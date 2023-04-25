@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "workspaces": ["packages/*", "apps/*", "services/*"]
+  "workspaces": ["packages/*", "apps/*", "services/*"],
+  "engines": {
+    "node": ">=18.16.0"
+  }
 }
