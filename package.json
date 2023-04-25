@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "license": "MIT",
   "workspaces": ["packages/*", "apps/*", "services/*"],
   "engines": {
     "node": ">=18.16.0"
