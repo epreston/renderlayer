@@ -1,0 +1,29 @@
+{
+  "root": true,
+  "env": {
+    "es2022": true,
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "extends": ["eslint:recommended"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "rules": {
+    "semi": "error",
+
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off",
+    "no-unused-vars": "off",
+
+    "no-duplicate-imports": "warn",
+    "no-new-native-nonconstructor": "error",
+
+    "yoda": ["error", "never", { "exceptRange": true }]
+  }
+}
