@@ -1,0 +1,21 @@
+{
+  "name": "renderlayer",
+  "version": "0.0.0",
+  "description": "Light, Modern, Stable - 3D Rendering Layer for the Web",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epreston/renderlayer.git"
+  },
+  "keywords": [
+    "webgl2"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epreston/renderlayer/issues"
+  },
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/README.md"
+}
