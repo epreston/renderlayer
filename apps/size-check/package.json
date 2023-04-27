@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "@renderlayer/size-check",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "vite build"
+  }
+}
