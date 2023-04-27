@@ -9,7 +9,7 @@
     "ecmaVersion": 2022,
     "sourceType": "module"
   },
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "prettier"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
