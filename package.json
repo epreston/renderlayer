@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@renderlayer/root",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Light, Modern, Stable - 3D Rendering Layer for the Web",
   "type": "module",
   "license": "MIT",
