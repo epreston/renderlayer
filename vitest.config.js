@@ -11,6 +11,8 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
+      // disable threads on GH actions to speed it up
+      threads: !process.env.GITHUB_ACTIONS,
       // setupFiles: ['./test/setup/setup.js'],
       // includeSource: ['src/**/*.{js,ts}'], // enable inline tests
       coverage: {
