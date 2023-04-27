@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"
   },
-  "homepage": "https://github.com/epreston/renderlayer/blob/main/README.md"
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/README.md",
+  "dependencies": {
+    "@renderlayer/shared": "^0.0.0",
+    "@renderlayer/math": "^0.0.0"
+  }
 }
