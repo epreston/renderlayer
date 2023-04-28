@@ -1,0 +1,10 @@
+// Settings in this file to overwrite default and user settings.
+{
+  // Use prettier to format javascript and JSON files
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
