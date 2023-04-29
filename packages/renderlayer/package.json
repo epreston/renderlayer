@@ -3,12 +3,20 @@
   "version": "0.0.1",
   "description": "Light, Modern, Stable - 3D Rendering Layer for the Web",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "sideEffects": false,
+  "buildOptions": {
+    "formats": [
+      "esm-bundler"
+    ]
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/epreston/renderlayer.git"
+    "url": "git+https://github.com/epreston/renderlayer.git",
+    "directory": "packages/renderlayer"
   },
   "keywords": [
     "webgl2"
