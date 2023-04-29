@@ -69,3 +69,6 @@ dist/*
 
 # Rollup Visualizer
 stats.html
+
+# Private working notes
+notes/
