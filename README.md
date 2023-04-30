@@ -14,6 +14,4 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 ## License
 
----
-
-See [License](LICENSE).
+MIT [License](LICENSE)
