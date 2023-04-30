@@ -16,6 +16,8 @@
   },
   "rules": {
     "semi": "error",
+    "quotes": ["error", "single"],
+    "no-throw-literal": [ "error" ],
 
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
@@ -24,6 +26,14 @@
     "no-duplicate-imports": "warn",
     "no-new-native-nonconstructor": "error",
 
-    "yoda": ["error", "never", { "exceptRange": true }]
+    "yoda": ["error", "never", { "exceptRange": true }],
+
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+      }
+    ]
   }
 }
