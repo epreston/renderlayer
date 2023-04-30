@@ -14,7 +14,7 @@ export default defineConfig({
   },
   plugins: [visualizer()],
   build: {
-    target: ['es2022', 'edge111', 'firefox111', 'chrome111', 'safari16.3', 'ios16.3'],
+    target: ['es2022', 'chrome112', 'edge112', 'firefox112', 'safari16.4', 'ios16.4'],
 
     // outDir: './dist',
     // emptyOutDir: true,
