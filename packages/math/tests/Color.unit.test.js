@@ -34,12 +34,6 @@ describe('Maths', () => {
       expect(c.b == 1).toBeTruthy();
     });
 
-    test('Color.NAMES', () => {
-      ColorManagement.enabled = false;
-
-      expect(Color.NAMES.aliceblue == 0xf0f8ff).toBeTruthy();
-    });
-
     test('isColor', () => {
       ColorManagement.enabled = false;
 
@@ -178,26 +172,16 @@ describe('Maths', () => {
       expect(a.g == 0xab / 255).toBeTruthy();
       expect(a.b == 0xc1 / 255).toBeTruthy();
 
-      a.setStyle('aliceblue');
+      a.setStyle('#f0f8ff');
       expect(a.r == 0xf0 / 255).toBeTruthy();
       expect(a.g == 0xf8 / 255).toBeTruthy();
       expect(a.b == 0xff / 255).toBeTruthy();
     });
 
-    test('setColorName', () => {
-      ColorManagement.enabled = false;
-
-      const c = new Color();
-      const res = c.setColorName('aliceblue');
-
-      expect(c.getHex() == 0xf0f8ff).toBeTruthy();
-      expect(c == res).toBeTruthy();
-    });
-
     test('clone', () => {
       ColorManagement.enabled = false;
 
-      const c = new Color('teal');
+      const c = new Color('#008080');
       const c2 = c.clone();
 
       expect(c2.getHex() == 0x008080).toBeTruthy();
@@ -206,7 +190,7 @@ describe('Maths', () => {
     test('copy', () => {
       ColorManagement.enabled = false;
 
-      const a = new Color('teal');
+      const a = new Color('#008080');
       const b = new Color();
 
       b.copy(a);
@@ -273,7 +257,7 @@ describe('Maths', () => {
     test('getHex', () => {
       ColorManagement.enabled = false;
 
-      const c = new Color('red');
+      const c = new Color('#ff0000');
       const res = c.getHex();
 
       expect(res == 0xff0000).toBeTruthy();
@@ -282,7 +266,7 @@ describe('Maths', () => {
     test('getHexString', () => {
       ColorManagement.enabled = false;
 
-      const c = new Color('tomato');
+      const c = new Color(0xff6347);
       const res = c.getHexString();
 
       expect(res == 'ff6347').toBeTruthy();
@@ -304,7 +288,7 @@ describe('Maths', () => {
     test('getRGB', () => {
       ColorManagement.enabled = true;
 
-      const c = new Color('plum');
+      const c = new Color('#dda0dd');
       const t = { r: 0, g: 0, b: 0 };
 
       c.getRGB(t);
@@ -332,7 +316,7 @@ describe('Maths', () => {
     test('getStyle', () => {
       ColorManagement.enabled = true;
 
-      const c = new Color('plum');
+      const c = new Color('#dda0dd');
 
       expect(c.getStyle()).toBe('rgb(221,160,221)');
       expect(c.getStyle(DisplayP3ColorSpace)).toBe('color(display-p3 0.831 0.637 0.852)');
@@ -548,7 +532,7 @@ describe('Maths', () => {
       ColorManagement.enabled = false;
 
       const c = new Color();
-      const c2 = new Color('ivory');
+      const c2 = new Color('#3fdefa');
 
       c.copy(c2);
 
@@ -570,7 +554,7 @@ describe('Maths', () => {
       ColorManagement.enabled = false;
 
       const c = new Color();
-      c.set('silver');
+      c.set('#c0c0c0');
 
       expect(c.getHex() == 0xc0c0c0).toBeTruthy();
     });
@@ -777,15 +761,6 @@ describe('Maths', () => {
       c.setStyle('#f00');
 
       expect(c.getHex() == 0xff0000).toBeTruthy();
-    });
-
-    test('setStyleColorName', () => {
-      ColorManagement.enabled = false;
-
-      const c = new Color();
-      c.setStyle('powderblue');
-
-      expect(c.getHex() == 0xb0e0e6).toBeTruthy();
     });
 
     test('iterable', () => {

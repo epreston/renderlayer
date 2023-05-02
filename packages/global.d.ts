@@ -25,6 +25,18 @@ declare interface String {
   substring(start: number, end?: number): string
 }
 
+declare interface Color {
+  /**
+   * @deprecated Removed.
+   */
+  setColorName(style: string, colorSpace?: string): this;
+
+  /**
+   * @deprecated Removed.
+   */
+  static NAMES: object;
+}
+
 declare interface ColorManagement {
 
   /**
