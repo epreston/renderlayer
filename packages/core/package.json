@@ -1,0 +1,29 @@
+{
+  "name": "@renderlayer/core",
+  "version": "0.0.0",
+  "description": "@renderlayer/core",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "sideEffects": false,
+  "buildOptions": {
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epreston/renderlayer.git",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "renderlayer"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epreston/renderlayer/issues"
+  },
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/core#readme"
+}
