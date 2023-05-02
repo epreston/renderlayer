@@ -4,10 +4,12 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 ## Commands
 
-| Action | Command        | Description              |
-| ------ | -------------- | ------------------------ |
-| lint   | `npm run lint` | Run static code analysis |
-| test   | `npm run test` | Run unit tests           |
+| Action        | Command                 | Description                     |
+| ------------- | ----------------------- | ------------------------------- |
+| lint          | `npm run lint`          | Run static code analysis        |
+| test          | `npm run test`          | Run unit tests                  |
+| test-run      | `npm run test-run`      | Run unit tests and exit         |
+| test-coverage | `npm run test-coverage` | Generate a test coverage report |
 
 ## References
 
