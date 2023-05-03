@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "@renderlayer/math",
   "main": "index.js",
+  "module": "dist/math.esm-bundler.js",
   "files": [
     "index.js",
     "dist"
