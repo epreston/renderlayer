@@ -2,9 +2,8 @@
   "name": "@renderlayer/loaders",
   "version": "0.0.0",
   "description": "@renderlayer/loaders",
-  "main": "index.js",
+  "type": "module",
   "files": [
-    "index.js",
     "dist"
   ],
   "sideEffects": false,

@@ -2,6 +2,7 @@
   "name": "renderlayer",
   "version": "0.0.1",
   "description": "Light, Modern, Stable - 3D Rendering Layer for the Web",
+  "type": "module",
   "main": "index.js",
   "files": [
     "index.js",
@@ -28,6 +29,6 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/README.md",
   "dependencies": {
     "@renderlayer/shared": "^0.0.0",
-    "@renderlayer/math": "^0.0.0"
+    "@renderlayer/math": "^0.0.2"
   }
 }

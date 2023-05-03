@@ -2,9 +2,8 @@
   "name": "@renderlayer/controls",
   "version": "0.0.0",
   "description": "@renderlayer/controls",
-  "main": "index.js",
+  "type": "module",
   "files": [
-    "index.js",
     "dist"
   ],
   "sideEffects": false,

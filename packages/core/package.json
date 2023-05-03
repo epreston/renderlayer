@@ -2,9 +2,8 @@
   "name": "@renderlayer/core",
   "version": "0.0.0",
   "description": "@renderlayer/core",
-  "main": "index.js",
+  "type": "module",
   "files": [
-    "index.js",
     "dist"
   ],
   "sideEffects": false,

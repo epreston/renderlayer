@@ -2,9 +2,8 @@
   "name": "@renderlayer/utils",
   "version": "0.0.0",
   "description": "@renderlayer/utils",
-  "main": "index.js",
+  "type": "module",
   "files": [
-    "index.js",
     "dist"
   ],
   "sideEffects": false,

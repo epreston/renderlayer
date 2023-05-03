@@ -2,9 +2,8 @@
   "name": "@renderlayer/shared",
   "version": "0.0.0",
   "description": "internal utils shared across @renderlayer packages",
-  "main": "index.js",
+  "type": "module",
   "files": [
-    "index.js",
     "dist"
   ],
   "sideEffects": false,
