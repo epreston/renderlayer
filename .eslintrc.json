@@ -14,8 +14,8 @@
     "no-debugger": "error",
 
     "semi": "error",
-    "quotes": ["error", "single", { "avoidEscape": true }],
-    "no-throw-literal": [ "error" ],
+    "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    "no-throw-literal": ["error"],
 
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
