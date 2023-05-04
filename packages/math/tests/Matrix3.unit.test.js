@@ -1,9 +1,7 @@
-/* global QUnit */
-
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
-import { Matrix3 } from '../src/Matrix3.js';
 import { Matrix4 } from '../src/Matrix4.js';
+import { Matrix3 } from '../src/Matrix3.js';
 
 function matrixEquals3(a, b, tolerance = 0.0001) {
   if (a.elements.length != b.elements.length) {
@@ -224,7 +222,8 @@ describe('Maths', () => {
       a.elements[0] = 0;
       expect(a.determinant() == 0).toBeTruthy();
 
-      // calculated via http://www.euclideanspace.com/maths/algebra/matrix/functions/determinant/threeD/index.htm
+      // calculated via
+      // http://www.euclideanspace.com/maths/algebra/matrix/functions/determinant/threeD/index.htm
       a.set(2, 3, 4, 5, 13, 7, 8, 9, 11);
       expect(a.determinant() == -73).toBeTruthy();
     });
