@@ -10,6 +10,7 @@ export * from './Matrix3.js';
 export * from './Matrix4.js';
 export * from './Plane.js';
 export * from './Quaternion.js';
+export * from './Ray.js';
 export * from './Sphere.js';
 export * from './Triangle.js';
 export * from './Vector2.js';
