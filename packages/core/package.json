@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/core",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "@renderlayer/core",
   "type": "module",
   "files": [
@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"
   },
-  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/core#readme"
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/core#readme",
+  "dependencies": {
+    "@renderlayer/math": "*"
+  }
 }
