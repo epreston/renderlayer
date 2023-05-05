@@ -1,0 +1,18 @@
+{
+  "extends": "./jsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false
+  },
+  "exclude": [
+    "apps/*/tests",
+    "apps/size-check",
+
+    "packages/*/tests",
+
+    "services/*/tests",
+    "services/json",
+    "services/worker"
+  ]
+}
