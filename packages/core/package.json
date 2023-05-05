@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/core",
   "type": "module",
+  "module": "dist/core.esm-bundler.js",
+  "exports": "./dist/core.esm-bundler.js",
   "files": [
     "dist"
   ],
