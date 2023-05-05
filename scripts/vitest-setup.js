@@ -1,4 +1,5 @@
-import { beforeEach, afterEach, expect, vi } from 'vitest';
+import { afterAll, beforeAll, beforeEach, afterEach, expect, vi } from 'vitest';
+import crypto from 'node:crypto';
 
 // from vue/core repo
 // - toHaveBeenWarned
@@ -87,3 +88,11 @@ afterEach(() => {
     throw new Error(`test case threw unexpected warnings:\n - ${nonAssertedWarnings.join('\n - ')}`);
   }
 });
+
+// beforeAll(() => {
+//   global.crypto = crypto.webcrypto;
+// });
+
+// afterAll(() => {
+//   delete global.crypto;
+// });
