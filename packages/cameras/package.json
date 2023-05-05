@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/cameras",
   "type": "module",
+  "module": "dist/cameras.esm-bundler.js",
+  "exports": "./dist/cameras.esm-bundler.js",
   "files": [
     "dist"
   ],
