@@ -631,12 +631,13 @@ class Quaternion {
   clone() {
     return new this.constructor(this._x, this._y, this._z, this._w);
   }
-  copy(quaternion) {
+  copy(quaternion, update = true) {
     this._x = quaternion.x;
     this._y = quaternion.y;
     this._z = quaternion.z;
     this._w = quaternion.w;
-    this._onChangeCallback();
+    if (update === true)
+      this._onChangeCallback();
     return this;
   }
   setFromEuler(euler, update) {
@@ -2992,12 +2993,13 @@ class Euler {
   clone() {
     return new this.constructor(this._x, this._y, this._z, this._order);
   }
-  copy(euler) {
+  copy(euler, update = true) {
     this._x = euler._x;
     this._y = euler._y;
     this._z = euler._z;
     this._order = euler._order;
-    this._onChangeCallback();
+    if (update === true)
+      this._onChangeCallback();
     return this;
   }
   setFromRotationMatrix(m, order = this._order, update = true) {
