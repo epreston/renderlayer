@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/scenes",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "@renderlayer/scenes",
   "type": "module",
   "files": [
@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/scenes#readme",
   "dependencies": {
-    "@renderlayer/shared": "^0.0.0"
+    "@renderlayer/math": "*"
   }
 }
