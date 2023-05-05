@@ -149,13 +149,14 @@ class Quaternion {
     return new this.constructor(this._x, this._y, this._z, this._w);
   }
 
-  copy(quaternion) {
+  copy(quaternion, update = true) {
     this._x = quaternion.x;
     this._y = quaternion.y;
     this._z = quaternion.z;
     this._w = quaternion.w;
 
-    this._onChangeCallback();
+    // update check required to optimise Object3D.copy()
+    if (update === true) this._onChangeCallback();
 
     return this;
   }
