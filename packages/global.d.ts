@@ -14,7 +14,7 @@ declare namespace jest {
   interface Matchers<R, T> {
     toHaveBeenWarned(): R
     toHaveBeenWarnedLast(): R
-    toHaveBeenWarnedTimes(n: number): R
+    toHaveBeenWarnedTimes( n: number ): R
   }
 }
 
@@ -22,14 +22,14 @@ declare interface String {
   /**
    * @deprecated Please use String.prototype.slice instead of String.prototype.substring in the repository.
    */
-  substring(start: number, end?: number): string
+  substring( start: number, end?: number ): string
 }
 
 declare interface Color {
   /**
    * @deprecated Removed.
    */
-  setColorName(style: string, colorSpace?: string): this;
+  setColorName( style: string, colorSpace?: string ): this
 
   /**
    * @deprecated Removed.
@@ -38,7 +38,6 @@ declare interface Color {
 }
 
 declare interface ColorManagement {
-
   /**
    * @deprecated ColorManagement.legacyMode=false renamed to .enabled=true.
    */
@@ -47,16 +46,15 @@ declare interface ColorManagement {
   /**
    * @deprecated ColorManagement.legacyMode=false renamed to .enabled=true.
    */
-  set legacyMode(legacyMode: boolean)
+  set legacyMode( legacyMode: boolean )
 
   /**
    * @deprecated ColorManagement.workingColorSpace is readonly.
    */
-  set workingColorSpace(colorSpace: string)
+  set workingColorSpace( colorSpace: string )
 }
 
 declare interface Triangle {
-
   /**
    * @deprecated Triangle.getUV() has been renamed to Triangle.getInterpolation().
    */
@@ -66,4 +64,16 @@ declare interface Triangle {
    * @deprecated Triangle.getUV() has been renamed to Triangle.getInterpolation().
    */
   getUV( point, uv1, uv2, uv3, target )
+}
+
+declare interface Scene {
+  /**
+   * @deprecated Scene: autoUpdate was renamed to matrixWorldAutoUpdate
+   */
+  get autoUpdate() : boolean
+
+  /**
+   * @deprecated Scene: autoUpdate was renamed to matrixWorldAutoUpdate
+   */
+	set autoUpdate( value: boolean )
 }
