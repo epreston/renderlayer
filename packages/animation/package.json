@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"
   },
-  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/animation#readme"
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/animation#readme",
+  "dependencies": {
+    "@renderlayer/math": "*"
+  }
 }
