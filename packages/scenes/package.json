@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/scenes",
   "type": "module",
+  "module": "dist/scenes.esm-bundler.js",
+  "exports": "./dist/scenes.esm-bundler.js",
   "files": [
     "dist"
   ],
