@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/lights",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "@renderlayer/lights",
   "type": "module",
   "files": [
@@ -24,5 +24,10 @@
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"
   },
-  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/lights#readme"
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/lights#readme",
+  "dependencies": {
+    "@renderlayer/math": "*",
+    "@renderlayer/core": "*",
+    "@renderlayer/cameras": "*"
+  }
 }
