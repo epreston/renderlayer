@@ -1,0 +1,31 @@
+{
+  "name": "@renderlayer/curves",
+  "version": "0.0.1",
+  "description": "@renderlayer/curves",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "buildOptions": {
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epreston/renderlayer.git",
+    "directory": "packages/curves"
+  },
+  "keywords": [
+    "renderlayer"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epreston/renderlayer/issues"
+  },
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/curves#readme",
+  "dependencies": {
+    "@renderlayer/math": "*"
+  }
+}
