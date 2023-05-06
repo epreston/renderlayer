@@ -24,16 +24,19 @@ describe('Scenes', () => {
       // implement
     });
 
-    test.todo('color', () => {
-      // implement
+    test('color', () => {
+      const object = new Fog(0xffffff, 0.015, 100);
+      expect(object.color.getHex()).toEqual(0xffffff);
     });
 
-    test.todo('near', () => {
-      // implement
+    test('near', () => {
+      const object = new Fog(0xffffff, 0.015, 100);
+      expect(object.near).toEqual(0.015);
     });
 
-    test.todo('far', () => {
-      // implement
+    test('far', () => {
+      const object = new Fog(0xffffff, 0.015, 100);
+      expect(object.far).toEqual(100);
     });
 
     test('isFog', () => {
