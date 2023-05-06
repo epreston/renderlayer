@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/lights",
   "type": "module",
+  "module": "dist/lights.esm-bundler.js",
+  "exports": "./dist/lights.esm-bundler.js",
   "files": [
     "dist"
   ],
