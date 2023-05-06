@@ -1,6 +1,33 @@
 import { afterAll, beforeAll, beforeEach, afterEach, expect, vi } from 'vitest';
 import crypto from 'node:crypto';
 
+// beforeAll(() => {
+//   global.crypto = crypto.webcrypto;
+// });
+
+// afterAll(() => {
+//   delete global.crypto;
+// });
+
+if (typeof ResizeObserver === 'undefined') {
+  global.ResizeObserver = class ResizeObserver {
+    constructor(callback) {}
+    observe(target, options = {}) {}
+    unobserve(target) {}
+    disconnect() {}
+  };
+}
+
+if (typeof TextEncoder === 'undefined') {
+  const { TextEncoder } = require('util');
+  global.TextEncoder = TextEncoder;
+}
+
+if (typeof TextDecoder === 'undefined') {
+  const { TextDecoder } = require('util');
+  global.TextDecoder = TextDecoder;
+}
+
 // from vue/core repo
 // - toHaveBeenWarned
 // - toHaveBeenWarnedLast
@@ -88,11 +115,3 @@ afterEach(() => {
     throw new Error(`test case threw unexpected warnings:\n - ${nonAssertedWarnings.join('\n - ')}`);
   }
 });
-
-// beforeAll(() => {
-//   global.crypto = crypto.webcrypto;
-// });
-
-// afterAll(() => {
-//   delete global.crypto;
-// });
