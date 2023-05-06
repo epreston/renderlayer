@@ -1,5 +1,5 @@
-import { DirectionalLightShadow } from './DirectionalLightShadow.js';
 import { Object3D } from '@renderlayer/core';
+import { DirectionalLightShadow } from './DirectionalLightShadow.js';
 import { Light } from './Light.js';
 
 class DirectionalLight extends Light {
