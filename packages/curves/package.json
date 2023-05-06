@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/curves",
   "type": "module",
+  "module": "dist/curves.esm-bundler.js",
+  "exports": "./dist/curves.esm-bundler.js",
   "files": [
     "dist"
   ],
