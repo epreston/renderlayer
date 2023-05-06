@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/controls",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "@renderlayer/controls",
   "type": "module",
   "files": [
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/controls#readme",
   "dependencies": {
-    "@renderlayer/math": "*"
+    "@renderlayer/math": "*",
+    "@renderlayer/core": "*"
   }
 }
