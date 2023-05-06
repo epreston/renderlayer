@@ -22,6 +22,25 @@ class Fog {
   }
 }
 
+class FogExp2 {
+  constructor(color, density = 25e-5) {
+    this.isFogExp2 = true;
+    this.name = "";
+    this.color = new Color(color);
+    this.density = density;
+  }
+  clone() {
+    return new FogExp2(this.color, this.density);
+  }
+  toJSON() {
+    return {
+      type: "FogExp2",
+      color: this.color.getHex(),
+      density: this.density
+    };
+  }
+}
+
 class Scene extends Object3D {
   constructor() {
     super();
@@ -61,4 +80,4 @@ class Scene extends Object3D {
   }
 }
 
-export { Fog, Scene };
+export { Fog, FogExp2, Scene };
