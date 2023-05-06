@@ -1,3 +1,5 @@
+// @vitest-environment jsdom
+
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // import { OrbitControls } from '../src/OrbitControls.js';
