@@ -5,11 +5,6 @@ import { InstancedBufferAttribute } from '../src/InstancedBufferAttribute.js';
 
 describe('Buffers', () => {
   describe('InstancedBufferAttribute', () => {
-    test('Extending', () => {
-      const object = new BufferAttribute();
-      expect(object).toBeInstanceOf(BufferAttribute);
-    });
-
     test('Instancing', () => {
       // array, itemSize
       let instance = new InstancedBufferAttribute(new Float32Array(10), 2);
@@ -18,6 +13,11 @@ describe('Buffers', () => {
       // array, itemSize, normalized, meshPerAttribute
       instance = new InstancedBufferAttribute(new Float32Array(10), 2, false, 123);
       expect(instance.meshPerAttribute === 123).toBeTruthy();
+    });
+
+    test('Extending', () => {
+      const object = new BufferAttribute();
+      expect(object).toBeInstanceOf(BufferAttribute);
     });
 
     test.todo('meshPerAttribute', () => {
