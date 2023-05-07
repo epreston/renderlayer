@@ -1,0 +1,32 @@
+{
+  "name": "@renderlayer/shaders",
+  "version": "0.0.1",
+  "description": "@renderlayer/shaders",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "buildOptions": {
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epreston/renderlayer.git",
+    "directory": "packages/shaders"
+  },
+  "keywords": [
+    "renderlayer"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epreston/renderlayer/issues"
+  },
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/shaders#readme",
+  "dependencies": {
+    "@renderlayer/math": "*",
+    "@renderlayer/shared": "*"
+  }
+}
