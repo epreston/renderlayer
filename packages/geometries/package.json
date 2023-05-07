@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/geometries",
   "type": "module",
+  "module": "dist/geometries.esm-bundler.js",
+  "exports": "./dist/geometries.esm-bundler.js",
   "files": [
     "dist"
   ],
