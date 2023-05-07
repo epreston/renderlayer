@@ -27,6 +27,7 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/renderers#readme",
   "dependencies": {
     "@renderlayer/math": "*",
-    "@renderlayer/core": "*"
+    "@renderlayer/core": "*",
+    "@renderlayer/shared": "*"
   }
 }
