@@ -140,7 +140,8 @@ class Curve {
       comparison;
 
     while (low <= high) {
-      i = Math.floor(low + (high - low) / 2); // less likely to overflow, though probably not issue here, JS doesn't really have integers, all numbers are floats
+      // less likely to overflow, all numbers are floats
+      i = Math.floor(low + (high - low) / 2);
 
       comparison = arcLengths[i] - targetArcLength;
 
