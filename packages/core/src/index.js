@@ -1,12 +1,5 @@
-// export * from './BufferAttribute.js';
-// export * from './BufferGeometry.js';
 // export * from './Clock.js';
 export * from './EventDispatcher.js';
-// export * from './InstancedBufferAttribute.js';
-// export * from './InstancedBufferGeometry.js';
-// export * from './InstancedInterleavedBuffer.js';
-// export * from './InterleavedBuffer.js';
-// export * from './InterleavedBufferAttribute.js';
 export * from './Layers.js';
 export * from './Object3D.js';
 // export * from './Raycaster.js';
