@@ -77,3 +77,10 @@ declare interface Scene {
    */
 	set autoUpdate( value: boolean )
 }
+
+declare interface BufferGeometry {
+  /**
+   * @deprecated Removed.
+   */
+  merge(): this
+}
