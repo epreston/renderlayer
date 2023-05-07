@@ -1,0 +1,32 @@
+{
+  "name": "@renderlayer/buffers",
+  "version": "0.0.1",
+  "description": "@renderlayer/buffers",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "buildOptions": {
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epreston/renderlayer.git",
+    "directory": "packages/buffers"
+  },
+  "keywords": [
+    "renderlayer"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epreston/renderlayer/issues"
+  },
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/buffers#readme",
+  "dependencies": {
+    "@renderlayer/math": "*",
+    "@renderlayer/core": "*"
+  }
+}
