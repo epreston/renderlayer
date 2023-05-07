@@ -16,7 +16,7 @@ Based on an optimized c++ solution in
  - http://ideone.com/NoEbVM
 
 This CubicPoly class could be used for reusing some variables and calculations,
-but for js curve use, it could be possible inlined and flatten into a single function call
+but for curve use, it could be possible inlined and flatten into a single function call
 which can be placed in CurveUtils.
 */
 
