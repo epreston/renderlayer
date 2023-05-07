@@ -18,6 +18,17 @@ declare namespace jest {
   }
 }
 
+// deprecations
+
+/** @deprecated Removed. */
+declare const TwoPassDoubleSide = 2;
+
+/** @deprecated Removed: Use LinearSRGBColorSpace or NoColorSpace */
+declare const LinearEncoding = 3000;
+
+/** @deprecated Removed: Use SRGBColorSpace */
+declare const sRGBEncoding = 3001;
+
 declare interface String {
   /**
    * @deprecated Please use String.prototype.slice instead of String.prototype.substring in the repository.
@@ -26,14 +37,10 @@ declare interface String {
 }
 
 declare interface Color {
-  /**
-   * @deprecated Removed.
-   */
+  /** @deprecated Removed. */
   setColorName( style: string, colorSpace?: string ): this
 
-  /**
-   * @deprecated Removed.
-   */
+  /** @deprecated Removed. */
   static NAMES: object;
 }
 
@@ -79,8 +86,12 @@ declare interface Scene {
 }
 
 declare interface BufferGeometry {
-  /**
-   * @deprecated Removed.
-   */
+  /** @deprecated Removed. Use mergeBufferGeometry */
   merge(): this
 }
+
+/** @deprecated Removed. Use BufferGeometryUtils: mergeBufferGeometries() has been renamed to mergeGeometries() */
+function mergeBufferGeometries(geometries, useGroups = false)
+
+/** @deprecated Removed. BufferGeometryUtils: mergeBufferAttributes() has been renamed to mergeAttributes() */
+function mergeBufferAttributes(attributes)
