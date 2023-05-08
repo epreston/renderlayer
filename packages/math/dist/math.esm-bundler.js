@@ -124,10 +124,14 @@ function denormalize(value, array) {
   switch (array.constructor) {
     case Float32Array:
       return value;
+    case Uint32Array:
+      return value / 4294967295;
     case Uint16Array:
       return value / 65535;
     case Uint8Array:
       return value / 255;
+    case Int32Array:
+      return Math.max(value / 2147483647, -1);
     case Int16Array:
       return Math.max(value / 32767, -1);
     case Int8Array:
@@ -140,10 +144,14 @@ function normalize(value, array) {
   switch (array.constructor) {
     case Float32Array:
       return value;
+    case Uint32Array:
+      return Math.round(value * 4294967295);
     case Uint16Array:
       return Math.round(value * 65535);
     case Uint8Array:
       return Math.round(value * 255);
+    case Int32Array:
+      return Math.round(value * 2147483647);
     case Int16Array:
       return Math.round(value * 32767);
     case Int8Array:
