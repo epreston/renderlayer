@@ -2,38 +2,40 @@ import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 import * as AnimationUtils from '../src/AnimationUtils.js';
 
+// split out keyframe
+
 describe('Animation', () => {
   describe('AnimationUtils', () => {
-    test.todo('arraySlice', () => {
-      // implement
+    // test.todo('arraySlice', () => {
+    //   // implement
+    // });
+
+    // test.todo('convertArray', () => {
+    //   // implement
+    // });
+
+    // test.todo('isTypedArray', () => {
+    //   // implement
+    // });
+
+    test('getKeyframeOrder', () => {
+      expect(AnimationUtils.getKeyframeOrder).toBeDefined();
     });
 
-    test.todo('convertArray', () => {
-      // implement
+    test('sortedArray', () => {
+      expect(AnimationUtils.sortedArray).toBeDefined();
     });
 
-    test.todo('isTypedArray', () => {
-      // implement
+    test('flattenJSON', () => {
+      expect(AnimationUtils.flattenJSON).toBeDefined();
     });
 
-    test.todo('getKeyframeOrder', () => {
-      // implement
+    test('subclip', () => {
+      expect(AnimationUtils.subclip).toBeDefined();
     });
 
-    test.todo('sortedArray', () => {
-      // implement
-    });
-
-    test.todo('flattenJSON', () => {
-      // implement
-    });
-
-    test.todo('subclip', () => {
-      // implement
-    });
-
-    test.todo('makeClipAdditive', () => {
-      // implement
+    test('makeClipAdditive', () => {
+      expect(AnimationUtils.makeClipAdditive).toBeDefined();
     });
   });
 });
