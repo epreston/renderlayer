@@ -1,8 +1,10 @@
 {
   "name": "@renderlayer/textures",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/textures",
   "type": "module",
+  "module": "dist/textures.esm-bundler.js",
+  "exports": "./dist/textures.esm-bundler.js",
   "files": [
     "dist"
   ],
