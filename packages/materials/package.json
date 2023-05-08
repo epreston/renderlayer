@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/materials",
   "type": "module",
+  "module": "dist/materials.esm-bundler.js",
+  "exports": "./dist/materials.esm-bundler.js",
   "files": [
     "dist"
   ],
