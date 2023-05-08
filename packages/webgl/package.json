@@ -36,6 +36,5 @@
     "@renderlayer/core": "*",
     "@renderlayer/shaders": "*",
     "@renderlayer/geometries": "*"
-
   }
 }
