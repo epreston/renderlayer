@@ -96,7 +96,6 @@ describe('Curves', () => {
       // implement
     });
 
-    // OTHERS
     test('Simple curve', () => {
       let curve = _curve;
 
