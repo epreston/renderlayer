@@ -95,3 +95,11 @@ function mergeBufferGeometries(geometries, useGroups = false)
 
 /** @deprecated Removed. BufferGeometryUtils: mergeBufferAttributes() has been renamed to mergeAttributes() */
 function mergeBufferAttributes(attributes)
+
+declare interface Texture {
+  /** @deprecated Removed. replaced by .colorSpace.*/
+  get encoding()
+
+  /** @deprecated Removed. replaced by .colorSpace. */
+  set encoding(encoding)
+}
