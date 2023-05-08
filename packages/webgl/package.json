@@ -26,6 +26,16 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/webgl#readme",
   "dependencies": {
-    "@renderlayer/math": "*"
+    "@renderlayer/math": "*",
+    "@renderlayer/shared": "*",
+    "@renderlayer/targets": "*",
+    "@renderlayer/objects": "*",
+    "@renderlayer/buffers": "*",
+    "@renderlayer/materials": "*",
+    "@renderlayer/textures": "*",
+    "@renderlayer/core": "*",
+    "@renderlayer/shaders": "*",
+    "@renderlayer/geometries": "*"
+
   }
 }
