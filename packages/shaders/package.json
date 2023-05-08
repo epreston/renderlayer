@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/shaders",
   "type": "module",
+  "module": "dist/shaders.esm-bundler.js",
+  "exports": "./dist/shaders.esm-bundler.js",
   "files": [
     "dist"
   ],
