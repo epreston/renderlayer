@@ -1,5 +1,6 @@
 import { Matrix4, RAD2DEG, DEG2RAD } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
+import { NoToneMapping } from '@renderlayer/shared';
 
 class Camera extends Object3D {
   constructor() {
@@ -32,95 +33,6 @@ class Camera extends Object3D {
   }
   clone() {
     return new this.constructor().copy(this);
-  }
-}
-
-class OrthographicCamera extends Camera {
-  constructor(left = -1, right = 1, top = 1, bottom = -1, near = 0.1, far = 2e3) {
-    super();
-    this.isOrthographicCamera = true;
-    this.type = "OrthographicCamera";
-    this.zoom = 1;
-    this.view = null;
-    this.left = left;
-    this.right = right;
-    this.top = top;
-    this.bottom = bottom;
-    this.near = near;
-    this.far = far;
-    this.updateProjectionMatrix();
-  }
-  copy(source, recursive) {
-    super.copy(source, recursive);
-    this.left = source.left;
-    this.right = source.right;
-    this.top = source.top;
-    this.bottom = source.bottom;
-    this.near = source.near;
-    this.far = source.far;
-    this.zoom = source.zoom;
-    this.view = source.view === null ? null : Object.assign({}, source.view);
-    return this;
-  }
-  setViewOffset(fullWidth, fullHeight, x, y, width, height) {
-    if (this.view === null) {
-      this.view = {
-        enabled: true,
-        fullWidth: 1,
-        fullHeight: 1,
-        offsetX: 0,
-        offsetY: 0,
-        width: 1,
-        height: 1
-      };
-    }
-    this.view.enabled = true;
-    this.view.fullWidth = fullWidth;
-    this.view.fullHeight = fullHeight;
-    this.view.offsetX = x;
-    this.view.offsetY = y;
-    this.view.width = width;
-    this.view.height = height;
-    this.updateProjectionMatrix();
-  }
-  clearViewOffset() {
-    if (this.view !== null) {
-      this.view.enabled = false;
-    }
-    this.updateProjectionMatrix();
-  }
-  updateProjectionMatrix() {
-    const dx = (this.right - this.left) / (2 * this.zoom);
-    const dy = (this.top - this.bottom) / (2 * this.zoom);
-    const cx = (this.right + this.left) / 2;
-    const cy = (this.top + this.bottom) / 2;
-    let left = cx - dx;
-    let right = cx + dx;
-    let top = cy + dy;
-    let bottom = cy - dy;
-    if (this.view !== null && this.view.enabled) {
-      const scaleW = (this.right - this.left) / this.view.fullWidth / this.zoom;
-      const scaleH = (this.top - this.bottom) / this.view.fullHeight / this.zoom;
-      left += scaleW * this.view.offsetX;
-      right = left + scaleW * this.view.width;
-      top -= scaleH * this.view.offsetY;
-      bottom = top - scaleH * this.view.height;
-    }
-    this.projectionMatrix.makeOrthographic(left, right, top, bottom, this.near, this.far);
-    this.projectionMatrixInverse.copy(this.projectionMatrix).invert();
-  }
-  toJSON(meta) {
-    const data = super.toJSON(meta);
-    data.object.zoom = this.zoom;
-    data.object.left = this.left;
-    data.object.right = this.right;
-    data.object.top = this.top;
-    data.object.bottom = this.bottom;
-    data.object.near = this.near;
-    data.object.far = this.far;
-    if (this.view !== null)
-      data.object.view = Object.assign({}, this.view);
-    return data;
   }
 }
 
@@ -281,4 +193,160 @@ class PerspectiveCamera extends Camera {
   }
 }
 
-export { Camera, OrthographicCamera, PerspectiveCamera };
+const fov = -90;
+const aspect = 1;
+class CubeCamera extends Object3D {
+  constructor(near, far, renderTarget) {
+    super();
+    this.type = "CubeCamera";
+    this.renderTarget = renderTarget;
+    const cameraPX = new PerspectiveCamera(fov, aspect, near, far);
+    cameraPX.layers = this.layers;
+    cameraPX.up.set(0, 1, 0);
+    cameraPX.lookAt(1, 0, 0);
+    this.add(cameraPX);
+    const cameraNX = new PerspectiveCamera(fov, aspect, near, far);
+    cameraNX.layers = this.layers;
+    cameraNX.up.set(0, 1, 0);
+    cameraNX.lookAt(-1, 0, 0);
+    this.add(cameraNX);
+    const cameraPY = new PerspectiveCamera(fov, aspect, near, far);
+    cameraPY.layers = this.layers;
+    cameraPY.up.set(0, 0, -1);
+    cameraPY.lookAt(0, 1, 0);
+    this.add(cameraPY);
+    const cameraNY = new PerspectiveCamera(fov, aspect, near, far);
+    cameraNY.layers = this.layers;
+    cameraNY.up.set(0, 0, 1);
+    cameraNY.lookAt(0, -1, 0);
+    this.add(cameraNY);
+    const cameraPZ = new PerspectiveCamera(fov, aspect, near, far);
+    cameraPZ.layers = this.layers;
+    cameraPZ.up.set(0, 1, 0);
+    cameraPZ.lookAt(0, 0, 1);
+    this.add(cameraPZ);
+    const cameraNZ = new PerspectiveCamera(fov, aspect, near, far);
+    cameraNZ.layers = this.layers;
+    cameraNZ.up.set(0, 1, 0);
+    cameraNZ.lookAt(0, 0, -1);
+    this.add(cameraNZ);
+  }
+  update(renderer, scene) {
+    if (this.parent === null)
+      this.updateMatrixWorld();
+    const renderTarget = this.renderTarget;
+    const [cameraPX, cameraNX, cameraPY, cameraNY, cameraPZ, cameraNZ] = this.children;
+    const currentRenderTarget = renderer.getRenderTarget();
+    const currentToneMapping = renderer.toneMapping;
+    renderer.toneMapping = NoToneMapping;
+    const generateMipmaps = renderTarget.texture.generateMipmaps;
+    renderTarget.texture.generateMipmaps = false;
+    renderer.setRenderTarget(renderTarget, 0);
+    renderer.render(scene, cameraPX);
+    renderer.setRenderTarget(renderTarget, 1);
+    renderer.render(scene, cameraNX);
+    renderer.setRenderTarget(renderTarget, 2);
+    renderer.render(scene, cameraPY);
+    renderer.setRenderTarget(renderTarget, 3);
+    renderer.render(scene, cameraNY);
+    renderer.setRenderTarget(renderTarget, 4);
+    renderer.render(scene, cameraPZ);
+    renderTarget.texture.generateMipmaps = generateMipmaps;
+    renderer.setRenderTarget(renderTarget, 5);
+    renderer.render(scene, cameraNZ);
+    renderer.setRenderTarget(currentRenderTarget);
+    renderer.toneMapping = currentToneMapping;
+    renderTarget.texture.needsPMREMUpdate = true;
+  }
+}
+
+class OrthographicCamera extends Camera {
+  constructor(left = -1, right = 1, top = 1, bottom = -1, near = 0.1, far = 2e3) {
+    super();
+    this.isOrthographicCamera = true;
+    this.type = "OrthographicCamera";
+    this.zoom = 1;
+    this.view = null;
+    this.left = left;
+    this.right = right;
+    this.top = top;
+    this.bottom = bottom;
+    this.near = near;
+    this.far = far;
+    this.updateProjectionMatrix();
+  }
+  copy(source, recursive) {
+    super.copy(source, recursive);
+    this.left = source.left;
+    this.right = source.right;
+    this.top = source.top;
+    this.bottom = source.bottom;
+    this.near = source.near;
+    this.far = source.far;
+    this.zoom = source.zoom;
+    this.view = source.view === null ? null : Object.assign({}, source.view);
+    return this;
+  }
+  setViewOffset(fullWidth, fullHeight, x, y, width, height) {
+    if (this.view === null) {
+      this.view = {
+        enabled: true,
+        fullWidth: 1,
+        fullHeight: 1,
+        offsetX: 0,
+        offsetY: 0,
+        width: 1,
+        height: 1
+      };
+    }
+    this.view.enabled = true;
+    this.view.fullWidth = fullWidth;
+    this.view.fullHeight = fullHeight;
+    this.view.offsetX = x;
+    this.view.offsetY = y;
+    this.view.width = width;
+    this.view.height = height;
+    this.updateProjectionMatrix();
+  }
+  clearViewOffset() {
+    if (this.view !== null) {
+      this.view.enabled = false;
+    }
+    this.updateProjectionMatrix();
+  }
+  updateProjectionMatrix() {
+    const dx = (this.right - this.left) / (2 * this.zoom);
+    const dy = (this.top - this.bottom) / (2 * this.zoom);
+    const cx = (this.right + this.left) / 2;
+    const cy = (this.top + this.bottom) / 2;
+    let left = cx - dx;
+    let right = cx + dx;
+    let top = cy + dy;
+    let bottom = cy - dy;
+    if (this.view !== null && this.view.enabled) {
+      const scaleW = (this.right - this.left) / this.view.fullWidth / this.zoom;
+      const scaleH = (this.top - this.bottom) / this.view.fullHeight / this.zoom;
+      left += scaleW * this.view.offsetX;
+      right = left + scaleW * this.view.width;
+      top -= scaleH * this.view.offsetY;
+      bottom = top - scaleH * this.view.height;
+    }
+    this.projectionMatrix.makeOrthographic(left, right, top, bottom, this.near, this.far);
+    this.projectionMatrixInverse.copy(this.projectionMatrix).invert();
+  }
+  toJSON(meta) {
+    const data = super.toJSON(meta);
+    data.object.zoom = this.zoom;
+    data.object.left = this.left;
+    data.object.right = this.right;
+    data.object.top = this.top;
+    data.object.bottom = this.bottom;
+    data.object.near = this.near;
+    data.object.far = this.far;
+    if (this.view !== null)
+      data.object.view = Object.assign({}, this.view);
+    return data;
+  }
+}
+
+export { Camera, CubeCamera, OrthographicCamera, PerspectiveCamera };
