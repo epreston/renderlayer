@@ -122,3 +122,7 @@ declare interface WebGLRenderer {
 declare interface WebGLRenderTarget {
   // constructor option .encoding deprecated, use .colorSpace
 }
+
+declare interface WebGLCubeRenderTarget {
+  // constructor option .encoding deprecated, use .colorSpace
+}
