@@ -6,12 +6,12 @@ import { ImageUtils } from '../src/ImageUtils.js';
 
 describe('Shared', () => {
   describe('ImageUtils', () => {
-    test.todo('getDataURL', () => {
-      // implement
+    test('getDataURL', () => {
+      expect(ImageUtils.getDataURL).toBeDefined();
     });
 
-    test.todo('sRGBToLinear', () => {
-      // implement
+    test('sRGBToLinear', () => {
+      expect(ImageUtils.sRGBToLinear).toBeDefined();
     });
   });
 });
