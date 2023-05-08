@@ -1,6 +1,6 @@
-import { ImageUtils, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, RGBAFormat, UnsignedByteType, NoColorSpace, UVMapping, MirroredRepeatWrapping, RepeatWrapping } from '@renderlayer/shared';
-import { generateUUID, Vector2, Matrix3 } from '@renderlayer/math';
+import { ImageUtils, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, RGBAFormat, UnsignedByteType, NoColorSpace, UVMapping, MirroredRepeatWrapping, RepeatWrapping, CubeReflectionMapping } from '@renderlayer/shared';
 import { EventDispatcher } from '@renderlayer/core';
+import { generateUUID, Vector2, Matrix3 } from '@renderlayer/math';
 
 class Source {
   constructor(data = null) {
@@ -246,4 +246,20 @@ Texture.DEFAULT_IMAGE = null;
 Texture.DEFAULT_MAPPING = UVMapping;
 Texture.DEFAULT_ANISOTROPY = 1;
 
-export { Source, Texture };
+class CubeTexture extends Texture {
+  constructor(images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, colorSpace) {
+    images = images !== void 0 ? images : [];
+    mapping = mapping !== void 0 ? mapping : CubeReflectionMapping;
+    super(images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, colorSpace);
+    this.isCubeTexture = true;
+    this.flipY = false;
+  }
+  get images() {
+    return this.image;
+  }
+  set images(value) {
+    this.image = value;
+  }
+}
+
+export { CubeTexture, Source, Texture };
