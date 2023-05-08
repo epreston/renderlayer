@@ -1,4 +1,4 @@
-import { ImageUtils, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, RGBAFormat, UnsignedByteType, NoColorSpace, UVMapping, MirroredRepeatWrapping, RepeatWrapping, CubeReflectionMapping } from '@renderlayer/shared';
+import { ImageUtils, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, RGBAFormat, UnsignedByteType, NoColorSpace, UVMapping, MirroredRepeatWrapping, RepeatWrapping, CubeReflectionMapping, NearestFilter } from '@renderlayer/shared';
 import { EventDispatcher } from '@renderlayer/core';
 import { generateUUID, Vector2, Matrix3 } from '@renderlayer/math';
 
@@ -262,4 +262,18 @@ class CubeTexture extends Texture {
   }
 }
 
-export { CubeTexture, Source, Texture };
+class DataArrayTexture extends Texture {
+  constructor(data = null, width = 1, height = 1, depth = 1) {
+    super(null);
+    this.isDataArrayTexture = true;
+    this.image = { data, width, height, depth };
+    this.magFilter = NearestFilter;
+    this.minFilter = NearestFilter;
+    this.wrapR = ClampToEdgeWrapping;
+    this.generateMipmaps = false;
+    this.flipY = false;
+    this.unpackAlignment = 1;
+  }
+}
+
+export { CubeTexture, DataArrayTexture, Source, Texture };
