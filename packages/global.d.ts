@@ -103,3 +103,22 @@ declare interface Texture {
   /** @deprecated Removed. replaced by .colorSpace. */
   set encoding(encoding)
 }
+
+declare interface WebGLRenderer {
+
+  /** @deprecated Removed. Use .useLegacyLights instead. */
+  get physicallyCorrectLights()
+
+  /** @deprecated Removed. Use .useLegacyLights instead. */
+  set physicallyCorrectLights( value )
+
+  /** @deprecated Removed. Use .outputColorSpace instead. */
+  get outputEncoding()
+
+  /** @deprecated Removed. Use .outputColorSpace instead. */
+  set outputEncoding( encoding )
+}
+
+declare interface WebGLRenderTarget {
+  // constructor option .encoding deprecated, use .colorSpace
+}
