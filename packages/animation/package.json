@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/animation#readme",
   "dependencies": {
-    "@renderlayer/math": "*"
+    "@renderlayer/math": "*",
+    "@renderlayer/shared": "*"
   }
 }
