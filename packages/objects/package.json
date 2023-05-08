@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/objects",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "@renderlayer/objects",
   "type": "module",
   "files": [
@@ -27,6 +27,9 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/objects#readme",
   "dependencies": {
     "@renderlayer/math": "*",
-    "@renderlayer/core": "*"
+    "@renderlayer/core": "*",
+    "@renderlayer/shared": "*",
+    "@renderlayer/buffers": "*",
+    "@renderlayer/materials": "*"
   }
 }
