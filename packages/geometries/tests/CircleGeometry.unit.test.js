@@ -97,7 +97,7 @@ describe('Geometries', () => {
         }
 
         // All parameters from geometry should be persisted.
-        let keys = Object.keys(params);
+        const keys = Object.keys(params);
         for (let i = 0, l = keys.length; i < l; i++) {
           const key = keys[i];
           expect(params[key]).toBe(json[key]);
@@ -107,10 +107,6 @@ describe('Geometries', () => {
 
     test.todo('fromJSON', () => {
       // implement
-    });
-
-    test('Standard geometry tests', () => {
-      // runStdGeometryTests( assert, geometries );
     });
   });
 });
