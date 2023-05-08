@@ -227,6 +227,7 @@ class Object3D extends EventDispatcher {
     } else {
       _target.set(x, y, z);
     }
+    const parent = this.parent;
     this.updateWorldMatrix(true, false);
     _position.setFromMatrixPosition(this.matrixWorld);
     if (this.isCamera || this.isLight) {
@@ -235,7 +236,6 @@ class Object3D extends EventDispatcher {
       _m1.lookAt(_target, _position, this.up);
     }
     this.quaternion.setFromRotationMatrix(_m1);
-    const parent = this.parent;
     if (parent) {
       _m1.extractRotation(parent.matrixWorld);
       _q1.setFromRotationMatrix(_m1);
