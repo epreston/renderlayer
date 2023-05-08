@@ -1,0 +1,41 @@
+{
+  "name": "@renderlayer/targets",
+  "version": "0.0.1",
+  "description": "@renderlayer/targets",
+  "type": "module",
+  "module": "dist/targets.esm-bundler.js",
+  "exports": "./dist/targets.esm-bundler.js",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "buildOptions": {
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epreston/renderlayer.git",
+    "directory": "packages/targets"
+  },
+  "keywords": [
+    "renderlayer"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epreston/renderlayer/issues"
+  },
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/targets#readme",
+  "dependencies": {
+    "@renderlayer/math": "*",
+    "@renderlayer/core": "*",
+    "@renderlayer/shared": "*",
+    "@renderlayer/textures": "*",
+    "@renderlayer/geometries": "*",
+    "@renderlayer/materials": "*",
+    "@renderlayer/objects": "*",
+    "@renderlayer/shaders": "*",
+    "@renderlayer/cameras": "*"
+  }
+}
