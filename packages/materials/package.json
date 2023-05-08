@@ -28,6 +28,7 @@
   "dependencies": {
     "@renderlayer/math": "*",
     "@renderlayer/core": "*",
-    "@renderlayer/shared": "*"
+    "@renderlayer/shared": "*",
+    "@renderlayer/shaders": "*"
   }
 }
