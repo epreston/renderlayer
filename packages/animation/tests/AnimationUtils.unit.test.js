@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
-// import * as AnimationUtils from '../src/AnimationUtils.js';
+import * as AnimationUtils from '../src/AnimationUtils.js';
 
 describe('Animation', () => {
   describe('AnimationUtils', () => {
