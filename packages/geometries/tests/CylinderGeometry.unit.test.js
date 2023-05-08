@@ -151,10 +151,6 @@ describe('Geometries', () => {
     test.todo('fromJSON', () => {
       // implement
     });
-
-    test('Standard geometry tests', () => {
-      // runStdGeometryTests( assert, geometries );
-    });
   });
 });
 
