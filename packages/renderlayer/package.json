@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/README.md",
   "dependencies": {
-    "@renderlayer/shared": "^0.0.1",
+    "@renderlayer/shared": "^0.0.2",
     "@renderlayer/math": "^0.0.4"
   }
 }
