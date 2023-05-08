@@ -1,4 +1,4 @@
-import { NormalBlending, FrontSide, SrcAlphaFactor, OneMinusSrcAlphaFactor, AddEquation, LessEqualDepth, AlwaysStencilFunc, KeepStencilOp, MultiplyOperation } from '@renderlayer/shared';
+import { NormalBlending, FrontSide, SrcAlphaFactor, OneMinusSrcAlphaFactor, AddEquation, LessEqualDepth, AlwaysStencilFunc, KeepStencilOp, MultiplyOperation, BasicDepthPacking } from '@renderlayer/shared';
 import { generateUUID, Color } from '@renderlayer/math';
 import { EventDispatcher } from '@renderlayer/core';
 import { cloneUniforms, cloneUniformsGroups } from '@renderlayer/shaders';
@@ -431,6 +431,58 @@ class MeshBasicMaterial extends Material {
   }
 }
 
+class MeshDepthMaterial extends Material {
+  constructor(parameters) {
+    super();
+    this.isMeshDepthMaterial = true;
+    this.type = "MeshDepthMaterial";
+    this.depthPacking = BasicDepthPacking;
+    this.map = null;
+    this.alphaMap = null;
+    this.displacementMap = null;
+    this.displacementScale = 1;
+    this.displacementBias = 0;
+    this.wireframe = false;
+    this.wireframeLinewidth = 1;
+    this.setValues(parameters);
+  }
+  copy(source) {
+    super.copy(source);
+    this.depthPacking = source.depthPacking;
+    this.map = source.map;
+    this.alphaMap = source.alphaMap;
+    this.displacementMap = source.displacementMap;
+    this.displacementScale = source.displacementScale;
+    this.displacementBias = source.displacementBias;
+    this.wireframe = source.wireframe;
+    this.wireframeLinewidth = source.wireframeLinewidth;
+    return this;
+  }
+}
+
+class MeshDistanceMaterial extends Material {
+  constructor(parameters) {
+    super();
+    this.isMeshDistanceMaterial = true;
+    this.type = "MeshDistanceMaterial";
+    this.map = null;
+    this.alphaMap = null;
+    this.displacementMap = null;
+    this.displacementScale = 1;
+    this.displacementBias = 0;
+    this.setValues(parameters);
+  }
+  copy(source) {
+    super.copy(source);
+    this.map = source.map;
+    this.alphaMap = source.alphaMap;
+    this.displacementMap = source.displacementMap;
+    this.displacementScale = source.displacementScale;
+    this.displacementBias = source.displacementBias;
+    return this;
+  }
+}
+
 var default_vertex = (
   /* glsl */
   `
@@ -577,4 +629,4 @@ class RawShaderMaterial extends ShaderMaterial {
   }
 }
 
-export { Material, MeshBasicMaterial, RawShaderMaterial, ShaderMaterial };
+export { Material, MeshBasicMaterial, MeshDepthMaterial, MeshDistanceMaterial, RawShaderMaterial, ShaderMaterial };
