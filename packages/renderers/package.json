@@ -28,6 +28,7 @@
   "dependencies": {
     "@renderlayer/math": "*",
     "@renderlayer/shared": "*",
-    "@renderlayer/targets": "*"
+    "@renderlayer/targets": "*",
+    "@renderlayer/webgl": "*"
   }
 }
