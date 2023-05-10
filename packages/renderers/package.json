@@ -1,8 +1,10 @@
 {
   "name": "@renderlayer/renderers",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/renderers",
   "type": "module",
+  "module": "dist/renderers.esm-bundler.js",
+  "exports": "./dist/renderers.esm-bundler.js",
   "files": [
     "dist"
   ],
