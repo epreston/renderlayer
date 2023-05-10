@@ -1,0 +1,31 @@
+{
+  "name": "@renderlayer/gltf",
+  "version": "0.0.1",
+  "description": "@renderlayer/gltf",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "buildOptions": {
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epreston/renderlayer.git",
+    "directory": "packages/gltf"
+  },
+  "keywords": [
+    "renderlayer"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epreston/renderlayer/issues"
+  },
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/gltf#readme",
+  "dependencies": {
+    "@renderlayer/math": "*"
+  }
+}
