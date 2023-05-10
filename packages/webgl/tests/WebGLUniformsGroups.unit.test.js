@@ -12,19 +12,15 @@ describe('WebGL', () => {
       // implement
     });
 
-    test.todo('setValue', () => {
+    test.todo('bind', () => {
       // implement
     });
 
-    test.todo('setOptional', () => {
+    test.todo('update', () => {
       // implement
     });
 
-    test.todo('upload', () => {
-      // implement
-    });
-
-    test.todo('seqWithValue', () => {
+    test.todo('dispose', () => {
       // implement
     });
   });
