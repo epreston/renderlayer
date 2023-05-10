@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/webgl",
   "type": "module",
+  "module": "dist/webgl.esm-bundler.js",
+  "exports": "./dist/webgl.esm-bundler.js",
   "files": [
     "dist"
   ],
