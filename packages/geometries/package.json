@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/geometries",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "@renderlayer/geometries",
   "type": "module",
   "module": "dist/geometries.esm-bundler.js",
