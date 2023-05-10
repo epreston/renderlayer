@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/loaders",
   "type": "module",
+  "module": "dist/loaders.esm-bundler.js",
+  "exports": "./dist/loaders.esm-bundler.js",
   "files": [
     "dist"
   ],
