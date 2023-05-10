@@ -1,6 +1,8 @@
 import { Ray } from '@renderlayer/math';
 import { Layers } from './Layers.js';
 
+// TODO: remove from core
+
 class Raycaster {
   constructor(origin, direction, near = 0, far = Infinity) {
     this.ray = new Ray(origin, direction);
