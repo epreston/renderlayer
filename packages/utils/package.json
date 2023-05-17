@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@renderlayer/utils",
   "version": "0.0.1",
   "description": "@renderlayer/utils",
