@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/core",
   "type": "module",
   "module": "dist/core.esm-bundler.js",
