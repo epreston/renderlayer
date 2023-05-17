@@ -2,9 +2,11 @@ import { ImageUtils, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter
 import { EventDispatcher } from '@renderlayer/core';
 import { generateUUID, Vector2, Matrix3 } from '@renderlayer/math';
 
+let sourceid = 0;
 class Source {
   constructor(data = null) {
     this.isSource = true;
+    Object.defineProperty(this, "id", { value: sourceid++ });
     this.uuid = generateUUID();
     this.data = data;
     this.version = 0;
