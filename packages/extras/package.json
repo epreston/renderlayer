@@ -1,9 +1,10 @@
 {
-  "private": true,
   "name": "@renderlayer/extras",
   "version": "0.0.1",
   "description": "@renderlayer/extras",
   "type": "module",
+  "module": "dist/extras.esm-bundler.js",
+  "exports": "./dist/extras.esm-bundler.js",
   "files": [
     "dist"
   ],
@@ -27,7 +28,5 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/extras#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/shared": "*"
   }
 }
