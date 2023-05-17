@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@renderlayer/gltf",
   "version": "0.0.1",
   "description": "@renderlayer/gltf",
@@ -27,6 +26,17 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/gltf#readme",
   "dependencies": {
-    "@renderlayer/math": "*"
+    "@renderlayer/math": "*",
+    "@renderlayer/shared": "*",
+    "@renderlayer/animation": "*",
+    "@renderlayer/keyframes": "*",
+    "@renderlayer/core": "*",
+    "@renderlayer/cameras": "*",
+    "@renderlayer/objects": "*",
+    "@renderlayer/materials": "*",
+    "@renderlayer/loaders": "*",
+    "@renderlayer/lights": "*",
+    "@renderlayer/buffers": "*",
+    "@renderlayer/textures": "*"
   }
 }
