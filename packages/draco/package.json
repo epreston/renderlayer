@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "@renderlayer/draco",
   "type": "module",
+  "module": "dist/draco.esm-bundler.js",
+  "exports": "./dist/draco.esm-bundler.js",
   "files": [
     "dist"
   ],
