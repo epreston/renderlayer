@@ -37,6 +37,7 @@
     "@renderlayer/loaders": "*",
     "@renderlayer/lights": "*",
     "@renderlayer/buffers": "*",
-    "@renderlayer/textures": "*"
+    "@renderlayer/textures": "*",
+    "@renderlayer/interpolants": "*"
   }
 }
