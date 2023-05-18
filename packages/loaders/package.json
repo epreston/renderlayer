@@ -32,6 +32,13 @@
     "@renderlayer/textures": "*",
     "@renderlayer/materials": "*",
     "@renderlayer/math": "*",
-    "@renderlayer/buffers": "*"
+    "@renderlayer/buffers": "*",
+    "@renderlayer/animation": "*",
+    "@renderlayer/cameras": "*",
+    "@renderlayer/core": "*",
+    "@renderlayer/scenes": "*",
+    "@renderlayer/geometries": "*",
+    "@renderlayer/lights": "*",
+    "@renderlayer/objects": "*"
   }
 }
