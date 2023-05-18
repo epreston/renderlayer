@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/objects",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/objects",
   "type": "module",
   "module": "dist/objects.esm-bundler.js",
@@ -32,6 +32,7 @@
     "@renderlayer/core": "*",
     "@renderlayer/shared": "*",
     "@renderlayer/buffers": "*",
-    "@renderlayer/materials": "*"
+    "@renderlayer/materials": "*",
+    "@renderlayer/textures": "*"
   }
 }
