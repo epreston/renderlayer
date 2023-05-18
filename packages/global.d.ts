@@ -126,3 +126,8 @@ declare interface WebGLRenderTarget {
 declare interface WebGLCubeRenderTarget {
   // constructor option .encoding deprecated, use .colorSpace
 }
+
+declare interface SkinnedMesh {
+  /** @deprecated Renamed to .applyBoneTransform() */
+  boneTransform(index, vector)
+}
