@@ -77,11 +77,11 @@ describe('Lights', () => {
       expect(a.color.getHex()).not.equal(b.color.getHex());
     });
 
-    test.todo('toJSON', () => {
+    test('toJSON', () => {
       const light = new AmbientLight(0xffc0d1);
       const json = light.toJSON();
 
-      expect(json.metadata.version).toBe('4.5');
+      expect(json.metadata.version).toBe(4.5);
 
       const object = json.object;
 
