@@ -40,7 +40,7 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
     // in a coordinate system in which positive-x is to the right when looking up the positive-z axis -- in other words,
     // in a left-handed coordinate system. By continuing this convention, preexisting cube maps continued to render correctly.
 
-    // three.js uses a right-handed coordinate system. So environment maps used in three.js appear to have px and nx swapped
+    // This uses a right-handed coordinate system. Environment maps used in appear to have px and nx swapped
     // and the flag isRenderTargetTexture controls this conversion. The flip is not required when using WebGLCubeRenderTarget.texture
     // as a cube texture (this is detected when isRenderTargetTexture is set to true for cube textures).
 
