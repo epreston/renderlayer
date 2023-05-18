@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/loaders",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "@renderlayer/loaders",
   "type": "module",
   "module": "dist/loaders.esm-bundler.js",
@@ -29,6 +29,9 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/loaders#readme",
   "dependencies": {
     "@renderlayer/shared": "*",
-    "@renderlayer/textures": "*"
+    "@renderlayer/textures": "*",
+    "@renderlayer/materials": "*",
+    "@renderlayer/math": "*",
+    "@renderlayer/buffers": "*"
   }
 }
