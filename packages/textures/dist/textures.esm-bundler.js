@@ -292,4 +292,15 @@ class DataArrayTexture extends Texture {
   }
 }
 
-export { CubeTexture, Data3DTexture, DataArrayTexture, Source, Texture };
+class DataTexture extends Texture {
+  constructor(data = null, width = 1, height = 1, format, type, mapping, wrapS, wrapT, magFilter = NearestFilter, minFilter = NearestFilter, anisotropy, colorSpace) {
+    super(null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, colorSpace);
+    this.isDataTexture = true;
+    this.image = { data, width, height };
+    this.generateMipmaps = false;
+    this.flipY = false;
+    this.unpackAlignment = 1;
+  }
+}
+
+export { CubeTexture, Data3DTexture, DataArrayTexture, DataTexture, Source, Texture };
