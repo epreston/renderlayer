@@ -60,7 +60,7 @@ class MaterialLoader extends Loader {
 
     function getTexture(name) {
       if (textures[name] === undefined) {
-        console.warn('THREE.MaterialLoader: Undefined texture', name);
+        console.warn('MaterialLoader: Undefined texture', name);
       }
 
       return textures[name];
