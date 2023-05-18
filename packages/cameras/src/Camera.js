@@ -6,7 +6,6 @@ class Camera extends Object3D {
     super();
 
     this.isCamera = true;
-
     this.type = 'Camera';
 
     this.matrixWorldInverse = new Matrix4();
