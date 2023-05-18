@@ -3,3 +3,7 @@ export * from './DirectionalLight.js';
 export * from './DirectionalLightShadow.js';
 export * from './Light.js';
 export * from './LightShadow.js';
+export * from './PointLight.js';
+export * from './PointLightShadow.js';
+export * from './SpotLight.js';
+export * from './SpotLightShadow.js';
