@@ -26,5 +26,9 @@
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"
   },
-  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/loaders#readme"
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/loaders#readme",
+  "dependencies": {
+    "@renderlayer/shared": "*",
+    "@renderlayer/textures": "*"
+  }
 }
