@@ -7,5 +7,5 @@ export * from './Loader.js';
 export * from './LoaderUtils.js';
 export * from './LoadingManager.js';
 export * from './MaterialLoader.js';
-// export * from './ObjectLoader.js'; // execlude from build
+export * from './ObjectLoader.js';
 export * from './TextureLoader.js';
