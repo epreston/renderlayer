@@ -1,5 +1,5 @@
-import { NormalBlending, FrontSide, SrcAlphaFactor, OneMinusSrcAlphaFactor, AddEquation, LessEqualDepth, AlwaysStencilFunc, KeepStencilOp, MultiplyOperation, BasicDepthPacking } from '@renderlayer/shared';
 import { generateUUID, Color } from '@renderlayer/math';
+import { NormalBlending, FrontSide, SrcAlphaFactor, OneMinusSrcAlphaFactor, AddEquation, LessEqualDepth, AlwaysStencilFunc, KeepStencilOp, MultiplyOperation, BasicDepthPacking } from '@renderlayer/shared';
 import { EventDispatcher } from '@renderlayer/core';
 import { cloneUniforms, cloneUniformsGroups } from '@renderlayer/shaders';
 
@@ -384,6 +384,31 @@ class Material extends EventDispatcher {
   }
 }
 
+class LineBasicMaterial extends Material {
+  constructor(parameters) {
+    super();
+    this.isLineBasicMaterial = true;
+    this.type = "LineBasicMaterial";
+    this.color = new Color(16777215);
+    this.map = null;
+    this.linewidth = 1;
+    this.linecap = "round";
+    this.linejoin = "round";
+    this.fog = true;
+    this.setValues(parameters);
+  }
+  copy(source) {
+    super.copy(source);
+    this.color.copy(source.color);
+    this.map = source.map;
+    this.linewidth = source.linewidth;
+    this.linecap = source.linecap;
+    this.linejoin = source.linejoin;
+    this.fog = source.fog;
+    return this;
+  }
+}
+
 class MeshBasicMaterial extends Material {
   constructor(parameters) {
     super();
@@ -479,6 +504,31 @@ class MeshDistanceMaterial extends Material {
     this.displacementMap = source.displacementMap;
     this.displacementScale = source.displacementScale;
     this.displacementBias = source.displacementBias;
+    return this;
+  }
+}
+
+class PointsMaterial extends Material {
+  constructor(parameters) {
+    super();
+    this.isPointsMaterial = true;
+    this.type = "PointsMaterial";
+    this.color = new Color(16777215);
+    this.map = null;
+    this.alphaMap = null;
+    this.size = 1;
+    this.sizeAttenuation = true;
+    this.fog = true;
+    this.setValues(parameters);
+  }
+  copy(source) {
+    super.copy(source);
+    this.color.copy(source.color);
+    this.map = source.map;
+    this.alphaMap = source.alphaMap;
+    this.size = source.size;
+    this.sizeAttenuation = source.sizeAttenuation;
+    this.fog = source.fog;
     return this;
   }
 }
@@ -629,4 +679,4 @@ class RawShaderMaterial extends ShaderMaterial {
   }
 }
 
-export { Material, MeshBasicMaterial, MeshDepthMaterial, MeshDistanceMaterial, RawShaderMaterial, ShaderMaterial };
+export { LineBasicMaterial, Material, MeshBasicMaterial, MeshDepthMaterial, MeshDistanceMaterial, PointsMaterial, RawShaderMaterial, ShaderMaterial };
