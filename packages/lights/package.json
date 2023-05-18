@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/lights",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/lights",
   "type": "module",
   "module": "dist/lights.esm-bundler.js",
