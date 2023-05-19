@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/materials",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "@renderlayer/materials",
   "type": "module",
   "module": "dist/materials.esm-bundler.js",
