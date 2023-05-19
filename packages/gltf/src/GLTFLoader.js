@@ -12,7 +12,7 @@ import { Interpolant } from '@renderlayer/interpolants';
 import { NumberKeyframeTrack, QuaternionKeyframeTrack, VectorKeyframeTrack } from '@renderlayer/keyframes';
 import { DirectionalLight, PointLight, SpotLight } from '@renderlayer/lights';
 import { FileLoader, ImageBitmapLoader, Loader, LoaderUtils, TextureLoader } from '@renderlayer/loaders';
-import { LineBasicMaterial, Material, MeshBasicMaterial, PointsMaterial } from '@renderlayer/materials';
+import { MeshStandardMaterial, LineBasicMaterial, Material, MeshBasicMaterial, PointsMaterial } from '@renderlayer/materials';
 import { Box3, Color, Matrix4, Quaternion, Sphere, Vector2, Vector3, radToDeg } from '@renderlayer/math';
 import {
   Bone,
@@ -47,7 +47,6 @@ import {
 import { Texture } from '@renderlayer/textures';
 
 // MeshPhysicalMaterial,
-// MeshStandardMaterial,
 
 class GLTFLoader extends Loader {
   constructor(manager) {
@@ -1730,8 +1729,7 @@ const ALPHA_MODES = {
  */
 function createDefaultMaterial(cache) {
   if (cache['DefaultMaterial'] === undefined) {
-    // cache['DefaultMaterial'] = new MeshStandardMaterial({
-    cache['DefaultMaterial'] = new MeshBasicMaterial({
+    cache['DefaultMaterial'] = new MeshStandardMaterial({
       color: 0xffffff,
       emissive: 0x000000,
       metalness: 1,
@@ -2709,8 +2707,7 @@ class GLTFParser {
   }
 
   getMaterialType(/* materialIndex */) {
-    // return MeshStandardMaterial;
-    return MeshBasicMaterial;
+    return MeshStandardMaterial;
   }
 
   /**
