@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/gltf",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/gltf",
   "type": "module",
   "module": "dist/gltf.esm-bundler.js",
