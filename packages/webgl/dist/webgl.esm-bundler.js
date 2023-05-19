@@ -163,21 +163,6 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
       setClear(background, 1);
       forceClear = true;
     }
-    const xr = renderer.xr;
-    const environmentBlendMode = xr.getEnvironmentBlendMode();
-    switch (environmentBlendMode) {
-      case "opaque":
-        forceClear = true;
-        break;
-      case "additive":
-        state.buffers.color.setClear(0, 0, 0, 1, premultipliedAlpha);
-        forceClear = true;
-        break;
-      case "alpha-blend":
-        state.buffers.color.setClear(0, 0, 0, 0, premultipliedAlpha);
-        forceClear = true;
-        break;
-    }
     if (renderer.autoClear || forceClear) {
       renderer.clear(renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil);
     }
