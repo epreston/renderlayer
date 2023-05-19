@@ -1086,6 +1086,8 @@ function WebGLMaterials(renderer, properties) {
     } else if (material.isMeshDistanceMaterial) {
       refreshUniformsCommon(uniforms, material);
       refreshUniformsDistance(uniforms, material);
+    } else if (material.isPointsMaterial) {
+      refreshUniformsPoints(uniforms, material, pixelRatio, height);
     } else if (material.isShadowMaterial) {
       uniforms.color.value.copy(material.color);
       uniforms.opacity.value = material.opacity;
@@ -1160,6 +1162,22 @@ function WebGLMaterials(renderer, properties) {
       uniforms.aoMap.value = material.aoMap;
       uniforms.aoMapIntensity.value = material.aoMapIntensity;
       refreshTransformUniform(material.aoMap, uniforms.aoMapTransform);
+    }
+  }
+  function refreshUniformsPoints(uniforms, material, pixelRatio, height) {
+    uniforms.diffuse.value.copy(material.color);
+    uniforms.opacity.value = material.opacity;
+    uniforms.size.value = material.size * pixelRatio;
+    uniforms.scale.value = height * 0.5;
+    if (material.map) {
+      uniforms.map.value = material.map;
+      refreshTransformUniform(material.map, uniforms.uvTransform);
+    }
+    if (material.alphaMap) {
+      uniforms.alphaMap.value = material.alphaMap;
+    }
+    if (material.alphaTest > 0) {
+      uniforms.alphaTest.value = material.alphaTest;
     }
   }
   function refreshUniformsStandard(uniforms, material) {
