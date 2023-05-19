@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/webgl",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "@renderlayer/webgl",
   "type": "module",
   "module": "dist/webgl.esm-bundler.js",
