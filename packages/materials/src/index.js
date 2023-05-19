@@ -7,3 +7,4 @@ export * from './MeshStandardMaterial.js';
 export * from './PointsMaterial.js';
 export * from './RawShaderMaterial.js';
 export * from './ShaderMaterial.js';
+export * from './ShadowMaterial.js';
