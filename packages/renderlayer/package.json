@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "renderlayer",
   "version": "0.0.1",
   "description": "Light, Modern, Stable - 3D Rendering Layer for the Web",
