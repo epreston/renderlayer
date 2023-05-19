@@ -12,7 +12,7 @@ describe('Materials', () => {
 
     test('Extending', () => {
       const object = new MeshDistanceMaterial();
-      expect(object ).toBeInstanceOf( Material);
+      expect(object).toBeInstanceOf(Material);
     });
 
     test('type', () => {
