@@ -55,8 +55,8 @@ function WebGLMaterials(renderer, properties) {
     //   if (material.isLineDashedMaterial) {
     //     refreshUniformsDash(uniforms, material);
     //   }
-    // } else if (material.isPointsMaterial) {
-    //   refreshUniformsPoints(uniforms, material, pixelRatio, height);
+    } else if (material.isPointsMaterial) {
+      refreshUniformsPoints(uniforms, material, pixelRatio, height);
     // } else if (material.isSpriteMaterial) {
     //   refreshUniformsSprites(uniforms, material);
     } else if (material.isShadowMaterial) {
@@ -187,26 +187,26 @@ function WebGLMaterials(renderer, properties) {
   //   uniforms.scale.value = material.scale;
   // }
 
-  // function refreshUniformsPoints(uniforms, material, pixelRatio, height) {
-  //   uniforms.diffuse.value.copy(material.color);
-  //   uniforms.opacity.value = material.opacity;
-  //   uniforms.size.value = material.size * pixelRatio;
-  //   uniforms.scale.value = height * 0.5;
+  function refreshUniformsPoints(uniforms, material, pixelRatio, height) {
+    uniforms.diffuse.value.copy(material.color);
+    uniforms.opacity.value = material.opacity;
+    uniforms.size.value = material.size * pixelRatio;
+    uniforms.scale.value = height * 0.5;
 
-  //   if (material.map) {
-  //     uniforms.map.value = material.map;
+    if (material.map) {
+      uniforms.map.value = material.map;
 
-  //     refreshTransformUniform(material.map, uniforms.uvTransform);
-  //   }
+      refreshTransformUniform(material.map, uniforms.uvTransform);
+    }
 
-  //   if (material.alphaMap) {
-  //     uniforms.alphaMap.value = material.alphaMap;
-  //   }
+    if (material.alphaMap) {
+      uniforms.alphaMap.value = material.alphaMap;
+    }
 
-  //   if (material.alphaTest > 0) {
-  //     uniforms.alphaTest.value = material.alphaTest;
-  //   }
-  // }
+    if (material.alphaTest > 0) {
+      uniforms.alphaTest.value = material.alphaTest;
+    }
+  }
 
   // function refreshUniformsSprites(uniforms, material) {
   //   uniforms.diffuse.value.copy(material.color);
