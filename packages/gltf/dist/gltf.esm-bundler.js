@@ -6,7 +6,7 @@ import { Interpolant } from '@renderlayer/interpolants';
 import { VectorKeyframeTrack, QuaternionKeyframeTrack, NumberKeyframeTrack } from '@renderlayer/keyframes';
 import { SpotLight, PointLight, DirectionalLight } from '@renderlayer/lights';
 import { Loader, LoaderUtils, FileLoader, TextureLoader, ImageBitmapLoader } from '@renderlayer/loaders';
-import { MeshBasicMaterial, PointsMaterial, Material, LineBasicMaterial } from '@renderlayer/materials';
+import { MeshBasicMaterial, PointsMaterial, Material, LineBasicMaterial, MeshStandardMaterial } from '@renderlayer/materials';
 import { Color, Matrix4, Vector3, Quaternion, Vector2, radToDeg, Box3, Sphere } from '@renderlayer/math';
 import { InstancedMesh, SkinnedMesh, Mesh, LineSegments, Line, LineLoop, Points, Group, Skeleton, Bone } from '@renderlayer/objects';
 import { SRGBColorSpace, LinearFilter, LinearMipmapLinearFilter, RepeatWrapping, DoubleSide, TriangleStripDrawMode, TriangleFanDrawMode, InterpolateLinear, NearestFilter, NearestMipmapNearestFilter, LinearMipmapNearestFilter, NearestMipmapLinearFilter, ClampToEdgeWrapping, MirroredRepeatWrapping, InterpolateDiscrete, FrontSide } from '@renderlayer/shared';
@@ -843,7 +843,7 @@ const ALPHA_MODES = {
 };
 function createDefaultMaterial(cache) {
   if (cache["DefaultMaterial"] === void 0) {
-    cache["DefaultMaterial"] = new MeshBasicMaterial({
+    cache["DefaultMaterial"] = new MeshStandardMaterial({
       color: 16777215,
       emissive: 0,
       metalness: 1,
@@ -1556,7 +1556,7 @@ class GLTFParser {
     mesh.material = material;
   }
   getMaterialType() {
-    return MeshBasicMaterial;
+    return MeshStandardMaterial;
   }
   /**
    * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#materials
