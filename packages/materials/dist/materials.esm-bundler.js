@@ -754,4 +754,22 @@ class RawShaderMaterial extends ShaderMaterial {
   }
 }
 
-export { LineBasicMaterial, Material, MeshBasicMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshStandardMaterial, PointsMaterial, RawShaderMaterial, ShaderMaterial };
+class ShadowMaterial extends Material {
+  constructor(parameters) {
+    super();
+    this.isShadowMaterial = true;
+    this.type = "ShadowMaterial";
+    this.color = new Color(0);
+    this.transparent = true;
+    this.fog = true;
+    this.setValues(parameters);
+  }
+  copy(source) {
+    super.copy(source);
+    this.color.copy(source.color);
+    this.fog = source.fog;
+    return this;
+  }
+}
+
+export { LineBasicMaterial, Material, MeshBasicMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshStandardMaterial, PointsMaterial, RawShaderMaterial, ShaderMaterial, ShadowMaterial };
