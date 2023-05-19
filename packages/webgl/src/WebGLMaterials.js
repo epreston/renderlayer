@@ -32,9 +32,9 @@ function WebGLMaterials(renderer, properties) {
     // } else if (material.isMeshPhongMaterial) {
     //   refreshUniformsCommon(uniforms, material);
     //   refreshUniformsPhong(uniforms, material);
-    // } else if (material.isMeshStandardMaterial) {
-    //   refreshUniformsCommon(uniforms, material);
-    //   refreshUniformsStandard(uniforms, material);
+    } else if (material.isMeshStandardMaterial) {
+      refreshUniformsCommon(uniforms, material);
+      refreshUniformsStandard(uniforms, material);
 
     //   if (material.isMeshPhysicalMaterial) {
     //     refreshUniformsPhysical(uniforms, material, transmissionRenderTarget);
@@ -239,30 +239,30 @@ function WebGLMaterials(renderer, properties) {
   //   }
   // }
 
-  // function refreshUniformsStandard(uniforms, material) {
-  //   uniforms.metalness.value = material.metalness;
+  function refreshUniformsStandard(uniforms, material) {
+    uniforms.metalness.value = material.metalness;
 
-  //   if (material.metalnessMap) {
-  //     uniforms.metalnessMap.value = material.metalnessMap;
+    if (material.metalnessMap) {
+      uniforms.metalnessMap.value = material.metalnessMap;
 
-  //     refreshTransformUniform(material.metalnessMap, uniforms.metalnessMapTransform);
-  //   }
+      refreshTransformUniform(material.metalnessMap, uniforms.metalnessMapTransform);
+    }
 
-  //   uniforms.roughness.value = material.roughness;
+    uniforms.roughness.value = material.roughness;
 
-  //   if (material.roughnessMap) {
-  //     uniforms.roughnessMap.value = material.roughnessMap;
+    if (material.roughnessMap) {
+      uniforms.roughnessMap.value = material.roughnessMap;
 
-  //     refreshTransformUniform(material.roughnessMap, uniforms.roughnessMapTransform);
-  //   }
+      refreshTransformUniform(material.roughnessMap, uniforms.roughnessMapTransform);
+    }
 
-  //   const envMap = properties.get(material).envMap;
+    const envMap = properties.get(material).envMap;
 
-  //   if (envMap) {
-  //     //uniforms.envMap.value = material.envMap; // part of uniforms common
-  //     uniforms.envMapIntensity.value = material.envMapIntensity;
-  //   }
-  // }
+    if (envMap) {
+      //uniforms.envMap.value = material.envMap; // part of uniforms common
+      uniforms.envMapIntensity.value = material.envMapIntensity;
+    }
+  }
 
   // function refreshUniformsPhysical(uniforms, material, transmissionRenderTarget) {
   //   uniforms.ior.value = material.ior; // also part of uniforms common
