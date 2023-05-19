@@ -13,7 +13,7 @@ import {
   MeshDepthMaterial,
   MeshDistanceMaterial,
   PointsMaterial,
-  // ShadowMaterial,
+  ShadowMaterial,
   // SpriteMaterial,
   RawShaderMaterial,
   ShaderMaterial,
@@ -292,7 +292,7 @@ class MaterialLoader extends Loader {
 
   static createMaterialFromType(type) {
     const materialLib = {
-      // ShadowMaterial,
+      ShadowMaterial,
       // SpriteMaterial,
       RawShaderMaterial,
       ShaderMaterial,
