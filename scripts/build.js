@@ -65,7 +65,8 @@ async function run() {
 }
 
 async function buildAll(targets) {
-  await runParallel(cpus().length, targets, build);
+  // await runParallel(cpus().length, targets, build);
+  await runParallel(1, targets, build);
 }
 
 async function runParallel(maxConcurrency, source, iteratorFn) {
