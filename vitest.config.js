@@ -17,7 +17,7 @@ export default mergeConfig(
       setupFiles: ['./scripts/vitest-setup.js'],
       // includeSource: ['src/**/*.{js,ts}'], // enable inline tests
       coverage: {
-        provider: 'c8',
+        provider: 'v8',
         reporter: ['html'],
         // reporter: ['text', 'html'], // default
         // reporter: ['text'],
