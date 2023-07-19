@@ -1,14 +1,14 @@
 {
+  "type": "module",
+  "sideEffects": false,
   "name": "@renderlayer/math",
   "version": "0.0.4",
   "description": "@renderlayer/math",
-  "type": "module",
   "module": "dist/math.esm-bundler.js",
   "exports": "./dist/math.esm-bundler.js",
   "files": [
     "dist"
   ],
-  "sideEffects": false,
   "buildOptions": {
     "formats": [
       "esm-bundler"
