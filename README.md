@@ -22,4 +22,4 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 ## License
 
-MIT [License](LICENSE)
+This project is released under the MIT [License](LICENSE).
