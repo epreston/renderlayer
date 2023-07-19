@@ -13,6 +13,8 @@
   "engines": {
     "node": ">=18.16.1"
   },
+  "packageManager": "npm@9.8.0",
+  "browserslist": "Chrome >= 112, ChromeAndroid >= 112, Edge >= 112, Firefox >= 112, FirefoxAndroid  >= 112,  Safari >= 16.4, iOS >= 16.4, not dead",
   "scripts": {
     "build": "node scripts/build.js",
     "check": "node scripts/circular.js",
