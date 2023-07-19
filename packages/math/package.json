@@ -4,7 +4,7 @@
   "name": "@renderlayer/math",
   "version": "0.0.4",
   "description": "@renderlayer/math",
-  "module": "dist/math.esm-bundler.js",
+  "module": "./dist/math.esm-bundler.js",
   "exports": "./dist/math.esm-bundler.js",
   "files": [
     "dist"
