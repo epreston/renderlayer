@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "@renderlayer/gltf",
   "type": "module",
-  "module": "dist/gltf.esm-bundler.js",
+  "module": "./dist/gltf.esm-bundler.js",
   "exports": "./dist/gltf.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/gltf"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "gltf"
   ],
   "license": "MIT",
   "bugs": {
