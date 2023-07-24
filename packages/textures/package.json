@@ -3,7 +3,7 @@
   "version": "0.0.7",
   "description": "@renderlayer/textures",
   "type": "module",
-  "module": "dist/textures.esm-bundler.js",
+  "module": "./dist/textures.esm-bundler.js",
   "exports": "./dist/textures.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/textures"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "textures"
   ],
   "license": "MIT",
   "bugs": {
