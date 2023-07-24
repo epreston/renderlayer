@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "@renderlayer/core",
   "type": "module",
-  "module": "dist/core.esm-bundler.js",
+  "module": "./dist/core.esm-bundler.js",
   "exports": "./dist/core.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/core"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "core"
   ],
   "license": "MIT",
   "bugs": {
