@@ -3,7 +3,7 @@
   "version": "0.0.7",
   "description": "@renderlayer/loaders",
   "type": "module",
-  "module": "dist/loaders.esm-bundler.js",
+  "module": "./dist/loaders.esm-bundler.js",
   "exports": "./dist/loaders.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/loaders"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "loaders"
   ],
   "license": "MIT",
   "bugs": {
