@@ -20,7 +20,7 @@
     "directory": "packages/cameras"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "cameras"
   ],
   "license": "MIT",
   "bugs": {
