@@ -3,7 +3,7 @@
   "version": "0.0.5",
   "description": "@renderlayer/materials",
   "type": "module",
-  "module": "dist/materials.esm-bundler.js",
+  "module": "./dist/materials.esm-bundler.js",
   "exports": "./dist/materials.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/materials"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "materials"
   ],
   "license": "MIT",
   "bugs": {
