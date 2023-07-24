@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "@renderlayer/controls",
   "type": "module",
-  "module": "dist/controls.esm-bundler.js",
+  "module": "./dist/controls.esm-bundler.js",
   "exports": "./dist/controls.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/controls"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "controls"
   ],
   "license": "MIT",
   "bugs": {
