@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "@renderlayer/scenes",
   "type": "module",
-  "module": "dist/scenes.esm-bundler.js",
+  "module": "./dist/scenes.esm-bundler.js",
   "exports": "./dist/scenes.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/scenes"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "scenes"
   ],
   "license": "MIT",
   "bugs": {
