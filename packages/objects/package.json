@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "@renderlayer/objects",
   "type": "module",
-  "module": "dist/objects.esm-bundler.js",
+  "module": "./dist/objects.esm-bundler.js",
   "exports": "./dist/objects.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/objects"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "objects"
   ],
   "license": "MIT",
   "bugs": {
