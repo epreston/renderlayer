@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "@renderlayer/extras",
   "type": "module",
-  "module": "dist/extras.esm-bundler.js",
+  "module": "./dist/extras.esm-bundler.js",
   "exports": "./dist/extras.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/extras"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "extras"
   ],
   "license": "MIT",
   "bugs": {
