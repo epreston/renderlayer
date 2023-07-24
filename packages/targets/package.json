@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "@renderlayer/targets",
   "type": "module",
-  "module": "dist/targets.esm-bundler.js",
+  "module": "./dist/targets.esm-bundler.js",
   "exports": "./dist/targets.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/targets"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "targets"
   ],
   "license": "MIT",
   "bugs": {
