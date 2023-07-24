@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "@renderlayer/shaders",
   "type": "module",
-  "module": "dist/shaders.esm-bundler.js",
+  "module": "./dist/shaders.esm-bundler.js",
   "exports": "./dist/shaders.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/shaders"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "shaders"
   ],
   "license": "MIT",
   "bugs": {
