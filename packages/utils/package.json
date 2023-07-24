@@ -19,7 +19,7 @@
     "directory": "packages/utils"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "utils"
   ],
   "license": "MIT",
   "bugs": {
