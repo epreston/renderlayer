@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "@renderlayer/lights",
   "type": "module",
-  "module": "dist/lights.esm-bundler.js",
+  "module": "./dist/lights.esm-bundler.js",
   "exports": "./dist/lights.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/lights"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "lights"
   ],
   "license": "MIT",
   "bugs": {
