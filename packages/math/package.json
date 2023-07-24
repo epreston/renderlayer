@@ -20,7 +20,7 @@
     "directory": "packages/math"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "math"
   ],
   "license": "MIT",
   "bugs": {
