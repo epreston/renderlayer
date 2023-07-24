@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "@renderlayer/curves",
   "type": "module",
-  "module": "dist/curves.esm-bundler.js",
+  "module": "./dist/curves.esm-bundler.js",
   "exports": "./dist/curves.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/curves"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "curves"
   ],
   "license": "MIT",
   "bugs": {
