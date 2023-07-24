@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "internal utils shared across @renderlayer packages",
   "type": "module",
-  "module": "dist/shared.esm-bundler.js",
+  "module": "./dist/shared.esm-bundler.js",
   "exports": "./dist/shared.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/shared"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "shared"
   ],
   "license": "MIT",
   "bugs": {
