@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "@renderlayer/animation",
   "type": "module",
-  "module": "dist/animation.esm-bundler.js",
+  "module": "./dist/animation.esm-bundler.js",
   "exports": "./dist/animation.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/animation"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "animation"
   ],
   "license": "MIT",
   "bugs": {
