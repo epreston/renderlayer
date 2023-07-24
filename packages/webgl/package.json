@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "@renderlayer/webgl",
   "type": "module",
-  "module": "dist/webgl.esm-bundler.js",
+  "module": "./dist/webgl.esm-bundler.js",
   "exports": "./dist/webgl.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/webgl"
   },
   "keywords": [
-    "webgl2"
+    "renderlayer", "webgl2"
   ],
   "license": "MIT",
   "bugs": {
