@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "@renderlayer/geometries",
   "type": "module",
-  "module": "dist/geometries.esm-bundler.js",
+  "module": "./dist/geometries.esm-bundler.js",
   "exports": "./dist/geometries.esm-bundler.js",
   "files": [
     "dist"
@@ -20,7 +20,7 @@
     "directory": "packages/geometries"
   },
   "keywords": [
-    "renderlayer"
+    "renderlayer", "geometries"
   ],
   "license": "MIT",
   "bugs": {
