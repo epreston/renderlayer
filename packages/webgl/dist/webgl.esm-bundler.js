@@ -4698,15 +4698,11 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   const _sources = /* @__PURE__ */ new WeakMap();
   let useOffscreenCanvas = false;
   try {
-    useOffscreenCanvas = typeof OffscreenCanvas !== "undefined" && // eslint-disable-next-line compat/compat
-    new OffscreenCanvas(1, 1).getContext("2d") !== null;
+    useOffscreenCanvas = typeof OffscreenCanvas !== "undefined" && new OffscreenCanvas(1, 1).getContext("2d") !== null;
   } catch (err) {
   }
   function createCanvas(width, height) {
-    return useOffscreenCanvas ? (
-      // eslint-disable-next-line compat/compat
-      new OffscreenCanvas(width, height)
-    ) : createElementNS("canvas");
+    return useOffscreenCanvas ? new OffscreenCanvas(width, height) : createElementNS("canvas");
   }
   function resizeImage(image, needsPowerOfTwo, needsNewCanvas, maxSize) {
     let scale = 1;
