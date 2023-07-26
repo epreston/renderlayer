@@ -566,7 +566,7 @@ class LoaderUtils {
     if (typeof url !== "string" || url === "")
       return "";
     if (/^https?:\/\//i.test(path) && /^\//.test(url)) {
-      path = path.replace(/(^https?:\/\/[^\/]+).*/i, "$1");
+      path = path.replace(/(^https?:\/\/[^/]+).*/i, "$1");
     }
     if (/^(https?:)?\/\//i.test(url))
       return url;
@@ -1387,7 +1387,7 @@ class ObjectLoader extends Loader {
         material = getMaterial(data.material);
         object = new Mesh(geometry, material);
         break;
-      case "InstancedMesh":
+      case "InstancedMesh": {
         geometry = getGeometry(data.geometry);
         material = getMaterial(data.material);
         const count = data.count;
@@ -1401,6 +1401,7 @@ class ObjectLoader extends Loader {
             instanceColor.itemSize
           );
         break;
+      }
       case "Line":
         object = new Line(getGeometry(data.geometry), getMaterial(data.material));
         break;

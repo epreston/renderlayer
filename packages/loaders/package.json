@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/loaders",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "@renderlayer/loaders",
   "type": "module",
   "module": "./dist/loaders.esm-bundler.js",
