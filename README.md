@@ -6,14 +6,49 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 [![License][license-badge]][license-url]
 [![CI][ci-badge]][ci-url]
 
-## Commands
+## Scripts
 
 | Action        | Command                 | Description                     |
 | ------------- | ----------------------- | ------------------------------- |
+| build         | `npm run build`         | Build all modules               |
+| check         | `npm run check`         | Check for circular dependencies |
 | lint          | `npm run lint`          | Run static code analysis        |
 | test          | `npm run test`          | Run unit tests                  |
 | test-run      | `npm run test-run`      | Run unit tests and exit         |
 | test-coverage | `npm run test-coverage` | Generate a test coverage report |
+
+## Structure
+
+This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) setup which hosts a number of associated packages under the `packages` directory:
+
+| Package        | Version | Description |
+| -------------- | ------- | ----------- |
+| `animation`    |         |             |
+| `buffers`      |         |             |
+| `cameras`      |         |             |
+| `controls`     |         |             |
+| `core`         |         |             |
+| `curves`       |         |             |
+| `draco`        |         |             |
+| `extras`       |         |             |
+| `geometries`   |         |             |
+| `gltf`         |         |             |
+| `interpolants` |         |             |
+| `keyframes`    |         |             |
+| `lights`       |         |             |
+| `loaders`      |         |             |
+| `materials`    |         |             |
+| `math`         |         |             |
+| `objects`      |         |             |
+| `renderers`    |         |             |
+| `renderlayer`  |         |             |
+| `scenes`       |         |             |
+| `shaders`      |         |             |
+| `shared`       |         |             |
+| `targets`      |         |             |
+| `textures`     |         |             |
+| `utils`        |         |             |
+| `webgl`        |         |             |
 
 ## References
 
@@ -41,4 +76,3 @@ This project is released under the MIT [License](LICENSE).
 [npm-url]: https://www.npmjs.com/package/renderlayer
 [license-badge]: https://img.shields.io/npm/l/renderlayer.svg?cacheSeconds=2592000
 [license-url]: LICENSE
-
