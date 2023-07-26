@@ -16,12 +16,17 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 ## References
 
-| Item    | Reference                      |
+| Tool         | Reference                |
+| ------------ | ------------------------ |
+| Node.js      | https://nodejs.org/      |
+| Vite         | https://vitejs.dev/      |
+| Vitest       | https://vitest.dev/      |
+| ESLint       | https://eslint.org/      |
+| Prettier     | https://prettier.io      |
+| EditorConfig | https://editorconfig.org |
+
+| Website | Reference                      |
 | ------- | ------------------------------ |
-| Node.js | https://nodejs.org/            |
-| Vite    | https://vitejs.dev/            |
-| Vitest  | https://vitest.dev/            |
-| ESLint  | https://eslint.org/            |
 | WebGL2  | https://www.khronos.org/webgl/ |
 | glTF    | https://www.khronos.org/gltf/  |
 
