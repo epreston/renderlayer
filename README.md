@@ -2,6 +2,9 @@
 
 Light, Modern, Stable - 3D Rendering Layer for the Web
 
+[![NPM version][npm-badge]][npm-url]
+[![License][license-badge]][license-url]
+
 ## Commands
 
 | Action        | Command                 | Description                     |
@@ -25,3 +28,8 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 ## License
 
 This project is released under the MIT [License](LICENSE).
+
+[npm-badge]: https://img.shields.io/npm/v/renderlayer.svg?logo=npm
+[npm-url]: https://www.npmjs.com/package/renderlayer
+[license-badge]: https://img.shields.io/npm/l/renderlayer.svg?cacheSeconds=2592000
+[license-url]: LICENSE
