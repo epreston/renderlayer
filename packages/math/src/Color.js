@@ -12,6 +12,7 @@ function hue2rgb(p, q, t) {
   if (t < 1 / 6) return p + (q - p) * 6 * t;
   if (t < 1 / 2) return q;
   if (t < 2 / 3) return p + (q - p) * 6 * (2 / 3 - t);
+
   return p;
 }
 
@@ -106,7 +107,7 @@ class Color {
 
     let m;
 
-    if ((m = /^(\w+)\(([^\)]*)\)/.exec(style))) {
+    if ((m = /^(\w+)\(([^)]*)\)/.exec(style))) {
       // rgb / hsl
 
       let color;
@@ -129,7 +130,7 @@ class Color {
             );
           }
 
-          if ((color = /^\s*(\d+)\%\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components))) {
+          if ((color = /^\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components))) {
             // rgb(100%,0%,0%) rgba(100%,0%,0%,0.5)
 
             handleAlpha(color[4]);
@@ -147,7 +148,7 @@ class Color {
         case 'hsl':
         case 'hsla':
           if (
-            (color = /^\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)\%\s*,\s*(\d*\.?\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
+            (color = /^\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)%\s*,\s*(\d*\.?\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
               components
             ))
           ) {
@@ -168,7 +169,7 @@ class Color {
         default:
           console.warn('Color: Unknown color model ' + style);
       }
-    } else if ((m = /^\#([A-Fa-f\d]+)$/.exec(style))) {
+    } else if ((m = /^#([A-Fa-f\d]+)$/.exec(style))) {
       // hex color
 
       const hex = m[1];
