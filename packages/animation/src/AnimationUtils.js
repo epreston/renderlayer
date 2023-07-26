@@ -2,15 +2,15 @@ import { Quaternion } from '@renderlayer/math';
 import { AdditiveAnimationBlendMode } from '@renderlayer/shared';
 
 // // same as Array.prototype.slice, but also works on typed arrays
-// function arraySlice(array, from, to) {
-//   if (isTypedArray(array)) {
-//     // in ios9 array.subarray(from, undefined) will return empty array
-//     // but array.subarray(from) or array.subarray(from, len) is correct
-//     return new array.constructor(array.subarray(from, to !== undefined ? to : array.length));
-//   }
+function arraySlice(array, from, to) {
+  if (isTypedArray(array)) {
+    // in ios9 array.subarray(from, undefined) will return empty array
+    // but array.subarray(from) or array.subarray(from, len) is correct
+    return new array.constructor(array.subarray(from, to !== undefined ? to : array.length));
+  }
 
-//   return array.slice(from, to);
-// }
+  return array.slice(from, to);
+}
 
 // converts an array to a specific type
 function convertArray(array, type, forceClone) {
@@ -27,9 +27,9 @@ function convertArray(array, type, forceClone) {
   return Array.prototype.slice.call(array); // create Array
 }
 
-// function isTypedArray(object) {
-//   return ArrayBuffer.isView(object) && !(object instanceof DataView);
-// }
+function isTypedArray(object) {
+  return ArrayBuffer.isView(object) && !(object instanceof DataView);
+}
 
 // returns an array by which times and values can be sorted
 function getKeyframeOrder(times) {
