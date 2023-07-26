@@ -4,6 +4,7 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 [![NPM version][npm-badge]][npm-url]
 [![License][license-badge]][license-url]
+[![CI][ci-badge]][ci-url]
 
 ## Commands
 
@@ -34,7 +35,10 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 This project is released under the MIT [License](LICENSE).
 
+[ci-badge]: https://github.com/epreston/renderlayer/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/epreston/renderlayer/actions/workflows/ci.yml
 [npm-badge]: https://img.shields.io/npm/v/renderlayer
 [npm-url]: https://www.npmjs.com/package/renderlayer
 [license-badge]: https://img.shields.io/npm/l/renderlayer.svg?cacheSeconds=2592000
 [license-url]: LICENSE
+
