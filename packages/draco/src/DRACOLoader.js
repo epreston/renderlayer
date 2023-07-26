@@ -336,11 +336,13 @@ function DRACOWorker() {
 
           DracoDecoderModule(decoderConfig); // eslint-disable-line no-undef
         });
+
         break;
 
-      case 'decode':
+      case 'decode': {
         const buffer = message.buffer;
         const taskConfig = message.taskConfig;
+
         decoderPending.then((module) => {
           const draco = module.draco;
           const decoder = new draco.Decoder();
@@ -361,7 +363,9 @@ function DRACOWorker() {
             draco.destroy(decoder);
           }
         });
+
         break;
+      }
     }
   };
 
