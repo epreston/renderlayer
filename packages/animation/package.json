@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/animation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/animation",
   "type": "module",
   "module": "./dist/animation.esm-bundler.js",

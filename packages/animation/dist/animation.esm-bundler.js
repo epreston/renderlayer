@@ -370,6 +370,12 @@ class AnimationAction {
   }
 }
 
+function arraySlice(array, from, to) {
+  if (isTypedArray(array)) {
+    return new array.constructor(array.subarray(from, to !== void 0 ? to : array.length));
+  }
+  return array.slice(from, to);
+}
 function convertArray(array, type, forceClone) {
   if (!array || // let 'undefined' and 'null' pass
   !forceClone && array.constructor === type)
@@ -378,6 +384,9 @@ function convertArray(array, type, forceClone) {
     return new type(array);
   }
   return Array.prototype.slice.call(array);
+}
+function isTypedArray(object) {
+  return ArrayBuffer.isView(object) && !(object instanceof DataView);
 }
 function getKeyframeOrder(times) {
   function compareTime(a, b) {
@@ -785,7 +794,7 @@ const _RESERVED_CHARS_RE = "\\[\\]\\.:\\/";
 const _reservedRe = new RegExp("[" + _RESERVED_CHARS_RE + "]", "g");
 const _wordChar = "[^" + _RESERVED_CHARS_RE + "]";
 const _wordCharOrDot = "[^" + _RESERVED_CHARS_RE.replace("\\.", "") + "]";
-const _directoryRe = /* @__PURE__ */ /((?:WC+[\/:])*)/.source.replace("WC", _wordChar);
+const _directoryRe = /* @__PURE__ */ /((?:WC+[/:])*)/.source.replace("WC", _wordChar);
 const _nodeRe = /* @__PURE__ */ /(WCOD+)?/.source.replace("WCOD", _wordCharOrDot);
 const _objectRe = /* @__PURE__ */ /(?:\.(WC+)(?:\[(.+)\])?)?/.source.replace("WC", _wordChar);
 const _propertyRe = /* @__PURE__ */ /\.(WC+)(?:\[(.+)\])?/.source.replace("WC", _wordChar);
