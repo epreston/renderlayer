@@ -1,6 +1,8 @@
 # renderlayer
+
 Light, Modern, Stable - 3D Rendering Layer for the Web
 
+[![NPM version][npm-badge]][npm-url]
 
 ## References
 
@@ -17,3 +19,6 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 ---
 
 See [License](LICENSE).
+
+[npm-badge]: https://img.shields.io/npm/v/@renderlayer
+[npm-url]: https://www.npmjs.com/package/@renderlayer
