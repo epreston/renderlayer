@@ -6,19 +6,11 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 ## References
 
----
-
 | Item   | Reference           |
 | ------ | ------------------- |
 | Vite   | https://vitejs.dev/ |
 | Vitest | https://vitest.dev/ |
 | ESLint | https://eslint.org/ |
 
-## License
-
----
-
-See [License](LICENSE).
-
-[npm-badge]: https://img.shields.io/npm/v/@renderlayer
-[npm-url]: https://www.npmjs.com/package/@renderlayer
+[npm-badge]: https://img.shields.io/npm/v/@renderlayer/renderlayer
+[npm-url]: https://www.npmjs.com/package/@renderlayer/renderlayer
