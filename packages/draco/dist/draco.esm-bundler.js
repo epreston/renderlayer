@@ -238,7 +238,7 @@ function DRACOWorker() {
           DracoDecoderModule(decoderConfig);
         });
         break;
-      case "decode":
+      case "decode": {
         const buffer = message.buffer;
         const taskConfig = message.taskConfig;
         decoderPending.then((module) => {
@@ -258,6 +258,7 @@ function DRACOWorker() {
           }
         });
         break;
+      }
     }
   };
   function decodeGeometry(draco, decoder, array, taskConfig) {

@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/draco",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/draco",
   "type": "module",
   "module": "./dist/draco.esm-bundler.js",
