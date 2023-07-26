@@ -686,9 +686,10 @@ class ObjectLoader extends Loader {
 
         break;
 
-      case 'InstancedMesh':
+      case 'InstancedMesh': {
         geometry = getGeometry(data.geometry);
         material = getMaterial(data.material);
+
         const count = data.count;
         const instanceMatrix = data.instanceMatrix;
         const instanceColor = data.instanceColor;
@@ -702,7 +703,7 @@ class ObjectLoader extends Loader {
           );
 
         break;
-
+      }
       // case 'LOD':
       //   object = new LOD();
 
