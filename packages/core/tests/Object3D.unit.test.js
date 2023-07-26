@@ -1083,8 +1083,8 @@ describe('Core', () => {
     });
 
     test('clone', () => {
-      let a;
       const b = new Object3D();
+      let a = undefined;
 
       expect(a).toBeUndefined();
 
