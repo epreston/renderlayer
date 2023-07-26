@@ -2084,7 +2084,7 @@ class Color {
       }
     }
     let m;
-    if (m = /^(\w+)\(([^\)]*)\)/.exec(style)) {
+    if (m = /^(\w+)\(([^)]*)\)/.exec(style)) {
       let color;
       const name = m[1];
       const components = m[2];
@@ -2100,7 +2100,7 @@ class Color {
               colorSpace
             );
           }
-          if (color = /^\s*(\d+)\%\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components)) {
+          if (color = /^\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components)) {
             handleAlpha(color[4]);
             return this.setRGB(
               Math.min(100, parseInt(color[1], 10)) / 100,
@@ -2112,7 +2112,7 @@ class Color {
           break;
         case "hsl":
         case "hsla":
-          if (color = /^\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)\%\s*,\s*(\d*\.?\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
+          if (color = /^\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)%\s*,\s*(\d*\.?\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
             components
           )) {
             handleAlpha(color[4]);
@@ -2127,7 +2127,7 @@ class Color {
         default:
           console.warn("Color: Unknown color model " + style);
       }
-    } else if (m = /^\#([A-Fa-f\d]+)$/.exec(style)) {
+    } else if (m = /^#([A-Fa-f\d]+)$/.exec(style)) {
       const hex = m[1];
       const size = hex.length;
       if (size === 3) {
