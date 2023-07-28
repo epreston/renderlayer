@@ -1,9 +1,10 @@
 {
   "private": true,
+  "type": "module",
   "name": "@renderlayer/size-check",
   "version": "0.0.1",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build --emptyOutDir"
   },
   "dependencies": {
     "renderlayer": "file:../../packages/renderlayer"
