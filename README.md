@@ -19,7 +19,7 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 ## Structure
 
-This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) setup which hosts a number of associated packages under the `packages` directory:
+This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) setup which hosts a number of associated packages under the `packages` directory. They can be used in any combination and define minimum dependencies between eachother.
 
 | Package        | Version | Description |
 | -------------- | ------- | ----------- |
