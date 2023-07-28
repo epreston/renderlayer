@@ -49,7 +49,7 @@ This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) set
 | `textures`     | [![textures][textures-badge]][textures-url]             |             |
 | `webgl`        | [![webgl][webgl-badge]][webgl-url]                      |             |
 
-## References
+## Tools
 
 | Tool         | Reference                |
 | ------------ | ------------------------ |
@@ -59,6 +59,8 @@ This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) set
 | ESLint       | https://eslint.org/      |
 | Prettier     | https://prettier.io      |
 | EditorConfig | https://editorconfig.org |
+
+## References
 
 | Website | Reference                      |
 | ------- | ------------------------------ |
