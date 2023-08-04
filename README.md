@@ -73,10 +73,13 @@ This project is released under the MIT [License](LICENSE).
 
 [ci-badge]: https://github.com/epreston/renderlayer/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/epreston/renderlayer/actions
+
 [npm-badge]: https://img.shields.io/npm/v/renderlayer
 [npm-url]: https://www.npmjs.com/package/renderlayer
+
 [license-badge]: https://img.shields.io/npm/l/renderlayer.svg?cacheSeconds=2592000
 [license-url]: LICENSE
+
 [animation-badge]: https://img.shields.io/npm/v/@renderlayer/animation
 [animation-url]: https://www.npmjs.com/package/@renderlayer/animation
 [buffers-badge]: https://img.shields.io/npm/v/@renderlayer/buffers
