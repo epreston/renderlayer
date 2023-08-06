@@ -155,7 +155,7 @@ class Quaternion {
     this._z = quaternion.z;
     this._w = quaternion.w;
 
-    // update check required to optimise Object3D.copy()
+    // update check required to optimize Object3D.copy()
     if (update === true) this._onChangeCallback();
 
     return this;

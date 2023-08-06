@@ -72,7 +72,7 @@ class Euler {
     this._z = euler._z;
     this._order = euler._order;
 
-    // update check required to optimise Object3D.copy()
+    // update check required to optimize Object3D.copy()
     if (update === true) this._onChangeCallback();
 
     return this;
@@ -193,7 +193,7 @@ class Euler {
   }
 
   reorder(newOrder) {
-    // WARNING: this discards revolution information -bhouston
+    // WARNING: this discards revolution information
 
     _quaternion.setFromEuler(this);
 

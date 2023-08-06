@@ -8,7 +8,47 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "cSpell.words": [
+    "AABB",
+    "bezier",
+    "Catmull",
+    "Cineon",
+    "clearcoat",
     "codepaths",
-    "renderlayer"
+    "componentwise",
+    "Cubemap",
+    "cubemaps",
+    "cubeuvmaps",
+    "denormalize",
+    "depthbuffer",
+    "Drawbuffers",
+    "Equirectangular",
+    "Framebuffers",
+    "glsl",
+    "gltf",
+    "interpolant",
+    "interpolants",
+    "keyframes",
+    "lerp",
+    "linewidth",
+    "matcap",
+    "mipmaps",
+    "multisampled",
+    "Phong",
+    "pingpong",
+    "Premultipled",
+    "Reinhard",
+    "renderlayer",
+    "slerp",
+    "smootherstep",
+    "subclip",
+    "tonemapping",
+    "Toon",
+    "Voronoi",
+    "wireframe"
+  ],
+  "cSpell.ignoreWords": [
+    "Christer",
+    "Elsevier",
+    "Kaufmann"
   ]
 }

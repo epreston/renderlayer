@@ -107,7 +107,7 @@ function ShadowUniformsCache() {
           };
           break;
 
-        // TODO (abelnation): set RectAreaLight shadow uniforms
+        // TODO: set RectAreaLight shadow uniforms
       }
 
       lights[light.id] = uniforms;

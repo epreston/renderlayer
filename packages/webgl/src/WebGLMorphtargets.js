@@ -151,7 +151,7 @@ function WebGLMorphtargets(gl, capabilities, textures) {
       let influences = influencesList[geometry.id];
 
       if (influences === undefined || influences.length !== length) {
-        // initialise list
+        // initialize list
 
         influences = [];
 
