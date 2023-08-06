@@ -1,6 +1,6 @@
 # @renderlayer/shared
 
-Internal utility functions and constants shared across `@renderlayer` packages.
+Constants and utility functions shared across `@renderlayer` packages.
 
 [![NPM version][npm-badge]][npm-url]
 
