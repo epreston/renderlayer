@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/scenes",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "@renderlayer/scenes",
   "type": "module",
   "module": "./dist/scenes.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/scenes"
   },
   "keywords": [
-    "renderlayer", "scenes"
+    "renderlayer", "scenes", "fog"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/scenes#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/core": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/core": "~0.0.2"
   }
 }

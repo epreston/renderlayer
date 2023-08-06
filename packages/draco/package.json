@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/draco",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "@renderlayer/draco",
   "type": "module",
   "module": "./dist/draco.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/draco"
   },
   "keywords": [
-    "renderlayer", "draco"
+    "renderlayer", "draco", "compression", "point-cloud", "mesh"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,9 +28,9 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/draco#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/loaders": "*",
-    "@renderlayer/buffers": "*",
-    "@renderlayer/shared": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/loaders": "~0.0.8",
+    "@renderlayer/buffers": "~0.0.1",
+    "@renderlayer/shared": "~0.0.2"
   }
 }

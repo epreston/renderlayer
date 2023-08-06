@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/interpolants",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/interpolants",
   "type": "module",
   "module": "./dist/interpolants.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/interpolants"
   },
   "keywords": [
-    "renderlayer", "interpolants"
+    "renderlayer", "interpolants", "cubic", "discrete", "linear", "quaternion"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/interpolants#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/shared": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/shared": "~0.0.2"
   }
 }

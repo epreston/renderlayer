@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/textures",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "@renderlayer/textures",
   "type": "module",
   "module": "./dist/textures.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/textures"
   },
   "keywords": [
-    "renderlayer", "textures"
+    "renderlayer", "textures", "cube"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/textures#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/core": "*",
-    "@renderlayer/shared": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/core": "~0.0.2",
+    "@renderlayer/shared": "~0.0.2"
   }
 }

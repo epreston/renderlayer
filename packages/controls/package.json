@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/controls",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/controls",
   "type": "module",
   "module": "./dist/controls.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/controls"
   },
   "keywords": [
-    "renderlayer", "controls"
+    "renderlayer", "controls", "orbital", "spherical"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/controls#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/core": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/core": "~0.0.2"
   }
 }

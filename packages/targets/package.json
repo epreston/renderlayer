@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/targets",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/targets",
   "type": "module",
   "module": "./dist/targets.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/targets"
   },
   "keywords": [
-    "renderlayer", "targets"
+    "renderlayer", "targets", "cube", "render"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,14 +28,14 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/targets#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/core": "*",
-    "@renderlayer/shared": "*",
-    "@renderlayer/textures": "*",
-    "@renderlayer/geometries": "*",
-    "@renderlayer/materials": "*",
-    "@renderlayer/objects": "*",
-    "@renderlayer/shaders": "*",
-    "@renderlayer/cameras": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/core": "~0.0.2",
+    "@renderlayer/shared": "~0.0.2",
+    "@renderlayer/textures": "~0.0.7",
+    "@renderlayer/geometries": "~0.0.4",
+    "@renderlayer/materials": "~0.0.5",
+    "@renderlayer/objects": "~0.0.2",
+    "@renderlayer/shaders": "~0.0.1",
+    "@renderlayer/cameras": "~0.0.2"
   }
 }

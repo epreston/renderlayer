@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@renderlayer/utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/utils",
   "type": "module",
   "files": [
@@ -19,7 +19,7 @@
     "directory": "packages/utils"
   },
   "keywords": [
-    "renderlayer", "utils"
+    "renderlayer", "utilities"
   ],
   "license": "MIT",
   "bugs": {
@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/utils#readme",
   "dependencies": {
-    "@renderlayer/math": "*"
+    "@renderlayer/math": "~0.0.5"
   }
 }

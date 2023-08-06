@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/extras",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/extras",
   "type": "module",
   "module": "./dist/extras.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/extras"
   },
   "keywords": [
-    "renderlayer", "extras"
+    "renderlayer", "extras", "clock"
   ],
   "license": "MIT",
   "bugs": {

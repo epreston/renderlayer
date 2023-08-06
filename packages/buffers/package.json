@@ -1,7 +1,7 @@
 {
   "name": "@renderlayer/buffers",
-  "version": "0.0.1",
-  "description": "@renderlayer/buffers",
+  "version": "0.0.2",
+  "description": "Geometry buffers used by @renderlayer packages.",
   "type": "module",
   "module": "./dist/buffers.esm-bundler.js",
   "exports": "./dist/buffers.esm-bundler.js",
@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/buffers#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/core": "*",
-    "@renderlayer/shared": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/core": "~0.0.2",
+    "@renderlayer/shared": "~0.0.2"
   }
 }

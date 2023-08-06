@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/shaders",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/shaders",
   "type": "module",
   "module": "./dist/shaders.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/shaders"
   },
   "keywords": [
-    "renderlayer", "shaders"
+    "renderlayer", "shaders", "uniforms"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/shaders#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/shared": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/shared": "~0.0.2"
   }
 }

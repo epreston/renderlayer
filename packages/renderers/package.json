@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/renderers",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "@renderlayer/renderers",
   "type": "module",
   "module": "./dist/renderers.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/renderers"
   },
   "keywords": [
-    "renderlayer", "renderers"
+    "renderlayer", "renderers", "webgl", "webgl2"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,9 +28,9 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/renderers#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/shared": "*",
-    "@renderlayer/targets": "*",
-    "@renderlayer/webgl": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/shared": "~0.0.2",
+    "@renderlayer/targets": "~0.0.1",
+    "@renderlayer/webgl": "~0.0.5"
   }
 }

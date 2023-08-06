@@ -2,8 +2,8 @@
   "type": "module",
   "sideEffects": false,
   "name": "@renderlayer/cameras",
-  "version": "0.0.2",
-  "description": "@renderlayer/cameras",
+  "version": "0.0.3",
+  "description": "Camera library used by @renderlayer packages",
   "module": "./dist/cameras.esm-bundler.js",
   "exports": "./dist/cameras.esm-bundler.js",
   "files": [
@@ -20,7 +20,7 @@
     "directory": "packages/cameras"
   },
   "keywords": [
-    "renderlayer", "cameras"
+    "renderlayer", "cameras", "cube", "orthographic", "perspective"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/cameras#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/core": "*",
-    "@renderlayer/shared": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/core": "~0.0.2",
+    "@renderlayer/shared": "~0.0.2"
   }
 }

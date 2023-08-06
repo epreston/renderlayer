@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/lights",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "@renderlayer/lights",
   "type": "module",
   "module": "./dist/lights.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/lights"
   },
   "keywords": [
-    "renderlayer", "lights"
+    "renderlayer", "lights", "ambient", "directional", "point", "shadow", "spot"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/lights#readme",
   "dependencies": {
-    "@renderlayer/math": "*",
-    "@renderlayer/core": "*",
-    "@renderlayer/cameras": "*"
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/core": "~0.0.2",
+    "@renderlayer/cameras": "~0.0.2"
   }
 }

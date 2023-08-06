@@ -1,7 +1,6 @@
 {
-  "private": true,
-  "name": "renderlayer",
-  "version": "0.0.1",
+  "name": "@renderlayer/renderlayer",
+  "version": "0.0.3",
   "description": "Light, Modern, Stable - 3D Rendering Layer for the Web",
   "type": "module",
   "main": "index.js",
@@ -21,7 +20,7 @@
     "directory": "packages/renderlayer"
   },
   "keywords": [
-    "webgl2"
+    "renderlayer", "3D", "webgl2", "browser", "HTML5"
   ],
   "license": "MIT",
   "bugs": {
@@ -29,7 +28,29 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/README.md",
   "dependencies": {
-    "@renderlayer/shared": "*",
-    "@renderlayer/math": "*"
+    "@renderlayer/animation": "~0.0.2",
+    "@renderlayer/buffers": "~0.0.1",
+    "@renderlayer/cameras": "~0.0.2",
+    "@renderlayer/controls": "~0.0.1",
+    "@renderlayer/core": "~0.0.2",
+    "@renderlayer/curves": "~0.0.2",
+    "@renderlayer/draco": "~0.0.2",
+    "@renderlayer/extras": "~0.0.1",
+    "@renderlayer/geometries": "~0.0.4",
+    "@renderlayer/gltf": "~0.0.3",
+    "@renderlayer/interpolants": "~0.0.1",
+    "@renderlayer/keyframes": "~0.0.1",
+    "@renderlayer/lights": "~0.0.2",
+    "@renderlayer/loaders": "~0.0.8",
+    "@renderlayer/materials": "~0.0.5",
+    "@renderlayer/math": "~0.0.5",
+    "@renderlayer/objects": "~0.0.2",
+    "@renderlayer/renderers": "~0.0.2",
+    "@renderlayer/scenes": "~0.0.2",
+    "@renderlayer/shaders": "~0.0.1",
+    "@renderlayer/shared": "~0.0.2",
+    "@renderlayer/targets": "~0.0.1",
+    "@renderlayer/textures": "~0.0.7",
+    "@renderlayer/webgl": "~0.0.5"
   }
 }

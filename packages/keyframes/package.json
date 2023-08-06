@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/keyframes",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@renderlayer/keyframes",
   "type": "module",
   "module": "./dist/keyframes.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/keyframes"
   },
   "keywords": [
-    "renderlayer", "keyframes"
+    "renderlayer", "keyframes", "track"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/keyframes#readme",
   "dependencies": {
-    "@renderlayer/shared": "*",
-    "@renderlayer/interpolants": "*"
+    "@renderlayer/shared": "~0.0.2",
+    "@renderlayer/interpolants": "~0.0.1"
   }
 }

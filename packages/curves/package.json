@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/curves",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "@renderlayer/curves",
   "type": "module",
   "module": "./dist/curves.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/curves"
   },
   "keywords": [
-    "renderlayer", "curves"
+    "renderlayer", "curves", "bezier", "catmull-rom"
   ],
   "license": "MIT",
   "bugs": {
@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/curves#readme",
   "dependencies": {
-    "@renderlayer/math": "*"
+    "@renderlayer/math": "~0.0.5"
   }
 }
