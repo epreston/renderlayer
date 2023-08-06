@@ -2,12 +2,12 @@ import { Vector3 } from '@renderlayer/math';
 import { Curve } from './core/Curve.js';
 
 /**
- * Centripetal CatmullRom Curve - which is useful for avoiding
- * cusps and self-intersections in non-uniform catmull rom curves.
+ * Centripetal Catmull-Rom Curve - which is useful for avoiding
+ * cusps and self-intersections in non-uniform Catmull-Rom curves.
  * http://www.cemyuksel.com/research/catmullrom_param/catmullrom.pdf
  *
- * curve.type accepts centripetal(default), chordal and catmullrom
- * curve.tension is used for catmullrom which defaults to 0.5
+ * curve.type accepts centripetal(default), chordal and Catmull-Rom
+ * curve.tension is used for Catmull-Rom which defaults to 0.5
  */
 
 /*
@@ -20,6 +20,7 @@ but for curve use, it could be possible inlined and flatten into a single functi
 which can be placed in CurveUtils.
 */
 
+// fixme: convert to class
 function CubicPoly() {
   let c0 = 0,
     c1 = 0,
@@ -125,7 +126,7 @@ class CatmullRomCurve3 extends Curve {
     }
 
     if (this.curveType === 'centripetal' || this.curveType === 'chordal') {
-      // init Centripetal / Chordal Catmull-Rom
+      // init centripetal / chordal Catmull-Rom
       const pow = this.curveType === 'chordal' ? 0.5 : 0.25;
       let dt0 = Math.pow(p0.distanceToSquared(p1), pow);
       let dt1 = Math.pow(p1.distanceToSquared(p2), pow);
