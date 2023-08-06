@@ -322,12 +322,12 @@ function getTrackTypeForValueTypeName(typeName) {
       return StringKeyframeTrack;
   }
 
-  throw new Error('KeyframeTrack: Unsupported typeName: ' + typeName);
+  throw new Error('KeyframeTrack: unsupported typeName: ' + typeName);
 }
 
 function parseKeyframeTrack(json) {
   if (json.type === undefined) {
-    throw new Error('KeyframeTrack: track type undefined, can not parse');
+    throw new Error('KeyframeTrack: can not parse track type: undefined');
   }
 
   const trackType = getTrackTypeForValueTypeName(json.type);
