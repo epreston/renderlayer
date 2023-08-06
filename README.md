@@ -49,7 +49,7 @@ This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) set
 | `textures`     | [![textures][textures-badge]][textures-url]             |             |
 | `webgl`        | [![webgl][webgl-badge]][webgl-url]                      |             |
 
-A convenience package is provided to make all packages available to your development environment and build tools with minimal configuration.
+A convenience package is provided to make all packages available to your development tools with minimal configuration.
 
 | Package       | Version                                              | Description |
 | ------------- | ---------------------------------------------------- | ----------- |
