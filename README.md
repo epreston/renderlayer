@@ -5,6 +5,7 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 [![NPM version][npm-badge]][npm-url]
 [![License][license-badge]][license-url]
 [![CI][ci-badge]][ci-url]
+[![Coverage][codecov-badge]][codecov-url]
 
 ## Scripts
 
@@ -70,6 +71,9 @@ This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) set
 ## License
 
 This project is released under the MIT [License](LICENSE).
+
+[codecov-badge]: https://codecov.io/gh/epreston/renderlayer/branch/main/graph/badge.svg?token=V88LBDC8EC
+[codecov-url]: https://codecov.io/gh/epreston/renderlayer
 
 [ci-badge]: https://github.com/epreston/renderlayer/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/epreston/renderlayer/actions
