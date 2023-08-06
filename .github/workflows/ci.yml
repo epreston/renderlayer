@@ -51,10 +51,4 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: npm run test-coverage -- --coverage.reporter=json
-
-      - name: Upload coverage reports to Codecov
-        if: ${{ success() }}
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: npm run test-run
