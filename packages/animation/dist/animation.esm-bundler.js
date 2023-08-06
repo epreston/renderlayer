@@ -172,7 +172,7 @@ class AnimationAction {
   getRoot() {
     return this._localRoot || this._mixer._root;
   }
-  // Interna
+  // Internal
   _update(time, deltaTime, timeDirection, accuIndex) {
     if (!this.enabled) {
       this._updateWeight(time);
@@ -770,11 +770,11 @@ function getTrackTypeForValueTypeName(typeName) {
     case "string":
       return StringKeyframeTrack;
   }
-  throw new Error("KeyframeTrack: Unsupported typeName: " + typeName);
+  throw new Error("KeyframeTrack: unsupported typeName: " + typeName);
 }
 function parseKeyframeTrack(json) {
   if (json.type === void 0) {
-    throw new Error("KeyframeTrack: track type undefined, can not parse");
+    throw new Error("KeyframeTrack: can not parse track type: undefined");
   }
   const trackType = getTrackTypeForValueTypeName(json.type);
   if (json.times === void 0) {

@@ -436,9 +436,11 @@ class LineCurve extends Curve {
   getPointAt(u, optionalTarget) {
     return this.getPoint(u, optionalTarget);
   }
+  // fixme: param
   getTangent(t, optionalTarget = new Vector2()) {
     return optionalTarget.subVectors(this.v2, this.v1).normalize();
   }
+  // fixme: param
   getTangentAt(u, optionalTarget) {
     return this.getTangent(u, optionalTarget);
   }
