@@ -1196,7 +1196,7 @@ class WebGLRenderer {
         uniforms.spotLightMap.value = lights.state.spotLightMap;
         uniforms.pointShadowMap.value = lights.state.pointShadowMap;
         uniforms.pointShadowMatrix.value = lights.state.pointShadowMatrix;
-        // TODO (abelnation): add area lights shadow info to uniforms
+        // TODO: add area lights shadow info to uniforms
       }
 
       const progUniforms = program.getUniforms();
@@ -1442,7 +1442,7 @@ class WebGLRenderer {
         p_uniforms.setValue(_gl, 'receiveShadow', object.receiveShadow);
       }
 
-      // TODO: Refactor #24467#issuecomment-1209031512
+      // TODO: Refactor #24467 #issue comment-1209031512
       if (material.isMeshGouraudMaterial && material.envMap !== null) {
         m_uniforms.envMap.value = envMap;
 
