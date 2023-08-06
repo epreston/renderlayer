@@ -12,9 +12,12 @@
   "extends": ["eslint:recommended", "prettier"],
   "rules": {
     "no-debugger": "error",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
 
     "semi": "error",
     "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    "quote-props": ["error", "consistent-as-needed"],
+
     "no-throw-literal": ["error"],
 
     "arrow-body-style": "off",
