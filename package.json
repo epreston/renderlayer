@@ -21,7 +21,7 @@
     "lint": "eslint . --ext .js",
     "test": "vitest",
     "test-run": "vitest run",
-    "test-coverage": "vitest run --coverage"
+    "test-coverage": "vitest run --coverage.enabled"
   },
   "devDependencies": {
     "@babel/parser": "^7.22.7",
