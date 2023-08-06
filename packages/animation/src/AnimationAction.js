@@ -267,7 +267,7 @@ class AnimationAction {
     return this._localRoot || this._mixer._root;
   }
 
-  // Interna
+  // Internal
 
   _update(time, deltaTime, timeDirection, accuIndex) {
     // called by the mixer
