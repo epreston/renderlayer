@@ -114,7 +114,7 @@ class AnimationClip {
     const animationToMorphTargets = {};
 
     // tested with https://regex101.com/ on trick sequences
-    // such flamingo_flyA_003, flamingo_run1_003, crdeath0059
+    // such bird_flyZ_000, fish_swim2_007, prSleep0042
     const pattern = /^([\w-]*?)([\d]+)$/;
 
     // sort morph target names into animation groups based
