@@ -20,7 +20,7 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 ## Structure
 
-This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) setup which hosts a number of associated packages under the `packages` directory. They can be used in any combination and define minimum dependencies between eachother.
+This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) setup which hosts a number of associated packages under the `packages` directory. They can be used in any combination and define minimum dependencies between each other.
 
 | Package        | Version                                                 | Description |
 | -------------- | ------------------------------------------------------- | ----------- |
@@ -42,13 +42,18 @@ This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) set
 | `math`         | [![math][math-badge]][math-url]                         |             |
 | `objects`      | [![objects][objects-badge]][objects-url]                |             |
 | `renderers`    | [![renderers][renderers-badge]][renderers-url]          |             |
-| `renderlayer`  | [![renderlayer][renderlayer-badge]][renderlayer-url]    |             |
 | `scenes`       | [![scenes][scenes-badge]][scenes-url]                   |             |
 | `shaders`      | [![shaders][shaders-badge]][shaders-url]                |             |
 | `shared`       | [![shared][shared-badge]][shared-url]                   |             |
 | `targets`      | [![targets][targets-badge]][targets-url]                |             |
 | `textures`     | [![textures][textures-badge]][textures-url]             |             |
 | `webgl`        | [![webgl][webgl-badge]][webgl-url]                      |             |
+
+A convenience package is provided to make all packages available to your development environment and build tools with minimal configuration.
+
+| Package       | Version                                              | Description |
+| ------------- | ---------------------------------------------------- | ----------- |
+| `renderlayer` | [![renderlayer][renderlayer-badge]][renderlayer-url] | bundle      |
 
 ## Tools
 
@@ -74,16 +79,12 @@ This project is released under the MIT [License](LICENSE).
 
 [codecov-badge]: https://codecov.io/gh/epreston/renderlayer/branch/main/graph/badge.svg?token=V88LBDC8EC
 [codecov-url]: https://codecov.io/gh/epreston/renderlayer
-
 [ci-badge]: https://github.com/epreston/renderlayer/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/epreston/renderlayer/actions
-
 [npm-badge]: https://img.shields.io/npm/v/renderlayer
 [npm-url]: https://www.npmjs.com/package/renderlayer
-
 [license-badge]: https://img.shields.io/npm/l/renderlayer.svg?cacheSeconds=2592000
 [license-url]: LICENSE
-
 [animation-badge]: https://img.shields.io/npm/v/@renderlayer/animation
 [animation-url]: https://www.npmjs.com/package/@renderlayer/animation
 [buffers-badge]: https://img.shields.io/npm/v/@renderlayer/buffers
