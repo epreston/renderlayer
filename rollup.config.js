@@ -43,11 +43,11 @@ const outputConfigs = {
     file: resolve(`dist/${name}.esm-browser.js`),
     format: `es`,
   },
-  cjs: {
+  'cjs': {
     file: resolve(`dist/${name}.cjs.js`),
     format: `cjs`,
   },
-  global: {
+  'global': {
     file: resolve(`dist/${name}.global.js`),
     format: `iife`,
   },
