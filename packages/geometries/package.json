@@ -22,6 +22,7 @@
   "keywords": [
     "renderlayer", "geometries", "box", "circle", "cylinder", "plane", "sphere"
   ],
+  "author": "Ed Preston",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"

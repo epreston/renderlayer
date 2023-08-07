@@ -18,10 +18,11 @@
     "url": "git+https://github.com/epreston/renderlayer.git",
     "directory": "packages/renderlayer"
   },
-  "author": "Ed Preston",
+
   "keywords": [
     "renderlayer", "3D", "webgl2", "browser", "HTML5"
   ],
+  "author": "Ed Preston",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"

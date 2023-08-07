@@ -22,6 +22,7 @@
   "keywords": [
     "renderlayer", "webgl2"
   ],
+  "author": "Ed Preston",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"

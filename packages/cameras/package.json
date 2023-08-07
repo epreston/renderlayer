@@ -22,6 +22,7 @@
   "keywords": [
     "renderlayer", "cameras", "cube", "orthographic", "perspective"
   ],
+  "author": "Ed Preston",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"

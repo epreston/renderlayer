@@ -22,6 +22,7 @@
   "keywords": [
     "renderlayer", "core", "events", "layers", "objects"
   ],
+  "author": "Ed Preston",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"
