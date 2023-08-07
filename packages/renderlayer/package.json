@@ -1,12 +1,12 @@
 {
-  "private": true,
   "name": "@renderlayer/renderlayer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Light, Modern, Stable - 3D Rendering Layer for the Web",
   "type": "module",
-  "main": "index.js",
+  "module": "./dist/renderlayer.esm-bundler.js",
+  "exports": "./dist/renderlayer.esm-bundler.js",
   "files": [
-    "index.js"
+    "dist"
   ],
   "sideEffects": false,
   "buildOptions": {
@@ -19,7 +19,6 @@
     "url": "git+https://github.com/epreston/renderlayer.git",
     "directory": "packages/renderlayer"
   },
-
   "keywords": [
     "renderlayer", "3D", "webgl2", "browser", "HTML5"
   ],
@@ -30,29 +29,29 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/README.md",
   "dependencies": {
-    "@renderlayer/animation": "~0.0.2",
-    "@renderlayer/buffers": "~0.0.1",
-    "@renderlayer/cameras": "~0.0.2",
-    "@renderlayer/controls": "~0.0.1",
-    "@renderlayer/core": "~0.0.2",
-    "@renderlayer/curves": "~0.0.2",
-    "@renderlayer/draco": "~0.0.2",
-    "@renderlayer/extras": "~0.0.1",
-    "@renderlayer/geometries": "~0.0.4",
-    "@renderlayer/gltf": "~0.0.3",
-    "@renderlayer/interpolants": "~0.0.1",
-    "@renderlayer/keyframes": "~0.0.1",
-    "@renderlayer/lights": "~0.0.2",
-    "@renderlayer/loaders": "~0.0.8",
-    "@renderlayer/materials": "~0.0.5",
-    "@renderlayer/math": "~0.0.5",
-    "@renderlayer/objects": "~0.0.2",
-    "@renderlayer/renderers": "~0.0.2",
-    "@renderlayer/scenes": "~0.0.2",
-    "@renderlayer/shaders": "~0.0.1",
-    "@renderlayer/shared": "~0.0.2",
-    "@renderlayer/targets": "~0.0.1",
-    "@renderlayer/textures": "~0.0.7",
-    "@renderlayer/webgl": "~0.0.5"
+    "@renderlayer/animation": "~0.0.3",
+    "@renderlayer/buffers": "~0.0.2",
+    "@renderlayer/cameras": "~0.0.3",
+    "@renderlayer/controls": "~0.0.2",
+    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/curves": "~0.0.3",
+    "@renderlayer/draco": "~0.0.3",
+    "@renderlayer/extras": "~0.0.2",
+    "@renderlayer/geometries": "~0.0.5",
+    "@renderlayer/gltf": "~0.0.4",
+    "@renderlayer/interpolants": "~0.0.2",
+    "@renderlayer/keyframes": "~0.0.2",
+    "@renderlayer/lights": "~0.0.3",
+    "@renderlayer/loaders": "~0.0.9",
+    "@renderlayer/materials": "~0.0.6",
+    "@renderlayer/math": "~0.0.6",
+    "@renderlayer/objects": "~0.0.3",
+    "@renderlayer/renderers": "~0.0.3",
+    "@renderlayer/scenes": "~0.0.3",
+    "@renderlayer/shaders": "~0.0.2",
+    "@renderlayer/shared": "~0.0.3",
+    "@renderlayer/targets": "~0.0.2",
+    "@renderlayer/textures": "~0.0.8",
+    "@renderlayer/webgl": "~0.0.6"
   }
 }
