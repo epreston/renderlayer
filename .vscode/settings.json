@@ -47,6 +47,7 @@
     "swapchain",
     "tonemapping",
     "Toon",
+    "treeshake",
     "Voronoi",
     "webxr",
     "wireframe"
