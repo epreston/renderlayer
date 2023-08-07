@@ -5,7 +5,7 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 [![NPM version][npm-badge]][npm-url]
 [![License][license-badge]][license-url]
 
-renderlayer is number of associated packages that can be used in any combination. They and define minimum dependencies between each other for the smallest possible builds.
+renderlayer is a number of associated packages that can be used in any combination. They define minimum dependencies between each other for the smallest possible builds.
 
 ## References
 
