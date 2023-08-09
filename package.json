@@ -2,9 +2,8 @@
   "private": true,
   "name": "@renderlayer/monorepo",
   "version": "0.0.2",
-  "description": "Light, Modern, Stable - 3D Rendering Layer for the Web",
+  "description": "3D Rendering Layer for the Web",
   "type": "module",
-  "license": "MIT",
   "workspaces": [
     "packages/*",
     "apps/*",
