@@ -12,7 +12,7 @@
   "extends": ["eslint:recommended", "prettier"],
   "rules": {
     "no-debugger": "error",
-    "no-console": ["error", { "allow": ["warn", "error"] }],
+    // "no-console": ["error", { "allow": ["warn", "error"] }],
 
     "semi": "error",
     "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
