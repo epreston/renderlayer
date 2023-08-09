@@ -25,7 +25,7 @@ import minimist from 'minimist';
 import { gzipSync, brotliCompressSync } from 'node:zlib';
 import chalk from 'chalk';
 import { execa, execaSync } from 'execa';
-import { cpus } from 'node:os';
+// import { cpus } from 'node:os';
 import { createRequire } from 'node:module';
 import { targets as allTargets, fuzzyMatchTarget } from './utils.js';
 // import { scanEnums } from './const-enum.js';

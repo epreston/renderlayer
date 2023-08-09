@@ -18,7 +18,7 @@ import path from 'node:path';
 import minimist from 'minimist';
 
 import { execa } from 'execa';
-import { cpus } from 'node:os';
+// import { cpus } from 'node:os';
 import { createRequire } from 'node:module';
 import { targets as allTargets, fuzzyMatchTarget } from './utils.js';
 
