@@ -1,19 +1,18 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
+import { Box3 } from '../src/Box3.js';
+import { Matrix4 } from '../src/Matrix4.js';
+import { Plane } from '../src/Plane.js';
 import { Sphere } from '../src/Sphere.js';
 import { Triangle } from '../src/Triangle.js';
-import { Plane } from '../src/Plane.js';
 import { Vector3 } from '../src/Vector3.js';
-import { Matrix4 } from '../src/Matrix4.js';
 
-// import { Mesh } from '../../objects/src/Mesh.js';
-// import { BufferAttribute } from '../../core/src/BufferAttribute.js';
-// import { BoxGeometry } from '../../geometries/src/BoxGeometry.js';
-// import { SphereGeometry } from '../../geometries/src/SphereGeometry.js';
+// import { Mesh } from '@renderlayer/objects';
+import { BufferAttribute } from '@renderlayer/buffers';
+// import { BoxGeometry } from '@renderlayer/geometries';
+// import { SphereGeometry } from '@renderlayer/geometries';
 
-import { negInf3, posInf3, zero3, one3, two3 } from './math-constants.js';
-
-import { Box3 } from '../src/Box3.js';
+import { negInf3, one3, posInf3, two3, zero3 } from './math-constants.js';
 
 function compareBox(a, b, threshold) {
   threshold = threshold || 0.0001;
@@ -62,23 +61,29 @@ describe('Maths', () => {
       expect(a.max.equals(two3)).toBeTruthy();
     });
 
-    test.todo('setFromBufferAttribute', () => {
-      // const a = new Box3(zero3.clone(), one3.clone());
-      // const bigger = new BufferAttribute(new Float32Array([-2, -2, -2, 2, 2, 2, 1.5, 1.5, 1.5, 0, 0, 0]), 3);
-      // const smaller = new BufferAttribute(new Float32Array([-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0, 0, 0]), 3);
-      // const newMin = new Vector3(-2, -2, -2);
-      // const newMax = new Vector3(2, 2, 2);
-      //
-      // a.setFromBufferAttribute(bigger);
-      // expect(a.min.equals(newMin)).toBeTruthy();
-      // expect(a.max.equals(newMax)).toBeTruthy();
-      //
-      // newMin.set(-0.5, -0.5, -0.5);
-      // newMax.set(0.5, 0.5, 0.5);
-      //
-      // a.setFromBufferAttribute(smaller);
-      // expect(a.min.equals(newMin)).toBeTruthy();
-      // expect(a.max.equals(newMax)).toBeTruthy();
+    test('setFromBufferAttribute', () => {
+      const a = new Box3(zero3.clone(), one3.clone());
+      const bigger = new BufferAttribute(
+        new Float32Array([-2, -2, -2, 2, 2, 2, 1.5, 1.5, 1.5, 0, 0, 0]),
+        3
+      );
+      const smaller = new BufferAttribute(
+        new Float32Array([-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0, 0, 0]),
+        3
+      );
+      const newMin = new Vector3(-2, -2, -2);
+      const newMax = new Vector3(2, 2, 2);
+
+      a.setFromBufferAttribute(bigger);
+      expect(a.min.equals(newMin)).toBeTruthy();
+      expect(a.max.equals(newMax)).toBeTruthy();
+
+      newMin.set(-0.5, -0.5, -0.5);
+      newMax.set(0.5, 0.5, 0.5);
+
+      a.setFromBufferAttribute(smaller);
+      expect(a.min.equals(newMin)).toBeTruthy();
+      expect(a.max.equals(newMax)).toBeTruthy();
     });
 
     test('setFromPoints', () => {
