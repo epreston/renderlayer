@@ -14,8 +14,8 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 | build         | `npm run build`         | Build all modules               |
 | check         | `npm run check`         | Check for circular dependencies |
 | lint          | `npm run lint`          | Run static code analysis        |
-| test          | `npm run test`          | Run unit tests                  |
-| test-run      | `npm run test-run`      | Run unit tests and exit         |
+| test          | `npm run test`          | Run unit tests and exit         |
+| test-watch    | `npm run test-watch`    | Watch for changes and run tests |
 | test-coverage | `npm run test-coverage` | Generate a test coverage report |
 
 ## Structure
