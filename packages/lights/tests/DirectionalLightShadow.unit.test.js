@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
-// import { ObjectLoader } from '../../loaders/src/ObjectLoader.js';
+import { ObjectLoader } from '@renderlayer/loaders';
 
 import { LightShadow } from '../src/LightShadow.js';
 import { DirectionalLight } from '../src/DirectionalLight.js';
@@ -52,10 +52,10 @@ describe('Lights', () => {
       light.shadow = shadow;
 
       const json = light.toJSON();
-      // const newLight = new ObjectLoader().parse(json);
+      const newLight = new ObjectLoader().parse(json);
 
       // Reloaded shadow is identical to the original one
-      // expect(newLight.shadow).toEqual(light.shadow);
+      expect(newLight.shadow).toEqual(light.shadow);
     });
   });
 });
