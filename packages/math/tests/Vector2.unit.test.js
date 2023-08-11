@@ -3,7 +3,7 @@ import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { Vector2 } from '../src/Vector2.js';
 import { Matrix3 } from '../src/Matrix3.js';
 
-// import { BufferAttribute } from '../../core/src/BufferAttribute.js';
+// import { BufferAttribute } from '@renderlayer/buffers';
 
 import { x, y, eps } from './math-constants.js';
 

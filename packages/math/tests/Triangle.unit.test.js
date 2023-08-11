@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
-// import { BufferAttribute } from '../../core/src/BufferAttribute.js';
+// import { BufferAttribute } from '@renderlayer/buffers';
 
 import { Triangle } from '../src/Triangle.js';
 import { Box3 } from '../src/Box3.js';
