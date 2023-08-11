@@ -8,8 +8,8 @@ Checks packages for circular references.
 To specify the package to check, simply pass its name.
 
 ```
-# name supports fuzzy match. will build all packages with name containing "ren":
-npm run check ren
+# name supports fuzzy match. will check all packages with name containing "test":
+npm run check test
 ```
 */
 
