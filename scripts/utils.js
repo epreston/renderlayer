@@ -28,7 +28,6 @@ export function fuzzyMatchTarget(partialTargets, includeAllMatching) {
   partialTargets.forEach((partialTarget) => {
     for (const target of targets) {
       if (target.match(partialTarget)) {
-
         matched.push(target);
 
         if (!includeAllMatching) {
@@ -43,7 +42,9 @@ export function fuzzyMatchTarget(partialTargets, includeAllMatching) {
   } else {
     console.log();
     console.error(
-      `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(`Target ${chalk.underline(partialTargets)} not found!`)}`
+      `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(
+        `Target ${chalk.underline(partialTargets)} not found!`
+      )}`
     );
     console.log();
 
