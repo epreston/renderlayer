@@ -53,7 +53,7 @@ import {
   RED_GREEN_RGTC2_Format,
   SIGNED_RED_GREEN_RGTC2_Format,
   SRGBColorSpace,
-  NoColorSpace,
+  NoColorSpace
 } from '@renderlayer/shared';
 
 function WebGLUtils(gl, extensions, capabilities) {
@@ -185,7 +185,9 @@ function WebGLUtils(gl, extensions, capabilities) {
 
       if (extension !== null) {
         if (p === RGB_ETC2_Format)
-          return colorSpace === SRGBColorSpace ? extension.COMPRESSED_SRGB8_ETC2 : extension.COMPRESSED_RGB8_ETC2;
+          return colorSpace === SRGBColorSpace
+            ? extension.COMPRESSED_SRGB8_ETC2
+            : extension.COMPRESSED_RGB8_ETC2;
         if (p === RGBA_ETC2_EAC_Format)
           return colorSpace === SRGBColorSpace
             ? extension.COMPRESSED_SRGB8_ALPHA8_ETC2_EAC
@@ -306,7 +308,8 @@ function WebGLUtils(gl, extensions, capabilities) {
         if (p === RGBA_BPTC_Format) return extension.COMPRESSED_RED_RGTC1_EXT;
         if (p === SIGNED_RED_RGTC1_Format) return extension.COMPRESSED_SIGNED_RED_RGTC1_EXT;
         if (p === RED_GREEN_RGTC2_Format) return extension.COMPRESSED_RED_GREEN_RGTC2_EXT;
-        if (p === SIGNED_RED_GREEN_RGTC2_Format) return extension.COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT;
+        if (p === SIGNED_RED_GREEN_RGTC2_Format)
+          return extension.COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT;
       } else {
         return null;
       }

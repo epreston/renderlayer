@@ -21,44 +21,50 @@ function WebGLMaterials(renderer, properties) {
     }
   }
 
-  function refreshMaterialUniforms(uniforms, material, pixelRatio, height, transmissionRenderTarget) {
+  function refreshMaterialUniforms(
+    uniforms,
+    material,
+    pixelRatio,
+    height,
+    transmissionRenderTarget
+  ) {
     if (material.isMeshBasicMaterial) {
       refreshUniformsCommon(uniforms, material);
-    // } else if (material.isMeshLambertMaterial) {
-    //   refreshUniformsCommon(uniforms, material);
-    // } else if (material.isMeshToonMaterial) {
-    //   refreshUniformsCommon(uniforms, material);
-    //   refreshUniformsToon(uniforms, material);
-    // } else if (material.isMeshPhongMaterial) {
-    //   refreshUniformsCommon(uniforms, material);
-    //   refreshUniformsPhong(uniforms, material);
+      // } else if (material.isMeshLambertMaterial) {
+      //   refreshUniformsCommon(uniforms, material);
+      // } else if (material.isMeshToonMaterial) {
+      //   refreshUniformsCommon(uniforms, material);
+      //   refreshUniformsToon(uniforms, material);
+      // } else if (material.isMeshPhongMaterial) {
+      //   refreshUniformsCommon(uniforms, material);
+      //   refreshUniformsPhong(uniforms, material);
     } else if (material.isMeshStandardMaterial) {
       refreshUniformsCommon(uniforms, material);
       refreshUniformsStandard(uniforms, material);
 
-    //   if (material.isMeshPhysicalMaterial) {
-    //     refreshUniformsPhysical(uniforms, material, transmissionRenderTarget);
-    //   }
-    // } else if (material.isMeshMatcapMaterial) {
-    //   refreshUniformsCommon(uniforms, material);
-    //   refreshUniformsMatcap(uniforms, material);
+      //   if (material.isMeshPhysicalMaterial) {
+      //     refreshUniformsPhysical(uniforms, material, transmissionRenderTarget);
+      //   }
+      // } else if (material.isMeshMatcapMaterial) {
+      //   refreshUniformsCommon(uniforms, material);
+      //   refreshUniformsMatcap(uniforms, material);
     } else if (material.isMeshDepthMaterial) {
       refreshUniformsCommon(uniforms, material);
     } else if (material.isMeshDistanceMaterial) {
       refreshUniformsCommon(uniforms, material);
       refreshUniformsDistance(uniforms, material);
-    // } else if (material.isMeshNormalMaterial) {
-    //   refreshUniformsCommon(uniforms, material);
-    // } else if (material.isLineBasicMaterial) {
-    //   refreshUniformsLine(uniforms, material);
+      // } else if (material.isMeshNormalMaterial) {
+      //   refreshUniformsCommon(uniforms, material);
+      // } else if (material.isLineBasicMaterial) {
+      //   refreshUniformsLine(uniforms, material);
 
-    //   if (material.isLineDashedMaterial) {
-    //     refreshUniformsDash(uniforms, material);
-    //   }
+      //   if (material.isLineDashedMaterial) {
+      //     refreshUniformsDash(uniforms, material);
+      //   }
     } else if (material.isPointsMaterial) {
       refreshUniformsPoints(uniforms, material, pixelRatio, height);
-    // } else if (material.isSpriteMaterial) {
-    //   refreshUniformsSprites(uniforms, material);
+      // } else if (material.isSpriteMaterial) {
+      //   refreshUniformsSprites(uniforms, material);
     } else if (material.isShadowMaterial) {
       uniforms.color.value.copy(material.color);
       uniforms.opacity.value = material.opacity;
@@ -144,7 +150,8 @@ function WebGLMaterials(renderer, properties) {
     if (envMap) {
       uniforms.envMap.value = envMap;
 
-      uniforms.flipEnvMap.value = envMap.isCubeTexture && envMap.isRenderTargetTexture === false ? -1 : 1;
+      uniforms.flipEnvMap.value =
+        envMap.isCubeTexture && envMap.isRenderTargetTexture === false ? -1 : 1;
 
       uniforms.reflectivity.value = material.reflectivity;
       uniforms.ior.value = material.ior;
@@ -388,7 +395,7 @@ function WebGLMaterials(renderer, properties) {
 
   return {
     refreshFogUniforms: refreshFogUniforms,
-    refreshMaterialUniforms: refreshMaterialUniforms,
+    refreshMaterialUniforms: refreshMaterialUniforms
   };
 }
 

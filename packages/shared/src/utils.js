@@ -42,7 +42,7 @@ const TYPED_ARRAYS = {
   Int32Array: Int32Array,
   Uint32Array: Uint32Array,
   Float32Array: Float32Array,
-  Float64Array: Float64Array,
+  Float64Array: Float64Array
 };
 
 function getTypedArray(type, buffer) {

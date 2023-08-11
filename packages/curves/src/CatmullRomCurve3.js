@@ -63,7 +63,7 @@ function CubicPoly() {
       const t2 = t * t;
       const t3 = t2 * t;
       return c0 + c1 * t + c2 * t2 + c3 * t3;
-    },
+    }
   };
 }
 

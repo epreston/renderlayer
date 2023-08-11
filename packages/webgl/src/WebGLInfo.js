@@ -1,7 +1,7 @@
 function WebGLInfo(gl) {
   const memory = {
     geometries: 0,
-    textures: 0,
+    textures: 0
   };
 
   const render = {
@@ -9,7 +9,7 @@ function WebGLInfo(gl) {
     calls: 0,
     triangles: 0,
     points: 0,
-    lines: 0,
+    lines: 0
   };
 
   function update(count, mode, instanceCount) {
@@ -56,7 +56,7 @@ function WebGLInfo(gl) {
     programs: null,
     autoReset: true,
     reset: reset,
-    update: update,
+    update: update
   };
 }
 

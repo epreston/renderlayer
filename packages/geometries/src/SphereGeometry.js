@@ -22,7 +22,7 @@ class SphereGeometry extends BufferGeometry {
       phiStart: phiStart,
       phiLength: phiLength,
       thetaStart: thetaStart,
-      thetaLength: thetaLength,
+      thetaLength: thetaLength
     };
 
     widthSegments = Math.max(3, Math.floor(widthSegments));
@@ -65,9 +65,11 @@ class SphereGeometry extends BufferGeometry {
 
         // vertex
 
-        vertex.x = -radius * Math.cos(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength);
+        vertex.x =
+          -radius * Math.cos(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength);
         vertex.y = radius * Math.cos(thetaStart + v * thetaLength);
-        vertex.z = radius * Math.sin(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength);
+        vertex.z =
+          radius * Math.sin(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength);
 
         vertices.push(vertex.x, vertex.y, vertex.z);
 

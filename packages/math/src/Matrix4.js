@@ -138,11 +138,11 @@ class Matrix4 {
     // prettier-ignore
     const x = euler.x, y = euler.y, z = euler.z;
     const a = Math.cos(x);
-    const  b = Math.sin(x);
+    const b = Math.sin(x);
     const c = Math.cos(y);
-    const  d = Math.sin(y);
+    const d = Math.sin(y);
     const e = Math.cos(z);
-    const  f = Math.sin(z);
+    const f = Math.sin(z);
 
     if (euler.order === 'XYZ') {
       // prettier-ignore
@@ -519,7 +519,7 @@ class Matrix4 {
 
   makeRotationX(theta) {
     const c = Math.cos(theta);
-    const  s = Math.sin(theta);
+    const s = Math.sin(theta);
 
     // prettier-ignore
     this.set(
@@ -569,10 +569,10 @@ class Matrix4 {
     const s = Math.sin(angle);
     const t = 1 - c;
     const x = axis.x;
-    const  y = axis.y;
-    const  z = axis.z;
+    const y = axis.y;
+    const z = axis.z;
     const tx = t * x;
-    const  ty = t * y;
+    const ty = t * y;
 
     // prettier-ignore
     this.set(

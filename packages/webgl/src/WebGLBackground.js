@@ -7,7 +7,15 @@ import { BackSide, CubeUVReflectionMapping, FrontSide, SRGBColorSpace } from '@r
 
 const _rgb = { r: 0, b: 0, g: 0 };
 
-function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
+function WebGLBackground(
+  renderer,
+  cubemaps,
+  cubeuvmaps,
+  state,
+  objects,
+  alpha,
+  premultipliedAlpha
+) {
   const clearColor = new Color(0x000000);
   let clearAlpha = alpha === true ? 0 : 1;
 
@@ -58,7 +66,10 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
       renderer.clear(renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil);
     }
 
-    if (background && (background.isCubeTexture || background.mapping === CubeUVReflectionMapping)) {
+    if (
+      background &&
+      (background.isCubeTexture || background.mapping === CubeUVReflectionMapping)
+    ) {
       if (boxMesh === undefined) {
         boxMesh = new Mesh(
           new BoxGeometry(1, 1, 1),
@@ -70,7 +81,7 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
             side: BackSide,
             depthTest: false,
             depthWrite: false,
-            fog: false,
+            fog: false
           })
         );
 
@@ -86,7 +97,7 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
         Object.defineProperty(boxMesh.material, 'envMap', {
           get: function () {
             return this.uniforms.envMap.value;
-          },
+          }
         });
 
         objects.update(boxMesh);
@@ -127,7 +138,7 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
             side: FrontSide,
             depthTest: false,
             depthWrite: false,
-            fog: false,
+            fog: false
           })
         );
 
@@ -137,7 +148,7 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
         Object.defineProperty(planeMesh.material, 'map', {
           get: function () {
             return this.uniforms.t2D.value;
-          },
+          }
         });
 
         objects.update(planeMesh);
@@ -194,7 +205,7 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
       clearAlpha = alpha;
       setClear(clearColor, clearAlpha);
     },
-    render: render,
+    render: render
   };
 }
 

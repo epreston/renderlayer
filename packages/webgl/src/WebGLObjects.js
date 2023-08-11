@@ -46,7 +46,7 @@ function WebGLObjects(gl, geometries, attributes, info) {
 
   return {
     update: update,
-    dispose: dispose,
+    dispose: dispose
   };
 }
 

@@ -21,4 +21,3 @@ class DataArrayTexture extends Texture {
 }
 
 export { DataArrayTexture };
-

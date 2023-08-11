@@ -50,7 +50,9 @@ class Line extends Object3D {
 
       geometry.setAttribute('lineDistance', new Float32BufferAttribute(lineDistances, 1));
     } else {
-      console.warn('Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.');
+      console.warn(
+        'Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.'
+      );
     }
 
     return this;
@@ -119,7 +121,7 @@ class Line extends Object3D {
           index: i,
           face: null,
           faceIndex: null,
-          object: this,
+          object: this
         });
       }
     } else {
@@ -148,7 +150,7 @@ class Line extends Object3D {
           index: i,
           face: null,
           faceIndex: null,
-          object: this,
+          object: this
         });
       }
     }

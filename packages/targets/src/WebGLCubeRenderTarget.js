@@ -1,9 +1,4 @@
-import {
-  BackSide,
-  LinearFilter,
-  LinearMipmapLinearFilter,
-  NoBlending,
-} from '@renderlayer/shared';
+import { BackSide, LinearFilter, LinearMipmapLinearFilter, NoBlending } from '@renderlayer/shared';
 import { BoxGeometry } from '@renderlayer/geometries';
 import { ShaderMaterial } from '@renderlayer/materials';
 import { Mesh } from '@renderlayer/objects';
@@ -46,7 +41,8 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
 
     this.texture.isRenderTargetTexture = true;
 
-    this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;
+    this.texture.generateMipmaps =
+      options.generateMipmaps !== undefined ? options.generateMipmaps : false;
     this.texture.minFilter = options.minFilter !== undefined ? options.minFilter : LinearFilter;
   }
 
@@ -60,7 +56,7 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
 
     const shader = {
       uniforms: {
-        tEquirect: { value: null },
+        tEquirect: { value: null }
       },
 
       vertexShader: /* glsl */ `
@@ -89,7 +85,7 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
 					vec2 sampleUV = equirectUv( direction );
 					gl_FragColor = texture2D( tEquirect, sampleUV );
 				}
-			`,
+			`
     };
 
     const geometry = new BoxGeometry(5, 5, 5);
@@ -101,7 +97,7 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
       vertexShader: shader.vertexShader,
       fragmentShader: shader.fragmentShader,
       side: BackSide,
-      blending: NoBlending,
+      blending: NoBlending
     });
 
     material.uniforms.tEquirect.value = texture;

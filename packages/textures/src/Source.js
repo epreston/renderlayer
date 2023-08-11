@@ -25,7 +25,7 @@ class Source {
 
     const output = {
       uuid: this.uuid,
-      url: '',
+      url: ''
     };
 
     const data = this.data;
@@ -79,7 +79,7 @@ function serializeImage(image) {
         data: Array.from(image.data),
         width: image.width,
         height: image.height,
-        type: image.data.constructor.name,
+        type: image.data.constructor.name
       };
     } else {
       console.warn('Texture: Unable to serialize Texture.');

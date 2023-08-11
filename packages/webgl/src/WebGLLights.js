@@ -16,7 +16,7 @@ function UniformsCache() {
         case 'DirectionalLight':
           uniforms = {
             direction: new Vector3(),
-            color: new Color(),
+            color: new Color()
           };
           break;
 
@@ -28,7 +28,7 @@ function UniformsCache() {
             distance: 0,
             coneCos: 0,
             penumbraCos: 0,
-            decay: 0,
+            decay: 0
           };
           break;
 
@@ -37,7 +37,7 @@ function UniformsCache() {
             position: new Vector3(),
             color: new Color(),
             distance: 0,
-            decay: 0,
+            decay: 0
           };
           break;
 
@@ -45,7 +45,7 @@ function UniformsCache() {
           uniforms = {
             direction: new Vector3(),
             skyColor: new Color(),
-            groundColor: new Color(),
+            groundColor: new Color()
           };
           break;
 
@@ -54,7 +54,7 @@ function UniformsCache() {
             color: new Color(),
             position: new Vector3(),
             halfWidth: new Vector3(),
-            halfHeight: new Vector3(),
+            halfHeight: new Vector3()
           };
           break;
       }
@@ -62,7 +62,7 @@ function UniformsCache() {
       lights[light.id] = uniforms;
 
       return uniforms;
-    },
+    }
   };
 }
 
@@ -83,7 +83,7 @@ function ShadowUniformsCache() {
             shadowBias: 0,
             shadowNormalBias: 0,
             shadowRadius: 1,
-            shadowMapSize: new Vector2(),
+            shadowMapSize: new Vector2()
           };
           break;
 
@@ -92,7 +92,7 @@ function ShadowUniformsCache() {
             shadowBias: 0,
             shadowNormalBias: 0,
             shadowRadius: 1,
-            shadowMapSize: new Vector2(),
+            shadowMapSize: new Vector2()
           };
           break;
 
@@ -103,7 +103,7 @@ function ShadowUniformsCache() {
             shadowRadius: 1,
             shadowMapSize: new Vector2(),
             shadowCameraNear: 1,
-            shadowCameraFar: 1000,
+            shadowCameraFar: 1000
           };
           break;
 
@@ -113,14 +113,19 @@ function ShadowUniformsCache() {
       lights[light.id] = uniforms;
 
       return uniforms;
-    },
+    }
   };
 }
 
 let nextVersion = 0;
 
 function shadowCastingAndTexturingLightsFirst(lightA, lightB) {
-  return (lightB.castShadow ? 2 : 0) - (lightA.castShadow ? 2 : 0) + (lightB.map ? 1 : 0) - (lightA.map ? 1 : 0);
+  return (
+    (lightB.castShadow ? 2 : 0) -
+    (lightA.castShadow ? 2 : 0) +
+    (lightB.map ? 1 : 0) -
+    (lightA.map ? 1 : 0)
+  );
 }
 
 function WebGLLights(extensions, capabilities) {
@@ -141,7 +146,7 @@ function WebGLLights(extensions, capabilities) {
       numDirectionalShadows: -1,
       numPointShadows: -1,
       numSpotShadows: -1,
-      numSpotMaps: -1,
+      numSpotMaps: -1
     },
 
     ambient: [0, 0, 0],
@@ -163,7 +168,7 @@ function WebGLLights(extensions, capabilities) {
     pointShadowMap: [],
     pointShadowMatrix: [],
     hemi: [],
-    numSpotLightShadowsWithMaps: 0,
+    numSpotLightShadowsWithMaps: 0
   };
 
   for (let i = 0; i < 9; i++) state.probe.push(new Vector3());
@@ -479,7 +484,7 @@ function WebGLLights(extensions, capabilities) {
   return {
     setup: setup,
     setupView: setupView,
-    state: state,
+    state: state
   };
 }
 

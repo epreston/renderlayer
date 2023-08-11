@@ -184,7 +184,10 @@ class SkinnedMesh extends Mesh {
       if (weight !== 0) {
         const boneIndex = _skinIndex.getComponent(i);
 
-        _matrix4.multiplyMatrices(skeleton.bones[boneIndex].matrixWorld, skeleton.boneInverses[boneIndex]);
+        _matrix4.multiplyMatrices(
+          skeleton.bones[boneIndex].matrixWorld,
+          skeleton.boneInverses[boneIndex]
+        );
 
         vector.addScaledVector(_vector3.copy(_basePosition).applyMatrix4(_matrix4), weight);
       }

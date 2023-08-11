@@ -52,7 +52,7 @@ function WebGLExtensions(gl) {
 
     init: function (capabilities) {
       // if (capabilities.isWebGL2) {
-        getExtension('EXT_color_buffer_float');
+      getExtension('EXT_color_buffer_float');
       // } else {
       //   getExtension('WEBGL_depth_texture');
       //   getExtension('OES_texture_float');
@@ -77,7 +77,7 @@ function WebGLExtensions(gl) {
       }
 
       return extension;
-    },
+    }
   };
 }
 

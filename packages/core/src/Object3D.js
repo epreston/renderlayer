@@ -59,29 +59,29 @@ class Object3D extends EventDispatcher {
       position: {
         configurable: true,
         enumerable: true,
-        value: position,
+        value: position
       },
       rotation: {
         configurable: true,
         enumerable: true,
-        value: rotation,
+        value: rotation
       },
       quaternion: {
         configurable: true,
         enumerable: true,
-        value: quaternion,
+        value: quaternion
       },
       scale: {
         configurable: true,
         enumerable: true,
-        value: scale,
+        value: scale
       },
       modelViewMatrix: {
-        value: new Matrix4(),
+        value: new Matrix4()
       },
       normalMatrix: {
-        value: new Matrix3(),
-      },
+        value: new Matrix3()
+      }
     });
 
     this.matrix = new Matrix4();
@@ -529,13 +529,13 @@ class Object3D extends EventDispatcher {
         shapes: {},
         skeletons: {},
         animations: {},
-        nodes: {},
+        nodes: {}
       };
 
       output.metadata = {
         version: 4.5,
         type: 'Object',
-        generator: 'Object3D.toJSON',
+        generator: 'Object3D.toJSON'
       };
     }
 
@@ -588,7 +588,11 @@ class Object3D extends EventDispatcher {
         }
       }
 
-      if (this.environment && this.environment.isTexture && this.environment.isRenderTargetTexture !== true) {
+      if (
+        this.environment &&
+        this.environment.isTexture &&
+        this.environment.isRenderTargetTexture !== true
+      ) {
         object.environment = this.environment.toJSON(meta).uuid;
       }
     } else if (this.isMesh || this.isLine || this.isPoints) {

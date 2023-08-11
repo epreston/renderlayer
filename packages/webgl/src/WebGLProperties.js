@@ -28,7 +28,7 @@ function WebGLProperties() {
     get: get,
     remove: remove,
     update: update,
-    dispose: dispose,
+    dispose: dispose
   };
 }
 

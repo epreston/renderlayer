@@ -129,7 +129,7 @@ class PropertyBinding {
       objectName: matches[3],
       objectIndex: matches[4],
       propertyName: matches[5], // required
-      propertyIndex: matches[6],
+      propertyIndex: matches[6]
     };
 
     const lastDot = results.nodeName && results.nodeName.lastIndexOf('.');
@@ -338,7 +338,9 @@ class PropertyBinding {
 
     // ensure there is a value node
     if (!targetObject) {
-      console.error('PropertyBinding: Trying to update node for track: ' + this.path + " but it wasn't found.");
+      console.error(
+        'PropertyBinding: Trying to update node for track: ' + this.path + " but it wasn't found."
+      );
       return;
     }
 
@@ -349,7 +351,10 @@ class PropertyBinding {
       switch (objectName) {
         case 'materials':
           if (!targetObject.material) {
-            console.error('PropertyBinding: Can not bind to material as node does not have a material.', this);
+            console.error(
+              'PropertyBinding: Can not bind to material as node does not have a material.',
+              this
+            );
             return;
           }
 
@@ -367,7 +372,10 @@ class PropertyBinding {
 
         case 'bones':
           if (!targetObject.skeleton) {
-            console.error('PropertyBinding: Can not bind to bones as node does not have a skeleton.', this);
+            console.error(
+              'PropertyBinding: Can not bind to bones as node does not have a skeleton.',
+              this
+            );
             return;
           }
 
@@ -393,12 +401,18 @@ class PropertyBinding {
           }
 
           if (!targetObject.material) {
-            console.error('PropertyBinding: Can not bind to material as node does not have a material.', this);
+            console.error(
+              'PropertyBinding: Can not bind to material as node does not have a material.',
+              this
+            );
             return;
           }
 
           if (!targetObject.material.map) {
-            console.error('PropertyBinding: Can not bind to material.map as node.material does not have a map.', this);
+            console.error(
+              'PropertyBinding: Can not bind to material.map as node.material does not have a map.',
+              this
+            );
             return;
           }
 
@@ -542,7 +556,7 @@ PropertyBinding.prototype.GetterByBindingType = [
   PropertyBinding.prototype._getValue_direct,
   PropertyBinding.prototype._getValue_array,
   PropertyBinding.prototype._getValue_arrayElement,
-  PropertyBinding.prototype._getValue_toArray,
+  PropertyBinding.prototype._getValue_toArray
 ];
 
 PropertyBinding.prototype.SetterByBindingTypeAndVersioning = [
@@ -550,26 +564,26 @@ PropertyBinding.prototype.SetterByBindingTypeAndVersioning = [
     // Direct
     PropertyBinding.prototype._setValue_direct,
     PropertyBinding.prototype._setValue_direct_setNeedsUpdate,
-    PropertyBinding.prototype._setValue_direct_setMatrixWorldNeedsUpdate,
+    PropertyBinding.prototype._setValue_direct_setMatrixWorldNeedsUpdate
   ],
   [
     // EntireArray
     PropertyBinding.prototype._setValue_array,
     PropertyBinding.prototype._setValue_array_setNeedsUpdate,
-    PropertyBinding.prototype._setValue_array_setMatrixWorldNeedsUpdate,
+    PropertyBinding.prototype._setValue_array_setMatrixWorldNeedsUpdate
   ],
   [
     // ArrayElement
     PropertyBinding.prototype._setValue_arrayElement,
     PropertyBinding.prototype._setValue_arrayElement_setNeedsUpdate,
-    PropertyBinding.prototype._setValue_arrayElement_setMatrixWorldNeedsUpdate,
+    PropertyBinding.prototype._setValue_arrayElement_setMatrixWorldNeedsUpdate
   ],
   [
     // HasToFromArray
     PropertyBinding.prototype._setValue_fromArray,
     PropertyBinding.prototype._setValue_fromArray_setNeedsUpdate,
-    PropertyBinding.prototype._setValue_fromArray_setMatrixWorldNeedsUpdate,
-  ],
+    PropertyBinding.prototype._setValue_fromArray_setMatrixWorldNeedsUpdate
+  ]
 ];
 
 export { PropertyBinding };

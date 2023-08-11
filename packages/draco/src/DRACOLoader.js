@@ -23,14 +23,14 @@ class DRACOLoader extends Loader {
       position: 'POSITION',
       normal: 'NORMAL',
       color: 'COLOR',
-      uv: 'TEX_COORD',
+      uv: 'TEX_COORD'
     };
 
     this.defaultAttributeTypes = {
       position: 'Float32Array',
       normal: 'Float32Array',
       color: 'Float32Array',
-      uv: 'Float32Array',
+      uv: 'Float32Array'
     };
   }
 
@@ -74,12 +74,18 @@ class DRACOLoader extends Loader {
     this.decodeDracoFile(buffer, onLoad, null, null, SRGBColorSpace).catch(onError);
   }
 
-  decodeDracoFile(buffer, callback, attributeIDs, attributeTypes, vertexColorSpace = LinearSRGBColorSpace) {
+  decodeDracoFile(
+    buffer,
+    callback,
+    attributeIDs,
+    attributeTypes,
+    vertexColorSpace = LinearSRGBColorSpace
+  ) {
     const taskConfig = {
       attributeIDs: attributeIDs || this.defaultAttributeIDs,
       attributeTypes: attributeTypes || this.defaultAttributeTypes,
       useUniqueIDs: !!attributeIDs,
-      vertexColorSpace: vertexColorSpace,
+      vertexColorSpace: vertexColorSpace
     };
 
     return this.decodeGeometry(buffer, taskConfig).then(callback);
@@ -146,7 +152,7 @@ class DRACOLoader extends Loader {
     // Cache the task result.
     _taskCache.set(buffer, {
       key: taskKey,
-      promise: geometryPending,
+      promise: geometryPending
     });
 
     return geometryPending;
@@ -237,7 +243,7 @@ class DRACOLoader extends Loader {
         jsContent,
         '',
         '/* worker */',
-        fn.substring(fn.indexOf('{') + 1, fn.lastIndexOf('}')),
+        fn.substring(fn.indexOf('{') + 1, fn.lastIndexOf('}'))
       ].join('\n');
 
       this.workerSourceURL = URL.createObjectURL(new Blob([body]));
@@ -416,7 +422,14 @@ function DRACOWorker() {
         attribute = decoder.GetAttribute(dracoGeometry, attributeID);
       }
 
-      const attributeResult = decodeAttribute(draco, decoder, dracoGeometry, attributeName, attributeType, attribute);
+      const attributeResult = decodeAttribute(
+        draco,
+        decoder,
+        dracoGeometry,
+        attributeName,
+        attributeType,
+        attribute
+      );
 
       if (attributeName === 'color') {
         attributeResult.vertexColorSpace = taskConfig.vertexColorSpace;
@@ -463,7 +476,7 @@ function DRACOWorker() {
     return {
       name: attributeName,
       array: array,
-      itemSize: numComponents,
+      itemSize: numComponents
     };
   }
 

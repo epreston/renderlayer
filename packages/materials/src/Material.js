@@ -6,7 +6,7 @@ import {
   LessEqualDepth,
   NormalBlending,
   OneMinusSrcAlphaFactor,
-  SrcAlphaFactor,
+  SrcAlphaFactor
 } from '@renderlayer/shared';
 import { generateUUID } from '@renderlayer/math';
 import { EventDispatcher } from '@renderlayer/core';
@@ -139,7 +139,7 @@ class Material extends EventDispatcher {
     if (isRootObject) {
       meta = {
         textures: {},
-        images: {},
+        images: {}
       };
     }
 
@@ -147,8 +147,8 @@ class Material extends EventDispatcher {
       metadata: {
         version: 4.5,
         type: 'Material',
-        generator: 'Material.toJSON',
-      },
+        generator: 'Material.toJSON'
+      }
     };
 
     // standard Material serialization
@@ -166,11 +166,13 @@ class Material extends EventDispatcher {
     if (this.sheenColor && this.sheenColor.isColor) data.sheenColor = this.sheenColor.getHex();
     if (this.sheenRoughness !== undefined) data.sheenRoughness = this.sheenRoughness;
     if (this.emissive && this.emissive.isColor) data.emissive = this.emissive.getHex();
-    if (this.emissiveIntensity && this.emissiveIntensity !== 1) data.emissiveIntensity = this.emissiveIntensity;
+    if (this.emissiveIntensity && this.emissiveIntensity !== 1)
+      data.emissiveIntensity = this.emissiveIntensity;
 
     if (this.specular && this.specular.isColor) data.specular = this.specular.getHex();
     if (this.specularIntensity !== undefined) data.specularIntensity = this.specularIntensity;
-    if (this.specularColor && this.specularColor.isColor) data.specularColor = this.specularColor.getHex();
+    if (this.specularColor && this.specularColor.isColor)
+      data.specularColor = this.specularColor.getHex();
     if (this.shininess !== undefined) data.shininess = this.shininess;
     if (this.clearcoat !== undefined) data.clearcoat = this.clearcoat;
     if (this.clearcoatRoughness !== undefined) data.clearcoatRoughness = this.clearcoatRoughness;
@@ -190,7 +192,8 @@ class Material extends EventDispatcher {
 
     if (this.iridescence !== undefined) data.iridescence = this.iridescence;
     if (this.iridescenceIOR !== undefined) data.iridescenceIOR = this.iridescenceIOR;
-    if (this.iridescenceThicknessRange !== undefined) data.iridescenceThicknessRange = this.iridescenceThicknessRange;
+    if (this.iridescenceThicknessRange !== undefined)
+      data.iridescenceThicknessRange = this.iridescenceThicknessRange;
 
     if (this.iridescenceMap && this.iridescenceMap.isTexture) {
       data.iridescenceMap = this.iridescenceMap.toJSON(meta).uuid;
@@ -231,11 +234,15 @@ class Material extends EventDispatcher {
       data.displacementBias = this.displacementBias;
     }
 
-    if (this.roughnessMap && this.roughnessMap.isTexture) data.roughnessMap = this.roughnessMap.toJSON(meta).uuid;
-    if (this.metalnessMap && this.metalnessMap.isTexture) data.metalnessMap = this.metalnessMap.toJSON(meta).uuid;
+    if (this.roughnessMap && this.roughnessMap.isTexture)
+      data.roughnessMap = this.roughnessMap.toJSON(meta).uuid;
+    if (this.metalnessMap && this.metalnessMap.isTexture)
+      data.metalnessMap = this.metalnessMap.toJSON(meta).uuid;
 
-    if (this.emissiveMap && this.emissiveMap.isTexture) data.emissiveMap = this.emissiveMap.toJSON(meta).uuid;
-    if (this.specularMap && this.specularMap.isTexture) data.specularMap = this.specularMap.toJSON(meta).uuid;
+    if (this.emissiveMap && this.emissiveMap.isTexture)
+      data.emissiveMap = this.emissiveMap.toJSON(meta).uuid;
+    if (this.specularMap && this.specularMap.isTexture)
+      data.specularMap = this.specularMap.toJSON(meta).uuid;
     if (this.specularIntensityMap && this.specularIntensityMap.isTexture)
       data.specularIntensityMap = this.specularIntensityMap.toJSON(meta).uuid;
     if (this.specularColorMap && this.specularColorMap.isTexture)
@@ -259,7 +266,8 @@ class Material extends EventDispatcher {
     if (this.transmissionMap && this.transmissionMap.isTexture)
       data.transmissionMap = this.transmissionMap.toJSON(meta).uuid;
     if (this.thickness !== undefined) data.thickness = this.thickness;
-    if (this.thicknessMap && this.thicknessMap.isTexture) data.thicknessMap = this.thicknessMap.toJSON(meta).uuid;
+    if (this.thicknessMap && this.thicknessMap.isTexture)
+      data.thicknessMap = this.thicknessMap.toJSON(meta).uuid;
     if (this.attenuationDistance !== undefined && this.attenuationDistance !== Infinity)
       data.attenuationDistance = this.attenuationDistance;
     if (this.attenuationColor !== undefined) data.attenuationColor = this.attenuationColor.getHex();

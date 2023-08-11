@@ -2,7 +2,14 @@ import { BufferGeometry, Float32BufferAttribute } from '@renderlayer/buffers';
 import { Vector3 } from '@renderlayer/math';
 
 class BoxGeometry extends BufferGeometry {
-  constructor(width = 1, height = 1, depth = 1, widthSegments = 1, heightSegments = 1, depthSegments = 1) {
+  constructor(
+    width = 1,
+    height = 1,
+    depth = 1,
+    widthSegments = 1,
+    heightSegments = 1,
+    depthSegments = 1
+  ) {
     super();
 
     this.type = 'BoxGeometry';
@@ -13,7 +20,7 @@ class BoxGeometry extends BufferGeometry {
       depth: depth,
       widthSegments: widthSegments,
       heightSegments: heightSegments,
-      depthSegments: depthSegments,
+      depthSegments: depthSegments
     };
 
     const scope = this;

@@ -67,7 +67,9 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
       }
     }
 
-    console.error('WebGLRenderer: Maximum number of simultaneously usable uniforms groups reached.');
+    console.error(
+      'WebGLRenderer: Maximum number of simultaneously usable uniforms groups reached.'
+    );
 
     return 0;
   }
@@ -189,7 +191,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
 
       const infos = {
         boundary: 0, // bytes
-        storage: 0, // bytes
+        storage: 0 // bytes
       };
 
       const values = Array.isArray(uniform.value) ? uniform.value : [uniform.value];
@@ -245,7 +247,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
   function getUniformSize(value) {
     const info = {
       boundary: 0, // bytes
-      storage: 0, // bytes
+      storage: 0 // bytes
     };
 
     // determine sizes according to STD140
@@ -316,7 +318,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
   return {
     bind: bind,
     update: update,
-    dispose: dispose,
+    dispose: dispose
   };
 }
 

@@ -33,7 +33,7 @@ import {
   OneMinusSrcColorFactor,
   OneMinusSrcAlphaFactor,
   OneMinusDstColorFactor,
-  OneMinusDstAlphaFactor,
+  OneMinusDstAlphaFactor
 } from '@renderlayer/shared';
 import { Vector4 } from '@renderlayer/math';
 
@@ -79,7 +79,7 @@ function WebGLState(gl, extensions, capabilities) {
 
         currentColorMask = null;
         currentColorClear.set(-1, 0, 0, 0); // set to invalid state
-      },
+      }
     };
   }
 
@@ -166,7 +166,7 @@ function WebGLState(gl, extensions, capabilities) {
         currentDepthMask = null;
         currentDepthFunc = null;
         currentDepthClear = null;
-      },
+      }
     };
   }
 
@@ -250,7 +250,7 @@ function WebGLState(gl, extensions, capabilities) {
         currentStencilZFail = null;
         currentStencilZPass = null;
         currentStencilClear = null;
-      },
+      }
     };
   }
 
@@ -334,11 +334,20 @@ function WebGLState(gl, extensions, capabilities) {
 
   const emptyTextures = {};
   emptyTextures[gl.TEXTURE_2D] = createTexture(gl.TEXTURE_2D, gl.TEXTURE_2D, 1);
-  emptyTextures[gl.TEXTURE_CUBE_MAP] = createTexture(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_CUBE_MAP_POSITIVE_X, 6);
+  emptyTextures[gl.TEXTURE_CUBE_MAP] = createTexture(
+    gl.TEXTURE_CUBE_MAP,
+    gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+    6
+  );
 
   // if (isWebGL2) {
-    emptyTextures[gl.TEXTURE_2D_ARRAY] = createTexture(gl.TEXTURE_2D_ARRAY, gl.TEXTURE_2D_ARRAY, 1, 1);
-    emptyTextures[gl.TEXTURE_3D] = createTexture(gl.TEXTURE_3D, gl.TEXTURE_3D, 1, 1);
+  emptyTextures[gl.TEXTURE_2D_ARRAY] = createTexture(
+    gl.TEXTURE_2D_ARRAY,
+    gl.TEXTURE_2D_ARRAY,
+    1,
+    1
+  );
+  emptyTextures[gl.TEXTURE_3D] = createTexture(gl.TEXTURE_3D, gl.TEXTURE_3D, 1, 1);
   // }
 
   // init
@@ -379,15 +388,15 @@ function WebGLState(gl, extensions, capabilities) {
       currentBoundFramebuffers[target] = framebuffer;
 
       // if (isWebGL2) {
-        // gl.DRAW_FRAMEBUFFER is equivalent to gl.FRAMEBUFFER
+      // gl.DRAW_FRAMEBUFFER is equivalent to gl.FRAMEBUFFER
 
-        if (target === gl.DRAW_FRAMEBUFFER) {
-          currentBoundFramebuffers[gl.FRAMEBUFFER] = framebuffer;
-        }
+      if (target === gl.DRAW_FRAMEBUFFER) {
+        currentBoundFramebuffers[gl.FRAMEBUFFER] = framebuffer;
+      }
 
-        if (target === gl.FRAMEBUFFER) {
-          currentBoundFramebuffers[gl.DRAW_FRAMEBUFFER] = framebuffer;
-        }
+      if (target === gl.FRAMEBUFFER) {
+        currentBoundFramebuffers[gl.DRAW_FRAMEBUFFER] = framebuffer;
+      }
       // }
 
       return true;
@@ -438,7 +447,7 @@ function WebGLState(gl, extensions, capabilities) {
 
     if (needsUpdate) {
       // if (capabilities.isWebGL2) {
-        gl.drawBuffers(drawBuffers);
+      gl.drawBuffers(drawBuffers);
       // } else {
       //   extensions.get('WEBGL_draw_buffers').drawBuffersWEBGL(drawBuffers);
       // }
@@ -460,12 +469,12 @@ function WebGLState(gl, extensions, capabilities) {
   const equationToGL = {
     [AddEquation]: gl.FUNC_ADD,
     [SubtractEquation]: gl.FUNC_SUBTRACT,
-    [ReverseSubtractEquation]: gl.FUNC_REVERSE_SUBTRACT,
+    [ReverseSubtractEquation]: gl.FUNC_REVERSE_SUBTRACT
   };
 
   // if (isWebGL2) {
-    equationToGL[MinEquation] = gl.MIN;
-    equationToGL[MaxEquation] = gl.MAX;
+  equationToGL[MinEquation] = gl.MIN;
+  equationToGL[MaxEquation] = gl.MAX;
   // } else {
   //   const extension = extensions.get('EXT_blend_minmax');
 
@@ -486,7 +495,7 @@ function WebGLState(gl, extensions, capabilities) {
     [OneMinusSrcColorFactor]: gl.ONE_MINUS_SRC_COLOR,
     [OneMinusSrcAlphaFactor]: gl.ONE_MINUS_SRC_ALPHA,
     [OneMinusDstColorFactor]: gl.ONE_MINUS_DST_COLOR,
-    [OneMinusDstAlphaFactor]: gl.ONE_MINUS_DST_ALPHA,
+    [OneMinusDstAlphaFactor]: gl.ONE_MINUS_DST_ALPHA
   };
 
   function setBlending(
@@ -547,7 +556,12 @@ function WebGLState(gl, extensions, capabilities) {
         } else {
           switch (blending) {
             case NormalBlending:
-              gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+              gl.blendFuncSeparate(
+                gl.SRC_ALPHA,
+                gl.ONE_MINUS_SRC_ALPHA,
+                gl.ONE,
+                gl.ONE_MINUS_SRC_ALPHA
+              );
               break;
 
             case AdditiveBlending:
@@ -586,7 +600,10 @@ function WebGLState(gl, extensions, capabilities) {
     blendSrcAlpha = blendSrcAlpha || blendSrc;
     blendDstAlpha = blendDstAlpha || blendDst;
 
-    if (blendEquation !== currentBlendEquation || blendEquationAlpha !== currentBlendEquationAlpha) {
+    if (
+      blendEquation !== currentBlendEquation ||
+      blendEquationAlpha !== currentBlendEquationAlpha
+    ) {
       gl.blendEquationSeparate(equationToGL[blendEquation], equationToGL[blendEquationAlpha]);
 
       currentBlendEquation = blendEquation;
@@ -650,9 +667,15 @@ function WebGLState(gl, extensions, capabilities) {
       stencilBuffer.setOp(material.stencilFail, material.stencilZFail, material.stencilZPass);
     }
 
-    setPolygonOffset(material.polygonOffset, material.polygonOffsetFactor, material.polygonOffsetUnits);
+    setPolygonOffset(
+      material.polygonOffset,
+      material.polygonOffsetFactor,
+      material.polygonOffsetUnits
+    );
 
-    material.alphaToCoverage === true ? enable(gl.SAMPLE_ALPHA_TO_COVERAGE) : disable(gl.SAMPLE_ALPHA_TO_COVERAGE);
+    material.alphaToCoverage === true
+      ? enable(gl.SAMPLE_ALPHA_TO_COVERAGE)
+      : disable(gl.SAMPLE_ALPHA_TO_COVERAGE);
   }
 
   //
@@ -936,8 +959,8 @@ function WebGLState(gl, extensions, capabilities) {
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
     // if (isWebGL2 === true) {
-      gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
-      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null);
+    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null);
     // }
 
     gl.useProgram(null);
@@ -990,7 +1013,7 @@ function WebGLState(gl, extensions, capabilities) {
     buffers: {
       color: colorBuffer,
       depth: depthBuffer,
-      stencil: stencilBuffer,
+      stencil: stencilBuffer
     },
 
     enable: enable,
@@ -1033,7 +1056,7 @@ function WebGLState(gl, extensions, capabilities) {
     scissor: scissor,
     viewport: viewport,
 
-    reset: reset,
+    reset: reset
   };
 }
 

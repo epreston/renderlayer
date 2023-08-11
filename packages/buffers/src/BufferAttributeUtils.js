@@ -108,7 +108,7 @@ function _generateTables() {
     shiftTable: shiftTable,
     mantissaTable: mantissaTable,
     exponentTable: exponentTable,
-    offsetTable: offsetTable,
+    offsetTable: offsetTable
   };
 }
 
@@ -129,7 +129,8 @@ function toHalfFloat(val) {
 
 function fromHalfFloat(val) {
   const m = val >> 10;
-  _tables.uint32View[0] = _tables.mantissaTable[_tables.offsetTable[m] + (val & 0x3ff)] + _tables.exponentTable[m];
+  _tables.uint32View[0] =
+    _tables.mantissaTable[_tables.offsetTable[m] + (val & 0x3ff)] + _tables.exponentTable[m];
   return _tables.floatView[0];
 }
 

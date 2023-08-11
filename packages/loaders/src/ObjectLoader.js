@@ -20,7 +20,7 @@ import {
   NearestMipmapNearestFilter,
   RepeatWrapping,
   UVMapping,
-  getTypedArray,
+  getTypedArray
 } from '@renderlayer/shared';
 import { DataTexture, CubeTexture, Source, Texture } from '@renderlayer/textures';
 
@@ -45,7 +45,7 @@ import {
   Skeleton,
   SkinnedMesh,
   Group,
-  Mesh,
+  Mesh
 } from '@renderlayer/objects';
 
 import { BufferGeometryLoader } from './BufferGeometryLoader.js';
@@ -88,7 +88,11 @@ class ObjectLoader extends Loader {
 
         const metadata = json.metadata;
 
-        if (metadata === undefined || metadata.type === undefined || metadata.type.toLowerCase() === 'geometry') {
+        if (
+          metadata === undefined ||
+          metadata.type === undefined ||
+          metadata.type.toLowerCase() === 'geometry'
+        ) {
           if (onError !== undefined) onError(new Error("ObjectLoader: Can't load " + url));
 
           console.error("ObjectLoader: Can't load " + url);
@@ -119,7 +123,11 @@ class ObjectLoader extends Loader {
 
     const metadata = json.metadata;
 
-    if (metadata === undefined || metadata.type === undefined || metadata.type.toLowerCase() === 'geometry') {
+    if (
+      metadata === undefined ||
+      metadata.type === undefined ||
+      metadata.type.toLowerCase() === 'geometry'
+    ) {
       throw new Error("ObjectLoader: Can't load " + url);
     }
 
@@ -326,7 +334,7 @@ class ObjectLoader extends Loader {
           return {
             data: getTypedArray(image.type, image.data),
             width: image.width,
-            height: image.height,
+            height: image.height
           };
         } else {
           return null;
@@ -361,7 +369,11 @@ class ObjectLoader extends Loader {
                 // special case: handle array of data textures for cube textures
 
                 imageArray.push(
-                  new DataTexture(deserializedImage.data, deserializedImage.width, deserializedImage.height)
+                  new DataTexture(
+                    deserializedImage.data,
+                    deserializedImage.width,
+                    deserializedImage.height
+                  )
                 );
               }
             }
@@ -398,7 +410,7 @@ class ObjectLoader extends Loader {
           return {
             data: getTypedArray(image.type, image.data),
             width: image.width,
-            height: image.height,
+            height: image.height
           };
         } else {
           return null;
@@ -431,7 +443,11 @@ class ObjectLoader extends Loader {
                 // special case: handle array of data textures for cube textures
 
                 imageArray.push(
-                  new DataTexture(deserializedImage.data, deserializedImage.width, deserializedImage.height)
+                  new DataTexture(
+                    deserializedImage.data,
+                    deserializedImage.width,
+                    deserializedImage.height
+                  )
                 );
               }
             }
@@ -498,7 +514,8 @@ class ObjectLoader extends Loader {
 
         if (data.name !== undefined) texture.name = data.name;
 
-        if (data.mapping !== undefined) texture.mapping = parseConstant(data.mapping, TEXTURE_MAPPING);
+        if (data.mapping !== undefined)
+          texture.mapping = parseConstant(data.mapping, TEXTURE_MAPPING);
         if (data.channel !== undefined) texture.channel = data.channel;
 
         if (data.offset !== undefined) texture.offset.fromArray(data.offset);
@@ -517,8 +534,10 @@ class ObjectLoader extends Loader {
         if (data.colorSpace !== undefined) texture.colorSpace = data.colorSpace;
         if (data.encoding !== undefined) texture.encoding = data.encoding; // @deprecated, r152
 
-        if (data.minFilter !== undefined) texture.minFilter = parseConstant(data.minFilter, TEXTURE_FILTER);
-        if (data.magFilter !== undefined) texture.magFilter = parseConstant(data.magFilter, TEXTURE_FILTER);
+        if (data.minFilter !== undefined)
+          texture.minFilter = parseConstant(data.minFilter, TEXTURE_FILTER);
+        if (data.magFilter !== undefined)
+          texture.magFilter = parseConstant(data.magFilter, TEXTURE_FILTER);
         if (data.anisotropy !== undefined) texture.anisotropy = data.anisotropy;
 
         if (data.flipY !== undefined) texture.flipY = data.flipY;
@@ -607,8 +626,10 @@ class ObjectLoader extends Loader {
           }
         }
 
-        if (data.backgroundBlurriness !== undefined) object.backgroundBlurriness = data.backgroundBlurriness;
-        if (data.backgroundIntensity !== undefined) object.backgroundIntensity = data.backgroundIntensity;
+        if (data.backgroundBlurriness !== undefined)
+          object.backgroundBlurriness = data.backgroundBlurriness;
+        if (data.backgroundIntensity !== undefined)
+          object.backgroundIntensity = data.backgroundIntensity;
 
         break;
 
@@ -624,7 +645,14 @@ class ObjectLoader extends Loader {
         break;
 
       case 'OrthographicCamera':
-        object = new OrthographicCamera(data.left, data.right, data.top, data.bottom, data.near, data.far);
+        object = new OrthographicCamera(
+          data.left,
+          data.right,
+          data.top,
+          data.bottom,
+          data.near,
+          data.far
+        );
 
         if (data.zoom !== undefined) object.zoom = data.zoom;
         if (data.view !== undefined) object.view = Object.assign({}, data.view);
@@ -652,7 +680,14 @@ class ObjectLoader extends Loader {
       //   break;
 
       case 'SpotLight':
-        object = new SpotLight(data.color, data.intensity, data.distance, data.angle, data.penumbra, data.decay);
+        object = new SpotLight(
+          data.color,
+          data.intensity,
+          data.distance,
+          data.angle,
+          data.penumbra,
+          data.decay
+        );
 
         break;
 
@@ -695,7 +730,10 @@ class ObjectLoader extends Loader {
         const instanceColor = data.instanceColor;
 
         object = new InstancedMesh(geometry, material, count);
-        object.instanceMatrix = new InstancedBufferAttribute(new Float32Array(instanceMatrix.array), 16);
+        object.instanceMatrix = new InstancedBufferAttribute(
+          new Float32Array(instanceMatrix.array),
+          16
+        );
         if (instanceColor !== undefined)
           object.instanceColor = new InstancedBufferAttribute(
             new Float32Array(instanceColor.array),
@@ -757,7 +795,8 @@ class ObjectLoader extends Loader {
       object.matrix.fromArray(data.matrix);
 
       if (data.matrixAutoUpdate !== undefined) object.matrixAutoUpdate = data.matrixAutoUpdate;
-      if (object.matrixAutoUpdate) object.matrix.decompose(object.position, object.quaternion, object.scale);
+      if (object.matrixAutoUpdate)
+        object.matrix.decompose(object.position, object.quaternion, object.scale);
     } else {
       if (data.position !== undefined) object.position.fromArray(data.position);
       if (data.rotation !== undefined) object.rotation.fromArray(data.rotation);
@@ -775,7 +814,8 @@ class ObjectLoader extends Loader {
       if (data.shadow.normalBias !== undefined) object.shadow.normalBias = data.shadow.normalBias;
       if (data.shadow.radius !== undefined) object.shadow.radius = data.shadow.radius;
       if (data.shadow.mapSize !== undefined) object.shadow.mapSize.fromArray(data.shadow.mapSize);
-      if (data.shadow.camera !== undefined) object.shadow.camera = this.parseObject(data.shadow.camera);
+      if (data.shadow.camera !== undefined)
+        object.shadow.camera = this.parseObject(data.shadow.camera);
     }
 
     if (data.visible !== undefined) object.visible = data.visible;
@@ -843,13 +883,13 @@ const TEXTURE_MAPPING = {
   CubeRefractionMapping: CubeRefractionMapping,
   EquirectangularReflectionMapping: EquirectangularReflectionMapping,
   EquirectangularRefractionMapping: EquirectangularRefractionMapping,
-  CubeUVReflectionMapping: CubeUVReflectionMapping,
+  CubeUVReflectionMapping: CubeUVReflectionMapping
 };
 
 const TEXTURE_WRAPPING = {
   RepeatWrapping: RepeatWrapping,
   ClampToEdgeWrapping: ClampToEdgeWrapping,
-  MirroredRepeatWrapping: MirroredRepeatWrapping,
+  MirroredRepeatWrapping: MirroredRepeatWrapping
 };
 
 const TEXTURE_FILTER = {
@@ -858,7 +898,7 @@ const TEXTURE_FILTER = {
   NearestMipmapLinearFilter: NearestMipmapLinearFilter,
   LinearFilter: LinearFilter,
   LinearMipmapNearestFilter: LinearMipmapNearestFilter,
-  LinearMipmapLinearFilter: LinearMipmapLinearFilter,
+  LinearMipmapLinearFilter: LinearMipmapLinearFilter
 };
 
 export { ObjectLoader };

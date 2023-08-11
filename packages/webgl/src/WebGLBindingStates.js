@@ -17,16 +17,16 @@
     let updateBuffers = false;
 
     // if (vaoAvailable) {
-      const state = getBindingState(geometry, program, material);
+    const state = getBindingState(geometry, program, material);
 
-      if (currentState !== state) {
-        currentState = state;
-        bindVertexArrayObject(currentState.object);
-      }
+    if (currentState !== state) {
+      currentState = state;
+      bindVertexArrayObject(currentState.object);
+    }
 
-      updateBuffers = needsUpdate(object, geometry, program, index);
+    updateBuffers = needsUpdate(object, geometry, program, index);
 
-      if (updateBuffers) saveCache(object, geometry, program, index);
+    if (updateBuffers) saveCache(object, geometry, program, index);
     // } else {
     //   const wireframe = material.wireframe === true;
 
@@ -128,7 +128,7 @@
       attributeDivisors: attributeDivisors,
       object: vao,
       attributes: {},
-      index: null,
+      index: null
     };
   }
 
@@ -148,8 +148,10 @@
         let geometryAttribute = geometryAttributes[name];
 
         if (geometryAttribute === undefined) {
-          if (name === 'instanceMatrix' && object.instanceMatrix) geometryAttribute = object.instanceMatrix;
-          if (name === 'instanceColor' && object.instanceColor) geometryAttribute = object.instanceColor;
+          if (name === 'instanceMatrix' && object.instanceMatrix)
+            geometryAttribute = object.instanceMatrix;
+          if (name === 'instanceColor' && object.instanceColor)
+            geometryAttribute = object.instanceColor;
         }
 
         if (cachedAttribute === undefined) return true;
@@ -262,7 +264,10 @@
   }
 
   function setupVertexAttributes(object, material, program, geometry) {
-    if (capabilities.isWebGL2 === false && (object.isInstancedMesh || geometry.isInstancedBufferGeometry)) {
+    if (
+      capabilities.isWebGL2 === false &&
+      (object.isInstancedMesh || geometry.isInstancedBufferGeometry)
+    ) {
       if (extensions.get('ANGLE_instanced_arrays') === null) return;
     }
 
@@ -281,8 +286,10 @@
         let geometryAttribute = geometryAttributes[name];
 
         if (geometryAttribute === undefined) {
-          if (name === 'instanceMatrix' && object.instanceMatrix) geometryAttribute = object.instanceMatrix;
-          if (name === 'instanceColor' && object.instanceColor) geometryAttribute = object.instanceColor;
+          if (name === 'instanceMatrix' && object.instanceMatrix)
+            geometryAttribute = object.instanceMatrix;
+          if (name === 'instanceColor' && object.instanceColor)
+            geometryAttribute = object.instanceColor;
         }
 
         if (geometryAttribute !== undefined) {
@@ -333,11 +340,15 @@
           } else {
             if (geometryAttribute.isInstancedBufferAttribute) {
               for (let i = 0; i < programAttribute.locationSize; i++) {
-                enableAttributeAndDivisor(programAttribute.location + i, geometryAttribute.meshPerAttribute);
+                enableAttributeAndDivisor(
+                  programAttribute.location + i,
+                  geometryAttribute.meshPerAttribute
+                );
               }
 
               if (object.isInstancedMesh !== true && geometry._maxInstanceCount === undefined) {
-                geometry._maxInstanceCount = geometryAttribute.meshPerAttribute * geometryAttribute.count;
+                geometry._maxInstanceCount =
+                  geometryAttribute.meshPerAttribute * geometryAttribute.count;
               }
             } else {
               for (let i = 0; i < programAttribute.locationSize; i++) {
@@ -474,7 +485,7 @@
 
     initAttributes: initAttributes,
     enableAttribute: enableAttribute,
-    disableUnusedAttributes: disableUnusedAttributes,
+    disableUnusedAttributes: disableUnusedAttributes
   };
 }
 

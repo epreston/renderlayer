@@ -277,5 +277,5 @@ export {
   sortedArray,
   flattenJSON,
   subclip,
-  makeClipAdditive,
+  makeClipAdditive
 };

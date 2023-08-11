@@ -20,7 +20,7 @@ class CubicInterpolant extends Interpolant {
 
     this.DefaultSettings_ = {
       endingStart: ZeroCurvatureEnding,
-      endingEnd: ZeroCurvatureEnding,
+      endingEnd: ZeroCurvatureEnding
     };
   }
 
@@ -90,14 +90,12 @@ class CubicInterpolant extends Interpolant {
     const result = this.resultBuffer,
       values = this.sampleValues,
       stride = this.valueSize,
-
       o1 = i1 * stride,
       o0 = o1 - stride,
       oP = this._offsetPrev,
       oN = this._offsetNext,
       wP = this._weightPrev,
       wN = this._weightNext,
-
       p = (t - t0) / (t1 - t0),
       pp = p * p,
       ppp = pp * p;

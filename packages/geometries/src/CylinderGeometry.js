@@ -24,7 +24,7 @@ class CylinderGeometry extends BufferGeometry {
       heightSegments: heightSegments,
       openEnded: openEnded,
       thetaStart: thetaStart,
-      thetaLength: thetaLength,
+      thetaLength: thetaLength
     };
 
     const scope = this;

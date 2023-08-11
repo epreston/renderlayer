@@ -41,8 +41,10 @@ class WebGLRenderTarget extends EventDispatcher {
     this.texture.isRenderTargetTexture = true;
 
     this.texture.flipY = false;
-    this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;
-    this.texture.internalFormat = options.internalFormat !== undefined ? options.internalFormat : null;
+    this.texture.generateMipmaps =
+      options.generateMipmaps !== undefined ? options.generateMipmaps : false;
+    this.texture.internalFormat =
+      options.internalFormat !== undefined ? options.internalFormat : null;
     this.texture.minFilter = options.minFilter !== undefined ? options.minFilter : LinearFilter;
 
     this.depthBuffer = options.depthBuffer !== undefined ? options.depthBuffer : true;

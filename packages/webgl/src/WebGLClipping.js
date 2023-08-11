@@ -52,7 +52,12 @@ function WebGLClipping(properties) {
 
     const materialProperties = properties.get(material);
 
-    if (!localClippingEnabled || planes === null || planes.length === 0 || (renderingShadows && !clipShadows)) {
+    if (
+      !localClippingEnabled ||
+      planes === null ||
+      planes.length === 0 ||
+      (renderingShadows && !clipShadows)
+    ) {
       // there's no local clipping
 
       if (renderingShadows) {

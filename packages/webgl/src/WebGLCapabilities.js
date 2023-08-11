@@ -39,7 +39,9 @@ function WebGLCapabilities(gl, extensions, parameters) {
     return 'lowp';
   }
 
-  const isWebGL2 = typeof WebGL2RenderingContext !== 'undefined' && gl.constructor.name === 'WebGL2RenderingContext';
+  const isWebGL2 =
+    typeof WebGL2RenderingContext !== 'undefined' &&
+    gl.constructor.name === 'WebGL2RenderingContext';
 
   let precision = parameters.precision !== undefined ? parameters.precision : 'highp';
   const maxPrecision = getMaxPrecision(precision);
@@ -94,7 +96,7 @@ function WebGLCapabilities(gl, extensions, parameters) {
     floatFragmentTextures: floatFragmentTextures,
     floatVertexTextures: floatVertexTextures,
 
-    maxSamples: maxSamples,
+    maxSamples: maxSamples
   };
 }
 

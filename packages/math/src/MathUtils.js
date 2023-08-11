@@ -201,7 +201,9 @@ function setQuaternionFromProperEuler(q, a, b, c, order) {
       break;
 
     default:
-      console.warn('MathUtils: .setQuaternionFromProperEuler() encountered an unknown order: ' + order);
+      console.warn(
+        'MathUtils: .setQuaternionFromProperEuler() encountered an unknown order: ' + order
+      );
   }
 }
 
@@ -211,7 +213,7 @@ function denormalize(value, array) {
       return value;
 
     case Uint32Array:
-			return value / 4294967295.0;
+      return value / 4294967295.0;
 
     case Uint16Array:
       return value / 65535.0;
@@ -220,7 +222,7 @@ function denormalize(value, array) {
       return value / 255.0;
 
     case Int32Array:
-			return Math.max( value / 2147483647.0, - 1.0 );
+      return Math.max(value / 2147483647.0, -1.0);
 
     case Int16Array:
       return Math.max(value / 32767.0, -1.0);
@@ -239,7 +241,7 @@ function normalize(value, array) {
       return value;
 
     case Uint32Array:
-			return Math.round( value * 4294967295.0 );
+      return Math.round(value * 4294967295.0);
 
     case Uint16Array:
       return Math.round(value * 65535.0);
@@ -248,7 +250,7 @@ function normalize(value, array) {
       return Math.round(value * 255.0);
 
     case Int32Array:
-			return Math.round( value * 2147483647.0 );
+      return Math.round(value * 2147483647.0);
 
     case Int16Array:
       return Math.round(value * 32767.0);
@@ -285,5 +287,5 @@ export {
   floorPowerOfTwo,
   setQuaternionFromProperEuler,
   normalize,
-  denormalize,
+  denormalize
 };

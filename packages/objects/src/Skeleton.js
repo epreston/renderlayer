@@ -187,10 +187,10 @@ class Skeleton {
       metadata: {
         version: 4.5,
         type: 'Skeleton',
-        generator: 'Skeleton.toJSON',
+        generator: 'Skeleton.toJSON'
       },
       bones: [],
-      boneInverses: [],
+      boneInverses: []
     };
 
     data.uuid = this.uuid;

@@ -42,7 +42,7 @@ class FileLoader extends Loader {
       loading[url].push({
         onLoad: onLoad,
         onProgress: onProgress,
-        onError: onError,
+        onError: onError
       });
 
       return;
@@ -54,13 +54,13 @@ class FileLoader extends Loader {
     loading[url].push({
       onLoad: onLoad,
       onProgress: onProgress,
-      onError: onError,
+      onError: onError
     });
 
     // create request
     const req = new Request(url, {
       headers: new Headers(this.requestHeader),
-      credentials: this.withCredentials ? 'include' : 'same-origin',
+      credentials: this.withCredentials ? 'include' : 'same-origin'
       // An abort controller could be added within a future PR
     });
 
@@ -94,7 +94,8 @@ class FileLoader extends Loader {
 
           // Nginx needs X-File-Size check
           // https://serverfault.com/questions/482875/why-does-nginx-remove-content-length-header-for-chunked-content
-          const contentLength = response.headers.get('Content-Length') || response.headers.get('X-File-Size');
+          const contentLength =
+            response.headers.get('Content-Length') || response.headers.get('X-File-Size');
           const total = contentLength ? parseInt(contentLength) : 0;
           const lengthComputable = total !== 0;
           let loaded = 0;
@@ -111,7 +112,11 @@ class FileLoader extends Loader {
                   } else {
                     loaded += value.byteLength;
 
-                    const event = new ProgressEvent('progress', { lengthComputable, loaded, total });
+                    const event = new ProgressEvent('progress', {
+                      lengthComputable,
+                      loaded,
+                      total
+                    });
                     for (let i = 0, il = callbacks.length; i < il; i++) {
                       const callback = callbacks[i];
                       if (callback.onProgress) callback.onProgress(event);
@@ -122,7 +127,7 @@ class FileLoader extends Loader {
                   }
                 });
               }
-            },
+            }
           });
 
           return new Response(stream);

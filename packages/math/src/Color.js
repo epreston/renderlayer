@@ -117,7 +117,11 @@ class Color {
       switch (name) {
         case 'rgb':
         case 'rgba':
-          if ((color = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components))) {
+          if (
+            (color = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
+              components
+            ))
+          ) {
             // rgb(255,0,0) rgba(255,0,0,0.5)
 
             handleAlpha(color[4]);
@@ -130,7 +134,11 @@ class Color {
             );
           }
 
-          if ((color = /^\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components))) {
+          if (
+            (color = /^\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
+              components
+            ))
+          ) {
             // rgb(100%,0%,0%) rgba(100%,0%,0%,0.5)
 
             handleAlpha(color[4]);
@@ -148,9 +156,10 @@ class Color {
         case 'hsl':
         case 'hsla':
           if (
-            (color = /^\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)%\s*,\s*(\d*\.?\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
-              components
-            ))
+            (color =
+              /^\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)%\s*,\s*(\d*\.?\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
+                components
+              ))
           ) {
             // hsl(120,50%,50%) hsla(120,50%,50%,0.5)
 
@@ -193,8 +202,6 @@ class Color {
 
     return this;
   }
-
-
 
   clone() {
     return new this.constructor(this.r, this.g, this.b);

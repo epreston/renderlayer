@@ -8,13 +8,21 @@ import {
   NoToneMapping,
   NormalBlending,
   ObjectSpaceNormalMap,
-  TangentSpaceNormalMap,
+  TangentSpaceNormalMap
 } from '@renderlayer/shared';
 
 import { WebGLProgram } from './WebGLProgram.js';
 import { WebGLShaderCache } from './WebGLShaderCache.js';
 
-function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities, bindingStates, clipping) {
+function WebGLPrograms(
+  renderer,
+  cubemaps,
+  cubeuvmaps,
+  extensions,
+  capabilities,
+  bindingStates,
+  clipping
+) {
   const _programLayers = new Layers();
   const _customShaders = new WebGLShaderCache();
   const programs = [];
@@ -40,7 +48,7 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
     LineDashedMaterial: 'dashed',
     PointsMaterial: 'points',
     ShadowMaterial: 'shadow',
-    SpriteMaterial: 'sprite',
+    SpriteMaterial: 'sprite'
   };
 
   function getChannel(value) {
@@ -60,7 +68,8 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
     const environment = null;
     const envMap = cubemaps.get(material.envMap || environment);
 
-    const envMapCubeUVHeight = !!envMap && envMap.mapping === CubeUVReflectionMapping ? envMap.image.height : null;
+    const envMapCubeUVHeight =
+      !!envMap && envMap.mapping === CubeUVReflectionMapping ? envMap.image.height : null;
 
     const shaderID = shaderIDs[material.type];
 
@@ -71,14 +80,22 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
       precision = capabilities.getMaxPrecision(material.precision);
 
       if (precision !== material.precision) {
-        console.warn('WebGLProgram.getParameters:', material.precision, 'not supported, using', precision, 'instead.');
+        console.warn(
+          'WebGLProgram.getParameters:',
+          material.precision,
+          'not supported, using',
+          precision,
+          'instead.'
+        );
       }
     }
 
     //
 
     const morphAttribute =
-      geometry.morphAttributes.position || geometry.morphAttributes.normal || geometry.morphAttributes.color;
+      geometry.morphAttributes.position ||
+      geometry.morphAttributes.normal ||
+      geometry.morphAttributes.color;
     const morphTargetsCount = morphAttribute !== undefined ? morphAttribute.length : 0;
 
     let morphTextureStride = 0;
@@ -249,18 +266,22 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
       roughnessMapUv: HAS_ROUGHNESSMAP && getChannel(material.roughnessMap.channel),
 
       clearcoatMapUv: HAS_CLEARCOATMAP && getChannel(material.clearcoatMap.channel),
-      clearcoatNormalMapUv: HAS_CLEARCOAT_NORMALMAP && getChannel(material.clearcoatNormalMap.channel),
-      clearcoatRoughnessMapUv: HAS_CLEARCOAT_ROUGHNESSMAP && getChannel(material.clearcoatRoughnessMap.channel),
+      clearcoatNormalMapUv:
+        HAS_CLEARCOAT_NORMALMAP && getChannel(material.clearcoatNormalMap.channel),
+      clearcoatRoughnessMapUv:
+        HAS_CLEARCOAT_ROUGHNESSMAP && getChannel(material.clearcoatRoughnessMap.channel),
 
       iridescenceMapUv: HAS_IRIDESCENCEMAP && getChannel(material.iridescenceMap.channel),
-      iridescenceThicknessMapUv: HAS_IRIDESCENCE_THICKNESSMAP && getChannel(material.iridescenceThicknessMap.channel),
+      iridescenceThicknessMapUv:
+        HAS_IRIDESCENCE_THICKNESSMAP && getChannel(material.iridescenceThicknessMap.channel),
 
       sheenColorMapUv: HAS_SHEEN_COLORMAP && getChannel(material.sheenColorMap.channel),
       sheenRoughnessMapUv: HAS_SHEEN_ROUGHNESSMAP && getChannel(material.sheenRoughnessMap.channel),
 
       specularMapUv: HAS_SPECULARMAP && getChannel(material.specularMap.channel),
       specularColorMapUv: HAS_SPECULAR_COLORMAP && getChannel(material.specularColorMap.channel),
-      specularIntensityMapUv: HAS_SPECULAR_INTENSITYMAP && getChannel(material.specularIntensityMap.channel),
+      specularIntensityMapUv:
+        HAS_SPECULAR_INTENSITYMAP && getChannel(material.specularIntensityMap.channel),
 
       transmissionMapUv: HAS_TRANSMISSIONMAP && getChannel(material.transmissionMap.channel),
       thicknessMapUv: HAS_THICKNESSMAP && getChannel(material.thicknessMap.channel),
@@ -272,7 +293,9 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
       vertexTangents: HAS_NORMALMAP && !!geometry.attributes.tangent,
       vertexColors: material.vertexColors,
       vertexAlphas:
-        material.vertexColors === true && !!geometry.attributes.color && geometry.attributes.color.itemSize === 4,
+        material.vertexColors === true &&
+        !!geometry.attributes.color &&
+        geometry.attributes.color.itemSize === 4,
       vertexUv1s: HAS_ATTRIBUTE_UV1,
       vertexUv2s: HAS_ATTRIBUTE_UV2,
       vertexUv3s: HAS_ATTRIBUTE_UV3,
@@ -338,7 +361,7 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
       rendererExtensionDrawBuffers: true, // IS_WEBGL2 || extensions.has('WEBGL_draw_buffers'),
       rendererExtensionShaderTextureLod: true, // IS_WEBGL2 || extensions.has('EXT_shader_texture_lod'),
 
-      customProgramCacheKey: material.customProgramCacheKey(),
+      customProgramCacheKey: material.customProgramCacheKey()
     };
 
     return parameters;
@@ -534,7 +557,7 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
     releaseShaderCache: releaseShaderCache,
     // Exposed for resource monitoring & error feedback via renderer.info:
     programs: programs,
-    dispose: dispose,
+    dispose: dispose
   };
 }
 

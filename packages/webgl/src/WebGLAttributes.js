@@ -21,7 +21,7 @@ function WebGLAttributes(gl, capabilities) {
     } else if (array instanceof Uint16Array) {
       if (attribute.isFloat16BufferAttribute) {
         // if (isWebGL2) {
-          type = gl.HALF_FLOAT;
+        type = gl.HALF_FLOAT;
         // } else {
         //   throw new Error('WebGLAttributes: Usage of Float16BufferAttribute requires WebGL2.');
         // }
@@ -48,7 +48,7 @@ function WebGLAttributes(gl, capabilities) {
       buffer: buffer,
       type: type,
       bytesPerElement: array.BYTES_PER_ELEMENT,
-      version: attribute.version,
+      version: attribute.version
     };
   }
 
@@ -64,13 +64,13 @@ function WebGLAttributes(gl, capabilities) {
       gl.bufferSubData(bufferType, 0, array);
     } else {
       // if (isWebGL2) {
-        gl.bufferSubData(
-          bufferType,
-          updateRange.offset * array.BYTES_PER_ELEMENT,
-          array,
-          updateRange.offset,
-          updateRange.count
-        );
+      gl.bufferSubData(
+        bufferType,
+        updateRange.offset * array.BYTES_PER_ELEMENT,
+        array,
+        updateRange.offset,
+        updateRange.count
+      );
       // } else {
       //   gl.bufferSubData(
       //     bufferType,
@@ -114,7 +114,7 @@ function WebGLAttributes(gl, capabilities) {
           buffer: attribute.buffer,
           type: attribute.type,
           bytesPerElement: attribute.elementSize,
-          version: attribute.version,
+          version: attribute.version
         });
       }
 
@@ -137,7 +137,7 @@ function WebGLAttributes(gl, capabilities) {
   return {
     get: get,
     remove: remove,
-    update: update,
+    update: update
   };
 }
 

@@ -233,7 +233,7 @@ class InterleavedBufferAttribute {
         itemSize: this.itemSize,
         type: this.array.constructor.name,
         array: array,
-        normalized: this.normalized,
+        normalized: this.normalized
       };
     } else {
       // save as true interleaved attribute
@@ -251,7 +251,7 @@ class InterleavedBufferAttribute {
         itemSize: this.itemSize,
         data: this.data.uuid,
         offset: this.offset,
-        normalized: this.normalized,
+        normalized: this.normalized
       };
     }
   }

@@ -4,7 +4,7 @@ import {
   InstancedBufferAttribute,
   InstancedBufferGeometry,
   InterleavedBuffer,
-  InterleavedBufferAttribute,
+  InterleavedBufferAttribute
 } from '@renderlayer/buffers';
 import { Sphere, Vector3 } from '@renderlayer/math';
 import { getTypedArray } from '@renderlayer/shared';
@@ -77,7 +77,9 @@ class BufferGeometryLoader extends Loader {
       return ab;
     }
 
-    const geometry = json.isInstancedBufferGeometry ? new InstancedBufferGeometry() : new BufferGeometry();
+    const geometry = json.isInstancedBufferGeometry
+      ? new InstancedBufferGeometry()
+      : new BufferGeometry();
 
     const index = json.data.index;
 
@@ -102,8 +104,14 @@ class BufferGeometryLoader extends Loader {
         );
       } else {
         const typedArray = getTypedArray(attribute.type, attribute.array);
-        const bufferAttributeConstr = attribute.isInstancedBufferAttribute ? InstancedBufferAttribute : BufferAttribute;
-        bufferAttribute = new bufferAttributeConstr(typedArray, attribute.itemSize, attribute.normalized);
+        const bufferAttributeConstr = attribute.isInstancedBufferAttribute
+          ? InstancedBufferAttribute
+          : BufferAttribute;
+        bufferAttribute = new bufferAttributeConstr(
+          typedArray,
+          attribute.itemSize,
+          attribute.normalized
+        );
       }
 
       if (attribute.name !== undefined) bufferAttribute.name = attribute.name;
@@ -139,7 +147,11 @@ class BufferGeometryLoader extends Loader {
             );
           } else {
             const typedArray = getTypedArray(attribute.type, attribute.array);
-            bufferAttribute = new BufferAttribute(typedArray, attribute.itemSize, attribute.normalized);
+            bufferAttribute = new BufferAttribute(
+              typedArray,
+              attribute.itemSize,
+              attribute.normalized
+            );
           }
 
           if (attribute.name !== undefined) bufferAttribute.name = attribute.name;

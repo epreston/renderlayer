@@ -1,7 +1,10 @@
 import { Vector3 } from './Vector3.js';
 
 class Box3 {
-  constructor(min = new Vector3(+Infinity, +Infinity, +Infinity), max = new Vector3(-Infinity, -Infinity, -Infinity)) {
+  constructor(
+    min = new Vector3(+Infinity, +Infinity, +Infinity),
+    max = new Vector3(-Infinity, -Infinity, -Infinity)
+  ) {
     this.isBox3 = true;
 
     this.min = min;
@@ -138,7 +141,11 @@ class Box3 {
       const geometry = object.geometry;
 
       if (geometry !== undefined) {
-        if (precise && geometry.attributes !== undefined && geometry.attributes.position !== undefined) {
+        if (
+          precise &&
+          geometry.attributes !== undefined &&
+          geometry.attributes.position !== undefined
+        ) {
           const position = geometry.attributes.position;
           for (let i = 0, l = position.count; i < l; i++) {
             _vector.fromBufferAttribute(position, i).applyMatrix4(object.matrixWorld);
@@ -369,7 +376,7 @@ const _points = [
   /*@__PURE__*/ new Vector3(),
   /*@__PURE__*/ new Vector3(),
   /*@__PURE__*/ new Vector3(),
-  /*@__PURE__*/ new Vector3(),
+  /*@__PURE__*/ new Vector3()
 ];
 
 const _vector = /*@__PURE__*/ new Vector3();
@@ -397,7 +404,10 @@ function satForAxes(axes, v0, v1, v2, extents) {
   for (let i = 0, j = axes.length - 3; i <= j; i += 3) {
     _testAxis.fromArray(axes, i);
     // project the aabb onto the separating axis
-    const r = extents.x * Math.abs(_testAxis.x) + extents.y * Math.abs(_testAxis.y) + extents.z * Math.abs(_testAxis.z);
+    const r =
+      extents.x * Math.abs(_testAxis.x) +
+      extents.y * Math.abs(_testAxis.y) +
+      extents.z * Math.abs(_testAxis.z);
     // project all 3 vertices of the triangle onto the separating axis
     const p0 = v0.dot(_testAxis);
     const p1 = v1.dot(_testAxis);

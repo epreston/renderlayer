@@ -1,4 +1,8 @@
-import { CubicInterpolant, DiscreteInterpolant, LinearInterpolant } from '@renderlayer/interpolants';
+import {
+  CubicInterpolant,
+  DiscreteInterpolant,
+  LinearInterpolant
+} from '@renderlayer/interpolants';
 import { InterpolateDiscrete, InterpolateLinear, InterpolateSmooth } from '@renderlayer/shared';
 import * as KeyframeUtils from './KeyframeUtils.js';
 
@@ -32,7 +36,7 @@ class KeyframeTrack {
       json = {
         name: track.name,
         times: KeyframeUtils.convertArray(track.times, Array),
-        values: KeyframeUtils.convertArray(track.values, Array),
+        values: KeyframeUtils.convertArray(track.values, Array)
       };
 
       const interpolation = track.getInterpolation();
@@ -80,7 +84,11 @@ class KeyframeTrack {
     }
 
     if (factoryMethod === undefined) {
-      const message = 'unsupported interpolation for ' + this.ValueTypeName + ' keyframe track named ' + this.name;
+      const message =
+        'unsupported interpolation for ' +
+        this.ValueTypeName +
+        ' keyframe track named ' +
+        this.name;
 
       if (this.createInterpolant === undefined) {
         // fall back to default, unless the default itself is messed up
@@ -300,7 +308,11 @@ class KeyframeTrack {
     if (lastIndex > 0) {
       times[writeIndex] = times[lastIndex];
 
-      for (let readOffset = lastIndex * stride, writeOffset = writeIndex * stride, j = 0; j !== stride; ++j) {
+      for (
+        let readOffset = lastIndex * stride, writeOffset = writeIndex * stride, j = 0;
+        j !== stride;
+        ++j
+      ) {
         values[writeOffset + j] = values[readOffset + j];
       }
 

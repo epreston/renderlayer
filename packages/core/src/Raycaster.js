@@ -18,7 +18,7 @@ class Raycaster {
       Line: { threshold: 1 },
       LOD: {},
       Points: { threshold: 1 },
-      Sprite: {},
+      Sprite: {}
     };
   }
 
@@ -31,7 +31,11 @@ class Raycaster {
   setFromCamera(coords, camera) {
     if (camera.isPerspectiveCamera) {
       this.ray.origin.setFromMatrixPosition(camera.matrixWorld);
-      this.ray.direction.set(coords.x, coords.y, 0.5).unproject(camera).sub(this.ray.origin).normalize();
+      this.ray.direction
+        .set(coords.x, coords.y, 0.5)
+        .unproject(camera)
+        .sub(this.ray.origin)
+        .normalize();
       this.camera = camera;
     } else if (camera.isOrthographicCamera) {
       this.ray.origin

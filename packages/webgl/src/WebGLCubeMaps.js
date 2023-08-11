@@ -2,7 +2,7 @@ import {
   CubeReflectionMapping,
   CubeRefractionMapping,
   EquirectangularReflectionMapping,
-  EquirectangularRefractionMapping,
+  EquirectangularRefractionMapping
 } from '@renderlayer/shared';
 import { WebGLCubeRenderTarget } from '@renderlayer/targets';
 
@@ -23,7 +23,10 @@ function WebGLCubeMaps(renderer) {
     if (texture && texture.isTexture && texture.isRenderTargetTexture === false) {
       const mapping = texture.mapping;
 
-      if (mapping === EquirectangularReflectionMapping || mapping === EquirectangularRefractionMapping) {
+      if (
+        mapping === EquirectangularReflectionMapping ||
+        mapping === EquirectangularRefractionMapping
+      ) {
         if (cubemaps.has(texture)) {
           const cubemap = cubemaps.get(texture).texture;
           return mapTextureMapping(cubemap, texture.mapping);
@@ -69,7 +72,7 @@ function WebGLCubeMaps(renderer) {
 
   return {
     get: get,
-    dispose: dispose,
+    dispose: dispose
   };
 }
 

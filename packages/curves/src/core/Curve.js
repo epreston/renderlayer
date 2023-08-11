@@ -87,7 +87,11 @@ class Curve {
   // Get list of cumulative segment lengths
 
   getLengths(divisions = this.arcLengthDivisions) {
-    if (this.cacheArcLengths && this.cacheArcLengths.length === divisions + 1 && !this.needsUpdate) {
+    if (
+      this.cacheArcLengths &&
+      this.cacheArcLengths.length === divisions + 1 &&
+      !this.needsUpdate
+    ) {
       return this.cacheArcLengths;
     }
 
@@ -300,7 +304,7 @@ class Curve {
     return {
       tangents: tangents,
       normals: normals,
-      binormals: binormals,
+      binormals: binormals
     };
   }
 
@@ -319,8 +323,8 @@ class Curve {
       metadata: {
         version: 4.5,
         type: 'Curve',
-        generator: 'Curve.toJSON',
-      },
+        generator: 'Curve.toJSON'
+      }
     };
 
     data.arcLengthDivisions = this.arcLengthDivisions;

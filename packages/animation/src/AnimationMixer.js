@@ -156,7 +156,7 @@ class AnimationMixer extends EventDispatcher {
         },
         get inUse() {
           return scope._nActiveActions;
-        },
+        }
       },
       bindings: {
         get total() {
@@ -164,7 +164,7 @@ class AnimationMixer extends EventDispatcher {
         },
         get inUse() {
           return scope._nActiveBindings;
-        },
+        }
       },
       controlInterpolants: {
         get total() {
@@ -172,8 +172,8 @@ class AnimationMixer extends EventDispatcher {
         },
         get inUse() {
           return scope._nActiveControlInterpolants;
-        },
-      },
+        }
+      }
     };
   }
 
@@ -193,7 +193,7 @@ class AnimationMixer extends EventDispatcher {
     if (actionsForClip === undefined) {
       actionsForClip = {
         knownActions: [action],
-        actionByRoot: {},
+        actionByRoot: {}
       };
 
       action._byClipCacheIndex = 0;

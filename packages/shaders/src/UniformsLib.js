@@ -12,12 +12,12 @@ const UniformsLib = {
     alphaMap: { value: null },
     alphaMapTransform: { value: /*@__PURE__*/ new Matrix3() },
 
-    alphaTest: { value: 0 },
+    alphaTest: { value: 0 }
   },
 
   specularmap: {
     specularMap: { value: null },
-    specularMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+    specularMapTransform: { value: /*@__PURE__*/ new Matrix3() }
   },
 
   envmap: {
@@ -25,64 +25,64 @@ const UniformsLib = {
     flipEnvMap: { value: -1 },
     reflectivity: { value: 1.0 }, // basic, lambert, phong
     ior: { value: 1.5 }, // physical
-    refractionRatio: { value: 0.98 }, // basic, lambert, phong
+    refractionRatio: { value: 0.98 } // basic, lambert, phong
   },
 
   aomap: {
     aoMap: { value: null },
     aoMapIntensity: { value: 1 },
-    aoMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+    aoMapTransform: { value: /*@__PURE__*/ new Matrix3() }
   },
 
   lightmap: {
     lightMap: { value: null },
     lightMapIntensity: { value: 1 },
-    lightMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+    lightMapTransform: { value: /*@__PURE__*/ new Matrix3() }
   },
 
   bumpmap: {
     bumpMap: { value: null },
     bumpMapTransform: { value: /*@__PURE__*/ new Matrix3() },
-    bumpScale: { value: 1 },
+    bumpScale: { value: 1 }
   },
 
   normalmap: {
     normalMap: { value: null },
     normalMapTransform: { value: /*@__PURE__*/ new Matrix3() },
-    normalScale: { value: /*@__PURE__*/ new Vector2(1, 1) },
+    normalScale: { value: /*@__PURE__*/ new Vector2(1, 1) }
   },
 
   displacementmap: {
     displacementMap: { value: null },
     displacementMapTransform: { value: /*@__PURE__*/ new Matrix3() },
     displacementScale: { value: 1 },
-    displacementBias: { value: 0 },
+    displacementBias: { value: 0 }
   },
 
   emissivemap: {
     emissiveMap: { value: null },
-    emissiveMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+    emissiveMapTransform: { value: /*@__PURE__*/ new Matrix3() }
   },
 
   metalnessmap: {
     metalnessMap: { value: null },
-    metalnessMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+    metalnessMapTransform: { value: /*@__PURE__*/ new Matrix3() }
   },
 
   roughnessmap: {
     roughnessMap: { value: null },
-    roughnessMapTransform: { value: /*@__PURE__*/ new Matrix3() },
+    roughnessMapTransform: { value: /*@__PURE__*/ new Matrix3() }
   },
 
   gradientmap: {
-    gradientMap: { value: null },
+    gradientMap: { value: null }
   },
 
   fog: {
     fogDensity: { value: 0.00025 },
     fogNear: { value: 1 },
     fogFar: { value: 2000 },
-    fogColor: { value: /*@__PURE__*/ new Color(0xffffff) },
+    fogColor: { value: /*@__PURE__*/ new Color(0xffffff) }
   },
 
   lights: {
@@ -94,8 +94,8 @@ const UniformsLib = {
       value: [],
       properties: {
         direction: {},
-        color: {},
-      },
+        color: {}
+      }
     },
 
     directionalLightShadows: {
@@ -104,8 +104,8 @@ const UniformsLib = {
         shadowBias: {},
         shadowNormalBias: {},
         shadowRadius: {},
-        shadowMapSize: {},
-      },
+        shadowMapSize: {}
+      }
     },
 
     directionalShadowMap: { value: [] },
@@ -120,8 +120,8 @@ const UniformsLib = {
         distance: {},
         coneCos: {},
         penumbraCos: {},
-        decay: {},
-      },
+        decay: {}
+      }
     },
 
     spotLightShadows: {
@@ -130,8 +130,8 @@ const UniformsLib = {
         shadowBias: {},
         shadowNormalBias: {},
         shadowRadius: {},
-        shadowMapSize: {},
-      },
+        shadowMapSize: {}
+      }
     },
 
     spotLightMap: { value: [] },
@@ -144,8 +144,8 @@ const UniformsLib = {
         color: {},
         position: {},
         decay: {},
-        distance: {},
-      },
+        distance: {}
+      }
     },
 
     pointLightShadows: {
@@ -156,8 +156,8 @@ const UniformsLib = {
         shadowRadius: {},
         shadowMapSize: {},
         shadowCameraNear: {},
-        shadowCameraFar: {},
-      },
+        shadowCameraFar: {}
+      }
     },
 
     pointShadowMap: { value: [] },
@@ -168,8 +168,8 @@ const UniformsLib = {
       properties: {
         direction: {},
         skyColor: {},
-        groundColor: {},
-      },
+        groundColor: {}
+      }
     },
 
     // TODO: RectAreaLight BRDF data needs to be moved from example to main src
@@ -179,12 +179,12 @@ const UniformsLib = {
         color: {},
         position: {},
         width: {},
-        height: {},
-      },
+        height: {}
+      }
     },
 
     ltc_1: { value: null },
-    ltc_2: { value: null },
+    ltc_2: { value: null }
   },
 
   points: {
@@ -195,7 +195,7 @@ const UniformsLib = {
     map: { value: null },
     alphaMap: { value: null },
     alphaTest: { value: 0 },
-    uvTransform: { value: /*@__PURE__*/ new Matrix3() },
+    uvTransform: { value: /*@__PURE__*/ new Matrix3() }
   },
 
   sprite: {
@@ -206,8 +206,8 @@ const UniformsLib = {
     map: { value: null },
     mapTransform: { value: /*@__PURE__*/ new Matrix3() },
     alphaMap: { value: null },
-    alphaTest: { value: 0 },
-  },
+    alphaTest: { value: 0 }
+  }
 };
 
 export { UniformsLib };

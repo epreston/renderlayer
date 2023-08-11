@@ -145,7 +145,10 @@ class InstancedMesh extends Mesh {
 
   setColorAt(index, color) {
     if (this.instanceColor === null) {
-      this.instanceColor = new InstancedBufferAttribute(new Float32Array(this.instanceMatrix.count * 3), 3);
+      this.instanceColor = new InstancedBufferAttribute(
+        new Float32Array(this.instanceMatrix.count * 3),
+        3
+      );
     }
 
     color.toArray(this.instanceColor.array, index * 3);
@@ -163,4 +166,3 @@ class InstancedMesh extends Mesh {
 }
 
 export { InstancedMesh };
-

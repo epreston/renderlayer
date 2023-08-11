@@ -31,7 +31,7 @@ function WebGLRenderState(extensions, capabilities) {
     lightsArray: lightsArray,
     shadowsArray: shadowsArray,
 
-    lights: lights,
+    lights: lights
   };
 
   return {
@@ -41,7 +41,7 @@ function WebGLRenderState(extensions, capabilities) {
     setupLightsView: setupLightsView,
 
     pushLight: pushLight,
-    pushShadow: pushShadow,
+    pushShadow: pushShadow
   };
 }
 
@@ -73,9 +73,8 @@ function WebGLRenderStates(extensions, capabilities) {
 
   return {
     get: get,
-    dispose: dispose,
+    dispose: dispose
   };
 }
-
 
 export { WebGLRenderStates, WebGLRenderState };

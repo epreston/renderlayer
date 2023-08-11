@@ -257,12 +257,13 @@ class BufferAttribute {
       itemSize: this.itemSize,
       type: this.array.constructor.name,
       array: Array.from(this.array),
-      normalized: this.normalized,
+      normalized: this.normalized
     };
 
     if (this.name !== '') data.name = this.name;
     if (this.usage !== StaticDrawUsage) data.usage = this.usage;
-    if (this.updateRange.offset !== 0 || this.updateRange.count !== -1) data.updateRange = this.updateRange;
+    if (this.updateRange.offset !== 0 || this.updateRange.count !== -1)
+      data.updateRange = this.updateRange;
 
     return data;
   }
@@ -457,5 +458,5 @@ export {
   Uint8ClampedBufferAttribute,
   Uint8BufferAttribute,
   Int8BufferAttribute,
-  BufferAttribute,
+  BufferAttribute
 };

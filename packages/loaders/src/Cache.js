@@ -25,7 +25,7 @@ const Cache = {
 
   clear: function () {
     this.files = {};
-  },
+  }
 };
 
 export { Cache };

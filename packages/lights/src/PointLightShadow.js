@@ -41,7 +41,7 @@ class PointLightShadow extends LightShadow {
       // positive Y
       new Vector4(3, 0, 1, 1),
       // negative Y
-      new Vector4(1, 0, 1, 1),
+      new Vector4(1, 0, 1, 1)
     ];
 
     this._cubeDirections = [
@@ -50,7 +50,7 @@ class PointLightShadow extends LightShadow {
       new Vector3(0, 0, 1),
       new Vector3(0, 0, -1),
       new Vector3(0, 1, 0),
-      new Vector3(0, -1, 0),
+      new Vector3(0, -1, 0)
     ];
 
     this._cubeUps = [
@@ -59,7 +59,7 @@ class PointLightShadow extends LightShadow {
       new Vector3(0, 1, 0),
       new Vector3(0, 1, 0),
       new Vector3(0, 0, 1),
-      new Vector3(0, 0, -1),
+      new Vector3(0, 0, -1)
     ];
   }
 
@@ -83,7 +83,11 @@ class PointLightShadow extends LightShadow {
     camera.lookAt(_lookTarget);
     camera.updateMatrixWorld();
 
-    shadowMatrix.makeTranslation(-_lightPositionWorld.x, -_lightPositionWorld.y, -_lightPositionWorld.z);
+    shadowMatrix.makeTranslation(
+      -_lightPositionWorld.x,
+      -_lightPositionWorld.y,
+      -_lightPositionWorld.z
+    );
 
     _projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     this._frustum.setFromProjectionMatrix(_projScreenMatrix);

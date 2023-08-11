@@ -89,10 +89,12 @@ class ImageUtils {
       return {
         data: data,
         width: image.width,
-        height: image.height,
+        height: image.height
       };
     } else {
-      console.warn('ImageUtils.sRGBToLinear(): Unsupported image type. No color space conversion applied.');
+      console.warn(
+        'ImageUtils.sRGBToLinear(): Unsupported image type. No color space conversion applied.'
+      );
       return image;
     }
   }

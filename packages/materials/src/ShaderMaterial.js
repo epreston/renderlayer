@@ -34,7 +34,7 @@ class ShaderMaterial extends Material {
       derivatives: false, // set to use derivatives
       fragDepth: false, // set to use fragment depth values
       drawBuffers: false, // set to use draw buffers
-      shaderTextureLOD: false, // set to use shader texture LOD
+      shaderTextureLOD: false // set to use shader texture LOD
     };
 
     // When rendered geometry doesn't include these attributes but the material does,
@@ -42,7 +42,7 @@ class ShaderMaterial extends Material {
     this.defaultAttributeValues = {
       color: [1, 1, 1],
       uv: [0, 0],
-      uv1: [0, 0],
+      uv1: [0, 0]
     };
 
     this.index0AttributeName = undefined;
@@ -93,41 +93,41 @@ class ShaderMaterial extends Material {
       if (value && value.isTexture) {
         data.uniforms[name] = {
           type: 't',
-          value: value.toJSON(meta).uuid,
+          value: value.toJSON(meta).uuid
         };
       } else if (value && value.isColor) {
         data.uniforms[name] = {
           type: 'c',
-          value: value.getHex(),
+          value: value.getHex()
         };
       } else if (value && value.isVector2) {
         data.uniforms[name] = {
           type: 'v2',
-          value: value.toArray(),
+          value: value.toArray()
         };
       } else if (value && value.isVector3) {
         data.uniforms[name] = {
           type: 'v3',
-          value: value.toArray(),
+          value: value.toArray()
         };
       } else if (value && value.isVector4) {
         data.uniforms[name] = {
           type: 'v4',
-          value: value.toArray(),
+          value: value.toArray()
         };
       } else if (value && value.isMatrix3) {
         data.uniforms[name] = {
           type: 'm3',
-          value: value.toArray(),
+          value: value.toArray()
         };
       } else if (value && value.isMatrix4) {
         data.uniforms[name] = {
           type: 'm4',
-          value: value.toArray(),
+          value: value.toArray()
         };
       } else {
         data.uniforms[name] = {
-          value: value,
+          value: value
         };
 
         // note: the array variants v2v, v3v, v4v, m4v and tv are not supported so far

@@ -16,7 +16,7 @@ import {
   ShadowMaterial,
   // SpriteMaterial,
   RawShaderMaterial,
-  ShaderMaterial,
+  ShaderMaterial
 } from '@renderlayer/materials';
 import { Color, Matrix3, Matrix4, Vector2, Vector3, Vector4 } from '@renderlayer/math';
 import { FileLoader } from './FileLoader.js';
@@ -76,21 +76,25 @@ class MaterialLoader extends Loader {
     if (json.sheen !== undefined) material.sheen = json.sheen;
     if (json.sheenColor !== undefined) material.sheenColor = new Color().setHex(json.sheenColor);
     if (json.sheenRoughness !== undefined) material.sheenRoughness = json.sheenRoughness;
-    if (json.emissive !== undefined && material.emissive !== undefined) material.emissive.setHex(json.emissive);
-    if (json.specular !== undefined && material.specular !== undefined) material.specular.setHex(json.specular);
+    if (json.emissive !== undefined && material.emissive !== undefined)
+      material.emissive.setHex(json.emissive);
+    if (json.specular !== undefined && material.specular !== undefined)
+      material.specular.setHex(json.specular);
     if (json.specularIntensity !== undefined) material.specularIntensity = json.specularIntensity;
     if (json.specularColor !== undefined && material.specularColor !== undefined)
       material.specularColor.setHex(json.specularColor);
     if (json.shininess !== undefined) material.shininess = json.shininess;
     if (json.clearcoat !== undefined) material.clearcoat = json.clearcoat;
-    if (json.clearcoatRoughness !== undefined) material.clearcoatRoughness = json.clearcoatRoughness;
+    if (json.clearcoatRoughness !== undefined)
+      material.clearcoatRoughness = json.clearcoatRoughness;
     if (json.iridescence !== undefined) material.iridescence = json.iridescence;
     if (json.iridescenceIOR !== undefined) material.iridescenceIOR = json.iridescenceIOR;
     if (json.iridescenceThicknessRange !== undefined)
       material.iridescenceThicknessRange = json.iridescenceThicknessRange;
     if (json.transmission !== undefined) material.transmission = json.transmission;
     if (json.thickness !== undefined) material.thickness = json.thickness;
-    if (json.attenuationDistance !== undefined) material.attenuationDistance = json.attenuationDistance;
+    if (json.attenuationDistance !== undefined)
+      material.attenuationDistance = json.attenuationDistance;
     if (json.attenuationColor !== undefined && material.attenuationColor !== undefined)
       material.attenuationColor.setHex(json.attenuationColor);
     if (json.fog !== undefined) material.fog = json.fog;
@@ -116,7 +120,8 @@ class MaterialLoader extends Loader {
     if (json.stencilZPass !== undefined) material.stencilZPass = json.stencilZPass;
 
     if (json.wireframe !== undefined) material.wireframe = json.wireframe;
-    if (json.wireframeLinewidth !== undefined) material.wireframeLinewidth = json.wireframeLinewidth;
+    if (json.wireframeLinewidth !== undefined)
+      material.wireframeLinewidth = json.wireframeLinewidth;
     if (json.wireframeLinecap !== undefined) material.wireframeLinecap = json.wireframeLinecap;
     if (json.wireframeLinejoin !== undefined) material.wireframeLinejoin = json.wireframeLinejoin;
 
@@ -128,13 +133,16 @@ class MaterialLoader extends Loader {
     if (json.scale !== undefined) material.scale = json.scale;
 
     if (json.polygonOffset !== undefined) material.polygonOffset = json.polygonOffset;
-    if (json.polygonOffsetFactor !== undefined) material.polygonOffsetFactor = json.polygonOffsetFactor;
-    if (json.polygonOffsetUnits !== undefined) material.polygonOffsetUnits = json.polygonOffsetUnits;
+    if (json.polygonOffsetFactor !== undefined)
+      material.polygonOffsetFactor = json.polygonOffsetFactor;
+    if (json.polygonOffsetUnits !== undefined)
+      material.polygonOffsetUnits = json.polygonOffsetUnits;
 
     if (json.dithering !== undefined) material.dithering = json.dithering;
 
     if (json.alphaToCoverage !== undefined) material.alphaToCoverage = json.alphaToCoverage;
-    if (json.premultipliedAlpha !== undefined) material.premultipliedAlpha = json.premultipliedAlpha;
+    if (json.premultipliedAlpha !== undefined)
+      material.premultipliedAlpha = json.premultipliedAlpha;
     if (json.forceSinglePass !== undefined) material.forceSinglePass = json.forceSinglePass;
 
     if (json.visible !== undefined) material.visible = json.visible;
@@ -237,7 +245,8 @@ class MaterialLoader extends Loader {
       material.normalScale = new Vector2().fromArray(normalScale);
     }
 
-    if (json.displacementMap !== undefined) material.displacementMap = getTexture(json.displacementMap);
+    if (json.displacementMap !== undefined)
+      material.displacementMap = getTexture(json.displacementMap);
     if (json.displacementScale !== undefined) material.displacementScale = json.displacementScale;
     if (json.displacementBias !== undefined) material.displacementBias = json.displacementBias;
 
@@ -248,8 +257,10 @@ class MaterialLoader extends Loader {
     if (json.emissiveIntensity !== undefined) material.emissiveIntensity = json.emissiveIntensity;
 
     if (json.specularMap !== undefined) material.specularMap = getTexture(json.specularMap);
-    if (json.specularIntensityMap !== undefined) material.specularIntensityMap = getTexture(json.specularIntensityMap);
-    if (json.specularColorMap !== undefined) material.specularColorMap = getTexture(json.specularColorMap);
+    if (json.specularIntensityMap !== undefined)
+      material.specularIntensityMap = getTexture(json.specularIntensityMap);
+    if (json.specularColorMap !== undefined)
+      material.specularColorMap = getTexture(json.specularColorMap);
 
     if (json.envMap !== undefined) material.envMap = getTexture(json.envMap);
     if (json.envMapIntensity !== undefined) material.envMapIntensity = json.envMapIntensity;
@@ -268,19 +279,23 @@ class MaterialLoader extends Loader {
     if (json.clearcoatMap !== undefined) material.clearcoatMap = getTexture(json.clearcoatMap);
     if (json.clearcoatRoughnessMap !== undefined)
       material.clearcoatRoughnessMap = getTexture(json.clearcoatRoughnessMap);
-    if (json.clearcoatNormalMap !== undefined) material.clearcoatNormalMap = getTexture(json.clearcoatNormalMap);
+    if (json.clearcoatNormalMap !== undefined)
+      material.clearcoatNormalMap = getTexture(json.clearcoatNormalMap);
     if (json.clearcoatNormalScale !== undefined)
       material.clearcoatNormalScale = new Vector2().fromArray(json.clearcoatNormalScale);
 
-    if (json.iridescenceMap !== undefined) material.iridescenceMap = getTexture(json.iridescenceMap);
+    if (json.iridescenceMap !== undefined)
+      material.iridescenceMap = getTexture(json.iridescenceMap);
     if (json.iridescenceThicknessMap !== undefined)
       material.iridescenceThicknessMap = getTexture(json.iridescenceThicknessMap);
 
-    if (json.transmissionMap !== undefined) material.transmissionMap = getTexture(json.transmissionMap);
+    if (json.transmissionMap !== undefined)
+      material.transmissionMap = getTexture(json.transmissionMap);
     if (json.thicknessMap !== undefined) material.thicknessMap = getTexture(json.thicknessMap);
 
     if (json.sheenColorMap !== undefined) material.sheenColorMap = getTexture(json.sheenColorMap);
-    if (json.sheenRoughnessMap !== undefined) material.sheenRoughnessMap = getTexture(json.sheenRoughnessMap);
+    if (json.sheenRoughnessMap !== undefined)
+      material.sheenRoughnessMap = getTexture(json.sheenRoughnessMap);
 
     return material;
   }
@@ -309,7 +324,7 @@ class MaterialLoader extends Loader {
       // MeshMatcapMaterial,
       // LineDashedMaterial,
       LineBasicMaterial,
-      Material,
+      Material
     };
 
     return new materialLib[type]();

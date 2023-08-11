@@ -6,7 +6,7 @@ import {
   LoopOnce,
   LoopRepeat,
   NormalAnimationBlendMode,
-  AdditiveAnimationBlendMode,
+  AdditiveAnimationBlendMode
 } from '@renderlayer/shared';
 
 class AnimationAction {
@@ -22,7 +22,7 @@ class AnimationAction {
 
     const interpolantSettings = {
       endingStart: ZeroCurvatureEnding,
-      endingEnd: ZeroCurvatureEnding,
+      endingEnd: ZeroCurvatureEnding
     };
 
     for (let i = 0; i !== nTracks; ++i) {
@@ -426,7 +426,7 @@ class AnimationAction {
         this._mixer.dispatchEvent({
           type: 'finished',
           action: this,
-          direction: deltaTime < 0 ? -1 : 1,
+          direction: deltaTime < 0 ? -1 : 1
         });
       }
     } else {
@@ -471,7 +471,7 @@ class AnimationAction {
           this._mixer.dispatchEvent({
             type: 'finished',
             action: this,
-            direction: deltaTime > 0 ? 1 : -1,
+            direction: deltaTime > 0 ? 1 : -1
           });
         } else {
           // keep running
@@ -492,7 +492,7 @@ class AnimationAction {
           this._mixer.dispatchEvent({
             type: 'loop',
             action: this,
-            loopDelta: loopDelta,
+            loopDelta: loopDelta
           });
         }
       } else {

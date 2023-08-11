@@ -124,7 +124,7 @@ function testPoint(point, index, localThresholdSq, matrixWorld, raycaster, inter
       point: intersectPoint,
       index: index,
       face: null,
-      object: object,
+      object: object
     });
   }
 }

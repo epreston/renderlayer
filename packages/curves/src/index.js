@@ -5,4 +5,3 @@ export * from './CatmullRomCurve3.js';
 export * from './CubicBezierCurve3.js';
 export * from './LineCurve.js';
 export * from './LineCurve3.js';
-

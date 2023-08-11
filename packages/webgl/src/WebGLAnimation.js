@@ -32,7 +32,7 @@ function WebGLAnimation() {
 
     setContext: function (value) {
       context = value;
-    },
+    }
   };
 }
 

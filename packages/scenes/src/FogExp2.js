@@ -17,7 +17,7 @@ class FogExp2 {
     return {
       type: 'FogExp2',
       color: this.color.getHex(),
-      density: this.density,
+      density: this.density
     };
   }
 }

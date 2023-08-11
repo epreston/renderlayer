@@ -79,7 +79,12 @@ export const ColorManagement = {
   },
 
   convert: function (color, sourceColorSpace, targetColorSpace) {
-    if (this.enabled === false || sourceColorSpace === targetColorSpace || !sourceColorSpace || !targetColorSpace) {
+    if (
+      this.enabled === false ||
+      sourceColorSpace === targetColorSpace ||
+      !sourceColorSpace ||
+      !targetColorSpace
+    ) {
       return color;
     }
 
@@ -87,7 +92,9 @@ export const ColorManagement = {
     const targetFromLinear = FROM_LINEAR[targetColorSpace];
 
     if (sourceToLinear === undefined || targetFromLinear === undefined) {
-      throw new Error(`Unsupported color space conversion, "${sourceColorSpace}" to "${targetColorSpace}".`);
+      throw new Error(
+        `Unsupported color space conversion, "${sourceColorSpace}" to "${targetColorSpace}".`
+      );
     }
 
     return targetFromLinear(sourceToLinear(color));
@@ -99,5 +106,5 @@ export const ColorManagement = {
 
   toWorkingColorSpace: function (color, sourceColorSpace) {
     return this.convert(color, sourceColorSpace, this.workingColorSpace);
-  },
+  }
 };

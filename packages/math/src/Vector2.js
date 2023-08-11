@@ -1,4 +1,4 @@
-import {clamp as clampToRange } from './MathUtils.js';
+import { clamp as clampToRange } from './MathUtils.js';
 
 class Vector2 {
   constructor(x = 0, y = 0) {

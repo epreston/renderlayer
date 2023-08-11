@@ -32,7 +32,9 @@ class LineSegments extends Line {
 
       geometry.setAttribute('lineDistance', new Float32BufferAttribute(lineDistances, 1));
     } else {
-      console.warn('LineSegments.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.');
+      console.warn(
+        'LineSegments.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.'
+      );
     }
 
     return this;

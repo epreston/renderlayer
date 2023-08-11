@@ -48,7 +48,10 @@ class LightShadow {
     shadowCamera.lookAt(_lookTarget);
     shadowCamera.updateMatrixWorld();
 
-    _projScreenMatrix.multiplyMatrices(shadowCamera.projectionMatrix, shadowCamera.matrixWorldInverse);
+    _projScreenMatrix.multiplyMatrices(
+      shadowCamera.projectionMatrix,
+      shadowCamera.matrixWorldInverse
+    );
     this._frustum.setFromProjectionMatrix(_projScreenMatrix);
 
     // prettier-ignore

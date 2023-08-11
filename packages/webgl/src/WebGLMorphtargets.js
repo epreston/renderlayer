@@ -30,7 +30,9 @@ function WebGLMorphtargets(gl, capabilities, textures) {
       // into an array of data textures. Each layer represents a single morph target.
 
       const morphAttribute =
-        geometry.morphAttributes.position || geometry.morphAttributes.normal || geometry.morphAttributes.color;
+        geometry.morphAttributes.position ||
+        geometry.morphAttributes.normal ||
+        geometry.morphAttributes.color;
       const morphTargetsCount = morphAttribute !== undefined ? morphAttribute.length : 0;
 
       let entry = morphTextures.get(geometry);
@@ -112,7 +114,7 @@ function WebGLMorphtargets(gl, capabilities, textures) {
         entry = {
           count: morphTargetsCount,
           texture: texture,
-          size: new Vector2(width, height),
+          size: new Vector2(width, height)
         };
 
         morphTextures.set(geometry, entry);
@@ -230,7 +232,7 @@ function WebGLMorphtargets(gl, capabilities, textures) {
   }
 
   return {
-    update: update,
+    update: update
   };
 }
 

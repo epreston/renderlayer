@@ -9,7 +9,7 @@ import {
   RepeatWrapping,
   RGBAFormat,
   UnsignedByteType,
-  UVMapping,
+  UVMapping
 } from '@renderlayer/shared';
 
 import { Source } from './Source.js';
@@ -160,7 +160,7 @@ class Texture extends EventDispatcher {
       metadata: {
         version: 4.5,
         type: 'Texture',
-        generator: 'Texture.toJSON',
+        generator: 'Texture.toJSON'
       },
 
       uuid: this.uuid,
@@ -191,7 +191,7 @@ class Texture extends EventDispatcher {
 
       generateMipmaps: this.generateMipmaps,
       premultiplyAlpha: this.premultiplyAlpha,
-      unpackAlignment: this.unpackAlignment,
+      unpackAlignment: this.unpackAlignment
     };
 
     if (Object.keys(this.userData).length > 0) output.userData = this.userData;

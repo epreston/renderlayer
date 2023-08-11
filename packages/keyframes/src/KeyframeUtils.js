@@ -30,9 +30,4 @@ function isTypedArray(object) {
   return ArrayBuffer.isView(object) && !(object instanceof DataView);
 }
 
-
-export {
-  arraySlice,
-  convertArray,
-  isTypedArray,
-};
+export { arraySlice, convertArray, isTypedArray };

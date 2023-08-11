@@ -19,8 +19,8 @@ function WebGLBufferRenderer(gl, extensions, info, capabilities) {
     // let extension, methodName;
 
     // if (isWebGL2) {
-      // extension = gl;
-      // methodName = 'drawArraysInstanced';
+    // extension = gl;
+    // methodName = 'drawArraysInstanced';
     // } else {
     //   extension = extensions.get('ANGLE_instanced_arrays');
     //   methodName = 'drawArraysInstancedANGLE';

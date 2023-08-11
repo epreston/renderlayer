@@ -6,7 +6,7 @@ import {
   BufferAttribute,
   Float32BufferAttribute,
   Uint16BufferAttribute,
-  Uint32BufferAttribute,
+  Uint32BufferAttribute
 } from './BufferAttribute.js';
 
 let _id = 0;
@@ -53,7 +53,10 @@ class BufferGeometry extends EventDispatcher {
 
   setIndex(index) {
     if (Array.isArray(index)) {
-      this.index = new (arrayNeedsUint32(index) ? Uint32BufferAttribute : Uint16BufferAttribute)(index, 1);
+      this.index = new (arrayNeedsUint32(index) ? Uint32BufferAttribute : Uint16BufferAttribute)(
+        index,
+        1
+      );
     } else {
       this.index = index;
     }
@@ -85,7 +88,7 @@ class BufferGeometry extends EventDispatcher {
     this.groups.push({
       start: start,
       count: count,
-      materialIndex: materialIndex,
+      materialIndex: materialIndex
     });
   }
 
@@ -276,7 +279,11 @@ class BufferGeometry extends EventDispatcher {
       this.boundingBox.makeEmpty();
     }
 
-    if (isNaN(this.boundingBox.min.x) || isNaN(this.boundingBox.min.y) || isNaN(this.boundingBox.min.z)) {
+    if (
+      isNaN(this.boundingBox.min.x) ||
+      isNaN(this.boundingBox.min.y) ||
+      isNaN(this.boundingBox.min.z)
+    ) {
       console.error(
         'BufferGeometry.computeBoundingBox(): Computed min/max have NaN values. The "position" attribute is likely to have NaN values.',
         this
@@ -701,8 +708,8 @@ class BufferGeometry extends EventDispatcher {
       metadata: {
         version: 4.5,
         type: 'BufferGeometry',
-        generator: 'BufferGeometry.toJSON',
-      },
+        generator: 'BufferGeometry.toJSON'
+      }
     };
 
     // standard BufferGeometry serialization

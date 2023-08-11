@@ -52,7 +52,7 @@ function WebGLRenderList() {
         groupOrder: groupOrder,
         renderOrder: object.renderOrder,
         z: z,
-        group: group,
+        group: group
       };
 
       renderItems[renderItemsIndex] = renderItem;
@@ -98,7 +98,8 @@ function WebGLRenderList() {
 
   function sort(customOpaqueSort, customTransparentSort) {
     if (opaque.length > 1) opaque.sort(customOpaqueSort || painterSortStable);
-    if (transmissive.length > 1) transmissive.sort(customTransparentSort || reversePainterSortStable);
+    if (transmissive.length > 1)
+      transmissive.sort(customTransparentSort || reversePainterSortStable);
     if (transparent.length > 1) transparent.sort(customTransparentSort || reversePainterSortStable);
   }
 
@@ -128,7 +129,7 @@ function WebGLRenderList() {
     unshift: unshift,
     finish: finish,
 
-    sort: sort,
+    sort: sort
   };
 }
 
@@ -160,7 +161,7 @@ function WebGLRenderLists() {
 
   return {
     get: get,
-    dispose: dispose,
+    dispose: dispose
   };
 }
 

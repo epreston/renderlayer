@@ -135,7 +135,8 @@ class Mesh extends Object3D {
     if (_sphere.containsPoint(_ray.origin) === false) {
       if (_ray.intersectSphere(_sphere, _sphereHitAt) === null) return;
 
-      if (_ray.origin.distanceToSquared(_sphereHitAt) > (raycaster.far - raycaster.near) ** 2) return;
+      if (_ray.origin.distanceToSquared(_sphereHitAt) > (raycaster.far - raycaster.near) ** 2)
+        return;
     }
 
     // convert ray to local space of mesh
@@ -177,7 +178,10 @@ class Mesh extends Object3D {
           const groupMaterial = material[group.materialIndex];
 
           const start = Math.max(group.start, drawRange.start);
-          const end = Math.min(index.count, Math.min(group.start + group.count, drawRange.start + drawRange.count));
+          const end = Math.min(
+            index.count,
+            Math.min(group.start + group.count, drawRange.start + drawRange.count)
+          );
 
           for (let j = start, jl = end; j < jl; j += 3) {
             const a = index.getX(j);
@@ -213,7 +217,18 @@ class Mesh extends Object3D {
           const b = index.getX(i + 1);
           const c = index.getX(i + 2);
 
-          intersection = checkGeometryIntersection(this, material, raycaster, rayLocalSpace, uv, uv1, normal, a, b, c);
+          intersection = checkGeometryIntersection(
+            this,
+            material,
+            raycaster,
+            rayLocalSpace,
+            uv,
+            uv1,
+            normal,
+            a,
+            b,
+            c
+          );
 
           if (intersection) {
             intersection.faceIndex = Math.floor(i / 3); // triangle number in indexed buffer semantics
@@ -230,7 +245,10 @@ class Mesh extends Object3D {
           const groupMaterial = material[group.materialIndex];
 
           const start = Math.max(group.start, drawRange.start);
-          const end = Math.min(position.count, Math.min(group.start + group.count, drawRange.start + drawRange.count));
+          const end = Math.min(
+            position.count,
+            Math.min(group.start + group.count, drawRange.start + drawRange.count)
+          );
 
           for (let j = start, jl = end; j < jl; j += 3) {
             const a = j;
@@ -266,7 +284,18 @@ class Mesh extends Object3D {
           const b = i + 1;
           const c = i + 2;
 
-          intersection = checkGeometryIntersection(this, material, raycaster, rayLocalSpace, uv, uv1, normal, a, b, c);
+          intersection = checkGeometryIntersection(
+            this,
+            material,
+            raycaster,
+            rayLocalSpace,
+            uv,
+            uv1,
+            normal,
+            a,
+            b,
+            c
+          );
 
           if (intersection) {
             intersection.faceIndex = Math.floor(i / 3); // triangle number in non-indexed buffer semantics
@@ -299,7 +328,7 @@ function checkIntersection(object, material, raycaster, ray, pA, pB, pC, point) 
   return {
     distance: distance,
     point: _intersectionPointWorld.clone(),
-    object: object,
+    object: object
   };
 }
 
@@ -308,7 +337,16 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
   object.getVertexPosition(b, _vB);
   object.getVertexPosition(c, _vC);
 
-  const intersection = checkIntersection(object, material, raycaster, ray, _vA, _vB, _vC, _intersectionPoint);
+  const intersection = checkIntersection(
+    object,
+    material,
+    raycaster,
+    ray,
+    _vA,
+    _vB,
+    _vC,
+    _intersectionPoint
+  );
 
   if (intersection) {
     if (uv) {
@@ -316,7 +354,16 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
       _uvB.fromBufferAttribute(uv, b);
       _uvC.fromBufferAttribute(uv, c);
 
-      intersection.uv = Triangle.getInterpolation(_intersectionPoint, _vA, _vB, _vC, _uvA, _uvB, _uvC, new Vector2());
+      intersection.uv = Triangle.getInterpolation(
+        _intersectionPoint,
+        _vA,
+        _vB,
+        _vC,
+        _uvA,
+        _uvB,
+        _uvC,
+        new Vector2()
+      );
     }
 
     if (uv1) {
@@ -324,7 +371,16 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
       _uvB.fromBufferAttribute(uv1, b);
       _uvC.fromBufferAttribute(uv1, c);
 
-      intersection.uv1 = Triangle.getInterpolation(_intersectionPoint, _vA, _vB, _vC, _uvA, _uvB, _uvC, new Vector2());
+      intersection.uv1 = Triangle.getInterpolation(
+        _intersectionPoint,
+        _vA,
+        _vB,
+        _vC,
+        _uvA,
+        _uvB,
+        _uvC,
+        new Vector2()
+      );
       intersection.uv2 = intersection.uv1; // Backwards compatibility
     }
 
@@ -354,7 +410,7 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
       b: b,
       c: c,
       normal: new Vector3(),
-      materialIndex: 0,
+      materialIndex: 0
     };
 
     Triangle.getNormal(_vA, _vB, _vC, face.normal);

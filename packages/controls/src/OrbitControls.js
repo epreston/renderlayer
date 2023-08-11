@@ -189,7 +189,9 @@ class OrbitControls extends EventDispatcher {
             spherical.theta = Math.max(min, Math.min(max, spherical.theta));
           } else {
             spherical.theta =
-              spherical.theta > (min + max) / 2 ? Math.max(min, spherical.theta) : Math.min(max, spherical.theta);
+              spherical.theta > (min + max) / 2
+                ? Math.max(min, spherical.theta)
+                : Math.min(max, spherical.theta);
           }
         }
 
@@ -201,7 +203,10 @@ class OrbitControls extends EventDispatcher {
         spherical.radius *= scale;
 
         // restrict radius to be between desired limits
-        spherical.radius = Math.max(scope.minDistance, Math.min(scope.maxDistance, spherical.radius));
+        spherical.radius = Math.max(
+          scope.minDistance,
+          Math.min(scope.maxDistance, spherical.radius)
+        );
 
         // move target to panned location
 
@@ -287,7 +292,7 @@ class OrbitControls extends EventDispatcher {
       TOUCH_ROTATE: 3,
       TOUCH_PAN: 4,
       TOUCH_DOLLY_PAN: 5,
-      TOUCH_DOLLY_ROTATE: 6,
+      TOUCH_DOLLY_ROTATE: 6
     };
 
     let state = STATE.NONE;
@@ -383,16 +388,22 @@ class OrbitControls extends EventDispatcher {
         } else if (scope.object.isOrthographicCamera) {
           // orthographic
           panLeft(
-            (deltaX * (scope.object.right - scope.object.left)) / scope.object.zoom / element.clientWidth,
+            (deltaX * (scope.object.right - scope.object.left)) /
+              scope.object.zoom /
+              element.clientWidth,
             scope.object.matrix
           );
           panUp(
-            (deltaY * (scope.object.top - scope.object.bottom)) / scope.object.zoom / element.clientHeight,
+            (deltaY * (scope.object.top - scope.object.bottom)) /
+              scope.object.zoom /
+              element.clientHeight,
             scope.object.matrix
           );
         } else {
           // camera neither orthographic nor perspective
-          console.warn('WARNING: OrbitControls.js encountered an unknown camera type - pan disabled.');
+          console.warn(
+            'WARNING: OrbitControls.js encountered an unknown camera type - pan disabled.'
+          );
           scope.enablePan = false;
         }
       };
@@ -402,11 +413,16 @@ class OrbitControls extends EventDispatcher {
       if (scope.object.isPerspectiveCamera) {
         scale /= dollyScale;
       } else if (scope.object.isOrthographicCamera) {
-        scope.object.zoom = Math.max(scope.minZoom, Math.min(scope.maxZoom, scope.object.zoom * dollyScale));
+        scope.object.zoom = Math.max(
+          scope.minZoom,
+          Math.min(scope.maxZoom, scope.object.zoom * dollyScale)
+        );
         scope.object.updateProjectionMatrix();
         zoomChanged = true;
       } else {
-        console.warn('WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.');
+        console.warn(
+          'WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.'
+        );
         scope.enableZoom = false;
       }
     }
@@ -415,11 +431,16 @@ class OrbitControls extends EventDispatcher {
       if (scope.object.isPerspectiveCamera) {
         scale *= dollyScale;
       } else if (scope.object.isOrthographicCamera) {
-        scope.object.zoom = Math.max(scope.minZoom, Math.min(scope.maxZoom, scope.object.zoom / dollyScale));
+        scope.object.zoom = Math.max(
+          scope.minZoom,
+          Math.min(scope.maxZoom, scope.object.zoom / dollyScale)
+        );
         scope.object.updateProjectionMatrix();
         zoomChanged = true;
       } else {
-        console.warn('WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.');
+        console.warn(
+          'WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.'
+        );
         scope.enableZoom = false;
       }
     }

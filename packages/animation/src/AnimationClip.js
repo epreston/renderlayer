@@ -5,7 +5,7 @@ import {
   NumberKeyframeTrack,
   QuaternionKeyframeTrack,
   StringKeyframeTrack,
-  VectorKeyframeTrack,
+  VectorKeyframeTrack
 } from '@renderlayer/keyframes';
 import { generateUUID } from '@renderlayer/math';
 import { NormalAnimationBlendMode } from '@renderlayer/shared';
@@ -50,7 +50,7 @@ class AnimationClip {
       duration: clip.duration,
       tracks: tracks,
       uuid: clip.uuid,
-      blendMode: clip.blendMode,
+      blendMode: clip.blendMode
     };
 
     for (let i = 0, n = clipTracks.length; i !== n; ++i) {
@@ -84,9 +84,11 @@ class AnimationClip {
       }
 
       tracks.push(
-        new NumberKeyframeTrack('.morphTargetInfluences[' + morphTargetSequence[i].name + ']', times, values).scale(
-          1.0 / fps
-        )
+        new NumberKeyframeTrack(
+          '.morphTargetInfluences[' + morphTargetSequence[i].name + ']',
+          times,
+          values
+        ).scale(1.0 / fps)
       );
     }
 
@@ -139,7 +141,9 @@ class AnimationClip {
     const clips = [];
 
     for (const name in animationToMorphTargets) {
-      clips.push(this.CreateFromMorphTargetSequence(name, animationToMorphTargets[name], fps, noLoop));
+      clips.push(
+        this.CreateFromMorphTargetSequence(name, animationToMorphTargets[name], fps, noLoop)
+      );
     }
 
     return clips;
@@ -152,7 +156,13 @@ class AnimationClip {
       return null;
     }
 
-    const addNonemptyTrack = function (trackType, trackName, animationKeys, propertyName, destTracks) {
+    const addNonemptyTrack = function (
+      trackType,
+      trackName,
+      animationKeys,
+      propertyName,
+      destTracks
+    ) {
       // only return track if there are actually keys.
       if (animationKeys.length !== 0) {
         const times = [];
@@ -213,7 +223,9 @@ class AnimationClip {
             values.push(animationKey.morphTarget === morphTargetName ? 1 : 0);
           }
 
-          tracks.push(new NumberKeyframeTrack('.morphTargetInfluence[' + morphTargetName + ']', times, values));
+          tracks.push(
+            new NumberKeyframeTrack('.morphTargetInfluence[' + morphTargetName + ']', times, values)
+          );
         }
 
         duration = morphTargetNames.length * fps;
@@ -223,7 +235,13 @@ class AnimationClip {
         const boneName = '.bones[' + bones[h].name + ']';
 
         addNonemptyTrack(VectorKeyframeTrack, boneName + '.position', animationKeys, 'pos', tracks);
-        addNonemptyTrack(QuaternionKeyframeTrack, boneName + '.quaternion', animationKeys, 'rot', tracks);
+        addNonemptyTrack(
+          QuaternionKeyframeTrack,
+          boneName + '.quaternion',
+          animationKeys,
+          'rot',
+          tracks
+        );
         addNonemptyTrack(VectorKeyframeTrack, boneName + '.scale', animationKeys, 'scl', tracks);
       }
     }
