@@ -37,33 +37,33 @@ const name = packageOptions.filename || path.basename(packageDir);
 const outputConfigs = {
   'esm-bundler': {
     file: resolve(`dist/${name}.esm-bundler.js`),
-    format: `es`,
+    format: `es`
   },
   'esm-browser': {
     file: resolve(`dist/${name}.esm-browser.js`),
-    format: `es`,
+    format: `es`
   },
   'cjs': {
     file: resolve(`dist/${name}.cjs.js`),
-    format: `cjs`,
+    format: `cjs`
   },
   'global': {
     file: resolve(`dist/${name}.global.js`),
-    format: `iife`,
+    format: `iife`
   },
   // runtime-only builds, for main "vue" package only
   'esm-bundler-runtime': {
     file: resolve(`dist/${name}.runtime.esm-bundler.js`),
-    format: `es`,
+    format: `es`
   },
   'esm-browser-runtime': {
     file: resolve(`dist/${name}.runtime.esm-browser.js`),
-    format: 'es',
+    format: 'es'
   },
   'global-runtime': {
     file: resolve(`dist/${name}.runtime.global.js`),
-    format: 'iife',
-  },
+    format: 'iife'
+  }
 };
 
 // const defaultFormats = ['esm-bundler', 'cjs'];
@@ -105,7 +105,8 @@ function createConfig(format, output, plugins = []) {
   const isCompatPackage = pkg.name === '@vue/compat' || pkg.name === '@vue/compat-canary';
   const isCompatBuild = !!packageOptions.compat;
   const isBrowserBuild =
-    (isGlobalBuild || isBrowserESMBuild || isBundlerESMBuild) && !packageOptions.enableNonBrowserBranches;
+    (isGlobalBuild || isBrowserESMBuild || isBundlerESMBuild) &&
+    !packageOptions.enableNonBrowserBranches;
 
   output.exports = isCompatPackage ? 'auto' : 'named';
   if (isNodeBuild) {
@@ -125,12 +126,9 @@ function createConfig(format, output, plugins = []) {
   // Rollup to complain for non-ESM targets, so we use separate entries for
   // esm vs. non-esm builds.
   if (isCompatPackage && (isBrowserESMBuild || isBundlerESMBuild)) {
-
     // entryFile = /runtime$/.test(format) ? `src/esm-runtime.ts` : `src/esm-index.ts`;
     entryFile = /runtime$/.test(format) ? `src/esm-runtime.js` : `src/esm-index.js`;
-
   }
-
 
   function resolveDefine() {
     const replacements = {
@@ -144,7 +142,7 @@ function createConfig(format, output, plugins = []) {
       __ESM_BUNDLER__: String(isBundlerESMBuild),
       __ESM_BROWSER__: String(isBrowserESMBuild),
       // is targeting Node (SSR)?
-      __NODE_JS__: String(isNodeBuild),
+      __NODE_JS__: String(isNodeBuild)
       // need SSR-specific branches?
       // __SSR__: String(isNodeBuild || isBundlerESMBuild || isServerRenderer),
 
@@ -176,21 +174,23 @@ function createConfig(format, output, plugins = []) {
   // esbuild define is a bit strict and only allows literal json or identifiers
   // so we still need replace plugin in some cases
   function resolveReplace() {
-    const replacements = { /* ...enumDefines */ };
+    const replacements = {
+      /* ...enumDefines */
+    };
 
     if (isProductionBuild && isBrowserBuild) {
       Object.assign(replacements, {
         'context.onError(': `/*#__PURE__*/ context.onError(`,
         'emitError(': `/*#__PURE__*/ emitError(`,
         'createCompilerError(': `/*#__PURE__*/ createCompilerError(`,
-        'createDOMCompilerError(': `/*#__PURE__*/ createDOMCompilerError(`,
+        'createDOMCompilerError(': `/*#__PURE__*/ createDOMCompilerError(`
       });
     }
 
     if (isBundlerESMBuild) {
       Object.assign(replacements, {
         // preserve to be handled by bundlers
-        __DEV__: `process.env.NODE_ENV !== 'production'`,
+        __DEV__: `process.env.NODE_ENV !== 'production'`
       });
     }
 
@@ -199,7 +199,7 @@ function createConfig(format, output, plugins = []) {
       Object.assign(replacements, {
         'process.env': '({})',
         'process.platform': '""',
-        'process.stdout': 'null',
+        'process.stdout': 'null'
       });
     }
 
@@ -229,7 +229,7 @@ function createConfig(format, output, plugins = []) {
         // for @vue/compiler-sfc / server-renderer
         ...['path', 'url', 'stream'],
         // somehow these throw warnings for runtime-* package builds
-        ...treeShakenDeps,
+        ...treeShakenDeps
       ];
     }
   }
@@ -273,10 +273,10 @@ function createConfig(format, output, plugins = []) {
     external: resolveExternal(),
     plugins: [
       json({
-        namedExports: false,
+        namedExports: false
       }),
       alias({
-        entries,
+        entries
       }),
       // enumPlugin,
       ...resolveReplace(),
@@ -285,10 +285,10 @@ function createConfig(format, output, plugins = []) {
         sourceMap: output.sourcemap,
         minify: false,
         target: isServerRenderer || isNodeBuild ? 'es2019' : 'es2022',
-        define: resolveDefine(),
+        define: resolveDefine()
       }),
       // ...resolveNodePlugins(),
-      ...plugins,
+      ...plugins
     ],
     output,
     onwarn: (msg, warn) => {
@@ -297,15 +297,15 @@ function createConfig(format, output, plugins = []) {
       }
     },
     treeshake: {
-      moduleSideEffects: false,
-    },
+      moduleSideEffects: false
+    }
   };
 }
 
 function createProductionConfig(format) {
   return createConfig(format, {
     file: resolve(`dist/${name}.${format}.prod.js`),
-    format: outputConfigs[format].format,
+    format: outputConfigs[format].format
   });
 }
 
@@ -314,17 +314,17 @@ function createMinifiedConfig(format) {
     format,
     {
       file: outputConfigs[format].file.replace(/\.js$/, '.prod.js'),
-      format: outputConfigs[format].format,
+      format: outputConfigs[format].format
     },
     [
       terser({
         module: /^esm/.test(format),
         compress: {
           ecma: 2020,
-          pure_getters: true,
-        },
+          pure_getters: true
+        }
         // safari10: true,
-      }),
+      })
     ]
   );
 }
