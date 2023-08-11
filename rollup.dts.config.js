@@ -19,7 +19,7 @@ export default targetPackages.map((pkg) => {
     input: `./temp/packages/${pkg}/src/index.d.ts`,
     output: {
       file: `packages/${pkg}/dist/${pkg}.d.ts`,
-      format: 'es',
+      format: 'es'
     },
     plugins: [dts(), patchTypes(pkg)],
     onwarn(warning, warn) {
@@ -28,7 +28,7 @@ export default targetPackages.map((pkg) => {
         return;
       }
       warn(warning);
-    },
+    }
   };
 });
 
@@ -49,7 +49,7 @@ function patchTypes(pkg) {
       const s = new MagicString(code);
       const ast = parse(code, {
         plugins: ['typescript'],
-        sourceType: 'module',
+        sourceType: 'module'
       });
 
       /**
@@ -80,7 +80,7 @@ function patchTypes(pkg) {
               enter(node) {
                 // @ts-ignore
                 if (removeInternal(node)) this.skip();
-              },
+              }
             });
           }
         }
@@ -212,6 +212,6 @@ function patchTypes(pkg) {
             .join('\n');
       }
       return code;
-    },
+    }
   };
 }
