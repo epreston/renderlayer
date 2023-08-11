@@ -8,8 +8,8 @@ import { SphereGeometry } from '@renderlayer/geometries';
 import { Vector3 } from '@renderlayer/math';
 
 import { Mesh } from '@renderlayer/objects';
-// import { Line } from '../../objects/src/Line.js';
-// import { Points } from '../../objects/src/Points.js';
+// import { Line } from '@renderlayer/objects';
+// import { Points } from '@renderlayer/objects';
 
 import { Raycaster } from '../src/Raycaster.js';
 
