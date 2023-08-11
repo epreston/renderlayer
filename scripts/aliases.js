@@ -7,15 +7,16 @@ import { readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const resolveEntryForPkg = (p) => path.resolve(fileURLToPath(import.meta.url), `../../packages/${p}/src/index.js`);
+const resolveEntryForPkg = (p) =>
+  path.resolve(fileURLToPath(import.meta.url), `../../packages/${p}/src/index.js`);
 
 const dirs = readdirSync(new URL('../packages', import.meta.url));
 
 const entries = {
-  renderlayer: resolveEntryForPkg('renderlayer'),
+  renderlayer: resolveEntryForPkg('renderlayer')
 };
 
-const nonSrcPackages = ['utils'];
+const nonSrcPackages = ['utils', 'size-check'];
 
 for (const dir of dirs) {
   const key = `@renderlayer/${dir}`;
