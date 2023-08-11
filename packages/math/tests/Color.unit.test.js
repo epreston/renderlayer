@@ -1,12 +1,8 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
+import { DisplayP3ColorSpace, SRGBColorSpace } from '@renderlayer/shared';
 import { ColorManagement } from '../src/ColorManagement.js';
 import { eps } from './math-constants.js';
-
-// import { DisplayP3ColorSpace, SRGBColorSpace } from '../../shared/src/constants.js';
-
-const SRGBColorSpace = 'srgb';
-const DisplayP3ColorSpace = 'display-p3';
 
 import { Color } from '../src/Color.js';
 
