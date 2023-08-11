@@ -7,14 +7,14 @@ Produces production builds and stitches together d.ts files.
 
 To specify the package to build, simply pass its name and the desired build
 formats to output (defaults to `buildOptions.formats` specified in that package,
-or "esm,cjs"):
+or "esm"):
 
 ```
 # name supports fuzzy match. will build all packages with name containing "dom":
 nr build dom
 
 # specify the format to output
-nr build core --formats cjs
+nr build core --formats esm
 ```
 */
 
@@ -47,7 +47,9 @@ run();
 async function run() {
   // const removeCache = scanEnums();
   try {
-    const resolvedTargets = targets.length ? fuzzyMatchTarget(targets, buildAllMatching) : allTargets;
+    const resolvedTargets = targets.length
+      ? fuzzyMatchTarget(targets, buildAllMatching)
+      : allTargets;
     await buildAll(resolvedTargets);
     checkAllSizes(resolvedTargets);
     // if (buildTypes) {
@@ -101,7 +103,8 @@ async function build(target) {
     await fs.rm(`${pkgDir}/dist`, { recursive: true });
   }
 
-  const env = (pkg.buildOptions && pkg.buildOptions.env) || (devOnly ? 'development' : 'production');
+  const env =
+    (pkg.buildOptions && pkg.buildOptions.env) || (devOnly ? 'development' : 'production');
   await execa(
     'rollup',
     [
@@ -113,10 +116,10 @@ async function build(target) {
         `TARGET:${target}`,
         formats ? `FORMATS:${formats}` : ``,
         prodOnly ? `PROD_ONLY:true` : ``,
-        sourceMap ? `SOURCE_MAP:true` : ``,
+        sourceMap ? `SOURCE_MAP:true` : ``
       ]
         .filter(Boolean)
-        .join(','),
+        .join(',')
     ],
     { stdio: 'inherit' }
   );
@@ -158,6 +161,8 @@ function checkFileSize(filePath) {
   // @ts-ignore
   const compressedSize = (compressed.length / 1024).toFixed(2) + 'kb';
   console.log(
-    `${chalk.gray(chalk.bold(path.basename(filePath)))} min:${minSize} / gzip:${gzippedSize} / brotli:${compressedSize}`
+    `${chalk.gray(
+      chalk.bold(path.basename(filePath))
+    )} min:${minSize} / gzip:${gzippedSize} / brotli:${compressedSize}`
   );
 }
