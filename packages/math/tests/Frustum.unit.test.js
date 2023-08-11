@@ -6,8 +6,8 @@ import { Sphere } from '../src/Sphere.js';
 import { Plane } from '../src/Plane.js';
 import { Box3 } from '../src/Box3.js';
 
-// import { Mesh } from '@renderlayer/objects';
-// import { BoxGeometry } from '@renderlayer/geometries';
+import { Mesh } from '@renderlayer/objects';
+import { BoxGeometry } from '@renderlayer/geometries';
 // import { Sprite } from '../../objects/src/Sprite.js';
 
 import { zero3, one3, eps } from './math-constants.js';
@@ -97,6 +97,7 @@ describe('Maths', () => {
 
       const b = new Frustum(p0, p1, p2, p3, p4, p5);
       const a = new Frustum().copy(b);
+
       expect(a.planes[0].equals(p0)).toBeTruthy();
       expect(a.planes[1].equals(p1)).toBeTruthy();
       expect(a.planes[2].equals(p2)).toBeTruthy();
@@ -175,21 +176,25 @@ describe('Maths', () => {
       expect(a.intersectsSphere(new Sphere(new Vector3(0, 0, -101), 1.1))).toBeTruthy();
     });
 
-    test.todo('intersectsObject', () => {
-      // const m = new Matrix4().makePerspective(-1, 1, 1, -1, 1, 100);
-      // const a = new Frustum().setFromProjectionMatrix(m);
-      // const object = new Mesh(new BoxGeometry(1, 1, 1));
-      // let intersects;
-      // intersects = a.intersectsObject(object);
-      // expect(intersects).toBeFalsy();
-      // object.position.set(-1, -1, -1);
-      // object.updateMatrixWorld();
-      // intersects = a.intersectsObject(object);
-      // expect(intersects).toBeTruthy();
-      // object.position.set(1, 1, 1);
-      // object.updateMatrixWorld();
-      // intersects = a.intersectsObject(object);
-      // expect(intersects).toBeFalsy();
+    test('intersectsObject', () => {
+      const m = new Matrix4().makePerspective(-1, 1, 1, -1, 1, 100);
+      const a = new Frustum().setFromProjectionMatrix(m);
+      const object = new Mesh(new BoxGeometry(1, 1, 1));
+
+      let intersects;
+
+      intersects = a.intersectsObject(object);
+      expect(intersects).toBeFalsy();
+
+      object.position.set(-1, -1, -1);
+      object.updateMatrixWorld();
+      intersects = a.intersectsObject(object);
+      expect(intersects).toBeTruthy();
+
+      object.position.set(1, 1, 1);
+      object.updateMatrixWorld();
+      intersects = a.intersectsObject(object);
+      expect(intersects).toBeFalsy();
     });
 
     test.todo('intersectsSprite', () => {
