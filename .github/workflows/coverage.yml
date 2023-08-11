@@ -39,13 +39,13 @@ jobs:
           cache: 'npm'
 
       - name: Install
-        run: npm install
+        run: npm clean-install --progress=false --no-fund
 
       - name: Lint
-        run: npm run lint
+        run: npm run lint --if-present
 
       - name: Build
-        run: npm run build
+        run: npm run build --if-present
 
       - name: Test
         run: npm run test-coverage -- --coverage.reporter=json
