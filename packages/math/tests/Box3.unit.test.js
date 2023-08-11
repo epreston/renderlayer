@@ -1,18 +1,18 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
-import { Box3 } from '../src/Box3.js';
 import { Matrix4 } from '../src/Matrix4.js';
 import { Plane } from '../src/Plane.js';
 import { Sphere } from '../src/Sphere.js';
 import { Triangle } from '../src/Triangle.js';
 import { Vector3 } from '../src/Vector3.js';
 
-// import { Mesh } from '@renderlayer/objects';
+import { Mesh } from '@renderlayer/objects';
 import { BufferAttribute } from '@renderlayer/buffers';
-// import { BoxGeometry } from '@renderlayer/geometries';
-// import { SphereGeometry } from '@renderlayer/geometries';
+import { BoxGeometry, SphereGeometry } from '@renderlayer/geometries';
 
 import { negInf3, one3, posInf3, two3, zero3 } from './math-constants.js';
+
+import { Box3 } from '../src/Box3.js';
 
 function compareBox(a, b, threshold) {
   threshold = threshold || 0.0001;
@@ -134,35 +134,35 @@ describe('Maths', () => {
       expect(a.equals(b)).toBeFalsy();
     });
 
-    test.todo('setFromObject/BufferGeometry', () => {
-      // const a = new Box3(zero3.clone(), one3.clone());
-      // const object = new Mesh(new BoxGeometry(2, 2, 2));
-      // const child = new Mesh(new BoxGeometry(1, 1, 1));
-      // object.add(child);
-      //
-      // a.setFromObject(object);
-      // expect(a.min.equals(new Vector3(-1, -1, -1))).toBeTruthy();
-      // expect(a.max.equals(new Vector3(1, 1, 1))).toBeTruthy();
+    test('setFromObject/BufferGeometry', () => {
+      const a = new Box3(zero3.clone(), one3.clone());
+      const object = new Mesh(new BoxGeometry(2, 2, 2));
+      const child = new Mesh(new BoxGeometry(1, 1, 1));
+      object.add(child);
+
+      a.setFromObject(object);
+      expect(a.min.equals(new Vector3(-1, -1, -1))).toBeTruthy();
+      expect(a.max.equals(new Vector3(1, 1, 1))).toBeTruthy();
     });
 
-    test.todo('setFromObject/Precise', () => {
-      // const a = new Box3(zero3.clone(), one3.clone());
-      // const object = new Mesh(new SphereGeometry(1, 32, 32));
-      // const child = new Mesh(new SphereGeometry(2, 32, 32));
-      // object.add(child);
-      //
-      // object.rotation.setFromVector3(new Vector3(0, 0, Math.PI / 4.0));
-      //
-      // a.setFromObject(object);
-      // const rotatedBox = new Box3(
-      //   new Vector3(-2 * Math.SQRT2, -2 * Math.SQRT2, -2),
-      //   new Vector3(2 * Math.SQRT2, 2 * Math.SQRT2, 2)
-      // );
-      // expect(compareBox(a, rotatedBox)).toBeTruthy();
-      //
-      // a.setFromObject(object, true);
-      // const rotatedMinBox = new Box3(new Vector3(-2, -2, -2), new Vector3(2, 2, 2));
-      // expect(compareBox(a, rotatedMinBox)).toBeTruthy();
+    test('setFromObject/Precise', () => {
+      const a = new Box3(zero3.clone(), one3.clone());
+      const object = new Mesh(new SphereGeometry(1, 32, 32));
+      const child = new Mesh(new SphereGeometry(2, 32, 32));
+      object.add(child);
+
+      object.rotation.setFromVector3(new Vector3(0, 0, Math.PI / 4.0));
+
+      a.setFromObject(object);
+      const rotatedBox = new Box3(
+        new Vector3(-2 * Math.SQRT2, -2 * Math.SQRT2, -2),
+        new Vector3(2 * Math.SQRT2, 2 * Math.SQRT2, 2)
+      );
+      expect(compareBox(a, rotatedBox)).toBeTruthy();
+
+      a.setFromObject(object, true);
+      const rotatedMinBox = new Box3(new Vector3(-2, -2, -2), new Vector3(2, 2, 2));
+      expect(compareBox(a, rotatedMinBox)).toBeTruthy();
     });
 
     test('clone', () => {
@@ -281,47 +281,47 @@ describe('Maths', () => {
       expect(a.getCenter(center).equals(zero3)).toBeTruthy();
     });
 
-    test.todo('expandByObject', () => {
-      // const a = new Box3(zero3.clone(), one3.clone());
-      // const b = a.clone();
-      // const bigger = new Mesh(new BoxGeometry(2, 2, 2));
-      // const smaller = new Mesh(new BoxGeometry(0.5, 0.5, 0.5));
-      // const child = new Mesh(new BoxGeometry(1, 1, 1));
-      //
-      // // just a bigger box to begin with
-      // a.expandByObject(bigger);
-      // expect(a.min.equals(new Vector3(-1, -1, -1))).toBeTruthy();
-      // expect(a.max.equals(new Vector3(1, 1, 1))).toBeTruthy();
-      //
-      // // a translated, bigger box
-      // a.copy(b);
-      // bigger.translateX(2);
-      // a.expandByObject(bigger);
-      // expect(a.min.equals(new Vector3(0, -1, -1))).toBeTruthy();
-      // expect(a.max.equals(new Vector3(3, 1, 1))).toBeTruthy();
-      //
-      // // a translated, bigger box with child
-      // a.copy(b);
-      // bigger.add(child);
-      // a.expandByObject(bigger);
-      // expect(a.min.equals(new Vector3(0, -1, -1))).toBeTruthy();
-      // expect(a.max.equals(new Vector3(3, 1, 1))).toBeTruthy();
-      //
-      // // a translated, bigger box with a translated child
-      // a.copy(b);
-      // child.translateX(2);
-      // a.expandByObject(bigger);
-      // expect(a.min.equals(new Vector3(0, -1, -1))).toBeTruthy();
-      // expect(a.max.equals(new Vector3(4.5, 1, 1))).toBeTruthy();
-      //
-      // // a smaller box
-      // a.copy(b);
-      // a.expandByObject(smaller);
-      // expect(a.min.equals(new Vector3(-0.25, -0.25, -0.25))).toBeTruthy();
-      // expect(a.max.equals(new Vector3(1, 1, 1))).toBeTruthy();
-      //
-      // // The AABB of a mesh with inital geometry is empty.
-      // expect(new Box3().expandByObject(new Mesh()).isEmpty() === true).toBeTruthy();
+    test('expandByObject', () => {
+      const a = new Box3(zero3.clone(), one3.clone());
+      const b = a.clone();
+      const bigger = new Mesh(new BoxGeometry(2, 2, 2));
+      const smaller = new Mesh(new BoxGeometry(0.5, 0.5, 0.5));
+      const child = new Mesh(new BoxGeometry(1, 1, 1));
+
+      // just a bigger box to begin with
+      a.expandByObject(bigger);
+      expect(a.min.equals(new Vector3(-1, -1, -1))).toBeTruthy();
+      expect(a.max.equals(new Vector3(1, 1, 1))).toBeTruthy();
+
+      // a translated, bigger box
+      a.copy(b);
+      bigger.translateX(2);
+      a.expandByObject(bigger);
+      expect(a.min.equals(new Vector3(0, -1, -1))).toBeTruthy();
+      expect(a.max.equals(new Vector3(3, 1, 1))).toBeTruthy();
+
+      // a translated, bigger box with child
+      a.copy(b);
+      bigger.add(child);
+      a.expandByObject(bigger);
+      expect(a.min.equals(new Vector3(0, -1, -1))).toBeTruthy();
+      expect(a.max.equals(new Vector3(3, 1, 1))).toBeTruthy();
+
+      // a translated, bigger box with a translated child
+      a.copy(b);
+      child.translateX(2);
+      a.expandByObject(bigger);
+      expect(a.min.equals(new Vector3(0, -1, -1))).toBeTruthy();
+      expect(a.max.equals(new Vector3(4.5, 1, 1))).toBeTruthy();
+
+      // a smaller box
+      a.copy(b);
+      a.expandByObject(smaller);
+      expect(a.min.equals(new Vector3(-0.25, -0.25, -0.25))).toBeTruthy();
+      expect(a.max.equals(new Vector3(1, 1, 1))).toBeTruthy();
+
+      // The AABB of a mesh with initial geometry is empty.
+      expect(new Box3().expandByObject(new Mesh()).isEmpty() === true).toBeTruthy();
     });
 
     test('containsPoint', () => {
