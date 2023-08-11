@@ -62,14 +62,14 @@ describe('Curves', () => {
         new Vector3(0, 0, 0),
         new Vector3(-2.4, 1.5, -2.1),
         new Vector3(-4, 2.5, -3.5),
-        new Vector3(-8, 5, -7),
+        new Vector3(-8, 5, -7)
       ];
 
       const points = [
         curve.getPointAt(0, new Vector3()),
         curve.getPointAt(0.3, new Vector3()),
         curve.getPointAt(0.5, new Vector3()),
-        curve.getPointAt(1, new Vector3()),
+        curve.getPointAt(1, new Vector3())
       ];
 
       expect(points).toEqual(expectedPoints);
@@ -96,7 +96,7 @@ describe('Curves', () => {
         new Vector3(4, 4, 4),
         new Vector3(6, 6, 6),
         new Vector3(8, 8, 8),
-        new Vector3(10, 10, 10),
+        new Vector3(10, 10, 10)
       ];
 
       let points = curve.getPoints();
@@ -113,7 +113,7 @@ describe('Curves', () => {
         new Vector3(2, 10, 2),
         new Vector3(-2, 10, -2),
         new Vector3(-6, 10, -6),
-        new Vector3(-10, 10, -10),
+        new Vector3(-10, 10, -10)
       ];
 
       points = curve.getPoints();
@@ -130,7 +130,14 @@ describe('Curves', () => {
       expect(length).toBeCloseTo(expectedLength);
 
       const lengths = curve.getLengths(5);
-      const expectedLengths = [0.0, Math.sqrt(12), Math.sqrt(48), Math.sqrt(108), Math.sqrt(192), Math.sqrt(300)];
+      const expectedLengths = [
+        0.0,
+        Math.sqrt(12),
+        Math.sqrt(48),
+        Math.sqrt(108),
+        Math.sqrt(192),
+        Math.sqrt(300)
+      ];
 
       expect(lengths.length).toBe(expectedLengths.length);
 
@@ -163,7 +170,7 @@ describe('Curves', () => {
       const expected = {
         binormals: new Vector3(-0.5 * Math.sqrt(2), 0.5 * Math.sqrt(2), 0),
         normals: new Vector3(Math.sqrt(1 / 6), Math.sqrt(1 / 6), -Math.sqrt(2 / 3)),
-        tangents: new Vector3(Math.sqrt(1 / 3), Math.sqrt(1 / 3), Math.sqrt(1 / 3)),
+        tangents: new Vector3(Math.sqrt(1 / 3), Math.sqrt(1 / 3), Math.sqrt(1 / 3))
       };
 
       const frames = curve.computeFrenetFrames(1, false);
@@ -195,7 +202,7 @@ describe('Curves', () => {
         new Vector3(2.5, 2.5, 2.5),
         new Vector3(5, 5, 5),
         new Vector3(7.5, 7.5, 7.5),
-        new Vector3(10, 10, 10),
+        new Vector3(10, 10, 10)
       ];
 
       const points = curve.getSpacedPoints(4);

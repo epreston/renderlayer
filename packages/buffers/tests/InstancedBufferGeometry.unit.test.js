@@ -12,7 +12,7 @@ describe('Buffers', () => {
         clone: function () {
           this.callCount++;
           return this;
-        },
+        }
       };
     }
 

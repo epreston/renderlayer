@@ -17,7 +17,7 @@ describe('Core', () => {
 
         now: function () {
           return this.deltaTime;
-        },
+        }
       };
     }
 

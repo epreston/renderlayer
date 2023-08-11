@@ -8,7 +8,7 @@ import {
   BufferAttribute,
   Float16BufferAttribute,
   Uint16BufferAttribute,
-  Uint32BufferAttribute,
+  Uint32BufferAttribute
 } from '../src/BufferAttribute.js';
 import { toHalfFloat } from '../src/BufferAttributeUtils.js';
 import { BufferGeometry } from '../src/BufferGeometry.js';
@@ -173,13 +173,13 @@ describe('Buffers', () => {
         {
           start: 0,
           count: 1,
-          materialIndex: 0,
+          materialIndex: 0
         },
         {
           start: 1,
           count: 2,
-          materialIndex: 2,
-        },
+          materialIndex: 2
+        }
       ];
 
       a.addGroup(0, 1, 0);
@@ -202,7 +202,7 @@ describe('Buffers', () => {
 
       expect(a.drawRange).toEqual({
         start: 1,
-        count: 7,
+        count: 7
       });
     });
 
@@ -232,7 +232,10 @@ describe('Buffers', () => {
 
     test('applyQuaternion', () => {
       const geometry = new BufferGeometry();
-      geometry.setAttribute('position', new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3));
+      geometry.setAttribute(
+        'position',
+        new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3)
+      );
 
       const q = new Quaternion(0.5, 0.5, 0.5, 0.5);
       geometry.applyQuaternion(q);
@@ -247,7 +250,10 @@ describe('Buffers', () => {
 
     test('rotateX/Y/Z', () => {
       const geometry = new BufferGeometry();
-      geometry.setAttribute('position', new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3));
+      geometry.setAttribute(
+        'position',
+        new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3)
+      );
 
       const pos = geometry.attributes.position.array;
 
@@ -255,14 +261,24 @@ describe('Buffers', () => {
 
       // object was rotated around x so all items should be flipped but the x ones
       expect(
-        pos[0] === 1 && pos[1] === -2 && pos[2] === -3 && pos[3] === 4 && pos[4] === -5 && pos[5] === -6
+        pos[0] === 1 &&
+          pos[1] === -2 &&
+          pos[2] === -3 &&
+          pos[3] === 4 &&
+          pos[4] === -5 &&
+          pos[5] === -6
       ).toBeTruthy();
 
       geometry.rotateY(180 * DegToRad);
 
       // vertices were rotated around y so all items should be flipped again but the y ones
       expect(
-        pos[0] === -1 && pos[1] === -2 && pos[2] === 3 && pos[3] === -4 && pos[4] === -5 && pos[5] === 6
+        pos[0] === -1 &&
+          pos[1] === -2 &&
+          pos[2] === 3 &&
+          pos[3] === -4 &&
+          pos[4] === -5 &&
+          pos[5] === 6
       ).toBeTruthy();
 
       geometry.rotateZ(180 * DegToRad);
@@ -275,27 +291,43 @@ describe('Buffers', () => {
 
     test('translate', () => {
       const geometry = new BufferGeometry();
-      geometry.setAttribute('position', new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3));
+      geometry.setAttribute(
+        'position',
+        new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3)
+      );
 
       const pos = geometry.attributes.position.array;
 
       geometry.translate(10, 20, 30);
 
       expect(
-        pos[0] === 11 && pos[1] === 22 && pos[2] === 33 && pos[3] === 14 && pos[4] === 25 && pos[5] === 36
+        pos[0] === 11 &&
+          pos[1] === 22 &&
+          pos[2] === 33 &&
+          pos[3] === 14 &&
+          pos[4] === 25 &&
+          pos[5] === 36
       ).toBeTruthy();
     });
 
     test('scale', () => {
       const geometry = new BufferGeometry();
-      geometry.setAttribute('position', new BufferAttribute(new Float32Array([-1, -1, -1, 2, 2, 2]), 3));
+      geometry.setAttribute(
+        'position',
+        new BufferAttribute(new Float32Array([-1, -1, -1, 2, 2, 2]), 3)
+      );
 
       const pos = geometry.attributes.position.array;
 
       geometry.scale(1, 2, 3);
 
       expect(
-        pos[0] === -1 && pos[1] === -2 && pos[2] === -3 && pos[3] === 2 && pos[4] === 4 && pos[5] === 6
+        pos[0] === -1 &&
+          pos[1] === -2 &&
+          pos[2] === -3 &&
+          pos[3] === 2 &&
+          pos[4] === 4 &&
+          pos[5] === 6
       ).toBeTruthy();
     });
 
@@ -417,13 +449,9 @@ describe('Buffers', () => {
 
       bb = getBBForVertices([-1, -1, -1]);
 
-      expect(
-        bb.min.x === bb.max.x && bb.min.y === bb.max.y && bb.min.z === bb.max.z
-      ).toBeTruthy();
+      expect(bb.min.x === bb.max.x && bb.min.y === bb.max.y && bb.min.z === bb.max.z).toBeTruthy();
 
-      expect(
-        bb.min.x === -1 && bb.min.y === -1 && bb.min.z === -1
-      ).toBeTruthy();
+      expect(bb.min.x === -1 && bb.min.y === -1 && bb.min.z === -1).toBeTruthy();
     });
 
     test('computeBoundingSphere - Float16', () => {
@@ -521,15 +549,11 @@ describe('Buffers', () => {
       let a = new BufferGeometry();
       a.setAttribute('position', position);
       a.computeVertexNormals();
-      expect(
-        bufferAttributeEquals(normal, a.getAttribute('normal'))
-      ).toBeTruthy();
+      expect(bufferAttributeEquals(normal, a.getAttribute('normal'))).toBeTruthy();
 
       // a second time to see if the existing normals get properly deleted
       a.computeVertexNormals();
-      expect(
-        bufferAttributeEquals(normal, a.getAttribute('normal'))
-      ).toBeTruthy();
+      expect(bufferAttributeEquals(normal, a.getAttribute('normal'))).toBeTruthy();
 
       // indexed geometry
       a = new BufferGeometry();
@@ -585,7 +609,7 @@ describe('Buffers', () => {
         metadata: {
           version: 4.5,
           type: 'BufferGeometry',
-          generator: 'BufferGeometry.toJSON',
+          generator: 'BufferGeometry.toJSON'
         },
         uuid: a.uuid,
         type: 'BufferGeometry',
@@ -597,25 +621,25 @@ describe('Buffers', () => {
               type: 'Uint16Array',
               array: [1, 3, 5, 7],
               normalized: false,
-              name: 'attribute1',
-            },
+              name: 'attribute1'
+            }
           },
           index: {
             type: 'Uint16Array',
-            array: [0, 1, 2, 3],
+            array: [0, 1, 2, 3]
           },
           groups: [
             {
               start: 0,
               count: 1,
-              materialIndex: 2,
-            },
+              materialIndex: 2
+            }
           ],
           boundingSphere: {
             center: [2, 3, 4],
-            radius: 0.5,
-          },
-        },
+            radius: 0.5
+          }
+        }
       };
 
       expect(j).toEqual(gold);
@@ -631,9 +655,9 @@ describe('Buffers', () => {
             type: 'Uint16Array',
             array: [1, 3, 5, 7],
             normalized: false,
-            name: 'attribute1',
-          },
-        ],
+            name: 'attribute1'
+          }
+        ]
       };
       gold.data.morphTargetsRelative = false;
 
@@ -656,9 +680,13 @@ describe('Buffers', () => {
 
       expect(Object.keys(a.attributes).count).toBe(Object.keys(b.attributes).count);
 
-      expect(bufferAttributeEquals(a.getAttribute('attribute1'), b.getAttribute('attribute1'))).toBeTruthy();
+      expect(
+        bufferAttributeEquals(a.getAttribute('attribute1'), b.getAttribute('attribute1'))
+      ).toBeTruthy();
 
-      expect(bufferAttributeEquals(a.getAttribute('attribute2'), b.getAttribute('attribute2'))).toBeTruthy();
+      expect(
+        bufferAttributeEquals(a.getAttribute('attribute2'), b.getAttribute('attribute2'))
+      ).toBeTruthy();
 
       expect(a.groups).toEqual(b.groups);
 
@@ -671,7 +699,10 @@ describe('Buffers', () => {
 
     test('copy', () => {
       const geometry = new BufferGeometry();
-      geometry.setAttribute('attrName', new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3));
+      geometry.setAttribute(
+        'attrName',
+        new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3)
+      );
       geometry.setAttribute('attrName2', new BufferAttribute(new Float32Array([0, 1, 3, 5, 6]), 1));
 
       const copy = new BufferGeometry().copy(geometry);

@@ -86,14 +86,14 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'intervalChanged',
-        args: [1, 11, 22],
+        args: [1, 11, 22]
       };
       expect(actual).toEqual(expected);
 
       actual = Mock.calls[1];
       expected = {
         func: 'interpolate',
-        args: [1, 11, 11, 22],
+        args: [1, 11, 11, 22]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(2);
@@ -104,7 +104,7 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'interpolate',
-        args: [1, 11, 12, 22],
+        args: [1, 11, 12, 22]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(1);
@@ -115,14 +115,14 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'intervalChanged',
-        args: [2, 22, 33],
+        args: [2, 22, 33]
       };
       expect(actual).toEqual(expected);
 
       actual = Mock.calls[1];
       expected = {
         func: 'interpolate',
-        args: [2, 22, 22, 33],
+        args: [2, 22, 22, 33]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(2);
@@ -133,14 +133,14 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'intervalChanged',
-        args: [1, 11, 22],
+        args: [1, 11, 22]
       };
       expect(actual).toEqual(expected);
 
       actual = Mock.calls[1];
       expected = {
         func: 'interpolate',
-        args: [1, 11, 21, 22],
+        args: [1, 11, 21, 22]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(2);
@@ -151,7 +151,7 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'interpolate',
-        args: [1, 11, 20, 22],
+        args: [1, 11, 20, 22]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(1);
@@ -162,14 +162,14 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'intervalChanged',
-        args: [3, 33, 44],
+        args: [3, 33, 44]
       };
       expect(actual).toEqual(expected);
 
       actual = Mock.calls[1];
       expected = {
         func: 'interpolate',
-        args: [3, 33, 43, 44],
+        args: [3, 33, 43, 44]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(2);
@@ -180,14 +180,14 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'intervalChanged',
-        args: [1, 11, 22],
+        args: [1, 11, 22]
       };
       expect(actual).toEqual(expected);
 
       actual = Mock.calls[1];
       expected = {
         func: 'interpolate',
-        args: [1, 11, 12, 22],
+        args: [1, 11, 12, 22]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(2);
@@ -198,14 +198,14 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'intervalChanged',
-        args: [7, 77, 88],
+        args: [7, 77, 88]
       };
       expect(actual).toEqual(expected);
 
       actual = Mock.calls[1];
       expected = {
         func: 'interpolate',
-        args: [7, 77, 77, 88],
+        args: [7, 77, 77, 88]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(2);
@@ -216,7 +216,7 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'interpolate',
-        args: [7, 77, 80, 88],
+        args: [7, 77, 80, 88]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(1);
@@ -227,14 +227,14 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'intervalChanged',
-        args: [3, 33, 44],
+        args: [3, 33, 44]
       };
       expect(actual).toEqual(expected);
 
       actual = Mock.calls[1];
       expected = {
         func: 'interpolate',
-        args: [3, 33, 36, 44],
+        args: [3, 33, 36, 44]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(2);
@@ -245,14 +245,14 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'intervalChanged',
-        args: [2, 22, 33],
+        args: [2, 22, 33]
       };
       expect(actual).toEqual(expected);
 
       actual = Mock.calls[1];
       expected = {
         func: 'interpolate',
-        args: [2, 22, 24, 33],
+        args: [2, 22, 24, 33]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(2);
@@ -263,14 +263,14 @@ describe('Interpolants', () => {
       actual = Mock.calls[0];
       expected = {
         func: 'intervalChanged',
-        args: [1, 11, 22],
+        args: [1, 11, 22]
       };
       expect(actual).toEqual(expected);
 
       actual = Mock.calls[1];
       expected = {
         func: 'interpolate',
-        args: [1, 11, 16, 22],
+        args: [1, 11, 16, 22]
       };
       expect(actual).toEqual(expected);
       expect(Mock.calls.length).toBe(2);

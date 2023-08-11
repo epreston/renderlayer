@@ -434,16 +434,36 @@ describe('Maths', () => {
       const b = new Vector3();
       const normal = new Vector3(10, 0, 0);
 
-      expect(b.copy(a).projectOnVector(normal).equals(new Vector3(1, 0, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .projectOnVector(normal)
+          .equals(new Vector3(1, 0, 0))
+      ).toBeTruthy();
 
       a.set(0, 1, 0);
-      expect(b.copy(a).projectOnVector(normal).equals(new Vector3(0, 0, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .projectOnVector(normal)
+          .equals(new Vector3(0, 0, 0))
+      ).toBeTruthy();
 
       a.set(0, 0, -1);
-      expect(b.copy(a).projectOnVector(normal).equals(new Vector3(0, 0, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .projectOnVector(normal)
+          .equals(new Vector3(0, 0, 0))
+      ).toBeTruthy();
 
       a.set(-1, 0, 0);
-      expect(b.copy(a).projectOnVector(normal).equals(new Vector3(-1, 0, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .projectOnVector(normal)
+          .equals(new Vector3(-1, 0, 0))
+      ).toBeTruthy();
     });
 
     test('projectOnPlane', () => {
@@ -451,16 +471,36 @@ describe('Maths', () => {
       const b = new Vector3();
       const normal = new Vector3(1, 0, 0);
 
-      expect(b.copy(a).projectOnPlane(normal).equals(new Vector3(0, 0, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .projectOnPlane(normal)
+          .equals(new Vector3(0, 0, 0))
+      ).toBeTruthy();
 
       a.set(0, 1, 0);
-      expect(b.copy(a).projectOnPlane(normal).equals(new Vector3(0, 1, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .projectOnPlane(normal)
+          .equals(new Vector3(0, 1, 0))
+      ).toBeTruthy();
 
       a.set(0, 0, -1);
-      expect(b.copy(a).projectOnPlane(normal).equals(new Vector3(0, 0, -1))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .projectOnPlane(normal)
+          .equals(new Vector3(0, 0, -1))
+      ).toBeTruthy();
 
       a.set(-1, 0, 0);
-      expect(b.copy(a).projectOnPlane(normal).equals(new Vector3(0, 0, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .projectOnPlane(normal)
+          .equals(new Vector3(0, 0, 0))
+      ).toBeTruthy();
     });
 
     test('reflect', () => {
@@ -469,14 +509,29 @@ describe('Maths', () => {
       const b = new Vector3();
 
       a.set(0, -1, 0);
-      expect(b.copy(a).reflect(normal).equals(new Vector3(0, 1, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .reflect(normal)
+          .equals(new Vector3(0, 1, 0))
+      ).toBeTruthy();
 
       a.set(1, -1, 0);
-      expect(b.copy(a).reflect(normal).equals(new Vector3(1, 1, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .reflect(normal)
+          .equals(new Vector3(1, 1, 0))
+      ).toBeTruthy();
 
       a.set(1, -1, 0);
       normal.set(0, -1, 0);
-      expect(b.copy(a).reflect(normal).equals(new Vector3(1, 1, 0))).toBeTruthy();
+      expect(
+        b
+          .copy(a)
+          .reflect(normal)
+          .equals(new Vector3(1, 1, 0))
+      ).toBeTruthy();
     });
 
     test('angleTo', () => {

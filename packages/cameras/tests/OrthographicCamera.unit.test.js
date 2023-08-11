@@ -6,7 +6,6 @@ import { OrthographicCamera } from '../src/OrthographicCamera.js';
 
 describe('Cameras', () => {
   describe('OrthographicCamera', () => {
-
     test('Instancing', () => {
       const object = new OrthographicCamera();
       expect(object).toBeDefined();

@@ -48,7 +48,7 @@ function doSlerpObject(aArr, bArr, t) {
     length: c.length(),
 
     dotA: c.dot(a),
-    dotB: c.dot(b),
+    dotB: c.dot(b)
   };
 }
 
@@ -76,7 +76,7 @@ function doSlerpArray(a, b, t) {
     length: Math.sqrt(arrDot(result, result)),
 
     dotA: arrDot(result, a),
-    dotB: arrDot(result, b),
+    dotB: arrDot(result, b)
   };
 }
 
@@ -321,7 +321,9 @@ describe('Maths', () => {
       for (let i = 0; i < orders.length; i++) {
         for (let j = 0; j < angles.length; j++) {
           const eulers2 = new Euler().setFromQuaternion(
-            new Quaternion().setFromEuler(new Euler(angles[j].x, angles[j].y, angles[j].z, orders[i])),
+            new Quaternion().setFromEuler(
+              new Euler(angles[j].x, angles[j].y, angles[j].z, orders[i])
+            ),
             orders[i]
           );
           const newAngle = new Vector3(eulers2.x, eulers2.y, eulers2.z);
@@ -371,7 +373,12 @@ describe('Maths', () => {
       const a = new Quaternion();
       let q = new Quaternion(-9, -2, 3, -4).normalize();
       const m = new Matrix4().makeRotationFromQuaternion(q);
-      let expected = new Vector4(0.8581163303210332, 0.19069251784911848, -0.2860387767736777, 0.38138503569823695);
+      let expected = new Vector4(
+        0.8581163303210332,
+        0.19069251784911848,
+        -0.2860387767736777,
+        0.38138503569823695
+      );
 
       a.setFromRotationMatrix(m);
       expect(Math.abs(a.x - expected.x) <= eps).toBeTruthy();
@@ -381,7 +388,12 @@ describe('Maths', () => {
 
       q = new Quaternion(-1, -2, 1, -1).normalize();
       m.makeRotationFromQuaternion(q);
-      expected = new Vector4(0.37796447300922714, 0.7559289460184544, -0.37796447300922714, 0.37796447300922714);
+      expected = new Vector4(
+        0.37796447300922714,
+        0.7559289460184544,
+        -0.37796447300922714,
+        0.37796447300922714
+      );
 
       a.setFromRotationMatrix(m);
       expect(Math.abs(a.x - expected.x) <= eps).toBeTruthy();

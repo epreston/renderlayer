@@ -10,13 +10,13 @@ describe('Lights', () => {
     beforeAll(function () {
       const parameters = {
         color: 0xaaaaaa,
-        intensity: 0.8,
+        intensity: 0.8
       };
 
       lights = [
         new DirectionalLight(),
         new DirectionalLight(parameters.color),
-        new DirectionalLight(parameters.color, parameters.intensity),
+        new DirectionalLight(parameters.color, parameters.intensity)
       ];
     });
 

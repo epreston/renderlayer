@@ -9,7 +9,7 @@ describe('Keyframes', () => {
       name: '.force',
       times: [0],
       values: [0.5, 0.5, 0.5],
-      interpolation: VectorKeyframeTrack.DefaultInterpolation,
+      interpolation: VectorKeyframeTrack.DefaultInterpolation
     };
 
     test('Instancing', () => {

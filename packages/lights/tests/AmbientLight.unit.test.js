@@ -10,7 +10,7 @@ describe('Lights', () => {
     beforeAll(function () {
       const parameters = {
         color: 0xaaaaaa,
-        intensity: 0.5,
+        intensity: 0.5
       };
 
       // prettier-ignore

@@ -16,7 +16,7 @@ describe('Geometries', () => {
         heightSegments: 30,
         openEnded: true,
         thetaStart: 0.1,
-        thetaLength: 2.0,
+        thetaLength: 2.0
       };
 
       geometries = [
@@ -63,7 +63,7 @@ describe('Geometries', () => {
           parameters.openEnded,
           parameters.thetaStart,
           parameters.thetaLength
-        ),
+        )
       ];
     });
 

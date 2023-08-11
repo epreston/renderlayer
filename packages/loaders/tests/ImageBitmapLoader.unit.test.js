@@ -13,7 +13,6 @@ describe('Loaders', () => {
     });
 
     test('Extending', () => {
-
       const object = new ImageBitmapLoader();
       expect('createImageBitmap() not supported.').toHaveBeenWarned();
 

@@ -245,7 +245,7 @@ describe('Maths', () => {
         new Matrix4().makeRotationZ(0.3),
         new Matrix4().makeRotationZ(-0.3),
         new Matrix4().makeScale(1, 2, 3),
-        new Matrix4().makeScale(1 / 8, 1 / 2, 1 / 3),
+        new Matrix4().makeScale(1 / 8, 1 / 2, 1 / 3)
       ];
 
       for (let i = 0, il = testMatrices.length; i < il; i++) {

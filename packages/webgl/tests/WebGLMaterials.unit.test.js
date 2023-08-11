@@ -10,8 +10,8 @@ import { WebGLMaterials } from '../src/WebGLMaterials.js';
 
 describe('WebGLMaterials', () => {
   it('should expose a function', () => {
-		expect(WebGLMaterials).toBeDefined();
-	});
+    expect(WebGLMaterials).toBeDefined();
+  });
 
   test.todo('Instancing', () => {
     // implement

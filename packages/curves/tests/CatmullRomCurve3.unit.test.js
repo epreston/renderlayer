@@ -82,7 +82,7 @@ describe('Curves', () => {
         new Vector3(41.75999999999997, 44.48000000000003, -41.75999999999997),
         new Vector3(67.68, -2.720000000000023, -67.68),
         new Vector3(65.75999999999999, -51.04000000000001, -65.75999999999999),
-        new Vector3(60, -100, -60),
+        new Vector3(60, -100, -60)
       ];
 
       const points = curve.getPoints(10);
@@ -112,7 +112,7 @@ describe('Curves', () => {
         new Vector3(42.998098664956586, 54.017050116427455, -42.998098664956586),
         new Vector3(63.542500175682434, -1.137153397546383, -63.542500175682434),
         new Vector3(62.65687513176183, -49.85286504815978, -62.65687513176183),
-        new Vector3(60.00000000000001, -100, -60.00000000000001),
+        new Vector3(60.00000000000001, -100, -60.00000000000001)
       ];
 
       const points = curve.getPoints(10);
@@ -141,7 +141,7 @@ describe('Curves', () => {
         new Vector3(42.384384731047874, 48.35477686933143, -42.384384731047874),
         new Vector3(65.25545512241153, -1.646250966068339, -65.25545512241153),
         new Vector3(63.94159134180865, -50.234688224551256, -63.94159134180865),
-        new Vector3(59.99999999999999, -100, -59.99999999999999),
+        new Vector3(59.99999999999999, -100, -59.99999999999999)
       ];
 
       const points = curve.getPoints(10);
@@ -171,7 +171,7 @@ describe('Curves', () => {
         new Vector3(75, -46.25, -75),
         new Vector3(60, -100, -60),
         new Vector3(0, -115, 0),
-        new Vector3(-60, -100, 60),
+        new Vector3(-60, -100, 60)
       ];
 
       const points = curve.getPoints(10);
@@ -223,14 +223,14 @@ describe('Curves', () => {
         new Vector3(-60, -100, 60),
         new Vector3(-64.84177333183106, 64.86956465359813, 64.84177333183106),
         new Vector3(-28.288507045700854, 104.83101184518996, 28.288507045700854),
-        new Vector3(60, -100, -60),
+        new Vector3(60, -100, -60)
       ];
 
       const points = [
         curve.getPointAt(0, new Vector3()),
         curve.getPointAt(0.3, new Vector3()),
         curve.getPointAt(0.5, new Vector3()),
-        curve.getPointAt(1, new Vector3()),
+        curve.getPointAt(1, new Vector3())
       ];
 
       expect(points).toEqual(expectedPoints);
@@ -245,7 +245,7 @@ describe('Curves', () => {
         new Vector3(-0.0001090274561657922, 0.9999999881130137, 0.0001090274561657922),
         new Vector3(0.7071067811865475, -2.0930381713877622e-13, -0.7071067811865475),
         new Vector3(0.43189437062802816, -0.7917919583070032, -0.43189437062802816),
-        new Vector3(-0.00019991333100812723, -0.9999999600346592, 0.00019991333100812723),
+        new Vector3(-0.00019991333100812723, -0.9999999600346592, 0.00019991333100812723)
       ];
 
       let tangents = [
@@ -253,7 +253,7 @@ describe('Curves', () => {
         curve.getTangent(0.25, new Vector3()),
         curve.getTangent(0.5, new Vector3()),
         curve.getTangent(0.75, new Vector3()),
-        curve.getTangent(1, new Vector3()),
+        curve.getTangent(1, new Vector3())
       ];
 
       expectedTangents.forEach(function (exp, i) {
@@ -270,7 +270,7 @@ describe('Curves', () => {
         new Vector3(-0.10709018822205997, 0.9884651653817284, 0.10709018822205997),
         new Vector3(0.6396363672964268, -0.4262987629159402, -0.6396363672964268),
         new Vector3(0.5077298411616501, -0.6960034603275557, -0.5077298411616501),
-        new Vector3(-0.00019991333100812723, -0.9999999600346592, 0.00019991333100812723),
+        new Vector3(-0.00019991333100812723, -0.9999999600346592, 0.00019991333100812723)
       ];
 
       tangents = [
@@ -278,7 +278,7 @@ describe('Curves', () => {
         curve.getTangentAt(0.25, new Vector3()),
         curve.getTangentAt(0.5, new Vector3()),
         curve.getTangentAt(0.75, new Vector3()),
-        curve.getTangentAt(1, new Vector3()),
+        curve.getTangentAt(1, new Vector3())
       ];
 
       expectedTangents.forEach(function (exp, i) {
@@ -297,18 +297,18 @@ describe('Curves', () => {
         binormals: [
           new Vector3(-1, 0, 0),
           new Vector3(-0.28685061854203, 0.6396363672964267, -0.7131493814579701),
-          new Vector3(-1.9982670528160395e-8, -0.0001999133310081272, -0.9999999800173295),
+          new Vector3(-1.9982670528160395e-8, -0.0001999133310081272, -0.9999999800173295)
         ],
         normals: [
           new Vector3(0, 0, -1),
           new Vector3(-0.7131493814579699, -0.6396363672964268, -0.2868506185420297),
-          new Vector3(-0.9999999800173294, 0.00019991333100810582, -1.99826701852146e-8),
+          new Vector3(-0.9999999800173294, 0.00019991333100810582, -1.99826701852146e-8)
         ],
         tangents: [
           new Vector3(0, 1, 0),
           new Vector3(0.6396363672964269, -0.4262987629159403, -0.6396363672964269),
-          new Vector3(-0.0001999133310081273, -0.9999999600346594, 0.0001999133310081273),
-        ],
+          new Vector3(-0.0001999133310081273, -0.9999999600346594, 0.0001999133310081273)
+        ]
       };
 
       const frames = curve.computeFrenetFrames(2, false);
@@ -347,7 +347,7 @@ describe('Curves', () => {
         new Vector3(-65.05889864636504, 117.99691802595966, 65.05889864636504),
         new Vector3(6.054276900088592, 78.7153118386369, -6.054276900088592),
         new Vector3(64.9991491385602, 8.386980812799566, -64.9991491385602),
-        new Vector3(60, -100, -60),
+        new Vector3(60, -100, -60)
       ];
 
       const points = curve.getSpacedPoints();

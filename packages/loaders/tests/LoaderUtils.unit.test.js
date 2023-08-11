@@ -5,7 +5,9 @@ import { LoaderUtils } from '../src/LoaderUtils.js';
 describe('Loaders', () => {
   describe('LoaderUtils', () => {
     test('decodeText', () => {
-      const jsonArray = new Uint8Array([123, 34, 106, 115, 111, 110, 34, 58, 32, 116, 114, 117, 101, 125]);
+      const jsonArray = new Uint8Array([
+        123, 34, 106, 115, 111, 110, 34, 58, 32, 116, 114, 117, 101, 125
+      ]);
       expect(LoaderUtils.decodeText(jsonArray)).toEqual('{"json": true}');
 
       const multibyteArray = new Uint8Array([230, 151, 165, 230, 156, 172, 229, 155, 189]);

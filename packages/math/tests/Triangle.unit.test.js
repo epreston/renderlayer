@@ -263,11 +263,31 @@ describe('Maths', () => {
 
     test('intersectsBox', () => {
       const a = new Box3(one3.clone(), two3.clone());
-      const b = new Triangle(new Vector3(1.5, 1.5, 2.5), new Vector3(2.5, 1.5, 1.5), new Vector3(1.5, 2.5, 1.5));
-      const c = new Triangle(new Vector3(1.5, 1.5, 3.5), new Vector3(3.5, 1.5, 1.5), new Vector3(1.5, 1.5, 1.5));
-      const d = new Triangle(new Vector3(1.5, 1.75, 3), new Vector3(3, 1.75, 1.5), new Vector3(1.5, 2.5, 1.5));
-      const e = new Triangle(new Vector3(1.5, 1.8, 3), new Vector3(3, 1.8, 1.5), new Vector3(1.5, 2.5, 1.5));
-      const f = new Triangle(new Vector3(1.5, 2.5, 3), new Vector3(3, 2.5, 1.5), new Vector3(1.5, 2.5, 1.5));
+      const b = new Triangle(
+        new Vector3(1.5, 1.5, 2.5),
+        new Vector3(2.5, 1.5, 1.5),
+        new Vector3(1.5, 2.5, 1.5)
+      );
+      const c = new Triangle(
+        new Vector3(1.5, 1.5, 3.5),
+        new Vector3(3.5, 1.5, 1.5),
+        new Vector3(1.5, 1.5, 1.5)
+      );
+      const d = new Triangle(
+        new Vector3(1.5, 1.75, 3),
+        new Vector3(3, 1.75, 1.5),
+        new Vector3(1.5, 2.5, 1.5)
+      );
+      const e = new Triangle(
+        new Vector3(1.5, 1.8, 3),
+        new Vector3(3, 1.8, 1.5),
+        new Vector3(1.5, 2.5, 1.5)
+      );
+      const f = new Triangle(
+        new Vector3(1.5, 2.5, 3),
+        new Vector3(3, 2.5, 1.5),
+        new Vector3(1.5, 2.5, 1.5)
+      );
 
       expect(b.intersectsBox(a)).toBeTruthy();
       expect(c.intersectsBox(a)).toBeTruthy();

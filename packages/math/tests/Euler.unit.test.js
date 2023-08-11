@@ -29,7 +29,8 @@ function matrixEquals4(a, b, tolerance) {
 
 function quatEquals(a, b, tolerance) {
   tolerance = tolerance || 0.0001;
-  const diff = Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z) + Math.abs(a.w - b.w);
+  const diff =
+    Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z) + Math.abs(a.w - b.w);
 
   return diff < tolerance;
 }

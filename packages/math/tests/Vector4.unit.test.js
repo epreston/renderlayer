@@ -323,7 +323,9 @@ describe('Maths', () => {
       expect(e.manhattanLength() == 0).toBeTruthy();
 
       a.set(x, y, z, w);
-      expect(a.manhattanLength() == Math.abs(x) + Math.abs(y) + Math.abs(z) + Math.abs(w)).toBeTruthy();
+      expect(
+        a.manhattanLength() == Math.abs(x) + Math.abs(y) + Math.abs(z) + Math.abs(w)
+      ).toBeTruthy();
     });
 
     test('normalize', () => {

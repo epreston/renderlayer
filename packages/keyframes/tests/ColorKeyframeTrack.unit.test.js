@@ -9,7 +9,7 @@ describe('Keyframes', () => {
       name: '.material.diffuse',
       times: [0, 1],
       values: [0, 0.5, 1.0],
-      interpolation: ColorKeyframeTrack.DefaultInterpolation,
+      interpolation: ColorKeyframeTrack.DefaultInterpolation
     };
 
     test('Instancing', () => {

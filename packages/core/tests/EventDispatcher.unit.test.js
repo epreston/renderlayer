@@ -43,7 +43,8 @@ describe('Core', () => {
 
       eventDispatcher.addEventListener('anyType', listener);
       expect(
-        Object.keys(eventDispatcher._listeners).length === 1 && eventDispatcher._listeners.anyType.length === 1
+        Object.keys(eventDispatcher._listeners).length === 1 &&
+          eventDispatcher._listeners.anyType.length === 1
       ).toBeTruthy();
 
       eventDispatcher.removeEventListener('anyType', listener);

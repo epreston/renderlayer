@@ -20,7 +20,7 @@ function createAnimation() {
     mixer: mixer,
     track: track,
     clip: clip,
-    animationAction: animationAction,
+    animationAction: animationAction
   };
 }
 
@@ -43,7 +43,7 @@ function createTwoAnimations() {
     animationAction: animationAction,
     track2: track2,
     clip2: clip2,
-    animationAction2: animationAction2,
+    animationAction2: animationAction2
   };
 }
 

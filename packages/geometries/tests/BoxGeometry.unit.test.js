@@ -14,7 +14,7 @@ describe('Geometries', () => {
         depth: 30,
         widthSegments: 2,
         heightSegments: 3,
-        depthSegments: 4,
+        depthSegments: 4
       };
 
       geometries = [
@@ -27,7 +27,7 @@ describe('Geometries', () => {
           parameters.widthSegments,
           parameters.heightSegments,
           parameters.depthSegments
-        ),
+        )
       ];
     });
 

@@ -34,7 +34,7 @@ describe('Renderers', () => {
           matrix4Value: { value: new Matrix4() },
           quatValue: { value: new Quaternion(1, 2, 3, 4) },
           arrayValue: { value: [1, 2, 3, 4] },
-          textureValue: { value: new Texture(null, CubeReflectionMapping) },
+          textureValue: { value: new Texture(null, CubeReflectionMapping) }
         };
 
         const uniformClones = UniformsUtils.cloneUniforms(uniforms);
@@ -49,8 +49,12 @@ describe('Renderers', () => {
         expect(uniforms.matrix3Value.value.equals(uniformClones.matrix3Value.value)).toBeTruthy();
         expect(uniforms.matrix4Value.value.equals(uniformClones.matrix4Value.value)).toBeTruthy();
         expect(uniforms.quatValue.value.equals(uniformClones.quatValue.value)).toBeTruthy();
-        expect(uniforms.textureValue.value.source.uuid === uniformClones.textureValue.value.source.uuid).toBeTruthy();
-        expect(uniforms.textureValue.value.mapping === uniformClones.textureValue.value.mapping).toBeTruthy();
+        expect(
+          uniforms.textureValue.value.source.uuid === uniformClones.textureValue.value.source.uuid
+        ).toBeTruthy();
+        expect(
+          uniforms.textureValue.value.mapping === uniformClones.textureValue.value.mapping
+        ).toBeTruthy();
         for (let i = 0; i < uniforms.arrayValue.value.length; ++i) {
           expect(uniforms.arrayValue.value[i] === uniformClones.arrayValue.value[i]).toBeTruthy();
         }
@@ -69,7 +73,7 @@ describe('Renderers', () => {
           matrix4Value: { value: new Matrix4() },
           quatValue: { value: new Quaternion(1, 2, 3, 4) },
           arrayValue: { value: [1, 2, 3, 4] },
-          textureValue: { value: new Texture(null, CubeReflectionMapping) },
+          textureValue: { value: new Texture(null, CubeReflectionMapping) }
         };
 
         const uniformClones = UniformsUtils.cloneUniforms(uniforms);
@@ -98,16 +102,20 @@ describe('Renderers', () => {
         expect(!uniforms.matrix3Value.value.equals(uniformClones.matrix3Value.value)).toBeTruthy();
         expect(!uniforms.matrix4Value.value.equals(uniformClones.matrix4Value.value)).toBeTruthy();
         expect(!uniforms.quatValue.value.equals(uniformClones.quatValue.value)).toBeTruthy();
-        expect(uniforms.textureValue.value.mapping !== uniformClones.textureValue.value.mapping).toBeTruthy();
+        expect(
+          uniforms.textureValue.value.mapping !== uniformClones.textureValue.value.mapping
+        ).toBeTruthy();
         expect(uniforms.arrayValue.value[0] !== uniformClones.arrayValue.value[0]).toBeTruthy();
 
         // Texture source remains same
-        expect(uniforms.textureValue.value.source.uuid === uniformClones.textureValue.value.source.uuid).toBeTruthy();
+        expect(
+          uniforms.textureValue.value.source.uuid === uniformClones.textureValue.value.source.uuid
+        ).toBeTruthy();
       });
 
       test('cloneUniforms skips render target textures', () => {
         const uniforms = {
-          textureValue: { value: new Texture(null, CubeReflectionMapping) },
+          textureValue: { value: new Texture(null, CubeReflectionMapping) }
         };
 
         uniforms.textureValue.value.isRenderTargetTexture = true;

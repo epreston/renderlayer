@@ -116,7 +116,7 @@ describe('Core', () => {
       raycaster.setFromCamera(
         {
           x: 0,
-          y: 0,
+          y: 0
         },
         camera
       );
@@ -130,7 +130,7 @@ describe('Core', () => {
           raycaster.setFromCamera(
             {
               x,
-              y,
+              y
             },
             camera
           );
@@ -153,7 +153,7 @@ describe('Core', () => {
       raycaster.setFromCamera(
         {
           x: 0,
-          y: 0,
+          y: 0
         },
         camera
       );

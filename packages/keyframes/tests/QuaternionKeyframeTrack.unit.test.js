@@ -9,12 +9,16 @@ describe('Keyframes', () => {
       name: '.rotation',
       times: [0],
       values: [0.5, 0.5, 0.5, 1],
-      interpolation: QuaternionKeyframeTrack.DefaultInterpolation,
+      interpolation: QuaternionKeyframeTrack.DefaultInterpolation
     };
 
     test('Instancing', () => {
       // name, times, values
-      const object = new QuaternionKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new QuaternionKeyframeTrack(
+        parameters.name,
+        parameters.times,
+        parameters.values
+      );
       expect(object).toBeDefined();
 
       // name, times, values, interpolation
@@ -28,7 +32,11 @@ describe('Keyframes', () => {
     });
 
     test('Extending', () => {
-      const object = new QuaternionKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new QuaternionKeyframeTrack(
+        parameters.name,
+        parameters.times,
+        parameters.values
+      );
       expect(object).toBeInstanceOf(KeyframeTrack);
     });
   });

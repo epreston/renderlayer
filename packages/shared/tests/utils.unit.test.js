@@ -32,7 +32,9 @@ describe('Shared', () => {
     test('getTypedArray', () => {
       expect(getTypedArray('Int8Array', new ArrayBuffer())).toBeInstanceOf(Int8Array);
       expect(getTypedArray('Uint8Array', new ArrayBuffer())).toBeInstanceOf(Uint8Array);
-      expect(getTypedArray('Uint8ClampedArray', new ArrayBuffer())).toBeInstanceOf(Uint8ClampedArray);
+      expect(getTypedArray('Uint8ClampedArray', new ArrayBuffer())).toBeInstanceOf(
+        Uint8ClampedArray
+      );
       expect(getTypedArray('Int16Array', new ArrayBuffer())).toBeInstanceOf(Int16Array);
       expect(getTypedArray('Uint16Array', new ArrayBuffer())).toBeInstanceOf(Uint16Array);
       expect(getTypedArray('Int32Array', new ArrayBuffer())).toBeInstanceOf(Int32Array);

@@ -422,11 +422,31 @@ describe('Maths', () => {
 
     test('intersectsTriangle', () => {
       const a = new Box3(one3.clone(), two3.clone());
-      const b = new Triangle(new Vector3(1.5, 1.5, 2.5), new Vector3(2.5, 1.5, 1.5), new Vector3(1.5, 2.5, 1.5));
-      const c = new Triangle(new Vector3(1.5, 1.5, 3.5), new Vector3(3.5, 1.5, 1.5), new Vector3(1.5, 1.5, 1.5));
-      const d = new Triangle(new Vector3(1.5, 1.75, 3), new Vector3(3, 1.75, 1.5), new Vector3(1.5, 2.5, 1.5));
-      const e = new Triangle(new Vector3(1.5, 1.8, 3), new Vector3(3, 1.8, 1.5), new Vector3(1.5, 2.5, 1.5));
-      const f = new Triangle(new Vector3(1.5, 2.5, 3), new Vector3(3, 2.5, 1.5), new Vector3(1.5, 2.5, 1.5));
+      const b = new Triangle(
+        new Vector3(1.5, 1.5, 2.5),
+        new Vector3(2.5, 1.5, 1.5),
+        new Vector3(1.5, 2.5, 1.5)
+      );
+      const c = new Triangle(
+        new Vector3(1.5, 1.5, 3.5),
+        new Vector3(3.5, 1.5, 1.5),
+        new Vector3(1.5, 1.5, 1.5)
+      );
+      const d = new Triangle(
+        new Vector3(1.5, 1.75, 3),
+        new Vector3(3, 1.75, 1.5),
+        new Vector3(1.5, 2.5, 1.5)
+      );
+      const e = new Triangle(
+        new Vector3(1.5, 1.8, 3),
+        new Vector3(3, 1.8, 1.5),
+        new Vector3(1.5, 2.5, 1.5)
+      );
+      const f = new Triangle(
+        new Vector3(1.5, 2.5, 3),
+        new Vector3(3, 2.5, 1.5),
+        new Vector3(1.5, 2.5, 1.5)
+      );
 
       expect(a.intersectsTriangle(b)).toBeTruthy();
       expect(a.intersectsTriangle(c)).toBeTruthy();
@@ -490,9 +510,13 @@ describe('Maths', () => {
 
       expect(a.getBoundingSphere(sphere).equals(new Sphere(zero3, 0))).toBeTruthy();
       expect(
-        b.getBoundingSphere(sphere).equals(new Sphere(one3.clone().multiplyScalar(0.5), Math.sqrt(3) * 0.5))
+        b
+          .getBoundingSphere(sphere)
+          .equals(new Sphere(one3.clone().multiplyScalar(0.5), Math.sqrt(3) * 0.5))
       ).toBeTruthy();
-      expect(c.getBoundingSphere(sphere).equals(new Sphere(zero3, Math.sqrt(12) * 0.5))).toBeTruthy();
+      expect(
+        c.getBoundingSphere(sphere).equals(new Sphere(zero3, Math.sqrt(12) * 0.5))
+      ).toBeTruthy();
 
       // Empty box\'s bounding sphere is empty
       const d = new Box3().makeEmpty();

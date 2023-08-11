@@ -56,13 +56,18 @@ describe('Curves', () => {
     test('getPointAt', () => {
       const curve = new LineCurve(_points[0], _points[3]);
 
-      const expectedPoints = [new Vector2(0, 0), new Vector2(-2.4, 1.5), new Vector2(-4, 2.5), new Vector2(-8, 5)];
+      const expectedPoints = [
+        new Vector2(0, 0),
+        new Vector2(-2.4, 1.5),
+        new Vector2(-4, 2.5),
+        new Vector2(-8, 5)
+      ];
 
       const points = [
         curve.getPointAt(0, new Vector2()),
         curve.getPointAt(0.3, new Vector2()),
         curve.getPointAt(0.5, new Vector2()),
-        curve.getPointAt(1, new Vector2()),
+        curve.getPointAt(1, new Vector2())
       ];
 
       expect(points).toEqual(expectedPoints);
@@ -105,7 +110,7 @@ describe('Curves', () => {
         new Vector2(4, 4),
         new Vector2(6, 6),
         new Vector2(8, 8),
-        new Vector2(10, 10),
+        new Vector2(10, 10)
       ];
 
       let points = curve.getPoints();
@@ -122,7 +127,7 @@ describe('Curves', () => {
         new Vector2(2, 10),
         new Vector2(-2, 10),
         new Vector2(-6, 10),
-        new Vector2(-10, 10),
+        new Vector2(-10, 10)
       ];
 
       points = curve.getPoints();
@@ -177,7 +182,7 @@ describe('Curves', () => {
         new Vector2(2.5, 2.5),
         new Vector2(5, 5),
         new Vector2(7.5, 7.5),
-        new Vector2(10, 10),
+        new Vector2(10, 10)
       ];
 
       const points = curve.getSpacedPoints(4);

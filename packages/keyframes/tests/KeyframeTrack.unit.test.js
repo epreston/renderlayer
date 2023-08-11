@@ -9,7 +9,7 @@ describe('Keyframes', () => {
       name: '.material.opacity',
       times: [0, 1],
       values: [0, 0.5],
-      interpolation: NumberKeyframeTrack.DefaultInterpolation,
+      interpolation: NumberKeyframeTrack.DefaultInterpolation
     };
 
     test('Instancing', () => {

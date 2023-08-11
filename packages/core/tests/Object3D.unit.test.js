@@ -558,7 +558,9 @@ describe('Core', () => {
       parent.add(childName, childNothing);
 
       expect(parent.getObjectsByProperty('name', 'foo').length).toBe(3);
-      expect(parent.getObjectsByProperty('name', 'foo').some((obj) => obj.name !== 'foo')).toBeFalsy();
+      expect(
+        parent.getObjectsByProperty('name', 'foo').some((obj) => obj.name !== 'foo')
+      ).toBeFalsy();
     });
 
     test('getWorldPosition', () => {
@@ -941,7 +943,9 @@ describe('Core', () => {
 
       expect(object.matrix.elements).toEqual(m.setPosition(object.position).elements);
 
-      expect(object.matrixWorld.elements).toEqual(m.setPosition(v.copy(parent.position).add(object.position)).elements);
+      expect(object.matrixWorld.elements).toEqual(
+        m.setPosition(v.copy(parent.position).add(object.position)).elements
+      );
 
       expect(child.matrix.elements).toEqual(m.identity().elements);
 
@@ -966,7 +970,9 @@ describe('Core', () => {
 
       expect(child.matrix.elements).toEqual(m.setPosition(child.position).elements);
 
-      expect(child.matrixWorld.elements).toEqual(m.setPosition(v.copy(object.position).add(child.position)).elements);
+      expect(child.matrixWorld.elements).toEqual(
+        m.setPosition(v.copy(object.position).add(child.position)).elements
+      );
 
       // Update the world matrices of an object and its parents and children
 
@@ -983,7 +989,9 @@ describe('Core', () => {
 
       expect(object.matrix.elements).toEqual(m.setPosition(object.position).elements);
 
-      expect(object.matrixWorld.elements).toEqual(m.setPosition(v.copy(parent.position).add(object.position)).elements);
+      expect(object.matrixWorld.elements).toEqual(
+        m.setPosition(v.copy(parent.position).add(object.position)).elements
+      );
 
       expect(child.matrix.elements).toEqual(m.setPosition(child.position).elements);
 

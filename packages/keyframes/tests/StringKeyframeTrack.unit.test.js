@@ -9,7 +9,7 @@ describe('Keyframes', () => {
       name: '.name',
       times: [0, 1],
       values: ['foo', 'bar'],
-      interpolation: StringKeyframeTrack.DefaultInterpolation,
+      interpolation: StringKeyframeTrack.DefaultInterpolation
     };
 
     test('Instancing', () => {

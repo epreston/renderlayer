@@ -15,7 +15,7 @@ describe('Geometries', () => {
         phiStart: 0.5,
         phiLength: 1.0,
         thetaStart: 0.4,
-        thetaLength: 2.0,
+        thetaLength: 2.0
       };
 
       geometries = [
@@ -23,7 +23,12 @@ describe('Geometries', () => {
         new SphereGeometry(parameters.radius),
         new SphereGeometry(parameters.radius, parameters.widthSegments),
         new SphereGeometry(parameters.radius, parameters.widthSegments, parameters.heightSegments),
-        new SphereGeometry(parameters.radius, parameters.widthSegments, parameters.heightSegments, parameters.phiStart),
+        new SphereGeometry(
+          parameters.radius,
+          parameters.widthSegments,
+          parameters.heightSegments,
+          parameters.phiStart
+        ),
         new SphereGeometry(
           parameters.radius,
           parameters.widthSegments,
@@ -47,7 +52,7 @@ describe('Geometries', () => {
           parameters.phiLength,
           parameters.thetaStart,
           parameters.thetaLength
-        ),
+        )
       ];
     });
 

@@ -208,7 +208,7 @@ describe('Maths', () => {
         new Euler(1, 0, 0, 'XYZ'),
         new Euler(0, 1, 0, 'ZYX'),
         new Euler(0, 0, 0.5, 'YZX'),
-        new Euler(0, 0, -0.5, 'YZX'),
+        new Euler(0, 0, -0.5, 'YZX')
       ];
 
       for (let i = 0; i < testValues.length; i++) {
@@ -261,7 +261,24 @@ describe('Maths', () => {
 
     test('multiply', () => {
       const lhs = new Matrix4().set(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53);
-      const rhs = new Matrix4().set(59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131);
+      const rhs = new Matrix4().set(
+        59,
+        61,
+        67,
+        71,
+        73,
+        79,
+        83,
+        89,
+        97,
+        101,
+        103,
+        107,
+        109,
+        113,
+        127,
+        131
+      );
 
       lhs.multiply(rhs);
 
@@ -285,7 +302,24 @@ describe('Maths', () => {
 
     test('premultiply', () => {
       const lhs = new Matrix4().set(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53);
-      const rhs = new Matrix4().set(59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131);
+      const rhs = new Matrix4().set(
+        59,
+        61,
+        67,
+        71,
+        73,
+        79,
+        83,
+        89,
+        97,
+        101,
+        103,
+        107,
+        109,
+        113,
+        127,
+        131
+      );
 
       rhs.premultiply(lhs);
 
@@ -325,7 +359,24 @@ describe('Maths', () => {
       //  [10514 11006 11840 12378]
       //  [15894 16634 17888 18710]]
       const lhs = new Matrix4().set(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53);
-      const rhs = new Matrix4().set(59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131);
+      const rhs = new Matrix4().set(
+        59,
+        61,
+        67,
+        71,
+        73,
+        79,
+        83,
+        89,
+        97,
+        101,
+        103,
+        107,
+        109,
+        113,
+        127,
+        131
+      );
       const ans = new Matrix4();
 
       ans.multiplyMatrices(lhs, rhs);
@@ -451,7 +502,7 @@ describe('Maths', () => {
         new Matrix4().makeScale(1 / 8, 1 / 2, 1 / 3),
         new Matrix4().makePerspective(-1, 1, 1, -1, 1, 1000),
         new Matrix4().makePerspective(-16, 16, 9, -9, 0.1, 10000),
-        new Matrix4().makeTranslation(1, 2, 3),
+        new Matrix4().makeTranslation(1, 2, 3)
       ];
 
       for (let i = 0, il = testMatrices.length; i < il; i++) {
@@ -576,7 +627,7 @@ describe('Maths', () => {
         new Vector3(0, -7, 0),
         new Vector3(0, 0, -8),
         new Vector3(-2, 5, -9),
-        new Vector3(-2, -5, -9),
+        new Vector3(-2, -5, -9)
       ];
 
       const sValues = [
@@ -588,14 +639,14 @@ describe('Maths', () => {
         new Vector3(2, -2, 1),
         new Vector3(-1, 2, -2),
         new Vector3(-1, -1, -1),
-        new Vector3(-2, -2, -2),
+        new Vector3(-2, -2, -2)
       ];
 
       const rValues = [
         new Quaternion(),
         new Quaternion().setFromEuler(new Euler(1, 1, 0)),
         new Quaternion().setFromEuler(new Euler(1, -1, 1)),
-        new Quaternion(0, 0.9238795292366128, 0, 0.38268342717215614),
+        new Quaternion(0, 0.9238795292366128, 0, 0.38268342717215614)
       ];
 
       for (let ti = 0; ti < tValues.length; ti++) {

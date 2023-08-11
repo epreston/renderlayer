@@ -25,7 +25,7 @@ import {
   toTrianglesDrawMode,
   computeMorphedAttributes,
   mergeGroups,
-  toCreasedNormals,
+  toCreasedNormals
 } from '../src/BufferGeometryUtils.js';
 
 // vi.mock('@renderlayer/math');

@@ -163,7 +163,9 @@ describe('Maths', () => {
       expect(!a.intersectsSphere(new Sphere(new Vector3(1.1, 1.1, -1.001), 0))).toBeTruthy();
       expect(a.intersectsSphere(new Sphere(new Vector3(1.1, 1.1, -1.001), 0.5))).toBeTruthy();
       expect(a.intersectsSphere(new Sphere(new Vector3(0, 0, -99.999), 0))).toBeTruthy();
-      expect(a.intersectsSphere(new Sphere(new Vector3(-99.999, -99.999, -99.999), 0))).toBeTruthy();
+      expect(
+        a.intersectsSphere(new Sphere(new Vector3(-99.999, -99.999, -99.999), 0))
+      ).toBeTruthy();
       expect(!a.intersectsSphere(new Sphere(new Vector3(-100.1, -100.1, -100.1), 0))).toBeTruthy();
       expect(a.intersectsSphere(new Sphere(new Vector3(-100.1, -100.1, -100.1), 0.5))).toBeTruthy();
       expect(a.intersectsSphere(new Sphere(new Vector3(99.999, 99.999, -99.999), 0))).toBeTruthy();
@@ -178,19 +180,14 @@ describe('Maths', () => {
       // const a = new Frustum().setFromProjectionMatrix(m);
       // const object = new Mesh(new BoxGeometry(1, 1, 1));
       // let intersects;
-
       // intersects = a.intersectsObject(object);
       // expect(intersects).toBeFalsy();
-
       // object.position.set(-1, -1, -1);
       // object.updateMatrixWorld();
-
       // intersects = a.intersectsObject(object);
       // expect(intersects).toBeTruthy();
-
       // object.position.set(1, 1, 1);
       // object.updateMatrixWorld();
-
       // intersects = a.intersectsObject(object);
       // expect(intersects).toBeFalsy();
     });
@@ -200,13 +197,10 @@ describe('Maths', () => {
       // const a = new Frustum().setFromProjectionMatrix(m);
       // const sprite = new Sprite();
       // let intersects;
-
       // intersects = a.intersectsSprite(sprite);
       // expect(intersects).toBeFalsy();
-
       // sprite.position.set(-1, -1, -1);
       // sprite.updateMatrixWorld();
-
       // intersects = a.intersectsSprite(sprite);
       // expect(intersects).toBeTruthy();
     });

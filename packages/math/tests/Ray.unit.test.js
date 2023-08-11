@@ -275,17 +275,26 @@ describe('Maths', () => {
       const point = new Vector3();
 
       // parallel plane behind
-      const b = new Plane().setFromNormalAndCoplanarPoint(new Vector3(0, 0, 1), new Vector3(1, 1, -1));
+      const b = new Plane().setFromNormalAndCoplanarPoint(
+        new Vector3(0, 0, 1),
+        new Vector3(1, 1, -1)
+      );
       a.intersectPlane(b, point.copy(posInf3));
       expect(point.equals(posInf3)).toBeTruthy();
 
       // parallel plane coincident with origin
-      const c = new Plane().setFromNormalAndCoplanarPoint(new Vector3(0, 0, 1), new Vector3(1, 1, 0));
+      const c = new Plane().setFromNormalAndCoplanarPoint(
+        new Vector3(0, 0, 1),
+        new Vector3(1, 1, 0)
+      );
       a.intersectPlane(c, point.copy(posInf3));
       expect(point.equals(posInf3)).toBeTruthy();
 
       // parallel plane infront
-      const d = new Plane().setFromNormalAndCoplanarPoint(new Vector3(0, 0, 1), new Vector3(1, 1, 1));
+      const d = new Plane().setFromNormalAndCoplanarPoint(
+        new Vector3(0, 0, 1),
+        new Vector3(1, 1, 1)
+      );
       a.intersectPlane(d, point.copy(posInf3));
       expect(point.equals(a.origin)).toBeTruthy();
 
@@ -312,11 +321,17 @@ describe('Maths', () => {
       expect(a.intersectsPlane(b)).toBeTruthy();
 
       // parallel plane coincident with origin
-      const c = new Plane().setFromNormalAndCoplanarPoint(new Vector3(0, 0, 1), one3.clone().sub(new Vector3(0, 0, 0)));
+      const c = new Plane().setFromNormalAndCoplanarPoint(
+        new Vector3(0, 0, 1),
+        one3.clone().sub(new Vector3(0, 0, 0))
+      );
       expect(a.intersectsPlane(c)).toBeTruthy();
 
       // parallel plane behind the ray
-      const d = new Plane().setFromNormalAndCoplanarPoint(new Vector3(0, 0, 1), one3.clone().sub(new Vector3(0, 0, 1)));
+      const d = new Plane().setFromNormalAndCoplanarPoint(
+        new Vector3(0, 0, 1),
+        one3.clone().sub(new Vector3(0, 0, 1))
+      );
       expect(!a.intersectsPlane(d)).toBeTruthy();
 
       // perpendical ray that overlaps exactly

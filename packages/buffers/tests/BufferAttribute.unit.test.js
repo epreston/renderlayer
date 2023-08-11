@@ -14,7 +14,7 @@ import {
   Uint32BufferAttribute,
   Float16BufferAttribute,
   Float32BufferAttribute,
-  Float64BufferAttribute,
+  Float64BufferAttribute
 } from '../src/BufferAttribute.js';
 
 describe('Buffers', () => {
@@ -222,7 +222,7 @@ describe('Buffers', () => {
         itemSize: 3,
         type: 'Float32Array',
         array: [1, 2, 3, 4, 5, 6],
-        normalized: false,
+        normalized: false
       });
 
       const attr2 = new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3, true);
@@ -238,7 +238,7 @@ describe('Buffers', () => {
         normalized: true,
         name: 'attributeName',
         usage: DynamicDrawUsage,
-        updateRange: { offset: 1, count: 2 },
+        updateRange: { offset: 1, count: 2 }
       });
     });
 

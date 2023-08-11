@@ -14,14 +14,19 @@ describe('Lights', () => {
         distance: 100,
         angle: 0.8,
         penumbra: 8,
-        decay: 2,
+        decay: 2
       };
 
       lights = [
         new SpotLight(parameters.color),
         new SpotLight(parameters.color, parameters.intensity),
         new SpotLight(parameters.color, parameters.intensity, parameters.distance),
-        new SpotLight(parameters.color, parameters.intensity, parameters.distance, parameters.angle),
+        new SpotLight(
+          parameters.color,
+          parameters.intensity,
+          parameters.distance,
+          parameters.angle
+        ),
         new SpotLight(
           parameters.color,
           parameters.intensity,
@@ -36,7 +41,7 @@ describe('Lights', () => {
           parameters.angle,
           parameters.penumbra,
           parameters.decay
-        ),
+        )
       ];
     });
 

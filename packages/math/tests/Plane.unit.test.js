@@ -259,13 +259,19 @@ describe('Maths', () => {
       const m = new Matrix4();
       m.makeRotationZ(Math.PI * 0.5);
 
-      expect(comparePlane(a.clone().applyMatrix4(m), new Plane(new Vector3(0, 1, 0), 0))).toBeTruthy();
+      expect(
+        comparePlane(a.clone().applyMatrix4(m), new Plane(new Vector3(0, 1, 0), 0))
+      ).toBeTruthy();
 
       a = new Plane(new Vector3(0, 1, 0), -1);
-      expect(comparePlane(a.clone().applyMatrix4(m), new Plane(new Vector3(-1, 0, 0), -1))).toBeTruthy();
+      expect(
+        comparePlane(a.clone().applyMatrix4(m), new Plane(new Vector3(-1, 0, 0), -1))
+      ).toBeTruthy();
 
       m.makeTranslation(1, 1, 1);
-      expect(comparePlane(a.clone().applyMatrix4(m), a.clone().translate(new Vector3(1, 1, 1)))).toBeTruthy();
+      expect(
+        comparePlane(a.clone().applyMatrix4(m), a.clone().translate(new Vector3(1, 1, 1)))
+      ).toBeTruthy();
     });
 
     test('equals', () => {

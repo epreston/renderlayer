@@ -56,7 +56,7 @@ describe('Maths', () => {
         new Vector3(-0, -1, 0),
         new Vector3(0, -1, 0),
         new Vector3(0, -1, -0),
-        new Vector3(-0, -1, -0),
+        new Vector3(-0, -1, -0)
       ];
 
       a.setFromPoints(points);

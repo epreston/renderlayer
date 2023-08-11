@@ -92,7 +92,7 @@ describe('WebGL', () => {
         groupOrder: 0,
         renderOrder: 0,
         z: 0.5,
-        group: {},
+        group: {}
       });
 
       list.push(objB, geoB, matB, 1, 1.5, {});
@@ -107,7 +107,7 @@ describe('WebGL', () => {
         groupOrder: 1,
         renderOrder: 0,
         z: 1.5,
-        group: {},
+        group: {}
       });
 
       list.push(objC, geoC, matC, 2, 2.5, {});
@@ -122,7 +122,7 @@ describe('WebGL', () => {
         groupOrder: 2,
         renderOrder: 0,
         z: 2.5,
-        group: {},
+        group: {}
       });
 
       list.push(objD, geoD, matD, 3, 3.5, {});
@@ -137,7 +137,7 @@ describe('WebGL', () => {
         groupOrder: 3,
         renderOrder: 0,
         z: 3.5,
-        group: {},
+        group: {}
       });
     });
 
@@ -171,7 +171,7 @@ describe('WebGL', () => {
         groupOrder: 0,
         renderOrder: 0,
         z: 0.5,
-        group: {},
+        group: {}
       });
 
       list.unshift(objB, geoB, matB, 1, 1.5, {});
@@ -186,7 +186,7 @@ describe('WebGL', () => {
         groupOrder: 1,
         renderOrder: 0,
         z: 1.5,
-        group: {},
+        group: {}
       });
 
       list.unshift(objC, geoC, matC, 2, 2.5, {});
@@ -201,7 +201,7 @@ describe('WebGL', () => {
         groupOrder: 2,
         renderOrder: 0,
         z: 2.5,
-        group: {},
+        group: {}
       });
 
       list.unshift(objD, geoD, matD, 3, 3.5, {});
@@ -216,7 +216,7 @@ describe('WebGL', () => {
         groupOrder: 3,
         renderOrder: 0,
         z: 3.5,
-        group: {},
+        group: {}
       });
     });
 

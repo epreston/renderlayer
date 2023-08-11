@@ -9,7 +9,7 @@ describe('Keyframes', () => {
       name: '.visible',
       times: [0, 1],
       values: [true, false],
-      interpolation: BooleanKeyframeTrack.DefaultInterpolation,
+      interpolation: BooleanKeyframeTrack.DefaultInterpolation
     };
 
     test('Instancing', () => {

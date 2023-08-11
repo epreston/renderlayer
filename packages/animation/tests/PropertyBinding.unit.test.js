@@ -17,7 +17,7 @@ describe('Animation', () => {
         objectName: 'material',
         objectIndex: undefined,
         propertyName: 'opacity',
-        propertyIndex: undefined,
+        propertyIndex: undefined
       };
 
       // mesh, path
@@ -45,13 +45,17 @@ describe('Animation', () => {
       expect(PropertyBinding.sanitizeNodeName('运气')).toBe('运气');
 
       // Replaces spaces with underscores.
-      expect(PropertyBinding.sanitizeNodeName('space separated name 123_ -')).toBe('space_separated_name_123__-');
+      expect(PropertyBinding.sanitizeNodeName('space separated name 123_ -')).toBe(
+        'space_separated_name_123__-'
+      );
 
       // Allows various punctuation and symbols.
       expect(PropertyBinding.sanitizeNodeName('"Mátyás" %_* 😇')).toBe('"Mátyás"_%_*_😇');
 
       // Strips reserved characters.
-      expect(PropertyBinding.sanitizeNodeName('/invalid: name ^123.[_]')).toBe('invalid_name_^123_');
+      expect(PropertyBinding.sanitizeNodeName('/invalid: name ^123.[_]')).toBe(
+        'invalid_name_^123_'
+      );
     });
 
     test('parseTrackName', () => {
@@ -63,8 +67,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -74,8 +78,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -85,8 +89,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -96,8 +100,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -107,8 +111,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -118,8 +122,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: 'accessor',
-          },
+            propertyIndex: 'accessor'
+          }
         ],
 
         [
@@ -129,8 +133,8 @@ describe('Animation', () => {
             objectName: 'material',
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: 'accessor',
-          },
+            propertyIndex: 'accessor'
+          }
         ],
 
         [
@@ -140,8 +144,8 @@ describe('Animation', () => {
             objectName: 'material',
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -151,8 +155,8 @@ describe('Animation', () => {
             objectName: 'material',
             objectIndex: 'materialIndex',
             propertyName: 'property',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -162,8 +166,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: 'accessor',
-          },
+            propertyIndex: 'accessor'
+          }
         ],
 
         [
@@ -173,8 +177,8 @@ describe('Animation', () => {
             objectName: 'objectName',
             objectIndex: 'objectIndex',
             propertyName: 'propertyName',
-            propertyIndex: 'propertyIndex',
-          },
+            propertyIndex: 'propertyIndex'
+          }
         ],
 
         [
@@ -185,8 +189,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -197,8 +201,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -209,8 +213,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'property',
-            propertyIndex: 'index',
-          },
+            propertyIndex: 'index'
+          }
         ],
 
         [
@@ -220,8 +224,8 @@ describe('Animation', () => {
             objectName: 'bone',
             objectIndex: 'Armature.DEF_cog',
             propertyName: 'position',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -231,8 +235,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: 'position',
-            propertyIndex: undefined,
-          },
+            propertyIndex: undefined
+          }
         ],
 
         [
@@ -242,8 +246,8 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: '材料',
-            propertyIndex: '零',
-          },
+            propertyIndex: '零'
+          }
         ],
 
         [
@@ -253,9 +257,9 @@ describe('Animation', () => {
             objectName: undefined,
             objectIndex: undefined,
             propertyName: '🎨',
-            propertyIndex: '🔴',
-          },
-        ],
+            propertyIndex: '🔴'
+          }
+        ]
       ];
 
       // Parses track names correctly.

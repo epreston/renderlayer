@@ -12,7 +12,7 @@ describe('Geometries', () => {
         radius: 10,
         segments: 20,
         thetaStart: 0.1,
-        thetaLength: 0.2,
+        thetaLength: 0.2
       };
 
       geometries = [
@@ -20,7 +20,12 @@ describe('Geometries', () => {
         new CircleGeometry(parameters.radius),
         new CircleGeometry(parameters.radius, parameters.segments),
         new CircleGeometry(parameters.radius, parameters.segments, parameters.thetaStart),
-        new CircleGeometry(parameters.radius, parameters.segments, parameters.thetaStart, parameters.thetaLength),
+        new CircleGeometry(
+          parameters.radius,
+          parameters.segments,
+          parameters.thetaStart,
+          parameters.thetaLength
+        )
       ];
     });
 

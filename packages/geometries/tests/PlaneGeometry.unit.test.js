@@ -12,7 +12,7 @@ describe('Geometries', () => {
         width: 10,
         height: 30,
         widthSegments: 3,
-        heightSegments: 5,
+        heightSegments: 5
       };
 
       geometries = [
@@ -20,7 +20,12 @@ describe('Geometries', () => {
         new PlaneGeometry(parameters.width),
         new PlaneGeometry(parameters.width, parameters.height),
         new PlaneGeometry(parameters.width, parameters.height, parameters.widthSegments),
-        new PlaneGeometry(parameters.width, parameters.height, parameters.widthSegments, parameters.heightSegments),
+        new PlaneGeometry(
+          parameters.width,
+          parameters.height,
+          parameters.widthSegments,
+          parameters.heightSegments
+        )
       ];
     });
 
