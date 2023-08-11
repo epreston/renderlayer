@@ -6,8 +6,8 @@ import { Sphere } from '../src/Sphere.js';
 import { Plane } from '../src/Plane.js';
 import { Box3 } from '../src/Box3.js';
 
-// import { Mesh } from '../../objects/src/Mesh.js';
-// import { BoxGeometry } from '../../geometries/src/BoxGeometry.js';
+// import { Mesh } from '@renderlayer/objects';
+// import { BoxGeometry } from '@renderlayer/geometries';
 // import { Sprite } from '../../objects/src/Sprite.js';
 
 import { zero3, one3, eps } from './math-constants.js';
