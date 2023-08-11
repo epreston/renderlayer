@@ -7,7 +7,7 @@ import { Matrix4 } from '../src/Matrix4.js';
 
 import { x, y, z, w, eps } from './math-constants.js';
 
-// import { BufferAttribute } from '../../core/src/BufferAttribute.js';
+// import { BufferAttribute } from '@renderlayer/buffers';
 
 import { Quaternion } from '../src/Quaternion.js';
 
