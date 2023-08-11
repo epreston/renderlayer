@@ -10,7 +10,7 @@ import { Quaternion } from '../src/Quaternion.js';
 // import { Cylindrical } from '../src/Cylindrical.js';
 
 // import { BufferAttribute } from '@renderlayer/buffers';
-// import { PerspectiveCamera } from '../../cameras/src/PerspectiveCamera.js';
+// import { PerspectiveCamera } from '@renderlayer/cameras';
 
 import { x, y, z, w, eps } from './math-constants.js';
 
