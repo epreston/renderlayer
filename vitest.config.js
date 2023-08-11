@@ -18,10 +18,8 @@ export default mergeConfig(
       // includeSource: ['src/**/*.{js,ts}'], // enable inline tests
       coverage: {
         provider: 'v8',
-        reporter: ['html'],
-        // reporter: ['text', 'html'], // default
-        // reporter: ['text'],
-      },
-    },
+        reporter: ['text-summary', 'html']
+      }
+    }
   })
 );
