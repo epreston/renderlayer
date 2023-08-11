@@ -41,7 +41,7 @@ declare interface Color {
   setColorName( style: string, colorSpace?: string ): this
 
   /** @deprecated Removed. */
-  static NAMES: object;
+  NAMES: object;
 }
 
 declare interface ColorManagement {
@@ -65,7 +65,7 @@ declare interface Triangle {
   /**
    * @deprecated Triangle.getUV() has been renamed to Triangle.getInterpolation().
    */
-  static getUV( point, p1, p2, p3, uv1, uv2, uv3, target )
+  getUV( point, p1, p2, p3, uv1, uv2, uv3, target )
 
   /**
    * @deprecated Triangle.getUV() has been renamed to Triangle.getInterpolation().
