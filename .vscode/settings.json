@@ -44,6 +44,7 @@
     "glsl",
     "gltf",
     "Gouraud",
+    "gzipped",
     "interpolant",
     "interpolants",
     "keyframes",
