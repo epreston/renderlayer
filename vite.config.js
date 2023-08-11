@@ -5,6 +5,7 @@
 
 import { defineConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { entries } from './scripts/aliases.js';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,6 +18,9 @@ export default defineConfig({
     __ESM_BUNDLER__: true,
     __ESM_BROWSER__: false,
     __NODE_JS__: true
+  },
+  resolve: {
+    alias: entries
   },
   plugins: [visualizer()],
   build: {
