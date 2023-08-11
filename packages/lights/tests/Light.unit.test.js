@@ -1,7 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
-// import { ObjectLoader } from '../../loaders/src/ObjectLoader.js';
-
+// import { ObjectLoader } from '@renderlayer/loaders';
 import { Object3D } from '@renderlayer/core';
 import { Light } from '../src/Light.js';
 
