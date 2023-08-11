@@ -13,7 +13,6 @@ npm run check ren
 ```
 */
 
-
 import path from 'node:path';
 import minimist from 'minimist';
 
@@ -28,13 +27,13 @@ const targets = args._;
 const isRelease = args.release;
 const buildAllMatching = args.all || args.a;
 
-
 run();
 
 async function run() {
-
   try {
-    const resolvedTargets = targets.length ? fuzzyMatchTarget(targets, buildAllMatching) : allTargets;
+    const resolvedTargets = targets.length
+      ? fuzzyMatchTarget(targets, buildAllMatching)
+      : allTargets;
 
     await checkAll(resolvedTargets);
   } finally {
@@ -83,9 +82,8 @@ async function check(target) {
       '--no-spinner',
       '--circular',
       // '--warning',
-      `${pkgDir}/src`,
+      `${pkgDir}/src`
     ],
     { stdio: 'inherit' }
   );
 }
-
