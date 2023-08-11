@@ -9,8 +9,8 @@ import { Quaternion } from '../src/Quaternion.js';
 // import { Spherical } from '../src/Spherical.js';
 // import { Cylindrical } from '../src/Cylindrical.js';
 
-// import { BufferAttribute } from '@renderlayer/buffers';
-// import { PerspectiveCamera } from '@renderlayer/cameras';
+import { BufferAttribute } from '@renderlayer/buffers';
+import { PerspectiveCamera } from '@renderlayer/cameras';
 
 import { x, y, z, w, eps } from './math-constants.js';
 
@@ -704,19 +704,19 @@ describe('Maths', () => {
       expect(array[3]).toStrictEqual(z);
     });
 
-    test.todo('fromBufferAttribute', () => {
-      // const a = new Vector3();
-      // const attr = new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3);
-      //
-      // a.fromBufferAttribute(attr, 0);
-      // expect(a.x).toStrictEqual(1);
-      // expect(a.y).toStrictEqual(2);
-      // expect(a.z).toStrictEqual(3);
-      //
-      // a.fromBufferAttribute(attr, 1);
-      // expect(a.x).toStrictEqual(4);
-      // expect(a.y).toStrictEqual(5);
-      // expect(a.z).toStrictEqual(6);
+    test('fromBufferAttribute', () => {
+      const a = new Vector3();
+      const attr = new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3);
+
+      a.fromBufferAttribute(attr, 0);
+      expect(a.x).toStrictEqual(1);
+      expect(a.y).toStrictEqual(2);
+      expect(a.z).toStrictEqual(3);
+
+      a.fromBufferAttribute(attr, 1);
+      expect(a.x).toStrictEqual(4);
+      expect(a.y).toStrictEqual(5);
+      expect(a.z).toStrictEqual(6);
     });
 
     test.todo('random', () => {
@@ -873,20 +873,20 @@ describe('Maths', () => {
       expect(b.z == -z).toBeTruthy();
     });
 
-    test.todo('project/unproject', () => {
-      // const a = new Vector3(x, y, z);
-      // const camera = new PerspectiveCamera(75, 16 / 9, 0.1, 300.0);
-      // const projected = new Vector3(-0.36653213611158914, -0.9774190296309043, 1.0506835611870624);
-      //
-      // a.project(camera);
-      // expect(Math.abs(a.x - projected.x) <= eps).toBeTruthy();
-      // expect(Math.abs(a.y - projected.y) <= eps).toBeTruthy();
-      // expect(Math.abs(a.z - projected.z) <= eps).toBeTruthy();
-      //
-      // a.unproject(camera);
-      // expect(Math.abs(a.x - x) <= eps).toBeTruthy();
-      // expect(Math.abs(a.y - y) <= eps).toBeTruthy();
-      // expect(Math.abs(a.z - z) <= eps).toBeTruthy();
+    test('project/unproject', () => {
+      const a = new Vector3(x, y, z);
+      const camera = new PerspectiveCamera(75, 16 / 9, 0.1, 300.0);
+      const projected = new Vector3(-0.36653213611158914, -0.9774190296309043, 1.0506835611870624);
+
+      a.project(camera);
+      expect(Math.abs(a.x - projected.x) <= eps).toBeTruthy();
+      expect(Math.abs(a.y - projected.y) <= eps).toBeTruthy();
+      expect(Math.abs(a.z - projected.z) <= eps).toBeTruthy();
+
+      a.unproject(camera);
+      expect(Math.abs(a.x - x) <= eps).toBeTruthy();
+      expect(Math.abs(a.y - y) <= eps).toBeTruthy();
+      expect(Math.abs(a.z - z) <= eps).toBeTruthy();
     });
 
     test('length/lengthSq', () => {
