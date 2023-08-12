@@ -18,8 +18,8 @@ renderlayer is a number of associated packages that can be used in any combinati
 
 This project is released under the MIT [License](LICENSE).
 
-[npm-badge]: https://img.shields.io/npm/v/@renderlayer/renderlayer
-[npm-url]: https://www.npmjs.com/package/@renderlayer/renderlayer
+[npm-badge]: https://img.shields.io/npm/v/renderlayer
+[npm-url]: https://www.npmjs.com/package/renderlayer
 
 [license-badge]: https://img.shields.io/npm/l/renderlayer.svg?cacheSeconds=2592000
 [license-url]: LICENSE
