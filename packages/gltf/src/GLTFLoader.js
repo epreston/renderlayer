@@ -1571,7 +1571,7 @@ class GLTFTextureTransformExtension {
       transform.rotation === undefined &&
       transform.scale === undefined
     ) {
-      // See https://github.com/mrdoob/js/issues/21819.
+      // See #21819.
       return texture;
     }
 
@@ -2572,7 +2572,7 @@ class GLTFParser {
     const cacheKey = (sourceDef.uri || sourceDef.bufferView) + ':' + textureDef.sampler;
 
     if (this.textureCache[cacheKey]) {
-      // See https://github.com/mrdoob/js/issues/21559.
+      // See #21559.
       return this.textureCache[cacheKey];
     }
 
@@ -2903,7 +2903,7 @@ class GLTFParser {
     if (alphaMode === ALPHA_MODES.BLEND) {
       materialParams.transparent = true;
 
-      // See: https://github.com/mrdoob/js/issues/17706
+      // See: #17706
       materialParams.depthWrite = false;
     } else {
       materialParams.transparent = false;
@@ -3580,7 +3580,7 @@ class GLTFParser {
     const parser = this;
 
     // Loader returns Group, not Scene.
-    // See: https://github.com/mrdoob/js/issues/18342#issuecomment-578981172
+    // See: #18342#issuecomment-578981172
     const scene = new Group();
     if (sceneDef.name) scene.name = parser.createUniqueName(sceneDef.name);
 
