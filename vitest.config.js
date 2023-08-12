@@ -3,7 +3,7 @@
 /// <reference types="vitest" />
 
 import { mergeConfig } from 'vite';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 import viteConfig from './vite.config.js';
 
@@ -19,6 +19,10 @@ export default mergeConfig(
       coverage: {
         provider: 'v8',
         reporter: ['text-summary', 'html']
+        // exclude: [
+        //   ...configDefaults.coverage.exclude,
+        //   'packages/renderlayer/**'
+        // ]
       }
     }
   })
