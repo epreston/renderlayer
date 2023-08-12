@@ -1,7 +1,7 @@
 {
   "name": "@renderlayer/shaders",
-  "version": "0.0.2",
-  "description": "@renderlayer/shaders",
+  "version": "0.0.3",
+  "description": "GLSL shader library used by @renderlayer packages.",
   "type": "module",
   "module": "./dist/shaders.esm-bundler.js",
   "exports": "./dist/shaders.esm-bundler.js",
@@ -20,7 +20,7 @@
     "directory": "packages/shaders"
   },
   "keywords": [
-    "renderlayer", "shaders", "uniforms"
+    "renderlayer", "glsl", "shaders", "uniforms"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -30,6 +30,6 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/shaders#readme",
   "dependencies": {
     "@renderlayer/math": "~0.0.5",
-    "@renderlayer/shared": "~0.0.2"
+    "@renderlayer/shared": "~0.0.4"
   }
 }
