@@ -30,6 +30,8 @@ body {
 }
 
 /* responsive images/videos */
+
+canvas,
 img,
 picture,
 svg,

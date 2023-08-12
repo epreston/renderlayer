@@ -1,6 +1,6 @@
 // The bare minimum code required for rendering something to the screen
 
-import * as RL from '@renderlayer/renderlayer';
+import * as RL from 'renderlayer';
 
 // init
 
@@ -10,7 +10,7 @@ camera.position.z = 1;
 const scene = new RL.Scene();
 
 const geometry = new RL.BoxGeometry(0.2, 0.2, 0.2);
-const material = new RL.MeshBasicMaterial();
+const material = new RL.MeshNormalMaterial();
 
 const mesh = new RL.Mesh(geometry, material);
 scene.add(mesh);
