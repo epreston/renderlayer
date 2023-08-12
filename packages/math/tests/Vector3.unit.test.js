@@ -162,12 +162,23 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('multiply', () => {
-      // implement
+    test('multiply', () => {
+      const v1 = new Vector3(1, 2, 3);
+      const v2 = new Vector3(4, 5, 6);
+
+      v1.multiply(v2);
+      expect(v1.x).to.equal(4);
+      expect(v1.y).to.equal(10);
+      expect(v1.z).to.equal(18);
     });
 
-    test.todo('multiplyScalar', () => {
-      // implement
+    test('multiplyScalar', () => {
+      const v = new Vector3(1, 2, 3);
+
+      v.multiplyScalar(2);
+      expect(v.x).to.equal(2);
+      expect(v.y).to.equal(4);
+      expect(v.z).to.equal(6);
     });
 
     test('multiplyVectors', () => {
@@ -259,11 +270,11 @@ describe('Maths', () => {
     });
 
     test.todo('project', () => {
-      // implement
+      // matrix - implement
     });
 
     test.todo('unproject', () => {
-      // implement
+      // matrix - implement
     });
 
     test('transformDirection', () => {
@@ -335,12 +346,22 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('floor', () => {
-      // implement
+    test('floor', () => {
+      const v = new Vector3(1.1, 2.2, 3.3);
+
+      v.floor();
+      expect(v.x).to.equal(1);
+      expect(v.y).to.equal(2);
+      expect(v.z).to.equal(3);
     });
 
-    test.todo('ceil', () => {
-      // implement
+    test('ceil', () => {
+      const v = new Vector3(1.1, 2.2, 3.3);
+
+      v.ceil();
+      expect(v.x).to.equal(2);
+      expect(v.y).to.equal(3);
+      expect(v.z).to.equal(4);
     });
 
     test('round', () => {
@@ -377,12 +398,20 @@ describe('Maths', () => {
       expect(result == 0).toBeTruthy();
     });
 
-    test.todo('lengthSq', () => {
-      // implement
+    test('lengthSq', () => {
+      const a = new Vector3();
+      expect(a.lengthSq()).to.equal(0);
+
+      const b = new Vector3(0, 3, 4);
+      expect(b.lengthSq()).to.equal(25);
     });
 
-    test.todo('length', () => {
-      // implement
+    test('length', () => {
+      const a = new Vector3();
+      expect(a.length()).to.equal(0);
+
+      const b = new Vector3(0, 3, 4);
+      expect(b.length()).to.equal(5);
     });
 
     test('manhattanLength', () => {
@@ -439,8 +468,15 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('lerpVectors', () => {
-      // implement
+    test('lerpVectors', () => {
+      const v1 = new Vector3(1, 2, 3);
+      const v2 = new Vector3(4, 5, 6);
+      const v3 = new Vector3();
+
+      v3.lerpVectors(v1, v2, 0.5);
+      expect(v3.x).to.equal(2.5);
+      expect(v3.y).to.equal(3.5);
+      expect(v3.z).to.equal(4.5);
     });
 
     test('cross', () => {
@@ -591,8 +627,15 @@ describe('Maths', () => {
       expect(Math.abs(x.angleTo(new Vector3(1, 1, 0)) - Math.PI / 4) < 0.0000001).toBeTruthy();
     });
 
-    test.todo('distanceTo', () => {
-      // implement
+    test('distanceTo', () => {
+      const v1 = new Vector3();
+      const v2 = new Vector3(10, 0, 0);
+
+      const distance = v1.distanceTo(v2);
+      expect(distance).to.equal(10);
+
+      const zeroDistance = v2.distanceTo(v2);
+      expect(zeroDistance).to.equal(0);
     });
 
     test.todo('distanceToSquared', () => {
