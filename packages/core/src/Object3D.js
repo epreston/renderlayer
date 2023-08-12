@@ -711,7 +711,7 @@ class Object3D extends EventDispatcher {
 
     this.position.copy(source.position);
 
-    // Rely on event caculations to set both values
+    // Rely on event calculations to set both values
     // this.rotation.order = source.rotation.order;
     // this.quaternion.copy( source.quaternion );
 
