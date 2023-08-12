@@ -1,6 +1,6 @@
+import { Color, Vector2 } from '@renderlayer/math';
 import { TangentSpaceNormalMap } from '@renderlayer/shared';
 import { Material } from './Material.js';
-import { Color, Vector2 } from '@renderlayer/math';
 
 class MeshStandardMaterial extends Material {
   constructor(parameters) {
