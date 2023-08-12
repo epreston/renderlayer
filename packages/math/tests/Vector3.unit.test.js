@@ -109,12 +109,23 @@ describe('Maths', () => {
       expect(c.z == -2 * z).toBeTruthy();
     });
 
-    test.todo('addScalar', () => {
-      // implement
+    test('addScalar', () => {
+      const v = new Vector3(1, 2, 3);
+
+      v.addScalar(2);
+      expect(v.x).to.equal(3);
+      expect(v.y).to.equal(4);
+      expect(v.z).to.equal(5);
     });
 
-    test.todo('addVectors', () => {
-      // implement
+    test('addVectors', () => {
+      const v1 = new Vector3(1, 2, 3);
+      const v2 = new Vector3(4, 5, 6);
+
+      v1.add(v2);
+      expect(v1.x).to.equal(5);
+      expect(v1.y).to.equal(7);
+      expect(v1.z).to.equal(9);
     });
 
     test('addScaledVector', () => {
@@ -267,20 +278,43 @@ describe('Maths', () => {
       expect(Math.abs(a.z - transformed.z) <= eps).toBeTruthy();
     });
 
-    test.todo('divide', () => {
-      // implement
+    test('divide', () => {
+      const v1 = new Vector3(1, 2, 3);
+      const v2 = new Vector3(4, 5, 6);
+
+      v1.divide(v2);
+      expect(v1.x).to.equal(0.25);
+      expect(v1.y).to.equal(0.4);
+      expect(v1.z).to.equal(0.5);
     });
 
-    test.todo('divideScalar', () => {
-      // implement
+    test('divideScalar', () => {
+      const v = new Vector3(1, 2, 3);
+
+      v.divideScalar(2);
+      expect(v.x).to.equal(0.5);
+      expect(v.y).to.equal(1);
+      expect(v.z).to.equal(1.5);
     });
 
-    test.todo('min', () => {
-      // implement
+    test('min', () => {
+      const v1 = new Vector3(1, 2, 3);
+      const v2 = new Vector3(4, 5, 6);
+
+      v1.min(v2);
+      expect(v1.x).to.equal(1);
+      expect(v1.y).to.equal(2);
+      expect(v1.z).to.equal(3);
     });
 
-    test.todo('max', () => {
-      // implement
+    test('max', () => {
+      const v1 = new Vector3(1, 2, 3);
+      const v2 = new Vector3(4, 5, 6);
+
+      v1.max(v2);
+      expect(v1.x).to.equal(4);
+      expect(v1.y).to.equal(5);
+      expect(v1.z).to.equal(6);
     });
 
     test.todo('clamp', () => {
@@ -309,8 +343,13 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('round', () => {
-      // implement
+    test('round', () => {
+      const v = new Vector3(1.1, 2.2, 3.3);
+
+      v.round();
+      expect(v.x).to.equal(1);
+      expect(v.y).to.equal(2);
+      expect(v.z).to.equal(3);
     });
 
     test.todo('roundToZero', () => {
