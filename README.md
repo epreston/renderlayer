@@ -49,11 +49,11 @@ This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) set
 | `textures`     | [![textures][textures-badge]][textures-url]             |             |
 | `webgl`        | [![webgl][webgl-badge]][webgl-url]                      |             |
 
-A convenience package is provided to make all packages available to your development tools with minimal configuration.
+A convenience package is provided to make all packages available to your development tools with minimal configuration. An [LTS release][renderlayer-url] is also available.
 
-| Package       | Version                                              | Description |
-| ------------- | ---------------------------------------------------- | ----------- |
-| `renderlayer` | [![renderlayer][renderlayer-badge]][renderlayer-url] | bundle      |
+| Package       | Version                              | Description |
+| ------------- | ------------------------------------ | ----------- |
+| `renderlayer` | [![NPM version][npm-badge]][npm-url] | bundle      |
 
 ## Tools
 
