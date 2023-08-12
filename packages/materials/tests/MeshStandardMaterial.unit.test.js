@@ -15,13 +15,13 @@ describe('Materials', () => {
       expect(object).toBeInstanceOf(Material);
     });
 
-    test.todo('defines', () => {
-      // implement
-    });
-
     test('type', () => {
       const object = new MeshStandardMaterial();
       expect(object.type).toBe('MeshStandardMaterial');
+    });
+
+    test.todo('defines', () => {
+      // implement
     });
 
     test.todo('color', () => {
