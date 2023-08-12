@@ -3,6 +3,7 @@ export * from './Material.js';
 export * from './MeshBasicMaterial.js';
 export * from './MeshDepthMaterial.js';
 export * from './MeshDistanceMaterial.js';
+export * from './MeshNormalMaterial.js';
 export * from './MeshStandardMaterial.js';
 export * from './PointsMaterial.js';
 export * from './RawShaderMaterial.js';
