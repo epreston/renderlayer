@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/geometries#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.5",
-    "@renderlayer/buffers": "~0.0.1"
+    "@renderlayer/buffers": "~0.0.2",
+    "@renderlayer/math": "~0.0.6"
   }
 }

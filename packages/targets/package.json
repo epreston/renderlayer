@@ -29,14 +29,14 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/targets#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.5",
-    "@renderlayer/core": "~0.0.2",
-    "@renderlayer/shared": "~0.0.2",
-    "@renderlayer/textures": "~0.0.7",
-    "@renderlayer/geometries": "~0.0.4",
-    "@renderlayer/materials": "~0.0.5",
-    "@renderlayer/objects": "~0.0.2",
-    "@renderlayer/shaders": "~0.0.1",
-    "@renderlayer/cameras": "~0.0.2"
+    "@renderlayer/cameras": "~0.0.3",
+    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/geometries": "~0.0.5",
+    "@renderlayer/materials": "~0.0.7",
+    "@renderlayer/math": "~0.0.6",
+    "@renderlayer/objects": "~0.0.3",
+    "@renderlayer/shaders": "~0.0.3",
+    "@renderlayer/shared": "~0.0.4",
+    "@renderlayer/textures": "~0.0.7"
   }
 }

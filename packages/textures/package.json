@@ -29,8 +29,8 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/textures#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.5",
-    "@renderlayer/core": "~0.0.2",
-    "@renderlayer/shared": "~0.0.2"
+    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/math": "~0.0.6",
+    "@renderlayer/shared": "~0.0.4"
   }
 }

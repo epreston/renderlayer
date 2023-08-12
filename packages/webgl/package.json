@@ -29,15 +29,15 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/webgl#readme",
   "dependencies": {
+    "@renderlayer/buffers": "~0.0.2",
+    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/geometries": "~0.0.5",
+    "@renderlayer/materials": "~0.0.7",
     "@renderlayer/math": "~0.0.5",
-    "@renderlayer/shared": "~0.0.2",
-    "@renderlayer/targets": "~0.0.1",
-    "@renderlayer/objects": "~0.0.2",
-    "@renderlayer/buffers": "~0.0.1",
-    "@renderlayer/materials": "~0.0.5",
-    "@renderlayer/textures": "~0.0.7",
-    "@renderlayer/core": "~0.0.2",
-    "@renderlayer/shaders": "~0.0.1",
-    "@renderlayer/geometries": "~0.0.4"
+    "@renderlayer/objects": "~0.0.3",
+    "@renderlayer/shaders": "~0.0.3",
+    "@renderlayer/shared": "~0.0.4",
+    "@renderlayer/targets": "~0.0.2",
+    "@renderlayer/textures": "~0.0.8"
   }
 }

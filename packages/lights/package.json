@@ -29,8 +29,8 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/lights#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.5",
-    "@renderlayer/core": "~0.0.2",
-    "@renderlayer/cameras": "~0.0.2"
+    "@renderlayer/cameras": "~0.0.3",
+    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/math": "~0.0.6"
   }
 }
