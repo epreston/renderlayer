@@ -29,10 +29,10 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/animation#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.5",
-    "@renderlayer/core": "~0.0.2",
-    "@renderlayer/shared": "~0.0.2",
-    "@renderlayer/interpolants": "~0.0.1",
-    "@renderlayer/keyframes": "~0.0.1"
+    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/interpolants": "~0.0.2",
+    "@renderlayer/keyframes": "~0.0.2",
+    "@renderlayer/math": "~0.0.6",
+    "@renderlayer/shared": "~0.0.4"
   }
 }
