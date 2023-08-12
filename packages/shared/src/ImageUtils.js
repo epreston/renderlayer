@@ -1,6 +1,6 @@
 import { createElementNS } from './utils.js';
 
-export function SRGBToLinear(c) {
+function SRGBToLinear(c) {
   // prettier-ignore
   return ( c < 0.04045 )
     ? c * 0.0773993808
