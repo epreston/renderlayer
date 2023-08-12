@@ -1,6 +1,6 @@
 {
   "name": "renderlayer",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "3D Rendering Layer for the Web",
   "type": "module",
   "module": "./dist/renderlayer.esm-bundler.js",
