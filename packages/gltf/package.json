@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/gltf",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "@renderlayer/gltf",
   "type": "module",
   "module": "./dist/gltf.esm-bundler.js",
@@ -29,18 +29,18 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/gltf#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.5",
-    "@renderlayer/shared": "~0.0.2",
-    "@renderlayer/animation": "~0.0.2",
-    "@renderlayer/keyframes": "~0.0.1",
-    "@renderlayer/core": "~0.0.2",
-    "@renderlayer/cameras": "~0.0.2",
-    "@renderlayer/objects": "~0.0.2",
-    "@renderlayer/materials": "~0.0.5",
-    "@renderlayer/loaders": "~0.0.8",
-    "@renderlayer/lights": "~0.0.2",
-    "@renderlayer/buffers": "~0.0.1",
-    "@renderlayer/textures": "~0.0.7",
-    "@renderlayer/interpolants": "~0.0.1"
+    "@renderlayer/animation": "~0.0.3",
+    "@renderlayer/buffers": "~0.0.2",
+    "@renderlayer/cameras": "~0.0.3",
+    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/interpolants": "~0.0.2",
+    "@renderlayer/keyframes": "~0.0.2",
+    "@renderlayer/lights": "~0.0.3",
+    "@renderlayer/loaders": "~0.0.9",
+    "@renderlayer/materials": "~0.0.7",
+    "@renderlayer/math": "~0.0.6",
+    "@renderlayer/objects": "~0.0.3",
+    "@renderlayer/shared": "~0.0.4",
+    "@renderlayer/textures": "~0.0.8"
   }
 }
