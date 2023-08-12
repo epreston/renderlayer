@@ -24,21 +24,32 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 
 This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) setup which hosts a number of associated packages under the `packages` directory. They can be used in any combination and define minimum dependencies between each other.
 
-| Package        | Version                                                 | Package     | Version                                        |
-| -------------- | ------------------------------------------------------- | ----------- | ---------------------------------------------- |
-| `animation`    | [![animation][animation-badge]][animation-url]          | `loaders`   | [![loaders][loaders-badge]][loaders-url]       |
-| `buffers`      | [![buffers][buffers-badge]][buffers-url]                | `materials` | [![materials][materials-badge]][materials-url] |
-| `cameras`      | [![cameras][cameras-badge]][cameras-url]                | `math`      | [![math][math-badge]][math-url]                |
-| `controls`     | [![controls][controls-badge]][controls-url]             | `objects`   | [![objects][objects-badge]][objects-url]       |
-| `core`         | [![core][core-badge]][core-url]                         | `renderers` | [![renderers][renderers-badge]][renderers-url] |
-| `curves`       | [![curves][curves-badge]][curves-url]                   | `scenes`    | [![scenes][scenes-badge]][scenes-url]          |
-| `draco`        | [![draco][draco-badge]][draco-url]                      | `shaders`   | [![shaders][shaders-badge]][shaders-url]       |
-| `extras`       | [![extras][extras-badge]][extras-url]                   | `shared`    | [![shared][shared-badge]][shared-url]          |
-| `geometries`   | [![geometries][geometries-badge]][geometries-url]       | `targets`   | [![targets][targets-badge]][targets-url]       |
-| `gltf`         | [![gltf][gltf-badge]][gltf-url]                         | `textures`  | [![textures][textures-badge]][textures-url]    |
-| `interpolants` | [![interpolants][interpolants-badge]][interpolants-url] | `webgl`     | [![webgl][webgl-badge]][webgl-url]             |
+| Package        | Version                                                 |
+| -------------- | ------------------------------------------------------- |
+| `animation`    | [![animation][animation-badge]][animation-url]          |
+| `buffers`      | [![buffers][buffers-badge]][buffers-url]                |
+| `cameras`      | [![cameras][cameras-badge]][cameras-url]                |
+| `controls`     | [![controls][controls-badge]][controls-url]             |
+| `core`         | [![core][core-badge]][core-url]                         |
+| `curves`       | [![curves][curves-badge]][curves-url]                   |
+| `draco`        | [![draco][draco-badge]][draco-url]                      |
+| `extras`       | [![extras][extras-badge]][extras-url]                   |
+| `geometries`   | [![geometries][geometries-badge]][geometries-url]       |
+| `gltf`         | [![gltf][gltf-badge]][gltf-url]                         |
+| `interpolants` | [![interpolants][interpolants-badge]][interpolants-url] |
 | `keyframes`    | [![keyframes][keyframes-badge]][keyframes-url]          |
 | `lights`       | [![lights][lights-badge]][lights-url]                   |
+| `loaders`      | [![loaders][loaders-badge]][loaders-url]                |
+| `materials`    | [![materials][materials-badge]][materials-url]          |
+| `math`         | [![math][math-badge]][math-url]                         |
+| `objects`      | [![objects][objects-badge]][objects-url]                |
+| `renderers`    | [![renderers][renderers-badge]][renderers-url]          |
+| `scenes`       | [![scenes][scenes-badge]][scenes-url]                   |
+| `shaders`      | [![shaders][shaders-badge]][shaders-url]                |
+| `shared`       | [![shared][shared-badge]][shared-url]                   |
+| `targets`      | [![targets][targets-badge]][targets-url]                |
+| `textures`     | [![textures][textures-badge]][textures-url]             |
+| `webgl`        | [![webgl][webgl-badge]][webgl-url]                      |
 
 A convenience package is provided to make all packages available to your development tools with minimal configuration. An [LTS release][renderlayer-url] is also available.
 
