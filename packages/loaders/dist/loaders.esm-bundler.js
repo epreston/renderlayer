@@ -219,7 +219,11 @@ class FileLoader extends Loader {
                   controller.close();
                 } else {
                   loaded += value.byteLength;
-                  const event = new ProgressEvent("progress", { lengthComputable, loaded, total });
+                  const event = new ProgressEvent("progress", {
+                    lengthComputable,
+                    loaded,
+                    total
+                  });
                   for (let i = 0, il = callbacks.length; i < il; i++) {
                     const callback = callbacks[i];
                     if (callback.onProgress)
@@ -373,7 +377,11 @@ class BufferGeometryLoader extends Loader {
       } else {
         const typedArray = getTypedArray(attribute.type, attribute.array);
         const bufferAttributeConstr = attribute.isInstancedBufferAttribute ? InstancedBufferAttribute : BufferAttribute;
-        bufferAttribute = new bufferAttributeConstr(typedArray, attribute.itemSize, attribute.normalized);
+        bufferAttribute = new bufferAttributeConstr(
+          typedArray,
+          attribute.itemSize,
+          attribute.normalized
+        );
       }
       if (attribute.name !== void 0)
         bufferAttribute.name = attribute.name;
@@ -403,7 +411,11 @@ class BufferGeometryLoader extends Loader {
             );
           } else {
             const typedArray = getTypedArray(attribute.type, attribute.array);
-            bufferAttribute = new BufferAttribute(typedArray, attribute.itemSize, attribute.normalized);
+            bufferAttribute = new BufferAttribute(
+              typedArray,
+              attribute.itemSize,
+              attribute.normalized
+            );
           }
           if (attribute.name !== void 0)
             bufferAttribute.name = attribute.name;
@@ -475,7 +487,10 @@ class ImageBitmapLoader extends Loader {
     fetch(url, fetchOptions).then(function(res) {
       return res.blob();
     }).then(function(blob) {
-      return createImageBitmap(blob, Object.assign(scope.options, { colorSpaceConversion: "none" }));
+      return createImageBitmap(
+        blob,
+        Object.assign(scope.options, { colorSpaceConversion: "none" })
+      );
     }).then(function(imageBitmap) {
       Cache.add(url, imageBitmap);
       if (onLoad)
@@ -1131,7 +1146,11 @@ class ObjectLoader extends Loader {
                 imageArray.push(deserializedImage);
               } else {
                 imageArray.push(
-                  new DataTexture(deserializedImage.data, deserializedImage.width, deserializedImage.height)
+                  new DataTexture(
+                    deserializedImage.data,
+                    deserializedImage.width,
+                    deserializedImage.height
+                  )
                 );
               }
             }
@@ -1182,7 +1201,11 @@ class ObjectLoader extends Loader {
                 imageArray.push(deserializedImage);
               } else {
                 imageArray.push(
-                  new DataTexture(deserializedImage.data, deserializedImage.width, deserializedImage.height)
+                  new DataTexture(
+                    deserializedImage.data,
+                    deserializedImage.width,
+                    deserializedImage.height
+                  )
                 );
               }
             }
@@ -1353,7 +1376,14 @@ class ObjectLoader extends Loader {
           object.view = Object.assign({}, data.view);
         break;
       case "OrthographicCamera":
-        object = new OrthographicCamera(data.left, data.right, data.top, data.bottom, data.near, data.far);
+        object = new OrthographicCamera(
+          data.left,
+          data.right,
+          data.top,
+          data.bottom,
+          data.near,
+          data.far
+        );
         if (data.zoom !== void 0)
           object.zoom = data.zoom;
         if (data.view !== void 0)
@@ -1369,7 +1399,14 @@ class ObjectLoader extends Loader {
         object = new PointLight(data.color, data.intensity, data.distance, data.decay);
         break;
       case "SpotLight":
-        object = new SpotLight(data.color, data.intensity, data.distance, data.angle, data.penumbra, data.decay);
+        object = new SpotLight(
+          data.color,
+          data.intensity,
+          data.distance,
+          data.angle,
+          data.penumbra,
+          data.decay
+        );
         break;
       case "SkinnedMesh":
         geometry = getGeometry(data.geometry);
@@ -1394,7 +1431,10 @@ class ObjectLoader extends Loader {
         const instanceMatrix = data.instanceMatrix;
         const instanceColor = data.instanceColor;
         object = new InstancedMesh(geometry, material, count);
-        object.instanceMatrix = new InstancedBufferAttribute(new Float32Array(instanceMatrix.array), 16);
+        object.instanceMatrix = new InstancedBufferAttribute(
+          new Float32Array(instanceMatrix.array),
+          16
+        );
         if (instanceColor !== void 0)
           object.instanceColor = new InstancedBufferAttribute(
             new Float32Array(instanceColor.array),

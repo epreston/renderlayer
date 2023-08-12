@@ -81,7 +81,10 @@ class LightShadow {
     _lookTarget$1.setFromMatrixPosition(light.target.matrixWorld);
     shadowCamera.lookAt(_lookTarget$1);
     shadowCamera.updateMatrixWorld();
-    _projScreenMatrix$1.multiplyMatrices(shadowCamera.projectionMatrix, shadowCamera.matrixWorldInverse);
+    _projScreenMatrix$1.multiplyMatrices(
+      shadowCamera.projectionMatrix,
+      shadowCamera.matrixWorldInverse
+    );
     this._frustum.setFromProjectionMatrix(_projScreenMatrix$1);
     shadowMatrix.set(
       0.5,
@@ -238,7 +241,11 @@ class PointLightShadow extends LightShadow {
     camera.up.copy(this._cubeUps[viewportIndex]);
     camera.lookAt(_lookTarget);
     camera.updateMatrixWorld();
-    shadowMatrix.makeTranslation(-_lightPositionWorld.x, -_lightPositionWorld.y, -_lightPositionWorld.z);
+    shadowMatrix.makeTranslation(
+      -_lightPositionWorld.x,
+      -_lightPositionWorld.y,
+      -_lightPositionWorld.z
+    );
     _projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     this._frustum.setFromProjectionMatrix(_projScreenMatrix);
   }

@@ -143,7 +143,10 @@ class Mesh extends Object3D {
           const group = groups[i];
           const groupMaterial = material[group.materialIndex];
           const start = Math.max(group.start, drawRange.start);
-          const end = Math.min(index.count, Math.min(group.start + group.count, drawRange.start + drawRange.count));
+          const end = Math.min(
+            index.count,
+            Math.min(group.start + group.count, drawRange.start + drawRange.count)
+          );
           for (let j = start, jl = end; j < jl; j += 3) {
             const a = index.getX(j);
             const b = index.getX(j + 1);
@@ -174,7 +177,18 @@ class Mesh extends Object3D {
           const a = index.getX(i);
           const b = index.getX(i + 1);
           const c = index.getX(i + 2);
-          intersection = checkGeometryIntersection(this, material, raycaster, rayLocalSpace, uv, uv1, normal, a, b, c);
+          intersection = checkGeometryIntersection(
+            this,
+            material,
+            raycaster,
+            rayLocalSpace,
+            uv,
+            uv1,
+            normal,
+            a,
+            b,
+            c
+          );
           if (intersection) {
             intersection.faceIndex = Math.floor(i / 3);
             intersects.push(intersection);
@@ -187,7 +201,10 @@ class Mesh extends Object3D {
           const group = groups[i];
           const groupMaterial = material[group.materialIndex];
           const start = Math.max(group.start, drawRange.start);
-          const end = Math.min(position.count, Math.min(group.start + group.count, drawRange.start + drawRange.count));
+          const end = Math.min(
+            position.count,
+            Math.min(group.start + group.count, drawRange.start + drawRange.count)
+          );
           for (let j = start, jl = end; j < jl; j += 3) {
             const a = j;
             const b = j + 1;
@@ -218,7 +235,18 @@ class Mesh extends Object3D {
           const a = i;
           const b = i + 1;
           const c = i + 2;
-          intersection = checkGeometryIntersection(this, material, raycaster, rayLocalSpace, uv, uv1, normal, a, b, c);
+          intersection = checkGeometryIntersection(
+            this,
+            material,
+            raycaster,
+            rayLocalSpace,
+            uv,
+            uv1,
+            normal,
+            a,
+            b,
+            c
+          );
           if (intersection) {
             intersection.faceIndex = Math.floor(i / 3);
             intersects.push(intersection);
@@ -252,19 +280,46 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
   object.getVertexPosition(a, _vA);
   object.getVertexPosition(b, _vB);
   object.getVertexPosition(c, _vC);
-  const intersection = checkIntersection(object, material, raycaster, ray, _vA, _vB, _vC, _intersectionPoint);
+  const intersection = checkIntersection(
+    object,
+    material,
+    raycaster,
+    ray,
+    _vA,
+    _vB,
+    _vC,
+    _intersectionPoint
+  );
   if (intersection) {
     if (uv) {
       _uvA.fromBufferAttribute(uv, a);
       _uvB.fromBufferAttribute(uv, b);
       _uvC.fromBufferAttribute(uv, c);
-      intersection.uv = Triangle.getInterpolation(_intersectionPoint, _vA, _vB, _vC, _uvA, _uvB, _uvC, new Vector2());
+      intersection.uv = Triangle.getInterpolation(
+        _intersectionPoint,
+        _vA,
+        _vB,
+        _vC,
+        _uvA,
+        _uvB,
+        _uvC,
+        new Vector2()
+      );
     }
     if (uv1) {
       _uvA.fromBufferAttribute(uv1, a);
       _uvB.fromBufferAttribute(uv1, b);
       _uvC.fromBufferAttribute(uv1, c);
-      intersection.uv1 = Triangle.getInterpolation(_intersectionPoint, _vA, _vB, _vC, _uvA, _uvB, _uvC, new Vector2());
+      intersection.uv1 = Triangle.getInterpolation(
+        _intersectionPoint,
+        _vA,
+        _vB,
+        _vC,
+        _uvA,
+        _uvB,
+        _uvC,
+        new Vector2()
+      );
       intersection.uv2 = intersection.uv1;
     }
     if (normal) {
@@ -393,7 +448,10 @@ class InstancedMesh extends Mesh {
   }
   setColorAt(index, color) {
     if (this.instanceColor === null) {
-      this.instanceColor = new InstancedBufferAttribute(new Float32Array(this.instanceMatrix.count * 3), 3);
+      this.instanceColor = new InstancedBufferAttribute(
+        new Float32Array(this.instanceMatrix.count * 3),
+        3
+      );
     }
     color.toArray(this.instanceColor.array, index * 3);
   }
@@ -440,7 +498,9 @@ class Line extends Object3D {
       }
       geometry.setAttribute("lineDistance", new Float32BufferAttribute(lineDistances, 1));
     } else {
-      console.warn("Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.");
+      console.warn(
+        "Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry."
+      );
     }
     return this;
   }
@@ -568,7 +628,9 @@ class LineSegments extends Line {
       }
       geometry.setAttribute("lineDistance", new Float32BufferAttribute(lineDistances, 1));
     } else {
-      console.warn("LineSegments.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.");
+      console.warn(
+        "LineSegments.computeLineDistances(): Computation only possible with non-indexed BufferGeometry."
+      );
     }
     return this;
   }
@@ -935,7 +997,10 @@ class SkinnedMesh extends Mesh {
       const weight = _skinWeight.getComponent(i);
       if (weight !== 0) {
         const boneIndex = _skinIndex.getComponent(i);
-        _matrix4.multiplyMatrices(skeleton.bones[boneIndex].matrixWorld, skeleton.boneInverses[boneIndex]);
+        _matrix4.multiplyMatrices(
+          skeleton.bones[boneIndex].matrixWorld,
+          skeleton.boneInverses[boneIndex]
+        );
         vector.addScaledVector(_vector3.copy(_basePosition).applyMatrix4(_matrix4), weight);
       }
     }

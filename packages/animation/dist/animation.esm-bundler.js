@@ -606,9 +606,11 @@ class AnimationClip {
         values.push(values[0]);
       }
       tracks.push(
-        new NumberKeyframeTrack(".morphTargetInfluences[" + morphTargetSequence[i].name + "]", times, values).scale(
-          1 / fps
-        )
+        new NumberKeyframeTrack(
+          ".morphTargetInfluences[" + morphTargetSequence[i].name + "]",
+          times,
+          values
+        ).scale(1 / fps)
       );
     }
     return new this(name, -1, tracks);
@@ -643,7 +645,9 @@ class AnimationClip {
     }
     const clips = [];
     for (const name in animationToMorphTargets) {
-      clips.push(this.CreateFromMorphTargetSequence(name, animationToMorphTargets[name], fps, noLoop));
+      clips.push(
+        this.CreateFromMorphTargetSequence(name, animationToMorphTargets[name], fps, noLoop)
+      );
     }
     return clips;
   }
@@ -691,13 +695,21 @@ class AnimationClip {
             times.push(animationKey.time);
             values.push(animationKey.morphTarget === morphTargetName ? 1 : 0);
           }
-          tracks.push(new NumberKeyframeTrack(".morphTargetInfluence[" + morphTargetName + "]", times, values));
+          tracks.push(
+            new NumberKeyframeTrack(".morphTargetInfluence[" + morphTargetName + "]", times, values)
+          );
         }
         duration = morphTargetNames.length * fps;
       } else {
         const boneName = ".bones[" + bones[h].name + "]";
         addNonemptyTrack(VectorKeyframeTrack, boneName + ".position", animationKeys, "pos", tracks);
-        addNonemptyTrack(QuaternionKeyframeTrack, boneName + ".quaternion", animationKeys, "rot", tracks);
+        addNonemptyTrack(
+          QuaternionKeyframeTrack,
+          boneName + ".quaternion",
+          animationKeys,
+          "rot",
+          tracks
+        );
         addNonemptyTrack(VectorKeyframeTrack, boneName + ".scale", animationKeys, "scl", tracks);
       }
     }
@@ -1016,7 +1028,9 @@ class PropertyBinding {
     this.getValue = this._getValue_unavailable;
     this.setValue = this._setValue_unavailable;
     if (!targetObject) {
-      console.error("PropertyBinding: Trying to update node for track: " + this.path + " but it wasn't found.");
+      console.error(
+        "PropertyBinding: Trying to update node for track: " + this.path + " but it wasn't found."
+      );
       return;
     }
     if (objectName) {
@@ -1024,7 +1038,10 @@ class PropertyBinding {
       switch (objectName) {
         case "materials":
           if (!targetObject.material) {
-            console.error("PropertyBinding: Can not bind to material as node does not have a material.", this);
+            console.error(
+              "PropertyBinding: Can not bind to material as node does not have a material.",
+              this
+            );
             return;
           }
           if (!targetObject.material.materials) {
@@ -1038,7 +1055,10 @@ class PropertyBinding {
           break;
         case "bones":
           if (!targetObject.skeleton) {
-            console.error("PropertyBinding: Can not bind to bones as node does not have a skeleton.", this);
+            console.error(
+              "PropertyBinding: Can not bind to bones as node does not have a skeleton.",
+              this
+            );
             return;
           }
           targetObject = targetObject.skeleton.bones;
@@ -1055,11 +1075,17 @@ class PropertyBinding {
             break;
           }
           if (!targetObject.material) {
-            console.error("PropertyBinding: Can not bind to material as node does not have a material.", this);
+            console.error(
+              "PropertyBinding: Can not bind to material as node does not have a material.",
+              this
+            );
             return;
           }
           if (!targetObject.material.map) {
-            console.error("PropertyBinding: Can not bind to material.map as node.material does not have a map.", this);
+            console.error(
+              "PropertyBinding: Can not bind to material.map as node.material does not have a map.",
+              this
+            );
             return;
           }
           targetObject = targetObject.material.map;

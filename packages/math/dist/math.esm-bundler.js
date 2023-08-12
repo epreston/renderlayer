@@ -117,7 +117,9 @@ function setQuaternionFromProperEuler(q, a, b, c, order) {
       q.set(s2 * s3_1, s2 * c3_1, c2 * s13, c2 * c13);
       break;
     default:
-      console.warn("MathUtils: .setQuaternionFromProperEuler() encountered an unknown order: " + order);
+      console.warn(
+        "MathUtils: .setQuaternionFromProperEuler() encountered an unknown order: " + order
+      );
   }
 }
 function denormalize(value, array) {
@@ -1989,7 +1991,9 @@ const ColorManagement = {
     const sourceToLinear = TO_LINEAR[sourceColorSpace];
     const targetFromLinear = FROM_LINEAR[targetColorSpace];
     if (sourceToLinear === void 0 || targetFromLinear === void 0) {
-      throw new Error(`Unsupported color space conversion, "${sourceColorSpace}" to "${targetColorSpace}".`);
+      throw new Error(
+        `Unsupported color space conversion, "${sourceColorSpace}" to "${targetColorSpace}".`
+      );
     }
     return targetFromLinear(sourceToLinear(color));
   },
@@ -2091,7 +2095,9 @@ class Color {
       switch (name) {
         case "rgb":
         case "rgba":
-          if (color = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components)) {
+          if (color = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
+            components
+          )) {
             handleAlpha(color[4]);
             return this.setRGB(
               Math.min(255, parseInt(color[1], 10)) / 255,
@@ -2100,7 +2106,9 @@ class Color {
               colorSpace
             );
           }
-          if (color = /^\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components)) {
+          if (color = /^\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(
+            components
+          )) {
             handleAlpha(color[4]);
             return this.setRGB(
               Math.min(100, parseInt(color[1], 10)) / 100,

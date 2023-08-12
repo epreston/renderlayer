@@ -459,7 +459,10 @@ class BufferGeometry extends EventDispatcher {
   }
   setIndex(index) {
     if (Array.isArray(index)) {
-      this.index = new (arrayNeedsUint32(index) ? Uint32BufferAttribute : Uint16BufferAttribute)(index, 1);
+      this.index = new (arrayNeedsUint32(index) ? Uint32BufferAttribute : Uint16BufferAttribute)(
+        index,
+        1
+      );
     } else {
       this.index = index;
     }
@@ -1371,7 +1374,9 @@ function mergeGeometries(geometries, useGroups = false) {
   for (const name in attributes) {
     const mergedAttribute = mergeAttributes(attributes[name]);
     if (!mergedAttribute) {
-      console.error("BufferGeometryUtils: .mergeGeometries() failed while trying to merge the " + name + " attribute.");
+      console.error(
+        "BufferGeometryUtils: .mergeGeometries() failed while trying to merge the " + name + " attribute."
+      );
       return null;
     }
     mergedGeometry.setAttribute(name, mergedAttribute);
@@ -1407,7 +1412,9 @@ function mergeAttributes(attributes) {
   for (let i = 0; i < attributes.length; ++i) {
     const attribute = attributes[i];
     if (attribute.isInterleavedBufferAttribute) {
-      console.error("BufferGeometryUtils: .mergeAttributes() failed. InterleavedBufferAttributes are not supported.");
+      console.error(
+        "BufferGeometryUtils: .mergeAttributes() failed. InterleavedBufferAttributes are not supported."
+      );
       return null;
     }
     if (TypedArray === void 0)
@@ -1477,7 +1484,12 @@ function interleaveAttributes(attributes) {
     const attribute = attributes[j];
     const itemSize = attribute.itemSize;
     const count = attribute.count;
-    const iba = new InterleavedBufferAttribute(interleavedBuffer, itemSize, offset, attribute.normalized);
+    const iba = new InterleavedBufferAttribute(
+      interleavedBuffer,
+      itemSize,
+      offset,
+      attribute.normalized
+    );
     res.push(iba);
     offset += itemSize;
     for (let c = 0; c < count; c++) {
@@ -1496,7 +1508,12 @@ function deinterleaveAttribute(attribute) {
   const array = new cons(count * itemSize);
   let newAttribute;
   if (attribute.isInstancedInterleavedBufferAttribute) {
-    newAttribute = new InstancedBufferAttribute(array, itemSize, normalized, attribute.meshPerAttribute);
+    newAttribute = new InstancedBufferAttribute(
+      array,
+      itemSize,
+      normalized,
+      attribute.meshPerAttribute
+    );
   } else {
     newAttribute = new BufferAttribute(array, itemSize, normalized);
   }
@@ -1643,7 +1660,9 @@ function mergeVertices(geometry, tolerance = 1e-4) {
 }
 function toTrianglesDrawMode(geometry, drawMode) {
   if (drawMode === TrianglesDrawMode) {
-    console.warn("BufferGeometryUtils.toTrianglesDrawMode(): Geometry already defined as triangles.");
+    console.warn(
+      "BufferGeometryUtils.toTrianglesDrawMode(): Geometry already defined as triangles."
+    );
     return geometry;
   }
   if (drawMode === TriangleFanDrawMode || drawMode === TriangleStripDrawMode) {
@@ -1686,7 +1705,9 @@ function toTrianglesDrawMode(geometry, drawMode) {
       }
     }
     if (newIndices.length / 3 !== numberOfTriangles) {
-      console.error("BufferGeometryUtils.toTrianglesDrawMode(): Unable to generate correct amount of triangles.");
+      console.error(
+        "BufferGeometryUtils.toTrianglesDrawMode(): Unable to generate correct amount of triangles."
+      );
     }
     const newGeometry = geometry.clone();
     newGeometry.setIndex(newIndices);

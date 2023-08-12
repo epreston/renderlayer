@@ -293,7 +293,14 @@ function DRACOWorker() {
           continue;
         attribute = decoder.GetAttribute(dracoGeometry, attributeID);
       }
-      const attributeResult = decodeAttribute(draco, decoder, dracoGeometry, attributeName, attributeType, attribute);
+      const attributeResult = decodeAttribute(
+        draco,
+        decoder,
+        dracoGeometry,
+        attributeName,
+        attributeType,
+        attribute
+      );
       if (attributeName === "color") {
         attributeResult.vertexColorSpace = taskConfig.vertexColorSpace;
       }

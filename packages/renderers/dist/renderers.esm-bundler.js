@@ -81,7 +81,13 @@ class WebGLRenderer {
     let _transmissionRenderTarget = null;
     const _projScreenMatrix = new Matrix4();
     const _vector3 = new Vector3();
-    const _emptyScene = { background: null, fog: null, environment: null, overrideMaterial: null, isScene: true };
+    const _emptyScene = {
+      background: null,
+      fog: null,
+      environment: null,
+      overrideMaterial: null,
+      isScene: true
+    };
     function getTargetPixelRatio() {
       return _currentRenderTarget === null ? _pixelRatio : 1;
     }
@@ -150,11 +156,27 @@ class WebGLRenderer {
       objects = new WebGLObjects(_gl, geometries, attributes, info);
       morphtargets = new WebGLMorphtargets(_gl, capabilities, textures);
       clipping = new WebGLClipping(properties);
-      programCache = new WebGLPrograms(_this, cubemaps, cubeuvmaps, extensions, capabilities, bindingStates, clipping);
+      programCache = new WebGLPrograms(
+        _this,
+        cubemaps,
+        cubeuvmaps,
+        extensions,
+        capabilities,
+        bindingStates,
+        clipping
+      );
       materials = new WebGLMaterials(_this, properties);
       renderLists = new WebGLRenderLists();
       renderStates = new WebGLRenderStates(extensions, capabilities);
-      background = new WebGLBackground(_this, cubemaps, cubeuvmaps, state, objects, _alpha, premultipliedAlpha);
+      background = new WebGLBackground(
+        _this,
+        cubemaps,
+        cubeuvmaps,
+        state,
+        objects,
+        _alpha,
+        premultipliedAlpha
+      );
       shadowMap = new WebGLShadowMap(_this, objects, capabilities);
       uniformsGroups = new WebGLUniformsGroups(_gl, info, capabilities, state);
       bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info, capabilities);
@@ -326,7 +348,10 @@ class WebGLRenderer {
       shadowMap.type = shadowMapType;
     }
     function onContextCreationError(event) {
-      console.error("WebGLRenderer: A WebGL context could not be created. Reason: ", event.statusMessage);
+      console.error(
+        "WebGLRenderer: A WebGL context could not be created. Reason: ",
+        event.statusMessage
+      );
     }
     function onMaterialDispose(event) {
       const material = event.target;
@@ -591,7 +616,14 @@ class WebGLRenderer {
                 const group = groups[i];
                 const groupMaterial = material[group.materialIndex];
                 if (groupMaterial && groupMaterial.visible) {
-                  currentRenderList.push(object, geometry, groupMaterial, groupOrder, _vector3.z, group);
+                  currentRenderList.push(
+                    object,
+                    geometry,
+                    groupMaterial,
+                    groupOrder,
+                    _vector3.z,
+                    group
+                  );
                 }
               }
             } else if (material.visible) {
@@ -707,7 +739,13 @@ class WebGLRenderer {
       const lights = currentRenderState.state.lights;
       const shadowsArray = currentRenderState.state.shadowsArray;
       const lightsStateVersion = lights.state.version;
-      const parameters2 = programCache.getParameters(material, lights.state, shadowsArray, scene, object);
+      const parameters2 = programCache.getParameters(
+        material,
+        lights.state,
+        shadowsArray,
+        scene,
+        object
+      );
       const programCacheKey = programCache.getProgramCacheKey(parameters2);
       let programs = materialProperties.programs;
       materialProperties.environment = null;
@@ -925,7 +963,13 @@ class WebGLRenderer {
         if (fog && material.fog === true) {
           materials.refreshFogUniforms(m_uniforms, fog);
         }
-        materials.refreshMaterialUniforms(m_uniforms, material, _pixelRatio, _height, _transmissionRenderTarget);
+        materials.refreshMaterialUniforms(
+          m_uniforms,
+          material,
+          _pixelRatio,
+          _height,
+          _transmissionRenderTarget
+        );
         WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
       }
       if (material.isShaderMaterial && material.uniformsNeedUpdate === true) {
@@ -1072,7 +1116,9 @@ class WebGLRenderer {
     };
     this.readRenderTargetPixels = function(renderTarget, x, y, width, height, buffer, activeCubeFaceIndex) {
       if (!(renderTarget && renderTarget.isWebGLRenderTarget)) {
-        console.error("WebGLRenderer.readRenderTargetPixels: renderTarget is not WebGLRenderTarget.");
+        console.error(
+          "WebGLRenderer.readRenderTargetPixels: renderTarget is not WebGLRenderTarget."
+        );
         return;
       }
       let framebuffer = properties.get(renderTarget).__webglFramebuffer;
@@ -1101,7 +1147,15 @@ class WebGLRenderer {
             return;
           }
           if (x >= 0 && x <= renderTarget.width - width && y >= 0 && y <= renderTarget.height - height) {
-            _gl.readPixels(x, y, width, height, utils.convert(textureFormat), utils.convert(textureType), buffer);
+            _gl.readPixels(
+              x,
+              y,
+              width,
+              height,
+              utils.convert(textureFormat),
+              utils.convert(textureType),
+              buffer
+            );
           }
         } finally {
           const framebuffer2 = _currentRenderTarget !== null ? properties.get(_currentRenderTarget).__webglFramebuffer : null;
@@ -1151,7 +1205,15 @@ class WebGLRenderer {
             srcTexture.mipmaps[0].data
           );
         } else {
-          _gl.texSubImage2D(_gl.TEXTURE_2D, level, position.x, position.y, glFormat, glType, srcTexture.image);
+          _gl.texSubImage2D(
+            _gl.TEXTURE_2D,
+            level,
+            position.x,
+            position.y,
+            glFormat,
+            glType,
+            srcTexture.image
+          );
         }
       }
       if (level === 0 && dstTexture.generateMipmaps)
@@ -1176,7 +1238,9 @@ class WebGLRenderer {
         textures.setTexture2DArray(dstTexture, 0);
         glTarget = _gl.TEXTURE_2D_ARRAY;
       } else {
-        console.warn("WebGLRenderer.copyTextureToTexture3D: only supports DataTexture3D and DataTexture2DArray.");
+        console.warn(
+          "WebGLRenderer.copyTextureToTexture3D: only supports DataTexture3D and DataTexture2DArray."
+        );
         return;
       }
       _gl.pixelStorei(_gl.UNPACK_FLIP_Y_WEBGL, dstTexture.flipY);
@@ -1209,7 +1273,9 @@ class WebGLRenderer {
         );
       } else {
         if (srcTexture.isCompressedArrayTexture) {
-          console.warn("WebGLRenderer.copyTextureToTexture3D: untested support for compressed srcTexture.");
+          console.warn(
+            "WebGLRenderer.copyTextureToTexture3D: untested support for compressed srcTexture."
+          );
           _gl.compressedTexSubImage3D(
             glTarget,
             level,

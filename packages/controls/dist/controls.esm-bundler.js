@@ -160,7 +160,10 @@ class OrbitControls extends EventDispatcher {
         spherical.phi = Math.max(scope.minPolarAngle, Math.min(scope.maxPolarAngle, spherical.phi));
         spherical.makeSafe();
         spherical.radius *= scale;
-        spherical.radius = Math.max(scope.minDistance, Math.min(scope.maxDistance, spherical.radius));
+        spherical.radius = Math.max(
+          scope.minDistance,
+          Math.min(scope.maxDistance, spherical.radius)
+        );
         if (scope.enableDamping === true) {
           scope.target.addScaledVector(panOffset, scope.dampingFactor);
         } else {
@@ -284,7 +287,9 @@ class OrbitControls extends EventDispatcher {
             scope.object.matrix
           );
         } else {
-          console.warn("WARNING: OrbitControls.js encountered an unknown camera type - pan disabled.");
+          console.warn(
+            "WARNING: OrbitControls.js encountered an unknown camera type - pan disabled."
+          );
           scope.enablePan = false;
         }
       };
@@ -293,11 +298,16 @@ class OrbitControls extends EventDispatcher {
       if (scope.object.isPerspectiveCamera) {
         scale /= dollyScale;
       } else if (scope.object.isOrthographicCamera) {
-        scope.object.zoom = Math.max(scope.minZoom, Math.min(scope.maxZoom, scope.object.zoom * dollyScale));
+        scope.object.zoom = Math.max(
+          scope.minZoom,
+          Math.min(scope.maxZoom, scope.object.zoom * dollyScale)
+        );
         scope.object.updateProjectionMatrix();
         zoomChanged = true;
       } else {
-        console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.");
+        console.warn(
+          "WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."
+        );
         scope.enableZoom = false;
       }
     }
@@ -305,11 +315,16 @@ class OrbitControls extends EventDispatcher {
       if (scope.object.isPerspectiveCamera) {
         scale *= dollyScale;
       } else if (scope.object.isOrthographicCamera) {
-        scope.object.zoom = Math.max(scope.minZoom, Math.min(scope.maxZoom, scope.object.zoom / dollyScale));
+        scope.object.zoom = Math.max(
+          scope.minZoom,
+          Math.min(scope.maxZoom, scope.object.zoom / dollyScale)
+        );
         scope.object.updateProjectionMatrix();
         zoomChanged = true;
       } else {
-        console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.");
+        console.warn(
+          "WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."
+        );
         scope.enableZoom = false;
       }
     }
