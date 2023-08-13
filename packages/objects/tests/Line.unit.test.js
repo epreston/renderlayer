@@ -33,8 +33,14 @@ describe('Objects', () => {
       expect(object.isLine).toBeTruthy();
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const src = new Line();
+      const dst = new Line();
+
+      dst.copy(src);
+
+      expect(dst.geometry).toStrictEqual(src.geometry);
+      expect(dst.material).toStrictEqual(src.material);
     });
 
     test.todo('computeLineDistances', () => {
