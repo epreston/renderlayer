@@ -38,8 +38,14 @@ describe('Objects', () => {
       expect(object.isMesh).toBeTruthy();
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const src = new Mesh();
+      const dst = new Mesh();
+
+      dst.copy(src);
+
+      expect(dst.geometry).toBe(src.geometry);
+      expect(dst.material).toBe(src.material);
     });
 
     test.todo('updateMorphTargets', () => {
