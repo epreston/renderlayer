@@ -2,34 +2,14 @@ import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 import { Euler, Matrix4, Quaternion, Vector3 } from '@renderlayer/math';
 import { EventDispatcher } from '../src/EventDispatcher.js';
+import { eulerEquals, matrixEquals4 } from './math-compare.js';
 import { eps, w, x, y, z } from './math-constants.js';
 
 import { Object3D } from '../src/Object3D.js';
 
-const matrixEquals4 = (a, b) => {
-  for (let i = 0; i < 16; i++) {
-    if (Math.abs(a.elements[i] - b.elements[i]) >= eps) {
-      return false;
-    }
-  }
-
-  return true;
-};
-
 describe('Core', () => {
   describe('Object3D', () => {
     const RadToDeg = 180 / Math.PI;
-
-    const eulerEquals = function (a, b, tolerance = 0.0001) {
-      if (a.order != b.order) {
-        return false;
-      }
-
-      // prettier-ignore
-      return Math.abs(a.x - b.x) <= tolerance &&
-        Math.abs(a.y - b.y) <= tolerance &&
-        Math.abs(a.z - b.z) <= tolerance;
-    };
 
     test('Instancing', () => {
       const object = new Object3D();
@@ -49,8 +29,12 @@ describe('Core', () => {
       // implement
     });
 
-    test.todo('name', () => {
-      // implement
+    test('name', () => {
+      const object = new Object3D();
+      expect(object.name).toEqual('');
+
+      object.name = 'root';
+      expect(object.name).toEqual('root');
     });
 
     test('type', () => {
@@ -58,12 +42,26 @@ describe('Core', () => {
       expect(object.type === 'Object3D').toBeTruthy();
     });
 
-    test.todo('parent', () => {
-      // implement
+    test('parent', () => {
+      const object = new Object3D();
+      expect(object.parent).toBeNull();
+
+      const parent = new Object3D();
+      const child = new Object3D();
+      parent.add(child);
+      expect(child.parent).toEqual(parent);
     });
 
-    test.todo('children', () => {
-      // implement
+    test('children', () => {
+      const object = new Object3D();
+      expect(object.children).to.be.an('array');
+      expect(object.children).to.be.empty;
+
+      const root = new Object3D();
+      const child = new Object3D();
+      root.add(child);
+      expect(root.children).to.be.an('array').with.lengthOf(1);
+      expect(root.children[0]).to.be.an.instanceof(Object3D);
     });
 
     test.todo('up', () => {
