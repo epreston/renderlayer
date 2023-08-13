@@ -18,11 +18,13 @@ export default mergeConfig(
       // includeSource: ['src/**/*.{js,ts}'], // enable inline tests
       coverage: {
         provider: 'v8',
-        reporter: ['text-summary', 'html']
-        // exclude: [
-        //   ...configDefaults.coverage.exclude,
-        //   'packages/renderlayer/**'
-        // ]
+        reporter: ['text-summary', 'html'],
+        exclude: [
+          ...configDefaults.coverage.exclude,
+          // mostly entries that skew coverage reports
+          'packages/shaders/src/ShaderChunk/**',
+          'packages/shaders/src/ShaderLib/**'
+        ]
       }
     }
   })
