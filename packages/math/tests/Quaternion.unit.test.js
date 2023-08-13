@@ -1,13 +1,13 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
-import { Vector3 } from '../src/Vector3.js';
-import { Vector4 } from '../src/Vector4.js';
+import { BufferAttribute } from '@renderlayer/buffers';
+
 import { Euler } from '../src/Euler.js';
 import { Matrix4 } from '../src/Matrix4.js';
+import { Vector3 } from '../src/Vector3.js';
+import { Vector4 } from '../src/Vector4.js';
 
-import { x, y, z, w, eps } from './math-constants.js';
-
-// import { BufferAttribute } from '@renderlayer/buffers';
+import { eps, w, x, y, z } from './math-constants.js';
 
 import { Quaternion } from '../src/Quaternion.js';
 
@@ -647,33 +647,33 @@ describe('Maths', () => {
       expect(array[4]).toStrictEqual(w);
     });
 
-    test.todo('fromBufferAttribute', () => {
-      // const a = new Quaternion();
-      //
-      // // prettier-ignore
-      // const attribute = new BufferAttribute( new Float32Array( [
-      // 	0, 0, 0, 1,
-      // 	.7, 0, 0, .7,
-      // 	0, .7, 0, .7,
-      // ] ), 4 );
-      //
-      // a.fromBufferAttribute(attribute, 0);
-      // expect(a.x).toBe(0);
-      // expect(a.y).toBe(0);
-      // expect(a.z).toBe(0);
-      // expect(a.w).toBe(1);
-      //
-      // a.fromBufferAttribute(attribute, 1);
-      // expect(a.x).toBe(0.7);
-      // expect(a.y).toBe(0);
-      // expect(a.z).toBe(0);
-      // expect(a.w).toBe(0.7);
-      //
-      // a.fromBufferAttribute(attribute, 2);
-      // expect(a.x).toBe(0);
-      // expect(a.y).toBe(0.7);
-      // expect(a.z).toBe(0);
-      // expect(a.w).toBe(0.7);
+    test('fromBufferAttribute', () => {
+      const a = new Quaternion();
+
+      // prettier-ignore
+      const attribute = new BufferAttribute( new Float32Array( [
+      	0.0, 0.0, 0.0, 1.0,
+      	0.7, 0.0, 0.0, 0.7,
+      	0.0, 0.7, 0.0, 0.7,
+      ] ), 4 );
+
+      a.fromBufferAttribute(attribute, 0);
+      expect(a.x).toBeCloseTo(0);
+      expect(a.y).toBeCloseTo(0);
+      expect(a.z).toBeCloseTo(0);
+      expect(a.w).toBeCloseTo(1);
+
+      a.fromBufferAttribute(attribute, 1);
+      expect(a.x).toBeCloseTo(0.7);
+      expect(a.y).toBeCloseTo(0);
+      expect(a.z).toBeCloseTo(0);
+      expect(a.w).toBeCloseTo(0.7);
+
+      a.fromBufferAttribute(attribute, 2);
+      expect(a.x).toBeCloseTo(0);
+      expect(a.y).toBeCloseTo(0.7);
+      expect(a.z).toBeCloseTo(0);
+      expect(a.w).toBeCloseTo(0.7);
     });
 
     test('_onChange', () => {
