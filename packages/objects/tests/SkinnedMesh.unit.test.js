@@ -41,8 +41,17 @@ describe('Objects', () => {
       expect(object.isSkinnedMesh).toBeTruthy();
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const src = new SkinnedMesh();
+      const dst = new SkinnedMesh();
+
+      dst.copy(src);
+
+      expect(dst.bindMode).toBe(src.bindMode);
+      expect(dst.bindMatrix.equals(src.bindMatrix)).toBeTruthy();
+      expect(dst.bindMatrixInverse.equals(src.bindMatrixInverse)).toBeTruthy();
+
+      expect(dst.skeleton).toBe(src.skeleton);
     });
 
     test.todo('bind', () => {
