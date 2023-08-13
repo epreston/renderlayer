@@ -1,5 +1,6 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
+import { Matrix4 } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
 import { Mesh } from '../src/Mesh.js';
 import { SkinnedMesh } from '../src/SkinnedMesh.js';
@@ -28,12 +29,20 @@ describe('Objects', () => {
       expect(object.bindMode).toBe('attached');
     });
 
-    test.todo('bindMatrix', () => {
-      // implement
+    test('bindMatrix', () => {
+      const object = new SkinnedMesh();
+      const bindMatrix = object.bindMatrix;
+
+      expect(bindMatrix).toBeInstanceOf(Matrix4);
+      expect(bindMatrix.equals(new Matrix4().identity())).toBeTruthy();
     });
 
-    test.todo('bindMatrixInverse', () => {
-      // implement
+    test('bindMatrixInverse', () => {
+      const object = new SkinnedMesh();
+      const bindMatrixInverse = object.bindMatrixInverse;
+
+      expect(bindMatrixInverse).toBeInstanceOf(Matrix4);
+      expect(bindMatrixInverse.equals(new Matrix4().identity())).toBeTruthy();
     });
 
     test('isSkinnedMesh', () => {
