@@ -135,8 +135,14 @@ describe('Maths', () => {
       expect(a.w == 0).toBeTruthy();
     });
 
-    test.todo('addScalar', () => {
-      // implement
+    test('addScalar', () => {
+      const v = new Vector4(1, 2, 3, 4);
+
+      v.addScalar(2);
+      expect(v.x).to.equal(3);
+      expect(v.y).to.equal(4);
+      expect(v.z).to.equal(5);
+      expect(v.w).to.equal(6);
     });
 
     test('addVectors', () => {
