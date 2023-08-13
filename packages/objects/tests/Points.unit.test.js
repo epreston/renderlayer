@@ -33,8 +33,14 @@ describe('Objects', () => {
       expect(object.isPoints).toBeTruthy();
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const src = new Points();
+      const dst = new Points();
+
+      dst.copy(src);
+
+      expect(dst.geometry).toBe(src.geometry);
+      expect(dst.material).toBe(src.material);
     });
 
     test.todo('raycast', () => {
