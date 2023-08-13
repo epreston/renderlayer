@@ -98,6 +98,7 @@ describe('Maths', () => {
       expect(v2.z).to.equal(3);
       expect(v2.w).to.equal(4);
 
+      // subclass keeps its class prototype
       class UserVec4 extends Vector4 {}
       const a = new UserVec4();
       const b = a.clone();
@@ -178,8 +179,14 @@ describe('Maths', () => {
       expect(a.w == 2 * w).toBeTruthy();
     });
 
-    test.todo('subScalar', () => {
-      // implement
+    test('subScalar', () => {
+      const v = new Vector4(1, 2, 3, 4);
+
+      v.subScalar(2);
+      expect(v.x).to.equal(-1);
+      expect(v.y).to.equal(0);
+      expect(v.z).to.equal(1);
+      expect(v.w).to.equal(2);
     });
 
     test('subVectors', () => {
