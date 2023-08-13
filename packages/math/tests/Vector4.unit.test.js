@@ -199,12 +199,25 @@ describe('Maths', () => {
       expect(c.w == 0).toBeTruthy();
     });
 
-    test.todo('multiply', () => {
-      // implement
+    test('multiply', () => {
+      const v1 = new Vector4(1, 2, 3, 4);
+      const v2 = new Vector4(5, 6, 7, 8);
+
+      v1.multiply(v2);
+      expect(v1.x).to.equal(5);
+      expect(v1.y).to.equal(12);
+      expect(v1.z).to.equal(21);
+      expect(v1.w).to.equal(32);
     });
 
-    test.todo('multiplyScalar', () => {
-      // implement
+    test('multiplyScalar', () => {
+      const v = new Vector4(1, 2, 3, 4);
+
+      v.multiplyScalar(2);
+      expect(v.x).to.equal(2);
+      expect(v.y).to.equal(4);
+      expect(v.z).to.equal(6);
+      expect(v.w).to.equal(8);
     });
 
     test('applyMatrix4', () => {
