@@ -32,10 +32,10 @@ describe('Maths', () => {
 
     test('set', () => {
       const a = new Vector4();
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-      expect(a.z == 0).toBeTruthy();
-      expect(a.w == 1).toBeTruthy();
+      expect(a.x).to.equal(0);
+      expect(a.y).to.equal(0);
+      expect(a.z).to.equal(0);
+      expect(a.w).to.equal(1);
 
       a.set(x, y, z, w);
       expect(a.x == x).toBeTruthy();
@@ -44,8 +44,14 @@ describe('Maths', () => {
       expect(a.w == w).toBeTruthy();
     });
 
-    test.todo('setScalar', () => {
-      // implement
+    test('setScalar', () => {
+      const v = new Vector4();
+
+      v.setScalar(3);
+      expect(v.x).to.equal(3);
+      expect(v.y).to.equal(3);
+      expect(v.z).to.equal(3);
+      expect(v.w).to.equal(3);
     });
 
     test('setX', () => {
@@ -321,8 +327,14 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('floor', () => {
-      // implement
+    test('floor', () => {
+      const v = new Vector4(1.1, 2.2, 3.3, 4.4);
+
+      v.floor();
+      expect(v.x).to.equal(1);
+      expect(v.y).to.equal(2);
+      expect(v.z).to.equal(3);
+      expect(v.w).to.equal(4);
     });
 
     test('ceil', () => {
@@ -335,8 +347,14 @@ describe('Maths', () => {
       expect(v.w).to.equal(5);
     });
 
-    test.todo('round', () => {
-      // implement
+    test('round', () => {
+      const v = new Vector4(1.1, 2.2, 3.3, 4.4);
+
+      v.round();
+      expect(v.x).to.equal(1);
+      expect(v.y).to.equal(2);
+      expect(v.z).to.equal(3);
+      expect(v.w).to.equal(4);
     });
 
     test.todo('roundToZero', () => {
@@ -448,12 +466,27 @@ describe('Maths', () => {
       expect(isNaN(a.length())).toBeTruthy();
     });
 
-    test.todo('lerp', () => {
-      // implement
+    test('lerp', () => {
+      const v1 = new Vector4(1, 2, 3, 4);
+      const v2 = new Vector4(5, 6, 7, 8);
+
+      v1.lerp(v2, 0.5);
+      expect(v1.x).to.equal(3);
+      expect(v1.y).to.equal(4);
+      expect(v1.z).to.equal(5);
+      expect(v1.w).to.equal(6);
     });
 
-    test.todo('lerpVectors', () => {
-      // implement
+    test('lerpVectors', () => {
+      const v1 = new Vector4(1, 2, 3, 4);
+      const v2 = new Vector4(5, 6, 7, 8);
+      const v3 = new Vector4();
+
+      v3.lerpVectors(v1, v2, 0.5);
+      expect(v3.x).to.equal(3);
+      expect(v3.y).to.equal(4);
+      expect(v3.z).to.equal(5);
+      expect(v3.w).to.equal(6);
     });
 
     test('equals', () => {
