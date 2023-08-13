@@ -5,7 +5,7 @@ class Vector4 {
     this.x = x;
     this.y = y;
     this.z = z;
-    this.w = w;
+    this.w = w; // important: w = 1 by default
   }
 
   get width() {

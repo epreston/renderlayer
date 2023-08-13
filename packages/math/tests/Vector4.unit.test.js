@@ -262,8 +262,14 @@ describe('Maths', () => {
       expect(Math.abs(a.w - expected.w) <= eps).toBeTruthy();
     });
 
-    test.todo('divideScalar', () => {
-      // implement
+    test('divideScalar', () => {
+      const v = new Vector4(1, 2, 3, 4);
+
+      v.divideScalar(2);
+      expect(v.x).to.equal(0.5);
+      expect(v.y).to.equal(1);
+      expect(v.z).to.equal(1.5);
+      expect(v.w).to.equal(2);
     });
 
     test.todo('setAxisAngleFromQuaternion', () => {
@@ -274,12 +280,26 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('min', () => {
-      // implement
+    test('min', () => {
+      const v1 = new Vector4(5, 6, 7, 8);
+      const v2 = new Vector4(1, 2, 3, 4);
+
+      v1.min(v2);
+      expect(v1.x).to.equal(1);
+      expect(v1.y).to.equal(2);
+      expect(v1.z).to.equal(3);
+      expect(v1.w).to.equal(4);
     });
 
-    test.todo('max', () => {
-      // implement
+    test('max', () => {
+      const v1 = new Vector4(5, 6, 7, 8);
+      const v2 = new Vector4(1, 2, 3, 4);
+
+      v1.max(v2);
+      expect(v1.x).to.equal(5);
+      expect(v1.y).to.equal(6);
+      expect(v1.z).to.equal(7);
+      expect(v1.w).to.equal(8);
     });
 
     test.todo('clamp', () => {
@@ -305,8 +325,14 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('ceil', () => {
-      // implement
+    test('ceil', () => {
+      const v = new Vector4(1.1, 2.2, 3.3, 4.4);
+
+      v.ceil();
+      expect(v.x).to.equal(2);
+      expect(v.y).to.equal(3);
+      expect(v.z).to.equal(4);
+      expect(v.w).to.equal(5);
     });
 
     test.todo('round', () => {
@@ -339,12 +365,28 @@ describe('Maths', () => {
       expect(result == 0).toBeTruthy();
     });
 
-    test.todo('lengthSq', () => {
-      // implement
+    test('lengthSq', () => {
+      const v = new Vector4(0, 0, 0, 0);
+      expect(v.lengthSq()).to.equal(0);
+
+      // important: w = 1 by default
+      const v2 = new Vector4();
+      expect(v2.lengthSq()).to.equal(1);
+
+      const v3 = new Vector4(0, 3, 4, 0);
+      expect(v3.lengthSq()).to.equal(25);
     });
 
-    test.todo('length', () => {
-      // implement
+    test('length', () => {
+      const v = new Vector4(0, 0, 0, 0);
+      expect(v.length()).to.equal(0);
+
+      // important: w = 1 by default
+      const v2 = new Vector4();
+      expect(v2.length()).to.equal(1);
+
+      const v3 = new Vector4(0, 3, 4, 0);
+      expect(v3.length()).to.equal(5);
     });
 
     test('manhattanLength', () => {
