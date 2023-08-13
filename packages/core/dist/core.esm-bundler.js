@@ -112,31 +112,33 @@ class Object3D extends EventDispatcher {
     }
     rotation._onChange(onRotationChange);
     quaternion._onChange(onQuaternionChange);
+    this.position = position;
+    this.rotation = rotation;
+    this.quaternion = quaternion;
+    this.scale = scale;
     Object.defineProperties(this, {
       position: {
-        configurable: true,
-        enumerable: true,
-        value: position
+        writable: false
       },
       rotation: {
-        configurable: true,
-        enumerable: true,
-        value: rotation
+        writable: false
       },
       quaternion: {
-        configurable: true,
-        enumerable: true,
-        value: quaternion
+        writable: false
       },
       scale: {
-        configurable: true,
-        enumerable: true,
-        value: scale
+        writable: false
       },
       modelViewMatrix: {
+        // enumerable: false,
+        // configurable: false,
+        // writable: false,
         value: new Matrix4()
       },
       normalMatrix: {
+        // enumerable: false,
+        // configurable: false,
+        // writable: false,
         value: new Matrix3()
       }
     });
