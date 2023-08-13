@@ -5,6 +5,10 @@ import * as MathUtils from '../src/MathUtils.js';
 describe('Maths', () => {
   describe('Math', () => {
     test('generateUUID', () => {
+      expect(MathUtils.generateUUID()).to.be.a('string');
+      expect(MathUtils.generateUUID()).to.have.length(36);
+      expect(MathUtils.generateUUID()).to.not.equal(MathUtils.generateUUID());
+
       const a = MathUtils.generateUUID();
       const regex = /[A-Z0-9]{8}-[A-Z0-9]{4}-4[A-Z0-9]{3}-[A-Z0-9]{4}-[A-Z0-9]{12}/i;
       // note the fixed '4' here ----------^
