@@ -1,4 +1,6 @@
 import { beforeEach, afterEach, expect, vi } from 'vitest';
+import { TextEncoder as nodeTextEncoder, TextDecoder as nodeTextDecoder } from 'node:util';
+
 // import crypto from 'node:crypto';
 
 // beforeAll(() => {
@@ -19,13 +21,11 @@ if (typeof ResizeObserver === 'undefined') {
 }
 
 if (typeof TextEncoder === 'undefined') {
-  const { TextEncoder } = require('util');
-  global.TextEncoder = TextEncoder;
+  global.TextEncoder = nodeTextEncoder;
 }
 
 if (typeof TextDecoder === 'undefined') {
-  const { TextDecoder } = require('util');
-  global.TextDecoder = TextDecoder;
+  global.TextDecoder = nodeTextDecoder;
 }
 
 // from vue/core repo
