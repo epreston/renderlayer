@@ -39,8 +39,8 @@ describe('Objects', () => {
 
       dst.copy(src);
 
-      expect(dst.geometry).toStrictEqual(src.geometry);
-      expect(dst.material).toStrictEqual(src.material);
+      expect(dst.geometry).toBe(src.geometry);
+      expect(dst.material).toBe(src.material);
     });
 
     test.todo('computeLineDistances', () => {
