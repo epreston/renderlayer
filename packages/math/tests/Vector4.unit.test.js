@@ -88,8 +88,20 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('clone', () => {
-      // implement
+    test('clone', () => {
+      const v1 = new Vector4(1, 2, 3, 4);
+      const v2 = v1.clone();
+
+      expect(v2).to.be.instanceof(Vector4);
+      expect(v2.x).to.equal(1);
+      expect(v2.y).to.equal(2);
+      expect(v2.z).to.equal(3);
+      expect(v2.w).to.equal(4);
+
+      class UserVec4 extends Vector4 {}
+      const a = new UserVec4();
+      const b = a.clone();
+      expect(b).to.be.an.instanceof(UserVec4);
     });
 
     test('copy', () => {
