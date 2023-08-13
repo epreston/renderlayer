@@ -1909,10 +1909,10 @@ class WebGLRenderer {
       dstTexture,
       level = 0
     ) {
-      if (_this.isWebGL1Renderer) {
-        console.warn('WebGLRenderer.copyTextureToTexture3D: can only be used with WebGL2.');
-        return;
-      }
+      // if (_this.isWebGL1Renderer) {
+      //   console.warn('WebGLRenderer.copyTextureToTexture3D: can only be used with WebGL2.');
+      //   return;
+      // }
 
       const width = sourceBox.max.x - sourceBox.min.x + 1;
       const height = sourceBox.max.y - sourceBox.min.y + 1;
