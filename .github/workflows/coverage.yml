@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches: ['main']
-    paths-ignore: ['README.md', 'LICENSE']
+    paths-ignore: ['README.md', 'LICENSE', '.vscode/**']
 
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
