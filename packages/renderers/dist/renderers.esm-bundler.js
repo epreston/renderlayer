@@ -1221,10 +1221,6 @@ class WebGLRenderer {
       state.unbindTexture();
     };
     this.copyTextureToTexture3D = function(sourceBox, position, srcTexture, dstTexture, level = 0) {
-      if (_this.isWebGL1Renderer) {
-        console.warn("WebGLRenderer.copyTextureToTexture3D: can only be used with WebGL2.");
-        return;
-      }
       const width = sourceBox.max.x - sourceBox.min.x + 1;
       const height = sourceBox.max.y - sourceBox.min.y + 1;
       const depth2 = sourceBox.max.z - sourceBox.min.z + 1;

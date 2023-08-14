@@ -222,6 +222,7 @@ class Vector2 {
         throw new Error("index is out of range: " + index);
     }
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor(this.x, this.y);
   }
@@ -453,6 +454,7 @@ class Box2 {
     this.max.copy(center).add(halfSize);
     return this;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
@@ -638,6 +640,7 @@ class Quaternion {
     this._onChangeCallback();
     return this;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor(this._x, this._y, this._z, this._w);
   }
@@ -997,6 +1000,7 @@ class Vector3 {
         throw new Error("index is out of range: " + index);
     }
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor(this.x, this.y, this.z);
   }
@@ -1402,6 +1406,7 @@ class Box3 {
     this.makeEmpty();
     return this.expandByObject(object, precise);
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
@@ -1926,6 +1931,7 @@ class Matrix3 {
     array[offset + 8] = te[8];
     return array;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().fromArray(this.elements);
   }
@@ -2153,6 +2159,7 @@ class Color {
     }
     return this;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor(this.r, this.g, this.b);
   }
@@ -3006,6 +3013,7 @@ class Euler {
     this._onChangeCallback();
     return this;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor(this._x, this._y, this._z, this._order);
   }
@@ -3256,6 +3264,7 @@ class Sphere {
   equals(sphere) {
     return sphere.center.equals(this.center) && sphere.radius === this.radius;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
@@ -3358,6 +3367,7 @@ class Plane {
   equals(plane) {
     return plane.normal.equals(this.normal) && plane.constant === this.constant;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
@@ -3454,6 +3464,7 @@ class Frustum {
     }
     return true;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
@@ -3514,6 +3525,7 @@ class Line3 {
   equals(line) {
     return line.start.equals(this.start) && line.end.equals(this.end);
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
@@ -3765,6 +3777,7 @@ class Ray {
   equals(ray) {
     return ray.origin.equals(this.origin) && ray.direction.equals(this.direction);
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
@@ -3851,6 +3864,7 @@ class Triangle {
     this.c.fromBufferAttribute(attribute, i2);
     return this;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
@@ -4023,6 +4037,7 @@ class Vector4 {
         throw new Error("index is out of range: " + index);
     }
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor(this.x, this.y, this.z, this.w);
   }
