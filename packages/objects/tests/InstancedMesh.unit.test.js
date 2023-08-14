@@ -1,6 +1,8 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
+import { InstancedBufferAttribute } from '@renderlayer/buffers';
 import { Mesh } from '../src/Mesh.js';
+
 import { InstancedMesh } from '../src/InstancedMesh.js';
 
 describe('Objects', () => {
@@ -15,8 +17,10 @@ describe('Objects', () => {
       expect(object).toBeInstanceOf(Mesh);
     });
 
-    test.todo('instanceMatrix', () => {
-      // implement
+    test('instanceMatrix', () => {
+      const object = new InstancedMesh();
+      const instanceMatrix = object.instanceMatrix;
+      expect(instanceMatrix).toBeInstanceOf(InstancedBufferAttribute);
     });
 
     test.todo('instanceColor', () => {
