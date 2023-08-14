@@ -71,7 +71,7 @@ export function getUnlitUniformColorSpace(renderer) {
     // working color space (Linear-sRGB) because we know whatever
     // color space transform is at the end of the post-processing
     // chain will affect the background color. If rendering to canvas,
-    // set background color in renderer.outputEncoding color space
+    // set background color in renderer.outputColorSpace color space
     // because we know it won't be affected by the usual encoding fragment.
     return renderer.outputColorSpace;
   }
@@ -79,6 +79,5 @@ export function getUnlitUniformColorSpace(renderer) {
   return LinearSRGBColorSpace;
 }
 
-// TODO: Legacy
-// const UniformsUtils = { clone: cloneUniforms, merge: mergeUniforms };=
-// export { UniformsUtils };
+// TODO: Legacy deprecation required.  Do not use.
+// export const UniformsUtils = { clone: cloneUniforms, merge: mergeUniforms };
