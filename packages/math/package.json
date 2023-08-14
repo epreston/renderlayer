@@ -2,7 +2,7 @@
   "type": "module",
   "sideEffects": false,
   "name": "@renderlayer/math",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Math library used by @renderlayer packages.",
   "module": "./dist/math.esm-bundler.js",
   "exports": "./dist/math.esm-bundler.js",
