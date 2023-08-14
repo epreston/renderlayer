@@ -26,8 +26,11 @@ describe('Animation', () => {
       // implement
     });
 
-    test.todo('uuid', () => {
-      // implement
+    test('uuid', () => {
+      const object = new AnimationClip('clip1', 1000, [{}]);
+
+      expect(object.uuid).to.be.a('string');
+      expect(object.uuid).to.have.length(36);
     });
 
     test.todo('parse', () => {
