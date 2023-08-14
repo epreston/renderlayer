@@ -75,8 +75,11 @@ describe('Buffers', () => {
       // implement
     });
 
-    test.todo('uuid', () => {
-      // implement
+    test('uuid', () => {
+      const object = new BufferGeometry();
+
+      expect(object.uuid).to.be.a('string');
+      expect(object.uuid).to.have.length(36);
     });
 
     test.todo('name', () => {
