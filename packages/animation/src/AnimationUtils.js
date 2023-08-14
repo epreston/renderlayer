@@ -269,6 +269,18 @@ function makeClipAdditive(targetClip, referenceFrame = 0, referenceClip = target
   return targetClip;
 }
 
+// TODO: Legacy deprecation required.  Do not use.
+// export const AnimationUtils = {
+//   arraySlice: arraySlice,
+//   convertArray: convertArray,
+//   isTypedArray: isTypedArray,
+//   getKeyframeOrder: getKeyframeOrder,
+//   sortedArray: sortedArray,
+//   flattenJSON: flattenJSON,
+//   subclip: subclip,
+//   makeClipAdditive: makeClipAdditive
+// };
+
 export {
   // arraySlice,
   // convertArray,
