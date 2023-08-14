@@ -332,6 +332,7 @@ class Matrix3 {
     return array;
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().fromArray(this.elements);
   }

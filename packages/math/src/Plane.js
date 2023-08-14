@@ -149,6 +149,7 @@ class Plane {
     return plane.normal.equals(this.normal) && plane.constant === this.constant;
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

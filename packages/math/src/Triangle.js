@@ -111,6 +111,7 @@ class Triangle {
     return this;
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

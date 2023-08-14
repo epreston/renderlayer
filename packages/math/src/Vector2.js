@@ -76,6 +76,7 @@ class Vector2 {
     }
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor(this.x, this.y);
   }

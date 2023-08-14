@@ -142,6 +142,7 @@ class Frustum {
     return true;
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

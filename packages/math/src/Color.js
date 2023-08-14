@@ -203,6 +203,7 @@ class Color {
     return this;
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor(this.r, this.g, this.b);
   }

@@ -369,6 +369,7 @@ class Ray {
     return ray.origin.equals(this.origin) && ray.direction.equals(this.direction);
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

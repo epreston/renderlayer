@@ -173,6 +173,7 @@ class Sphere {
     return sphere.center.equals(this.center) && sphere.radius === this.radius;
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

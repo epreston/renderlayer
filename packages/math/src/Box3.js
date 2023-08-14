@@ -63,6 +63,7 @@ class Box3 {
     return this.expandByObject(object, precise);
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

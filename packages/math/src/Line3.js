@@ -77,6 +77,7 @@ class Line3 {
     return line.start.equals(this.start) && line.end.equals(this.end);
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

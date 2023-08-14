@@ -102,6 +102,7 @@ class Vector4 {
     }
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor(this.x, this.y, this.z, this.w);
   }

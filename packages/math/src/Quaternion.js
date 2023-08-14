@@ -145,6 +145,7 @@ class Quaternion {
     return this;
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor(this._x, this._y, this._z, this._w);
   }
