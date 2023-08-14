@@ -1,9 +1,9 @@
 {
   "private": true,
+  "type": "module",
   "name": "@renderlayer/monorepo",
   "version": "0.0.2",
   "description": "3D Rendering Layer for the Web",
-  "type": "module",
   "workspaces": [
     "packages/*",
     "apps/*",
