@@ -1084,6 +1084,9 @@ function WebGLMaterials(renderer, properties) {
     } else if (material.isMeshStandardMaterial) {
       refreshUniformsCommon(uniforms, material);
       refreshUniformsStandard(uniforms, material);
+      if (material.isMeshPhysicalMaterial) {
+        refreshUniformsPhysical(uniforms, material, transmissionRenderTarget);
+      }
     } else if (material.isMeshDepthMaterial) {
       refreshUniformsCommon(uniforms, material);
     } else if (material.isMeshDistanceMaterial) {
@@ -1197,6 +1200,93 @@ function WebGLMaterials(renderer, properties) {
     const envMap = properties.get(material).envMap;
     if (envMap) {
       uniforms.envMapIntensity.value = material.envMapIntensity;
+    }
+  }
+  function refreshUniformsPhysical(uniforms, material, transmissionRenderTarget) {
+    uniforms.ior.value = material.ior;
+    if (material.sheen > 0) {
+      uniforms.sheenColor.value.copy(material.sheenColor).multiplyScalar(material.sheen);
+      uniforms.sheenRoughness.value = material.sheenRoughness;
+      if (material.sheenColorMap) {
+        uniforms.sheenColorMap.value = material.sheenColorMap;
+        refreshTransformUniform(material.sheenColorMap, uniforms.sheenColorMapTransform);
+      }
+      if (material.sheenRoughnessMap) {
+        uniforms.sheenRoughnessMap.value = material.sheenRoughnessMap;
+        refreshTransformUniform(material.sheenRoughnessMap, uniforms.sheenRoughnessMapTransform);
+      }
+    }
+    if (material.clearcoat > 0) {
+      uniforms.clearcoat.value = material.clearcoat;
+      uniforms.clearcoatRoughness.value = material.clearcoatRoughness;
+      if (material.clearcoatMap) {
+        uniforms.clearcoatMap.value = material.clearcoatMap;
+        refreshTransformUniform(material.clearcoatMap, uniforms.clearcoatMapTransform);
+      }
+      if (material.clearcoatRoughnessMap) {
+        uniforms.clearcoatRoughnessMap.value = material.clearcoatRoughnessMap;
+        refreshTransformUniform(
+          material.clearcoatRoughnessMap,
+          uniforms.clearcoatRoughnessMapTransform
+        );
+      }
+      if (material.clearcoatNormalMap) {
+        uniforms.clearcoatNormalMap.value = material.clearcoatNormalMap;
+        refreshTransformUniform(material.clearcoatNormalMap, uniforms.clearcoatNormalMapTransform);
+        uniforms.clearcoatNormalScale.value.copy(material.clearcoatNormalScale);
+        if (material.side === BackSide) {
+          uniforms.clearcoatNormalScale.value.negate();
+        }
+      }
+    }
+    if (material.iridescence > 0) {
+      uniforms.iridescence.value = material.iridescence;
+      uniforms.iridescenceIOR.value = material.iridescenceIOR;
+      uniforms.iridescenceThicknessMinimum.value = material.iridescenceThicknessRange[0];
+      uniforms.iridescenceThicknessMaximum.value = material.iridescenceThicknessRange[1];
+      if (material.iridescenceMap) {
+        uniforms.iridescenceMap.value = material.iridescenceMap;
+        refreshTransformUniform(material.iridescenceMap, uniforms.iridescenceMapTransform);
+      }
+      if (material.iridescenceThicknessMap) {
+        uniforms.iridescenceThicknessMap.value = material.iridescenceThicknessMap;
+        refreshTransformUniform(
+          material.iridescenceThicknessMap,
+          uniforms.iridescenceThicknessMapTransform
+        );
+      }
+    }
+    if (material.transmission > 0) {
+      uniforms.transmission.value = material.transmission;
+      uniforms.transmissionSamplerMap.value = transmissionRenderTarget.texture;
+      uniforms.transmissionSamplerSize.value.set(
+        transmissionRenderTarget.width,
+        transmissionRenderTarget.height
+      );
+      if (material.transmissionMap) {
+        uniforms.transmissionMap.value = material.transmissionMap;
+        refreshTransformUniform(material.transmissionMap, uniforms.transmissionMapTransform);
+      }
+      uniforms.thickness.value = material.thickness;
+      if (material.thicknessMap) {
+        uniforms.thicknessMap.value = material.thicknessMap;
+        refreshTransformUniform(material.thicknessMap, uniforms.thicknessMapTransform);
+      }
+      uniforms.attenuationDistance.value = material.attenuationDistance;
+      uniforms.attenuationColor.value.copy(material.attenuationColor);
+    }
+    uniforms.specularIntensity.value = material.specularIntensity;
+    uniforms.specularColor.value.copy(material.specularColor);
+    if (material.specularColorMap) {
+      uniforms.specularColorMap.value = material.specularColorMap;
+      refreshTransformUniform(material.specularColorMap, uniforms.specularColorMapTransform);
+    }
+    if (material.specularIntensityMap) {
+      uniforms.specularIntensityMap.value = material.specularIntensityMap;
+      refreshTransformUniform(
+        material.specularIntensityMap,
+        uniforms.specularIntensityMapTransform
+      );
     }
   }
   function refreshUniformsDistance(uniforms, material) {

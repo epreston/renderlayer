@@ -42,9 +42,9 @@ function WebGLMaterials(renderer, properties) {
       refreshUniformsCommon(uniforms, material);
       refreshUniformsStandard(uniforms, material);
 
-      //   if (material.isMeshPhysicalMaterial) {
-      //     refreshUniformsPhysical(uniforms, material, transmissionRenderTarget);
-      //   }
+      if (material.isMeshPhysicalMaterial) {
+        refreshUniformsPhysical(uniforms, material, transmissionRenderTarget);
+      }
       // } else if (material.isMeshMatcapMaterial) {
       //   refreshUniformsCommon(uniforms, material);
       //   refreshUniformsMatcap(uniforms, material);
@@ -271,113 +271,125 @@ function WebGLMaterials(renderer, properties) {
     }
   }
 
-  // function refreshUniformsPhysical(uniforms, material, transmissionRenderTarget) {
-  //   uniforms.ior.value = material.ior; // also part of uniforms common
+  function refreshUniformsPhysical(uniforms, material, transmissionRenderTarget) {
+    uniforms.ior.value = material.ior; // also part of uniforms common
 
-  //   if (material.sheen > 0) {
-  //     uniforms.sheenColor.value.copy(material.sheenColor).multiplyScalar(material.sheen);
+    if (material.sheen > 0) {
+      uniforms.sheenColor.value.copy(material.sheenColor).multiplyScalar(material.sheen);
 
-  //     uniforms.sheenRoughness.value = material.sheenRoughness;
+      uniforms.sheenRoughness.value = material.sheenRoughness;
 
-  //     if (material.sheenColorMap) {
-  //       uniforms.sheenColorMap.value = material.sheenColorMap;
+      if (material.sheenColorMap) {
+        uniforms.sheenColorMap.value = material.sheenColorMap;
 
-  //       refreshTransformUniform(material.sheenColorMap, uniforms.sheenColorMapTransform);
-  //     }
+        refreshTransformUniform(material.sheenColorMap, uniforms.sheenColorMapTransform);
+      }
 
-  //     if (material.sheenRoughnessMap) {
-  //       uniforms.sheenRoughnessMap.value = material.sheenRoughnessMap;
+      if (material.sheenRoughnessMap) {
+        uniforms.sheenRoughnessMap.value = material.sheenRoughnessMap;
 
-  //       refreshTransformUniform(material.sheenRoughnessMap, uniforms.sheenRoughnessMapTransform);
-  //     }
-  //   }
+        refreshTransformUniform(material.sheenRoughnessMap, uniforms.sheenRoughnessMapTransform);
+      }
+    }
 
-  //   if (material.clearcoat > 0) {
-  //     uniforms.clearcoat.value = material.clearcoat;
-  //     uniforms.clearcoatRoughness.value = material.clearcoatRoughness;
+    if (material.clearcoat > 0) {
+      uniforms.clearcoat.value = material.clearcoat;
+      uniforms.clearcoatRoughness.value = material.clearcoatRoughness;
 
-  //     if (material.clearcoatMap) {
-  //       uniforms.clearcoatMap.value = material.clearcoatMap;
+      if (material.clearcoatMap) {
+        uniforms.clearcoatMap.value = material.clearcoatMap;
 
-  //       refreshTransformUniform(material.clearcoatMap, uniforms.clearcoatMapTransform);
-  //     }
+        refreshTransformUniform(material.clearcoatMap, uniforms.clearcoatMapTransform);
+      }
 
-  //     if (material.clearcoatRoughnessMap) {
-  //       uniforms.clearcoatRoughnessMap.value = material.clearcoatRoughnessMap;
+      if (material.clearcoatRoughnessMap) {
+        uniforms.clearcoatRoughnessMap.value = material.clearcoatRoughnessMap;
 
-  //       refreshTransformUniform(material.clearcoatRoughnessMap, uniforms.clearcoatRoughnessMapTransform);
-  //     }
+        refreshTransformUniform(
+          material.clearcoatRoughnessMap,
+          uniforms.clearcoatRoughnessMapTransform
+        );
+      }
 
-  //     if (material.clearcoatNormalMap) {
-  //       uniforms.clearcoatNormalMap.value = material.clearcoatNormalMap;
+      if (material.clearcoatNormalMap) {
+        uniforms.clearcoatNormalMap.value = material.clearcoatNormalMap;
 
-  //       refreshTransformUniform(material.clearcoatNormalMap, uniforms.clearcoatNormalMapTransform);
+        refreshTransformUniform(material.clearcoatNormalMap, uniforms.clearcoatNormalMapTransform);
 
-  //       uniforms.clearcoatNormalScale.value.copy(material.clearcoatNormalScale);
+        uniforms.clearcoatNormalScale.value.copy(material.clearcoatNormalScale);
 
-  //       if (material.side === BackSide) {
-  //         uniforms.clearcoatNormalScale.value.negate();
-  //       }
-  //     }
-  //   }
+        if (material.side === BackSide) {
+          uniforms.clearcoatNormalScale.value.negate();
+        }
+      }
+    }
 
-  //   if (material.iridescence > 0) {
-  //     uniforms.iridescence.value = material.iridescence;
-  //     uniforms.iridescenceIOR.value = material.iridescenceIOR;
-  //     uniforms.iridescenceThicknessMinimum.value = material.iridescenceThicknessRange[0];
-  //     uniforms.iridescenceThicknessMaximum.value = material.iridescenceThicknessRange[1];
+    if (material.iridescence > 0) {
+      uniforms.iridescence.value = material.iridescence;
+      uniforms.iridescenceIOR.value = material.iridescenceIOR;
+      uniforms.iridescenceThicknessMinimum.value = material.iridescenceThicknessRange[0];
+      uniforms.iridescenceThicknessMaximum.value = material.iridescenceThicknessRange[1];
 
-  //     if (material.iridescenceMap) {
-  //       uniforms.iridescenceMap.value = material.iridescenceMap;
+      if (material.iridescenceMap) {
+        uniforms.iridescenceMap.value = material.iridescenceMap;
 
-  //       refreshTransformUniform(material.iridescenceMap, uniforms.iridescenceMapTransform);
-  //     }
+        refreshTransformUniform(material.iridescenceMap, uniforms.iridescenceMapTransform);
+      }
 
-  //     if (material.iridescenceThicknessMap) {
-  //       uniforms.iridescenceThicknessMap.value = material.iridescenceThicknessMap;
+      if (material.iridescenceThicknessMap) {
+        uniforms.iridescenceThicknessMap.value = material.iridescenceThicknessMap;
 
-  //       refreshTransformUniform(material.iridescenceThicknessMap, uniforms.iridescenceThicknessMapTransform);
-  //     }
-  //   }
+        refreshTransformUniform(
+          material.iridescenceThicknessMap,
+          uniforms.iridescenceThicknessMapTransform
+        );
+      }
+    }
 
-  //   if (material.transmission > 0) {
-  //     uniforms.transmission.value = material.transmission;
-  //     uniforms.transmissionSamplerMap.value = transmissionRenderTarget.texture;
-  //     uniforms.transmissionSamplerSize.value.set(transmissionRenderTarget.width, transmissionRenderTarget.height);
+    if (material.transmission > 0) {
+      uniforms.transmission.value = material.transmission;
+      uniforms.transmissionSamplerMap.value = transmissionRenderTarget.texture;
+      uniforms.transmissionSamplerSize.value.set(
+        transmissionRenderTarget.width,
+        transmissionRenderTarget.height
+      );
 
-  //     if (material.transmissionMap) {
-  //       uniforms.transmissionMap.value = material.transmissionMap;
+      if (material.transmissionMap) {
+        uniforms.transmissionMap.value = material.transmissionMap;
 
-  //       refreshTransformUniform(material.transmissionMap, uniforms.transmissionMapTransform);
-  //     }
+        refreshTransformUniform(material.transmissionMap, uniforms.transmissionMapTransform);
+      }
 
-  //     uniforms.thickness.value = material.thickness;
+      uniforms.thickness.value = material.thickness;
 
-  //     if (material.thicknessMap) {
-  //       uniforms.thicknessMap.value = material.thicknessMap;
+      if (material.thicknessMap) {
+        uniforms.thicknessMap.value = material.thicknessMap;
 
-  //       refreshTransformUniform(material.thicknessMap, uniforms.thicknessMapTransform);
-  //     }
+        refreshTransformUniform(material.thicknessMap, uniforms.thicknessMapTransform);
+      }
 
-  //     uniforms.attenuationDistance.value = material.attenuationDistance;
-  //     uniforms.attenuationColor.value.copy(material.attenuationColor);
-  //   }
+      uniforms.attenuationDistance.value = material.attenuationDistance;
+      uniforms.attenuationColor.value.copy(material.attenuationColor);
+    }
 
-  //   uniforms.specularIntensity.value = material.specularIntensity;
-  //   uniforms.specularColor.value.copy(material.specularColor);
+    uniforms.specularIntensity.value = material.specularIntensity;
+    uniforms.specularColor.value.copy(material.specularColor);
 
-  //   if (material.specularColorMap) {
-  //     uniforms.specularColorMap.value = material.specularColorMap;
+    if (material.specularColorMap) {
+      uniforms.specularColorMap.value = material.specularColorMap;
 
-  //     refreshTransformUniform(material.specularColorMap, uniforms.specularColorMapTransform);
-  //   }
+      refreshTransformUniform(material.specularColorMap, uniforms.specularColorMapTransform);
+    }
 
-  //   if (material.specularIntensityMap) {
-  //     uniforms.specularIntensityMap.value = material.specularIntensityMap;
+    if (material.specularIntensityMap) {
+      uniforms.specularIntensityMap.value = material.specularIntensityMap;
 
-  //     refreshTransformUniform(material.specularIntensityMap, uniforms.specularIntensityMapTransform);
-  //   }
-  // }
+      refreshTransformUniform(
+        material.specularIntensityMap,
+        uniforms.specularIntensityMapTransform
+      );
+    }
+  }
 
   // function refreshUniformsMatcap(uniforms, material) {
   //   if (material.matcap) {
