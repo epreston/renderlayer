@@ -1,7 +1,7 @@
 import { InstancedBufferGeometry, BufferGeometry, BufferAttribute, InterleavedBufferAttribute, InstancedBufferAttribute, InterleavedBuffer } from '@renderlayer/buffers';
 import { Vector3, Sphere, Color, Matrix4, Matrix3, Vector4, Vector2 } from '@renderlayer/math';
 import { getTypedArray, createElementNS, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeUVReflectionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter } from '@renderlayer/shared';
-import { ShadowMaterial, RawShaderMaterial, ShaderMaterial, PointsMaterial, MeshStandardMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshBasicMaterial, LineBasicMaterial, Material } from '@renderlayer/materials';
+import { ShadowMaterial, RawShaderMaterial, ShaderMaterial, PointsMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshBasicMaterial, LineBasicMaterial, Material } from '@renderlayer/materials';
 import { AnimationClip } from '@renderlayer/animation';
 import { OrthographicCamera, PerspectiveCamera } from '@renderlayer/cameras';
 import { Object3D } from '@renderlayer/core';
@@ -904,7 +904,7 @@ class MaterialLoader extends Loader {
       RawShaderMaterial,
       ShaderMaterial,
       PointsMaterial,
-      // MeshPhysicalMaterial,
+      MeshPhysicalMaterial,
       MeshStandardMaterial,
       // MeshPhongMaterial,
       // MeshToonMaterial,

@@ -42,7 +42,7 @@
     "@renderlayer/interpolants": "~0.0.2",
     "@renderlayer/keyframes": "~0.0.2",
     "@renderlayer/lights": "~0.0.3",
-    "@renderlayer/loaders": "~0.0.9",
+    "@renderlayer/loaders": "~0.0.10",
     "@renderlayer/materials": "~0.0.8",
     "@renderlayer/math": "~0.0.7",
     "@renderlayer/objects": "~0.0.3",
