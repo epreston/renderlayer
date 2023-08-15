@@ -77,6 +77,9 @@ function degToRad(degrees) {
 function radToDeg(radians) {
   return radians * RAD2DEG;
 }
+function isPowerOfThree(n) {
+  return Math.log10(n) / Math.log10(3) % 1 == 0;
+}
 function isPowerOfTwo(value) {
   return (value & value - 1) === 0 && value !== 0;
 }
@@ -4335,4 +4338,4 @@ class Vector4 {
   }
 }
 
-export { Box2, Box3, Color, ColorManagement, DEG2RAD, Euler, Frustum, Line3, LinearToSRGB, Matrix3, Matrix4, Plane, Quaternion, RAD2DEG, Ray, SRGBToLinear, Sphere, Triangle, Vector2, Vector3, Vector4, ceilPowerOfTwo, clamp, damp, degToRad, denormalize, euclideanModulo, floorPowerOfTwo, generateUUID, inverseLerp, isPowerOfTwo, lerp, mapLinear, normalize, pingpong, radToDeg, randFloat, randFloatSpread, randInt, seededRandom, setQuaternionFromProperEuler, smootherstep, smoothstep };
+export { Box2, Box3, Color, ColorManagement, DEG2RAD, Euler, Frustum, Line3, LinearToSRGB, Matrix3, Matrix4, Plane, Quaternion, RAD2DEG, Ray, SRGBToLinear, Sphere, Triangle, Vector2, Vector3, Vector4, ceilPowerOfTwo, clamp, damp, degToRad, denormalize, euclideanModulo, floorPowerOfTwo, generateUUID, inverseLerp, isPowerOfThree, isPowerOfTwo, lerp, mapLinear, normalize, pingpong, radToDeg, randFloat, randFloatSpread, randInt, seededRandom, setQuaternionFromProperEuler, smootherstep, smoothstep };

@@ -34,9 +34,16 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('getUV', () => {
+    test.todo('getInterpolation', () => {
       // static version of class member below
-      // getUV( point, p1, p2, p3, uv1, uv2, uv3, target )
+      // getInterpolation( point, p1, p2, p3, uv1, uv2, uv3, target )
+      // implement
+    });
+
+    // EP: check difference
+    test.todo('getInterpolation', () => {
+      // class member version
+      // getInterpolation( point, uv1, uv2, uv3, target )
       // implement
     });
 
@@ -108,7 +115,7 @@ describe('Maths', () => {
       a = new Triangle(new Vector3(2, 0, 0), new Vector3(0, 0, 0), new Vector3(0, 0, 2));
       expect(a.getArea() == 2).toBeTruthy();
 
-      // colinear triangle.
+      // collinear triangle.
       a = new Triangle(new Vector3(2, 0, 0), new Vector3(0, 0, 0), new Vector3(3, 0, 0));
       expect(a.getArea() == 0).toBeTruthy();
     });
@@ -226,12 +233,6 @@ describe('Maths', () => {
 
       a.getBarycoord(midpoint, barycoord);
       expect(barycoord.distanceTo(new Vector3(1 / 3, 1 / 3, 1 / 3)) < 0.0001).toBeTruthy();
-    });
-
-    test.todo('getUV', () => {
-      // class member version
-      // getUV( point, uv1, uv2, uv3, target )
-      // implement
     });
 
     test('containsPoint', () => {

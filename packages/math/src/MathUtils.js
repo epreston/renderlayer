@@ -141,6 +141,10 @@ function radToDeg(radians) {
   return radians * RAD2DEG;
 }
 
+function isPowerOfThree(n) {
+  return (Math.log10(n) / Math.log10(3)) % 1 == 0;
+}
+
 function isPowerOfTwo(value) {
   return (value & (value - 1)) === 0 && value !== 0;
 }
@@ -282,6 +286,7 @@ export {
   seededRandom,
   degToRad,
   radToDeg,
+  isPowerOfThree,
   isPowerOfTwo,
   ceilPowerOfTwo,
   floorPowerOfTwo,
