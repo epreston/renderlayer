@@ -38,7 +38,7 @@
     "@renderlayer/draco": "~0.0.3",
     "@renderlayer/extras": "~0.0.2",
     "@renderlayer/geometries": "~0.0.5",
-    "@renderlayer/gltf": "~0.0.5",
+    "@renderlayer/gltf": "~0.0.6",
     "@renderlayer/interpolants": "~0.0.2",
     "@renderlayer/keyframes": "~0.0.2",
     "@renderlayer/lights": "~0.0.3",

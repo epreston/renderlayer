@@ -23,6 +23,7 @@ import {
   TextureLoader
 } from '@renderlayer/loaders';
 import {
+  MeshPhysicalMaterial,
   MeshStandardMaterial,
   LineBasicMaterial,
   Material,
@@ -83,11 +84,9 @@ class GLTFLoader extends Loader {
 
     this.pluginCallbacks = [];
 
-    // this.register( function ( parser ) {
-
-    // 	return new GLTFMaterialsClearcoatExtension( parser );
-
-    // } );
+    this.register(function (parser) {
+      return new GLTFMaterialsClearcoatExtension(parser);
+    });
 
     this.register(function (parser) {
       return new GLTFTextureBasisUExtension(parser);
@@ -101,45 +100,33 @@ class GLTFLoader extends Loader {
       return new GLTFTextureAVIFExtension(parser);
     });
 
-    // this.register( function ( parser ) {
+    this.register(function (parser) {
+      return new GLTFMaterialsSheenExtension(parser);
+    });
 
-    // 	return new GLTFMaterialsSheenExtension( parser );
+    this.register(function (parser) {
+      return new GLTFMaterialsTransmissionExtension(parser);
+    });
 
-    // } );
+    this.register(function (parser) {
+      return new GLTFMaterialsVolumeExtension(parser);
+    });
 
-    // this.register( function ( parser ) {
-
-    // 	return new GLTFMaterialsTransmissionExtension( parser );
-
-    // } );
-
-    // this.register( function ( parser ) {
-
-    // 	return new GLTFMaterialsVolumeExtension( parser );
-
-    // } );
-
-    // this.register( function ( parser ) {
-
-    // 	return new GLTFMaterialsIorExtension( parser );
-
-    // } );
+    this.register(function (parser) {
+      return new GLTFMaterialsIorExtension(parser);
+    });
 
     this.register(function (parser) {
       return new GLTFMaterialsEmissiveStrengthExtension(parser);
     });
 
-    // this.register( function ( parser ) {
+    this.register(function (parser) {
+      return new GLTFMaterialsSpecularExtension(parser);
+    });
 
-    // 	return new GLTFMaterialsSpecularExtension( parser );
-
-    // } );
-
-    // this.register( function ( parser ) {
-
-    // 	return new GLTFMaterialsIridescenceExtension( parser );
-
-    // } );
+    this.register(function (parser) {
+      return new GLTFMaterialsIridescenceExtension(parser);
+    });
 
     this.register(function (parser) {
       return new GLTFLightsExtension(parser);
@@ -607,246 +594,209 @@ class GLTFMaterialsEmissiveStrengthExtension {
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_clearcoat
  */
-// class GLTFMaterialsClearcoatExtension {
+class GLTFMaterialsClearcoatExtension {
+  constructor(parser) {
+    this.parser = parser;
+    this.name = EXTENSIONS.KHR_MATERIALS_CLEARCOAT;
+  }
 
-// 	constructor( parser ) {
+  getMaterialType(materialIndex) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		this.parser = parser;
-// 		this.name = EXTENSIONS.KHR_MATERIALS_CLEARCOAT;
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
 
-// 	}
+    return MeshPhysicalMaterial;
+  }
 
-// 	getMaterialType( materialIndex ) {
+  extendMaterialParams(materialIndex, materialParams) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
+      return Promise.resolve();
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) return null;
+    const pending = [];
 
-// 		return MeshPhysicalMaterial;
+    const extension = materialDef.extensions[this.name];
 
-// 	}
+    if (extension.clearcoatFactor !== undefined) {
+      materialParams.clearcoat = extension.clearcoatFactor;
+    }
 
-// 	extendMaterialParams( materialIndex, materialParams ) {
+    if (extension.clearcoatTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(materialParams, 'clearcoatMap', extension.clearcoatTexture)
+      );
+    }
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (extension.clearcoatRoughnessFactor !== undefined) {
+      materialParams.clearcoatRoughness = extension.clearcoatRoughnessFactor;
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) {
+    if (extension.clearcoatRoughnessTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(
+          materialParams,
+          'clearcoatRoughnessMap',
+          extension.clearcoatRoughnessTexture
+        )
+      );
+    }
 
-// 			return Promise.resolve();
+    if (extension.clearcoatNormalTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(materialParams, 'clearcoatNormalMap', extension.clearcoatNormalTexture)
+      );
 
-// 		}
+      if (extension.clearcoatNormalTexture.scale !== undefined) {
+        const scale = extension.clearcoatNormalTexture.scale;
 
-// 		const pending = [];
+        materialParams.clearcoatNormalScale = new Vector2(scale, scale);
+      }
+    }
 
-// 		const extension = materialDef.extensions[ this.name ];
-
-// 		if ( extension.clearcoatFactor !== undefined ) {
-
-// 			materialParams.clearcoat = extension.clearcoatFactor;
-
-// 		}
-
-// 		if ( extension.clearcoatTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'clearcoatMap', extension.clearcoatTexture ) );
-
-// 		}
-
-// 		if ( extension.clearcoatRoughnessFactor !== undefined ) {
-
-// 			materialParams.clearcoatRoughness = extension.clearcoatRoughnessFactor;
-
-// 		}
-
-// 		if ( extension.clearcoatRoughnessTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'clearcoatRoughnessMap', extension.clearcoatRoughnessTexture ) );
-
-// 		}
-
-// 		if ( extension.clearcoatNormalTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'clearcoatNormalMap', extension.clearcoatNormalTexture ) );
-
-// 			if ( extension.clearcoatNormalTexture.scale !== undefined ) {
-
-// 				const scale = extension.clearcoatNormalTexture.scale;
-
-// 				materialParams.clearcoatNormalScale = new Vector2( scale, scale );
-
-// 			}
-
-// 		}
-
-// 		return Promise.all( pending );
-
-// 	}
-
-// }
+    return Promise.all(pending);
+  }
+}
 
 /**
  * Iridescence Materials Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_iridescence
  */
-// class GLTFMaterialsIridescenceExtension {
+class GLTFMaterialsIridescenceExtension {
+  constructor(parser) {
+    this.parser = parser;
+    this.name = EXTENSIONS.KHR_MATERIALS_IRIDESCENCE;
+  }
 
-// 	constructor( parser ) {
+  getMaterialType(materialIndex) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		this.parser = parser;
-// 		this.name = EXTENSIONS.KHR_MATERIALS_IRIDESCENCE;
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
 
-// 	}
+    return MeshPhysicalMaterial;
+  }
 
-// 	getMaterialType( materialIndex ) {
+  extendMaterialParams(materialIndex, materialParams) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
+      return Promise.resolve();
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) return null;
+    const pending = [];
 
-// 		return MeshPhysicalMaterial;
+    const extension = materialDef.extensions[this.name];
 
-// 	}
+    if (extension.iridescenceFactor !== undefined) {
+      materialParams.iridescence = extension.iridescenceFactor;
+    }
 
-// 	extendMaterialParams( materialIndex, materialParams ) {
+    if (extension.iridescenceTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(materialParams, 'iridescenceMap', extension.iridescenceTexture)
+      );
+    }
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (extension.iridescenceIor !== undefined) {
+      materialParams.iridescenceIOR = extension.iridescenceIor;
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) {
+    if (materialParams.iridescenceThicknessRange === undefined) {
+      materialParams.iridescenceThicknessRange = [100, 400];
+    }
 
-// 			return Promise.resolve();
+    if (extension.iridescenceThicknessMinimum !== undefined) {
+      materialParams.iridescenceThicknessRange[0] = extension.iridescenceThicknessMinimum;
+    }
 
-// 		}
+    if (extension.iridescenceThicknessMaximum !== undefined) {
+      materialParams.iridescenceThicknessRange[1] = extension.iridescenceThicknessMaximum;
+    }
 
-// 		const pending = [];
+    if (extension.iridescenceThicknessTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(
+          materialParams,
+          'iridescenceThicknessMap',
+          extension.iridescenceThicknessTexture
+        )
+      );
+    }
 
-// 		const extension = materialDef.extensions[ this.name ];
-
-// 		if ( extension.iridescenceFactor !== undefined ) {
-
-// 			materialParams.iridescence = extension.iridescenceFactor;
-
-// 		}
-
-// 		if ( extension.iridescenceTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'iridescenceMap', extension.iridescenceTexture ) );
-
-// 		}
-
-// 		if ( extension.iridescenceIor !== undefined ) {
-
-// 			materialParams.iridescenceIOR = extension.iridescenceIor;
-
-// 		}
-
-// 		if ( materialParams.iridescenceThicknessRange === undefined ) {
-
-// 			materialParams.iridescenceThicknessRange = [ 100, 400 ];
-
-// 		}
-
-// 		if ( extension.iridescenceThicknessMinimum !== undefined ) {
-
-// 			materialParams.iridescenceThicknessRange[ 0 ] = extension.iridescenceThicknessMinimum;
-
-// 		}
-
-// 		if ( extension.iridescenceThicknessMaximum !== undefined ) {
-
-// 			materialParams.iridescenceThicknessRange[ 1 ] = extension.iridescenceThicknessMaximum;
-
-// 		}
-
-// 		if ( extension.iridescenceThicknessTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'iridescenceThicknessMap', extension.iridescenceThicknessTexture ) );
-
-// 		}
-
-// 		return Promise.all( pending );
-
-// 	}
-
-// }
+    return Promise.all(pending);
+  }
+}
 
 /**
  * Sheen Materials Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_sheen
  */
-// class GLTFMaterialsSheenExtension {
+class GLTFMaterialsSheenExtension {
+  constructor(parser) {
+    this.parser = parser;
+    this.name = EXTENSIONS.KHR_MATERIALS_SHEEN;
+  }
 
-// 	constructor( parser ) {
+  getMaterialType(materialIndex) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		this.parser = parser;
-// 		this.name = EXTENSIONS.KHR_MATERIALS_SHEEN;
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
 
-// 	}
+    return MeshPhysicalMaterial;
+  }
 
-// 	getMaterialType( materialIndex ) {
+  extendMaterialParams(materialIndex, materialParams) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
+      return Promise.resolve();
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) return null;
+    const pending = [];
 
-// 		return MeshPhysicalMaterial;
+    materialParams.sheenColor = new Color(0, 0, 0);
+    materialParams.sheenRoughness = 0;
+    materialParams.sheen = 1;
 
-// 	}
+    const extension = materialDef.extensions[this.name];
 
-// 	extendMaterialParams( materialIndex, materialParams ) {
+    if (extension.sheenColorFactor !== undefined) {
+      materialParams.sheenColor.fromArray(extension.sheenColorFactor);
+    }
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (extension.sheenRoughnessFactor !== undefined) {
+      materialParams.sheenRoughness = extension.sheenRoughnessFactor;
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) {
+    if (extension.sheenColorTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(
+          materialParams,
+          'sheenColorMap',
+          extension.sheenColorTexture,
+          SRGBColorSpace
+        )
+      );
+    }
 
-// 			return Promise.resolve();
+    if (extension.sheenRoughnessTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(materialParams, 'sheenRoughnessMap', extension.sheenRoughnessTexture)
+      );
+    }
 
-// 		}
-
-// 		const pending = [];
-
-// 		materialParams.sheenColor = new Color( 0, 0, 0 );
-// 		materialParams.sheenRoughness = 0;
-// 		materialParams.sheen = 1;
-
-// 		const extension = materialDef.extensions[ this.name ];
-
-// 		if ( extension.sheenColorFactor !== undefined ) {
-
-// 			materialParams.sheenColor.fromArray( extension.sheenColorFactor );
-
-// 		}
-
-// 		if ( extension.sheenRoughnessFactor !== undefined ) {
-
-// 			materialParams.sheenRoughness = extension.sheenRoughnessFactor;
-
-// 		}
-
-// 		if ( extension.sheenColorTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'sheenColorMap', extension.sheenColorTexture, SRGBColorSpace ) );
-
-// 		}
-
-// 		if ( extension.sheenRoughnessTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'sheenRoughnessMap', extension.sheenRoughnessTexture ) );
-
-// 		}
-
-// 		return Promise.all( pending );
-
-// 	}
-
-// }
+    return Promise.all(pending);
+  }
+}
 
 /**
  * Transmission Materials Extension
@@ -854,226 +804,191 @@ class GLTFMaterialsEmissiveStrengthExtension {
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_transmission
  * Draft: https://github.com/KhronosGroup/glTF/pull/1698
  */
-// class GLTFMaterialsTransmissionExtension {
+class GLTFMaterialsTransmissionExtension {
+  constructor(parser) {
+    this.parser = parser;
+    this.name = EXTENSIONS.KHR_MATERIALS_TRANSMISSION;
+  }
 
-// 	constructor( parser ) {
+  getMaterialType(materialIndex) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		this.parser = parser;
-// 		this.name = EXTENSIONS.KHR_MATERIALS_TRANSMISSION;
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
 
-// 	}
+    return MeshPhysicalMaterial;
+  }
 
-// 	getMaterialType( materialIndex ) {
+  extendMaterialParams(materialIndex, materialParams) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
+      return Promise.resolve();
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) return null;
+    const pending = [];
 
-// 		return MeshPhysicalMaterial;
+    const extension = materialDef.extensions[this.name];
 
-// 	}
+    if (extension.transmissionFactor !== undefined) {
+      materialParams.transmission = extension.transmissionFactor;
+    }
 
-// 	extendMaterialParams( materialIndex, materialParams ) {
+    if (extension.transmissionTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(materialParams, 'transmissionMap', extension.transmissionTexture)
+      );
+    }
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
-
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) {
-
-// 			return Promise.resolve();
-
-// 		}
-
-// 		const pending = [];
-
-// 		const extension = materialDef.extensions[ this.name ];
-
-// 		if ( extension.transmissionFactor !== undefined ) {
-
-// 			materialParams.transmission = extension.transmissionFactor;
-
-// 		}
-
-// 		if ( extension.transmissionTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'transmissionMap', extension.transmissionTexture ) );
-
-// 		}
-
-// 		return Promise.all( pending );
-
-// 	}
-
-// }
+    return Promise.all(pending);
+  }
+}
 
 /**
  * Materials Volume Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_volume
  */
-// class GLTFMaterialsVolumeExtension {
+class GLTFMaterialsVolumeExtension {
+  constructor(parser) {
+    this.parser = parser;
+    this.name = EXTENSIONS.KHR_MATERIALS_VOLUME;
+  }
 
-// 	constructor( parser ) {
+  getMaterialType(materialIndex) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		this.parser = parser;
-// 		this.name = EXTENSIONS.KHR_MATERIALS_VOLUME;
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
 
-// 	}
+    return MeshPhysicalMaterial;
+  }
 
-// 	getMaterialType( materialIndex ) {
+  extendMaterialParams(materialIndex, materialParams) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
+      return Promise.resolve();
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) return null;
+    const pending = [];
 
-// 		return MeshPhysicalMaterial;
+    const extension = materialDef.extensions[this.name];
 
-// 	}
+    materialParams.thickness =
+      extension.thicknessFactor !== undefined ? extension.thicknessFactor : 0;
 
-// 	extendMaterialParams( materialIndex, materialParams ) {
+    if (extension.thicknessTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(materialParams, 'thicknessMap', extension.thicknessTexture)
+      );
+    }
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    materialParams.attenuationDistance = extension.attenuationDistance || Infinity;
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) {
+    const colorArray = extension.attenuationColor || [1, 1, 1];
+    materialParams.attenuationColor = new Color(colorArray[0], colorArray[1], colorArray[2]);
 
-// 			return Promise.resolve();
-
-// 		}
-
-// 		const pending = [];
-
-// 		const extension = materialDef.extensions[ this.name ];
-
-// 		materialParams.thickness = extension.thicknessFactor !== undefined ? extension.thicknessFactor : 0;
-
-// 		if ( extension.thicknessTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'thicknessMap', extension.thicknessTexture ) );
-
-// 		}
-
-// 		materialParams.attenuationDistance = extension.attenuationDistance || Infinity;
-
-// 		const colorArray = extension.attenuationColor || [ 1, 1, 1 ];
-// 		materialParams.attenuationColor = new Color( colorArray[ 0 ], colorArray[ 1 ], colorArray[ 2 ] );
-
-// 		return Promise.all( pending );
-
-// 	}
-
-// }
+    return Promise.all(pending);
+  }
+}
 
 /**
  * Materials ior Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_ior
  */
-// class GLTFMaterialsIorExtension {
+class GLTFMaterialsIorExtension {
+  constructor(parser) {
+    this.parser = parser;
+    this.name = EXTENSIONS.KHR_MATERIALS_IOR;
+  }
 
-// 	constructor( parser ) {
+  getMaterialType(materialIndex) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		this.parser = parser;
-// 		this.name = EXTENSIONS.KHR_MATERIALS_IOR;
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
 
-// 	}
+    return MeshPhysicalMaterial;
+  }
 
-// 	getMaterialType( materialIndex ) {
+  extendMaterialParams(materialIndex, materialParams) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
+      return Promise.resolve();
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) return null;
+    const extension = materialDef.extensions[this.name];
 
-// 		return MeshPhysicalMaterial;
+    materialParams.ior = extension.ior !== undefined ? extension.ior : 1.5;
 
-// 	}
-
-// 	extendMaterialParams( materialIndex, materialParams ) {
-
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
-
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) {
-
-// 			return Promise.resolve();
-
-// 		}
-
-// 		const extension = materialDef.extensions[ this.name ];
-
-// 		materialParams.ior = extension.ior !== undefined ? extension.ior : 1.5;
-
-// 		return Promise.resolve();
-
-// 	}
-
-// }
+    return Promise.resolve();
+  }
+}
 
 /**
  * Materials specular Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_specular
  */
-// class GLTFMaterialsSpecularExtension {
+class GLTFMaterialsSpecularExtension {
+  constructor(parser) {
+    this.parser = parser;
+    this.name = EXTENSIONS.KHR_MATERIALS_SPECULAR;
+  }
 
-// 	constructor( parser ) {
+  getMaterialType(materialIndex) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		this.parser = parser;
-// 		this.name = EXTENSIONS.KHR_MATERIALS_SPECULAR;
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
 
-// 	}
+    return MeshPhysicalMaterial;
+  }
 
-// 	getMaterialType( materialIndex ) {
+  extendMaterialParams(materialIndex, materialParams) {
+    const parser = this.parser;
+    const materialDef = parser.json.materials[materialIndex];
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
+      return Promise.resolve();
+    }
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) return null;
+    const pending = [];
 
-// 		return MeshPhysicalMaterial;
+    const extension = materialDef.extensions[this.name];
 
-// 	}
+    materialParams.specularIntensity =
+      extension.specularFactor !== undefined ? extension.specularFactor : 1.0;
 
-// 	extendMaterialParams( materialIndex, materialParams ) {
+    if (extension.specularTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(materialParams, 'specularIntensityMap', extension.specularTexture)
+      );
+    }
 
-// 		const parser = this.parser;
-// 		const materialDef = parser.json.materials[ materialIndex ];
+    const colorArray = extension.specularColorFactor || [1, 1, 1];
+    materialParams.specularColor = new Color(colorArray[0], colorArray[1], colorArray[2]);
 
-// 		if ( ! materialDef.extensions || ! materialDef.extensions[ this.name ] ) {
+    if (extension.specularColorTexture !== undefined) {
+      pending.push(
+        parser.assignTexture(
+          materialParams,
+          'specularColorMap',
+          extension.specularColorTexture,
+          SRGBColorSpace
+        )
+      );
+    }
 
-// 			return Promise.resolve();
-
-// 		}
-
-// 		const pending = [];
-
-// 		const extension = materialDef.extensions[ this.name ];
-
-// 		materialParams.specularIntensity = extension.specularFactor !== undefined ? extension.specularFactor : 1.0;
-
-// 		if ( extension.specularTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'specularIntensityMap', extension.specularTexture ) );
-
-// 		}
-
-// 		const colorArray = extension.specularColorFactor || [ 1, 1, 1 ];
-// 		materialParams.specularColor = new Color( colorArray[ 0 ], colorArray[ 1 ], colorArray[ 2 ] );
-
-// 		if ( extension.specularColorTexture !== undefined ) {
-
-// 			pending.push( parser.assignTexture( materialParams, 'specularColorMap', extension.specularColorTexture, SRGBColorSpace ) );
-
-// 		}
-
-// 		return Promise.all( pending );
-
-// 	}
-
-// }
+    return Promise.all(pending);
+  }
+}
 
 /**
  * BasisU Texture Extension
@@ -2729,7 +2644,7 @@ class GLTFParser {
    * but reuse of the same glTF material may require multiple materials
    * to accommodate different primitive types, defines, etc. New materials will
    * be created if necessary, and reused from a cache.
-   * @param  {Object3D} mesh Mesh, Line, or Points instance.
+   * @param  {Mesh | Line | Points} mesh Mesh, Line, or Points instance.
    */
   assignFinalMaterial(mesh) {
     const geometry = mesh.geometry;
@@ -3150,7 +3065,7 @@ class GLTFParser {
   /**
    * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#cameras
    * @param {number} cameraIndex
-   * @return {Promise<Camera>}
+   * @return {Promise<PerspectiveCamera | OrthographicCamera>}
    */
   loadCamera(cameraIndex) {
     let camera;

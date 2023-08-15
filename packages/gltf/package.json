@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/gltf",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "glTF library used by @renderlayer packages.",
   "type": "module",
   "module": "./dist/gltf.esm-bundler.js",
@@ -32,7 +32,7 @@
     "@renderlayer/animation": "~0.0.3",
     "@renderlayer/buffers": "~0.0.2",
     "@renderlayer/cameras": "~0.0.3",
-    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/core": "~0.0.4",
     "@renderlayer/interpolants": "~0.0.2",
     "@renderlayer/keyframes": "~0.0.2",
     "@renderlayer/lights": "~0.0.3",
