@@ -635,7 +635,7 @@ function toTrianglesDrawMode(geometry, drawMode) {
 
 /**
  * Calculates the morphed attributes of a morphed/skinned BufferGeometry.
- * Helpful for Raytracing or Decals.
+ * Helpful for Ray tracing or Decals.
  * @param {Mesh | Line | Points} object An instance of Mesh, Line or Points.
  * @return {Object} An Object with original position/normal attributes and morphed ones.
  */
@@ -975,7 +975,7 @@ function toCreasedNormals(geometry, creaseAngle = Math.PI / 3 /* 60 degrees */) 
   const creaseDot = Math.cos(creaseAngle);
   const hashMultiplier = (1 + 1e-10) * 1e2;
 
-  // reusable vertors
+  // reusable vectors
   const verts = [new Vector3(), new Vector3(), new Vector3()];
   const tempVec1 = new Vector3();
   const tempVec2 = new Vector3();
