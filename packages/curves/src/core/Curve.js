@@ -308,6 +308,7 @@ class Curve {
     };
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

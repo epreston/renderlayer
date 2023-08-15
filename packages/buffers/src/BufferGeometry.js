@@ -796,6 +796,7 @@ class BufferGeometry extends EventDispatcher {
     return data;
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

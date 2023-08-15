@@ -72,6 +72,7 @@ class WebGLRenderTarget extends EventDispatcher {
     this.scissor.set(0, 0, width, height);
   }
 
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
