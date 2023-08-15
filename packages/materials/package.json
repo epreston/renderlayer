@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/materials",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Material library used by @renderlayer packages.",
   "type": "module",
   "module": "./dist/materials.esm-bundler.js",
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/materials#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/core": "~0.0.4",
     "@renderlayer/math": "~0.0.6",
     "@renderlayer/shaders": "~0.0.3",
     "@renderlayer/shared": "~0.0.4"
