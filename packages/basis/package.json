@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "name": "@renderlayer/basis",
+  "version": "0.0.1",
+  "description": "@renderlayer/basis",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "buildOptions": {
+    "formats": [
+      "esm-bundler"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epreston/renderlayer.git",
+    "directory": "packages/basis"
+  },
+  "keywords": [
+    "renderlayer", "basis"
+  ],
+  "author": "Ed Preston",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epreston/renderlayer/issues"
+  },
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/basis#readme",
+  "dependencies": {
+  }
+}
