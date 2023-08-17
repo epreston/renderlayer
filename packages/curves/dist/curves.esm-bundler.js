@@ -177,6 +177,7 @@ class Curve {
       binormals
     };
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

@@ -748,6 +748,7 @@ class AnimationClip {
     }
     return this;
   }
+  /** @returns {this} */
   clone() {
     const tracks = [];
     for (let i = 0; i < this.tracks.length; i++) {

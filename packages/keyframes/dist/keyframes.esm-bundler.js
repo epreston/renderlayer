@@ -239,6 +239,7 @@ class KeyframeTrack {
     }
     return this;
   }
+  /** @returns {this} */
   clone() {
     const times = arraySlice(this.times, 0);
     const values = arraySlice(this.values, 0);

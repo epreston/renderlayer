@@ -31,6 +31,7 @@ class Camera extends Object3D {
     super.updateWorldMatrix(updateParents, updateChildren);
     this.matrixWorldInverse.copy(this.matrixWorld).invert();
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

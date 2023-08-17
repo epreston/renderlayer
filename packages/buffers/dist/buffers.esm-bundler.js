@@ -274,6 +274,7 @@ class BufferAttribute {
     this.onUploadCallback = callback;
     return this;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor(this.array, this.itemSize).copy(this);
   }
@@ -948,6 +949,7 @@ class BufferGeometry extends EventDispatcher {
     }
     return data;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

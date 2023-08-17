@@ -119,6 +119,7 @@ class Texture extends EventDispatcher {
       this.center.y
     );
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }

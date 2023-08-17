@@ -1832,7 +1832,7 @@ class GLTFParser {
    * but reuse of the same glTF material may require multiple materials
    * to accommodate different primitive types, defines, etc. New materials will
    * be created if necessary, and reused from a cache.
-   * @param  {Object3D} mesh Mesh, Line, or Points instance.
+   * @param  {Mesh | Line | Points} mesh Mesh, Line, or Points instance.
    */
   assignFinalMaterial(mesh) {
     const geometry = mesh.geometry;
@@ -2136,7 +2136,7 @@ class GLTFParser {
   /**
    * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#cameras
    * @param {number} cameraIndex
-   * @return {Promise<Camera>}
+   * @return {Promise<PerspectiveCamera | OrthographicCamera>}
    */
   loadCamera(cameraIndex) {
     let camera;

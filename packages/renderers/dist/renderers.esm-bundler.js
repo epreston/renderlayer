@@ -748,7 +748,7 @@ class WebGLRenderer {
       );
       const programCacheKey = programCache.getProgramCacheKey(parameters2);
       let programs = materialProperties.programs;
-      materialProperties.environment = null;
+      materialProperties.environment = material.isMeshStandardMaterial ? scene.environment : null;
       materialProperties.fog = scene.fog;
       materialProperties.envMap = cubemaps.get(material.envMap || materialProperties.environment);
       if (programs === void 0) {

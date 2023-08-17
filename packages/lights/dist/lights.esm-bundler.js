@@ -127,6 +127,7 @@ class LightShadow {
     this.mapSize.copy(source.mapSize);
     return this;
   }
+  /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
