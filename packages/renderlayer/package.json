@@ -46,7 +46,7 @@
     "@renderlayer/materials": "~0.0.8",
     "@renderlayer/math": "~0.0.7",
     "@renderlayer/objects": "~0.0.3",
-    "@renderlayer/renderers": "~0.0.3",
+    "@renderlayer/renderers": "~0.0.4",
     "@renderlayer/scenes": "~0.0.3",
     "@renderlayer/shaders": "~0.0.4",
     "@renderlayer/shared": "~0.0.4",

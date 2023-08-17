@@ -53,10 +53,6 @@ describe('Renderers', () => {
       // implement
     });
 
-    test.todo('physicallyCorrectLights', () => {
-      // implement
-    });
-
     test.todo('toneMapping', () => {
       // implement
     });

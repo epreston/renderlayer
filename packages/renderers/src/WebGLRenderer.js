@@ -1165,13 +1165,11 @@ class WebGLRenderer {
 
       // always update environment and fog - changing these trigger an getProgram call, but it's possible that the program doesn't change
 
-      // materialProperties.environment = material.isMeshStandardMaterial ? scene.environment : null;
-      materialProperties.environment = null;
-
+      materialProperties.environment = material.isMeshStandardMaterial ? scene.environment : null;
       materialProperties.fog = scene.fog;
-
       // materialProperties.envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(
-
+      //          material.envMap || materialProperties.environment
+      // );
       materialProperties.envMap = cubemaps.get(material.envMap || materialProperties.environment);
 
       if (programs === undefined) {
@@ -1292,7 +1290,9 @@ class WebGLRenderer {
             // ? _currentRenderTarget.texture.colorSpace
             LinearSRGBColorSpace;
 
-      // const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(material.envMap || environment);
+      // const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(
+      //  material.envMap || environment
+      //);
       const envMap = cubemaps.get(material.envMap || environment);
 
       const vertexAlphas =
