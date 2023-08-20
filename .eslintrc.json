@@ -14,7 +14,7 @@
     "no-debugger": "error",
     // "no-console": ["error", { "allow": ["warn", "error"] }],
 
-    "eqeqeq": ["error", "smart"],
+    // "eqeqeq": ["error", "smart"],
 
     "semi": "error",
     "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],

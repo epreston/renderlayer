@@ -18,7 +18,7 @@
     "build": "node scripts/build.js",
     "check": "node scripts/circular.js",
     "size": "cd apps/size-check && vite build && node brotli",
-    "lint": "eslint --ext .js --report-unused-disable-directives --env-info .",
+    "lint": "eslint --ext .js --report-unused-disable-directives .",
     "test": "vitest run",
     "test-watch": "vitest",
     "test-coverage": "vitest run --coverage.enabled",
