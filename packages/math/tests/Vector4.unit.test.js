@@ -3,7 +3,7 @@ import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { Vector4 } from '../src/Vector4.js';
 import { Matrix4 } from '../src/Matrix4.js';
 
-// import { BufferAttribute } from '@renderlayer/buffers';
+import { BufferAttribute } from '@renderlayer/buffers';
 
 import { x, y, z, w, eps } from './math-constants.js';
 
@@ -551,19 +551,21 @@ describe('Maths', () => {
       expect(array[4]).toStrictEqual(w);
     });
 
-    test.todo('fromBufferAttribute', () => {
-      // const a = new Vector4();
-      // const attr = new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6, 7, 8]), 4);
-      // a.fromBufferAttribute(attr, 0);
-      // expect(a.x).toStrictEqual(1);
-      // expect(a.y).toStrictEqual(2);
-      // expect(a.z).toStrictEqual(3);
-      // expect(a.w).toStrictEqual(4);
-      // a.fromBufferAttribute(attr, 1);
-      // expect(a.x).toStrictEqual(5);
-      // expect(a.y).toStrictEqual(6);
-      // expect(a.z).toStrictEqual(7);
-      // expect(a.w).toStrictEqual(8);
+    test('fromBufferAttribute', () => {
+      const a = new Vector4();
+      const attr = new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6, 7, 8]), 4);
+
+      a.fromBufferAttribute(attr, 0);
+      expect(a.x).toStrictEqual(1);
+      expect(a.y).toStrictEqual(2);
+      expect(a.z).toStrictEqual(3);
+      expect(a.w).toStrictEqual(4);
+
+      a.fromBufferAttribute(attr, 1);
+      expect(a.x).toStrictEqual(5);
+      expect(a.y).toStrictEqual(6);
+      expect(a.z).toStrictEqual(7);
+      expect(a.w).toStrictEqual(8);
     });
 
     test('setX,setY,setZ,setW', () => {
