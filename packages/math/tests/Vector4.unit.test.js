@@ -11,16 +11,16 @@ describe('Maths', () => {
   describe('Vector4', () => {
     test('Instancing', () => {
       let a = new Vector4();
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-      expect(a.z == 0).toBeTruthy();
-      expect(a.w == 1).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      expect(a.z).toBe(0);
+      expect(a.w).toBe(1);
 
       a = new Vector4(x, y, z, w);
-      expect(a.x === x).toBeTruthy();
-      expect(a.y === y).toBeTruthy();
-      expect(a.z === z).toBeTruthy();
-      expect(a.w === w).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
+      expect(a.z).toBe(z);
+      expect(a.w).toBe(w);
     });
 
     test('isVector4', () => {
@@ -38,10 +38,10 @@ describe('Maths', () => {
       expect(a.w).to.equal(1);
 
       a.set(x, y, z, w);
-      expect(a.x == x).toBeTruthy();
-      expect(a.y == y).toBeTruthy();
-      expect(a.z == z).toBeTruthy();
-      expect(a.w == w).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
+      expect(a.z).toBe(z);
+      expect(a.w).toBe(w);
     });
 
     test('setScalar', () => {
@@ -56,34 +56,34 @@ describe('Maths', () => {
 
     test('setX', () => {
       const a = new Vector4();
-      expect(a.x == 0).toBeTruthy();
+      expect(a.x).toBe(0);
 
       a.setX(x);
-      expect(a.x == x).toBeTruthy();
+      expect(a.x).toBe(x);
     });
 
     test('setY', () => {
       const a = new Vector4();
-      expect(a.y == 0).toBeTruthy();
+      expect(a.y).toBe(0);
 
       a.setY(y);
-      expect(a.y == y).toBeTruthy();
+      expect(a.y).toBe(y);
     });
 
     test('setZ', () => {
       const a = new Vector4();
-      expect(a.z == 0).toBeTruthy();
+      expect(a.z).toBe(0);
 
       a.setZ(z);
-      expect(a.z == z).toBeTruthy();
+      expect(a.z).toBe(z);
     });
 
     test('setW', () => {
       const a = new Vector4();
-      expect(a.w == 1).toBeTruthy();
+      expect(a.w).toBe(1);
 
       a.setW(w);
-      expect(a.w == w).toBeTruthy();
+      expect(a.w).toBe(w);
     });
 
     test.todo('setComponent', () => {
@@ -115,20 +115,20 @@ describe('Maths', () => {
       const a = new Vector4(x, y, z, w);
       const b = new Vector4().copy(a);
 
-      expect(b.x == x).toBeTruthy();
-      expect(b.y == y).toBeTruthy();
-      expect(b.z == z).toBeTruthy();
-      expect(b.w == w).toBeTruthy();
+      expect(b.x).toBe(x);
+      expect(b.y).toBe(y);
+      expect(b.z).toBe(z);
+      expect(b.w).toBe(w);
 
       // ensure that it is a true copy
       a.x = 0;
       a.y = -1;
       a.z = -2;
       a.w = -3;
-      expect(b.x == x).toBeTruthy();
-      expect(b.y == y).toBeTruthy();
-      expect(b.z == z).toBeTruthy();
-      expect(b.w == w).toBeTruthy();
+      expect(b.x).toBe(x);
+      expect(b.y).toBe(y);
+      expect(b.z).toBe(z);
+      expect(b.w).toBe(w);
     });
 
     test('add', () => {
@@ -136,10 +136,10 @@ describe('Maths', () => {
       const b = new Vector4(-x, -y, -z, -w);
 
       a.add(b);
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-      expect(a.z == 0).toBeTruthy();
-      expect(a.w == 0).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      expect(a.z).toBe(0);
+      expect(a.w).toBe(0);
     });
 
     test('addScalar', () => {
@@ -199,10 +199,10 @@ describe('Maths', () => {
       const a = new Vector4(x, y, z, w);
       const c = new Vector4().subVectors(a, a);
 
-      expect(c.x == 0).toBeTruthy();
-      expect(c.y == 0).toBeTruthy();
-      expect(c.z == 0).toBeTruthy();
-      expect(c.w == 0).toBeTruthy();
+      expect(c.x).toBe(0);
+      expect(c.y).toBe(0);
+      expect(c.z).toBe(0);
+      expect(c.w).toBe(0);
     });
 
     test('multiply', () => {
@@ -365,10 +365,10 @@ describe('Maths', () => {
       const a = new Vector4(x, y, z, w);
 
       a.negate();
-      expect(a.x == -x).toBeTruthy();
-      expect(a.y == -y).toBeTruthy();
-      expect(a.z == -z).toBeTruthy();
-      expect(a.w == -w).toBeTruthy();
+      expect(a.x).toBe(-x);
+      expect(a.y).toBe(-y);
+      expect(a.z).toBe(-z);
+      expect(a.w).toBe(-w);
     });
 
     test('dot', () => {
@@ -377,10 +377,10 @@ describe('Maths', () => {
       const c = new Vector4(0, 0, 0, 0);
 
       let result = a.dot(b);
-      expect(result == -x * x - y * y - z * z - w * w).toBeTruthy();
+      expect(result).toBe(-x * x - y * y - z * z - w * w);
 
       result = a.dot(c);
-      expect(result == 0).toBeTruthy();
+      expect(result).toBe(0);
     });
 
     test('lengthSq', () => {
@@ -414,16 +414,14 @@ describe('Maths', () => {
       const d = new Vector4(0, 0, 0, w);
       const e = new Vector4(0, 0, 0, 0);
 
-      expect(a.manhattanLength() == x).toBeTruthy();
-      expect(b.manhattanLength() == y).toBeTruthy();
-      expect(c.manhattanLength() == z).toBeTruthy();
-      expect(d.manhattanLength() == w).toBeTruthy();
-      expect(e.manhattanLength() == 0).toBeTruthy();
+      expect(a.manhattanLength()).toBe(x);
+      expect(b.manhattanLength()).toBe(y);
+      expect(c.manhattanLength()).toBe(z);
+      expect(d.manhattanLength()).toBe(w);
+      expect(e.manhattanLength()).toBe(0);
 
       a.set(x, y, z, w);
-      expect(
-        a.manhattanLength() == Math.abs(x) + Math.abs(y) + Math.abs(z) + Math.abs(w)
-      ).toBeTruthy();
+      expect(a.manhattanLength()).toBe(Math.abs(x) + Math.abs(y) + Math.abs(z) + Math.abs(w));
     });
 
     test('normalize', () => {
@@ -433,34 +431,34 @@ describe('Maths', () => {
       const d = new Vector4(0, 0, 0, -w);
 
       a.normalize();
-      expect(a.length() == 1).toBeTruthy();
-      expect(a.x == 1).toBeTruthy();
+      expect(a.length()).toBe(1);
+      expect(a.x).toBe(1);
 
       b.normalize();
-      expect(b.length() == 1).toBeTruthy();
-      expect(b.y == -1).toBeTruthy();
+      expect(b.length()).toBe(1);
+      expect(b.y).toBe(-1);
 
       c.normalize();
-      expect(c.length() == 1).toBeTruthy();
-      expect(c.z == 1).toBeTruthy();
+      expect(c.length()).toBe(1);
+      expect(c.z).toBe(1);
 
       d.normalize();
-      expect(d.length() == 1).toBeTruthy();
-      expect(d.w == -1).toBeTruthy();
+      expect(d.length()).toBe(1);
+      expect(d.w).toBe(-1);
     });
 
     test('setLength', () => {
       let a = new Vector4(x, 0, 0, 0);
-      expect(a.length() == x).toBeTruthy();
+      expect(a.length()).toBe(x);
 
       a.setLength(y);
-      expect(a.length() == y).toBeTruthy();
+      expect(a.length()).toBe(y);
 
       a = new Vector4(0, 0, 0, 0);
-      expect(a.length() == 0).toBeTruthy();
+      expect(a.length()).toBe(0);
 
       a.setLength(y);
-      expect(a.length() == 0).toBeTruthy();
+      expect(a.length()).toBe(0);
 
       a.setLength();
       expect(isNaN(a.length())).toBeTruthy();
@@ -493,19 +491,19 @@ describe('Maths', () => {
       const a = new Vector4(x, 0, z, 0);
       const b = new Vector4(0, -y, 0, -w);
 
-      expect(a.x != b.x).toBeTruthy();
-      expect(a.y != b.y).toBeTruthy();
-      expect(a.z != b.z).toBeTruthy();
-      expect(a.w != b.w).toBeTruthy();
+      expect(a.x).not.toBe(b.x);
+      expect(a.y).not.toBe(b.y);
+      expect(a.z).not.toBe(b.z);
+      expect(a.w).not.toBe(b.w);
 
       expect(!a.equals(b)).toBeTruthy();
       expect(!b.equals(a)).toBeTruthy();
 
       a.copy(b);
-      expect(a.x == b.x).toBeTruthy();
-      expect(a.y == b.y).toBeTruthy();
-      expect(a.z == b.z).toBeTruthy();
-      expect(a.w == b.w).toBeTruthy();
+      expect(a.x).toBe(b.x);
+      expect(a.y).toBe(b.y);
+      expect(a.z).toBe(b.z);
+      expect(a.w).toBe(b.w);
 
       expect(a.equals(b)).toBeTruthy();
       expect(b.equals(a)).toBeTruthy();
@@ -556,13 +554,11 @@ describe('Maths', () => {
     test.todo('fromBufferAttribute', () => {
       // const a = new Vector4();
       // const attr = new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6, 7, 8]), 4);
-      //
       // a.fromBufferAttribute(attr, 0);
       // expect(a.x).toStrictEqual(1);
       // expect(a.y).toStrictEqual(2);
       // expect(a.z).toStrictEqual(3);
       // expect(a.w).toStrictEqual(4);
-      //
       // a.fromBufferAttribute(attr, 1);
       // expect(a.x).toStrictEqual(5);
       // expect(a.y).toStrictEqual(6);
@@ -572,39 +568,39 @@ describe('Maths', () => {
 
     test('setX,setY,setZ,setW', () => {
       const a = new Vector4();
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-      expect(a.z == 0).toBeTruthy();
-      expect(a.w == 1).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      expect(a.z).toBe(0);
+      expect(a.w).toBe(1);
 
       a.setX(x);
       a.setY(y);
       a.setZ(z);
       a.setW(w);
 
-      expect(a.x == x).toBeTruthy();
-      expect(a.y == y).toBeTruthy();
-      expect(a.z == z).toBeTruthy();
-      expect(a.w == w).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
+      expect(a.z).toBe(z);
+      expect(a.w).toBe(w);
     });
 
     test('setComponent,getComponent', () => {
       const a = new Vector4();
 
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-      expect(a.z == 0).toBeTruthy();
-      expect(a.w == 1).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      expect(a.z).toBe(0);
+      expect(a.w).toBe(1);
 
       a.setComponent(0, 1);
       a.setComponent(1, 2);
       a.setComponent(2, 3);
       a.setComponent(3, 4);
 
-      expect(a.getComponent(0) == 1).toBeTruthy();
-      expect(a.getComponent(1) == 2).toBeTruthy();
-      expect(a.getComponent(2) == 3).toBeTruthy();
-      expect(a.getComponent(3) == 4).toBeTruthy();
+      expect(a.getComponent(0)).toBe(1);
+      expect(a.getComponent(1)).toBe(2);
+      expect(a.getComponent(2)).toBe(3);
+      expect(a.getComponent(3)).toBe(4);
     });
 
     test('setComponent/getComponent exceptions', () => {
@@ -698,20 +694,20 @@ describe('Maths', () => {
       const d = new Vector4(0, 0, 0, w);
       const e = new Vector4(0, 0, 0, 0);
 
-      expect(a.length() == x).toBeTruthy();
-      expect(a.lengthSq() == x * x).toBeTruthy();
+      expect(a.length()).toBe(x);
+      expect(a.lengthSq()).toBe(x * x);
 
-      expect(b.length() == y).toBeTruthy();
-      expect(b.lengthSq() == y * y).toBeTruthy();
+      expect(b.length()).toBe(y);
+      expect(b.lengthSq()).toBe(y * y);
 
-      expect(c.length() == z).toBeTruthy();
-      expect(c.lengthSq() == z * z).toBeTruthy();
+      expect(c.length()).toBe(z);
+      expect(c.lengthSq()).toBe(z * z);
 
-      expect(d.length() == w).toBeTruthy();
-      expect(d.lengthSq() == w * w).toBeTruthy();
+      expect(d.length()).toBe(w);
+      expect(d.lengthSq()).toBe(w * w);
 
-      expect(e.length() == 0).toBeTruthy();
-      expect(e.lengthSq() == 0).toBeTruthy();
+      expect(e.length()).toBe(0);
+      expect(e.lengthSq()).toBe(0);
 
       a.set(x, y, z, w);
       expect(a.length() == Math.sqrt(x * x + y * y + z * z + w * w)).toBeTruthy();
