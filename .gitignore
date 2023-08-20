@@ -71,7 +71,7 @@ dist/*
 stats.html
 
 # Private working notes
-notes/
+/notes
 
 # Temp folder
 temp
