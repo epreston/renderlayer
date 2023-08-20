@@ -1,5 +1,7 @@
 # .eslintignore
 
-**/node_modules/**
-**/dist/**
+node_modules
+dist
+public
+coverage
 /notes
