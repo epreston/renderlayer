@@ -532,12 +532,14 @@ class WebGLRenderer {
     function onContextLost(event) {
       event.preventDefault();
 
+      // eslint-disable-next-line no-console
       console.log('WebGLRenderer: Context Lost.');
 
       _isContextLost = true;
     }
 
     function onContextRestore(/* event */) {
+      // eslint-disable-next-line no-console
       console.log('WebGLRenderer: Context Restored.');
 
       _isContextLost = false;

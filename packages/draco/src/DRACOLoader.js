@@ -301,6 +301,7 @@ class DRACOLoader extends Loader {
   }
 
   debug() {
+    // eslint-disable-next-line no-console
     console.log(
       'Task load: ',
       this.workerPool.map((worker) => worker._taskLoad)

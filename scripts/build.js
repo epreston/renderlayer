@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // @ts-check
 
 // based on vue/core mono repo build system

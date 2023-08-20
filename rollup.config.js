@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // @ts-check
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
