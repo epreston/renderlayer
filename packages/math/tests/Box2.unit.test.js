@@ -289,15 +289,15 @@ describe('Maths', () => {
       const a = new Box2(zero2.clone(), zero2.clone());
       const b = new Box2(one2.clone().negate(), one2.clone());
 
-      expect(a.distanceToPoint(new Vector2(0, 0)) == 0).toBeTruthy();
-      expect(a.distanceToPoint(new Vector2(1, 1)) == Math.sqrt(2)).toBeTruthy();
-      expect(a.distanceToPoint(new Vector2(-1, -1)) == Math.sqrt(2)).toBeTruthy();
+      expect(a.distanceToPoint(new Vector2(0, 0))).toBe(0);
+      expect(a.distanceToPoint(new Vector2(1, 1))).toBe(Math.sqrt(2));
+      expect(a.distanceToPoint(new Vector2(-1, -1))).toBe(Math.sqrt(2));
 
-      expect(b.distanceToPoint(new Vector2(2, 2)) == Math.sqrt(2)).toBeTruthy();
-      expect(b.distanceToPoint(new Vector2(1, 1)) == 0).toBeTruthy();
-      expect(b.distanceToPoint(new Vector2(0, 0)) == 0).toBeTruthy();
-      expect(b.distanceToPoint(new Vector2(-1, -1)) == 0).toBeTruthy();
-      expect(b.distanceToPoint(new Vector2(-2, -2)) == Math.sqrt(2)).toBeTruthy();
+      expect(b.distanceToPoint(new Vector2(2, 2))).toBe(Math.sqrt(2));
+      expect(b.distanceToPoint(new Vector2(1, 1))).toBe(0);
+      expect(b.distanceToPoint(new Vector2(0, 0))).toBe(0);
+      expect(b.distanceToPoint(new Vector2(-1, -1))).toBe(0);
+      expect(b.distanceToPoint(new Vector2(-2, -2))).toBe(Math.sqrt(2));
     });
 
     test('intersect', () => {
