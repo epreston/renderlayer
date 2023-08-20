@@ -1047,40 +1047,40 @@ describe('Core', () => {
 
       // prettier-ignore
       const gold = {
-				'metadata': {
-					'version': 4.5,
-					'type': 'Object',
-					'generator': 'Object3D.toJSON'
+				metadata: {
+					version: 4.5,
+					type: 'Object',
+					generator: 'Object3D.toJSON'
 				},
-				'object': {
-					'uuid': '0A1E4F43-CB5B-4097-8F82-DC2969C0B8C2',
-					'type': 'Object3D',
-					'name': 'a\'s name',
-					'castShadow': true,
-					'receiveShadow': true,
-					'visible': false,
-					'userData': { 'foo': 'bar' },
-					'layers': 1,
-					'matrix': [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
-					'children': [
+				object: {
+					uuid: '0A1E4F43-CB5B-4097-8F82-DC2969C0B8C2',
+					type: 'Object3D',
+					name: 'a\'s name',
+					castShadow: true,
+					receiveShadow: true,
+					visible: false,
+					userData: { foo: 'bar' },
+					layers: 1,
+					matrix: [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
+					children: [
 						{
-							'uuid': '5D4E9AE8-DA61-4912-A575-71A5BE3D72CD',
-							'type': 'Object3D',
-							'layers': 1,
-							'matrix': [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
-							'children': [
+							uuid: '5D4E9AE8-DA61-4912-A575-71A5BE3D72CD',
+							type: 'Object3D',
+							layers: 1,
+							matrix: [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+							children: [
 								{
-									'uuid': 'B43854B3-E970-4E85-BD41-AAF8D7BFA189',
-									'type': 'Object3D',
-									'layers': 1,
-									'matrix': [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
-									'up': [ 0, 1, 0 ]
+									uuid: 'B43854B3-E970-4E85-BD41-AAF8D7BFA189',
+									type: 'Object3D',
+									layers: 1,
+									matrix: [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+									up: [ 0, 1, 0 ]
 								}
 							],
-							'up': [ 0, 1, 0 ]
+							up: [ 0, 1, 0 ]
 						}
 					],
-					'up': [ 1, 0, 0 ]
+					up: [ 1, 0, 0 ]
 				}
 			};
 
