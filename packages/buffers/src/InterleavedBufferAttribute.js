@@ -178,7 +178,7 @@ class InterleavedBufferAttribute {
 
   clone(data) {
     if (data === undefined) {
-      console.log(
+      console.warn(
         'InterleavedBufferAttribute.clone(): Cloning an interleaved buffer attribute will de-interleave buffer data.'
       );
 
@@ -213,7 +213,7 @@ class InterleavedBufferAttribute {
 
   toJSON(data) {
     if (data === undefined) {
-      console.log(
+      console.warn(
         'InterleavedBufferAttribute.toJSON(): Serializing an interleaved buffer attribute will de-interleave buffer data.'
       );
 
