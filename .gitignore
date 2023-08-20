@@ -75,3 +75,7 @@ notes/
 
 # Temp folder
 temp
+
+# ignore non-npm lockfiles
+pnpm-lock.yaml
+yarn.lock
