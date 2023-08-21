@@ -1,7 +1,7 @@
 import { Object3D } from '@renderlayer/core';
-import { BufferGeometry, InstancedBufferAttribute, Float32BufferAttribute } from '@renderlayer/buffers';
+import { BufferGeometry, InstancedBufferAttribute, Float32BufferAttribute, InterleavedBuffer, InterleavedBufferAttribute } from '@renderlayer/buffers';
 import { Triangle, Vector2, Vector3, Matrix4, Ray, Sphere, Box3, generateUUID, ceilPowerOfTwo, Vector4 } from '@renderlayer/math';
-import { MeshBasicMaterial, LineBasicMaterial, PointsMaterial } from '@renderlayer/materials';
+import { MeshBasicMaterial, LineBasicMaterial, PointsMaterial, SpriteMaterial } from '@renderlayer/materials';
 import { BackSide, FrontSide, RGBAFormat, FloatType } from '@renderlayer/shared';
 import { DataTexture } from '@renderlayer/textures';
 
@@ -25,14 +25,14 @@ const _inverseMatrix$3 = /* @__PURE__ */ new Matrix4();
 const _ray$3 = /* @__PURE__ */ new Ray();
 const _sphere$4 = /* @__PURE__ */ new Sphere();
 const _sphereHitAt = /* @__PURE__ */ new Vector3();
-const _vA = /* @__PURE__ */ new Vector3();
-const _vB = /* @__PURE__ */ new Vector3();
-const _vC = /* @__PURE__ */ new Vector3();
+const _vA$1 = /* @__PURE__ */ new Vector3();
+const _vB$1 = /* @__PURE__ */ new Vector3();
+const _vC$1 = /* @__PURE__ */ new Vector3();
 const _tempA = /* @__PURE__ */ new Vector3();
 const _morphA = /* @__PURE__ */ new Vector3();
-const _uvA = /* @__PURE__ */ new Vector2();
-const _uvB = /* @__PURE__ */ new Vector2();
-const _uvC = /* @__PURE__ */ new Vector2();
+const _uvA$1 = /* @__PURE__ */ new Vector2();
+const _uvB$1 = /* @__PURE__ */ new Vector2();
+const _uvC$1 = /* @__PURE__ */ new Vector2();
 const _normalA = /* @__PURE__ */ new Vector3();
 const _normalB = /* @__PURE__ */ new Vector3();
 const _normalC = /* @__PURE__ */ new Vector3();
@@ -277,47 +277,47 @@ function checkIntersection(object, material, raycaster, ray, pA, pB, pC, point) 
   };
 }
 function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, normal, a, b, c) {
-  object.getVertexPosition(a, _vA);
-  object.getVertexPosition(b, _vB);
-  object.getVertexPosition(c, _vC);
+  object.getVertexPosition(a, _vA$1);
+  object.getVertexPosition(b, _vB$1);
+  object.getVertexPosition(c, _vC$1);
   const intersection = checkIntersection(
     object,
     material,
     raycaster,
     ray,
-    _vA,
-    _vB,
-    _vC,
+    _vA$1,
+    _vB$1,
+    _vC$1,
     _intersectionPoint
   );
   if (intersection) {
     if (uv) {
-      _uvA.fromBufferAttribute(uv, a);
-      _uvB.fromBufferAttribute(uv, b);
-      _uvC.fromBufferAttribute(uv, c);
+      _uvA$1.fromBufferAttribute(uv, a);
+      _uvB$1.fromBufferAttribute(uv, b);
+      _uvC$1.fromBufferAttribute(uv, c);
       intersection.uv = Triangle.getInterpolation(
         _intersectionPoint,
-        _vA,
-        _vB,
-        _vC,
-        _uvA,
-        _uvB,
-        _uvC,
+        _vA$1,
+        _vB$1,
+        _vC$1,
+        _uvA$1,
+        _uvB$1,
+        _uvC$1,
         new Vector2()
       );
     }
     if (uv1) {
-      _uvA.fromBufferAttribute(uv1, a);
-      _uvB.fromBufferAttribute(uv1, b);
-      _uvC.fromBufferAttribute(uv1, c);
+      _uvA$1.fromBufferAttribute(uv1, a);
+      _uvB$1.fromBufferAttribute(uv1, b);
+      _uvC$1.fromBufferAttribute(uv1, c);
       intersection.uv1 = Triangle.getInterpolation(
         _intersectionPoint,
-        _vA,
-        _vB,
-        _vC,
-        _uvA,
-        _uvB,
-        _uvC,
+        _vA$1,
+        _vB$1,
+        _vC$1,
+        _uvA$1,
+        _uvB$1,
+        _uvC$1,
         new Vector2()
       );
       intersection.uv2 = intersection.uv1;
@@ -328,9 +328,9 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
       _normalC.fromBufferAttribute(normal, c);
       intersection.normal = Triangle.getInterpolation(
         _intersectionPoint,
-        _vA,
-        _vB,
-        _vC,
+        _vA$1,
+        _vB$1,
+        _vC$1,
         _normalA,
         _normalB,
         _normalC,
@@ -347,7 +347,7 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
       normal: new Vector3(),
       materialIndex: 0
     };
-    Triangle.getNormal(_vA, _vB, _vC, face.normal);
+    Triangle.getNormal(_vA$1, _vB$1, _vC$1, face.normal);
     intersection.face = face;
   }
   return intersection;
@@ -633,6 +633,119 @@ class LineSegments extends Line {
       );
     }
     return this;
+  }
+}
+
+const _v1 = /* @__PURE__ */ new Vector3();
+const _v2 = /* @__PURE__ */ new Vector3();
+class LOD extends Object3D {
+  constructor() {
+    super();
+    this._currentLevel = 0;
+    this.type = "LOD";
+    Object.defineProperties(this, {
+      levels: {
+        enumerable: true,
+        value: []
+      },
+      isLOD: {
+        value: true
+      }
+    });
+    this.autoUpdate = true;
+  }
+  copy(source) {
+    super.copy(source, false);
+    const levels = source.levels;
+    for (let i = 0, l = levels.length; i < l; i++) {
+      const level = levels[i];
+      this.addLevel(level.object.clone(), level.distance, level.hysteresis);
+    }
+    this.autoUpdate = source.autoUpdate;
+    return this;
+  }
+  addLevel(object, distance = 0, hysteresis = 0) {
+    distance = Math.abs(distance);
+    const levels = this.levels;
+    let l;
+    for (l = 0; l < levels.length; l++) {
+      if (distance < levels[l].distance) {
+        break;
+      }
+    }
+    levels.splice(l, 0, { distance, hysteresis, object });
+    this.add(object);
+    return this;
+  }
+  getCurrentLevel() {
+    return this._currentLevel;
+  }
+  getObjectForDistance(distance) {
+    const levels = this.levels;
+    if (levels.length > 0) {
+      let i, l;
+      for (i = 1, l = levels.length; i < l; i++) {
+        let levelDistance = levels[i].distance;
+        if (levels[i].object.visible) {
+          levelDistance -= levelDistance * levels[i].hysteresis;
+        }
+        if (distance < levelDistance) {
+          break;
+        }
+      }
+      return levels[i - 1].object;
+    }
+    return null;
+  }
+  raycast(raycaster, intersects) {
+    const levels = this.levels;
+    if (levels.length > 0) {
+      _v1.setFromMatrixPosition(this.matrixWorld);
+      const distance = raycaster.ray.origin.distanceTo(_v1);
+      this.getObjectForDistance(distance).raycast(raycaster, intersects);
+    }
+  }
+  update(camera) {
+    const levels = this.levels;
+    if (levels.length > 1) {
+      _v1.setFromMatrixPosition(camera.matrixWorld);
+      _v2.setFromMatrixPosition(this.matrixWorld);
+      const distance = _v1.distanceTo(_v2) / camera.zoom;
+      levels[0].object.visible = true;
+      let i, l;
+      for (i = 1, l = levels.length; i < l; i++) {
+        let levelDistance = levels[i].distance;
+        if (levels[i].object.visible) {
+          levelDistance -= levelDistance * levels[i].hysteresis;
+        }
+        if (distance >= levelDistance) {
+          levels[i - 1].object.visible = false;
+          levels[i].object.visible = true;
+        } else {
+          break;
+        }
+      }
+      this._currentLevel = i - 1;
+      for (; i < l; i++) {
+        levels[i].object.visible = false;
+      }
+    }
+  }
+  toJSON(meta) {
+    const data = super.toJSON(meta);
+    if (this.autoUpdate === false)
+      data.object.autoUpdate = false;
+    data.object.levels = [];
+    const levels = this.levels;
+    for (let i = 0, l = levels.length; i < l; i++) {
+      const level = levels[i];
+      data.object.levels.push({
+        object: level.object.uuid,
+        distance: level.distance,
+        hysteresis: level.hysteresis
+      });
+    }
+    return data;
   }
 }
 
@@ -1008,4 +1121,135 @@ class SkinnedMesh extends Mesh {
   }
 }
 
-export { Bone, Group, InstancedMesh, Line, LineLoop, LineSegments, Mesh, Points, Skeleton, SkinnedMesh };
+let _geometry;
+const _intersectPoint = /* @__PURE__ */ new Vector3();
+const _worldScale = /* @__PURE__ */ new Vector3();
+const _mvPosition = /* @__PURE__ */ new Vector3();
+const _alignedPosition = /* @__PURE__ */ new Vector2();
+const _rotatedPosition = /* @__PURE__ */ new Vector2();
+const _viewWorldMatrix = /* @__PURE__ */ new Matrix4();
+const _vA = /* @__PURE__ */ new Vector3();
+const _vB = /* @__PURE__ */ new Vector3();
+const _vC = /* @__PURE__ */ new Vector3();
+const _uvA = /* @__PURE__ */ new Vector2();
+const _uvB = /* @__PURE__ */ new Vector2();
+const _uvC = /* @__PURE__ */ new Vector2();
+class Sprite extends Object3D {
+  constructor(material) {
+    super();
+    this.isSprite = true;
+    this.type = "Sprite";
+    if (_geometry === void 0) {
+      _geometry = new BufferGeometry();
+      const float32Array = new Float32Array([
+        -0.5,
+        -0.5,
+        0,
+        0,
+        0,
+        0.5,
+        -0.5,
+        0,
+        1,
+        0,
+        0.5,
+        0.5,
+        0,
+        1,
+        1,
+        -0.5,
+        0.5,
+        0,
+        0,
+        1
+      ]);
+      const interleavedBuffer = new InterleavedBuffer(float32Array, 5);
+      _geometry.setIndex([0, 1, 2, 0, 2, 3]);
+      _geometry.setAttribute(
+        "position",
+        new InterleavedBufferAttribute(interleavedBuffer, 3, 0, false)
+      );
+      _geometry.setAttribute("uv", new InterleavedBufferAttribute(interleavedBuffer, 2, 3, false));
+    }
+    this.geometry = _geometry;
+    this.material = material !== void 0 ? material : new SpriteMaterial();
+    this.center = new Vector2(0.5, 0.5);
+  }
+  raycast(raycaster, intersects) {
+    if (raycaster.camera === null) {
+      console.error(
+        'THREE.Sprite: "Raycaster.camera" needs to be set in order to raycast against sprites.'
+      );
+    }
+    _worldScale.setFromMatrixScale(this.matrixWorld);
+    _viewWorldMatrix.copy(raycaster.camera.matrixWorld);
+    this.modelViewMatrix.multiplyMatrices(raycaster.camera.matrixWorldInverse, this.matrixWorld);
+    _mvPosition.setFromMatrixPosition(this.modelViewMatrix);
+    if (raycaster.camera.isPerspectiveCamera && this.material.sizeAttenuation === false) {
+      _worldScale.multiplyScalar(-_mvPosition.z);
+    }
+    const rotation = this.material.rotation;
+    let sin, cos;
+    if (rotation !== 0) {
+      cos = Math.cos(rotation);
+      sin = Math.sin(rotation);
+    }
+    const center = this.center;
+    transformVertex(_vA.set(-0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+    transformVertex(_vB.set(0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+    transformVertex(_vC.set(0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+    _uvA.set(0, 0);
+    _uvB.set(1, 0);
+    _uvC.set(1, 1);
+    let intersect = raycaster.ray.intersectTriangle(_vA, _vB, _vC, false, _intersectPoint);
+    if (intersect === null) {
+      transformVertex(_vB.set(-0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+      _uvB.set(0, 1);
+      intersect = raycaster.ray.intersectTriangle(_vA, _vC, _vB, false, _intersectPoint);
+      if (intersect === null) {
+        return;
+      }
+    }
+    const distance = raycaster.ray.origin.distanceTo(_intersectPoint);
+    if (distance < raycaster.near || distance > raycaster.far)
+      return;
+    intersects.push({
+      distance,
+      point: _intersectPoint.clone(),
+      uv: Triangle.getInterpolation(
+        _intersectPoint,
+        _vA,
+        _vB,
+        _vC,
+        _uvA,
+        _uvB,
+        _uvC,
+        new Vector2()
+      ),
+      face: null,
+      object: this
+    });
+  }
+  copy(source, recursive) {
+    super.copy(source, recursive);
+    if (source.center !== void 0)
+      this.center.copy(source.center);
+    this.material = source.material;
+    return this;
+  }
+}
+function transformVertex(vertexPosition, mvPosition, center, scale, sin, cos) {
+  _alignedPosition.subVectors(vertexPosition, center).addScalar(0.5).multiply(scale);
+  if (sin !== void 0) {
+    _rotatedPosition.x = cos * _alignedPosition.x - sin * _alignedPosition.y;
+    _rotatedPosition.y = sin * _alignedPosition.x + cos * _alignedPosition.y;
+  } else {
+    _rotatedPosition.copy(_alignedPosition);
+  }
+  vertexPosition.copy(mvPosition);
+  vertexPosition.x += _rotatedPosition.x;
+  vertexPosition.y += _rotatedPosition.y;
+  vertexPosition.applyMatrix4(_viewWorldMatrix);
+}
+
+export { Bone, Group, InstancedMesh, LOD, Line, LineLoop, LineSegments, Mesh, Points, Skeleton, SkinnedMesh, Sprite };
