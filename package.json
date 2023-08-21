@@ -22,8 +22,8 @@
     "test": "vitest run",
     "test-watch": "vitest",
     "test-coverage": "vitest run --coverage.enabled",
-    "format": "prettier --write --cache \"**/*.[tj]s?(x)\"",
-    "format-check": "prettier --check --cache \"**/*.[tj]s?(x)\""
+    "format": "prettier --check --cache \"**/*.[tj]s?(x)\"",
+    "format-fix": "prettier --write --cache \"**/*.[tj]s?(x)\""
   },
   "devDependencies": {
     "@babel/parser": "^7.22.10",
