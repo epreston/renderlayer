@@ -22,7 +22,7 @@ import {
   UVMapping,
   getTypedArray
 } from '@renderlayer/shared';
-import { DataTexture, CubeTexture, Source, Texture } from '@renderlayer/textures';
+import { CubeTexture, DataTexture, Source, Texture } from '@renderlayer/textures';
 
 // import { Shape } from '../extras/core/Shape.js';
 
@@ -31,21 +31,21 @@ import * as Geometries from '@renderlayer/geometries';
 // import { HemisphereLight } from '../lights/HemisphereLight.js';
 // import { LightProbe } from '../lights/LightProbe.js';
 // import { RectAreaLight } from '../lights/RectAreaLight.js';
-import { PointLight, SpotLight, AmbientLight, DirectionalLight } from '@renderlayer/lights';
+import { AmbientLight, DirectionalLight, PointLight, SpotLight } from '@renderlayer/lights';
 
-// import { LOD } from '../objects/LOD.js';
-// import { Sprite } from '../objects/Sprite.js';
 import {
-  InstancedMesh,
   Bone,
+  Group,
+  InstancedMesh,
+  LOD,
   Line,
   LineLoop,
   LineSegments,
+  Mesh,
   Points,
   Skeleton,
   SkinnedMesh,
-  Group,
-  Mesh
+  Sprite
 } from '@renderlayer/objects';
 
 import { BufferGeometryLoader } from './BufferGeometryLoader.js';
@@ -742,10 +742,10 @@ class ObjectLoader extends Loader {
 
         break;
       }
-      // case 'LOD':
-      //   object = new LOD();
+      case 'LOD':
+        object = new LOD();
 
-      //   break;
+        break;
 
       case 'Line':
         object = new Line(getGeometry(data.geometry), getMaterial(data.material));
@@ -768,10 +768,10 @@ class ObjectLoader extends Loader {
 
         break;
 
-      // case 'Sprite':
-      //   object = new Sprite(getMaterial(data.material));
+      case 'Sprite':
+        object = new Sprite(getMaterial(data.material));
 
-      //   break;
+        break;
 
       case 'Group':
         object = new Group();
@@ -842,20 +842,20 @@ class ObjectLoader extends Loader {
       }
     }
 
-    // if (data.type === 'LOD') {
-    //   if (data.autoUpdate !== undefined) object.autoUpdate = data.autoUpdate;
+    if (data.type === 'LOD') {
+      if (data.autoUpdate !== undefined) object.autoUpdate = data.autoUpdate;
 
-    //   const levels = data.levels;
+      const levels = data.levels;
 
-    //   for (let l = 0; l < levels.length; l++) {
-    //     const level = levels[l];
-    //     const child = object.getObjectByProperty('uuid', level.object);
+      for (let l = 0; l < levels.length; l++) {
+        const level = levels[l];
+        const child = object.getObjectByProperty('uuid', level.object);
 
-    //     if (child !== undefined) {
-    //       object.addLevel(child, level.distance, level.hysteresis);
-    //     }
-    //   }
-    // }
+        if (child !== undefined) {
+          object.addLevel(child, level.distance, level.hysteresis);
+        }
+      }
+    }
 
     return object;
   }
