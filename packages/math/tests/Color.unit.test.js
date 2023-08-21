@@ -1,5 +1,6 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
+import { BufferAttribute } from '@renderlayer/buffers';
 import { DisplayP3ColorSpace, SRGBColorSpace } from '@renderlayer/shared';
 import { ColorManagement } from '../src/ColorManagement.js';
 import { eps } from './math-constants.js';
@@ -519,9 +520,19 @@ describe('Maths', () => {
       expect(array[3]).toStrictEqual(b);
     });
 
-    test.todo('fromBufferAttribute', () => {
-      // fromBufferAttribute( attribute, index )
-      // implement
+    test('fromBufferAttribute', () => {
+      const a = new Color();
+      const attr = new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3);
+
+      a.fromBufferAttribute(attr, 0);
+      expect(a.r).toStrictEqual(1);
+      expect(a.g).toStrictEqual(2);
+      expect(a.b).toStrictEqual(3);
+
+      a.fromBufferAttribute(attr, 1);
+      expect(a.r).toStrictEqual(4);
+      expect(a.g).toStrictEqual(5);
+      expect(a.b).toStrictEqual(6);
     });
 
     test('toJSON', () => {
