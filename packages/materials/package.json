@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/materials",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Material library used by @renderlayer packages.",
   "type": "module",
   "module": "./dist/materials.esm-bundler.js",
