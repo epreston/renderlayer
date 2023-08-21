@@ -39,6 +39,10 @@ const _normalC = /* @__PURE__ */ new Vector3();
 const _intersectionPoint = /* @__PURE__ */ new Vector3();
 const _intersectionPointWorld = /* @__PURE__ */ new Vector3();
 class Mesh extends Object3D {
+  /**
+   * @param {BufferGeometry} geometry
+   * @param {import('@renderlayer/materials').Material } material
+   */
   constructor(geometry = new BufferGeometry(), material = new MeshBasicMaterial()) {
     super();
     this.isMesh = true;
