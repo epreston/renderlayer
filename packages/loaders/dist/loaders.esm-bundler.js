@@ -1,7 +1,7 @@
 import { InstancedBufferGeometry, BufferGeometry, BufferAttribute, InterleavedBufferAttribute, InstancedBufferAttribute, InterleavedBuffer } from '@renderlayer/buffers';
 import { Vector3, Sphere, Color, Matrix4, Matrix3, Vector4, Vector2 } from '@renderlayer/math';
 import { getTypedArray, createElementNS, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeUVReflectionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter } from '@renderlayer/shared';
-import { ShadowMaterial, RawShaderMaterial, ShaderMaterial, PointsMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshBasicMaterial, LineBasicMaterial, Material } from '@renderlayer/materials';
+import { ShadowMaterial, SpriteMaterial, RawShaderMaterial, ShaderMaterial, PointsMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshNormalMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshBasicMaterial, LineBasicMaterial, Material } from '@renderlayer/materials';
 import { AnimationClip } from '@renderlayer/animation';
 import { OrthographicCamera, PerspectiveCamera } from '@renderlayer/cameras';
 import { Object3D } from '@renderlayer/core';
@@ -9,7 +9,7 @@ import { Scene, Fog, FogExp2 } from '@renderlayer/scenes';
 import { DataTexture, Source, CubeTexture, Texture } from '@renderlayer/textures';
 import * as Geometries from '@renderlayer/geometries';
 import { SpotLight, PointLight, DirectionalLight, AmbientLight } from '@renderlayer/lights';
-import { Skeleton, Bone, Group, Points, LineSegments, LineLoop, Line, InstancedMesh, Mesh, SkinnedMesh } from '@renderlayer/objects';
+import { Skeleton, Bone, Group, Sprite, Points, LineSegments, LineLoop, Line, LOD, InstancedMesh, Mesh, SkinnedMesh } from '@renderlayer/objects';
 
 const Cache = {
   enabled: false,
@@ -900,7 +900,7 @@ class MaterialLoader extends Loader {
   static createMaterialFromType(type) {
     const materialLib = {
       ShadowMaterial,
-      // SpriteMaterial,
+      SpriteMaterial,
       RawShaderMaterial,
       ShaderMaterial,
       PointsMaterial,
@@ -908,7 +908,7 @@ class MaterialLoader extends Loader {
       MeshStandardMaterial,
       // MeshPhongMaterial,
       // MeshToonMaterial,
-      // MeshNormalMaterial,
+      MeshNormalMaterial,
       // MeshLambertMaterial,
       MeshDepthMaterial,
       MeshDistanceMaterial,
@@ -1442,6 +1442,9 @@ class ObjectLoader extends Loader {
           );
         break;
       }
+      case "LOD":
+        object = new LOD();
+        break;
       case "Line":
         object = new Line(getGeometry(data.geometry), getMaterial(data.material));
         break;
@@ -1454,6 +1457,9 @@ class ObjectLoader extends Loader {
       case "PointCloud":
       case "Points":
         object = new Points(getGeometry(data.geometry), getMaterial(data.material));
+        break;
+      case "Sprite":
+        object = new Sprite(getMaterial(data.material));
         break;
       case "Group":
         object = new Group();
@@ -1522,6 +1528,18 @@ class ObjectLoader extends Loader {
       for (let i = 0; i < objectAnimations.length; i++) {
         const uuid = objectAnimations[i];
         object.animations.push(animations[uuid]);
+      }
+    }
+    if (data.type === "LOD") {
+      if (data.autoUpdate !== void 0)
+        object.autoUpdate = data.autoUpdate;
+      const levels = data.levels;
+      for (let l = 0; l < levels.length; l++) {
+        const level = levels[l];
+        const child = object.getObjectByProperty("uuid", level.object);
+        if (child !== void 0) {
+          object.addLevel(child, level.distance, level.hysteresis);
+        }
       }
     }
     return object;
