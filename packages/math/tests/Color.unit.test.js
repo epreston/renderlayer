@@ -413,19 +413,44 @@ describe('Maths', () => {
       c.setRGB(0, 0, 0);
       c.lerp(c2, 0.2);
 
-      expect(c.r == 0.2).toBeTruthy();
-      expect(c.g == 0.2).toBeTruthy();
-      expect(c.b == 0.2).toBeTruthy();
+      expect(c.r).toBeCloseTo(0.2);
+      expect(c.g).toBeCloseTo(0.2);
+      expect(c.b).toBeCloseTo(0.2);
     });
 
-    test.todo('lerpColors', () => {
-      // lerpColors( color1, color2, alpha )
-      // implement
+    test('lerpColors', () => {
+      const c1 = new Color(0.1, 0.2, 0.3);
+      const c2 = new Color(0.5, 0.6, 0.7);
+      const c3 = new Color();
+
+      c3.lerpColors(c1, c2, 0);
+      expect(c3.r).to.equal(0.1);
+      expect(c3.g).to.equal(0.2);
+      expect(c3.b).to.equal(0.3);
+
+      c3.lerpColors(c1, c2, 0.5);
+      expect(c3.r).to.be.closeTo(0.3, 0.0001);
+      expect(c3.g).to.be.closeTo(0.4, 0.0001);
+      expect(c3.b).to.be.closeTo(0.5, 0.0001);
+
+      c3.lerpColors(c1, c2, 1);
+      expect(c3.r).to.equal(0.5);
+      expect(c3.g).to.equal(0.6);
+      expect(c3.b).to.equal(0.7);
     });
 
-    test.todo('lerpHSL', () => {
-      // lerpHSL( color, alpha )
-      // implement
+    test('lerpHSL', () => {
+      ColorManagement.enabled = false;
+
+      const c = new Color();
+      const c2 = new Color();
+
+      c.setRGB(0, 0, 0);
+      c.lerpHSL(c2, 0.2);
+
+      expect(c.r).toBeCloseTo(0.2);
+      expect(c.g).toBeCloseTo(0.2);
+      expect(c.b).toBeCloseTo(0.2);
     });
 
     test('equals', () => {
