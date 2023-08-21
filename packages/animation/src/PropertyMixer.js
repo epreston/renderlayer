@@ -9,7 +9,7 @@ class PropertyMixer {
 
     // buffer layout: [ incoming | accu0 | accu1 | orig | addAccu | (optional work) ]
     //
-    // interpolators can use .buffer as their .result
+    // Interpolators can use .buffer as their .result
     // the data then goes to 'incoming'
     //
     // 'accu0' and 'accu1' are used frame-interleaved for
