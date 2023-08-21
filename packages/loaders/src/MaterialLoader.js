@@ -1,22 +1,20 @@
 import {
-  // MeshMatcapMaterial,
-  // LineDashedMaterial,
   LineBasicMaterial,
   Material,
   MeshBasicMaterial,
-  MeshPhysicalMaterial,
-  MeshStandardMaterial,
-  // MeshPhongMaterial,
-  // MeshToonMaterial,
-  // MeshNormalMaterial,
   // MeshLambertMaterial,
   MeshDepthMaterial,
   MeshDistanceMaterial,
+  // MeshPhongMaterial,
+  // MeshToonMaterial,
+  MeshNormalMaterial,
+  MeshPhysicalMaterial,
+  MeshStandardMaterial,
   PointsMaterial,
-  ShadowMaterial,
-  // SpriteMaterial,
   RawShaderMaterial,
-  ShaderMaterial
+  ShaderMaterial,
+  ShadowMaterial,
+  SpriteMaterial
 } from '@renderlayer/materials';
 import { Color, Matrix3, Matrix4, Vector2, Vector3, Vector4 } from '@renderlayer/math';
 import { FileLoader } from './FileLoader.js';
@@ -308,7 +306,7 @@ class MaterialLoader extends Loader {
   static createMaterialFromType(type) {
     const materialLib = {
       ShadowMaterial,
-      // SpriteMaterial,
+      SpriteMaterial,
       RawShaderMaterial,
       ShaderMaterial,
       PointsMaterial,
@@ -316,7 +314,7 @@ class MaterialLoader extends Loader {
       MeshStandardMaterial,
       // MeshPhongMaterial,
       // MeshToonMaterial,
-      // MeshNormalMaterial,
+      MeshNormalMaterial,
       // MeshLambertMaterial,
       MeshDepthMaterial,
       MeshDistanceMaterial,
