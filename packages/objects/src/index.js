@@ -4,6 +4,7 @@ export * from './InstancedMesh.js';
 export * from './Line.js';
 export * from './LineLoop.js';
 export * from './LineSegments.js';
+export * from './LOD.js';
 export * from './Mesh.js';
 export * from './Points.js';
 export * from './Skeleton.js';
