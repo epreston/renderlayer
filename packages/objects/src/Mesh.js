@@ -1,6 +1,6 @@
 import { BufferGeometry } from '@renderlayer/buffers';
 import { Object3D } from '@renderlayer/core';
-import { MeshBasicMaterial } from '@renderlayer/materials';
+import { MeshBasicMaterial, Material } from '@renderlayer/materials';
 import { Matrix4, Ray, Sphere, Triangle, Vector2, Vector3 } from '@renderlayer/math';
 import { BackSide, FrontSide } from '@renderlayer/shared';
 
@@ -28,6 +28,10 @@ const _intersectionPoint = /*@__PURE__*/ new Vector3();
 const _intersectionPointWorld = /*@__PURE__*/ new Vector3();
 
 class Mesh extends Object3D {
+  /**
+   * @param {BufferGeometry} geometry
+   * @param {Material} material
+   */
   constructor(geometry = new BufferGeometry(), material = new MeshBasicMaterial()) {
     super();
 
