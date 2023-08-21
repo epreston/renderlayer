@@ -8,3 +8,4 @@ export * from './Mesh.js';
 export * from './Points.js';
 export * from './Skeleton.js';
 export * from './SkinnedMesh.js';
+export * from './Sprite.js';
