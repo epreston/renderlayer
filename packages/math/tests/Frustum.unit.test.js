@@ -1,16 +1,15 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
-import { Vector3 } from '../src/Vector3.js';
-import { Matrix4 } from '../src/Matrix4.js';
-import { Sphere } from '../src/Sphere.js';
-import { Plane } from '../src/Plane.js';
 import { Box3 } from '../src/Box3.js';
+import { Matrix4 } from '../src/Matrix4.js';
+import { Plane } from '../src/Plane.js';
+import { Sphere } from '../src/Sphere.js';
+import { Vector3 } from '../src/Vector3.js';
 
-import { Mesh } from '@renderlayer/objects';
 import { BoxGeometry } from '@renderlayer/geometries';
-// import { Sprite } from '../../objects/src/Sprite.js';
+import { Mesh, Sprite } from '@renderlayer/objects';
 
-import { zero3, one3, eps } from './math-constants.js';
+import { eps, one3, zero3 } from './math-constants.js';
 
 import { Frustum } from '../src/Frustum.js';
 
@@ -197,17 +196,20 @@ describe('Maths', () => {
       expect(intersects).toBeFalsy();
     });
 
-    test.todo('intersectsSprite', () => {
-      // const m = new Matrix4().makePerspective(-1, 1, 1, -1, 1, 100);
-      // const a = new Frustum().setFromProjectionMatrix(m);
-      // const sprite = new Sprite();
-      // let intersects;
-      // intersects = a.intersectsSprite(sprite);
-      // expect(intersects).toBeFalsy();
-      // sprite.position.set(-1, -1, -1);
-      // sprite.updateMatrixWorld();
-      // intersects = a.intersectsSprite(sprite);
-      // expect(intersects).toBeTruthy();
+    test('intersectsSprite', () => {
+      const m = new Matrix4().makePerspective(-1, 1, 1, -1, 1, 100);
+      const a = new Frustum().setFromProjectionMatrix(m);
+      const sprite = new Sprite();
+
+      let intersects;
+
+      intersects = a.intersectsSprite(sprite);
+      expect(intersects).toBeFalsy();
+
+      sprite.position.set(-1, -1, -1);
+      sprite.updateMatrixWorld();
+      intersects = a.intersectsSprite(sprite);
+      expect(intersects).toBeTruthy();
     });
 
     test('intersectsSphere', () => {
