@@ -68,6 +68,7 @@
     "INTENSITYMAP",
     "interpolant",
     "interpolants",
+    "Interpolators",
     "IRIDESCENCEMAP",
     "keyframes",
     "lerp",
