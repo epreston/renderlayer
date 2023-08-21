@@ -3,7 +3,7 @@ import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { Vector2 } from '../src/Vector2.js';
 import { Matrix3 } from '../src/Matrix3.js';
 
-// import { BufferAttribute } from '@renderlayer/buffers';
+import { BufferAttribute } from '@renderlayer/buffers';
 
 import { x, y, eps } from './math-constants.js';
 
@@ -377,17 +377,17 @@ describe('Maths', () => {
       expect(array[2]).toStrictEqual(y);
     });
 
-    test.todo('fromBufferAttribute', () => {
-      // const a = new Vector2();
-      // const attr = new BufferAttribute(new Float32Array([1, 2, 3, 4]), 2);
-      //
-      // a.fromBufferAttribute(attr, 0);
-      // expect(a.x).toStrictEqual(1);
-      // expect(a.y).toStrictEqual(2);
-      //
-      // a.fromBufferAttribute(attr, 1);
-      // expect(a.x).toStrictEqual(3);
-      // expect(a.y).toStrictEqual(4);
+    test('fromBufferAttribute', () => {
+      const a = new Vector2();
+      const attr = new BufferAttribute(new Float32Array([1, 2, 3, 4]), 2);
+
+      a.fromBufferAttribute(attr, 0);
+      expect(a.x).toStrictEqual(1);
+      expect(a.y).toStrictEqual(2);
+
+      a.fromBufferAttribute(attr, 1);
+      expect(a.x).toStrictEqual(3);
+      expect(a.y).toStrictEqual(4);
     });
 
     test.todo('rotateAround', () => {
