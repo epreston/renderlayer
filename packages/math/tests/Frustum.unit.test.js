@@ -210,8 +210,32 @@ describe('Maths', () => {
       // expect(intersects).toBeTruthy();
     });
 
-    test.todo('intersectsSphere', () => {
-      // implement
+    test('intersectsSphere', () => {
+      const m = new Matrix4().makePerspective(-1, 1, 1, -1, 1, 100);
+      const a = new Frustum().setFromProjectionMatrix(m);
+
+      expect(!a.intersectsSphere(new Sphere(new Vector3(0, 0, 0), 0))).toBeTruthy();
+      expect(!a.intersectsSphere(new Sphere(new Vector3(0, 0, 0), 0.9))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(0, 0, 0), 1.1))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(0, 0, -50), 0))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(0, 0, -1.001), 0))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(-1, -1, -1.001), 0))).toBeTruthy();
+      expect(!a.intersectsSphere(new Sphere(new Vector3(-1.1, -1.1, -1.001), 0))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(-1.1, -1.1, -1.001), 0.5))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(1, 1, -1.001), 0))).toBeTruthy();
+      expect(!a.intersectsSphere(new Sphere(new Vector3(1.1, 1.1, -1.001), 0))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(1.1, 1.1, -1.001), 0.5))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(0, 0, -99.999), 0))).toBeTruthy();
+      expect(
+        a.intersectsSphere(new Sphere(new Vector3(-99.999, -99.999, -99.999), 0))
+      ).toBeTruthy();
+      expect(!a.intersectsSphere(new Sphere(new Vector3(-100.1, -100.1, -100.1), 0))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(-100.1, -100.1, -100.1), 0.5))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(99.999, 99.999, -99.999), 0))).toBeTruthy();
+      expect(!a.intersectsSphere(new Sphere(new Vector3(100.1, 100.1, -100.1), 0))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(100.1, 100.1, -100.1), 0.2))).toBeTruthy();
+      expect(!a.intersectsSphere(new Sphere(new Vector3(0, 0, -101), 0))).toBeTruthy();
+      expect(a.intersectsSphere(new Sphere(new Vector3(0, 0, -101), 1.1))).toBeTruthy();
     });
 
     test('intersectsBox', () => {
