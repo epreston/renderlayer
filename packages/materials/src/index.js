@@ -10,3 +10,4 @@ export * from './PointsMaterial.js';
 export * from './RawShaderMaterial.js';
 export * from './ShaderMaterial.js';
 export * from './ShadowMaterial.js';
+export * from './SpriteMaterial.js';
