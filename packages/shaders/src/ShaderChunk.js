@@ -108,14 +108,14 @@ import * as cube from './ShaderLib/cube.glsl.js';
 import * as depth from './ShaderLib/depth.glsl.js';
 import * as distanceRGBA from './ShaderLib/distanceRGBA.glsl.js';
 import * as equirect from './ShaderLib/equirect.glsl.js';
-import * as linedashed from './ShaderLib/linedashed.glsl.js';
+// import * as linedashed from './ShaderLib/linedashed.glsl.js';
 import * as meshbasic from './ShaderLib/meshbasic.glsl.js';
-import * as meshlambert from './ShaderLib/meshlambert.glsl.js';
-import * as meshmatcap from './ShaderLib/meshmatcap.glsl.js';
+// import * as meshlambert from './ShaderLib/meshlambert.glsl.js';
+// import * as meshmatcap from './ShaderLib/meshmatcap.glsl.js';
 import * as meshnormal from './ShaderLib/meshnormal.glsl.js';
-import * as meshphong from './ShaderLib/meshphong.glsl.js';
+// import * as meshphong from './ShaderLib/meshphong.glsl.js';
 import * as meshphysical from './ShaderLib/meshphysical.glsl.js';
-import * as meshtoon from './ShaderLib/meshtoon.glsl.js';
+// import * as meshtoon from './ShaderLib/meshtoon.glsl.js';
 import * as points from './ShaderLib/points.glsl.js';
 import * as shadow from './ShaderLib/shadow.glsl.js';
 import * as sprite from './ShaderLib/sprite.glsl.js';
@@ -237,22 +237,22 @@ export const ShaderChunk = {
   distanceRGBA_frag: distanceRGBA.fragment,
   equirect_vert: equirect.vertex,
   equirect_frag: equirect.fragment,
-  linedashed_vert: linedashed.vertex,
-  linedashed_frag: linedashed.fragment,
+  // linedashed_vert: linedashed.vertex,
+  // linedashed_frag: linedashed.fragment,
   meshbasic_vert: meshbasic.vertex,
   meshbasic_frag: meshbasic.fragment,
-  meshlambert_vert: meshlambert.vertex,
-  meshlambert_frag: meshlambert.fragment,
-  meshmatcap_vert: meshmatcap.vertex,
-  meshmatcap_frag: meshmatcap.fragment,
+  // meshlambert_vert: meshlambert.vertex,
+  // meshlambert_frag: meshlambert.fragment,
+  // meshmatcap_vert: meshmatcap.vertex,
+  // meshmatcap_frag: meshmatcap.fragment,
   meshnormal_vert: meshnormal.vertex,
   meshnormal_frag: meshnormal.fragment,
-  meshphong_vert: meshphong.vertex,
-  meshphong_frag: meshphong.fragment,
+  // meshphong_vert: meshphong.vertex,
+  // meshphong_frag: meshphong.fragment,
   meshphysical_vert: meshphysical.vertex,
   meshphysical_frag: meshphysical.fragment,
-  meshtoon_vert: meshtoon.vertex,
-  meshtoon_frag: meshtoon.fragment,
+  // meshtoon_vert: meshtoon.vertex,
+  // meshtoon_frag: meshtoon.fragment,
   points_vert: points.vertex,
   points_frag: points.fragment,
   shadow_vert: shadow.vertex,

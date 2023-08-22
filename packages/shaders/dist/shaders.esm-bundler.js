@@ -4669,7 +4669,7 @@ var worldpos_vertex = (
 `
 );
 
-const vertex$g = (
+const vertex$b = (
   /* glsl */
   `
 varying vec2 vUv;
@@ -4684,7 +4684,7 @@ void main() {
 }
 `
 );
-const fragment$g = (
+const fragment$b = (
   /* glsl */
   `
 uniform sampler2D t2D;
@@ -4707,7 +4707,7 @@ void main() {
 `
 );
 
-const vertex$f = (
+const vertex$a = (
   /* glsl */
   `
 varying vec3 vWorldDirection;
@@ -4726,7 +4726,7 @@ void main() {
 }
 `
 );
-const fragment$f = (
+const fragment$a = (
   /* glsl */
   `
 
@@ -4775,7 +4775,7 @@ void main() {
 `
 );
 
-const vertex$e = (
+const vertex$9 = (
   /* glsl */
   `
 varying vec3 vWorldDirection;
@@ -4794,7 +4794,7 @@ void main() {
 }
 `
 );
-const fragment$e = (
+const fragment$9 = (
   /* glsl */
   `
 uniform samplerCube tCube;
@@ -4817,7 +4817,7 @@ void main() {
 `
 );
 
-const vertex$d = (
+const vertex$8 = (
   /* glsl */
   `
 #include <common>
@@ -4860,7 +4860,7 @@ void main() {
 }
 `
 );
-const fragment$d = (
+const fragment$8 = (
   /* glsl */
   `
 #if DEPTH_PACKING == 3200
@@ -4915,7 +4915,7 @@ void main() {
 `
 );
 
-const vertex$c = (
+const vertex$7 = (
   /* glsl */
   `
 #define DISTANCE
@@ -4956,7 +4956,7 @@ void main() {
 }
 `
 );
-const fragment$c = (
+const fragment$7 = (
   /* glsl */
   `
 #define DISTANCE
@@ -4994,7 +4994,7 @@ void main () {
 `
 );
 
-const vertex$b = (
+const vertex$6 = (
   /* glsl */
   `
 varying vec3 vWorldDirection;
@@ -5011,7 +5011,7 @@ void main() {
 }
 `
 );
-const fragment$b = (
+const fragment$6 = (
   /* glsl */
   `
 uniform sampler2D tEquirect;
@@ -5035,88 +5035,7 @@ void main() {
 `
 );
 
-const vertex$a = (
-  /* glsl */
-  `
-uniform float scale;
-attribute float lineDistance;
-
-varying float vLineDistance;
-
-#include <common>
-#include <uv_pars_vertex>
-#include <color_pars_vertex>
-#include <fog_pars_vertex>
-#include <morphtarget_pars_vertex>
-#include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>
-
-void main() {
-
-	vLineDistance = scale * lineDistance;
-
-	#include <uv_vertex>
-	#include <color_vertex>
-	#include <morphcolor_vertex>
-	#include <begin_vertex>
-	#include <morphtarget_vertex>
-	#include <project_vertex>
-	#include <logdepthbuf_vertex>
-	#include <clipping_planes_vertex>
-	#include <fog_vertex>
-
-}
-`
-);
-const fragment$a = (
-  /* glsl */
-  `
-uniform vec3 diffuse;
-uniform float opacity;
-
-uniform float dashSize;
-uniform float totalSize;
-
-varying float vLineDistance;
-
-#include <common>
-#include <color_pars_fragment>
-#include <uv_pars_fragment>
-#include <map_pars_fragment>
-#include <fog_pars_fragment>
-#include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>
-
-void main() {
-
-	#include <clipping_planes_fragment>
-
-	if ( mod( vLineDistance, totalSize ) > dashSize ) {
-
-		discard;
-
-	}
-
-	vec3 outgoingLight = vec3( 0.0 );
-	vec4 diffuseColor = vec4( diffuse, opacity );
-
-	#include <logdepthbuf_fragment>
-	#include <map_fragment>
-	#include <color_fragment>
-
-	outgoingLight = diffuseColor.rgb; // simple shader
-
-	#include <output_fragment>
-	#include <tonemapping_fragment>
-	#include <encodings_fragment>
-	#include <fog_fragment>
-	#include <premultiplied_alpha_fragment>
-
-}
-`
-);
-
-const vertex$9 = (
+const vertex$5 = (
   /* glsl */
   `
 #include <common>
@@ -5159,7 +5078,7 @@ void main() {
 }
 `
 );
-const fragment$9 = (
+const fragment$5 = (
   /* glsl */
   `
 uniform vec3 diffuse;
@@ -5234,246 +5153,7 @@ void main() {
 `
 );
 
-const vertex$8 = (
-  /* glsl */
-  `
-#define LAMBERT
-
-varying vec3 vViewPosition;
-
-#include <common>
-#include <uv_pars_vertex>
-#include <displacementmap_pars_vertex>
-#include <envmap_pars_vertex>
-#include <color_pars_vertex>
-#include <fog_pars_vertex>
-#include <normal_pars_vertex>
-#include <morphtarget_pars_vertex>
-#include <skinning_pars_vertex>
-#include <shadowmap_pars_vertex>
-#include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>
-
-void main() {
-
-	#include <uv_vertex>
-	#include <color_vertex>
-	#include <morphcolor_vertex>
-
-	#include <beginnormal_vertex>
-	#include <morphnormal_vertex>
-	#include <skinbase_vertex>
-	#include <skinnormal_vertex>
-	#include <defaultnormal_vertex>
-	#include <normal_vertex>
-
-	#include <begin_vertex>
-	#include <morphtarget_vertex>
-	#include <skinning_vertex>
-	#include <displacementmap_vertex>
-	#include <project_vertex>
-	#include <logdepthbuf_vertex>
-	#include <clipping_planes_vertex>
-
-	vViewPosition = - mvPosition.xyz;
-
-	#include <worldpos_vertex>
-	#include <envmap_vertex>
-	#include <shadowmap_vertex>
-	#include <fog_vertex>
-
-}
-`
-);
-const fragment$8 = (
-  /* glsl */
-  `
-#define LAMBERT
-
-uniform vec3 diffuse;
-uniform vec3 emissive;
-uniform float opacity;
-
-#include <common>
-#include <packing>
-#include <dithering_pars_fragment>
-#include <color_pars_fragment>
-#include <uv_pars_fragment>
-#include <map_pars_fragment>
-#include <alphamap_pars_fragment>
-#include <alphatest_pars_fragment>
-#include <aomap_pars_fragment>
-#include <lightmap_pars_fragment>
-#include <emissivemap_pars_fragment>
-#include <envmap_common_pars_fragment>
-#include <envmap_pars_fragment>
-#include <fog_pars_fragment>
-#include <bsdfs>
-#include <lights_pars_begin>
-#include <normal_pars_fragment>
-#include <lights_lambert_pars_fragment>
-#include <shadowmap_pars_fragment>
-#include <bumpmap_pars_fragment>
-#include <normalmap_pars_fragment>
-#include <specularmap_pars_fragment>
-#include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>
-
-void main() {
-
-	#include <clipping_planes_fragment>
-
-	vec4 diffuseColor = vec4( diffuse, opacity );
-	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
-	vec3 totalEmissiveRadiance = emissive;
-
-	#include <logdepthbuf_fragment>
-	#include <map_fragment>
-	#include <color_fragment>
-	#include <alphamap_fragment>
-	#include <alphatest_fragment>
-	#include <specularmap_fragment>
-	#include <normal_fragment_begin>
-	#include <normal_fragment_maps>
-	#include <emissivemap_fragment>
-
-	// accumulation
-	#include <lights_lambert_fragment>
-	#include <lights_fragment_begin>
-	#include <lights_fragment_maps>
-	#include <lights_fragment_end>
-
-	// modulation
-	#include <aomap_fragment>
-
-	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;
-
-	#include <envmap_fragment>
-	#include <output_fragment>
-	#include <tonemapping_fragment>
-	#include <encodings_fragment>
-	#include <fog_fragment>
-	#include <premultiplied_alpha_fragment>
-	#include <dithering_fragment>
-
-}
-`
-);
-
-const vertex$7 = (
-  /* glsl */
-  `
-#define MATCAP
-
-varying vec3 vViewPosition;
-
-#include <common>
-#include <uv_pars_vertex>
-#include <color_pars_vertex>
-#include <displacementmap_pars_vertex>
-#include <fog_pars_vertex>
-#include <normal_pars_vertex>
-#include <morphtarget_pars_vertex>
-#include <skinning_pars_vertex>
-
-#include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>
-
-void main() {
-
-	#include <uv_vertex>
-	#include <color_vertex>
-	#include <morphcolor_vertex>
-	#include <beginnormal_vertex>
-	#include <morphnormal_vertex>
-	#include <skinbase_vertex>
-	#include <skinnormal_vertex>
-	#include <defaultnormal_vertex>
-	#include <normal_vertex>
-
-	#include <begin_vertex>
-	#include <morphtarget_vertex>
-	#include <skinning_vertex>
-	#include <displacementmap_vertex>
-	#include <project_vertex>
-
-	#include <logdepthbuf_vertex>
-	#include <clipping_planes_vertex>
-	#include <fog_vertex>
-
-	vViewPosition = - mvPosition.xyz;
-
-}
-`
-);
-const fragment$7 = (
-  /* glsl */
-  `
-#define MATCAP
-
-uniform vec3 diffuse;
-uniform float opacity;
-uniform sampler2D matcap;
-
-varying vec3 vViewPosition;
-
-#include <common>
-#include <dithering_pars_fragment>
-#include <color_pars_fragment>
-#include <uv_pars_fragment>
-#include <map_pars_fragment>
-#include <alphamap_pars_fragment>
-#include <alphatest_pars_fragment>
-#include <fog_pars_fragment>
-#include <normal_pars_fragment>
-#include <bumpmap_pars_fragment>
-#include <normalmap_pars_fragment>
-#include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>
-
-void main() {
-
-	#include <clipping_planes_fragment>
-
-	vec4 diffuseColor = vec4( diffuse, opacity );
-
-	#include <logdepthbuf_fragment>
-	#include <map_fragment>
-	#include <color_fragment>
-	#include <alphamap_fragment>
-	#include <alphatest_fragment>
-	#include <normal_fragment_begin>
-	#include <normal_fragment_maps>
-
-	vec3 viewDir = normalize( vViewPosition );
-	vec3 x = normalize( vec3( viewDir.z, 0.0, - viewDir.x ) );
-	vec3 y = cross( viewDir, x );
-	vec2 uv = vec2( dot( x, normal ), dot( y, normal ) ) * 0.495 + 0.5; // 0.495 to remove artifacts caused by undersized matcap disks
-
-	#ifdef USE_MATCAP
-
-		vec4 matcapColor = texture2D( matcap, uv );
-
-	#else
-
-		vec4 matcapColor = vec4( vec3( mix( 0.2, 0.8, uv.y ) ), 1.0 ); // default if matcap is missing
-
-	#endif
-
-	vec3 outgoingLight = diffuseColor.rgb * matcapColor.rgb;
-
-	#include <output_fragment>
-	#include <tonemapping_fragment>
-	#include <encodings_fragment>
-	#include <fog_fragment>
-	#include <premultiplied_alpha_fragment>
-	#include <dithering_fragment>
-
-}
-`
-);
-
-const vertex$6 = (
+const vertex$4 = (
   /* glsl */
   `
 #define NORMAL
@@ -5521,7 +5201,7 @@ void main() {
 }
 `
 );
-const fragment$6 = (
+const fragment$4 = (
   /* glsl */
   `
 #define NORMAL
@@ -5561,135 +5241,7 @@ void main() {
 `
 );
 
-const vertex$5 = (
-  /* glsl */
-  `
-#define PHONG
-
-varying vec3 vViewPosition;
-
-#include <common>
-#include <uv_pars_vertex>
-#include <displacementmap_pars_vertex>
-#include <envmap_pars_vertex>
-#include <color_pars_vertex>
-#include <fog_pars_vertex>
-#include <normal_pars_vertex>
-#include <morphtarget_pars_vertex>
-#include <skinning_pars_vertex>
-#include <shadowmap_pars_vertex>
-#include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>
-
-void main() {
-
-	#include <uv_vertex>
-	#include <color_vertex>
-	#include <morphcolor_vertex>
-
-	#include <beginnormal_vertex>
-	#include <morphnormal_vertex>
-	#include <skinbase_vertex>
-	#include <skinnormal_vertex>
-	#include <defaultnormal_vertex>
-	#include <normal_vertex>
-
-	#include <begin_vertex>
-	#include <morphtarget_vertex>
-	#include <skinning_vertex>
-	#include <displacementmap_vertex>
-	#include <project_vertex>
-	#include <logdepthbuf_vertex>
-	#include <clipping_planes_vertex>
-
-	vViewPosition = - mvPosition.xyz;
-
-	#include <worldpos_vertex>
-	#include <envmap_vertex>
-	#include <shadowmap_vertex>
-	#include <fog_vertex>
-
-}
-`
-);
-const fragment$5 = (
-  /* glsl */
-  `
-#define PHONG
-
-uniform vec3 diffuse;
-uniform vec3 emissive;
-uniform vec3 specular;
-uniform float shininess;
-uniform float opacity;
-
-#include <common>
-#include <packing>
-#include <dithering_pars_fragment>
-#include <color_pars_fragment>
-#include <uv_pars_fragment>
-#include <map_pars_fragment>
-#include <alphamap_pars_fragment>
-#include <alphatest_pars_fragment>
-#include <aomap_pars_fragment>
-#include <lightmap_pars_fragment>
-#include <emissivemap_pars_fragment>
-#include <envmap_common_pars_fragment>
-#include <envmap_pars_fragment>
-#include <fog_pars_fragment>
-#include <bsdfs>
-#include <lights_pars_begin>
-#include <normal_pars_fragment>
-#include <lights_phong_pars_fragment>
-#include <shadowmap_pars_fragment>
-#include <bumpmap_pars_fragment>
-#include <normalmap_pars_fragment>
-#include <specularmap_pars_fragment>
-#include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>
-
-void main() {
-
-	#include <clipping_planes_fragment>
-
-	vec4 diffuseColor = vec4( diffuse, opacity );
-	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
-	vec3 totalEmissiveRadiance = emissive;
-
-	#include <logdepthbuf_fragment>
-	#include <map_fragment>
-	#include <color_fragment>
-	#include <alphamap_fragment>
-	#include <alphatest_fragment>
-	#include <specularmap_fragment>
-	#include <normal_fragment_begin>
-	#include <normal_fragment_maps>
-	#include <emissivemap_fragment>
-
-	// accumulation
-	#include <lights_phong_fragment>
-	#include <lights_fragment_begin>
-	#include <lights_fragment_maps>
-	#include <lights_fragment_end>
-
-	// modulation
-	#include <aomap_fragment>
-
-	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
-
-	#include <envmap_fragment>
-	#include <output_fragment>
-	#include <tonemapping_fragment>
-	#include <encodings_fragment>
-	#include <fog_fragment>
-	#include <premultiplied_alpha_fragment>
-	#include <dithering_fragment>
-
-}
-`
-);
-
-const vertex$4 = (
+const vertex$3 = (
   /* glsl */
   `
 #define STANDARD
@@ -5749,7 +5301,7 @@ void main() {
 }
 `
 );
-const fragment$4 = (
+const fragment$3 = (
   /* glsl */
   `
 #define STANDARD
@@ -5894,126 +5446,6 @@ void main() {
 		outgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + clearcoatSpecular * material.clearcoat;
 
 	#endif
-
-	#include <output_fragment>
-	#include <tonemapping_fragment>
-	#include <encodings_fragment>
-	#include <fog_fragment>
-	#include <premultiplied_alpha_fragment>
-	#include <dithering_fragment>
-
-}
-`
-);
-
-const vertex$3 = (
-  /* glsl */
-  `
-#define TOON
-
-varying vec3 vViewPosition;
-
-#include <common>
-#include <uv_pars_vertex>
-#include <displacementmap_pars_vertex>
-#include <color_pars_vertex>
-#include <fog_pars_vertex>
-#include <normal_pars_vertex>
-#include <morphtarget_pars_vertex>
-#include <skinning_pars_vertex>
-#include <shadowmap_pars_vertex>
-#include <logdepthbuf_pars_vertex>
-#include <clipping_planes_pars_vertex>
-
-void main() {
-
-	#include <uv_vertex>
-	#include <color_vertex>
-	#include <morphcolor_vertex>
-
-	#include <beginnormal_vertex>
-	#include <morphnormal_vertex>
-	#include <skinbase_vertex>
-	#include <skinnormal_vertex>
-	#include <defaultnormal_vertex>
-	#include <normal_vertex>
-
-	#include <begin_vertex>
-	#include <morphtarget_vertex>
-	#include <skinning_vertex>
-	#include <displacementmap_vertex>
-	#include <project_vertex>
-	#include <logdepthbuf_vertex>
-	#include <clipping_planes_vertex>
-
-	vViewPosition = - mvPosition.xyz;
-
-	#include <worldpos_vertex>
-	#include <shadowmap_vertex>
-	#include <fog_vertex>
-
-}
-`
-);
-const fragment$3 = (
-  /* glsl */
-  `
-#define TOON
-
-uniform vec3 diffuse;
-uniform vec3 emissive;
-uniform float opacity;
-
-#include <common>
-#include <packing>
-#include <dithering_pars_fragment>
-#include <color_pars_fragment>
-#include <uv_pars_fragment>
-#include <map_pars_fragment>
-#include <alphamap_pars_fragment>
-#include <alphatest_pars_fragment>
-#include <aomap_pars_fragment>
-#include <lightmap_pars_fragment>
-#include <emissivemap_pars_fragment>
-#include <gradientmap_pars_fragment>
-#include <fog_pars_fragment>
-#include <bsdfs>
-#include <lights_pars_begin>
-#include <normal_pars_fragment>
-#include <lights_toon_pars_fragment>
-#include <shadowmap_pars_fragment>
-#include <bumpmap_pars_fragment>
-#include <normalmap_pars_fragment>
-#include <logdepthbuf_pars_fragment>
-#include <clipping_planes_pars_fragment>
-
-void main() {
-
-	#include <clipping_planes_fragment>
-
-	vec4 diffuseColor = vec4( diffuse, opacity );
-	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
-	vec3 totalEmissiveRadiance = emissive;
-
-	#include <logdepthbuf_fragment>
-	#include <map_fragment>
-	#include <color_fragment>
-	#include <alphamap_fragment>
-	#include <alphatest_fragment>
-	#include <normal_fragment_begin>
-	#include <normal_fragment_maps>
-	#include <emissivemap_fragment>
-
-	// accumulation
-	#include <lights_toon_fragment>
-	#include <lights_fragment_begin>
-	#include <lights_fragment_maps>
-	#include <lights_fragment_end>
-
-	// modulation
-	#include <aomap_fragment>
-
-	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;
 
 	#include <output_fragment>
 	#include <tonemapping_fragment>
@@ -6365,34 +5797,34 @@ const ShaderChunk = {
   uv_pars_vertex,
   uv_vertex,
   worldpos_vertex,
-  background_vert: vertex$g,
-  background_frag: fragment$g,
-  backgroundCube_vert: vertex$f,
-  backgroundCube_frag: fragment$f,
-  cube_vert: vertex$e,
-  cube_frag: fragment$e,
-  depth_vert: vertex$d,
-  depth_frag: fragment$d,
-  distanceRGBA_vert: vertex$c,
-  distanceRGBA_frag: fragment$c,
-  equirect_vert: vertex$b,
-  equirect_frag: fragment$b,
-  linedashed_vert: vertex$a,
-  linedashed_frag: fragment$a,
-  meshbasic_vert: vertex$9,
-  meshbasic_frag: fragment$9,
-  meshlambert_vert: vertex$8,
-  meshlambert_frag: fragment$8,
-  meshmatcap_vert: vertex$7,
-  meshmatcap_frag: fragment$7,
-  meshnormal_vert: vertex$6,
-  meshnormal_frag: fragment$6,
-  meshphong_vert: vertex$5,
-  meshphong_frag: fragment$5,
-  meshphysical_vert: vertex$4,
-  meshphysical_frag: fragment$4,
-  meshtoon_vert: vertex$3,
-  meshtoon_frag: fragment$3,
+  background_vert: vertex$b,
+  background_frag: fragment$b,
+  backgroundCube_vert: vertex$a,
+  backgroundCube_frag: fragment$a,
+  cube_vert: vertex$9,
+  cube_frag: fragment$9,
+  depth_vert: vertex$8,
+  depth_frag: fragment$8,
+  distanceRGBA_vert: vertex$7,
+  distanceRGBA_frag: fragment$7,
+  equirect_vert: vertex$6,
+  equirect_frag: fragment$6,
+  // linedashed_vert: linedashed.vertex,
+  // linedashed_frag: linedashed.fragment,
+  meshbasic_vert: vertex$5,
+  meshbasic_frag: fragment$5,
+  // meshlambert_vert: meshlambert.vertex,
+  // meshlambert_frag: meshlambert.fragment,
+  // meshmatcap_vert: meshmatcap.vertex,
+  // meshmatcap_frag: meshmatcap.fragment,
+  meshnormal_vert: vertex$4,
+  meshnormal_frag: fragment$4,
+  // meshphong_vert: meshphong.vertex,
+  // meshphong_frag: meshphong.fragment,
+  meshphysical_vert: vertex$3,
+  meshphysical_frag: fragment$3,
+  // meshtoon_vert: meshtoon.vertex,
+  // meshtoon_frag: meshtoon.fragment,
   points_vert: vertex$2,
   points_frag: fragment$2,
   shadow_vert: vertex$1,
@@ -6643,48 +6075,43 @@ const ShaderLib = {
     vertexShader: ShaderChunk.meshbasic_vert,
     fragmentShader: ShaderChunk.meshbasic_frag
   },
-  lambert: {
-    uniforms: /* @__PURE__ */ mergeUniforms([
-      UniformsLib.common,
-      UniformsLib.specularmap,
-      UniformsLib.envmap,
-      UniformsLib.aomap,
-      UniformsLib.lightmap,
-      UniformsLib.emissivemap,
-      UniformsLib.bumpmap,
-      UniformsLib.normalmap,
-      UniformsLib.displacementmap,
-      UniformsLib.fog,
-      UniformsLib.lights,
-      {
-        emissive: { value: /* @__PURE__ */ new Color(0) }
-      }
-    ]),
-    vertexShader: ShaderChunk.meshlambert_vert,
-    fragmentShader: ShaderChunk.meshlambert_frag
-  },
-  phong: {
-    uniforms: /* @__PURE__ */ mergeUniforms([
-      UniformsLib.common,
-      UniformsLib.specularmap,
-      UniformsLib.envmap,
-      UniformsLib.aomap,
-      UniformsLib.lightmap,
-      UniformsLib.emissivemap,
-      UniformsLib.bumpmap,
-      UniformsLib.normalmap,
-      UniformsLib.displacementmap,
-      UniformsLib.fog,
-      UniformsLib.lights,
-      {
-        emissive: { value: /* @__PURE__ */ new Color(0) },
-        specular: { value: /* @__PURE__ */ new Color(1118481) },
-        shininess: { value: 30 }
-      }
-    ]),
-    vertexShader: ShaderChunk.meshphong_vert,
-    fragmentShader: ShaderChunk.meshphong_frag
-  },
+  // lambert: {
+  //     UniformsLib.common,
+  //     UniformsLib.specularmap,
+  //     UniformsLib.envmap,
+  //     UniformsLib.aomap,
+  //     UniformsLib.lightmap,
+  //     UniformsLib.emissivemap,
+  //     UniformsLib.bumpmap,
+  //     UniformsLib.normalmap,
+  //     UniformsLib.displacementmap,
+  //     UniformsLib.fog,
+  //     UniformsLib.lights,
+  //     {
+  //     }
+  //   ]),
+  //   vertexShader: ShaderChunk.meshlambert_vert,
+  //   fragmentShader: ShaderChunk.meshlambert_frag
+  // },
+  // phong: {
+  //     UniformsLib.common,
+  //     UniformsLib.specularmap,
+  //     UniformsLib.envmap,
+  //     UniformsLib.aomap,
+  //     UniformsLib.lightmap,
+  //     UniformsLib.emissivemap,
+  //     UniformsLib.bumpmap,
+  //     UniformsLib.normalmap,
+  //     UniformsLib.displacementmap,
+  //     UniformsLib.fog,
+  //     UniformsLib.lights,
+  //     {
+  //       shininess: { value: 30 }
+  //     }
+  //   ]),
+  //   vertexShader: ShaderChunk.meshphong_vert,
+  //   fragmentShader: ShaderChunk.meshphong_frag
+  // },
   standard: {
     uniforms: /* @__PURE__ */ mergeUniforms([
       UniformsLib.common,
@@ -6710,57 +6137,53 @@ const ShaderLib = {
     vertexShader: ShaderChunk.meshphysical_vert,
     fragmentShader: ShaderChunk.meshphysical_frag
   },
-  toon: {
-    uniforms: /* @__PURE__ */ mergeUniforms([
-      UniformsLib.common,
-      UniformsLib.aomap,
-      UniformsLib.lightmap,
-      UniformsLib.emissivemap,
-      UniformsLib.bumpmap,
-      UniformsLib.normalmap,
-      UniformsLib.displacementmap,
-      UniformsLib.gradientmap,
-      UniformsLib.fog,
-      UniformsLib.lights,
-      {
-        emissive: { value: /* @__PURE__ */ new Color(0) }
-      }
-    ]),
-    vertexShader: ShaderChunk.meshtoon_vert,
-    fragmentShader: ShaderChunk.meshtoon_frag
-  },
-  matcap: {
-    uniforms: /* @__PURE__ */ mergeUniforms([
-      UniformsLib.common,
-      UniformsLib.bumpmap,
-      UniformsLib.normalmap,
-      UniformsLib.displacementmap,
-      UniformsLib.fog,
-      {
-        matcap: { value: null }
-      }
-    ]),
-    vertexShader: ShaderChunk.meshmatcap_vert,
-    fragmentShader: ShaderChunk.meshmatcap_frag
-  },
+  // toon: {
+  //     UniformsLib.common,
+  //     UniformsLib.aomap,
+  //     UniformsLib.lightmap,
+  //     UniformsLib.emissivemap,
+  //     UniformsLib.bumpmap,
+  //     UniformsLib.normalmap,
+  //     UniformsLib.displacementmap,
+  //     UniformsLib.gradientmap,
+  //     UniformsLib.fog,
+  //     UniformsLib.lights,
+  //     {
+  //     }
+  //   ]),
+  //   vertexShader: ShaderChunk.meshtoon_vert,
+  //   fragmentShader: ShaderChunk.meshtoon_frag
+  // },
+  // matcap: {
+  //     UniformsLib.common,
+  //     UniformsLib.bumpmap,
+  //     UniformsLib.normalmap,
+  //     UniformsLib.displacementmap,
+  //     UniformsLib.fog,
+  //     {
+  //       matcap: { value: null }
+  //     }
+  //   ]),
+  //   vertexShader: ShaderChunk.meshmatcap_vert,
+  //   fragmentShader: ShaderChunk.meshmatcap_frag
+  // },
   points: {
     uniforms: /* @__PURE__ */ mergeUniforms([UniformsLib.points, UniformsLib.fog]),
     vertexShader: ShaderChunk.points_vert,
     fragmentShader: ShaderChunk.points_frag
   },
-  dashed: {
-    uniforms: /* @__PURE__ */ mergeUniforms([
-      UniformsLib.common,
-      UniformsLib.fog,
-      {
-        scale: { value: 1 },
-        dashSize: { value: 1 },
-        totalSize: { value: 2 }
-      }
-    ]),
-    vertexShader: ShaderChunk.linedashed_vert,
-    fragmentShader: ShaderChunk.linedashed_frag
-  },
+  // dashed: {
+  //     UniformsLib.common,
+  //     UniformsLib.fog,
+  //     {
+  //       scale: { value: 1 },
+  //       dashSize: { value: 1 },
+  //       totalSize: { value: 2 }
+  //     }
+  //   ]),
+  //   vertexShader: ShaderChunk.linedashed_vert,
+  //   fragmentShader: ShaderChunk.linedashed_frag
+  // },
   depth: {
     uniforms: /* @__PURE__ */ mergeUniforms([UniformsLib.common, UniformsLib.displacementmap]),
     vertexShader: ShaderChunk.depth_vert,
