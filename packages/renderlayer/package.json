@@ -48,10 +48,10 @@
     "@renderlayer/objects": "~0.0.4",
     "@renderlayer/renderers": "~0.0.4",
     "@renderlayer/scenes": "~0.0.3",
-    "@renderlayer/shaders": "~0.0.4",
+    "@renderlayer/shaders": "~0.0.5",
     "@renderlayer/shared": "~0.0.4",
     "@renderlayer/targets": "~0.0.2",
     "@renderlayer/textures": "~0.0.8",
-    "@renderlayer/webgl": "~0.0.7"
+    "@renderlayer/webgl": "~0.0.8"
   }
 }
