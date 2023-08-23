@@ -64,6 +64,7 @@ A convenience package is provided to make core packages available to your develo
 | Node.js      | https://nodejs.org/      |
 | Vite         | https://vitejs.dev/      |
 | Vitest       | https://vitest.dev/      |
+| Rollup       | https://rollupjs.org     |
 | ESLint       | https://eslint.org/      |
 | Prettier     | https://prettier.io      |
 | EditorConfig | https://editorconfig.org |
