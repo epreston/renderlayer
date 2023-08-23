@@ -486,8 +486,8 @@ class Vector3 {
     return this;
   }
 
-  setFromMatrixPosition(m) {
-    const e = m.elements;
+  setFromMatrixPosition(mat4) {
+    const e = mat4.elements;
 
     this.x = e[12];
     this.y = e[13];
@@ -496,10 +496,10 @@ class Vector3 {
     return this;
   }
 
-  setFromMatrixScale(m) {
-    const sx = this.setFromMatrixColumn(m, 0).length();
-    const sy = this.setFromMatrixColumn(m, 1).length();
-    const sz = this.setFromMatrixColumn(m, 2).length();
+  setFromMatrixScale(mat4) {
+    const sx = this.setFromMatrixColumn(mat4, 0).length();
+    const sy = this.setFromMatrixColumn(mat4, 1).length();
+    const sz = this.setFromMatrixColumn(mat4, 2).length();
 
     this.x = sx;
     this.y = sy;
@@ -508,12 +508,12 @@ class Vector3 {
     return this;
   }
 
-  setFromMatrixColumn(m, index) {
-    return this.fromArray(m.elements, index * 4);
+  setFromMatrixColumn(mat4, index) {
+    return this.fromArray(mat4.elements, index * 4);
   }
 
-  setFromMatrix3Column(m, index) {
-    return this.fromArray(m.elements, index * 3);
+  setFromMatrix3Column(mat3, index) {
+    return this.fromArray(mat3.elements, index * 3);
   }
 
   setFromEuler(e) {
