@@ -285,6 +285,7 @@ function createConfig(format, output, plugins = []) {
         tsconfig: path.resolve(__dirname, 'jsconfig.json'),
         sourceMap: output.sourcemap,
         minify: false,
+        // minifyWhitespace: true,
         target: isServerRenderer || isNodeBuild ? 'es2019' : 'es2022',
         define: resolveDefine()
       }),
