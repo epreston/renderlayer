@@ -12,6 +12,7 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 | Action        | Command                 | Description                        |
 | ------------- | ----------------------- | ---------------------------------- |
 | build         | `npm run build`         | Build all modules                  |
+| meta          | `npm run meta`          | Create esbuild meta for analysis   |
 | check         | `npm run check`         | Check for circular dependencies    |
 | lint          | `npm run lint`          | Run static code analysis           |
 | test          | `npm run test`          | Run unit tests and exit            |
@@ -59,22 +60,24 @@ A convenience package is provided to make core packages available to your develo
 
 ## Tools
 
-| Tool         | Reference                |
-| ------------ | ------------------------ |
-| Node.js      | https://nodejs.org/      |
-| Vite         | https://vitejs.dev/      |
-| Vitest       | https://vitest.dev/      |
-| Rollup       | https://rollupjs.org     |
-| ESLint       | https://eslint.org/      |
-| Prettier     | https://prettier.io      |
-| EditorConfig | https://editorconfig.org |
+| Tool         | Reference                 |
+| ------------ | ------------------------- |
+| Node.js      | https://nodejs.org/       |
+| Vite         | https://vitejs.dev/       |
+| Vitest       | https://vitest.dev/       |
+| rollup.js    | https://rollupjs.org      |
+| ESLint       | https://eslint.org/       |
+| Prettier     | https://prettier.io       |
+| EditorConfig | https://editorconfig.org  |
+| esbuild      | https://esbuild.github.io |
 
 ## References
 
-| Website | Reference                      |
-| ------- | ------------------------------ |
-| WebGL2  | https://www.khronos.org/webgl/ |
-| glTF    | https://www.khronos.org/gltf/  |
+| Website | Reference                          |
+| ------- | ---------------------------------- |
+| WebGL2  | https://www.khronos.org/webgl/     |
+| glTF    | https://www.khronos.org/gltf/      |
+| analyze | https://esbuild.github.io/analyze/ |
 
 ## License
 
