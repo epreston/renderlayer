@@ -102,12 +102,12 @@ async function check(target) {
     bundle: true,
     metafile: true,
     format: 'esm',
-    sourcemap: 'external', // true
+    // sourcemap: 'external',
     packages: 'external',
     external: ['@renderlayer/*'],
-    // outfile: `meta/${target}.js`,
     write: false,
-    outdir: 'meta'
+    outfile: `meta/${target}.js`
+    // outdir: 'meta'
   })
     .then(({ metafile }) => {
       // const file = Object.keys(metafile.outputs)[0].replace('map', 'meta.json');
