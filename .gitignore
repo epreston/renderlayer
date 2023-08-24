@@ -77,6 +77,9 @@ stats.html
 # Temp folder
 temp
 
+# esbuild meta
+/meta
+
 # ignore non-npm lockfiles
 pnpm-lock.yaml
 yarn.lock
