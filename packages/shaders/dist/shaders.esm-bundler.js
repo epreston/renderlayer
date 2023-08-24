@@ -4830,7 +4830,7 @@ const vertex$8 = (
 
 // This is used for computing an equivalent of gl_FragCoord.z that is as high precision as possible.
 // Some platforms compute gl_FragCoord at a lower precision which makes the manually computed value better for
-// depth-based postprocessing effects. Reproduced on iPad with A10 processor / iPadOS 13.3.1.
+// depth-based post-processing effects. Reproduced on iPad with A10 processor / iPadOS 13.3.1.
 varying vec2 vHighPrecisionZW;
 
 void main() {
