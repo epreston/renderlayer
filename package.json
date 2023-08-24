@@ -17,6 +17,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "check": "node scripts/circular.js",
+    "meta": "node scripts/meta.js",
     "size": "cd apps/size-check && vite build && node brotli",
     "lint": "eslint --ext .js --report-unused-disable-directives .",
     "test": "vitest run",
