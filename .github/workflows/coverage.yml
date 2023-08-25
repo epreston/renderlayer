@@ -1,10 +1,10 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them,
-# lint, build the source code, and run tests across different versions of node.
+# lint, build the source code, run tests on one version of node, and upload coverage data.
 
 # For more information see:
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Coverage
+name: Upload Coverage
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ env:
   VITEST_SEGFAULT_RETRY: 3
 
 jobs:
-  coverage-on-node:
+  upload-coverage:
     runs-on: ubuntu-latest
 
     timeout-minutes: 10
