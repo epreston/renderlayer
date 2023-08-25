@@ -8,9 +8,11 @@ name: Continuous Integration
 
 on:
   workflow_dispatch:
+
   push:
     branches: ['main']
     paths-ignore: ['README.md', 'LICENSE', '.vscode/**']
+
   pull_request:
     branches: ['main']
     paths-ignore: ['README.md', 'LICENSE', '.vscode/**']
