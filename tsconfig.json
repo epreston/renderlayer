@@ -13,7 +13,7 @@
       "@renderlayer/*": ["packages/*/src"],
       "renderlayer": ["packages/renderlayer/src"]
     },
-    "types": ["vitest/globals", "node"],
+    "types": ["vitest/globals"],
     "resolveJsonModule": true,
 
     /* JavaScript Support */
