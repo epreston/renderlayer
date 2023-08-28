@@ -21,6 +21,7 @@
 
     /* Emit */
     "sourceMap": false,
+    "outDir": "temp",
     "removeComments": false,
     "newLine": "lf",
 
