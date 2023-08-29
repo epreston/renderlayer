@@ -1,0 +1,46 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Cameras > OrthographicCamera > toJSON 1`] = `
+{
+  "metadata": {
+    "generator": "Object3D.toJSON",
+    "type": "Object",
+    "version": 4.5,
+  },
+  "object": {
+    "bottom": -1,
+    "far": 42,
+    "layers": 1,
+    "left": -1.5,
+    "matrix": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+    ],
+    "near": 0.1,
+    "right": 1.5,
+    "top": 1,
+    "type": "OrthographicCamera",
+    "up": [
+      0,
+      1,
+      0,
+    ],
+    "uuid": "b67e5706-a8aa-410b-b306-e71461b67e2f",
+    "zoom": 1,
+  },
+}
+`;

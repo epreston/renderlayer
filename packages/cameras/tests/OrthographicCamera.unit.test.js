@@ -96,8 +96,17 @@ describe('Cameras', () => {
       expect(pMatrix[14] === -((far + near) / (far - near))).toBeTruthy(); // m[3,2] === -(f+n/f-n)
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const left = -1.5,
+        right = 1.5,
+        top = 1,
+        bottom = -1,
+        near = 0.1,
+        far = 42;
+      const cam = new OrthographicCamera(left, right, top, bottom, near, far);
+      cam.uuid = 'b67e5706-a8aa-410b-b306-e71461b67e2f';
+
+      expect(cam).toMatchSnapshot();
     });
 
     // TODO: clone is a camera methods that relied to copy method
@@ -111,6 +120,7 @@ describe('Cameras', () => {
       const cam = new OrthographicCamera(left, right, top, bottom, near, far);
 
       const clonedCam = cam.clone();
+      expect(cam).not.toBe(clonedCam);
 
       expect(cam.left === clonedCam.left).toBeTruthy();
       expect(cam.right === clonedCam.right).toBeTruthy();
