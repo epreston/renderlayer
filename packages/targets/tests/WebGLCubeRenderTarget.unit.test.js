@@ -5,12 +5,12 @@ import { WebGLCubeRenderTarget } from '../src/WebGLCubeRenderTarget.js';
 
 describe('Renderers', () => {
   describe('WebGLCubeRenderTarget', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new WebGLCubeRenderTarget();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new WebGLCubeRenderTarget();
       expect(object).toBeInstanceOf(WebGLRenderTarget);
     });

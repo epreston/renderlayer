@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Camera } from '../src/Camera.js';
 
@@ -6,12 +6,12 @@ import { OrthographicCamera } from '../src/OrthographicCamera.js';
 
 describe('Cameras', () => {
   describe('OrthographicCamera', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new OrthographicCamera();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new OrthographicCamera();
       expect(object).toBeInstanceOf(Camera);
     });

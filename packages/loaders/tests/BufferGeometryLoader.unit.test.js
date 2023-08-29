@@ -7,12 +7,12 @@ import { BufferGeometryLoader } from '../src/BufferGeometryLoader.js';
 
 describe('Loaders', () => {
   describe('BufferGeometryLoader', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new BufferGeometryLoader();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new BufferGeometryLoader();
       expect(object).toBeInstanceOf(Loader);
     });

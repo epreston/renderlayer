@@ -4,7 +4,7 @@ import { Layers } from '../src/Layers.js';
 
 describe('Core', () => {
   describe('Layers', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Layers();
       expect(object).toBeDefined();
     });

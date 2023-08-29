@@ -5,12 +5,12 @@ import { Material } from '../src/Material.js';
 
 describe('Materials', () => {
   describe('Material', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Material();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Material();
       expect(object).toBeInstanceOf(EventDispatcher);
     });

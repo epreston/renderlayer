@@ -4,7 +4,7 @@ import { FogExp2 } from '../src/FogExp2.js';
 
 describe('Scenes', () => {
   describe('FoxExp2', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       // FoxExp2( color, density = 0.00025 )
 
       // no params

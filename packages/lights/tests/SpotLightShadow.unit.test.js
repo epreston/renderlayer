@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { LightShadow } from '../src/LightShadow.js';
 import { SpotLight } from '../src/SpotLight.js';
@@ -6,12 +6,12 @@ import { SpotLightShadow } from '../src/SpotLightShadow.js';
 
 describe('Lights', () => {
   describe('SpotLightShadow', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new SpotLightShadow();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new SpotLightShadow();
       expect(object).toBeInstanceOf(LightShadow);
     });

@@ -5,12 +5,12 @@ import { Points } from '../src/Points.js';
 
 describe('Objects', () => {
   describe('Points', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Points();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const points = new Points();
       expect(points).toBeInstanceOf(Object3D);
     });

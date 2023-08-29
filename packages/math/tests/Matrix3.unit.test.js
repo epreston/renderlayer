@@ -38,7 +38,7 @@ function toMatrix4(m3) {
 
 describe('Maths', () => {
   describe('Matrix3', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const a = new Matrix3();
       expect(a.determinant() == 1).toBeTruthy();
 

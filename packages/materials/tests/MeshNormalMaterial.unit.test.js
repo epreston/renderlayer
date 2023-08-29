@@ -5,12 +5,12 @@ import { MeshNormalMaterial } from '../src/MeshNormalMaterial.js';
 
 describe('Materials', () => {
   describe('MeshNormalMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new MeshNormalMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new MeshNormalMaterial();
       expect(object).toBeInstanceOf(Material);
     });

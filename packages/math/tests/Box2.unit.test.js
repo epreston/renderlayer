@@ -7,7 +7,7 @@ import { Box2 } from '../src/Box2.js';
 
 describe('Maths', () => {
   describe('Box2', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const a = new Box2();
       expect(a.min.equals(posInf2)).toBeTruthy();
       expect(a.max.equals(negInf2)).toBeTruthy();

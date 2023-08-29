@@ -5,12 +5,12 @@ import { MeshPhysicalMaterial } from '../src/MeshPhysicalMaterial.js';
 
 describe('Materials', () => {
   describe('MeshPhysicalMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new MeshPhysicalMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new MeshPhysicalMaterial();
       expect(object).toBeInstanceOf(Material);
     });

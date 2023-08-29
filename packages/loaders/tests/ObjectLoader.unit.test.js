@@ -5,12 +5,12 @@ import { ObjectLoader } from '../src/ObjectLoader.js';
 
 describe('Loaders', () => {
   describe('ObjectLoader', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new ObjectLoader();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new ObjectLoader();
       expect(object).toBeInstanceOf(Loader);
     });

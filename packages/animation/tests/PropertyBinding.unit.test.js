@@ -7,7 +7,7 @@ import { PropertyBinding } from '../src/PropertyBinding.js';
 
 describe('Animation', () => {
   describe('PropertyBinding', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const geometry = new BoxGeometry();
       const material = new MeshBasicMaterial();
       const mesh = new Mesh(geometry, material);

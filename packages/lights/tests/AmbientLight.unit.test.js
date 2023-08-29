@@ -21,12 +21,12 @@ describe('Lights', () => {
 			];
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new AmbientLight();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new AmbientLight();
       expect(object).toBeInstanceOf(Light);
     });

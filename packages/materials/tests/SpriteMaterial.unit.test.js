@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Material } from '../src/Material.js';
 import { SpriteMaterial } from '../src/SpriteMaterial.js';

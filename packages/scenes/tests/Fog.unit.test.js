@@ -4,7 +4,7 @@ import { Fog } from '../src/Fog.js';
 
 describe('Scenes', () => {
   describe('Fog', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       // Fog( color, near = 1, far = 1000 )
 
       // no params

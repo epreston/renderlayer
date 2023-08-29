@@ -17,12 +17,12 @@ describe('Curves', () => {
       );
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new CubicBezierCurve3();
       expect(object).toBeInstanceOf(Curve);
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new CubicBezierCurve3();
       expect(object).toBeDefined();
     });

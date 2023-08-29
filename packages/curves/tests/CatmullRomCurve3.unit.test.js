@@ -15,12 +15,12 @@ describe('Curves', () => {
       new Vector3( 60, -100, -60),
     ];
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new CatmullRomCurve3();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new CatmullRomCurve3();
       expect(object).toBeInstanceOf(Curve);
     });

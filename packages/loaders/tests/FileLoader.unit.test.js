@@ -5,12 +5,12 @@ import { FileLoader } from '../src/FileLoader.js';
 
 describe('Loaders', () => {
   describe('FileLoader', () => {
-    test('Extending', () => {
+    test('extends', () => {
       const object = new FileLoader();
       expect(object).toBeInstanceOf(Loader);
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new FileLoader();
       expect(object).toBeDefined();
     });

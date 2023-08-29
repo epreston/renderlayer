@@ -11,12 +11,12 @@ describe('Core', () => {
   describe('Object3D', () => {
     const RadToDeg = 180 / Math.PI;
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Object3D();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Object3D();
       expect(object).toBeInstanceOf(EventDispatcher);
     });

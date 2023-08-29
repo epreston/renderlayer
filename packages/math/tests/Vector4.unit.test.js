@@ -9,7 +9,7 @@ import { x, y, z, w, eps } from './math-constants.js';
 
 describe('Maths', () => {
   describe('Vector4', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Vector4();
       expect(a.x).toBe(0);
       expect(a.y).toBe(0);

@@ -7,12 +7,12 @@ import { SkinnedMesh } from '../src/SkinnedMesh.js';
 
 describe('Objects', () => {
   describe('SkinnedMesh', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new SkinnedMesh();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const skinnedMesh = new SkinnedMesh();
 
       expect(skinnedMesh).toBeInstanceOf(Object3D);

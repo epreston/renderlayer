@@ -49,7 +49,7 @@ function createTwoAnimations() {
 
 describe('Animation', () => {
   describe('AnimationAction', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const mixer = new AnimationMixer();
       const clip = new AnimationClip('nonname', -1, []);
 

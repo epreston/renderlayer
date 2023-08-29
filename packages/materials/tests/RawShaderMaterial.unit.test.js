@@ -5,12 +5,12 @@ import { RawShaderMaterial } from '../src/RawShaderMaterial.js';
 
 describe('Materials', () => {
   describe('RawShaderMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new RawShaderMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new RawShaderMaterial();
       expect(object).toBeInstanceOf(ShaderMaterial);
     });

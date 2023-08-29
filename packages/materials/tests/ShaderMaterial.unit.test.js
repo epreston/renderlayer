@@ -5,12 +5,12 @@ import { ShaderMaterial } from '../src/ShaderMaterial.js';
 
 describe('Materials', () => {
   describe('ShaderMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new ShaderMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new ShaderMaterial();
       expect(object).toBeInstanceOf(Material);
     });

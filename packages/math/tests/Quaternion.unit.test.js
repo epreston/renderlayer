@@ -129,7 +129,7 @@ function changeEulerOrder(euler, order) {
 
 describe('Maths', () => {
   describe('Quaternion', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Quaternion();
       expect(a.x == 0).toBeTruthy();
       expect(a.y == 0).toBeTruthy();

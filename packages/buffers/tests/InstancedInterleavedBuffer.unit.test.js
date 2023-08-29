@@ -5,14 +5,14 @@ import { InstancedInterleavedBuffer } from '../src/InstancedInterleavedBuffer.js
 
 describe('Buffers', () => {
   describe('InstancedInterleavedBuffer', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const array = new Float32Array([1, 2, 3, 7, 8, 9]);
       const instance = new InstancedInterleavedBuffer(array, 3);
 
       expect(instance.meshPerAttribute === 1).toBeTruthy();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new InstancedInterleavedBuffer();
       expect(object).toBeInstanceOf(InterleavedBuffer);
     });

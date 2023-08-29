@@ -4,7 +4,7 @@ import { ShaderChunk } from '../src/ShaderChunk.js';
 
 describe('Shaders', () => {
   describe('ShaderChunk', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       expect(ShaderChunk).toBeDefined();
     });
   });

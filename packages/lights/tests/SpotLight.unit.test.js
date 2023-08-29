@@ -45,12 +45,12 @@ describe('Lights', () => {
       ];
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new SpotLight();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new SpotLight();
       expect(object).toBeInstanceOf(Light);
     });

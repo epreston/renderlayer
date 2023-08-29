@@ -10,12 +10,12 @@ import { Mesh } from '../src/Mesh.js';
 
 describe('Objects', () => {
   describe('Mesh', () => {
-    test('Extending', () => {
+    test('extends', () => {
       const mesh = new Mesh();
       expect(mesh).toBeInstanceOf(Object3D);
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Mesh();
       expect(object).toBeDefined();
     });

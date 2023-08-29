@@ -5,12 +5,12 @@ import { LineBasicMaterial } from '../src/LineBasicMaterial.js';
 
 describe('Materials', () => {
   describe('LineBasicMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new LineBasicMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new LineBasicMaterial();
       expect(object).toBeInstanceOf(Material);
     });

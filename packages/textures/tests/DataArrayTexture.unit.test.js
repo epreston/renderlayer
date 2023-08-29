@@ -5,12 +5,12 @@ import { DataArrayTexture } from '../src/DataArrayTexture.js';
 
 describe('Textures', () => {
   describe('DataArrayTexture', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new DataArrayTexture();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new DataArrayTexture();
       expect(object).toBeInstanceOf(Texture);
     });

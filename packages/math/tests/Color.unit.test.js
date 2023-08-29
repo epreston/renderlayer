@@ -15,7 +15,7 @@ describe('Maths', () => {
       ColorManagement.enabled = colorManagementEnabled;
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       ColorManagement.enabled = false;
 
       // default ctor

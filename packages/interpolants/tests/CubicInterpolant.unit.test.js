@@ -5,13 +5,13 @@ import { CubicInterpolant } from '../src/CubicInterpolant.js';
 
 describe('Interpolants', () => {
   describe('CubicInterpolant', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       // parameterPositions, sampleValues, sampleSize, resultBuffer
       const object = new CubicInterpolant(null, [1, 11, 2, 22, 3, 33], 2, []);
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new CubicInterpolant(null, [1, 11, 2, 22, 3, 33], 2, []);
       expect(object).toBeInstanceOf(Interpolant);
     });

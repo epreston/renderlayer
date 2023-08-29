@@ -4,7 +4,7 @@ import { Source } from '../src/Source.js';
 
 describe('Textures', () => {
   describe('Source', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Source();
       expect(object).toBeDefined();
     });

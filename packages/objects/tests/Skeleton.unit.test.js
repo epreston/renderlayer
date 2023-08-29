@@ -4,7 +4,7 @@ import { Skeleton } from '../src/Skeleton.js';
 
 describe('Objects', () => {
   describe('Skeleton', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Skeleton();
       expect(object).toBeDefined();
     });

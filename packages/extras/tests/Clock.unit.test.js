@@ -21,7 +21,7 @@ describe('Core', () => {
       };
     }
 
-    test('Instancing', () => {
+    test('constructor', () => {
       // no params
       const object = new Clock();
       expect(object).toBeDefined();

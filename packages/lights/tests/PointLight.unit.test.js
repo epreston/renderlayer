@@ -29,12 +29,12 @@ describe('Lights', () => {
       ];
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new PointLight();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new PointLight();
       expect(object).toBeInstanceOf(Light);
     });

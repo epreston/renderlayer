@@ -12,7 +12,7 @@ describe('Keyframes', () => {
       interpolation: ColorKeyframeTrack.DefaultInterpolation
     };
 
-    test('Instancing', () => {
+    test('constructor', () => {
       // name, times, values
       const object = new ColorKeyframeTrack(parameters.name, parameters.times, parameters.values);
       expect(object).toBeTruthy();
@@ -27,7 +27,7 @@ describe('Keyframes', () => {
       expect(object_all).toBeTruthy();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new ColorKeyframeTrack(parameters.name, parameters.times, parameters.values);
       expect(object).toBeInstanceOf(KeyframeTrack);
     });

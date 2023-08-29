@@ -31,12 +31,12 @@ describe('Geometries', () => {
       ];
     });
 
-    test('Instancing', (assert) => {
+    test('constructor', (assert) => {
       const object = new BoxGeometry();
       expect(object).toBeDefined();
     });
 
-    test('Extending', (assert) => {
+    test('extends', (assert) => {
       const object = new BoxGeometry();
       expect(object).toBeInstanceOf(BufferGeometry);
     });

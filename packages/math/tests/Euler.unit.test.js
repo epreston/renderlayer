@@ -37,7 +37,7 @@ function quatEquals(a, b, tolerance) {
 
 describe('Maths', () => {
   describe('Euler', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const a = new Euler();
 
       expect(a.equals(eulerZero)).toBeTruthy();

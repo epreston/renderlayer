@@ -5,12 +5,12 @@ import { Scene } from '../src/Scene.js';
 
 describe('Scenes', () => {
   describe('Scene', () => {
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Scene();
       expect(object).toBeInstanceOf(Object3D);
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Scene();
       expect(object).toBeDefined();
     });

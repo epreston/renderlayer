@@ -4,7 +4,7 @@ import { ShaderLib } from '../src/ShaderLib.js';
 
 describe('Shaders', () => {
   describe('ShaderLib', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       expect(ShaderLib, 'ShaderLib is defined.').toBeTruthy();
     });
   });

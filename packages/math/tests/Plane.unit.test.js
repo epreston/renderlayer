@@ -18,7 +18,7 @@ function comparePlane(a, b, threshold = 0.0001) {
 
 describe('Maths', () => {
   describe('Plane', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Plane();
       expect(a.normal.x == 1).toBeTruthy();
       expect(a.normal.y == 0).toBeTruthy();

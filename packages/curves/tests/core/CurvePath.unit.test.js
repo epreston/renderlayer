@@ -6,12 +6,12 @@ import { CurvePath } from '../../src/core/CurvePath.js';
 describe('Curves', () => {
   describe('Core', () => {
     describe('CurvePath', () => {
-      test('Instancing', () => {
+      test('constructor', () => {
         const object = new CurvePath();
         expect(object).toBeDefined();
       });
 
-      test('Extending', () => {
+      test('extends', () => {
         const object = new CurvePath();
         expect(object).toBeInstanceOf(Curve);
       });

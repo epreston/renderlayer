@@ -5,12 +5,12 @@ import { DataTexture } from '../src/DataTexture.js';
 
 describe('Textures', () => {
   describe('DataTexture', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new DataTexture();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new DataTexture();
       expect(object).toBeInstanceOf(Texture);
     });

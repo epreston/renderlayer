@@ -5,12 +5,12 @@ import { PointLightShadow } from '../src/PointLightShadow.js';
 
 describe('Lights', () => {
   describe('PointLightShadow', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new PointLightShadow();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new PointLightShadow();
       expect(object).toBeInstanceOf(LightShadow);
     });

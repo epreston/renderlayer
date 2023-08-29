@@ -33,7 +33,7 @@ function eulerEquals(a, b, tolerance = 0.0001) {
 
 describe('Maths', () => {
   describe('Matrix4', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const a = new Matrix4();
       expect(a.determinant() == 1).toBeTruthy();
 

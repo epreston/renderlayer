@@ -4,7 +4,7 @@ import { GLTFLoader } from '../src/GLTFLoader.js';
 
 describe('GLTF', () => {
   describe('GLTFLoader', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new GLTFLoader();
       expect(object).toBeDefined();
     });

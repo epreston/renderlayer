@@ -7,12 +7,12 @@ import { InstancedMesh } from '../src/InstancedMesh.js';
 
 describe('Objects', () => {
   describe('InstancedMesh', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new InstancedMesh();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new InstancedMesh();
       expect(object).toBeInstanceOf(Mesh);
     });

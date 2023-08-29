@@ -5,12 +5,12 @@ import { Line } from '../src/Line.js';
 
 describe('Objects', () => {
   describe('Line', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Line();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const line = new Line();
       expect(line).toBeInstanceOf(Object3D);
     });

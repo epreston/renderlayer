@@ -11,7 +11,7 @@ import { Sphere } from '../src/Sphere.js';
 
 describe('Maths', () => {
   describe('Sphere', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Sphere();
       expect(a.center.equals(zero3)).toBeTruthy();
       expect(a.radius == -1).toBeTruthy();

@@ -7,7 +7,7 @@ export const eps = 0.0001;
 
 describe('Maths', () => {
   describe('Spherical', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const spherical = new Spherical();
       const radius = 10.0;
       const phi = Math.acos(-0.5);

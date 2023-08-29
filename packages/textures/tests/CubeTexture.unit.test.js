@@ -5,12 +5,12 @@ import { CubeTexture } from '../src/CubeTexture.js';
 
 describe('Textures', () => {
   describe('CubeTexture', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new CubeTexture();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new CubeTexture();
       expect(object).toBeInstanceOf(Texture);
     });

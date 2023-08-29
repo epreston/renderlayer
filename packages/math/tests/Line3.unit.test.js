@@ -10,7 +10,7 @@ import { Line3 } from '../src/Line3.js';
 
 describe('Maths', () => {
   describe('Line3', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Line3();
       expect(a.start.equals(zero3)).toBeTruthy();
       expect(a.end.equals(zero3)).toBeTruthy();

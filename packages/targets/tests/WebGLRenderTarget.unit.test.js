@@ -5,12 +5,12 @@ import { WebGLRenderTarget } from '../src/WebGLRenderTarget.js';
 
 describe('Renderers', () => {
   describe('WebGLRenderTarget', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new WebGLRenderTarget();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new WebGLRenderTarget();
       expect(object).toBeInstanceOf(EventDispatcher);
     });

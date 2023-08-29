@@ -5,12 +5,12 @@ import { ImageLoader } from '../src/ImageLoader.js';
 
 describe('Loaders', () => {
   describe('ImageLoader', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new ImageLoader();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new ImageLoader();
       expect(object).toBeInstanceOf(Loader);
     });

@@ -12,7 +12,7 @@ import { Ray } from '../src/Ray.js';
 
 describe('Maths', () => {
   describe('Ray', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Ray();
       expect(a.origin.equals(zero3)).toBeTruthy();
       expect(a.direction.equals(new Vector3(0, 0, -1))).toBeTruthy();

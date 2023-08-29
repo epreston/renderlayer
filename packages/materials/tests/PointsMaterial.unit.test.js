@@ -5,12 +5,12 @@ import { PointsMaterial } from '../src/PointsMaterial.js';
 
 describe('Materials', () => {
   describe('PointsMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new PointsMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new PointsMaterial();
       expect(object).toBeInstanceOf(Material);
     });

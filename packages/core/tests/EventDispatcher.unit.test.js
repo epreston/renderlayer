@@ -4,7 +4,7 @@ import { EventDispatcher } from '../src/EventDispatcher.js';
 
 describe('Core', () => {
   describe('EventDispatcher', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new EventDispatcher();
       expect(object).toBeDefined();
     });

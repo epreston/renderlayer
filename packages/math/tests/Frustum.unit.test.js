@@ -17,7 +17,7 @@ const unit3 = new Vector3(1, 0, 0);
 
 describe('Maths', () => {
   describe('Frustum', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Frustum();
 
       expect(a.planes !== undefined).toBeTruthy();

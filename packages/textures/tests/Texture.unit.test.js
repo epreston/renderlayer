@@ -5,13 +5,13 @@ import { Texture } from '../src/Texture.js';
 
 describe('Textures', () => {
   describe('Texture', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       // no params
       const object = new Texture();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Texture();
       expect(object).toBeInstanceOf(EventDispatcher);
     });

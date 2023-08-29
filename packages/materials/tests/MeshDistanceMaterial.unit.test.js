@@ -5,12 +5,12 @@ import { MeshDistanceMaterial } from '../src/MeshDistanceMaterial.js';
 
 describe('Materials', () => {
   describe('MeshDistanceMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new MeshDistanceMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new MeshDistanceMaterial();
       expect(object).toBeInstanceOf(Material);
     });

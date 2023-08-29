@@ -5,7 +5,7 @@ import { InterleavedBufferAttribute } from '../src/InterleavedBufferAttribute.js
 
 describe('Core', () => {
   describe('InterleavedBufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new InterleavedBufferAttribute();
       expect(object).toBeDefined();
     });

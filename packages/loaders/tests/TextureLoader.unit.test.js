@@ -5,12 +5,12 @@ import { TextureLoader } from '../src/TextureLoader.js';
 
 describe('Loaders', () => {
   describe('TextureLoader', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new TextureLoader();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new TextureLoader();
       expect(object).toBeInstanceOf(Loader);
     });

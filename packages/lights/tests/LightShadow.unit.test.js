@@ -16,7 +16,7 @@ describe('Lights', () => {
       object = new LightShadow(camera);
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       expect(object).toBeDefined();
     });
 

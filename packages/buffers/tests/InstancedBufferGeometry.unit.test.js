@@ -16,12 +16,12 @@ describe('Buffers', () => {
       };
     }
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new InstancedBufferGeometry();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new InstancedBufferGeometry();
       expect(object).toBeInstanceOf(BufferGeometry);
     });

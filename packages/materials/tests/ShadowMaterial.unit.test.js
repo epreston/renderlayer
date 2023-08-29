@@ -5,12 +5,12 @@ import { ShadowMaterial } from '../src/ShadowMaterial.js';
 
 describe('Materials', () => {
   describe('ShadowMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new ShadowMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new ShadowMaterial();
       expect(object).toBeInstanceOf(Material);
     });

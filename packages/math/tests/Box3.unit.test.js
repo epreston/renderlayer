@@ -21,7 +21,7 @@ function compareBox(a, b, threshold) {
 
 describe('Maths', () => {
   describe('Box3', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Box3();
       expect(a.min.equals(posInf3)).toBeTruthy();
       expect(a.max.equals(negInf3)).toBeTruthy();

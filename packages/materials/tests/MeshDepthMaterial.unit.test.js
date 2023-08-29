@@ -5,12 +5,12 @@ import { MeshDepthMaterial } from '../src/MeshDepthMaterial.js';
 
 describe('Materials', () => {
   describe('MeshDepthMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new MeshDepthMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new MeshDepthMaterial();
       expect(object).toBeInstanceOf(Material);
     });

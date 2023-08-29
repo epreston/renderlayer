@@ -13,7 +13,7 @@ describe('WebGLShaderCache', () => {
   //   instance = new WebGLShaderCache();
   // });
 
-  test('Instancing', () => {
+  test('constructor', () => {
     expect(instance).toBeInstanceOf(WebGLShaderCache);
   });
 

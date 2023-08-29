@@ -8,12 +8,12 @@ import { DirectionalLightShadow } from '../src/DirectionalLightShadow.js';
 
 describe('Lights', () => {
   describe('DirectionalLightShadow', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new DirectionalLightShadow();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new DirectionalLightShadow();
       expect(object).toBeInstanceOf(LightShadow);
     });

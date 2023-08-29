@@ -10,7 +10,7 @@ import { zero3, one3, two3 } from './math-constants.js';
 
 describe('Maths', () => {
   describe('Triangle', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Triangle();
       expect(a.a.equals(zero3)).toBeTruthy();
       expect(a.b.equals(zero3)).toBeTruthy();

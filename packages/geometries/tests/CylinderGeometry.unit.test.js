@@ -67,12 +67,12 @@ describe('Geometries', () => {
       ];
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new CylinderGeometry();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new CylinderGeometry();
       expect(object).toBeInstanceOf(BufferGeometry);
     });

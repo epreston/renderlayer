@@ -16,7 +16,7 @@ describe('Core', () => {
       expect(copiedInstance.usage === DynamicDrawUsage).toBeTruthy();
     }
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new InterleavedBuffer();
       expect(object).toBeDefined();
     });

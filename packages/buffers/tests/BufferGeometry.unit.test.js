@@ -61,12 +61,12 @@ function getNormalsForVertices(vertices) {
 
 describe('Buffers', () => {
   describe('BufferGeometry', () => {
-    test('Extending', () => {
+    test('extends', () => {
       const object = new BufferGeometry();
       expect(object).toBeInstanceOf(EventDispatcher);
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new BufferGeometry();
       expect(object).toBeDefined();
     });

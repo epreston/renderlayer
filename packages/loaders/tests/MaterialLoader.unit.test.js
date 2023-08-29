@@ -5,12 +5,12 @@ import { MaterialLoader } from '../src/MaterialLoader.js';
 
 describe('Loaders', () => {
   describe('MaterialLoader', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new MaterialLoader();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new MaterialLoader();
       expect(object).toBeInstanceOf(Loader);
     });

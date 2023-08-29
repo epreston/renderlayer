@@ -63,7 +63,7 @@ function getSphere() {
 
 describe('Core', () => {
   describe('Raycaster', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Raycaster();
       expect(object).toBeDefined();
     });

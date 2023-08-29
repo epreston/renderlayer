@@ -28,12 +28,12 @@ function getClips(pos1, pos2, scale1, scale2, dur) {
 
 describe('Animation', () => {
   describe('AnimationMixer', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new AnimationMixer();
       expect(object).toBeDefined;
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new AnimationMixer();
       expect(object).toBeInstanceOf(EventDispatcher);
     });

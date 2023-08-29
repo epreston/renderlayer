@@ -25,7 +25,7 @@ function createAnimation() {
 
 describe('Animation', () => {
   describe('AnimationClip', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const clip = new AnimationClip('clip1', 1000, [{}]);
       expect(clip).toBeTruthy();
     });

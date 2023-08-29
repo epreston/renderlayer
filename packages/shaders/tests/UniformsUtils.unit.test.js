@@ -8,7 +8,7 @@ import * as UniformsUtils from '../src/UniformsUtils.js';
 
 describe('Shaders', () => {
   describe('UniformsUtils', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       expect(UniformsUtils).toBeTruthy();
     });
 

@@ -5,12 +5,12 @@ import { Group } from '../src/Group.js';
 
 describe('Objects', () => {
   describe('Group', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Group();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const group = new Group();
       expect(group).toBeInstanceOf(Object3D);
     });

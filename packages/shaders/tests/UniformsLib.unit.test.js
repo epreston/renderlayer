@@ -4,7 +4,7 @@ import { UniformsLib } from '../src/UniformsLib.js';
 
 describe('Shaders', () => {
   describe('UniformsLib', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       expect(UniformsLib, 'UniformsLib is defined.').toBeTruthy();
     });
   });

@@ -4,7 +4,7 @@ import { PropertyMixer } from '../src/PropertyMixer.js';
 
 describe('Animation', () => {
   describe('PropertyMixer', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new PropertyMixer();
       expect(object).toBeDefined();
     });

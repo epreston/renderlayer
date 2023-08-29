@@ -5,7 +5,7 @@ import { Curve } from '../../src/core/Curve.js';
 describe('Curves', () => {
   describe('Core', () => {
     describe('Curve', () => {
-      test('Instancing', () => {
+      test('constructor', () => {
         const object = new Curve();
         expect(object).toBeDefined();
       });

@@ -8,7 +8,7 @@ import { WebGLRenderer } from '../src/WebGLRenderer.js';
 
 describe('Renderers', () => {
   describe.todo('WebGLRenderer', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const renderer = new WebGLRenderer();
       expect(renderer).toBeDefined();
     });

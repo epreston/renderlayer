@@ -6,12 +6,12 @@ import { LineLoop } from '../src/LineLoop.js';
 
 describe('Objects', () => {
   describe('LineLoop', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new LineLoop();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const lineLoop = new LineLoop();
 
       expect(lineLoop).toBeInstanceOf(Object3D);

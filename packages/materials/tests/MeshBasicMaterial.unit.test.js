@@ -5,12 +5,12 @@ import { MeshBasicMaterial } from '../src/MeshBasicMaterial.js';
 
 describe('Materials', () => {
   describe('MeshBasicMaterial', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new MeshBasicMaterial();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new MeshBasicMaterial();
       expect(object).toBeInstanceOf(Material);
     });

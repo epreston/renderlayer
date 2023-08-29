@@ -5,7 +5,7 @@ import { LoadingManager } from '../src/LoadingManager.js';
 
 describe('Loaders', () => {
   describe('LoadingManager', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       // no params
       const object = new LoadingManager();
       expect(object).toBeDefined();

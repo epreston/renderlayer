@@ -5,12 +5,12 @@ import { Bone } from '../src/Bone.js';
 
 describe('Objects', () => {
   describe('Bone', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Bone();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const bone = new Bone();
       expect(bone).toBeInstanceOf(Object3D);
     });

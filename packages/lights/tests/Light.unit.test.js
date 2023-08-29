@@ -6,12 +6,12 @@ import { Light } from '../src/Light.js';
 
 describe('Lights', () => {
   describe('Light', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Light();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Light();
       expect(object).toBeInstanceOf(Object3D);
     });

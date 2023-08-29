@@ -5,14 +5,14 @@ import { ImageBitmapLoader } from '../src/ImageBitmapLoader.js';
 
 describe('Loaders', () => {
   describe('ImageBitmapLoader', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new ImageBitmapLoader();
       expect('createImageBitmap() not supported.').toHaveBeenWarned();
 
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new ImageBitmapLoader();
       expect('createImageBitmap() not supported.').toHaveBeenWarned();
 

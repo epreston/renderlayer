@@ -56,12 +56,12 @@ describe('Geometries', () => {
       ];
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new SphereGeometry();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new SphereGeometry();
       expect(object).toBeInstanceOf(BufferGeometry);
     });

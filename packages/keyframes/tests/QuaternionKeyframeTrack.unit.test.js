@@ -12,7 +12,7 @@ describe('Keyframes', () => {
       interpolation: QuaternionKeyframeTrack.DefaultInterpolation
     };
 
-    test('Instancing', () => {
+    test('constructor', () => {
       // name, times, values
       const object = new QuaternionKeyframeTrack(
         parameters.name,
@@ -31,7 +31,7 @@ describe('Keyframes', () => {
       expect(object_all).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new QuaternionKeyframeTrack(
         parameters.name,
         parameters.times,

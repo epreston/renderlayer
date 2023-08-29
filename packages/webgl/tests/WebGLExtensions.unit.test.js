@@ -19,7 +19,7 @@ describe('WebGL', () => {
       expect(WebGLExtensions).toBeDefined();
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const gl = new WebglContextMock();
       const extensions = WebGLExtensions(gl);
 

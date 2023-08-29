@@ -18,7 +18,7 @@ import { Vector3 } from '../src/Vector3.js';
 
 describe('Maths', () => {
   describe('Vector3', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       let a = new Vector3();
       expect(a.x == 0).toBeTruthy();
       expect(a.y == 0).toBeTruthy();

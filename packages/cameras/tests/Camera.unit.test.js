@@ -7,12 +7,12 @@ import { Camera } from '../src/Camera.js';
 
 describe('Cameras', () => {
   describe('Camera', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Camera();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Camera();
       expect(object).toBeInstanceOf(Object3D);
     });

@@ -38,7 +38,7 @@ describe('Interpolants', () => {
 
     // Tests
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const interpolant = new Mock(null, [1, 11, 2, 22, 3, 33], 2, []);
       expect(interpolant).toBeInstanceOf(Interpolant);
     });

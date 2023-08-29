@@ -29,12 +29,12 @@ describe('Geometries', () => {
       ];
     });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new PlaneGeometry();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new PlaneGeometry();
       expect(object).toBeInstanceOf(BufferGeometry);
     });

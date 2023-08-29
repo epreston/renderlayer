@@ -5,7 +5,7 @@ import { Loader } from '../src/Loader.js';
 
 describe('Loaders', () => {
   describe('Loader', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Loader();
       expect(object).toBeDefined();
     });

@@ -19,7 +19,7 @@ import {
 
 describe('Buffers', () => {
   describe('BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       // no simple array
 
       // prettier-ignore
@@ -248,96 +248,96 @@ describe('Buffers', () => {
   });
 
   describe('Int8BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Int8BufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Int8BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
   });
 
   describe('Uint8BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Uint8BufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Uint8BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
   });
 
   describe('Uint8ClampedBufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Uint8ClampedBufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Uint8ClampedBufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
   });
 
   describe('Int16BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Int16BufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Int16BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
   });
 
   describe('Uint16BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Uint16BufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Uint16BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
   });
 
   describe('Int32BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Int32BufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Int32BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
   });
 
   describe('Uint32BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Uint32BufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Uint32BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
   });
 
   describe('Float16BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Float16BufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Float16BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
@@ -405,24 +405,24 @@ describe('Buffers', () => {
   });
 
   describe('Float32BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Float32BufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Float32BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
   });
 
   describe('Float64BufferAttribute', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       const object = new Float64BufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new Float64BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });

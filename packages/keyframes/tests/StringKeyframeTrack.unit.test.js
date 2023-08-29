@@ -12,7 +12,7 @@ describe('Keyframes', () => {
       interpolation: StringKeyframeTrack.DefaultInterpolation
     };
 
-    test('Instancing', () => {
+    test('constructor', () => {
       // name, times, values
       const object = new StringKeyframeTrack(parameters.name, parameters.times, parameters.values);
       expect(object).toBeDefined();
@@ -27,7 +27,7 @@ describe('Keyframes', () => {
       expect(object_all).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new StringKeyframeTrack(parameters.name, parameters.times, parameters.values);
       expect(object).toBeInstanceOf(KeyframeTrack);
     });

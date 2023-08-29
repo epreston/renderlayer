@@ -5,13 +5,13 @@ import { LinearInterpolant } from '../src/LinearInterpolant.js';
 
 describe('Interpolants', () => {
   describe('LinearInterpolant', () => {
-    test('Instancing', () => {
+    test('constructor', () => {
       // parameterPositions, sampleValues, sampleSize, resultBuffer
       const object = new LinearInterpolant(null, [1, 11, 2, 22, 3, 33], 2, []);
       expect(object).toBeDefined();
     });
 
-    test('Extending', () => {
+    test('extends', () => {
       const object = new LinearInterpolant(null, [1, 11, 2, 22, 3, 33], 2, []);
       expect(object).toBeInstanceOf(Interpolant);
     });

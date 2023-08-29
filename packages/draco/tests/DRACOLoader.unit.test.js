@@ -23,7 +23,7 @@ describe('DRACO', () => {
     //   instance = new DRACOLoader();
     // });
 
-    test('Instancing', () => {
+    test('constructor', () => {
       expect(instance).toBeInstanceOf(DRACOLoader);
     });
 
