@@ -120,8 +120,6 @@ class MaterialLoader extends Loader {
     if (json.wireframe !== undefined) material.wireframe = json.wireframe;
     if (json.wireframeLinewidth !== undefined)
       material.wireframeLinewidth = json.wireframeLinewidth;
-    if (json.wireframeLinecap !== undefined) material.wireframeLinecap = json.wireframeLinecap;
-    if (json.wireframeLinejoin !== undefined) material.wireframeLinejoin = json.wireframeLinejoin;
 
     if (json.rotation !== undefined) material.rotation = json.rotation;
 
