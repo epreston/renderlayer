@@ -15,6 +15,11 @@ describe('Materials', () => {
       expect(object).toBeInstanceOf(Material);
     });
 
+    test('isMeshDepthMaterial', () => {
+      const object = new MeshDepthMaterial();
+      expect(object.isMeshDepthMaterial).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new MeshDepthMaterial();
       expect(object.type === 'MeshDepthMaterial').toBeTruthy();
@@ -50,11 +55,6 @@ describe('Materials', () => {
 
     test.todo('wireframeLinewidth', () => {
       // implement
-    });
-
-    test('isMeshDepthMaterial', () => {
-      const object = new MeshDepthMaterial();
-      expect(object.isMeshDepthMaterial).toBeTruthy();
     });
 
     test.todo('copy', () => {
