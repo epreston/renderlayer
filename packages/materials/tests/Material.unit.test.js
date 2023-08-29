@@ -163,72 +163,89 @@ describe('Materials', () => {
       expect(object.stencilWrite).toBe(false);
     });
 
-    test.todo('clippingPlanes', () => {
-      // implement
+    test('clippingPlanes', () => {
+      const object = new Material();
+      expect(object.clippingPlanes).toBeNull();
     });
 
-    test.todo('clipIntersection', () => {
-      // implement
+    test('clipIntersection', () => {
+      const object = new Material();
+      expect(object.clipIntersection).toBe(false);
     });
 
-    test.todo('clipShadows', () => {
-      // implement
+    test('clipShadows', () => {
+      const object = new Material();
+      expect(object.clipShadows).toBe(false);
     });
 
-    test.todo('shadowSide', () => {
-      // implement
+    test('shadowSide', () => {
+      const object = new Material();
+      expect(object.shadowSide).toBeNull();
     });
 
-    test.todo('colorWrite', () => {
-      // implement
+    test('colorWrite', () => {
+      const object = new Material();
+      expect(object.colorWrite).toBe(true);
     });
 
-    test.todo('precision', () => {
-      // implement
+    test('precision', () => {
+      const object = new Material();
+      expect(object.precision).toBeNull();
     });
 
-    test.todo('polygonOffset', () => {
-      // implement
+    test('polygonOffset', () => {
+      const object = new Material();
+      expect(object.polygonOffset).toBe(false);
     });
 
-    test.todo('polygonOffsetFactor', () => {
-      // implement
+    test('polygonOffsetFactor', () => {
+      const object = new Material();
+      expect(object.polygonOffsetFactor).toBe(0);
     });
 
-    test.todo('polygonOffsetUnits', () => {
-      // implement
+    test('polygonOffsetUnits', () => {
+      const object = new Material();
+      expect(object.polygonOffsetUnits).toBe(0);
     });
 
-    test.todo('dithering', () => {
-      // implement
+    test('dithering', () => {
+      const object = new Material();
+      expect(object.dithering).toBe(false);
     });
 
-    test.todo('alphaToCoverage', () => {
-      // implement
+    test('alphaToCoverage', () => {
+      const object = new Material();
+      expect(object.alphaToCoverage).toBe(false);
     });
 
-    test.todo('premultipliedAlpha', () => {
-      // implement
+    test('premultipliedAlpha', () => {
+      const object = new Material();
+      expect(object.premultipliedAlpha).toBe(false);
     });
 
-    test.todo('forceSinglePass', () => {
-      // implement
+    test('forceSinglePass', () => {
+      const object = new Material();
+      expect(object.forceSinglePass).toBe(false);
     });
 
-    test.todo('visible', () => {
-      // implement
+    test('visible', () => {
+      const object = new Material();
+      expect(object.visible).toBe(true);
     });
 
-    test.todo('toneMapped', () => {
-      // implement
+    test('toneMapped', () => {
+      const object = new Material();
+      expect(object.toneMapped).toBe(true);
     });
 
-    test.todo('userData', () => {
-      // implement
+    test('userData', () => {
+      const object = new Material();
+      expect(object.userData).toBeInstanceOf(Object);
     });
 
-    test.todo('alphaTest', () => {
-      // implement
+    test('alphaTest', () => {
+      const object = new Material();
+      expect(object.alphaTest).toBe(0);
     });
 
     test.todo('needsUpdate', () => {
