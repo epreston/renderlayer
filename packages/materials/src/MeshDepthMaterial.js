@@ -19,7 +19,7 @@ class MeshDepthMaterial extends Material {
     this.displacementBias = 0;
 
     this.wireframe = false;
-    this.wireframeLinewidth = 1;
+    this.wireframeLinewidth = 1; // will almost always be 1
 
     this.setValues(parameters);
   }
