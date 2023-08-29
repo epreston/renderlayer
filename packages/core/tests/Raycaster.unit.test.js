@@ -2,14 +2,12 @@ import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 // TODO: remove from core
 
-// import { BufferGeometry } from '@renderlayer/buffers';
+import { BufferGeometry } from '@renderlayer/buffers';
 import { OrthographicCamera, PerspectiveCamera } from '@renderlayer/cameras';
 import { SphereGeometry } from '@renderlayer/geometries';
 import { Vector3 } from '@renderlayer/math';
 
-import { Mesh } from '@renderlayer/objects';
-// import { Line } from '@renderlayer/objects';
-// import { Points } from '@renderlayer/objects';
+import { Line, Mesh, Points } from '@renderlayer/objects';
 
 import { Raycaster } from '../src/Raycaster.js';
 
@@ -197,38 +195,38 @@ describe('Core', () => {
       }
     });
 
-    // test('Line intersection threshold', () => {
-    //   const raycaster = getRaycaster();
-    //   const points = [new Vector3(-2, -10, -5), new Vector3(-2, 10, -5)];
-    //   const geometry = new BufferGeometry().setFromPoints(points);
-    //   const line = new Line(geometry, null);
+    test('line intersection threshold', () => {
+      const raycaster = getRaycaster();
+      const points = [new Vector3(-2, -10, -5), new Vector3(-2, 10, -5)];
+      const geometry = new BufferGeometry().setFromPoints(points);
+      const line = new Line(geometry, null);
 
-    //   raycaster.params.Line.threshold = 1.999;
+      raycaster.params.Line.threshold = 1.999;
 
-    //   // no Line intersection with a not-large-enough threshold
-    //   expect(raycaster.intersectObject(line).length === 0).toBeTruthy();
+      // no Line intersection with a not-large-enough threshold
+      expect(raycaster.intersectObject(line).length === 0).toBeTruthy();
 
-    //   raycaster.params.Line.threshold = 2.001;
+      raycaster.params.Line.threshold = 2.001;
 
-    //   // successful Line intersection with a large-enough threshold
-    //   expect(raycaster.intersectObject(line).length === 1).toBeTruthy();
-    // });
+      // successful Line intersection with a large-enough threshold
+      expect(raycaster.intersectObject(line).length === 1).toBeTruthy();
+    });
 
-    // test('Points intersection threshold', () => {
-    //   const raycaster = getRaycaster();
-    //   const coordinates = [new Vector3(-2, 0, -5)];
-    //   const geometry = new BufferGeometry().setFromPoints(coordinates);
-    //   const points = new Points(geometry, null);
+    test('points intersection threshold', () => {
+      const raycaster = getRaycaster();
+      const coordinates = [new Vector3(-2, 0, -5)];
+      const geometry = new BufferGeometry().setFromPoints(coordinates);
+      const points = new Points(geometry, null);
 
-    //   raycaster.params.Points.threshold = 1.999;
+      raycaster.params.Points.threshold = 1.999;
 
-    //   // no Points intersection with a not-large-enough threshold
-    //   expect(raycaster.intersectObject(points).length === 0).toBeTruthy();
+      // no Points intersection with a not-large-enough threshold
+      expect(raycaster.intersectObject(points).length === 0).toBeTruthy();
 
-    //   raycaster.params.Points.threshold = 2.001;
+      raycaster.params.Points.threshold = 2.001;
 
-    //   // successful Points intersection with a large-enough threshold
-    //   expect(raycaster.intersectObject(points).length === 1).toBeTruthy();
-    // });
+      // successful Points intersection with a large-enough threshold
+      expect(raycaster.intersectObject(points).length === 1).toBeTruthy();
+    });
   });
 });
