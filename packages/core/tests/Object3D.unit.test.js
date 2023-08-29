@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Euler, Matrix4, Quaternion, Vector3 } from '@renderlayer/math';
 import { EventDispatcher } from '../src/EventDispatcher.js';
