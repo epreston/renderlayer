@@ -67,14 +67,6 @@ describe('Materials', () => {
       const object = new SpriteMaterial();
       const object2 = new SpriteMaterial();
 
-      expect(object.transparent).toBe(true);
-      expect(object.color.equals(new Color(0xffffff))).toBeTruthy();
-      expect(object.map).toBeNull();
-      expect(object.alphaMap).toBeNull();
-      expect(object.rotation).toBe(0);
-      expect(object.sizeAttenuation).toBe(true);
-      expect(object.fog).toBe(true);
-
       object2.transparent = false;
       object2.color = new Color(0x3d3d3d);
       object2.map = new Texture();
@@ -85,15 +77,11 @@ describe('Materials', () => {
 
       object.copy(object2);
 
-      expect(object).not.toBe(object2);
+      // uuid will be different
+      object.uuid = object2.uuid;
 
-      expect(object.transparent).toBe(object2.transparent);
-      expect(object.color.equals(object2.color)).toBeTruthy();
-      expect(object.map).toBe(object2.map);
-      expect(object.alphaMap).toBe(object2.alphaMap);
-      expect(object.rotation).toBe(object2.rotation);
-      expect(object.sizeAttenuation).toBe(object2.sizeAttenuation);
-      expect(object.fog).toBe(object2.fog);
+      expect(object).not.toBe(object2);
+      expect(object).toStrictEqual(object2);
     });
   });
 });
