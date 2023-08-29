@@ -324,6 +324,10 @@ class Material extends EventDispatcher {
   clone() {
     return new this.constructor().copy(this);
   }
+  /**
+   * @param {Material} source
+   * @returns {this}
+   */
   copy(source) {
     this.name = source.name;
     this.blending = source.blending;
@@ -393,18 +397,18 @@ class LineBasicMaterial extends Material {
     this.color = new Color(16777215);
     this.map = null;
     this.linewidth = 1;
-    this.linecap = "round";
-    this.linejoin = "round";
     this.fog = true;
     this.setValues(parameters);
   }
+  /**
+   * @param {LineBasicMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.color.copy(source.color);
     this.map = source.map;
     this.linewidth = source.linewidth;
-    this.linecap = source.linecap;
-    this.linejoin = source.linejoin;
     this.fog = source.fog;
     return this;
   }
@@ -434,6 +438,10 @@ class MeshBasicMaterial extends Material {
     this.fog = true;
     this.setValues(parameters);
   }
+  /**
+   * @param {MeshBasicMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.color.copy(source.color);
@@ -472,6 +480,10 @@ class MeshDepthMaterial extends Material {
     this.wireframeLinewidth = 1;
     this.setValues(parameters);
   }
+  /**
+   * @param {MeshDepthMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.depthPacking = source.depthPacking;
@@ -498,6 +510,10 @@ class MeshDistanceMaterial extends Material {
     this.displacementBias = 0;
     this.setValues(parameters);
   }
+  /**
+   * @param {MeshDistanceMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.map = source.map;
@@ -527,6 +543,10 @@ class MeshNormalMaterial extends Material {
     this.flatShading = false;
     this.setValues(parameters);
   }
+  /**
+   * @param {MeshNormalMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.bumpMap = source.bumpMap;
@@ -582,6 +602,10 @@ class MeshStandardMaterial extends Material {
     this.fog = true;
     this.setValues(parameters);
   }
+  /**
+   * @param {MeshStandardMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.defines = { STANDARD: "" };
@@ -701,6 +725,10 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     }
     this._transmission = value;
   }
+  /**
+   * @param {MeshPhysicalMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.defines = {
@@ -751,6 +779,10 @@ class PointsMaterial extends Material {
     this.fog = true;
     this.setValues(parameters);
   }
+  /**
+   * @param {PointsMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.color.copy(source.color);
@@ -820,6 +852,10 @@ class ShaderMaterial extends Material {
       this.setValues(parameters);
     }
   }
+  /**
+   * @param {ShaderMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.fragmentShader = source.fragmentShader;
@@ -827,6 +863,7 @@ class ShaderMaterial extends Material {
     this.uniforms = cloneUniforms(source.uniforms);
     this.uniformsGroups = cloneUniformsGroups(source.uniformsGroups);
     this.defines = Object.assign({}, source.defines);
+    this.linewidth = source.linewidth;
     this.wireframe = source.wireframe;
     this.wireframeLinewidth = source.wireframeLinewidth;
     this.fog = source.fog;
@@ -919,6 +956,10 @@ class ShadowMaterial extends Material {
     this.fog = true;
     this.setValues(parameters);
   }
+  /**
+   * @param {ShadowMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.color.copy(source.color);
@@ -941,6 +982,10 @@ class SpriteMaterial extends Material {
     this.fog = true;
     this.setValues(parameters);
   }
+  /**
+   * @param {SpriteMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
     this.color.copy(source.color);

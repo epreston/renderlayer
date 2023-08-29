@@ -126,6 +126,7 @@ class AnimationAction {
   }
   // return the time scale considering warping and .paused
   getEffectiveTimeScale() {
+    this._effectiveTimeScale = this.paused ? 0 : this._effectiveTimeScale;
     return this._effectiveTimeScale;
   }
   setDuration(duration) {

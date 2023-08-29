@@ -1092,8 +1092,14 @@ function WebGLMaterials(renderer, properties) {
     } else if (material.isMeshDistanceMaterial) {
       refreshUniformsCommon(uniforms, material);
       refreshUniformsDistance(uniforms, material);
+    } else if (material.isMeshNormalMaterial) {
+      refreshUniformsCommon(uniforms, material);
+    } else if (material.isLineBasicMaterial) {
+      refreshUniformsLine(uniforms, material);
     } else if (material.isPointsMaterial) {
       refreshUniformsPoints(uniforms, material, pixelRatio, height);
+    } else if (material.isSpriteMaterial) {
+      refreshUniformsSprites(uniforms, material);
     } else if (material.isShadowMaterial) {
       uniforms.color.value.copy(material.color);
       uniforms.opacity.value = material.opacity;
@@ -1170,6 +1176,14 @@ function WebGLMaterials(renderer, properties) {
       refreshTransformUniform(material.aoMap, uniforms.aoMapTransform);
     }
   }
+  function refreshUniformsLine(uniforms, material) {
+    uniforms.diffuse.value.copy(material.color);
+    uniforms.opacity.value = material.opacity;
+    if (material.map) {
+      uniforms.map.value = material.map;
+      refreshTransformUniform(material.map, uniforms.mapTransform);
+    }
+  }
   function refreshUniformsPoints(uniforms, material, pixelRatio, height) {
     uniforms.diffuse.value.copy(material.color);
     uniforms.opacity.value = material.opacity;
@@ -1178,6 +1192,21 @@ function WebGLMaterials(renderer, properties) {
     if (material.map) {
       uniforms.map.value = material.map;
       refreshTransformUniform(material.map, uniforms.uvTransform);
+    }
+    if (material.alphaMap) {
+      uniforms.alphaMap.value = material.alphaMap;
+    }
+    if (material.alphaTest > 0) {
+      uniforms.alphaTest.value = material.alphaTest;
+    }
+  }
+  function refreshUniformsSprites(uniforms, material) {
+    uniforms.diffuse.value.copy(material.color);
+    uniforms.opacity.value = material.opacity;
+    uniforms.rotation.value = material.rotation;
+    if (material.map) {
+      uniforms.map.value = material.map;
+      refreshTransformUniform(material.map, uniforms.mapTransform);
     }
     if (material.alphaMap) {
       uniforms.alphaMap.value = material.alphaMap;
