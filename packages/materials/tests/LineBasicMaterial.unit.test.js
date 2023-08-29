@@ -1,4 +1,6 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
+
+import { Color } from '@renderlayer/math';
 
 import { Material } from '../src/Material.js';
 import { LineBasicMaterial } from '../src/LineBasicMaterial.js';
@@ -15,38 +17,63 @@ describe('Materials', () => {
       expect(object).toBeInstanceOf(Material);
     });
 
-    test('type', () => {
-      const object = new LineBasicMaterial();
-      expect(object.type).toBe('LineBasicMaterial');
-    });
-
-    test.todo('color', () => {
-      // implement
-    });
-
-    test.todo('linewidth', () => {
-      // implement
-    });
-
-    test.todo('linecap', () => {
-      // implement
-    });
-
-    test.todo('linejoin', () => {
-      // implement
-    });
-
-    test.todo('fog', () => {
-      // implement
-    });
-
     test('isLineBasicMaterial', () => {
       const object = new LineBasicMaterial();
       expect(object.isLineBasicMaterial).toBeTruthy();
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('type', () => {
+      const object = new LineBasicMaterial();
+      expect(object.type).toBe('LineBasicMaterial');
+    });
+
+    test('color', () => {
+      const object = new LineBasicMaterial();
+      expect(object.color.equals(new Color(0xffffff))).toBeTruthy();
+    });
+
+    test('map', () => {
+      const object = new LineBasicMaterial();
+      expect(object.map).toBeNull();
+    });
+
+    test('linewidth', () => {
+      const object = new LineBasicMaterial();
+      expect(object.linewidth).toBe(1);
+    });
+
+    test('linecap', () => {
+      const object = new LineBasicMaterial();
+      expect(object.linecap).toBe('round');
+    });
+
+    test('linejoin', () => {
+      const object = new LineBasicMaterial();
+      expect(object.linejoin).toBe('round');
+    });
+
+    test('fog', () => {
+      const object = new LineBasicMaterial();
+      expect(object.fog).toBe(true);
+    });
+
+    test('copy', () => {
+      const object = new LineBasicMaterial();
+      const object2 = new LineBasicMaterial();
+
+      object2.color = new Color(0x3d3d3d);
+      object2.linewidth = 2;
+      object2.linecap = 'square';
+      object2.linejoin = 'square';
+      object2.fog = false;
+
+      object.copy(object2);
+
+      // uuid will be different
+      object.uuid = object2.uuid;
+
+      expect(object).not.toBe(object2);
+      expect(object).toStrictEqual(object2);
     });
   });
 });
