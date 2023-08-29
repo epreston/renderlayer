@@ -1,12 +1,9 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
-// TODO: remove from core
-
 import { BufferGeometry } from '@renderlayer/buffers';
 import { OrthographicCamera, PerspectiveCamera } from '@renderlayer/cameras';
 import { SphereGeometry } from '@renderlayer/geometries';
 import { Vector3 } from '@renderlayer/math';
-
 import { Line, Mesh, Points } from '@renderlayer/objects';
 
 import { Raycaster } from '../src/Raycaster.js';
