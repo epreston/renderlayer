@@ -53,18 +53,18 @@ function WebGLMaterials(renderer, properties) {
     } else if (material.isMeshDistanceMaterial) {
       refreshUniformsCommon(uniforms, material);
       refreshUniformsDistance(uniforms, material);
-      // } else if (material.isMeshNormalMaterial) {
-      //   refreshUniformsCommon(uniforms, material);
-      // } else if (material.isLineBasicMaterial) {
-      //   refreshUniformsLine(uniforms, material);
+    } else if (material.isMeshNormalMaterial) {
+      refreshUniformsCommon(uniforms, material);
+    } else if (material.isLineBasicMaterial) {
+      refreshUniformsLine(uniforms, material);
 
       //   if (material.isLineDashedMaterial) {
       //     refreshUniformsDash(uniforms, material);
       //   }
     } else if (material.isPointsMaterial) {
       refreshUniformsPoints(uniforms, material, pixelRatio, height);
-      // } else if (material.isSpriteMaterial) {
-      //   refreshUniformsSprites(uniforms, material);
+    } else if (material.isSpriteMaterial) {
+      refreshUniformsSprites(uniforms, material);
     } else if (material.isShadowMaterial) {
       uniforms.color.value.copy(material.color);
       uniforms.opacity.value = material.opacity;
@@ -177,16 +177,16 @@ function WebGLMaterials(renderer, properties) {
     }
   }
 
-  // function refreshUniformsLine(uniforms, material) {
-  //   uniforms.diffuse.value.copy(material.color);
-  //   uniforms.opacity.value = material.opacity;
+  function refreshUniformsLine(uniforms, material) {
+    uniforms.diffuse.value.copy(material.color);
+    uniforms.opacity.value = material.opacity;
 
-  //   if (material.map) {
-  //     uniforms.map.value = material.map;
+    if (material.map) {
+      uniforms.map.value = material.map;
 
-  //     refreshTransformUniform(material.map, uniforms.mapTransform);
-  //   }
-  // }
+      refreshTransformUniform(material.map, uniforms.mapTransform);
+    }
+  }
 
   // function refreshUniformsDash(uniforms, material) {
   //   uniforms.dashSize.value = material.dashSize;
@@ -215,25 +215,25 @@ function WebGLMaterials(renderer, properties) {
     }
   }
 
-  // function refreshUniformsSprites(uniforms, material) {
-  //   uniforms.diffuse.value.copy(material.color);
-  //   uniforms.opacity.value = material.opacity;
-  //   uniforms.rotation.value = material.rotation;
+  function refreshUniformsSprites(uniforms, material) {
+    uniforms.diffuse.value.copy(material.color);
+    uniforms.opacity.value = material.opacity;
+    uniforms.rotation.value = material.rotation;
 
-  //   if (material.map) {
-  //     uniforms.map.value = material.map;
+    if (material.map) {
+      uniforms.map.value = material.map;
 
-  //     refreshTransformUniform(material.map, uniforms.mapTransform);
-  //   }
+      refreshTransformUniform(material.map, uniforms.mapTransform);
+    }
 
-  //   if (material.alphaMap) {
-  //     uniforms.alphaMap.value = material.alphaMap;
-  //   }
+    if (material.alphaMap) {
+      uniforms.alphaMap.value = material.alphaMap;
+    }
 
-  //   if (material.alphaTest > 0) {
-  //     uniforms.alphaTest.value = material.alphaTest;
-  //   }
-  // }
+    if (material.alphaTest > 0) {
+      uniforms.alphaTest.value = material.alphaTest;
+    }
+  }
 
   // function refreshUniformsPhong(uniforms, material) {
   //   uniforms.specular.value.copy(material.specular);
