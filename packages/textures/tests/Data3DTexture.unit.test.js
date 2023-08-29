@@ -5,47 +5,47 @@ import { Data3DTexture } from '../src/Data3DTexture.js';
 
 describe('Textures', () => {
   describe('Data3DTexture', () => {
-    test('constructor', (assert) => {
+    test('constructor', () => {
       const object = new Data3DTexture();
       expect(object).toBeDefined();
     });
 
-    test('extends', (assert) => {
+    test('extends', () => {
       const object = new Data3DTexture();
       expect(object).toBeInstanceOf(Texture);
     });
 
-    test.todo('image', (assert) => {
-      // implement
-    });
-
-    test.todo('magFilter', (assert) => {
-      // implement
-    });
-
-    test.todo('minFilter', (assert) => {
-      // implement
-    });
-
-    test.todo('wrapR', (assert) => {
-      // implement
-    });
-
-    test.todo('generateMipmaps', (assert) => {
-      // implement
-    });
-
-    test.todo('flipY', (assert) => {
-      // implement
-    });
-
-    test.todo('unpackAlignment', (assert) => {
-      // implement
-    });
-
-    test('isData3DTexture', (assert) => {
+    test('isData3DTexture', () => {
       const object = new Data3DTexture();
       expect(object.isData3DTexture).toBeTruthy();
+    });
+
+    test.todo('image', () => {
+      // implement
+    });
+
+    test.todo('magFilter', () => {
+      // implement
+    });
+
+    test.todo('minFilter', () => {
+      // implement
+    });
+
+    test.todo('wrapR', () => {
+      // implement
+    });
+
+    test.todo('generateMipmaps', () => {
+      // implement
+    });
+
+    test.todo('flipY', () => {
+      // implement
+    });
+
+    test.todo('unpackAlignment', () => {
+      // implement
     });
   });
 });
