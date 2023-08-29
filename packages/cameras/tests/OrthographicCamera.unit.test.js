@@ -16,6 +16,11 @@ describe('Cameras', () => {
       expect(object).toBeInstanceOf(Camera);
     });
 
+    test('isOrthographicCamera', () => {
+      const object = new OrthographicCamera();
+      expect(object.isOrthographicCamera).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new OrthographicCamera();
       expect(object.type === 'OrthographicCamera').toBeTruthy();
@@ -51,11 +56,6 @@ describe('Cameras', () => {
 
     test.todo('far', () => {
       // implement
-    });
-
-    test('isOrthographicCamera', () => {
-      const object = new OrthographicCamera();
-      expect(object.isOrthographicCamera).toBeTruthy();
     });
 
     test.todo('copy', () => {

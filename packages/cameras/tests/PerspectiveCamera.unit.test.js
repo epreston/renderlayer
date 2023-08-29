@@ -5,25 +5,25 @@ import { Camera } from '../src/Camera.js';
 
 import { PerspectiveCamera } from '../src/PerspectiveCamera.js';
 
+// see e.g. math/Matrix4.js
+const matrixEquals4 = function (a, b, tolerance) {
+  tolerance = tolerance || 0.0001;
+  if (a.elements.length != b.elements.length) {
+    return false;
+  }
+
+  for (let i = 0, il = a.elements.length; i < il; i++) {
+    const delta = a.elements[i] - b.elements[i];
+    if (delta > tolerance) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 describe('Cameras', () => {
   describe('PerspectiveCamera', () => {
-    // see e.g. math/Matrix4.js
-    const matrixEquals4 = function (a, b, tolerance) {
-      tolerance = tolerance || 0.0001;
-      if (a.elements.length != b.elements.length) {
-        return false;
-      }
-
-      for (let i = 0, il = a.elements.length; i < il; i++) {
-        const delta = a.elements[i] - b.elements[i];
-        if (delta > tolerance) {
-          return false;
-        }
-      }
-
-      return true;
-    };
-
     test('constructor', () => {
       const object = new PerspectiveCamera();
       expect(object).toBeDefined();
@@ -32,6 +32,11 @@ describe('Cameras', () => {
     test('extends', () => {
       const object = new PerspectiveCamera();
       expect(object).toBeInstanceOf(Camera);
+    });
+
+    test('isPerspectiveCamera', () => {
+      const object = new PerspectiveCamera();
+      expect(object.isPerspectiveCamera).toBeTruthy();
     });
 
     test('type', () => {
@@ -73,11 +78,6 @@ describe('Cameras', () => {
 
     test.todo('filmOffset', () => {
       // implement
-    });
-
-    test('isPerspectiveCamera', () => {
-      const object = new PerspectiveCamera();
-      expect(object.isPerspectiveCamera).toBeTruthy();
     });
 
     test.todo('copy', () => {

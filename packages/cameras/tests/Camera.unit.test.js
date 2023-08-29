@@ -17,6 +17,11 @@ describe('Cameras', () => {
       expect(object).toBeInstanceOf(Object3D);
     });
 
+    test('isCamera', () => {
+      const object = new Camera();
+      expect(object.isCamera).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new Camera();
       expect(object.type).toBe('Camera');
@@ -32,11 +37,6 @@ describe('Cameras', () => {
 
     test.todo('projectionMatrixInverse', () => {
       // implement
-    });
-
-    test('isCamera', () => {
-      const object = new Camera();
-      expect(object.isCamera).toBeTruthy();
     });
 
     test.todo('copy', () => {
