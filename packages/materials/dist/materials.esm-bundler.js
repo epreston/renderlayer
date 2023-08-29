@@ -287,10 +287,6 @@ class Material extends EventDispatcher {
       data.wireframe = this.wireframe;
     if (this.wireframeLinewidth > 1)
       data.wireframeLinewidth = this.wireframeLinewidth;
-    if (this.wireframeLinecap !== "round")
-      data.wireframeLinecap = this.wireframeLinecap;
-    if (this.wireframeLinejoin !== "round")
-      data.wireframeLinejoin = this.wireframeLinejoin;
     if (this.flatShading === true)
       data.flatShading = this.flatShading;
     if (this.visible === false)
@@ -433,8 +429,6 @@ class MeshBasicMaterial extends Material {
     this.refractionRatio = 0.98;
     this.wireframe = false;
     this.wireframeLinewidth = 1;
-    this.wireframeLinecap = "round";
-    this.wireframeLinejoin = "round";
     this.fog = true;
     this.setValues(parameters);
   }
@@ -458,8 +452,6 @@ class MeshBasicMaterial extends Material {
     this.refractionRatio = source.refractionRatio;
     this.wireframe = source.wireframe;
     this.wireframeLinewidth = source.wireframeLinewidth;
-    this.wireframeLinecap = source.wireframeLinecap;
-    this.wireframeLinejoin = source.wireframeLinejoin;
     this.fog = source.fog;
     return this;
   }
@@ -596,8 +588,6 @@ class MeshStandardMaterial extends Material {
     this.envMapIntensity = 1;
     this.wireframe = false;
     this.wireframeLinewidth = 1;
-    this.wireframeLinecap = "round";
-    this.wireframeLinejoin = "round";
     this.flatShading = false;
     this.fog = true;
     this.setValues(parameters);
@@ -635,8 +625,6 @@ class MeshStandardMaterial extends Material {
     this.envMapIntensity = source.envMapIntensity;
     this.wireframe = source.wireframe;
     this.wireframeLinewidth = source.wireframeLinewidth;
-    this.wireframeLinecap = source.wireframeLinecap;
-    this.wireframeLinejoin = source.wireframeLinejoin;
     this.flatShading = source.flatShading;
     this.fog = source.fog;
     return this;
@@ -647,25 +635,17 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
   constructor(parameters) {
     super();
     this.isMeshPhysicalMaterial = true;
+    this.type = "MeshPhysicalMaterial";
     this.defines = {
       STANDARD: "",
       PHYSICAL: ""
     };
-    this.type = "MeshPhysicalMaterial";
     this.clearcoatMap = null;
     this.clearcoatRoughness = 0;
     this.clearcoatRoughnessMap = null;
     this.clearcoatNormalScale = new Vector2(1, 1);
     this.clearcoatNormalMap = null;
     this.ior = 1.5;
-    Object.defineProperty(this, "reflectivity", {
-      get: function() {
-        return clamp(2.5 * (this.ior - 1) / (this.ior + 1), 0, 1);
-      },
-      set: function(reflectivity) {
-        this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
-      }
-    });
     this.iridescenceMap = null;
     this.iridescenceIOR = 1.3;
     this.iridescenceThicknessRange = [100, 400];
@@ -688,6 +668,12 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     this._iridescence = 0;
     this._transmission = 0;
     this.setValues(parameters);
+  }
+  get reflectivity() {
+    return clamp(2.5 * (this.ior - 1) / (this.ior + 1), 0, 1);
+  }
+  set reflectivity(reflectivity) {
+    this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
   }
   get sheen() {
     return this._sheen;
