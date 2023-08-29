@@ -1,4 +1,8 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
+
+import { Color, Vector2 } from '@renderlayer/math';
+import { TangentSpaceNormalMap } from '@renderlayer/shared';
+import { Texture } from '@renderlayer/textures';
 
 import { Material } from '../src/Material.js';
 import { MeshStandardMaterial } from '../src/MeshStandardMaterial.js';
@@ -25,133 +29,209 @@ describe('Materials', () => {
       expect(object.type).toBe('MeshStandardMaterial');
     });
 
-    test.todo('defines', () => {
-      // implement
+    test('defines', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.defines).toEqual({
+        STANDARD: ''
+      });
     });
 
-    test.todo('color', () => {
+    test('color', () => {
       // diffuse color
-      // implement
+      const object = new MeshStandardMaterial();
+      expect(object.color.equals(new Color(0xffffff))).toBeTruthy();
     });
 
-    test.todo('roughness', () => {
-      // implement
+    test('roughness', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.roughness).toBe(1.0);
     });
 
-    test.todo('metalness', () => {
-      // implement
+    test('metalness', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.metalness).toBe(0.0);
     });
 
-    test.todo('map', () => {
-      // implement
+    test('map', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.map).toBeNull();
     });
 
-    test.todo('lightMap', () => {
-      // implement
+    test('lightMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.lightMap).toBeNull();
     });
 
-    test.todo('lightMapIntensity', () => {
-      // implement
+    test('lightMapIntensity', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.lightMapIntensity).toBe(1.0);
     });
 
-    test.todo('aoMap', () => {
-      // implement
+    test('aoMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.aoMap).toBeNull();
     });
 
-    test.todo('aoMapIntensity', () => {
-      // implement
+    test('aoMapIntensity', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.aoMapIntensity).toBe(1.0);
     });
 
-    test.todo('emissive', () => {
-      // implement
+    test('emissive', () => {
+      // color
+      const object = new MeshStandardMaterial();
+      expect(object.emissive.equals(new Color(0x000000))).toBeTruthy();
     });
 
-    test.todo('emissiveIntensity', () => {
-      // implement
+    test('emissiveIntensity', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.emissiveIntensity).toBe(1.0);
     });
 
-    test.todo('emissiveMap', () => {
-      // implement
+    test('emissiveMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.emissiveMap).toBeNull();
     });
 
-    test.todo('bumpMap', () => {
-      // implement
+    test('bumpMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.bumpMap).toBeNull();
     });
 
-    test.todo('bumpScale', () => {
-      // implement
+    test('bumpScale', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.bumpScale).toBe(1);
     });
 
-    test.todo('normalMap', () => {
-      // implement
+    test('normalMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.normalMap).toBeNull();
     });
 
-    test.todo('normalMapType', () => {
-      // implement
+    test('normalMapType', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.normalMapType).toBe(TangentSpaceNormalMap);
     });
 
-    test.todo('normalScale', () => {
-      // implement
+    test('normalScale', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.normalScale.equals(new Vector2(1, 1))).toBeTruthy();
     });
 
-    test.todo('displacementMap', () => {
-      // implement
+    test('displacementMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.displacementMap).toBeNull();
     });
 
-    test.todo('displacementScale', () => {
-      // implement
+    test('displacementScale', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.displacementScale).toBe(1);
     });
 
-    test.todo('displacementBias', () => {
-      // implement
+    test('displacementBias', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.displacementBias).toBe(0);
     });
 
-    test.todo('roughnessMap', () => {
-      // implement
+    test('roughnessMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.roughnessMap).toBeNull();
     });
 
-    test.todo('metalnessMap', () => {
-      // implement
+    test('metalnessMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.metalnessMap).toBeNull();
     });
 
-    test.todo('alphaMap', () => {
-      // implement
+    test('alphaMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.alphaMap).toBeNull();
     });
 
-    test.todo('envMap', () => {
-      // implement
+    test('envMap', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.envMap).toBeNull();
     });
 
-    test.todo('envMapIntensity', () => {
-      // implement
+    test('envMapIntensity', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.envMapIntensity).toBe(1.0);
     });
 
-    test.todo('wireframe', () => {
-      // implement
+    test('wireframe', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.wireframe).toBe(false);
     });
 
-    test.todo('wireframeLinewidth', () => {
-      // implement
+    test('wireframeLinewidth', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.wireframeLinewidth).toBe(1);
     });
 
-    test.todo('wireframeLinecap', () => {
-      // implement
+    test('flatShading', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.flatShading).toBe(false);
     });
 
-    test.todo('wireframeLinejoin', () => {
-      // implement
+    test('fog', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.fog).toBe(true);
     });
 
-    test.todo('flatShading', () => {
-      // implement
-    });
+    test('copy', () => {
+      const object = new MeshStandardMaterial();
+      const object2 = new MeshStandardMaterial();
 
-    test.todo('fog', () => {
-      // implement
-    });
+      object2.color = new Color(0x3d3d3d); // diffuse
+      object2.roughness = 0.8;
+      object2.metalness = 0.1;
 
-    test.todo('copy', () => {
-      // implement
+      object2.map = new Texture();
+
+      object2.lightMap = new Texture();
+      object2.lightMapIntensity = 0.7;
+
+      object2.aoMap = new Texture();
+      object2.aoMapIntensity = 0.6;
+
+      object2.emissive = new Color(0x000000);
+      object2.emissiveIntensity = 0.5;
+      object2.emissiveMap = new Texture();
+
+      object2.bumpMap = new Texture();
+      object2.bumpScale = 0.9;
+
+      object2.normalMap = new Texture();
+      object2.normalMapType = TangentSpaceNormalMap;
+      object2.normalScale = new Vector2(1, 0.8);
+
+      object2.displacementMap = new Texture();
+      object2.displacementScale = 0.8;
+      object2.displacementBias = 0.1;
+
+      object2.roughnessMap = new Texture();
+
+      object2.metalnessMap = new Texture();
+
+      object2.alphaMap = new Texture();
+
+      object2.envMap = new Texture();
+      object2.envMapIntensity = 0.9;
+
+      object2.wireframe = true;
+      object2.wireframeLinewidth = 2;
+
+      object2.flatShading = true;
+
+      object2.fog = false;
+
+      object.copy(object2);
+
+      // uuid will be different
+      object.uuid = object2.uuid;
+
+      expect(object).not.toBe(object2);
+      expect(object).toStrictEqual(object2);
     });
   });
 });
