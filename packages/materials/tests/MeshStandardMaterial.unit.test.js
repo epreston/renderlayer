@@ -15,6 +15,11 @@ describe('Materials', () => {
       expect(object).toBeInstanceOf(Material);
     });
 
+    test('isMeshStandardMaterial', () => {
+      const object = new MeshStandardMaterial();
+      expect(object.isMeshStandardMaterial).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new MeshStandardMaterial();
       expect(object.type).toBe('MeshStandardMaterial');
@@ -143,11 +148,6 @@ describe('Materials', () => {
 
     test.todo('fog', () => {
       // implement
-    });
-
-    test('isMeshStandardMaterial', () => {
-      const object = new MeshStandardMaterial();
-      expect(object.isMeshStandardMaterial).toBeTruthy();
     });
 
     test.todo('copy', () => {
