@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Texture } from '../src/Texture.js';
 import { Data3DTexture } from '../src/Data3DTexture.js';
