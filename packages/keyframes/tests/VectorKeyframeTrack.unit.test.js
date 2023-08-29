@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { KeyframeTrack } from '../src/KeyframeTrack.js';
 import { VectorKeyframeTrack } from '../src/VectorKeyframeTrack.js';
