@@ -719,10 +719,6 @@ class MaterialLoader extends Loader {
       material.wireframe = json.wireframe;
     if (json.wireframeLinewidth !== void 0)
       material.wireframeLinewidth = json.wireframeLinewidth;
-    if (json.wireframeLinecap !== void 0)
-      material.wireframeLinecap = json.wireframeLinecap;
-    if (json.wireframeLinejoin !== void 0)
-      material.wireframeLinejoin = json.wireframeLinejoin;
     if (json.rotation !== void 0)
       material.rotation = json.rotation;
     if (json.linewidth !== 1)
