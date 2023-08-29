@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Material } from '../src/Material.js';
 import { ShadowMaterial } from '../src/ShadowMaterial.js';
@@ -13,6 +13,11 @@ describe('Materials', () => {
     test('extends', () => {
       const object = new ShadowMaterial();
       expect(object).toBeInstanceOf(Material);
+    });
+
+    test('isShadowMaterial', () => {
+      const object = new ShadowMaterial();
+      expect(object.isShadowMaterial).toBeTruthy();
     });
 
     test('type', () => {
@@ -30,11 +35,6 @@ describe('Materials', () => {
 
     test.todo('fog', () => {
       // implement
-    });
-
-    test('isShadowMaterial', () => {
-      const object = new ShadowMaterial();
-      expect(object.isShadowMaterial).toBeTruthy();
     });
 
     test.todo('copy', () => {
