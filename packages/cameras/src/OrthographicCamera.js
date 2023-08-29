@@ -39,16 +39,15 @@ class OrthographicCamera extends Camera {
 
   setViewOffset(fullWidth, fullHeight, x, y, width, height) {
     if (this.view === null) {
-      // prettier-ignore
       this.view = {
-				enabled: true,
-				fullWidth: 1,
-				fullHeight: 1,
-				offsetX: 0,
-				offsetY: 0,
-				width: 1,
-				height: 1
-			};
+        enabled: true,
+        fullWidth: 1,
+        fullHeight: 1,
+        offsetX: 0,
+        offsetY: 0,
+        width: 1,
+        height: 1
+      };
     }
 
     this.view.enabled = true;
