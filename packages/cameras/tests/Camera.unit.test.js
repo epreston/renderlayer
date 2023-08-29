@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Vector3 } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
@@ -19,7 +19,7 @@ describe('Cameras', () => {
 
     test('type', () => {
       const object = new Camera();
-      expect(object.type === 'Camera').toBeTruthy();
+      expect(object.type).toBe('Camera');
     });
 
     test.todo('matrixWorldInverse', () => {
