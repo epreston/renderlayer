@@ -6,13 +6,7 @@
     "noEmit": false
   },
   "exclude": [
-    "apps/*/tests",
-    "apps/size-check",
-
+    "apps/*",
     "packages/*/tests",
-
-    "services/*/tests",
-    "services/json",
-    "services/worker"
   ]
 }
