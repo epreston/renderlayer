@@ -30,6 +30,11 @@ describe('Materials', () => {
       // implement
     });
 
+    test('isMaterial', () => {
+      const object = new Material();
+      expect(object.isMaterial).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new Material();
       expect(object.type === 'Material').toBeTruthy();
@@ -194,11 +199,6 @@ describe('Materials', () => {
     test.todo('needsUpdate', () => {
       // set needsUpdate
       // implement
-    });
-
-    test('isMaterial', () => {
-      const object = new Material();
-      expect(object.isMaterial).toBeTruthy();
     });
 
     test.todo('onBuild', () => {
