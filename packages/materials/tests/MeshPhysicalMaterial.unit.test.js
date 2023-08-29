@@ -1,5 +1,8 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { Color, Vector2 } from '@renderlayer/math';
+import { Texture } from '@renderlayer/textures';
+
 import { Material } from '../src/Material.js';
 import { MeshPhysicalMaterial } from '../src/MeshPhysicalMaterial.js';
 
@@ -25,124 +28,201 @@ describe('Materials', () => {
       expect(object.type).toBe('MeshPhysicalMaterial');
     });
 
-    test.todo('defines', () => {
-      // implement
+    test('defines', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.defines).toEqual({
+        STANDARD: '',
+        PHYSICAL: ''
+      });
     });
 
-    test.todo('clearcoatMap', () => {
-      // implement
+    test('clearcoatMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.clearcoatMap).toBeNull();
     });
 
-    test.todo('clearcoatRoughness', () => {
-      // implement
+    test('clearcoatRoughness', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.clearcoatRoughness).toBe(0.0);
     });
 
-    test.todo('clearcoatRoughnessMap', () => {
-      // implement
+    test('clearcoatRoughnessMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.clearcoatRoughnessMap).toBeNull();
     });
 
-    test.todo('clearcoatNormalScale', () => {
-      // implement
+    test('clearcoatNormalScale', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.clearcoatNormalScale.equals(new Vector2(1, 1))).toBeTruthy();
     });
 
-    test.todo('clearcoatNormalMap', () => {
-      // implement
+    test('clearcoatNormalMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.clearcoatNormalMap).toBeNull();
     });
 
-    test.todo('ior', () => {
-      // implement
+    test('ior', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.ior).toBe(1.5);
     });
 
-    test.todo('reflectivity', () => {
-      // implement
+    test('reflectivity', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.reflectivity).toBe(0.5);
     });
 
-    test.todo('iridescenceMap', () => {
-      // implement
+    test('iridescenceMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.iridescenceMap).toBeNull();
     });
 
-    test.todo('iridescenceIOR', () => {
-      // implement
+    test('iridescenceIOR', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.iridescenceIOR).toBe(1.3);
     });
 
-    test.todo('iridescenceThicknessRange', () => {
-      // implement
+    test('iridescenceThicknessRange', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.iridescenceThicknessRange).toBeInstanceOf(Array);
+      expect(object.iridescenceThicknessRange.length).toBe(2);
     });
 
-    test.todo('iridescenceThicknessMap', () => {
-      // implement
+    test('iridescenceThicknessMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.iridescenceThicknessMap).toBeNull();
     });
 
-    test.todo('sheenColor', () => {
-      // implement
+    test('sheenColor', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.sheenColor.equals(new Color(0x000000))).toBeTruthy();
     });
 
-    test.todo('sheenColorMap', () => {
-      // implement
+    test('sheenColorMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.sheenColorMap).toBeNull();
     });
 
-    test.todo('sheenRoughness', () => {
-      // implement
+    test('sheenRoughness', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.sheenRoughness).toBe(1.0);
     });
 
-    test.todo('sheenRoughnessMap', () => {
-      // implement
+    test('sheenRoughnessMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.sheenRoughnessMap).toBeNull();
     });
 
-    test.todo('transmissionMap', () => {
-      // implement
+    test('transmissionMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.transmissionMap).toBeNull();
     });
 
-    test.todo('thickness', () => {
-      // implement
+    test('thickness', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.thickness).toBe(0);
     });
 
-    test.todo('thicknessMap', () => {
-      // implement
+    test('thicknessMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.thicknessMap).toBeNull();
     });
 
-    test.todo('attenuationDistance', () => {
-      // implement
+    test('attenuationDistance', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.attenuationDistance).toBe(Infinity);
     });
 
-    test.todo('attenuationColor', () => {
-      // implement
+    test('attenuationColor', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.attenuationColor.equals(new Color(1, 1, 1))).toBeTruthy();
     });
 
-    test.todo('specularIntensity', () => {
-      // implement
+    test('specularIntensity', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.specularIntensity).toBe(1.0);
     });
 
-    test.todo('specularIntensityMap', () => {
-      // implement
+    test('specularIntensityMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.specularIntensityMap).toBeNull();
     });
 
-    test.todo('specularColor', () => {
-      // implement
+    test('specularColor', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.specularColor.equals(new Color(1, 1, 1))).toBeTruthy();
     });
 
-    test.todo('specularColorMap', () => {
-      // implement
+    test('specularColorMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.specularColorMap).toBeNull();
     });
 
-    test.todo('sheen', () => {
-      // implement
+    test('sheen', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.sheen).toBe(0.0);
     });
 
-    test.todo('clearcoat', () => {
-      // implement
+    test('clearcoat', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.clearcoat).toBe(0);
     });
 
-    test.todo('iridescence', () => {
-      // implement
+    test('iridescence', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.iridescence).toBe(0);
     });
 
-    test.todo('transmission', () => {
-      // implement
+    test('transmission', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.transmission).toBe(0);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const object = new MeshPhysicalMaterial();
+      const object2 = new MeshPhysicalMaterial();
+
+      object2.clearcoatMap = new Texture();
+      object2.clearcoatRoughness = 0.1;
+      object2.clearcoatRoughnessMap = new Texture();
+      object2.clearcoatNormalScale = new Vector2(0.8, 1);
+      object2.clearcoatNormalMap = new Texture();
+
+      object2.ior = 1.1;
+
+      object2.iridescenceMap = new Texture();
+      object2.iridescenceIOR = 1.2;
+      object2.iridescenceThicknessRange = [100, 400];
+      object2.iridescenceThicknessMap = new Texture();
+
+      object2.sheenColor = new Color(0x000000);
+      object2.sheenColorMap = new Texture();
+      object2.sheenRoughness = 0.5;
+      object2.sheenRoughnessMap = new Texture();
+
+      object2.transmissionMap = new Texture();
+
+      object2.thickness = 1;
+      object2.thicknessMap = new Texture();
+      object2.attenuationDistance = Infinity;
+      object2.attenuationColor = new Color(1, 1, 0.5);
+
+      object2.specularIntensity = 0.8;
+      object2.specularIntensityMap = new Texture();
+      object2.specularColor = new Color(1, 0, 1);
+      object2.specularColorMap = new Texture();
+
+      object2.sheen = 0.2;
+      object2.clearcoat = 1;
+      object2.iridescence = 1;
+      object2.transmission = 1;
+
+      object.copy(object2);
+
+      // uuid will be different
+      object.uuid = object2.uuid;
+
+      expect(object).not.toBe(object2);
+      expect(object).toStrictEqual(object2);
     });
   });
 });
