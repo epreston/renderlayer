@@ -18,6 +18,10 @@ class MeshDistanceMaterial extends Material {
     this.setValues(parameters);
   }
 
+  /**
+   * @param {MeshDistanceMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 

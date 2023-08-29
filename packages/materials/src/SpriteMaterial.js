@@ -20,6 +20,10 @@ class SpriteMaterial extends Material {
     this.setValues(parameters);
   }
 
+  /**
+   * @param {SpriteMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 

@@ -28,6 +28,10 @@ class MeshNormalMaterial extends Material {
     this.setValues(parameters);
   }
 
+  /**
+   * @param {MeshNormalMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 

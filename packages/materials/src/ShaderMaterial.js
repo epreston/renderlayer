@@ -55,6 +55,10 @@ class ShaderMaterial extends Material {
     }
   }
 
+  /**
+   * @param {ShaderMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 

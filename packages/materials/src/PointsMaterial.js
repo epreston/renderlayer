@@ -21,6 +21,10 @@ class PointsMaterial extends Material {
     this.setValues(parameters);
   }
 
+  /**
+   * @param {PointsMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 

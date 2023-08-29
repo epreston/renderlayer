@@ -16,6 +16,10 @@ class ShadowMaterial extends Material {
     this.setValues(parameters);
   }
 
+  /**
+   * @param {ShadowMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 

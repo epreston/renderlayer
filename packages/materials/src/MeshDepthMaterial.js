@@ -24,6 +24,10 @@ class MeshDepthMaterial extends Material {
     this.setValues(parameters);
   }
 
+  /**
+   * @param {MeshDepthMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 

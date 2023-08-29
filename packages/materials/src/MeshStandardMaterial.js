@@ -59,6 +59,10 @@ class MeshStandardMaterial extends Material {
     this.setValues(parameters);
   }
 
+  /**
+   * @param {MeshStandardMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 

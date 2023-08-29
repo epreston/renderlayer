@@ -21,6 +21,10 @@ class LineBasicMaterial extends Material {
     this.setValues(parameters);
   }
 
+  /**
+   * @param {LineBasicMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 

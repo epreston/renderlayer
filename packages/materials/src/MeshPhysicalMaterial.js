@@ -109,6 +109,10 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     this._transmission = value;
   }
 
+  /**
+   * @param {MeshPhysicalMaterial} source
+   * @returns {this}
+   */
   copy(source) {
     super.copy(source);
 
