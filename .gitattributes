@@ -17,3 +17,18 @@ LICENSE.txt eol=crlf
 *.ps1 eol=lf
 *.sh eol=lf
 *.rtf -text
+
+# Binary file types.
+*.webp binary
+*.png binary
+*.jpg binary
+*.glb binary
+*.fbx binary
+*.wasm binary
+*.basis binary
+*.bin binary
+*.dds binary
+*.drc binary
+*.mp3 binary
+*.mp4 binary
+*.gz binary
