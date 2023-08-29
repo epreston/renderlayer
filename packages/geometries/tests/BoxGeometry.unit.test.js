@@ -31,22 +31,22 @@ describe('Geometries', () => {
       ];
     });
 
-    test('constructor', (assert) => {
+    test('constructor', () => {
       const object = new BoxGeometry();
       expect(object).toBeDefined();
     });
 
-    test('extends', (assert) => {
+    test('extends', () => {
       const object = new BoxGeometry();
       expect(object).toBeInstanceOf(BufferGeometry);
     });
 
-    test('type', (assert) => {
+    test('type', () => {
       const object = new BoxGeometry();
-      expect(object.type === 'BoxGeometry').toBeTruthy();
+      expect(object.type).toBe('BoxGeometry');
     });
 
-    test.todo('parameters', (assert) => {
+    test.todo('parameters', () => {
       // implement
     });
 
@@ -112,7 +112,7 @@ describe('Geometries', () => {
       });
     });
 
-    test.todo('fromJSON', (assert) => {
+    test.todo('fromJSON', () => {
       // implement
     });
   });
