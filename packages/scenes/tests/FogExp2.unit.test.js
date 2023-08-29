@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { FogExp2 } from '../src/FogExp2.js';
 

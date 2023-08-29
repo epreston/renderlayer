@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
 import { Scene } from '../src/Scene.js';
@@ -13,6 +13,11 @@ describe('Scenes', () => {
     test('constructor', () => {
       const object = new Scene();
       expect(object).toBeDefined();
+    });
+
+    test('isScene', () => {
+      const object = new Scene();
+      expect(object.isScene).toBeTruthy();
     });
 
     test.todo('type', () => {
@@ -41,11 +46,6 @@ describe('Scenes', () => {
 
     test.todo('overrideMaterial', () => {
       // implement
-    });
-
-    test('isScene', () => {
-      const object = new Scene();
-      expect(object.isScene).toBeTruthy();
     });
 
     test.todo('copy', () => {
