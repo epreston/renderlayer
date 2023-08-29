@@ -2,6 +2,8 @@
  * https://github.com/mrdoob/eventdispatcher.js/
  */
 
+// EP: implement with map for 2x perf
+
 class EventDispatcher {
   addEventListener(type, listener) {
     if (this._listeners === undefined) this._listeners = {};
