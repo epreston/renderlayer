@@ -1,6 +1,7 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { Color } from '@renderlayer/math';
+import { Texture } from '@renderlayer/textures';
 
 import { Material } from '../src/Material.js';
 import { LineBasicMaterial } from '../src/LineBasicMaterial.js';
@@ -42,16 +43,6 @@ describe('Materials', () => {
       expect(object.linewidth).toBe(1);
     });
 
-    test('linecap', () => {
-      const object = new LineBasicMaterial();
-      expect(object.linecap).toBe('round');
-    });
-
-    test('linejoin', () => {
-      const object = new LineBasicMaterial();
-      expect(object.linejoin).toBe('round');
-    });
-
     test('fog', () => {
       const object = new LineBasicMaterial();
       expect(object.fog).toBe(true);
@@ -62,9 +53,8 @@ describe('Materials', () => {
       const object2 = new LineBasicMaterial();
 
       object2.color = new Color(0x3d3d3d);
+      object2.map = new Texture();
       object2.linewidth = 2;
-      object2.linecap = 'square';
-      object2.linejoin = 'square';
       object2.fog = false;
 
       object.copy(object2);

@@ -9,13 +9,8 @@ class LineBasicMaterial extends Material {
     this.type = 'LineBasicMaterial';
 
     this.color = new Color(0xffffff);
-
     this.map = null;
-
-    this.linewidth = 1;
-    this.linecap = 'round';
-    this.linejoin = 'round';
-
+    this.linewidth = 1; // may be ignored
     this.fog = true;
 
     this.setValues(parameters);
@@ -29,13 +24,8 @@ class LineBasicMaterial extends Material {
     super.copy(source);
 
     this.color.copy(source.color);
-
     this.map = source.map;
-
     this.linewidth = source.linewidth;
-    this.linecap = source.linecap;
-    this.linejoin = source.linejoin;
-
     this.fog = source.fog;
 
     return this;
