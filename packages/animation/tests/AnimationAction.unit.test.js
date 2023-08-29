@@ -1,12 +1,12 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
-import { LoopOnce, LoopRepeat, LoopPingPong } from '@renderlayer/shared';
 import { NumberKeyframeTrack } from '@renderlayer/keyframes';
+import { LoopOnce, LoopPingPong, LoopRepeat, NormalAnimationBlendMode } from '@renderlayer/shared';
 
 import { AnimationAction } from '../src/AnimationAction.js';
-import { AnimationMixer } from '../src/AnimationMixer.js';
 import { AnimationClip } from '../src/AnimationClip.js';
+import { AnimationMixer } from '../src/AnimationMixer.js';
 
 function createAnimation() {
   const root = new Object3D();
@@ -57,48 +57,59 @@ describe('Animation', () => {
       expect(animationAction).toBeDefined();
     });
 
-    test.todo('blendMode', () => {
-      // implement
+    test('blendMode', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.blendMode).toBe(NormalAnimationBlendMode);
     });
 
-    test.todo('loop', () => {
-      // implement
+    test('loop', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.loop).toBe(LoopRepeat);
     });
 
-    test.todo('time', () => {
-      // implement
+    test('time', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.time).toBe(0);
     });
 
-    test.todo('timeScale', () => {
-      // implement
+    test('timeScale', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.timeScale).toBe(1);
     });
 
-    test.todo('weight', () => {
-      // implement
+    test('weight', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.weight).toBe(1);
     });
 
-    test.todo('repetitions', () => {
-      // implement
+    test('repetitions', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.repetitions).toBe(Infinity);
     });
 
-    test.todo('paused', () => {
-      // implement
+    test('paused', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.paused).toBe(false);
     });
 
-    test.todo('enabled', () => {
-      // implement
+    test('enabled', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.enabled).toBe(true);
     });
 
-    test.todo('clampWhenFinished', () => {
-      // implement
+    test('clampWhenFinished', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.clampWhenFinished).toBe(false);
     });
 
-    test.todo('zeroSlopeAtStart', () => {
-      // implement
+    test('zeroSlopeAtStart', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.zeroSlopeAtStart).toBe(true);
     });
 
-    test.todo('zeroSlopeAtEnd', () => {
-      // implement
+    test('zeroSlopeAtEnd', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.zeroSlopeAtEnd).toBe(true);
     });
 
     test('play', () => {
@@ -400,36 +411,85 @@ describe('Animation', () => {
       expect(animationAction2.getEffectiveWeight()).toBeCloseTo(0);
     });
 
-    test.todo('stopFading', () => {
-      // implement
+    test('stopFading', () => {
+      const { animationAction } = createAnimation();
+      const animationAction2 = animationAction.stopFading();
+      expect(animationAction).toBe(animationAction2);
+
+      // EP: test result ?
     });
 
-    test.todo('setEffectiveTimeScale', () => {
-      // implement
+    test('setEffectiveTimeScale', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.timeScale).toBe(1);
+
+      animationAction.setEffectiveTimeScale(2);
+      expect(animationAction.timeScale).toBe(2);
+      expect(animationAction.paused).toBe(false);
+
+      const animationAction2 = animationAction.setEffectiveTimeScale(3);
+      expect(animationAction2.timeScale).toBe(3);
+      expect(animationAction).toBe(animationAction2);
     });
 
-    test.todo('getEffectiveTimeScale', () => {
-      // implement
+    test('getEffectiveTimeScale', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.timeScale).toBe(1);
+      expect(animationAction.getEffectiveTimeScale()).toBe(1);
+
+      animationAction.paused = true;
+      expect(animationAction.getEffectiveTimeScale()).toBe(0);
     });
 
-    test.todo('setDuration', () => {
-      // implement
+    test('setDuration', () => {
+      const { animationAction } = createAnimation();
+      expect(animationAction.timeScale).toBe(1);
+
+      animationAction.setDuration(100);
+      expect(animationAction.timeScale).toBe(10);
+
+      const animationAction2 = animationAction.setDuration(500);
+      expect(animationAction2.timeScale).toBe(2);
+      expect(animationAction).toBe(animationAction2);
     });
 
-    test.todo('syncWith', () => {
-      // implement
+    test('syncWith', () => {
+      const { animationAction, animationAction2 } = createTwoAnimations();
+      expect(animationAction.time).toBe(0);
+      expect(animationAction.timeScale).toBe(1);
+
+      animationAction2.time = 2;
+      animationAction2.timeScale = 2;
+
+      const animationAction3 = animationAction.syncWith(animationAction2);
+      expect(animationAction.time).toBe(2);
+      expect(animationAction.timeScale).toBe(2);
+
+      expect(animationAction).toBe(animationAction3);
     });
 
-    test.todo('halt', () => {
-      // implement
+    test('halt', () => {
+      const { animationAction } = createAnimation();
+      const animationAction2 = animationAction.halt(7);
+      expect(animationAction).toBe(animationAction2);
+
+      // EP: test result ?
     });
 
-    test.todo('warp', () => {
-      // implement
+    test('warp', () => {
+      const { animationAction } = createAnimation();
+      const animationAction2 = animationAction.warp(1, 2, 3);
+      expect(animationAction).toBe(animationAction2);
+
+      // EP: test result ?
     });
 
-    test.todo('stopWarping', () => {
-      // implement
+    test('stopWarping', () => {
+      const { animationAction } = createAnimation();
+      const animationAction2 = animationAction.stopWarping();
+      expect(animationAction).toBe(animationAction2);
+
+      // EP: test result ?
     });
 
     test('getMixer', () => {

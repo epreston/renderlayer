@@ -198,6 +198,8 @@ class AnimationAction {
 
   // return the time scale considering warping and .paused
   getEffectiveTimeScale() {
+    // EP: patch bug
+    this._effectiveTimeScale = this.paused ? 0 : this._effectiveTimeScale;
     return this._effectiveTimeScale;
   }
 
