@@ -16,8 +16,9 @@ describe('Lights', () => {
       expect(object).toBeInstanceOf(LightShadow);
     });
 
-    test.todo('focus', () => {
-      // implement
+    test('focus', () => {
+      const object = new SpotLightShadow();
+      expect(object.focus).toBe(1);
     });
 
     test('isSpotLightShadow', () => {
