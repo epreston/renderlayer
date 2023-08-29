@@ -8,7 +8,7 @@ class EventDispatcher {
     if (listeners[type] === void 0) {
       listeners[type] = [];
     }
-    if (listeners[type].indexOf(listener) === -1) {
+    if (!listeners[type].includes(listener)) {
       listeners[type].push(listener);
     }
   }
@@ -16,7 +16,7 @@ class EventDispatcher {
     if (this._listeners === void 0)
       return false;
     const listeners = this._listeners;
-    return listeners[type] !== void 0 && listeners[type].indexOf(listener) !== -1;
+    return listeners[type] !== void 0 && listeners[type].includes(listener);
   }
   removeEventListener(type, listener) {
     if (this._listeners === void 0)
