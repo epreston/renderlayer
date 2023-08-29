@@ -1,6 +1,8 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 import { BufferGeometry } from '@renderlayer/buffers';
+import { getDifferingProp } from './prop-compare.js';
+
 import { SphereGeometry } from '../src/SphereGeometry.js';
 
 describe('Geometries', () => {
@@ -68,7 +70,7 @@ describe('Geometries', () => {
 
     test('type', () => {
       const object = new SphereGeometry();
-      expect(object.type === 'SphereGeometry').toBeTruthy();
+      expect(object.type).toBe('SphereGeometry');
     });
 
     test.todo('parameters', () => {
@@ -142,22 +144,3 @@ describe('Geometries', () => {
     });
   });
 });
-
-// Compare two geometries.
-function getDifferingProp(geometryA, geometryB) {
-  const geometryKeys = Object.keys(geometryA);
-  const cloneKeys = Object.keys(geometryB);
-
-  let differingProp = undefined;
-
-  for (let i = 0, l = geometryKeys.length; i < l; i++) {
-    const key = geometryKeys[i];
-
-    if (cloneKeys.indexOf(key) < 0) {
-      differingProp = key;
-      break;
-    }
-  }
-
-  return differingProp;
-}
