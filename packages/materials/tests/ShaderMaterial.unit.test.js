@@ -20,16 +20,19 @@ describe('Materials', () => {
       expect(object.type === 'ShaderMaterial').toBeTruthy();
     });
 
-    test.todo('defines', () => {
-      // implement
+    test('defines', () => {
+      const object = new ShaderMaterial();
+      expect(object.defines).toBeInstanceOf(Object);
     });
 
-    test.todo('uniforms', () => {
-      // implement
+    test('uniforms', () => {
+      const object = new ShaderMaterial();
+      expect(object.uniforms).toBeInstanceOf(Object);
     });
 
-    test.todo('uniformsGroups', () => {
-      // implement
+    test('uniformsGroups', () => {
+      const object = new ShaderMaterial();
+      expect(object.uniformsGroups).toBeInstanceOf(Array);
     });
 
     test.todo('vertexShader', () => {
@@ -40,28 +43,39 @@ describe('Materials', () => {
       // implement
     });
 
-    test.todo('linewidth', () => {
-      // implement
+    test('linewidth', () => {
+      const object = new ShaderMaterial();
+      expect(object.linewidth).toBe(1);
     });
 
-    test.todo('wireframe', () => {
-      // implement
+    test('wireframe', () => {
+      const object = new ShaderMaterial();
+      expect(object.wireframe).toBe(false);
     });
 
-    test.todo('wireframeLinewidth', () => {
-      // implement
+    test('wireframeLinewidth', () => {
+      const object = new ShaderMaterial();
+      expect(object.wireframeLinewidth).toBe(1);
     });
 
-    test.todo('fog', () => {
-      // implement
+    test('fog', () => {
+      const object = new ShaderMaterial();
+      expect(object.fog).toBe(false);
     });
 
-    test.todo('lights', () => {
-      // implement
+    test('lights', () => {
+      const object = new ShaderMaterial();
+      expect(object.lights).toBe(false);
     });
 
-    test.todo('clipping', () => {
-      // implement
+    test('clipping', () => {
+      const object = new ShaderMaterial();
+      expect(object.clipping).toBe(false);
+    });
+
+    test('forceSinglePass', () => {
+      const object = new ShaderMaterial();
+      expect(object.forceSinglePass).toBe(true);
     });
 
     test.todo('extensions', () => {
