@@ -29,8 +29,28 @@ describe('Lights', () => {
       // implement
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const a = new SpotLightShadow();
+      const b = new SpotLightShadow();
+
+      b.bias = 10;
+      b.radius = 5;
+      b.mapSize.set(128, 128);
+      b.focus = 1.2;
+
+      expect(a).not.toBe(b);
+      expect(a.bias).not.toEqual(b.bias);
+      expect(a.radius).not.toBe(b.radius);
+      expect(a.mapSize.equals(b.mapSize)).toBeFalsy();
+      expect(a.focus).not.toBe(b.focus);
+
+      a.copy(b);
+
+      expect(a).not.toBe(b);
+      expect(a.bias).toEqual(b.bias);
+      expect(a.radius).toBe(b.radius);
+      expect(a.mapSize.equals(b.mapSize)).toBeTruthy();
+      expect(a.focus).toBe(b.focus);
     });
 
     test('clone/copy', () => {
@@ -47,7 +67,11 @@ describe('Lights', () => {
       expect(a).not.toEqual(b);
 
       b.copy(a);
-      // expect(a).toEqual(b);
+      expect(a).not.toBe(b);
+      expect(a.bias).toEqual(b.bias);
+      expect(a.radius).toBe(b.radius);
+      expect(a.mapSize.equals(b.mapSize)).toBeTruthy();
+      expect(a.focus).toBe(b.focus);
 
       b.mapSize.set(512, 512);
       expect(a).not.toEqual(b);
@@ -62,10 +86,35 @@ describe('Lights', () => {
       shadow.mapSize.set(128, 128);
       light.shadow = shadow;
 
-      // const json = light.toJSON();
-      // const newLight = new ObjectLoader().parse(json);
-
-      // expect(newLight.shadow).toEqual(light.shadow);
+      shadow.camera.uuid = '7fbc9b8d-a570-4f6b-9ad4-b08b4ab74a45';
+      expect(shadow.toJSON()).toMatchInlineSnapshot(`
+        {
+          "bias": 10,
+          "camera": {
+            "aspect": 1,
+            "far": 500,
+            "filmGauge": 35,
+            "filmOffset": 0,
+            "focus": 10,
+            "fov": 50,
+            "layers": 1,
+            "near": 0.5,
+            "type": "PerspectiveCamera",
+            "up": [
+              0,
+              1,
+              0,
+            ],
+            "uuid": "7fbc9b8d-a570-4f6b-9ad4-b08b4ab74a45",
+            "zoom": 1,
+          },
+          "mapSize": [
+            128,
+            128,
+          ],
+          "radius": 5,
+        }
+      `);
     });
   });
 });
