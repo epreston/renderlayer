@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Material } from '../src/Material.js';
 import { ShaderMaterial } from '../src/ShaderMaterial.js';
@@ -13,6 +13,11 @@ describe('Materials', () => {
     test('extends', () => {
       const object = new ShaderMaterial();
       expect(object).toBeInstanceOf(Material);
+    });
+
+    test('isShaderMaterial', () => {
+      const object = new ShaderMaterial();
+      expect(object.isShaderMaterial).toBeTruthy();
     });
 
     test('type', () => {
@@ -35,12 +40,14 @@ describe('Materials', () => {
       expect(object.uniformsGroups).toBeInstanceOf(Array);
     });
 
-    test.todo('vertexShader', () => {
-      // implement
+    test('vertexShader', () => {
+      const object = new ShaderMaterial();
+      expect(object.vertexShader).toBeDefined();
     });
 
-    test.todo('fragmentShader', () => {
-      // implement
+    test('fragmentShader', () => {
+      const object = new ShaderMaterial();
+      expect(object.fragmentShader).toBeDefined();
     });
 
     test('linewidth', () => {
@@ -78,37 +85,61 @@ describe('Materials', () => {
       expect(object.forceSinglePass).toBe(true);
     });
 
-    test.todo('extensions', () => {
-      // implement
-    });
-
-    test.todo('defaultAttributeValues', () => {
-      // implement
-    });
-
-    test.todo('index0AttributeName', () => {
-      // implement
-    });
-
-    test.todo('uniformsNeedUpdate', () => {
-      // implement
-    });
-
-    test.todo('glslVersion', () => {
-      // implement
-    });
-
-    test('isShaderMaterial', () => {
+    test('extensions', () => {
       const object = new ShaderMaterial();
-      expect(object.isShaderMaterial).toBeTruthy();
+      expect(object.extensions).toBeDefined();
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('defaultAttributeValues', () => {
+      const object = new ShaderMaterial();
+      expect(object.defaultAttributeValues).toBeDefined();
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('index0AttributeName', () => {
+      const object = new ShaderMaterial();
+      expect(object.index0AttributeName).toBeUndefined();
+    });
+
+    test('uniformsNeedUpdate', () => {
+      const object = new ShaderMaterial();
+      expect(object.uniformsNeedUpdate).toBe(false);
+    });
+
+    test('glslVersion', () => {
+      const object = new ShaderMaterial();
+      expect(object.glslVersion).toBeNull();
+    });
+
+    test('copy', () => {
+      const object = new ShaderMaterial();
+      const object2 = new ShaderMaterial();
+
+      // EP: incomplete
+
+      object2.linewidth = 2;
+      object2.wireframe = true;
+      object2.wireframeLinewidth = 2;
+      object2.fog = true;
+      object2.lights = true;
+      object2.clipping = true;
+      object2.forceSinglePass = false;
+
+      object.copy(object2);
+
+      // uuid will be different
+      object.uuid = object2.uuid;
+
+      expect(object).not.toBe(object2);
+      expect(object).toStrictEqual(object2);
+    });
+
+    test('toJSON', () => {
+      const object = new ShaderMaterial();
+
+      // uuid will be different
+      object.uuid = 'd8c485c3-df12-4143-9149-b249facd67f7';
+
+      expect(object.toJSON()).toMatchSnapshot();
     });
   });
 });
