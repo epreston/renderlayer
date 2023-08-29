@@ -6,13 +6,12 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     super();
 
     this.isMeshPhysicalMaterial = true;
+    this.type = 'MeshPhysicalMaterial';
 
     this.defines = {
       STANDARD: '',
       PHYSICAL: ''
     };
-
-    this.type = 'MeshPhysicalMaterial';
 
     this.clearcoatMap = null;
     this.clearcoatRoughness = 0.0;
@@ -21,15 +20,6 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     this.clearcoatNormalMap = null;
 
     this.ior = 1.5;
-
-    Object.defineProperty(this, 'reflectivity', {
-      get: function () {
-        return clamp((2.5 * (this.ior - 1)) / (this.ior + 1), 0, 1);
-      },
-      set: function (reflectivity) {
-        this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
-      }
-    });
 
     this.iridescenceMap = null;
     this.iridescenceIOR = 1.3;
@@ -59,6 +49,14 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     this._transmission = 0;
 
     this.setValues(parameters);
+  }
+
+  get reflectivity() {
+    return clamp((2.5 * (this.ior - 1)) / (this.ior + 1), 0, 1);
+  }
+
+  set reflectivity(reflectivity) {
+    this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
   }
 
   get sheen() {
