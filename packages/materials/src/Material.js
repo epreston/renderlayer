@@ -361,6 +361,10 @@ class Material extends EventDispatcher {
     return new this.constructor().copy(this);
   }
 
+  /**
+   * @param {Material} source
+   * @returns {this}
+   */
   copy(source) {
     this.name = source.name;
 
