@@ -70,6 +70,9 @@ class ShaderMaterial extends Material {
 
     this.defines = Object.assign({}, source.defines);
 
+    // EP: bug fix
+    this.linewidth = source.linewidth;
+
     this.wireframe = source.wireframe;
     this.wireframeLinewidth = source.wireframeLinewidth;
 
