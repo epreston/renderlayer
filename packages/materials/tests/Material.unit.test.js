@@ -1,6 +1,17 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import {
+  AddEquation,
+  AlwaysStencilFunc,
+  FrontSide,
+  KeepStencilOp,
+  LessEqualDepth,
+  NormalBlending,
+  OneMinusSrcAlphaFactor,
+  SrcAlphaFactor
+} from '@renderlayer/shared';
 import { EventDispatcher } from '@renderlayer/core';
+
 import { Material } from '../src/Material.js';
 
 describe('Materials', () => {
@@ -15,8 +26,9 @@ describe('Materials', () => {
       expect(object).toBeInstanceOf(EventDispatcher);
     });
 
-    test.todo('id', () => {
-      // implement
+    test('id', () => {
+      const object = new Material();
+      expect(object.id).toBeDefined();
     });
 
     test('uuid', () => {
@@ -26,8 +38,9 @@ describe('Materials', () => {
       expect(object.uuid).to.have.length(36);
     });
 
-    test.todo('name', () => {
-      // implement
+    test('name', () => {
+      const object = new Material();
+      expect(object.name).toBe('');
     });
 
     test('isMaterial', () => {
@@ -37,95 +50,117 @@ describe('Materials', () => {
 
     test('type', () => {
       const object = new Material();
-      expect(object.type === 'Material').toBeTruthy();
+      expect(object.type).toBe('Material');
     });
 
-    test.todo('blending', () => {
-      // implement
+    test('blending', () => {
+      const object = new Material();
+      expect(object.blending).toBe(NormalBlending);
     });
 
-    test.todo('side', () => {
-      // implement
+    test('side', () => {
+      const object = new Material();
+      expect(object.side).toBe(FrontSide);
     });
 
-    test.todo('vertexColors', () => {
-      // implement
+    test('vertexColors', () => {
+      const object = new Material();
+      expect(object.vertexColors).toBe(false);
     });
 
-    test.todo('opacity', () => {
-      // implement
+    test('opacity', () => {
+      const object = new Material();
+      expect(object.opacity).toBe(1);
     });
 
-    test.todo('transparent', () => {
-      // implement
+    test('transparent', () => {
+      const object = new Material();
+      expect(object.transparent).toBe(false);
     });
 
-    test.todo('blendSrc', () => {
-      // implement
+    test('blendSrc', () => {
+      const object = new Material();
+      expect(object.blendSrc).toBe(SrcAlphaFactor);
     });
 
-    test.todo('blendDst', () => {
-      // implement
+    test('blendDst', () => {
+      const object = new Material();
+      expect(object.blendDst).toBe(OneMinusSrcAlphaFactor);
     });
 
-    test.todo('blendEquation', () => {
-      // implement
+    test('blendEquation', () => {
+      const object = new Material();
+      expect(object.blendEquation).toBe(AddEquation);
     });
 
-    test.todo('blendSrcAlpha', () => {
-      // implement
+    test('blendSrcAlpha', () => {
+      const object = new Material();
+      expect(object.blendSrcAlpha).toBeNull();
     });
 
-    test.todo('blendDstAlpha', () => {
-      // implement
+    test('blendDstAlpha', () => {
+      const object = new Material();
+      expect(object.blendDstAlpha).toBeNull();
     });
 
-    test.todo('blendEquationAlpha', () => {
-      // implement
+    test('blendEquationAlpha', () => {
+      const object = new Material();
+      expect(object.blendEquationAlpha).toBeNull();
     });
 
-    test.todo('depthFunc', () => {
-      // implement
+    test('depthFunc', () => {
+      const object = new Material();
+      expect(object.depthFunc).toBe(LessEqualDepth);
     });
 
-    test.todo('depthTest', () => {
-      // implement
+    test('depthTest', () => {
+      const object = new Material();
+      expect(object.depthTest).toBe(true);
     });
 
-    test.todo('depthWrite', () => {
-      // implement
+    test('depthWrite', () => {
+      const object = new Material();
+      expect(object.depthWrite).toBe(true);
     });
 
-    test.todo('stencilWriteMask', () => {
-      // implement
+    test('stencilWriteMask', () => {
+      const object = new Material();
+      expect(object.stencilWriteMask).toBe(0xff);
     });
 
-    test.todo('stencilFunc', () => {
-      // implement
+    test('stencilFunc', () => {
+      const object = new Material();
+      expect(object.stencilFunc).toBe(AlwaysStencilFunc);
     });
 
-    test.todo('stencilRef', () => {
-      // implement
+    test('stencilRef', () => {
+      const object = new Material();
+      expect(object.stencilRef).toBe(0);
     });
 
-    test.todo('stencilFuncMask', () => {
-      // implement
+    test('stencilFuncMask', () => {
+      const object = new Material();
+      expect(object.stencilFuncMask).toBe(0xff);
     });
 
-    test.todo('stencilFail', () => {
-      // implement
+    test('stencilFail', () => {
+      const object = new Material();
+      expect(object.stencilFail).toBe(KeepStencilOp);
     });
 
-    test.todo('stencilZFail', () => {
-      // implement
+    test('stencilZFail', () => {
+      const object = new Material();
+      expect(object.stencilZFail).toBe(KeepStencilOp);
     });
 
-    test.todo('stencilZPass', () => {
-      // implement
+    test('stencilZPass', () => {
+      const object = new Material();
+      expect(object.stencilZPass).toBe(KeepStencilOp);
     });
 
-    test.todo('stencilWrite', () => {
-      // implement
+    test('stencilWrite', () => {
+      const object = new Material();
+      expect(object.stencilWrite).toBe(false);
     });
 
     test.todo('clippingPlanes', () => {
