@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Material } from '../src/Material.js';
 import { MeshPhysicalMaterial } from '../src/MeshPhysicalMaterial.js';
@@ -13,6 +13,11 @@ describe('Materials', () => {
     test('extends', () => {
       const object = new MeshPhysicalMaterial();
       expect(object).toBeInstanceOf(Material);
+    });
+
+    test('isMeshPhysicalMaterial', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.isMeshPhysicalMaterial).toBeTruthy();
     });
 
     test('type', () => {
@@ -134,11 +139,6 @@ describe('Materials', () => {
 
     test.todo('transmission', () => {
       // implement
-    });
-
-    test('isMeshPhysicalMaterial', () => {
-      const object = new MeshPhysicalMaterial();
-      expect(object.isMeshPhysicalMaterial).toBeTruthy();
     });
 
     test.todo('copy', () => {
