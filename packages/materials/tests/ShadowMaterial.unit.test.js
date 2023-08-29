@@ -1,5 +1,7 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { Color } from '@renderlayer/math';
+
 import { Material } from '../src/Material.js';
 import { ShadowMaterial } from '../src/ShadowMaterial.js';
 
@@ -25,20 +27,40 @@ describe('Materials', () => {
       expect(object.type).toBe('ShadowMaterial');
     });
 
-    test.todo('color', () => {
-      // implement
+    test('color', () => {
+      const object = new ShadowMaterial();
+      expect(object.color.equals(new Color(0x000000))).toBeTruthy();
     });
 
-    test.todo('transparent', () => {
-      // implement
+    test('transparent', () => {
+      const object = new ShadowMaterial();
+      expect(object.transparent).toBe(true);
     });
 
-    test.todo('fog', () => {
-      // implement
+    test('fog', () => {
+      const object = new ShadowMaterial();
+      expect(object.fog).toBe(true);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const object = new ShadowMaterial();
+      const object2 = new ShadowMaterial();
+
+      expect(object.transparent).toBe(true);
+      expect(object.color.equals(new Color(0x000000))).toBeTruthy();
+      expect(object.fog).toBe(true);
+
+      object2.transparent = false;
+      object2.color = new Color(0x3d3d3d);
+      object2.fog = false;
+
+      object.copy(object2);
+
+      expect(object).not.toBe(object2);
+
+      expect(object.transparent).toBe(object2.transparent);
+      expect(object.color.equals(object2.color)).toBeTruthy();
+      expect(object.fog).toBe(object2.fog);
     });
   });
 });
