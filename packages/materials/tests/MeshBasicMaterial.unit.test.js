@@ -99,16 +99,6 @@ describe('Materials', () => {
       expect(object.wireframeLinewidth).toBe(1);
     });
 
-    test('wireframeLinecap', () => {
-      const object = new MeshBasicMaterial();
-      expect(object.wireframeLinecap).toBe('round');
-    });
-
-    test('wireframeLinejoin', () => {
-      const object = new MeshBasicMaterial();
-      expect(object.wireframeLinejoin).toBe('round');
-    });
-
     test('fog', () => {
       const object = new MeshBasicMaterial();
       expect(object.fog).toBe(true);
@@ -138,8 +128,6 @@ describe('Materials', () => {
 
       object2.wireframe = true;
       object2.wireframeLinewidth = 2;
-      object2.wireframeLinecap = 'square';
-      object2.wireframeLinejoin = 'square';
 
       object2.fog = false;
 

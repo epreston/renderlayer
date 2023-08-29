@@ -30,9 +30,7 @@ class MeshBasicMaterial extends Material {
     this.refractionRatio = 0.98;
 
     this.wireframe = false;
-    this.wireframeLinewidth = 1;
-    this.wireframeLinecap = 'round';
-    this.wireframeLinejoin = 'round';
+    this.wireframeLinewidth = 1; // will almost always be 1
 
     this.fog = true;
 
@@ -67,8 +65,6 @@ class MeshBasicMaterial extends Material {
 
     this.wireframe = source.wireframe;
     this.wireframeLinewidth = source.wireframeLinewidth;
-    this.wireframeLinecap = source.wireframeLinecap;
-    this.wireframeLinejoin = source.wireframeLinejoin;
 
     this.fog = source.fog;
 
