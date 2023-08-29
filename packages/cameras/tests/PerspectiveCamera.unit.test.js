@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Matrix4 } from '@renderlayer/math';
 import { Camera } from '../src/Camera.js';
