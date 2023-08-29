@@ -1,4 +1,7 @@
-import { beforeAll, beforeEach, createExpect, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
+
+import { BasicDepthPacking, RGBADepthPacking } from '@renderlayer/shared';
+import { Texture } from '@renderlayer/textures';
 
 import { Material } from '../src/Material.js';
 import { MeshDepthMaterial } from '../src/MeshDepthMaterial.js';
@@ -22,43 +25,72 @@ describe('Materials', () => {
 
     test('type', () => {
       const object = new MeshDepthMaterial();
-      expect(object.type === 'MeshDepthMaterial').toBeTruthy();
+      expect(object.type).toBe('MeshDepthMaterial');
     });
 
-    test.todo('depthPacking', () => {
-      // implement
+    test('depthPacking', () => {
+      const object = new MeshDepthMaterial();
+      expect(object.depthPacking).toBe(BasicDepthPacking);
     });
 
-    test.todo('map', () => {
-      // implement
+    test('map', () => {
+      const object = new MeshDepthMaterial();
+      expect(object.map).toBeNull();
     });
 
-    test.todo('alphaMap', () => {
-      // implement
+    test('alphaMap', () => {
+      const object = new MeshDepthMaterial();
+      expect(object.map).toBeNull();
     });
 
-    test.todo('displacementMap', () => {
-      // implement
+    test('displacementMap', () => {
+      const object = new MeshDepthMaterial();
+      expect(object.map).toBeNull();
     });
 
-    test.todo('displacementScale', () => {
-      // implement
+    test('displacementScale', () => {
+      const object = new MeshDepthMaterial();
+      expect(object.displacementScale).toBe(1);
     });
 
-    test.todo('displacementBias', () => {
-      // implement
+    test('displacementBias', () => {
+      const object = new MeshDepthMaterial();
+      expect(object.displacementBias).toBe(0);
     });
 
-    test.todo('wireframe', () => {
-      // implement
+    test('wireframe', () => {
+      const object = new MeshDepthMaterial();
+      expect(object.wireframe).toBe(false);
     });
 
-    test.todo('wireframeLinewidth', () => {
-      // implement
+    test('wireframeLinewidth', () => {
+      const object = new MeshDepthMaterial();
+      expect(object.wireframeLinewidth).toBe(1);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const object = new MeshDepthMaterial();
+      const object2 = new MeshDepthMaterial();
+
+      object2.depthPacking = RGBADepthPacking;
+
+      object2.map = new Texture();
+      object2.alphaMap = new Texture();
+
+      object2.displacementMap = new Texture();
+      object2.displacementScale = 0.8;
+      object2.displacementBias = 0.2;
+
+      object2.wireframe = false;
+      object2.wireframeLinewidth = 2;
+
+      object.copy(object2);
+
+      // uuid will be different
+      object.uuid = object2.uuid;
+
+      expect(object).not.toBe(object2);
+      expect(object).toStrictEqual(object2);
     });
   });
 });
