@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Interpolant } from '../src/Interpolant.js';
 import { CubicInterpolant } from '../src/CubicInterpolant.js';
