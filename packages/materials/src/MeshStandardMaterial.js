@@ -48,9 +48,7 @@ class MeshStandardMaterial extends Material {
     this.envMapIntensity = 1.0;
 
     this.wireframe = false;
-    this.wireframeLinewidth = 1;
-    this.wireframeLinecap = 'round';
-    this.wireframeLinejoin = 'round';
+    this.wireframeLinewidth = 1; // will almost always be 1
 
     this.flatShading = false;
 
@@ -106,8 +104,6 @@ class MeshStandardMaterial extends Material {
 
     this.wireframe = source.wireframe;
     this.wireframeLinewidth = source.wireframeLinewidth;
-    this.wireframeLinecap = source.wireframeLinecap;
-    this.wireframeLinejoin = source.wireframeLinejoin;
 
     this.flatShading = source.flatShading;
 
