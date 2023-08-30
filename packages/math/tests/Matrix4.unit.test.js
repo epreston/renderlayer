@@ -61,7 +61,7 @@ describe('Maths', () => {
     test('isMatrix4', () => {
       const a = new Matrix4();
       // @ts-ignore
-      expect(a.isMatrix4 === true).toBeTruthy();
+      expect(a.isMatrix4).toBeTruthy();
 
       const b = new Vector3();
       // @ts-ignore
