@@ -433,10 +433,10 @@ describe('Maths', () => {
       const halfPI = Math.PI * 0.5;
 
       a.rotateTowards(b, 0);
-      expect(a.equals(a) === true).toBeTruthy();
+      expect(a.equals(a)).toBeTruthy();
 
       a.rotateTowards(b, Math.PI * 2); // test overshoot
-      expect(a.equals(b) === true).toBeTruthy();
+      expect(a.equals(b)).toBeTruthy();
 
       a.set(0, 0, 0, 1);
       a.rotateTowards(b, halfPI);
