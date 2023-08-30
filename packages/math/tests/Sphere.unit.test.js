@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Box3 } from '../src/Box3.js';
 import { Vector3 } from '../src/Vector3.js';
@@ -14,21 +14,21 @@ describe('Maths', () => {
     test('constructor', () => {
       let a = new Sphere();
       expect(a.center.equals(zero3)).toBeTruthy();
-      expect(a.radius == -1).toBeTruthy();
+      expect(a.radius).toBe(-1);
 
       a = new Sphere(one3.clone(), 1);
       expect(a.center.equals(one3)).toBeTruthy();
-      expect(a.radius == 1).toBeTruthy();
+      expect(a.radius).toBe(1);
     });
 
     test('set', () => {
       const a = new Sphere();
       expect(a.center.equals(zero3)).toBeTruthy();
-      expect(a.radius == -1).toBeTruthy();
+      expect(a.radius).toBe(-1);
 
       a.set(one3, 1);
       expect(a.center.equals(one3)).toBeTruthy();
-      expect(a.radius == 1).toBeTruthy();
+      expect(a.radius).toBe(1);
     });
 
     test('setFromPoints', () => {
@@ -82,14 +82,14 @@ describe('Maths', () => {
       const b = new Sphere().copy(a);
 
       expect(b.center.equals(one3)).toBeTruthy();
-      expect(b.radius == 1).toBeTruthy();
+      expect(b.radius).toBe(1);
 
       // ensure that it is a true copy
       a.center = zero3;
       a.radius = 0;
 
       expect(b.center.equals(one3)).toBeTruthy();
-      expect(b.radius == 1).toBeTruthy();
+      expect(b.radius).toBe(1);
     });
 
     test('isEmpty', () => {
