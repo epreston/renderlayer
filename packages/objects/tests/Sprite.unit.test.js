@@ -1,6 +1,11 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
-import { Object3D } from '@renderlayer/core';
+import { BufferGeometry } from '@renderlayer/buffers';
+import { PerspectiveCamera } from '@renderlayer/cameras';
+import { Object3D, Raycaster } from '@renderlayer/core';
+import { SpriteMaterial } from '@renderlayer/materials';
+import { Vector2 } from '@renderlayer/math';
+
 import { Sprite } from '../src/Sprite.js';
 
 describe('Objects', () => {
@@ -15,34 +20,60 @@ describe('Objects', () => {
       expect(object).toBeInstanceOf(Object3D);
     });
 
-    test('type', () => {
-      const object = new Sprite();
-      expect(object.type).toBe('Sprite');
-    });
-
     test('isSprite', () => {
       const object = new Sprite();
       expect(object.isSprite).toBeTruthy();
     });
 
-    test.todo('geometry', () => {
-      // implement
+    test('type', () => {
+      const object = new Sprite();
+      expect(object.type).toBe('Sprite');
     });
 
-    test.todo('material', () => {
-      // implement
+    test('geometry', () => {
+      const object = new Sprite();
+      expect(object.geometry).toBeInstanceOf(BufferGeometry);
     });
 
-    test.todo('center', () => {
-      // implement
+    test('material', () => {
+      const object = new Sprite();
+      expect(object.material).toBeInstanceOf(SpriteMaterial);
     });
 
-    test.todo('raycast', () => {
-      // implement
+    test('center', () => {
+      const object = new Sprite();
+      expect(object.center).toBeInstanceOf(Vector2);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('raycast', () => {
+      const object = new Sprite();
+      const raycaster = new Raycaster();
+      const camera = new PerspectiveCamera(90, 1, 1, 1000);
+      raycaster.setFromCamera(
+        {
+          x: 0.5,
+          y: 0.5
+        },
+        camera
+      );
+
+      expect(raycaster.intersectObject(object, false).length).toBe(1);
+    });
+
+    test('copy', () => {
+      const object = new Sprite();
+      const object2 = new Sprite();
+
+      object2.center = new Vector2(1, 1);
+      object2.material = new SpriteMaterial();
+
+      object.copy(object2);
+
+      // uuid will be different
+      object.uuid = object2.uuid;
+
+      expect(object).not.toBe(object2);
+      expect(object).toStrictEqual(object2);
     });
   });
 });
