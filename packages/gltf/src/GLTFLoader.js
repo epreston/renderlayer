@@ -2225,7 +2225,7 @@ class GLTFParser {
 
         default:
           dependency = this._invokeOne(function (ext) {
-            return ext != this && ext.getDependency && ext.getDependency(type, index);
+            return ext !== this && ext.getDependency && ext.getDependency(type, index);
           });
 
           if (!dependency) {
