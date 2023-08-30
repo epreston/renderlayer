@@ -11,7 +11,7 @@ export const matrixEquals4 = (a, b) => {
 };
 
 export const eulerEquals = function (a, b, tolerance = 0.0001) {
-  if (a.order != b.order) {
+  if (a.order !== b.order) {
     return false;
   }
 
