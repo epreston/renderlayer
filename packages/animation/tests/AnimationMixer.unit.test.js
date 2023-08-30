@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 import { one3, two3, zero3 } from './math-constants.js';
 
 import { EventDispatcher, Object3D } from '@renderlayer/core';
@@ -73,16 +73,16 @@ describe('Animation', () => {
 
       // prettier-ignore
       expect(
-        obj.position.x == 0 &&
-        obj.position.y == 0 &&
-        obj.position.z == 0
+        obj.position.x === 0 &&
+        obj.position.y === 0 &&
+        obj.position.z === 0
       ).toBeTruthy();
 
       // prettier-ignore
       expect(
-        obj.scale.x == 1 &&
-        obj.scale.y == 1 &&
-        obj.scale.z == 1
+        obj.scale.x === 1 &&
+        obj.scale.y === 1 &&
+        obj.scale.z === 1
       ).toBeTruthy();
     });
 
