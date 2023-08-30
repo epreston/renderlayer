@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Matrix4 } from '../src/Matrix4.js';
 import { Plane } from '../src/Plane.js';
@@ -37,7 +37,7 @@ describe('Maths', () => {
 
     test('isBox3', () => {
       const a = new Box3();
-      expect(a.isBox3 === true).toBeTruthy();
+      expect(a.isBox3).toBeTruthy();
 
       const b = new Sphere();
 
@@ -321,7 +321,7 @@ describe('Maths', () => {
       expect(a.max.equals(new Vector3(1, 1, 1))).toBeTruthy();
 
       // The AABB of a mesh with initial geometry is empty.
-      expect(new Box3().expandByObject(new Mesh()).isEmpty() === true).toBeTruthy();
+      expect(new Box3().expandByObject(new Mesh()).isEmpty()).toBeTruthy();
     });
 
     test('containsPoint', () => {
@@ -496,15 +496,15 @@ describe('Maths', () => {
       const a = new Box3(zero3.clone(), zero3.clone());
       const b = new Box3(one3.clone().negate(), one3.clone());
 
-      expect(a.distanceToPoint(new Vector3(0, 0, 0)) == 0).toBeTruthy();
-      expect(a.distanceToPoint(new Vector3(1, 1, 1)) == Math.sqrt(3)).toBeTruthy();
-      expect(a.distanceToPoint(new Vector3(-1, -1, -1)) == Math.sqrt(3)).toBeTruthy();
+      expect(a.distanceToPoint(new Vector3(0, 0, 0))).toBe(0);
+      expect(a.distanceToPoint(new Vector3(1, 1, 1))).toBe(Math.sqrt(3));
+      expect(a.distanceToPoint(new Vector3(-1, -1, -1))).toBe(Math.sqrt(3));
 
-      expect(b.distanceToPoint(new Vector3(2, 2, 2)) == Math.sqrt(3)).toBeTruthy();
-      expect(b.distanceToPoint(new Vector3(1, 1, 1)) == 0).toBeTruthy();
-      expect(b.distanceToPoint(new Vector3(0, 0, 0)) == 0).toBeTruthy();
-      expect(b.distanceToPoint(new Vector3(-1, -1, -1)) == 0).toBeTruthy();
-      expect(b.distanceToPoint(new Vector3(-2, -2, -2)) == Math.sqrt(3)).toBeTruthy();
+      expect(b.distanceToPoint(new Vector3(2, 2, 2))).toBe(Math.sqrt(3));
+      expect(b.distanceToPoint(new Vector3(1, 1, 1))).toBe(0);
+      expect(b.distanceToPoint(new Vector3(0, 0, 0))).toBe(0);
+      expect(b.distanceToPoint(new Vector3(-1, -1, -1))).toBe(0);
+      expect(b.distanceToPoint(new Vector3(-2, -2, -2))).toBe(Math.sqrt(3));
     });
 
     test('getBoundingSphere', () => {
