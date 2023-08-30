@@ -121,22 +121,22 @@ describe('Maths', () => {
       const point = new Vector3();
 
       // nearby the ray
-      expect(a.closestPointToPointParameter(zero3.clone(), true) == 0).toBeTruthy();
+      expect(a.closestPointToPointParameter(zero3.clone(), true)).toBe(0);
       a.closestPointToPoint(zero3.clone(), true, point);
       expect(point.distanceTo(new Vector3(1, 1, 1)) < 0.0001).toBeTruthy();
 
       // nearby the ray
-      expect(a.closestPointToPointParameter(zero3.clone(), false) == -1).toBeTruthy();
+      expect(a.closestPointToPointParameter(zero3.clone(), false)).toBe(-1);
       a.closestPointToPoint(zero3.clone(), false, point);
       expect(point.distanceTo(new Vector3(1, 1, 0)) < 0.0001).toBeTruthy();
 
       // nearby the ray
-      expect(a.closestPointToPointParameter(new Vector3(1, 1, 5), true) == 1).toBeTruthy();
+      expect(a.closestPointToPointParameter(new Vector3(1, 1, 5), true)).toBe(1);
       a.closestPointToPoint(new Vector3(1, 1, 5), true, point);
       expect(point.distanceTo(new Vector3(1, 1, 2)) < 0.0001).toBeTruthy();
 
       // exactly on the ray
-      expect(a.closestPointToPointParameter(one3.clone(), true) == 0).toBeTruthy();
+      expect(a.closestPointToPointParameter(one3.clone(), true)).toBe(0);
       a.closestPointToPoint(one3.clone(), true, point);
       expect(point.distanceTo(one3.clone()) < 0.0001).toBeTruthy();
     });
