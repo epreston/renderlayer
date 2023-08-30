@@ -1,7 +1,16 @@
 import { createFilter } from '@rollup/pluginutils';
 
+/** @typedef {import('rollup').Plugin} Plugin */
+/** @typedef {string | string[]} GlobPattern */
 /**
- * @type {readonly RegExp[]}
+ * @typedef {Object | null} PluginOptions
+ * @property {GlobPattern?} include - pattern(s array) to import
+ * @property {GlobPattern?} exclude - pattern(s array) to ignore
+ * @property {boolean?} enabled - enable the plugin
+ */
+
+/**
+ * @type {readonly string[]}
  */
 const DEFAULT_SHADERS = Object.freeze(['**/*.js']);
 
