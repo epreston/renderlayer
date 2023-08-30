@@ -113,38 +113,8 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
       uniforms: {
         tEquirect: { value: null }
       },
-      vertexShader: (
-        /* glsl */
-        `
-				varying vec3 vWorldDirection;
-
-				vec3 transformDirection( in vec3 dir, in mat4 matrix ) {
-					return normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );
-				}
-
-				void main() {
-					vWorldDirection = transformDirection( position, modelMatrix );
-
-					#include <begin_vertex>
-					#include <project_vertex>
-				}
-			`
-      ),
-      fragmentShader: (
-        /* glsl */
-        `
-				uniform sampler2D tEquirect;
-				varying vec3 vWorldDirection;
-
-				#include <common>
-
-				void main() {
-					vec3 direction = normalize( vWorldDirection );
-					vec2 sampleUV = equirectUv( direction );
-					gl_FragColor = texture2D( tEquirect, sampleUV );
-				}
-			`
-      )
+      vertexShader: "varying vec3 vWorldDirection;\n				vec3 transformDirection( in vec3 dir, in mat4 matrix ) {\n					return normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );\n				}\n				void main() {\n					vWorldDirection = transformDirection( position, modelMatrix );\n					#include <begin_vertex>\n					#include <project_vertex>\n				}",
+      fragmentShader: "uniform sampler2D tEquirect;\n				varying vec3 vWorldDirection;\n				#include <common>\n				void main() {\n					vec3 direction = normalize( vWorldDirection );\n					vec2 sampleUV = equirectUv( direction );\n					gl_FragColor = texture2D( tEquirect, sampleUV );\n				}"
     };
     const geometry = new BoxGeometry(5, 5, 5);
     const material = new ShaderMaterial({
