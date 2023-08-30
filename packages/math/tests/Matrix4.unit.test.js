@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Matrix3 } from '../src/Matrix3.js';
 import { Vector3 } from '../src/Vector3.js';
@@ -11,7 +11,7 @@ import { eps } from './math-constants.js';
 import { Matrix4 } from '../src/Matrix4.js';
 
 function matrixEquals4(a, b, tolerance = 0.0001) {
-  if (a.elements.length != b.elements.length) {
+  if (a.elements.length !== b.elements.length) {
     return false;
   }
 
@@ -35,25 +35,25 @@ describe('Maths', () => {
   describe('Matrix4', () => {
     test('constructor', () => {
       const a = new Matrix4();
-      expect(a.determinant() == 1).toBeTruthy();
+      expect(a.determinant()).toBe(1);
 
       const b = new Matrix4().set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-      expect(b.elements[0] == 0).toBeTruthy();
-      expect(b.elements[1] == 4).toBeTruthy();
-      expect(b.elements[2] == 8).toBeTruthy();
-      expect(b.elements[3] == 12).toBeTruthy();
-      expect(b.elements[4] == 1).toBeTruthy();
-      expect(b.elements[5] == 5).toBeTruthy();
-      expect(b.elements[6] == 9).toBeTruthy();
-      expect(b.elements[7] == 13).toBeTruthy();
-      expect(b.elements[8] == 2).toBeTruthy();
-      expect(b.elements[9] == 6).toBeTruthy();
-      expect(b.elements[10] == 10).toBeTruthy();
-      expect(b.elements[11] == 14).toBeTruthy();
-      expect(b.elements[12] == 3).toBeTruthy();
-      expect(b.elements[13] == 7).toBeTruthy();
-      expect(b.elements[14] == 11).toBeTruthy();
-      expect(b.elements[15] == 15).toBeTruthy();
+      expect(b.elements[0]).toBe(0);
+      expect(b.elements[1]).toBe(4);
+      expect(b.elements[2]).toBe(8);
+      expect(b.elements[3]).toBe(12);
+      expect(b.elements[4]).toBe(1);
+      expect(b.elements[5]).toBe(5);
+      expect(b.elements[6]).toBe(9);
+      expect(b.elements[7]).toBe(13);
+      expect(b.elements[8]).toBe(2);
+      expect(b.elements[9]).toBe(6);
+      expect(b.elements[10]).toBe(10);
+      expect(b.elements[11]).toBe(14);
+      expect(b.elements[12]).toBe(3);
+      expect(b.elements[13]).toBe(7);
+      expect(b.elements[14]).toBe(11);
+      expect(b.elements[15]).toBe(15);
 
       expect(!matrixEquals4(a, b)).toBeTruthy();
     });
@@ -70,45 +70,45 @@ describe('Maths', () => {
 
     test('set', () => {
       const b = new Matrix4();
-      expect(b.determinant() == 1).toBeTruthy();
+      expect(b.determinant()).toBe(1);
 
       b.set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-      expect(b.elements[0] == 0).toBeTruthy();
-      expect(b.elements[1] == 4).toBeTruthy();
-      expect(b.elements[2] == 8).toBeTruthy();
-      expect(b.elements[3] == 12).toBeTruthy();
-      expect(b.elements[4] == 1).toBeTruthy();
-      expect(b.elements[5] == 5).toBeTruthy();
-      expect(b.elements[6] == 9).toBeTruthy();
-      expect(b.elements[7] == 13).toBeTruthy();
-      expect(b.elements[8] == 2).toBeTruthy();
-      expect(b.elements[9] == 6).toBeTruthy();
-      expect(b.elements[10] == 10).toBeTruthy();
-      expect(b.elements[11] == 14).toBeTruthy();
-      expect(b.elements[12] == 3).toBeTruthy();
-      expect(b.elements[13] == 7).toBeTruthy();
-      expect(b.elements[14] == 11).toBeTruthy();
-      expect(b.elements[15] == 15).toBeTruthy();
+      expect(b.elements[0]).toBe(0);
+      expect(b.elements[1]).toBe(4);
+      expect(b.elements[2]).toBe(8);
+      expect(b.elements[3]).toBe(12);
+      expect(b.elements[4]).toBe(1);
+      expect(b.elements[5]).toBe(5);
+      expect(b.elements[6]).toBe(9);
+      expect(b.elements[7]).toBe(13);
+      expect(b.elements[8]).toBe(2);
+      expect(b.elements[9]).toBe(6);
+      expect(b.elements[10]).toBe(10);
+      expect(b.elements[11]).toBe(14);
+      expect(b.elements[12]).toBe(3);
+      expect(b.elements[13]).toBe(7);
+      expect(b.elements[14]).toBe(11);
+      expect(b.elements[15]).toBe(15);
     });
 
     test('identity', () => {
       const b = new Matrix4().set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-      expect(b.elements[0] == 0).toBeTruthy();
-      expect(b.elements[1] == 4).toBeTruthy();
-      expect(b.elements[2] == 8).toBeTruthy();
-      expect(b.elements[3] == 12).toBeTruthy();
-      expect(b.elements[4] == 1).toBeTruthy();
-      expect(b.elements[5] == 5).toBeTruthy();
-      expect(b.elements[6] == 9).toBeTruthy();
-      expect(b.elements[7] == 13).toBeTruthy();
-      expect(b.elements[8] == 2).toBeTruthy();
-      expect(b.elements[9] == 6).toBeTruthy();
-      expect(b.elements[10] == 10).toBeTruthy();
-      expect(b.elements[11] == 14).toBeTruthy();
-      expect(b.elements[12] == 3).toBeTruthy();
-      expect(b.elements[13] == 7).toBeTruthy();
-      expect(b.elements[14] == 11).toBeTruthy();
-      expect(b.elements[15] == 15).toBeTruthy();
+      expect(b.elements[0]).toBe(0);
+      expect(b.elements[1]).toBe(4);
+      expect(b.elements[2]).toBe(8);
+      expect(b.elements[3]).toBe(12);
+      expect(b.elements[4]).toBe(1);
+      expect(b.elements[5]).toBe(5);
+      expect(b.elements[6]).toBe(9);
+      expect(b.elements[7]).toBe(13);
+      expect(b.elements[8]).toBe(2);
+      expect(b.elements[9]).toBe(6);
+      expect(b.elements[10]).toBe(10);
+      expect(b.elements[11]).toBe(14);
+      expect(b.elements[12]).toBe(3);
+      expect(b.elements[13]).toBe(7);
+      expect(b.elements[14]).toBe(11);
+      expect(b.elements[15]).toBe(15);
 
       const a = new Matrix4();
       expect(!matrixEquals4(a, b)).toBeTruthy();
@@ -260,196 +260,169 @@ describe('Maths', () => {
     });
 
     test('multiply', () => {
-      const lhs = new Matrix4().set(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53);
+      // prettier-ignore
+      const lhs = new Matrix4().set(
+        2, 3, 5, 7,
+        11, 13, 17, 19,
+        23, 29, 31, 37,
+        41, 43, 47, 53
+      );
+
+      // prettier-ignore
       const rhs = new Matrix4().set(
-        59,
-        61,
-        67,
-        71,
-        73,
-        79,
-        83,
-        89,
-        97,
-        101,
-        103,
-        107,
-        109,
-        113,
-        127,
-        131
+        59, 61, 67, 71,
+        73, 79, 83, 89,
+        97, 101, 103, 107,
+        109, 113, 127, 131
       );
 
       lhs.multiply(rhs);
 
-      expect(lhs.elements[0] == 1585).toBeTruthy();
-      expect(lhs.elements[1] == 5318).toBeTruthy();
-      expect(lhs.elements[2] == 10514).toBeTruthy();
-      expect(lhs.elements[3] == 15894).toBeTruthy();
-      expect(lhs.elements[4] == 1655).toBeTruthy();
-      expect(lhs.elements[5] == 5562).toBeTruthy();
-      expect(lhs.elements[6] == 11006).toBeTruthy();
-      expect(lhs.elements[7] == 16634).toBeTruthy();
-      expect(lhs.elements[8] == 1787).toBeTruthy();
-      expect(lhs.elements[9] == 5980).toBeTruthy();
-      expect(lhs.elements[10] == 11840).toBeTruthy();
-      expect(lhs.elements[11] == 17888).toBeTruthy();
-      expect(lhs.elements[12] == 1861).toBeTruthy();
-      expect(lhs.elements[13] == 6246).toBeTruthy();
-      expect(lhs.elements[14] == 12378).toBeTruthy();
-      expect(lhs.elements[15] == 18710).toBeTruthy();
+      expect(lhs.elements[0]).toBe(1585);
+      expect(lhs.elements[1]).toBe(5318);
+      expect(lhs.elements[2]).toBe(10514);
+      expect(lhs.elements[3]).toBe(15894);
+      expect(lhs.elements[4]).toBe(1655);
+      expect(lhs.elements[5]).toBe(5562);
+      expect(lhs.elements[6]).toBe(11006);
+      expect(lhs.elements[7]).toBe(16634);
+      expect(lhs.elements[8]).toBe(1787);
+      expect(lhs.elements[9]).toBe(5980);
+      expect(lhs.elements[10]).toBe(11840);
+      expect(lhs.elements[11]).toBe(17888);
+      expect(lhs.elements[12]).toBe(1861);
+      expect(lhs.elements[13]).toBe(6246);
+      expect(lhs.elements[14]).toBe(12378);
+      expect(lhs.elements[15]).toBe(18710);
     });
 
     test('premultiply', () => {
-      const lhs = new Matrix4().set(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53);
+      // prettier-ignore
+      const lhs = new Matrix4().set(
+        2, 3, 5, 7,
+        11, 13, 17, 19,
+        23, 29, 31, 37,
+        41, 43, 47, 53
+      );
+
+      // prettier-ignore
       const rhs = new Matrix4().set(
-        59,
-        61,
-        67,
-        71,
-        73,
-        79,
-        83,
-        89,
-        97,
-        101,
-        103,
-        107,
-        109,
-        113,
-        127,
-        131
+        59, 61, 67, 71,
+        73, 79, 83, 89,
+        97, 101, 103, 107,
+        109, 113, 127, 131
       );
 
       rhs.premultiply(lhs);
 
-      expect(rhs.elements[0] == 1585).toBeTruthy();
-      expect(rhs.elements[1] == 5318).toBeTruthy();
-      expect(rhs.elements[2] == 10514).toBeTruthy();
-      expect(rhs.elements[3] == 15894).toBeTruthy();
-      expect(rhs.elements[4] == 1655).toBeTruthy();
-      expect(rhs.elements[5] == 5562).toBeTruthy();
-      expect(rhs.elements[6] == 11006).toBeTruthy();
-      expect(rhs.elements[7] == 16634).toBeTruthy();
-      expect(rhs.elements[8] == 1787).toBeTruthy();
-      expect(rhs.elements[9] == 5980).toBeTruthy();
-      expect(rhs.elements[10] == 11840).toBeTruthy();
-      expect(rhs.elements[11] == 17888).toBeTruthy();
-      expect(rhs.elements[12] == 1861).toBeTruthy();
-      expect(rhs.elements[13] == 6246).toBeTruthy();
-      expect(rhs.elements[14] == 12378).toBeTruthy();
-      expect(rhs.elements[15] == 18710).toBeTruthy();
+      expect(rhs.elements[0]).toBe(1585);
+      expect(rhs.elements[1]).toBe(5318);
+      expect(rhs.elements[2]).toBe(10514);
+      expect(rhs.elements[3]).toBe(15894);
+      expect(rhs.elements[4]).toBe(1655);
+      expect(rhs.elements[5]).toBe(5562);
+      expect(rhs.elements[6]).toBe(11006);
+      expect(rhs.elements[7]).toBe(16634);
+      expect(rhs.elements[8]).toBe(1787);
+      expect(rhs.elements[9]).toBe(5980);
+      expect(rhs.elements[10]).toBe(11840);
+      expect(rhs.elements[11]).toBe(17888);
+      expect(rhs.elements[12]).toBe(1861);
+      expect(rhs.elements[13]).toBe(6246);
+      expect(rhs.elements[14]).toBe(12378);
+      expect(rhs.elements[15]).toBe(18710);
     });
 
     test('multiplyMatrices', () => {
-      // Reference:
-      //
-      // #!/usr/bin/env python
-      // from __future__ import print_function
-      // import numpy as np
-      // print(
-      //     np.dot(
-      //         np.reshape([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53], (4, 4)),
-      //         np.reshape([59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131], (4, 4))
-      //     )
-      // )
-      //
-      // [[ 1585  1655  1787  1861]
-      //  [ 5318  5562  5980  6246]
-      //  [10514 11006 11840 12378]
-      //  [15894 16634 17888 18710]]
-      const lhs = new Matrix4().set(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53);
-      const rhs = new Matrix4().set(
-        59,
-        61,
-        67,
-        71,
-        73,
-        79,
-        83,
-        89,
-        97,
-        101,
-        103,
-        107,
-        109,
-        113,
-        127,
-        131
+      // prettier-ignore
+      const lhs = new Matrix4().set(
+        2, 3, 5, 7,
+        11, 13, 17, 19,
+        23, 29, 31, 37,
+        41, 43, 47, 53
       );
+
+      // prettier-ignore
+      const rhs = new Matrix4().set(
+        59, 61, 67, 71,
+        73, 79, 83, 89,
+        97, 101, 103, 107,
+        109, 113, 127, 131
+      );
+
       const ans = new Matrix4();
 
       ans.multiplyMatrices(lhs, rhs);
 
-      expect(ans.elements[0] == 1585).toBeTruthy();
-      expect(ans.elements[1] == 5318).toBeTruthy();
-      expect(ans.elements[2] == 10514).toBeTruthy();
-      expect(ans.elements[3] == 15894).toBeTruthy();
-      expect(ans.elements[4] == 1655).toBeTruthy();
-      expect(ans.elements[5] == 5562).toBeTruthy();
-      expect(ans.elements[6] == 11006).toBeTruthy();
-      expect(ans.elements[7] == 16634).toBeTruthy();
-      expect(ans.elements[8] == 1787).toBeTruthy();
-      expect(ans.elements[9] == 5980).toBeTruthy();
-      expect(ans.elements[10] == 11840).toBeTruthy();
-      expect(ans.elements[11] == 17888).toBeTruthy();
-      expect(ans.elements[12] == 1861).toBeTruthy();
-      expect(ans.elements[13] == 6246).toBeTruthy();
-      expect(ans.elements[14] == 12378).toBeTruthy();
-      expect(ans.elements[15] == 18710).toBeTruthy();
+      expect(ans.elements[0]).toBe(1585);
+      expect(ans.elements[1]).toBe(5318);
+      expect(ans.elements[2]).toBe(10514);
+      expect(ans.elements[3]).toBe(15894);
+      expect(ans.elements[4]).toBe(1655);
+      expect(ans.elements[5]).toBe(5562);
+      expect(ans.elements[6]).toBe(11006);
+      expect(ans.elements[7]).toBe(16634);
+      expect(ans.elements[8]).toBe(1787);
+      expect(ans.elements[9]).toBe(5980);
+      expect(ans.elements[10]).toBe(11840);
+      expect(ans.elements[11]).toBe(17888);
+      expect(ans.elements[12]).toBe(1861);
+      expect(ans.elements[13]).toBe(6246);
+      expect(ans.elements[14]).toBe(12378);
+      expect(ans.elements[15]).toBe(18710);
     });
 
     test('multiplyScalar', () => {
       const b = new Matrix4().set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-      expect(b.elements[0] == 0).toBeTruthy();
-      expect(b.elements[1] == 4).toBeTruthy();
-      expect(b.elements[2] == 8).toBeTruthy();
-      expect(b.elements[3] == 12).toBeTruthy();
-      expect(b.elements[4] == 1).toBeTruthy();
-      expect(b.elements[5] == 5).toBeTruthy();
-      expect(b.elements[6] == 9).toBeTruthy();
-      expect(b.elements[7] == 13).toBeTruthy();
-      expect(b.elements[8] == 2).toBeTruthy();
-      expect(b.elements[9] == 6).toBeTruthy();
-      expect(b.elements[10] == 10).toBeTruthy();
-      expect(b.elements[11] == 14).toBeTruthy();
-      expect(b.elements[12] == 3).toBeTruthy();
-      expect(b.elements[13] == 7).toBeTruthy();
-      expect(b.elements[14] == 11).toBeTruthy();
-      expect(b.elements[15] == 15).toBeTruthy();
+      expect(b.elements[0]).toBe(0);
+      expect(b.elements[1]).toBe(4);
+      expect(b.elements[2]).toBe(8);
+      expect(b.elements[3]).toBe(12);
+      expect(b.elements[4]).toBe(1);
+      expect(b.elements[5]).toBe(5);
+      expect(b.elements[6]).toBe(9);
+      expect(b.elements[7]).toBe(13);
+      expect(b.elements[8]).toBe(2);
+      expect(b.elements[9]).toBe(6);
+      expect(b.elements[10]).toBe(10);
+      expect(b.elements[11]).toBe(14);
+      expect(b.elements[12]).toBe(3);
+      expect(b.elements[13]).toBe(7);
+      expect(b.elements[14]).toBe(11);
+      expect(b.elements[15]).toBe(15);
 
       b.multiplyScalar(2);
-      expect(b.elements[0] == 0 * 2).toBeTruthy();
-      expect(b.elements[1] == 4 * 2).toBeTruthy();
-      expect(b.elements[2] == 8 * 2).toBeTruthy();
-      expect(b.elements[3] == 12 * 2).toBeTruthy();
-      expect(b.elements[4] == 1 * 2).toBeTruthy();
-      expect(b.elements[5] == 5 * 2).toBeTruthy();
-      expect(b.elements[6] == 9 * 2).toBeTruthy();
-      expect(b.elements[7] == 13 * 2).toBeTruthy();
-      expect(b.elements[8] == 2 * 2).toBeTruthy();
-      expect(b.elements[9] == 6 * 2).toBeTruthy();
-      expect(b.elements[10] == 10 * 2).toBeTruthy();
-      expect(b.elements[11] == 14 * 2).toBeTruthy();
-      expect(b.elements[12] == 3 * 2).toBeTruthy();
-      expect(b.elements[13] == 7 * 2).toBeTruthy();
-      expect(b.elements[14] == 11 * 2).toBeTruthy();
-      expect(b.elements[15] == 15 * 2).toBeTruthy();
+      expect(b.elements[0]).toBe(0 * 2);
+      expect(b.elements[1]).toBe(4 * 2);
+      expect(b.elements[2]).toBe(8 * 2);
+      expect(b.elements[3]).toBe(12 * 2);
+      expect(b.elements[4]).toBe(1 * 2);
+      expect(b.elements[5]).toBe(5 * 2);
+      expect(b.elements[6]).toBe(9 * 2);
+      expect(b.elements[7]).toBe(13 * 2);
+      expect(b.elements[8]).toBe(2 * 2);
+      expect(b.elements[9]).toBe(6 * 2);
+      expect(b.elements[10]).toBe(10 * 2);
+      expect(b.elements[11]).toBe(14 * 2);
+      expect(b.elements[12]).toBe(3 * 2);
+      expect(b.elements[13]).toBe(7 * 2);
+      expect(b.elements[14]).toBe(11 * 2);
+      expect(b.elements[15]).toBe(15 * 2);
     });
 
     test('determinant', () => {
       const a = new Matrix4();
-      expect(a.determinant() == 1).toBeTruthy();
+      expect(a.determinant()).toBe(1);
 
       a.elements[0] = 2;
-      expect(a.determinant() == 2).toBeTruthy();
+      expect(a.determinant()).toBe(2);
 
       a.elements[0] = 0;
-      expect(a.determinant() == 0).toBeTruthy();
+      expect(a.determinant()).toBe(0);
 
       // calculated via http://www.euclideanspace.com/maths/algebra/matrix/functions/determinant/fourD/index.htm
       a.set(2, 3, 4, 5, -1, -21, -3, -4, 6, 7, 8, 10, -8, -9, -10, -12);
-      expect(a.determinant() == 76).toBeTruthy();
+      expect(a.determinant()).toBe(76);
     });
 
     test('transpose', () => {
