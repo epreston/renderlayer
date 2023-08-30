@@ -1,6 +1,6 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
-// import { BufferAttribute } from '@renderlayer/buffers';
+import { BufferAttribute } from '@renderlayer/buffers';
 
 import { Triangle } from '../src/Triangle.js';
 import { Box3 } from '../src/Box3.js';
@@ -74,13 +74,13 @@ describe('Maths', () => {
       expect(a.c.equals(two3)).toBeTruthy();
     });
 
-    test.todo('setFromAttributeAndIndices', () => {
-      // const a = new Triangle();
-      // const attribute = new BufferAttribute( new Float32Array( [ 1, 1, 1, - 1, - 1, - 1, 2, 2, 2 ] ), 3 );
-      // a.setFromAttributeAndIndices( attribute, 1, 0, 2 );
-      // expect( a.a.equals( one3.clone().negate() )).toBeTruthy();
-      // expect( a.b.equals( one3 )).toBeTruthy();
-      // expect( a.c.equals( two3 )).toBeTruthy();
+    test('setFromAttributeAndIndices', () => {
+      const a = new Triangle();
+      const attribute = new BufferAttribute(new Float32Array([1, 1, 1, -1, -1, -1, 2, 2, 2]), 3);
+      a.setFromAttributeAndIndices(attribute, 1, 0, 2);
+      expect(a.a.equals(one3.clone().negate())).toBeTruthy();
+      expect(a.b.equals(one3)).toBeTruthy();
+      expect(a.c.equals(two3)).toBeTruthy();
     });
 
     test.todo('clone', () => {
@@ -107,17 +107,17 @@ describe('Maths', () => {
     test('getArea', () => {
       let a = new Triangle();
 
-      expect(a.getArea() == 0).toBeTruthy();
+      expect(a.getArea()).toBe(0);
 
       a = new Triangle(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 1, 0));
-      expect(a.getArea() == 0.5).toBeTruthy();
+      expect(a.getArea()).toBe(0.5);
 
       a = new Triangle(new Vector3(2, 0, 0), new Vector3(0, 0, 0), new Vector3(0, 0, 2));
-      expect(a.getArea() == 2).toBeTruthy();
+      expect(a.getArea()).toBe(2);
 
       // collinear triangle.
       a = new Triangle(new Vector3(2, 0, 0), new Vector3(0, 0, 0), new Vector3(3, 0, 0));
-      expect(a.getArea() == 0).toBeTruthy();
+      expect(a.getArea()).toBe(0);
     });
 
     test('getMidpoint', () => {
@@ -165,18 +165,18 @@ describe('Maths', () => {
       a.getPlane(plane);
       a.getNormal(normal);
 
-      expect(plane.distanceToPoint(a.a) == 0).toBeTruthy();
-      expect(plane.distanceToPoint(a.b) == 0).toBeTruthy();
-      expect(plane.distanceToPoint(a.c) == 0).toBeTruthy();
+      expect(plane.distanceToPoint(a.a)).toBe(0);
+      expect(plane.distanceToPoint(a.b)).toBe(0);
+      expect(plane.distanceToPoint(a.c)).toBe(0);
       expect(plane.normal.equals(normal)).toBeTruthy();
 
       a = new Triangle(new Vector3(2, 0, 0), new Vector3(0, 0, 0), new Vector3(0, 0, 2));
       a.getPlane(plane);
       a.getNormal(normal);
 
-      expect(plane.distanceToPoint(a.a) == 0).toBeTruthy();
-      expect(plane.distanceToPoint(a.b) == 0).toBeTruthy();
-      expect(plane.distanceToPoint(a.c) == 0).toBeTruthy();
+      expect(plane.distanceToPoint(a.a)).toBe(0);
+      expect(plane.distanceToPoint(a.b)).toBe(0);
+      expect(plane.distanceToPoint(a.c)).toBe(0);
       expect(plane.normal.clone().normalize().equals(normal)).toBeTruthy();
     });
 
