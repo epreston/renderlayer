@@ -27,6 +27,7 @@
     "ALPHAMAP",
     "ALPHATEST",
     "AOMAP",
+    "Barycoord",
     "beginnormal",
     "bezier",
     "Bitangent",
