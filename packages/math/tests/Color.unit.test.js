@@ -1,4 +1,4 @@
-import { afterEach, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { afterEach, describe, expect, it, test, vi } from 'vitest';
 
 import { BufferAttribute } from '@renderlayer/buffers';
 import { DisplayP3ColorSpace, SRGBColorSpace } from '@renderlayer/shared';
@@ -26,16 +26,16 @@ describe('Maths', () => {
 
       // rgb ctor
       c = new Color(1, 1, 1);
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g == 1).toBeTruthy();
-      expect(c.b == 1).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(1);
+      expect(c.b).toBe(1);
     });
 
     test('isColor', () => {
       ColorManagement.enabled = false;
 
       const a = new Color();
-      expect(a.isColor === true).toBeTruthy();
+      expect(a.isColor).toBeTruthy();
 
       const b = new Object();
 
@@ -66,9 +66,9 @@ describe('Maths', () => {
 
       const c = new Color();
       c.setScalar(0.5);
-      expect(c.r === 0.5).toBeTruthy();
-      expect(c.g === 0.5).toBeTruthy();
-      expect(c.b === 0.5).toBeTruthy();
+      expect(c.r).toBe(0.5);
+      expect(c.g).toBe(0.5);
+      expect(c.b).toBe(0.5);
     });
 
     test('setHex', () => {
@@ -76,10 +76,10 @@ describe('Maths', () => {
 
       const c = new Color();
       c.setHex(0xfa8072);
-      expect(c.getHex() === 0xfa8072).toBeTruthy();
-      expect(c.r === 0xfa / 0xff).toBeTruthy();
-      expect(c.g === 0x80 / 0xff).toBeTruthy();
-      expect(c.b === 0x72 / 0xff).toBeTruthy();
+      expect(c.getHex()).toBe(0xfa8072);
+      expect(c.r).toBe(0xfa / 0xff);
+      expect(c.g).toBe(0x80 / 0xff);
+      expect(c.b).toBe(0x72 / 0xff);
     });
 
     test('setRGB', () => {
@@ -125,9 +125,9 @@ describe('Maths', () => {
       c.setHSL(0.75, 1.0, 0.25);
       c.getHSL(hsl);
 
-      expect(hsl.h === 0.75).toBeTruthy();
-      expect(hsl.s === 1.0).toBeTruthy();
-      expect(hsl.l === 0.25).toBeTruthy();
+      expect(hsl.h).toBe(0.75);
+      expect(hsl.s).toBe(1.0);
+      expect(hsl.l).toBe(0.25);
     });
 
     test('setStyle', () => {
@@ -147,32 +147,32 @@ describe('Maths', () => {
       a.setStyle('hsl(270,50%,75%)');
       a.getHSL(hsl);
 
-      expect(hsl.h == 0.75).toBeTruthy();
-      expect(hsl.s == 0.5).toBeTruthy();
-      expect(hsl.l == 0.75).toBeTruthy();
+      expect(hsl.h).toBe(0.75);
+      expect(hsl.s).toBe(0.5);
+      expect(hsl.l).toBe(0.75);
 
       hsl = { h: 0, s: 0, l: 0 };
       a.setStyle('hsl(270,50%,75%)');
       a.getHSL(hsl);
 
-      expect(hsl.h == 0.75).toBeTruthy();
-      expect(hsl.s == 0.5).toBeTruthy();
-      expect(hsl.l == 0.75).toBeTruthy();
+      expect(hsl.h).toBe(0.75);
+      expect(hsl.s).toBe(0.5);
+      expect(hsl.l).toBe(0.75);
 
       a.setStyle('#F8A');
-      expect(a.r == 0xff / 255).toBeTruthy();
-      expect(a.g == 0x88 / 255).toBeTruthy();
-      expect(a.b == 0xaa / 255).toBeTruthy();
+      expect(a.r).toBe(0xff / 255);
+      expect(a.g).toBe(0x88 / 255);
+      expect(a.b).toBe(0xaa / 255);
 
       a.setStyle('#F8ABC1');
-      expect(a.r == 0xf8 / 255).toBeTruthy();
-      expect(a.g == 0xab / 255).toBeTruthy();
-      expect(a.b == 0xc1 / 255).toBeTruthy();
+      expect(a.r).toBe(0xf8 / 255);
+      expect(a.g).toBe(0xab / 255);
+      expect(a.b).toBe(0xc1 / 255);
 
       a.setStyle('#f0f8ff');
-      expect(a.r == 0xf0 / 255).toBeTruthy();
-      expect(a.g == 0xf8 / 255).toBeTruthy();
-      expect(a.b == 0xff / 255).toBeTruthy();
+      expect(a.r).toBe(0xf0 / 255);
+      expect(a.g).toBe(0xf8 / 255);
+      expect(a.b).toBe(0xff / 255);
     });
 
     test('clone', () => {
@@ -181,7 +181,7 @@ describe('Maths', () => {
       const c = new Color('#008080');
       const c2 = c.clone();
 
-      expect(c2.getHex() == 0x008080).toBeTruthy();
+      expect(c2.getHex()).toBe(0x008080);
     });
 
     test('copy', () => {
@@ -192,9 +192,9 @@ describe('Maths', () => {
 
       b.copy(a);
 
-      expect(b.r == 0x00 / 255).toBeTruthy();
-      expect(b.g == 0x80 / 255).toBeTruthy();
-      expect(b.b == 0x80 / 255).toBeTruthy();
+      expect(b.r).toBe(0x00 / 255);
+      expect(b.g).toBe(0x80 / 255);
+      expect(b.b).toBe(0x80 / 255);
     });
 
     test('copySRGBToLinear', () => {
@@ -257,7 +257,7 @@ describe('Maths', () => {
       const c = new Color('#ff0000');
       const res = c.getHex();
 
-      expect(res == 0xff0000).toBeTruthy();
+      expect(res).toBe(0xff0000);
     });
 
     test('getHexString', () => {
@@ -266,7 +266,7 @@ describe('Maths', () => {
       const c = new Color(0xff6347);
       const res = c.getHexString();
 
-      expect(res == 'ff6347').toBeTruthy();
+      expect(res).toBe('ff6347');
     });
 
     test('getHSL', () => {
@@ -277,9 +277,9 @@ describe('Maths', () => {
 
       c.getHSL(hsl);
 
-      expect(hsl.h == 0.5).toBeTruthy();
-      expect(hsl.s == 1.0).toBeTruthy();
-      expect(Math.round(hsl.l * 100.0) / 100 == 0.75).toBeTruthy();
+      expect(hsl.h).toBe(0.5);
+      expect(hsl.s).toBe(1.0);
+      expect(Math.round(hsl.l * 100.0) / 100).toBe(0.75);
     });
 
     test('getRGB', () => {
@@ -557,7 +557,7 @@ describe('Maths', () => {
 
       c.copy(c2);
 
-      expect(c.getHex() == c2.getHex()).toBeTruthy();
+      expect(c.getHex()).toBe(c2.getHex());
     });
 
     test('copyColorString', () => {
@@ -568,7 +568,7 @@ describe('Maths', () => {
 
       c.copy(c2);
 
-      expect(c.getHex() == c2.getHex()).toBeTruthy();
+      expect(c.getHex()).toBe(c2.getHex());
     });
 
     test('setWithNum', () => {
@@ -577,9 +577,9 @@ describe('Maths', () => {
       const c = new Color();
       c.set(0xff0000);
 
-      expect(c.r === 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setWithString', () => {
@@ -588,7 +588,7 @@ describe('Maths', () => {
       const c = new Color();
       c.set('#c0c0c0');
 
-      expect(c.getHex() == 0xc0c0c0).toBeTruthy();
+      expect(c.getHex()).toBe(0xc0c0c0);
     });
 
     test('setStyleRGBRed', () => {
@@ -597,9 +597,9 @@ describe('Maths', () => {
       const c = new Color();
       c.setStyle('rgb(255,0,0)');
 
-      expect(c.r === 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleRGBARed', () => {
@@ -610,9 +610,9 @@ describe('Maths', () => {
       c.setStyle('rgba(255,0,0,0.5)');
       expect('Alpha component of rgba').toHaveBeenWarned();
 
-      expect(c.r === 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleRGBRedWithSpaces', () => {
@@ -621,9 +621,9 @@ describe('Maths', () => {
       const c = new Color();
       c.setStyle('rgb( 255 , 0,   0 )');
 
-      expect(c.r === 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleRGBARedWithSpaces', () => {
@@ -632,9 +632,9 @@ describe('Maths', () => {
       const c = new Color();
       c.setStyle('rgba( 255,  0,  0  , 1 )');
 
-      expect(c.r === 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleRGBPercent', () => {
@@ -643,9 +643,9 @@ describe('Maths', () => {
       const c = new Color();
       c.setStyle('rgb(100%,50%,10%)');
 
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g == 0.5).toBeTruthy();
-      expect(c.b == 0.1).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0.5);
+      expect(c.b).toBe(0.1);
     });
 
     test('setStyleRGBAPercent', () => {
@@ -656,9 +656,9 @@ describe('Maths', () => {
       c.setStyle('rgba(100%,50%,10%, 0.5)');
       expect('Alpha component of rgba').toHaveBeenWarned();
 
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g == 0.5).toBeTruthy();
-      expect(c.b == 0.1).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0.5);
+      expect(c.b).toBe(0.1);
     });
 
     test('setStyleRGBPercentWithSpaces', () => {
@@ -668,9 +668,9 @@ describe('Maths', () => {
 
       c.setStyle('rgb( 100% ,50%  , 10% )');
 
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g == 0.5).toBeTruthy();
-      expect(c.b == 0.1).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0.5);
+      expect(c.b).toBe(0.1);
     });
 
     test('setStyleRGBAPercentWithSpaces', () => {
@@ -681,9 +681,9 @@ describe('Maths', () => {
       c.setStyle('rgba( 100%, 50%, 10%, 0.5 )');
       expect('Alpha component of rgba').toHaveBeenWarned();
 
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g == 0.5).toBeTruthy();
-      expect(c.b == 0.1).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0.5);
+      expect(c.b).toBe(0.1);
     });
 
     test('setStyleHSLRed', () => {
@@ -693,9 +693,9 @@ describe('Maths', () => {
 
       c.setStyle('hsl(360,100%,50%)');
 
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleHSLARed', () => {
@@ -706,9 +706,9 @@ describe('Maths', () => {
       c.setStyle('hsla( 360, 100%, 50%, 0.5 )');
       expect('Alpha component of hsla').toHaveBeenWarned();
 
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleHSLRedWithSpaces', () => {
@@ -718,9 +718,9 @@ describe('Maths', () => {
 
       c.setStyle('hsl( 360, 100%, 50% )');
 
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleHSLARedWithSpaces', () => {
@@ -731,9 +731,9 @@ describe('Maths', () => {
       c.setStyle('hsla( 360, 100%, 50%, 0.5 )');
       expect('Alpha component of hsla').toHaveBeenWarned();
 
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleHSLRedWithDecimals', () => {
@@ -741,9 +741,9 @@ describe('Maths', () => {
 
       const c = new Color();
       c.setStyle('hsl( 360, 100.0%, 50.0% )');
-      expect(c.r == 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleHSLARedWithDecimals', () => {
@@ -754,9 +754,9 @@ describe('Maths', () => {
       c.setStyle('hsla( 360, 100.0%, 50.0%, 0.5 )');
       expect('Alpha component of hsla').toHaveBeenWarned();
 
-      expect(c.r === 1).toBeTruthy();
-      expect(c.g === 0).toBeTruthy();
-      expect(c.b === 0).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(0);
+      expect(c.b).toBe(0);
     });
 
     test('setStyleHexSkyBlue', () => {
@@ -765,7 +765,7 @@ describe('Maths', () => {
       const c = new Color();
       c.setStyle('#87CEEB');
 
-      expect(c.getHex() == 0x87ceeb).toBeTruthy();
+      expect(c.getHex()).toBe(0x87ceeb);
     });
 
     test('setStyleHexSkyBlueMixed', () => {
@@ -774,7 +774,7 @@ describe('Maths', () => {
       const c = new Color();
       c.setStyle('#87cEeB');
 
-      expect(c.getHex() == 0x87ceeb).toBeTruthy();
+      expect(c.getHex()).toBe(0x87ceeb);
     });
 
     test('setStyleHex2Olive', () => {
@@ -783,7 +783,7 @@ describe('Maths', () => {
       const c = new Color();
       c.setStyle('#F00');
 
-      expect(c.getHex() == 0xff0000).toBeTruthy();
+      expect(c.getHex()).toBe(0xff0000);
     });
 
     test('setStyleHex2OliveMixed', () => {
@@ -792,7 +792,7 @@ describe('Maths', () => {
       const c = new Color();
       c.setStyle('#f00');
 
-      expect(c.getHex() == 0xff0000).toBeTruthy();
+      expect(c.getHex()).toBe(0xff0000);
     });
 
     test('iterable', () => {
