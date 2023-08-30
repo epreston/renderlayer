@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Vector3 } from '../src/Vector3.js';
 import { Line3 } from '../src/Line3.js';
@@ -20,27 +20,27 @@ describe('Maths', () => {
   describe('Plane', () => {
     test('constructor', () => {
       let a = new Plane();
-      expect(a.normal.x == 1).toBeTruthy();
-      expect(a.normal.y == 0).toBeTruthy();
-      expect(a.normal.z == 0).toBeTruthy();
-      expect(a.constant == 0).toBeTruthy();
+      expect(a.normal.x).toBe(1);
+      expect(a.normal.y).toBe(0);
+      expect(a.normal.z).toBe(0);
+      expect(a.constant).toBe(0);
 
       a = new Plane(one3.clone(), 0);
-      expect(a.normal.x == 1).toBeTruthy();
-      expect(a.normal.y == 1).toBeTruthy();
-      expect(a.normal.z == 1).toBeTruthy();
-      expect(a.constant == 0).toBeTruthy();
+      expect(a.normal.x).toBe(1);
+      expect(a.normal.y).toBe(1);
+      expect(a.normal.z).toBe(1);
+      expect(a.constant).toBe(0);
 
       a = new Plane(one3.clone(), 1);
-      expect(a.normal.x == 1).toBeTruthy();
-      expect(a.normal.y == 1).toBeTruthy();
-      expect(a.normal.z == 1).toBeTruthy();
-      expect(a.constant == 1).toBeTruthy();
+      expect(a.normal.x).toBe(1);
+      expect(a.normal.y).toBe(1);
+      expect(a.normal.z).toBe(1);
+      expect(a.constant).toBe(1);
     });
 
     test('isPlane', () => {
       const a = new Plane();
-      expect(a.isPlane === true).toBeTruthy();
+      expect(a.isPlane).toBeTruthy();
 
       const b = new Vector3();
 
@@ -50,30 +50,30 @@ describe('Maths', () => {
 
     test('set', () => {
       const a = new Plane();
-      expect(a.normal.x == 1).toBeTruthy();
-      expect(a.normal.y == 0).toBeTruthy();
-      expect(a.normal.z == 0).toBeTruthy();
-      expect(a.constant == 0).toBeTruthy();
+      expect(a.normal.x).toBe(1);
+      expect(a.normal.y).toBe(0);
+      expect(a.normal.z).toBe(0);
+      expect(a.constant).toBe(0);
 
       const b = a.clone().set(new Vector3(x, y, z), w);
-      expect(b.normal.x == x).toBeTruthy();
-      expect(b.normal.y == y).toBeTruthy();
-      expect(b.normal.z == z).toBeTruthy();
-      expect(b.constant == w).toBeTruthy();
+      expect(b.normal.x).toBe(x);
+      expect(b.normal.y).toBe(y);
+      expect(b.normal.z).toBe(z);
+      expect(b.constant).toBe(w);
     });
 
     test('setComponents', () => {
       const a = new Plane();
-      expect(a.normal.x == 1).toBeTruthy();
-      expect(a.normal.y == 0).toBeTruthy();
-      expect(a.normal.z == 0).toBeTruthy();
-      expect(a.constant == 0).toBeTruthy();
+      expect(a.normal.x).toBe(1);
+      expect(a.normal.y).toBe(0);
+      expect(a.normal.z).toBe(0);
+      expect(a.constant).toBe(0);
 
       const b = a.clone().setComponents(x, y, z, w);
-      expect(b.normal.x == x).toBeTruthy();
-      expect(b.normal.y == y).toBeTruthy();
-      expect(b.normal.z == z).toBeTruthy();
-      expect(b.constant == w).toBeTruthy();
+      expect(b.normal.x).toBe(x);
+      expect(b.normal.y).toBe(y);
+      expect(b.normal.z).toBe(z);
+      expect(b.constant).toBe(w);
     });
 
     test('setFromNormalAndCoplanarPoint', () => {
@@ -81,7 +81,7 @@ describe('Maths', () => {
       const a = new Plane().setFromNormalAndCoplanarPoint(normal, zero3);
 
       expect(a.normal.equals(normal)).toBeTruthy();
-      expect(a.constant == 0).toBeTruthy();
+      expect(a.constant).toBeCloseTo(0);
     });
 
     test('setFromCoplanarPoints', () => {
@@ -109,10 +109,10 @@ describe('Maths', () => {
       const a = new Plane(new Vector3(x, y, z), w);
       const b = new Plane().copy(a);
 
-      expect(b.normal.x == x).toBeTruthy();
-      expect(b.normal.y == y).toBeTruthy();
-      expect(b.normal.z == z).toBeTruthy();
-      expect(b.constant == w).toBeTruthy();
+      expect(b.normal.x).toBe(x);
+      expect(b.normal.y).toBe(y);
+      expect(b.normal.z).toBe(z);
+      expect(b.constant).toBe(w);
 
       // ensure that it is a true copy
       a.normal.x = 0;
@@ -120,10 +120,10 @@ describe('Maths', () => {
       a.normal.z = -2;
       a.constant = -3;
 
-      expect(b.normal.x == x).toBeTruthy();
-      expect(b.normal.y == y).toBeTruthy();
-      expect(b.normal.z == z).toBeTruthy();
-      expect(b.constant == w).toBeTruthy();
+      expect(b.normal.x).toBe(x);
+      expect(b.normal.y).toBe(y);
+      expect(b.normal.z).toBe(z);
+      expect(b.constant).toBe(w);
     });
 
     test('normalize', () => {
@@ -131,21 +131,21 @@ describe('Maths', () => {
 
       a.normalize();
 
-      expect(a.normal.length() == 1).toBeTruthy();
+      expect(a.normal.length()).toBe(1);
       expect(a.normal.equals(new Vector3(1, 0, 0))).toBeTruthy();
-      expect(a.constant == 1).toBeTruthy();
+      expect(a.constant).toBe(1);
     });
 
     test('negate/distanceToPoint', () => {
       const a = new Plane(new Vector3(2, 0, 0), -2);
 
       a.normalize();
-      expect(a.distanceToPoint(new Vector3(4, 0, 0)) === 3).toBeTruthy();
-      expect(a.distanceToPoint(new Vector3(1, 0, 0)) === 0).toBeTruthy();
+      expect(a.distanceToPoint(new Vector3(4, 0, 0))).toBe(3);
+      expect(a.distanceToPoint(new Vector3(1, 0, 0))).toBe(0);
 
       a.negate();
-      expect(a.distanceToPoint(new Vector3(4, 0, 0)) === -3).toBeTruthy();
-      expect(a.distanceToPoint(new Vector3(1, 0, 0)) === 0).toBeTruthy();
+      expect(a.distanceToPoint(new Vector3(4, 0, 0))).toBe(-3);
+      expect(a.distanceToPoint(new Vector3(1, 0, 0))).toBe(0);
     });
 
     test('distanceToPoint', () => {
@@ -153,8 +153,8 @@ describe('Maths', () => {
       const point = new Vector3();
 
       a.normalize().projectPoint(zero3.clone(), point);
-      expect(a.distanceToPoint(point) === 0).toBeTruthy();
-      expect(a.distanceToPoint(new Vector3(4, 0, 0)) === 3).toBeTruthy();
+      expect(a.distanceToPoint(point)).toBe(0);
+      expect(a.distanceToPoint(new Vector3(4, 0, 0))).toBe(3);
     });
 
     test('distanceToSphere', () => {
@@ -162,13 +162,13 @@ describe('Maths', () => {
 
       const b = new Sphere(new Vector3(2, 0, 0), 1);
 
-      expect(a.distanceToSphere(b) === 1).toBeTruthy();
+      expect(a.distanceToSphere(b)).toBe(1);
 
       a.set(new Vector3(1, 0, 0), 2);
-      expect(a.distanceToSphere(b) === 3).toBeTruthy();
+      expect(a.distanceToSphere(b)).toBe(3);
 
       a.set(new Vector3(1, 0, 0), -2);
-      expect(a.distanceToSphere(b) === -1).toBeTruthy();
+      expect(a.distanceToSphere(b)).toBe(-1);
     });
 
     test('projectPoint', () => {
@@ -246,11 +246,11 @@ describe('Maths', () => {
 
       let a = new Plane(new Vector3(1, 0, 0), 0);
       a.coplanarPoint(point);
-      expect(a.distanceToPoint(point) === 0).toBeTruthy();
+      expect(a.distanceToPoint(point)).toBe(0);
 
       a = new Plane(new Vector3(0, 1, 0), -1);
       a.coplanarPoint(point);
-      expect(a.distanceToPoint(point) === 0).toBeTruthy();
+      expect(a.distanceToPoint(point)).toBe(0);
     });
 
     test('applyMatrix4/translate', () => {
