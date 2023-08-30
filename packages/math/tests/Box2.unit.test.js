@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { negInf2, posInf2, negOne2, zero2, one2, two2 } from './math-constants.js';
 import { Vector2 } from '../src/Vector2.js';
@@ -23,7 +23,7 @@ describe('Maths', () => {
 
     test('isBox2', () => {
       const a = new Box2();
-      expect(a.isBox2 === true).toBeTruthy();
+      expect(a.isBox2).toBeTruthy();
 
       const b = new Object();
 
