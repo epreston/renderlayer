@@ -493,7 +493,7 @@ describe('Core', () => {
 
       // prettier-ignore
       expect(
-        object.parent && object.parent == newParent &&
+        object.parent && object.parent === newParent &&
         oldParent.children.indexOf(object) === -1
       ).toBeTruthy();
 
@@ -519,7 +519,7 @@ describe('Core', () => {
       newParent.attach(object);
 
       // prettier-ignore
-      expect( object.parent && object.parent == newParent &&
+      expect( object.parent && object.parent === newParent &&
 				newParent.children.indexOf( object ) !== - 1 &&
 				oldParent.children.indexOf( object ) === - 1
       ).toBeTruthy();
