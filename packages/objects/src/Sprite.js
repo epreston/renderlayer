@@ -30,7 +30,6 @@ class Sprite extends Object3D {
     super();
 
     this.isSprite = true;
-
     this.type = 'Sprite';
 
     if (_geometry === undefined) {
