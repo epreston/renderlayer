@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
 import { Line } from '../src/Line.js';
@@ -17,14 +17,14 @@ describe('Objects', () => {
       expect(lineSegments).toBeInstanceOf(Line);
     });
 
-    test('type', () => {
-      const object = new LineSegments();
-      expect(object.type).toBe('LineSegments');
-    });
-
     test('isLineSegments', () => {
       const object = new LineSegments();
       expect(object.isLineSegments).toBeTruthy();
+    });
+
+    test('type', () => {
+      const object = new LineSegments();
+      expect(object.type).toBe('LineSegments');
     });
 
     test.todo('computeLineDistances', () => {

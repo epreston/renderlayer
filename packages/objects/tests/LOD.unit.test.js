@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D, Raycaster } from '@renderlayer/core';
 import { LOD } from '../src/LOD.js';
@@ -15,15 +15,15 @@ describe('Objects', () => {
       expect(object).toBeInstanceOf(Object3D);
     });
 
-    test('type', () => {
-      const object = new LOD();
-      expect(object.type).toBe('LOD');
-    });
-
     test('isLOD', () => {
       const object = new LOD();
       // @ts-ignore
       expect(object.isLOD).toBeTruthy();
+    });
+
+    test('type', () => {
+      const object = new LOD();
+      expect(object.type).toBe('LOD');
     });
 
     test('levels', () => {

@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
 import { Points } from '../src/Points.js';
@@ -15,6 +15,11 @@ describe('Objects', () => {
       expect(points).toBeInstanceOf(Object3D);
     });
 
+    test('isPoints', () => {
+      const object = new Points();
+      expect(object.isPoints).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new Points();
       expect(object.type).toBe('Points');
@@ -26,11 +31,6 @@ describe('Objects', () => {
 
     test.todo('material', () => {
       // implement
-    });
-
-    test('isPoints', () => {
-      const object = new Points();
-      expect(object.isPoints).toBeTruthy();
     });
 
     test('copy', () => {

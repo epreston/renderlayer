@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D, Raycaster } from '@renderlayer/core';
 import { BoxGeometry, PlaneGeometry } from '@renderlayer/geometries';
@@ -20,6 +20,11 @@ describe('Objects', () => {
       expect(object).toBeDefined();
     });
 
+    test('isMesh', () => {
+      const object = new Mesh();
+      expect(object.isMesh).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new Mesh();
       expect(object.type === 'Mesh').toBeTruthy();
@@ -31,11 +36,6 @@ describe('Objects', () => {
 
     test.todo('material', () => {
       // implement
-    });
-
-    test('isMesh', () => {
-      const object = new Mesh();
-      expect(object.isMesh).toBeTruthy();
     });
 
     test('copy', () => {

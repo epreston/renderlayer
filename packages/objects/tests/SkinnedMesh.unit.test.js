@@ -19,6 +19,11 @@ describe('Objects', () => {
       expect(skinnedMesh).toBeInstanceOf(Mesh);
     });
 
+    test('isSkinnedMesh', () => {
+      const object = new SkinnedMesh();
+      expect(object.isSkinnedMesh).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new SkinnedMesh();
       expect(object.type).toBe('SkinnedMesh');
@@ -43,11 +48,6 @@ describe('Objects', () => {
 
       expect(bindMatrixInverse).toBeInstanceOf(Matrix4);
       expect(bindMatrixInverse.equals(new Matrix4().identity())).toBeTruthy();
-    });
-
-    test('isSkinnedMesh', () => {
-      const object = new SkinnedMesh();
-      expect(object.isSkinnedMesh).toBeTruthy();
     });
 
     test('copy', () => {

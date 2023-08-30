@@ -17,6 +17,11 @@ describe('Objects', () => {
       expect(object).toBeInstanceOf(Mesh);
     });
 
+    test('isInstancedMesh', () => {
+      const object = new InstancedMesh();
+      expect(object.isInstancedMesh).toBeTruthy();
+    });
+
     test('instanceMatrix', () => {
       const object = new InstancedMesh();
       const instanceMatrix = object.instanceMatrix;
@@ -33,11 +38,6 @@ describe('Objects', () => {
 
     test.todo('frustumCulled', () => {
       // implement
-    });
-
-    test('isInstancedMesh', () => {
-      const object = new InstancedMesh();
-      expect(object.isInstancedMesh).toBeTruthy();
     });
 
     test.todo('copy', () => {

@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
 import { Line } from '../src/Line.js';
@@ -18,14 +18,14 @@ describe('Objects', () => {
       expect(lineLoop).toBeInstanceOf(Line);
     });
 
-    test('type', () => {
-      const object = new LineLoop();
-      expect(object.type).toBe('LineLoop');
-    });
-
     test('isLineLoop', () => {
       const object = new LineLoop();
       expect(object.isLineLoop).toBeTruthy();
+    });
+
+    test('type', () => {
+      const object = new LineLoop();
+      expect(object.type).toBe('LineLoop');
     });
   });
 });

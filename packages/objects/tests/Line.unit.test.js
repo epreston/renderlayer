@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
 import { Line } from '../src/Line.js';
@@ -15,6 +15,11 @@ describe('Objects', () => {
       expect(line).toBeInstanceOf(Object3D);
     });
 
+    test('isLine', () => {
+      const object = new Line();
+      expect(object.isLine).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new Line();
       expect(object.type).toBe('Line');
@@ -26,11 +31,6 @@ describe('Objects', () => {
 
     test.todo('material', () => {
       // implement
-    });
-
-    test('isLine', () => {
-      const object = new Line();
-      expect(object.isLine).toBeTruthy();
     });
 
     test('copy', () => {
