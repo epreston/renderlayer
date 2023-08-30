@@ -13,7 +13,7 @@ const eulerAzyx = new Euler(0, 1, 0, 'ZYX');
 
 function matrixEquals4(a, b, tolerance) {
   tolerance = tolerance || 0.0001;
-  if (a.elements.length != b.elements.length) {
+  if (a.elements.length !== b.elements.length) {
     return false;
   }
 
