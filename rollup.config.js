@@ -15,6 +15,8 @@ import alias from '@rollup/plugin-alias';
 import { entries } from './scripts/aliases.js';
 // import { constEnum } from './scripts/const-enum.js';
 
+import { glsl } from './scripts/rollup-glsl.js';
+
 if (!process.env.TARGET) {
   throw new Error('TARGET package must be specified via --environment flag.');
 }
@@ -273,6 +275,7 @@ function createConfig(format, output, plugins = []) {
     // used alone.
     external: resolveExternal(),
     plugins: [
+      glsl(),
       json({
         namedExports: false
       }),
