@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Box3 } from '../src/Box3.js';
 import { Matrix4 } from '../src/Matrix4.js';
@@ -334,11 +334,11 @@ describe('Maths', () => {
       );
       expect(!a.intersectsPlane(d)).toBeTruthy();
 
-      // perpendical ray that overlaps exactly
+      // perpendicular ray that overlaps exactly
       const e = new Plane().setFromNormalAndCoplanarPoint(new Vector3(1, 0, 0), one3);
       expect(a.intersectsPlane(e)).toBeTruthy();
 
-      // perpendical ray that doesn't overlap
+      // perpendicular ray that doesn't overlap
       const f = new Plane().setFromNormalAndCoplanarPoint(new Vector3(1, 0, 0), zero3);
       expect(!a.intersectsPlane(f)).toBeTruthy();
     });
@@ -351,7 +351,7 @@ describe('Maths', () => {
 
       const a = new Ray(new Vector3(-2, 0, 0), new Vector3(1, 0, 0));
       //ray should intersect box at -1,0,0
-      expect(a.intersectsBox(box) === true).toBeTruthy();
+      expect(a.intersectsBox(box)).toBeTruthy();
       a.intersectBox(box, point);
       expect(point.distanceTo(new Vector3(-1, 0, 0)) < TOL).toBeTruthy();
 
@@ -363,19 +363,19 @@ describe('Maths', () => {
 
       const c = new Ray(new Vector3(0, 0, 0), new Vector3(1, 0, 0));
       // ray is inside box, should return exit point
-      expect(c.intersectsBox(box) === true).toBeTruthy();
+      expect(c.intersectsBox(box)).toBeTruthy();
       c.intersectBox(box, point);
       expect(point.distanceTo(new Vector3(1, 0, 0)) < TOL).toBeTruthy();
 
       const d = new Ray(new Vector3(0, 2, 1), new Vector3(0, -1, -1).normalize());
       //tilted ray should intersect box at 0,1,0
-      expect(d.intersectsBox(box) === true).toBeTruthy();
+      expect(d.intersectsBox(box)).toBeTruthy();
       d.intersectBox(box, point);
       expect(point.distanceTo(new Vector3(0, 1, 0)) < TOL).toBeTruthy();
 
       const e = new Ray(new Vector3(1, -2, 1), new Vector3(0, 1, 0).normalize());
       //handle case where ray is coplanar with one of the boxes side - box in front of ray
-      expect(e.intersectsBox(box) === true).toBeTruthy();
+      expect(e.intersectsBox(box)).toBeTruthy();
       e.intersectBox(box, point);
       expect(point.distanceTo(new Vector3(1, -1, 1)) < TOL).toBeTruthy();
 
