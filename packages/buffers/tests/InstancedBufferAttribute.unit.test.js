@@ -36,7 +36,7 @@ describe('Buffers', () => {
 
       expect(copiedInstance).toBeInstanceOf(InstancedBufferAttribute);
       expect(copiedInstance.itemSize === 2).toBeTruthy();
-      expect(copiedInstance.normalized === true).toBeTruthy();
+      expect(copiedInstance.normalized).toBeTruthy();
       expect(copiedInstance.meshPerAttribute === 123).toBeTruthy();
 
       for (let i = 0; i < array.length; i++) {
