@@ -142,7 +142,7 @@ function radToDeg(radians) {
 }
 
 function isPowerOfThree(n) {
-  return (Math.log10(n) / Math.log10(3)) % 1 == 0;
+  return (Math.log10(n) / Math.log10(3)) % 1 === 0;
 }
 
 function isPowerOfTwo(value) {
