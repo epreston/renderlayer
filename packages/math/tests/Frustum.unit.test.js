@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Box3 } from '../src/Box3.js';
 import { Matrix4 } from '../src/Matrix4.js';
