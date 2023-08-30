@@ -131,16 +131,16 @@ describe('Maths', () => {
   describe('Quaternion', () => {
     test('constructor', () => {
       let a = new Quaternion();
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-      expect(a.z == 0).toBeTruthy();
-      expect(a.w == 1).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      expect(a.z).toBe(0);
+      expect(a.w).toBe(1);
 
       a = new Quaternion(x, y, z, w);
-      expect(a.x === x).toBeTruthy();
-      expect(a.y === y).toBeTruthy();
-      expect(a.z === z).toBeTruthy();
-      expect(a.w === w).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
+      expect(a.z).toBe(z);
+      expect(a.w).toBe(w);
     });
 
     test('slerp', () => {
@@ -168,17 +168,17 @@ describe('Maths', () => {
 
     test('x', () => {
       let a = new Quaternion();
-      expect(a.x === 0).toBeTruthy();
+      expect(a.x).toBe(0);
 
       a = new Quaternion(1, 2, 3);
-      expect(a.x === 1).toBeTruthy();
+      expect(a.x).toBe(1);
 
       a = new Quaternion(4, 5, 6, 1);
-      expect(a.x === 4).toBeTruthy();
+      expect(a.x).toBe(4);
 
       a = new Quaternion(7, 8, 9);
       a.x = 10;
-      expect(a.x === 10).toBeTruthy();
+      expect(a.x).toBe(10);
 
       a = new Quaternion(11, 12, 13);
       let b = false;
@@ -187,22 +187,22 @@ describe('Maths', () => {
 
       a.x = 14;
       expect(b).toBeTruthy();
-      expect(a.x === 14).toBeTruthy();
+      expect(a.x).toBe(14);
     });
 
     test('y', () => {
       let a = new Quaternion();
-      expect(a.y === 0).toBeTruthy();
+      expect(a.y).toBe(0);
 
       a = new Quaternion(1, 2, 3);
-      expect(a.y === 2).toBeTruthy();
+      expect(a.y).toBe(2);
 
       a = new Quaternion(4, 5, 6, 1);
-      expect(a.y === 5).toBeTruthy();
+      expect(a.y).toBe(5);
 
       a = new Quaternion(7, 8, 9);
       a.y = 10;
-      expect(a.y === 10).toBeTruthy();
+      expect(a.y).toBe(10);
 
       a = new Quaternion(11, 12, 13);
       let b = false;
@@ -211,22 +211,22 @@ describe('Maths', () => {
 
       a.y = 14;
       expect(b).toBeTruthy();
-      expect(a.y === 14).toBeTruthy();
+      expect(a.y).toBe(14);
     });
 
     test('z', () => {
       let a = new Quaternion();
-      expect(a.z === 0).toBeTruthy();
+      expect(a.z).toBe(0);
 
       a = new Quaternion(1, 2, 3);
-      expect(a.z === 3).toBeTruthy();
+      expect(a.z).toBe(3);
 
       a = new Quaternion(4, 5, 6, 1);
-      expect(a.z === 6).toBeTruthy();
+      expect(a.z).toBe(6);
 
       a = new Quaternion(7, 8, 9);
       a.z = 10;
-      expect(a.z === 10).toBeTruthy();
+      expect(a.z).toBe(10);
 
       a = new Quaternion(11, 12, 13);
       let b = false;
@@ -235,22 +235,22 @@ describe('Maths', () => {
 
       a.z = 14;
       expect(b).toBeTruthy();
-      expect(a.z === 14).toBeTruthy();
+      expect(a.z).toBe(14);
     });
 
     test('w', () => {
       let a = new Quaternion();
-      expect(a.w === 1).toBeTruthy();
+      expect(a.w).toBe(1);
 
       a = new Quaternion(1, 2, 3);
-      expect(a.w === 1).toBeTruthy();
+      expect(a.w).toBe(1);
 
       a = new Quaternion(4, 5, 6, 1);
-      expect(a.w === 1).toBeTruthy();
+      expect(a.w).toBe(1);
 
       a = new Quaternion(7, 8, 9);
       a.w = 10;
-      expect(a.w === 10).toBeTruthy();
+      expect(a.w).toBe(10);
 
       a = new Quaternion(11, 12, 13);
       let b = false;
@@ -259,7 +259,7 @@ describe('Maths', () => {
 
       a.w = 14;
       expect(b).toBeTruthy();
-      expect(a.w === 14).toBeTruthy();
+      expect(a.w).toBe(14);
     });
 
     test('isQuaternion', () => {
@@ -269,40 +269,40 @@ describe('Maths', () => {
 
     test('set', () => {
       const a = new Quaternion();
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-      expect(a.z == 0).toBeTruthy();
-      expect(a.w == 1).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      expect(a.z).toBe(0);
+      expect(a.w).toBe(1);
 
       a.set(x, y, z, w);
-      expect(a.x == x).toBeTruthy();
-      expect(a.y == y).toBeTruthy();
-      expect(a.z === z).toBeTruthy();
-      expect(a.w === w).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
+      expect(a.z).toBe(z);
+      expect(a.w).toBe(w);
     });
 
     test('clone', () => {
       const a = new Quaternion().clone();
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-      expect(a.z == 0).toBeTruthy();
-      expect(a.w == 1).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      expect(a.z).toBe(0);
+      expect(a.w).toBe(1);
 
       const b = a.set(x, y, z, w).clone();
-      expect(b.x == x).toBeTruthy();
-      expect(b.y == y).toBeTruthy();
-      expect(b.z === z).toBeTruthy();
-      expect(b.w === w).toBeTruthy();
+      expect(b.x).toBe(x);
+      expect(b.y).toBe(y);
+      expect(b.z).toBe(z);
+      expect(b.w).toBe(w);
     });
 
     test('copy', () => {
       const a = new Quaternion(x, y, z, w);
       const b = new Quaternion().copy(a);
 
-      expect(b.x == x).toBeTruthy();
-      expect(b.y == y).toBeTruthy();
-      expect(b.z == z).toBeTruthy();
-      expect(b.w == w).toBeTruthy();
+      expect(b.x).toBe(x);
+      expect(b.y).toBe(y);
+      expect(b.z).toBe(z);
+      expect(b.w).toBe(w);
 
       // ensure that it is a true copy
       a.x = 0;
@@ -310,8 +310,8 @@ describe('Maths', () => {
       a.z = 0;
       a.w = -1;
 
-      expect(b.x == x).toBeTruthy();
-      expect(b.y == y).toBeTruthy();
+      expect(b.x).toBe(x);
+      expect(b.y).toBe(y);
     });
 
     test('setFromEuler/setFromQuaternion', () => {
@@ -449,10 +449,10 @@ describe('Maths', () => {
       a.set(x, y, z, w);
       a.identity();
 
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-      expect(a.z === 0).toBeTruthy();
-      expect(a.w === 1).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      expect(a.z).toBe(0);
+      expect(a.w).toBe(1);
     });
 
     test('invert/conjugate', () => {
@@ -462,40 +462,40 @@ describe('Maths', () => {
 
       const b = a.clone().conjugate();
 
-      expect(a.x == -b.x).toBeTruthy();
-      expect(a.y == -b.y).toBeTruthy();
-      expect(a.z == -b.z).toBeTruthy();
-      expect(a.w == b.w).toBeTruthy();
+      expect(a.x).toBe(-b.x);
+      expect(a.y).toBe(-b.y);
+      expect(a.z).toBe(-b.z);
+      expect(a.w).toBe(b.w);
     });
 
     test('dot', () => {
       let a = new Quaternion();
       let b = new Quaternion();
 
-      expect(a.dot(b) === 1).toBeTruthy();
+      expect(a.dot(b)).toBe(1);
       a = new Quaternion(1, 2, 3, 1);
       b = new Quaternion(3, 2, 1, 1);
 
-      expect(a.dot(b) === 11).toBeTruthy();
+      expect(a.dot(b)).toBe(11);
     });
 
     test('normalize/length/lengthSq', () => {
       const a = new Quaternion(x, y, z, w);
 
-      expect(a.length() != 1).toBeTruthy();
-      expect(a.lengthSq() != 1).toBeTruthy();
+      expect(a.length()).not.toBe(1);
+      expect(a.lengthSq()).not.toBe(1);
 
       a.normalize();
-      expect(a.length() == 1).toBeTruthy();
-      expect(a.lengthSq() == 1).toBeTruthy();
+      expect(a.length()).toBe(1);
+      expect(a.lengthSq()).toBe(1);
 
       a.set(0, 0, 0, 0);
-      expect(a.lengthSq() == 0).toBeTruthy();
-      expect(a.length() == 0).toBeTruthy();
+      expect(a.lengthSq()).toBe(0);
+      expect(a.length()).toBe(0);
 
       a.normalize();
-      expect(a.lengthSq() == 1).toBeTruthy();
-      expect(a.length() == 1).toBeTruthy();
+      expect(a.lengthSq()).toBe(1);
+      expect(a.length()).toBe(1);
     });
 
     test('multiplyQuaternions/multiply', () => {
@@ -593,15 +593,15 @@ describe('Maths', () => {
       const a = new Quaternion(x, y, z, w);
       const b = new Quaternion(-x, -y, -z, -w);
 
-      expect(a.x != b.x).toBeTruthy();
-      expect(a.y != b.y).toBeTruthy();
+      expect(a.x).not.toBe(b.x);
+      expect(a.y).not.toBe(b.y);
 
       expect(!a.equals(b)).toBeTruthy();
       expect(!b.equals(a)).toBeTruthy();
 
       a.copy(b);
-      expect(a.x == b.x).toBeTruthy();
-      expect(a.y == b.y).toBeTruthy();
+      expect(a.x).toBe(b.x);
+      expect(a.y).toBe(b.y);
 
       expect(a.equals(b)).toBeTruthy();
       expect(b.equals(a)).toBeTruthy();
@@ -610,16 +610,16 @@ describe('Maths', () => {
     test('fromArray', () => {
       const a = new Quaternion();
       a.fromArray([x, y, z, w]);
-      expect(a.x == x).toBeTruthy();
-      expect(a.y == y).toBeTruthy();
-      expect(a.z === z).toBeTruthy();
-      expect(a.w === w).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
+      expect(a.z).toBe(z);
+      expect(a.w).toBe(w);
 
       a.fromArray([undefined, x, y, z, w, undefined], 1);
-      expect(a.x == x).toBeTruthy();
-      expect(a.y == y).toBeTruthy();
-      expect(a.z === z).toBeTruthy();
-      expect(a.w === w).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
+      expect(a.z).toBe(z);
+      expect(a.w).toBe(w);
     });
 
     test('toArray', () => {
