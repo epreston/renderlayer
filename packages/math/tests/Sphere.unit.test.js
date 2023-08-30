@@ -221,7 +221,7 @@ describe('Maths', () => {
 
       a.expandByPoint(p);
 
-      expect(a.containsPoint(p) === true).toBeTruthy();
+      expect(a.containsPoint(p)).toBeTruthy();
       expect(a.center.equals(new Vector3(0.5, 0, 0))).toBeTruthy();
       expect(a.radius === 1.5).toBeTruthy();
     });
