@@ -8,7 +8,7 @@ import { PerspectiveCamera } from '../src/PerspectiveCamera.js';
 // see e.g. math/Matrix4.js
 const matrixEquals4 = function (a, b, tolerance) {
   tolerance = tolerance || 0.0001;
-  if (a.elements.length != b.elements.length) {
+  if (a.elements.length !== b.elements.length) {
     return false;
   }
 
