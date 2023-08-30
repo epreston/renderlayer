@@ -156,10 +156,10 @@ describe('Maths', () => {
       const b = new Vector4(-x, -y, -z, -w);
       const c = new Vector4().addVectors(b, b);
 
-      expect(c.x == -2 * x).toBeTruthy();
-      expect(c.y == -2 * y).toBeTruthy();
-      expect(c.z == -2 * z).toBeTruthy();
-      expect(c.w == -2 * w).toBeTruthy();
+      expect(c.x).toBe(-2 * x);
+      expect(c.y).toBe(-2 * y);
+      expect(c.z).toBe(-2 * z);
+      expect(c.w).toBe(-2 * w);
     });
 
     test('addScaledVector', () => {
@@ -179,10 +179,10 @@ describe('Maths', () => {
       const b = new Vector4(-x, -y, -z, -w);
 
       a.sub(b);
-      expect(a.x == 2 * x).toBeTruthy();
-      expect(a.y == 2 * y).toBeTruthy();
-      expect(a.z == 2 * z).toBeTruthy();
-      expect(a.w == 2 * w).toBeTruthy();
+      expect(a.x).toBe(2 * x);
+      expect(a.y).toBe(2 * y);
+      expect(a.z).toBe(2 * z);
+      expect(a.w).toBe(2 * w);
     });
 
     test('subScalar', () => {
@@ -640,28 +640,28 @@ describe('Maths', () => {
       const b = new Vector4(-x, -y, -z, -w);
 
       a.multiplyScalar(-2);
-      expect(a.x == x * -2).toBeTruthy();
-      expect(a.y == y * -2).toBeTruthy();
-      expect(a.z == z * -2).toBeTruthy();
-      expect(a.w == w * -2).toBeTruthy();
+      expect(a.x).toBe(x * -2);
+      expect(a.y).toBe(y * -2);
+      expect(a.z).toBe(z * -2);
+      expect(a.w).toBe(w * -2);
 
       b.multiplyScalar(-2);
-      expect(b.x == 2 * x).toBeTruthy();
-      expect(b.y == 2 * y).toBeTruthy();
-      expect(b.z == 2 * z).toBeTruthy();
-      expect(b.w == 2 * w).toBeTruthy();
+      expect(b.x).toBe(2 * x);
+      expect(b.y).toBe(2 * y);
+      expect(b.z).toBe(2 * z);
+      expect(b.w).toBe(2 * w);
 
       a.divideScalar(-2);
-      expect(a.x == x).toBeTruthy();
-      expect(a.y == y).toBeTruthy();
-      expect(a.z == z).toBeTruthy();
-      expect(a.w == w).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
+      expect(a.z).toBe(z);
+      expect(a.w).toBe(w);
 
       b.divideScalar(-2);
-      expect(b.x == -x).toBeTruthy();
-      expect(b.y == -y).toBeTruthy();
-      expect(b.z == -z).toBeTruthy();
-      expect(b.w == -w).toBeTruthy();
+      expect(b.x).toBe(-x);
+      expect(b.y).toBe(-y);
+      expect(b.z).toBe(-z);
+      expect(b.w).toBe(-w);
     });
 
     test('min/max/clamp', () => {
@@ -670,23 +670,23 @@ describe('Maths', () => {
       const c = new Vector4();
 
       c.copy(a).min(b);
-      expect(c.x == -x).toBeTruthy();
-      expect(c.y == -y).toBeTruthy();
-      expect(c.z == -z).toBeTruthy();
-      expect(c.w == -w).toBeTruthy();
+      expect(c.x).toBe(-x);
+      expect(c.y).toBe(-y);
+      expect(c.z).toBe(-z);
+      expect(c.w).toBe(-w);
 
       c.copy(a).max(b);
-      expect(c.x == x).toBeTruthy();
-      expect(c.y == y).toBeTruthy();
-      expect(c.z == z).toBeTruthy();
-      expect(c.w == w).toBeTruthy();
+      expect(c.x).toBe(x);
+      expect(c.y).toBe(y);
+      expect(c.z).toBe(z);
+      expect(c.w).toBe(w);
 
       c.set(-2 * x, 2 * y, -2 * z, 2 * w);
       c.clamp(b, a);
-      expect(c.x == -x).toBeTruthy();
-      expect(c.y == y).toBeTruthy();
-      expect(c.z == -z).toBeTruthy();
-      expect(c.w == w).toBeTruthy();
+      expect(c.x).toBe(-x);
+      expect(c.y).toBe(y);
+      expect(c.z).toBe(-z);
+      expect(c.w).toBe(w);
     });
 
     test('length/lengthSq', () => {
@@ -712,8 +712,8 @@ describe('Maths', () => {
       expect(e.lengthSq()).toBe(0);
 
       a.set(x, y, z, w);
-      expect(a.length() == Math.sqrt(x * x + y * y + z * z + w * w)).toBeTruthy();
-      expect(a.lengthSq() == x * x + y * y + z * z + w * w).toBeTruthy();
+      expect(a.length()).toBe(Math.sqrt(x * x + y * y + z * z + w * w));
+      expect(a.lengthSq()).toBe(x * x + y * y + z * z + w * w);
     });
 
     test('lerp/clone', () => {
@@ -725,10 +725,10 @@ describe('Maths', () => {
 
       expect(a.clone().lerp(b, 0).equals(a)).toBeTruthy();
 
-      expect(a.clone().lerp(b, 0.5).x == x * 0.5).toBeTruthy();
-      expect(a.clone().lerp(b, 0.5).y == -y * 0.5).toBeTruthy();
-      expect(a.clone().lerp(b, 0.5).z == z * 0.5).toBeTruthy();
-      expect(a.clone().lerp(b, 0.5).w == -w * 0.5).toBeTruthy();
+      expect(a.clone().lerp(b, 0.5).x).toBe(x * 0.5);
+      expect(a.clone().lerp(b, 0.5).y).toBe(-y * 0.5);
+      expect(a.clone().lerp(b, 0.5).z).toBe(z * 0.5);
+      expect(a.clone().lerp(b, 0.5).w).toBe(-w * 0.5);
 
       expect(a.clone().lerp(b, 1).equals(b)).toBeTruthy();
     });
