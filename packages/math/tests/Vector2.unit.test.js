@@ -11,12 +11,12 @@ describe('Maths', () => {
   describe('Vector2', () => {
     test('constructor', () => {
       const a = new Vector2();
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
 
       const b = new Vector2(x, y);
-      expect(b.x === x).toBeTruthy();
-      expect(b.y === y).toBeTruthy();
+      expect(b.x).toBe(x);
+      expect(b.y).toBe(y);
     });
 
     test('properties', () => {
@@ -49,12 +49,12 @@ describe('Maths', () => {
 
     test('set', () => {
       const a = new Vector2();
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
 
       a.set(x, y);
-      expect(a.x == x).toBeTruthy();
-      expect(a.y == y).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
     });
 
     test.todo('setScalar', () => {
@@ -84,14 +84,14 @@ describe('Maths', () => {
     test('copy', () => {
       const a = new Vector2(x, y);
       const b = new Vector2().copy(a);
-      expect(b.x == x).toBeTruthy();
-      expect(b.y == y).toBeTruthy();
+      expect(b.x).toBe(x);
+      expect(b.y).toBe(y);
 
       // ensure that it is a true copy
       a.x = 0;
       a.y = -1;
-      expect(b.x == x).toBeTruthy();
-      expect(b.y == y).toBeTruthy();
+      expect(b.x).toBe(x);
+      expect(b.y).toBe(y);
     });
 
     test('add', () => {
@@ -99,12 +99,12 @@ describe('Maths', () => {
       const b = new Vector2(-x, -y);
 
       a.add(b);
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
-
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      0;
       const c = new Vector2().addVectors(b, b);
-      expect(c.x == -2 * x).toBeTruthy();
-      expect(c.y == -2 * y).toBeTruthy();
+      expect(c.x).toBe(-2 * x);
+      expect(c.y).toBe(-2 * y);
     });
 
     test.todo('addScalar', () => {
@@ -130,12 +130,12 @@ describe('Maths', () => {
       const b = new Vector2(-x, -y);
 
       a.sub(b);
-      expect(a.x == 2 * x).toBeTruthy();
-      expect(a.y == 2 * y).toBeTruthy();
+      expect(a.x).toBe(2 * x);
+      expect(a.y).toBe(2 * y);
 
       const c = new Vector2().subVectors(a, a);
-      expect(c.x == 0).toBeTruthy();
-      expect(c.y == 0).toBeTruthy();
+      expect(c.x).toBe(0);
+      expect(c.y).toBe(0);
     });
 
     test.todo('subScalar', () => {
@@ -211,8 +211,8 @@ describe('Maths', () => {
       const a = new Vector2(x, y);
 
       a.negate();
-      expect(a.x == -x).toBeTruthy();
-      expect(a.y == -y).toBeTruthy();
+      expect(a.x).toBe(-x);
+      expect(a.y).toBe(-y);
     });
 
     test('dot', () => {
@@ -221,10 +221,10 @@ describe('Maths', () => {
       const c = new Vector2();
 
       let result = a.dot(b);
-      expect(result == -x * x - y * y).toBeTruthy();
+      expect(result).toBe(-x * x - y * y);
 
       result = a.dot(c);
-      expect(result == 0).toBeTruthy();
+      expect(result).toBe(0);
     });
 
     test('cross', () => {
@@ -262,12 +262,12 @@ describe('Maths', () => {
       const b = new Vector2(0, -y);
 
       a.normalize();
-      expect(a.length() == 1).toBeTruthy();
-      expect(a.x == 1).toBeTruthy();
+      expect(a.length()).toBe(1);
+      expect(a.x).toBe(1);
 
       b.normalize();
-      expect(b.length() == 1).toBeTruthy();
-      expect(b.y == -1).toBeTruthy();
+      expect(b.length()).toBe(1);
+      expect(b.y).toBe(-1);
     });
 
     test.todo('angle', () => {
@@ -304,16 +304,16 @@ describe('Maths', () => {
 
     test('setLength', () => {
       let a = new Vector2(x, 0);
-      expect(a.length() == x).toBeTruthy();
+      expect(a.length()).toBe(x);
 
       a.setLength(y);
-      expect(a.length() == y).toBeTruthy();
+      expect(a.length()).toBe(y);
 
       a = new Vector2(0, 0);
-      expect(a.length() == 0).toBeTruthy();
+      expect(a.length()).toBe(0);
 
       a.setLength(y);
-      expect(a.length() == 0).toBeTruthy();
+      expect(a.length()).toBe(0);
 
       a.setLength();
       expect(isNaN(a.length())).toBeTruthy();
@@ -331,15 +331,15 @@ describe('Maths', () => {
       const a = new Vector2(x, 0);
       const b = new Vector2(0, -y);
 
-      expect(a.x != b.x).toBeTruthy();
-      expect(a.y != b.y).toBeTruthy();
+      expect(a.x).not.toBe(b.x);
+      expect(a.y).not.toBe(b.y);
 
       expect(!a.equals(b)).toBeTruthy();
       expect(!b.equals(a)).toBeTruthy();
 
       a.copy(b);
-      expect(a.x == b.x).toBeTruthy();
-      expect(a.y == b.y).toBeTruthy();
+      expect(a.x).toBe(b.x);
+      expect(a.y).toBe(b.y);
 
       expect(a.equals(b)).toBeTruthy();
       expect(b.equals(a)).toBeTruthy();
@@ -397,25 +397,25 @@ describe('Maths', () => {
     test('setX,setY', () => {
       const a = new Vector2();
 
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
 
       a.setX(x);
       a.setY(y);
-      expect(a.x == x).toBeTruthy();
-      expect(a.y == y).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
     });
 
     test('setComponent,getComponent', () => {
       const a = new Vector2();
 
-      expect(a.x == 0).toBeTruthy();
-      expect(a.y == 0).toBeTruthy();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
 
       a.setComponent(0, 1);
       a.setComponent(1, 2);
-      expect(a.getComponent(0) == 1).toBeTruthy();
-      expect(a.getComponent(1) == 2).toBeTruthy();
+      expect(a.getComponent(0)).toBe(1);
+      expect(a.getComponent(1)).toBe(2);
     });
 
     test('multiply/divide', () => {
@@ -423,20 +423,20 @@ describe('Maths', () => {
       const b = new Vector2(-x, -y);
 
       a.multiplyScalar(-2);
-      expect(a.x == x * -2).toBeTruthy();
-      expect(a.y == y * -2).toBeTruthy();
+      expect(a.x).toBe(x * -2);
+      expect(a.y).toBe(y * -2);
 
       b.multiplyScalar(-2);
-      expect(b.x == 2 * x).toBeTruthy();
-      expect(b.y == 2 * y).toBeTruthy();
+      expect(b.x).toBe(2 * x);
+      expect(b.y).toBe(2 * y);
 
       a.divideScalar(-2);
-      expect(a.x == x).toBeTruthy();
-      expect(a.y == y).toBeTruthy();
+      expect(a.x).toBe(x);
+      expect(a.y).toBe(y);
 
       b.divideScalar(-2);
-      expect(b.x == -x).toBeTruthy();
-      expect(b.y == -y).toBeTruthy();
+      expect(b.x).toBe(-x);
+      expect(b.y).toBe(-y);
     });
 
     test('min/max/clamp', () => {
@@ -445,17 +445,17 @@ describe('Maths', () => {
       const c = new Vector2();
 
       c.copy(a).min(b);
-      expect(c.x == -x).toBeTruthy();
-      expect(c.y == -y).toBeTruthy();
+      expect(c.x).toBe(-x);
+      expect(c.y).toBe(-y);
 
       c.copy(a).max(b);
-      expect(c.x == x).toBeTruthy();
-      expect(c.y == y).toBeTruthy();
+      expect(c.x).toBe(x);
+      expect(c.y).toBe(y);
 
       c.set(-2 * x, 2 * y);
       c.clamp(b, a);
-      expect(c.x == -x).toBeTruthy();
-      expect(c.y == y).toBeTruthy();
+      expect(c.x).toBe(-x);
+      expect(c.y).toBe(y);
 
       c.set(-2 * x, 2 * x);
       c.clampScalar(-x, x);
@@ -530,18 +530,18 @@ describe('Maths', () => {
       const b = new Vector2(0, -y);
       const c = new Vector2();
 
-      expect(a.length() == x).toBeTruthy();
-      expect(a.lengthSq() == x * x).toBeTruthy();
+      expect(a.length()).toBe(x);
+      expect(a.lengthSq()).toBe(x * x);
 
-      expect(b.length() == y).toBeTruthy();
-      expect(b.lengthSq() == y * y).toBeTruthy();
+      expect(b.length()).toBe(y);
+      expect(b.lengthSq()).toBe(y * y);
 
-      expect(c.length() == 0).toBeTruthy();
-      expect(c.lengthSq() == 0).toBeTruthy();
+      expect(c.length()).toBe(0);
+      expect(c.lengthSq()).toBe(0);
 
       a.set(x, y);
-      expect(a.length() == Math.sqrt(x * x + y * y)).toBeTruthy();
-      expect(a.lengthSq() == x * x + y * y).toBeTruthy();
+      expect(a.length()).toBe(Math.sqrt(x * x + y * y));
+      expect(a.lengthSq()).toBe(x * x + y * y);
     });
 
     test('distanceTo/distanceToSquared', () => {
@@ -549,11 +549,11 @@ describe('Maths', () => {
       const b = new Vector2(0, -y);
       const c = new Vector2();
 
-      expect(a.distanceTo(c) == x).toBeTruthy();
-      expect(a.distanceToSquared(c) == x * x).toBeTruthy();
+      expect(a.distanceTo(c)).toBe(x);
+      expect(a.distanceToSquared(c)).toBe(x * x);
 
-      expect(b.distanceTo(c) == y).toBeTruthy();
-      expect(b.distanceToSquared(c) == y * y).toBeTruthy();
+      expect(b.distanceTo(c)).toBe(y);
+      expect(b.distanceToSquared(c)).toBe(y * y);
     });
 
     test('lerp/clone', () => {
@@ -565,8 +565,8 @@ describe('Maths', () => {
 
       expect(a.clone().lerp(b, 0).equals(a)).toBeTruthy();
 
-      expect(a.clone().lerp(b, 0.5).x == x * 0.5).toBeTruthy();
-      expect(a.clone().lerp(b, 0.5).y == -y * 0.5).toBeTruthy();
+      expect(a.clone().lerp(b, 0.5).x).toBe(x * 0.5);
+      expect(a.clone().lerp(b, 0.5).y).toBe(-y * 0.5);
 
       expect(a.clone().lerp(b, 1).equals(b)).toBeTruthy();
     });
