@@ -1,5 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { BufferGeometry } from '@renderlayer/buffers';
 import { Object3D, Raycaster } from '@renderlayer/core';
 import { BoxGeometry, PlaneGeometry } from '@renderlayer/geometries';
 import { MeshBasicMaterial } from '@renderlayer/materials';
@@ -27,15 +28,17 @@ describe('Objects', () => {
 
     test('type', () => {
       const object = new Mesh();
-      expect(object.type === 'Mesh').toBeTruthy();
+      expect(object.type).toBe('Mesh');
     });
 
-    test.todo('geometry', () => {
-      // implement
+    test('geometry', () => {
+      const object = new Mesh();
+      expect(object.geometry).toBeInstanceOf(BufferGeometry);
     });
 
-    test.todo('material', () => {
-      // implement
+    test('material', () => {
+      const object = new Mesh();
+      expect(object.material).toBeInstanceOf(MeshBasicMaterial);
     });
 
     test('copy', () => {
@@ -48,12 +51,22 @@ describe('Objects', () => {
       expect(dst.material).toBe(src.material);
     });
 
-    test.todo('updateMorphTargets', () => {
+    test('updateMorphTargets', () => {
+      const object = new Mesh();
+      object.updateMorphTargets();
+
       // implement
     });
 
-    test.todo('getVertexPosition', () => {
-      // implement
+    test('getVertexPosition', () => {
+      const geometry = new PlaneGeometry();
+      const material = new MeshBasicMaterial();
+
+      const mesh = new Mesh(geometry, material);
+      const target = new Vector3();
+
+      const position = mesh.getVertexPosition(2, target);
+      expect(position.equals(new Vector3(-0.5, -0.5, 0))).toBeTruthy();
     });
 
     test('raycast', () => {
