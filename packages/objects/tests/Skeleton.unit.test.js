@@ -90,24 +90,34 @@ describe('Objects', () => {
       expect(skeleton.boneTextureSize).toBe(4);
     });
 
-    test.todo('frame', () => {
-      // implement
+    test('frame', () => {
+      const { skeleton } = createSkeleton();
+      expect(skeleton.frame).toBe(-1);
     });
 
-    test.todo('init', () => {
-      // implement
+    test('init', () => {
+      const { skeleton } = createSkeleton();
+      skeleton.init();
     });
 
-    test.todo('calculateInverses', () => {
-      // implement
+    test('calculateInverses', () => {
+      const { skeleton } = createSkeleton();
+
+      skeleton.calculateInverses();
+
+      expect(skeleton.boneInverses).toBeInstanceOf(Array);
     });
 
-    test.todo('pose', () => {
-      // implement
+    test('pose', () => {
+      const { skeleton } = createSkeleton();
+      skeleton.pose();
     });
 
-    test.todo('update', () => {
-      // implement
+    test('update', () => {
+      const { skeleton, hand } = createSkeleton();
+      hand.position.y = 10;
+
+      skeleton.update();
     });
 
     test('clone', () => {
