@@ -83,8 +83,12 @@ describe('Maths', () => {
       expect(a.c.equals(two3)).toBeTruthy();
     });
 
-    test.todo('clone', () => {
-      // implement
+    test('clone', () => {
+      const object = new Triangle(one3.clone().negate(), one3.clone(), two3.clone());
+      const clonedObject = object.clone();
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
     test('copy', () => {
