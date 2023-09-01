@@ -142,6 +142,7 @@
     "Neubelt",
     "Pettineo",
     "Schlick",
+    "catmullrom",
     "pluginutils",
     "unproject"
   ]
