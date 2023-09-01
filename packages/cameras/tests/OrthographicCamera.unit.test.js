@@ -23,39 +23,46 @@ describe('Cameras', () => {
 
     test('type', () => {
       const object = new OrthographicCamera();
-      expect(object.type === 'OrthographicCamera').toBeTruthy();
+      expect(object.type).toBe('OrthographicCamera');
     });
 
-    test.todo('zoom', () => {
-      // implement
+    test('zoom', () => {
+      const object = new OrthographicCamera();
+      expect(object.zoom).toBe(1.0);
     });
 
     test.todo('view', () => {
       // implement
     });
 
-    test.todo('left', () => {
-      // implement
+    test('left', () => {
+      const object = new OrthographicCamera();
+      expect(object.left).toBe(-1);
     });
 
-    test.todo('right', () => {
-      // implement
+    test('right', () => {
+      const object = new OrthographicCamera();
+      expect(object.right).toBe(1);
     });
 
-    test.todo('top', () => {
-      // implement
+    test('top', () => {
+      const object = new OrthographicCamera();
+      expect(object.top).toBe(1);
     });
 
-    test.todo('bottom', () => {
-      // implement
+    test('bottom', () => {
+      const object = new OrthographicCamera();
+      expect(object.bottom).toBe(-1);
     });
 
-    test.todo('near', () => {
-      // implement
+    test('near', () => {
+      const object = new OrthographicCamera();
+      expect(object.near).toBe(0.1);
     });
 
-    test.todo('far', () => {
-      // implement
+    test('far', () => {
+      const object = new OrthographicCamera();
+      expect(object.far).toBe(2000);
     });
 
     test.todo('copy', () => {
