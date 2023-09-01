@@ -1,9 +1,9 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { DynamicDrawUsage } from '@renderlayer/shared';
 import { InterleavedBuffer } from '../src/InterleavedBuffer.js';
 
-describe('Core', () => {
+describe('Buffers', () => {
   describe('InterleavedBuffer', () => {
     function checkInstanceAgainstCopy(instance, copiedInstance) {
       expect(copiedInstance).toBeInstanceOf(InterleavedBuffer);
@@ -19,6 +19,11 @@ describe('Core', () => {
     test('constructor', () => {
       const object = new InterleavedBuffer();
       expect(object).toBeDefined();
+    });
+
+    test('isInterleavedBuffer', () => {
+      const object = new InterleavedBuffer();
+      expect(object.isInterleavedBuffer).toBeTruthy();
     });
 
     test.todo('array', () => {
@@ -63,11 +68,6 @@ describe('Core', () => {
       a.needsUpdate = true;
 
       expect(a.version).toBe(1);
-    });
-
-    test('isInterleavedBuffer', () => {
-      const object = new InterleavedBuffer();
-      expect(object.isInterleavedBuffer).toBeTruthy();
     });
 
     test('setUsage', () => {
@@ -117,8 +117,21 @@ describe('Core', () => {
       expect(a.onUploadCallback).toBe(func);
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const instance = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      instance.uuid = '29bf3df6-7dcd-477a-ba66-21b15ac0ffe6';
+      instance.array.buffer._uuid = 'ef947120-656c-44f5-b9c6-bea826d1f4ce';
+
+      const data = {};
+
+      expect(instance.toJSON(data)).toMatchInlineSnapshot(`
+        {
+          "buffer": "ef947120-656c-44f5-b9c6-bea826d1f4ce",
+          "stride": 3,
+          "type": "Float32Array",
+          "uuid": "29bf3df6-7dcd-477a-ba66-21b15ac0ffe6",
+        }
+      `);
     });
   });
 });
