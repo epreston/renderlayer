@@ -56,9 +56,28 @@ describe('Keyframes', () => {
       // implement
     });
 
-    test.todo('toJSON', () => {
-      // static method toJSON
-      // implement
+    test('toJSON', () => {
+      const object = new NumberKeyframeTrack(
+        parameters.name,
+        parameters.times,
+        parameters.values,
+        parameters.interpolation
+      );
+
+      expect(object).toMatchInlineSnapshot(`
+        NumberKeyframeTrack {
+          "createInterpolant": [Function],
+          "name": ".material.opacity",
+          "times": Float32Array [
+            0,
+            1,
+          ],
+          "values": Float32Array [
+            0,
+            0.5,
+          ],
+        }
+      `);
     });
 
     test.todo('InterpolantFactoryMethodDiscrete', () => {
