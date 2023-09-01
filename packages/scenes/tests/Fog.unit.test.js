@@ -20,8 +20,14 @@ describe('Scenes', () => {
       expect(object_all).toBeDefined();
     });
 
-    test.todo('name', () => {
-      // implement
+    test('isFog', () => {
+      const object = new Fog();
+      expect(object.isFog).toBeTruthy();
+    });
+
+    test('name', () => {
+      const object = new Fog();
+      expect(object.name).toBe('');
     });
 
     test('color', () => {
@@ -39,17 +45,24 @@ describe('Scenes', () => {
       expect(object.far).toEqual(100);
     });
 
-    test('isFog', () => {
+    test('clone', () => {
+      const object = new Fog(0xffffff, 0.015, 100);
+      const clonedObject = object.clone();
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
+    });
+
+    test('toJSON', () => {
       const object = new Fog();
-      expect(object.isFog).toBeTruthy();
-    });
-
-    test.todo('clone', () => {
-      // implement
-    });
-
-    test.todo('toJSON', () => {
-      // implement
+      expect(object).toMatchInlineSnapshot(`
+        {
+          "color": 16777215,
+          "far": 1000,
+          "near": 1,
+          "type": "Fog",
+        }
+      `);
     });
   });
 });
