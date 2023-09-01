@@ -52,8 +52,46 @@ describe('Scenes', () => {
       // implement
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const object = new Scene();
+      object.uuid = '92ff990a-5092-466b-8642-bf028acf7cac';
+      expect(object).toMatchInlineSnapshot(`
+        {
+          "metadata": {
+            "generator": "Object3D.toJSON",
+            "type": "Object",
+            "version": 4.5,
+          },
+          "object": {
+            "layers": 1,
+            "matrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+            ],
+            "type": "Scene",
+            "up": [
+              0,
+              1,
+              0,
+            ],
+            "uuid": "92ff990a-5092-466b-8642-bf028acf7cac",
+          },
+        }
+      `);
     });
   });
 });
