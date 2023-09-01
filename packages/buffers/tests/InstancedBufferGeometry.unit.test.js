@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { BufferGeometry } from '../src/BufferGeometry.js';
 import { BufferAttribute } from '../src/BufferAttribute.js';
@@ -6,7 +6,7 @@ import { InstancedBufferGeometry } from '../src/InstancedBufferGeometry.js';
 
 describe('Buffers', () => {
   describe('InstancedBufferGeometry', () => {
-    function createClonableMock() {
+    function createCloneableMock() {
       return {
         callCount: 0,
         clone: function () {
@@ -26,29 +26,31 @@ describe('Buffers', () => {
       expect(object).toBeInstanceOf(BufferGeometry);
     });
 
-    test('type', () => {
-      const object = new InstancedBufferGeometry();
-      expect(object.type === 'InstancedBufferGeometry').toBeTruthy();
-    });
-
-    test.todo('instanceCount', () => {
-      // implement
-    });
-
     test('isInstancedBufferGeometry', () => {
       const object = new InstancedBufferGeometry();
       expect(object.isInstancedBufferGeometry).toBeTruthy();
     });
 
+    test('type', () => {
+      const object = new InstancedBufferGeometry();
+      expect(object.type).toBe('InstancedBufferGeometry');
+    });
+
+    test('instanceCount', () => {
+      const object = new InstancedBufferGeometry();
+      expect(object.instanceCount).toBe(Infinity);
+    });
+
     test('copy', () => {
       const instanceMock1 = {};
       const instanceMock2 = {};
-      const indexMock = createClonableMock();
+      const indexMock = createCloneableMock();
       const defaultAttribute1 = new BufferAttribute(new Float32Array([1]));
       const defaultAttribute2 = new BufferAttribute(new Float32Array([2]));
 
       const instance = new InstancedBufferGeometry();
 
+      // EP: type error ?
       instance.addGroup(0, 10, instanceMock1);
       instance.addGroup(10, 5, instanceMock2);
       instance.setIndex(indexMock);
@@ -75,8 +77,25 @@ describe('Buffers', () => {
       expect(copiedInstance.groups[1].materialIndex).toBe(instanceMock2);
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const instance = new InstancedBufferGeometry();
+      instance.uuid = 'eebb4977-88d8-47ff-9a70-5fa57dcb8ce5';
+      expect(instance).toMatchInlineSnapshot(`
+        {
+          "data": {
+            "attributes": {},
+          },
+          "instanceCount": Infinity,
+          "isInstancedBufferGeometry": true,
+          "metadata": {
+            "generator": "BufferGeometry.toJSON",
+            "type": "BufferGeometry",
+            "version": 4.5,
+          },
+          "type": "InstancedBufferGeometry",
+          "uuid": "eebb4977-88d8-47ff-9a70-5fa57dcb8ce5",
+        }
+      `);
     });
   });
 });
