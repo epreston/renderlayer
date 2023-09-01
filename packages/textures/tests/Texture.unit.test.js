@@ -156,8 +156,16 @@ describe('Textures', () => {
       // implement
     });
 
-    test.todo('clone', () => {
-      // implement
+    test('clone', () => {
+      const object = new Texture(0xffffff, 0.015, 100);
+      const clonedObject = object.clone();
+
+      // will be different
+      clonedObject.uuid = object.uuid;
+      clonedObject.version = object.version;
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
     test.todo('copy', () => {
