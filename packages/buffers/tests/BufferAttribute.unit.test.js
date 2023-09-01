@@ -72,9 +72,13 @@ describe('Buffers', () => {
       // implement
     });
 
-    test.todo('needsUpdate', () => {
-      // set needsUpdate( value )
-      // implement
+    test('needsUpdate', () => {
+      const object = new BufferAttribute();
+      expect(object.version).toBe(0);
+
+      object.needsUpdate = true;
+
+      expect(object.version).toBe(1);
     });
 
     test('setUsage', () => {
