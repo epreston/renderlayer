@@ -13,6 +13,11 @@ describe('Renderers', () => {
       expect(renderer).toBeDefined();
     });
 
+    test.todo('isWebGLRenderer', () => {
+      const object = new WebGLRenderer();
+      expect(object.isWebGLRenderer).toBeTruthy();
+    });
+
     test.todo('domElement', () => {
       // implement
     });
@@ -58,10 +63,6 @@ describe('Renderers', () => {
     });
 
     test.todo('toneMappingExposure', () => {
-      // implement
-    });
-
-    test.todo('isWebGLRenderer', () => {
       // implement
     });
 
