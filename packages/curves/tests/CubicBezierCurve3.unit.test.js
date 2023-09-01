@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 import { Vector3 } from '@renderlayer/math';
 import { Curve } from '../src/core/Curve.js';
@@ -6,10 +6,10 @@ import { CubicBezierCurve3 } from '../src/CubicBezierCurve3.js';
 
 describe('Curves', () => {
   describe('CubicBezierCurve3', () => {
-    let curve = undefined;
+    let _curve = undefined;
 
     beforeEach(() => {
-      curve = new CubicBezierCurve3(
+      _curve = new CubicBezierCurve3(
         new Vector3(-10, 0, 2),
         new Vector3(-5, 15, 4),
         new Vector3(20, 15, -5),
@@ -25,6 +25,11 @@ describe('Curves', () => {
     test('constructor', () => {
       const object = new CubicBezierCurve3();
       expect(object).toBeDefined();
+    });
+
+    test('isCubicBezierCurve3', () => {
+      const object = new CubicBezierCurve3();
+      expect(object.isCubicBezierCurve3).toBeTruthy();
     });
 
     test('type', () => {
@@ -52,26 +57,70 @@ describe('Curves', () => {
       // implement
     });
 
-    test('isCubicBezierCurve3', () => {
-      const object = new CubicBezierCurve3();
-      expect(object.isCubicBezierCurve3).toBeTruthy();
-    });
-
     test.todo('getPoint', () => {
       // getPoint( t, optionalTarget = new Vector3() )
       // implement
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const curve = new CubicBezierCurve3();
+
+      curve.copy(_curve);
+
+      expect(curve).not.toBe(_curve);
+      expect(curve).toStrictEqual(_curve);
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      expect(_curve).toMatchInlineSnapshot(`
+        {
+          "arcLengthDivisions": 200,
+          "metadata": {
+            "generator": "Curve.toJSON",
+            "type": "Curve",
+            "version": 4.5,
+          },
+          "type": "CubicBezierCurve3",
+          "v0": [
+            -10,
+            0,
+            2,
+          ],
+          "v1": [
+            -5,
+            15,
+            4,
+          ],
+          "v2": [
+            20,
+            15,
+            -5,
+          ],
+          "v3": [
+            10,
+            0,
+            10,
+          ],
+        }
+      `);
     });
 
-    test.todo('fromJSON', () => {
-      // implement
+    test('fromJSON', () => {
+      const curve = new CubicBezierCurve3().fromJSON({
+        arcLengthDivisions: 200,
+        metadata: {
+          generator: 'Curve.toJSON',
+          type: 'Curve',
+          version: 4.5
+        },
+        type: 'CubicBezierCurve3',
+        v0: [-10, 0, 2],
+        v1: [-5, 15, 4],
+        v2: [20, 15, -5],
+        v3: [10, 0, 10]
+      });
+
+      expect(_curve).toStrictEqual(curve);
     });
 
     test('Simple curve', () => {
@@ -83,13 +132,13 @@ describe('Curves', () => {
         new Vector3(10, 0, 10)
       ];
 
-      let points = curve.getPoints(expectedPoints.length - 1);
+      let points = _curve.getPoints(expectedPoints.length - 1);
 
       expect(points.length).toBe(expectedPoints.length);
       expect(points).toEqual(expectedPoints);
 
       // symmetry
-      const curveRev = new CubicBezierCurve3(curve.v3, curve.v2, curve.v1, curve.v0);
+      const curveRev = new CubicBezierCurve3(_curve.v3, _curve.v2, _curve.v1, _curve.v0);
 
       points = curveRev.getPoints(expectedPoints.length - 1);
 
@@ -98,7 +147,7 @@ describe('Curves', () => {
     });
 
     test('getLength/getLengths', () => {
-      const length = curve.getLength();
+      const length = _curve.getLength();
       const expectedLength = 39.58103024989427;
 
       expect(length).toBe(expectedLength);
@@ -112,7 +161,7 @@ describe('Curves', () => {
 					38.453287150114214
 				];
 
-      const lengths = curve.getLengths(expectedLengths.length - 1);
+      const lengths = _curve.getLengths(expectedLengths.length - 1);
 
       expect(lengths.length).toBe(expectedLengths.length);
 
@@ -130,10 +179,10 @@ describe('Curves', () => {
       ];
 
       const points = [
-        curve.getPointAt(0, new Vector3()),
-        curve.getPointAt(0.3, new Vector3()),
-        curve.getPointAt(0.5, new Vector3()),
-        curve.getPointAt(1, new Vector3())
+        _curve.getPointAt(0, new Vector3()),
+        _curve.getPointAt(0.3, new Vector3()),
+        _curve.getPointAt(0.5, new Vector3()),
+        _curve.getPointAt(1, new Vector3())
       ];
 
       expect(points).toEqual(expectedPoints);
@@ -149,11 +198,11 @@ describe('Curves', () => {
       ];
 
       let tangents = [
-        curve.getTangent(0, new Vector3()),
-        curve.getTangent(0.25, new Vector3()),
-        curve.getTangent(0.5, new Vector3()),
-        curve.getTangent(0.75, new Vector3()),
-        curve.getTangent(1, new Vector3())
+        _curve.getTangent(0, new Vector3()),
+        _curve.getTangent(0.25, new Vector3()),
+        _curve.getTangent(0.5, new Vector3()),
+        _curve.getTangent(0.75, new Vector3()),
+        _curve.getTangent(1, new Vector3())
       ];
 
       expectedTangents.forEach(function (exp, i) {
@@ -174,11 +223,11 @@ describe('Curves', () => {
       ];
 
       tangents = [
-        curve.getTangentAt(0, new Vector3()),
-        curve.getTangentAt(0.25, new Vector3()),
-        curve.getTangentAt(0.5, new Vector3()),
-        curve.getTangentAt(0.75, new Vector3()),
-        curve.getTangentAt(1, new Vector3())
+        _curve.getTangentAt(0, new Vector3()),
+        _curve.getTangentAt(0.25, new Vector3()),
+        _curve.getTangentAt(0.5, new Vector3()),
+        _curve.getTangentAt(0.75, new Vector3()),
+        _curve.getTangentAt(1, new Vector3())
       ];
 
       expectedTangents.forEach(function (exp, i) {
@@ -190,9 +239,9 @@ describe('Curves', () => {
     });
 
     test('getUtoTmapping', () => {
-      const start = curve.getUtoTmapping(0, 0);
-      const end = curve.getUtoTmapping(0, curve.getLength());
-      const somewhere = curve.getUtoTmapping(0.5, 1);
+      const start = _curve.getUtoTmapping(0, 0);
+      const end = _curve.getUtoTmapping(0, _curve.getLength());
+      const somewhere = _curve.getUtoTmapping(0.5, 1);
 
       const expectedSomewhere = 0.021163245321323316;
 
@@ -211,7 +260,7 @@ describe('Curves', () => {
         new Vector3(10, 0, 10)
       ];
 
-      const points = curve.getSpacedPoints();
+      const points = _curve.getSpacedPoints();
 
       expect(points.length).toBe(expectedPoints.length);
       expect(points).toEqual(expectedPoints);
@@ -236,7 +285,7 @@ describe('Curves', () => {
         ]
       };
 
-      const frames = curve.computeFrenetFrames(2, false);
+      const frames = _curve.computeFrenetFrames(2, false);
 
       Object.keys(expected).forEach(function (group, i) {
         expected[group].forEach(function (vec, j) {
