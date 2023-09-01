@@ -403,6 +403,7 @@ class AnimationMixer extends EventDispatcher {
   // return an action for a clip optionally using a custom root target
   // object (this method allocates a lot of dynamic memory in case a
   // previously unknown clip/root combination is specified)
+  /** @returns {AnimationAction | null} */
   clipAction(clip, optionalRoot, blendMode) {
     const root = optionalRoot || this._root,
       rootUuid = root.uuid;
