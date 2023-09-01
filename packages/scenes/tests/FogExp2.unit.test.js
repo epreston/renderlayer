@@ -20,8 +20,14 @@ describe('Scenes', () => {
       expect(object_all).toBeDefined();
     });
 
-    test.todo('name', () => {
-      // implement
+    test('isFogExp2', () => {
+      const object = new FogExp2();
+      expect(object.isFogExp2).toBeTruthy();
+    });
+
+    test('name', () => {
+      const object = new FogExp2();
+      expect(object.name).toBe('');
     });
 
     test('color', () => {
@@ -34,17 +40,23 @@ describe('Scenes', () => {
       expect(object.density).toEqual(0.0003);
     });
 
-    test('isFogExp2', () => {
+    test('clone', () => {
+      const object = new FogExp2(0xffffff, 0.0003);
+      const clonedObject = object.clone();
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
+    });
+
+    test('toJSON', () => {
       const object = new FogExp2();
-      expect(object.isFogExp2).toBeTruthy();
-    });
-
-    test.todo('clone', () => {
-      // implement
-    });
-
-    test.todo('toJSON', () => {
-      // implement
+      expect(object).toMatchInlineSnapshot(`
+        {
+          "color": 16777215,
+          "density": 0.00025,
+          "type": "FogExp2",
+        }
+      `);
     });
   });
 });
