@@ -48,9 +48,14 @@ describe('Buffers', () => {
       // implement
     });
 
-    test.todo('needsUpdate', () => {
-      // set needsUpdate( value )
-      // implement
+    test('needsUpdate', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+      expect(object.data.version).toBe(0);
+
+      object.needsUpdate = true;
+
+      expect(object.data.version).toBe(1);
     });
 
     test.todo('applyMatrix4', () => {
