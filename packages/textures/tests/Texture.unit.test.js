@@ -25,8 +25,15 @@ describe('Textures', () => {
       // implement
     });
 
-    test.todo('id', () => {
-      // implement
+    test('id', () => {
+      const object = new Texture();
+      expect(object.id).toBeDefined();
+
+      // can change based on order of tests
+      const prevId = object.id;
+
+      const object2 = new Texture();
+      expect(object2.id).toBeGreaterThan(prevId);
     });
 
     test('uuid', () => {
