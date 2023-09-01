@@ -25,6 +25,13 @@ describe('Interpolants', () => {
       expect(object).toBeInstanceOf(Interpolant);
     });
 
+    test('evaluate', () => {
+      const object = createCubicInterpolant();
+      const evalResult = object.evaluate(0.5);
+      expect(evalResult.length).toBe(1);
+      expect(evalResult[0]).toBe(1);
+    });
+
     test('intervalChanged_', () => {
       const object = createCubicInterpolant();
       const evalResult = object.evaluate(0.5);
