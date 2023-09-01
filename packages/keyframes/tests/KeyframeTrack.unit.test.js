@@ -32,16 +32,39 @@ describe('Keyframes', () => {
       expect(object).toBeInstanceOf(KeyframeTrack);
     });
 
-    test.todo('name', () => {
-      // implement
+    test('name', () => {
+      const object = new NumberKeyframeTrack(
+        parameters.name,
+        parameters.times,
+        parameters.values,
+        parameters.interpolation
+      );
+
+      expect(object.name).toBe(parameters.name);
     });
 
-    test.todo('times', () => {
-      // implement
+    test('times', () => {
+      const object = new NumberKeyframeTrack(
+        parameters.name,
+        parameters.times,
+        parameters.values,
+        parameters.interpolation
+      );
+
+      expect(object.times[0]).toBe(0);
+      expect(object.times[1]).toBe(1);
     });
 
-    test.todo('values', () => {
-      // implement
+    test('values', () => {
+      const object = new NumberKeyframeTrack(
+        parameters.name,
+        parameters.times,
+        parameters.values,
+        parameters.interpolation
+      );
+
+      expect(object.values[0]).toBe(0);
+      expect(object.values[1]).toBe(0.5);
     });
 
     test.todo('TimeBufferType', () => {
