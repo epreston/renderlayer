@@ -1,0 +1,47 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Cameras > PerspectiveCamera > toJSON 1`] = `
+{
+  "metadata": {
+    "generator": "Object3D.toJSON",
+    "type": "Object",
+    "version": 4.5,
+  },
+  "object": {
+    "aspect": 1,
+    "far": 2000,
+    "filmGauge": 35,
+    "filmOffset": 0,
+    "focus": 10,
+    "fov": 50,
+    "layers": 1,
+    "matrix": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+    ],
+    "near": 0.1,
+    "type": "PerspectiveCamera",
+    "up": [
+      0,
+      1,
+      0,
+    ],
+    "uuid": "934b9669-a7d5-4214-b723-dea6b4b3e068",
+    "zoom": 1,
+  },
+}
+`;

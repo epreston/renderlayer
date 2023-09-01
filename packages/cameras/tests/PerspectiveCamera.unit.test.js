@@ -148,8 +148,13 @@ describe('Cameras', () => {
       expect(matrixEquals4(reference, m, 0.000001)).toBeTruthy();
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const object = new PerspectiveCamera();
+
+      // will be different
+      object.uuid = '934b9669-a7d5-4214-b723-dea6b4b3e068';
+
+      expect(object).toMatchSnapshot();
     });
 
     // TODO: clone is a camera methods that relied to copy method
