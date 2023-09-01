@@ -160,8 +160,12 @@ describe('Keyframes', () => {
       expect(Array.from(track.values)).toEqual([0, 0, 1]);
     });
 
-    test.todo('clone', () => {
-      // implement
+    test('clone', () => {
+      const object = new NumberKeyframeTrack('.material.opacity', [0, 1, 2, 3, 4], [0, 0, 0, 0, 1]);
+      const clonedObject = object.clone();
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
   });
 });
