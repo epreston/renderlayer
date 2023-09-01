@@ -17,8 +17,8 @@ describe('Curves', () => {
       });
 
       test('type', () => {
-        const object = new Curve();
-        expect(object.type).toBe('Curve');
+        const object = new CurvePath();
+        expect(object.type).toBe('CurvePath');
       });
 
       test('curves', () => {
@@ -67,8 +67,21 @@ describe('Curves', () => {
         // implement
       });
 
-      test.todo('toJSON', () => {
-        // implement
+      test('toJSON', () => {
+        const object = new CurvePath();
+        expect(object).toMatchInlineSnapshot(`
+          {
+            "arcLengthDivisions": 200,
+            "autoClose": false,
+            "curves": [],
+            "metadata": {
+              "generator": "Curve.toJSON",
+              "type": "Curve",
+              "version": 4.5,
+            },
+            "type": "CurvePath",
+          }
+        `);
       });
 
       test.todo('fromJSON', () => {
