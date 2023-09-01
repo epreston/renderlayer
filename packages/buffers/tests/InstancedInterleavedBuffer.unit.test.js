@@ -34,8 +34,17 @@ describe('Buffers', () => {
       expect(copiedInstance.meshPerAttribute === 1).toBeTruthy();
     });
 
-    test.todo('clone', () => {
-      // implement
+    test('clone', () => {
+      const array = new Float32Array([1, 2, 3, 7, 8, 9]);
+      const object = new InstancedInterleavedBuffer(array, 3);
+      const data = {};
+      const clonedObject = object.clone(data);
+
+      // will be different
+      clonedObject.uuid = object.uuid;
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
     test('toJSON', () => {
