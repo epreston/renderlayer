@@ -33,8 +33,9 @@ describe('Buffers', () => {
       expect(object.isBufferAttribute).toBeTruthy();
     });
 
-    test.todo('name', () => {
-      // implement
+    test('name', () => {
+      const object = new BufferAttribute();
+      expect(object.name).toBe('');
     });
 
     test.todo('array', () => {
