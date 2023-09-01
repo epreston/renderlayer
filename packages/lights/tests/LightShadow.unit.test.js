@@ -97,15 +97,42 @@ describe('Lights', () => {
     });
 
     test.todo('copy', () => {
+      // EP: bugged ?
       // implement
     });
 
     test.todo('clone', () => {
-      // implement
+      // EP: bugged ?
+
+      const clonedObject = object.clone();
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      object.camera.uuid = 'a3fb35eb-dcae-4ccd-a619-5bf5d09575d0';
+      expect(object).toMatchInlineSnapshot(`
+        {
+          "camera": {
+            "bottom": -5,
+            "far": 500,
+            "layers": 1,
+            "left": -5,
+            "near": 0.5,
+            "right": 5,
+            "top": 5,
+            "type": "OrthographicCamera",
+            "up": [
+              0,
+              1,
+              0,
+            ],
+            "uuid": "a3fb35eb-dcae-4ccd-a619-5bf5d09575d0",
+            "zoom": 1,
+          },
+        }
+      `);
     });
 
     test('clone/copy', () => {
