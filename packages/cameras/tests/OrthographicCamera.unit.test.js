@@ -1,7 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { Camera } from '../src/Camera.js';
-
 import { OrthographicCamera } from '../src/OrthographicCamera.js';
 
 describe('Cameras', () => {
@@ -31,8 +30,9 @@ describe('Cameras', () => {
       expect(object.zoom).toBe(1.0);
     });
 
-    test.todo('view', () => {
-      // implement
+    test('view', () => {
+      const object = new OrthographicCamera();
+      expect(object.view).toBeNull();
     });
 
     test('left', () => {
