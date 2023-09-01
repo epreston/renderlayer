@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Curve } from '../../src/core/Curve.js';
 
@@ -12,7 +12,7 @@ describe('Curves', () => {
 
       test('type', () => {
         const object = new Curve();
-        expect(object.type === 'Curve').toBeTruthy();
+        expect(object.type).toBe('Curve');
       });
 
       test.todo('arcLengthDivisions', () => {
@@ -71,8 +71,19 @@ describe('Curves', () => {
         // implement
       });
 
-      test.todo('toJSON', () => {
-        // implement
+      test('toJSON', () => {
+        const object = new Curve();
+        expect(object).toMatchInlineSnapshot(`
+          {
+            "arcLengthDivisions": 200,
+            "metadata": {
+              "generator": "Curve.toJSON",
+              "type": "Curve",
+              "version": 4.5,
+            },
+            "type": "Curve",
+          }
+        `);
       });
 
       test.todo('fromJSON', () => {
