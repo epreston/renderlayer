@@ -128,8 +128,47 @@ describe('Objects', () => {
       // implement
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const object = new LOD();
+      object.uuid = 'c67c987a-930e-45f5-92f2-e4a6605184e3';
+      expect(object).toMatchInlineSnapshot(`
+        {
+          "metadata": {
+            "generator": "Object3D.toJSON",
+            "type": "Object",
+            "version": 4.5,
+          },
+          "object": {
+            "layers": 1,
+            "levels": [],
+            "matrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+            ],
+            "type": "LOD",
+            "up": [
+              0,
+              1,
+              0,
+            ],
+            "uuid": "c67c987a-930e-45f5-92f2-e4a6605184e3",
+          },
+        }
+      `);
     });
   });
 });
