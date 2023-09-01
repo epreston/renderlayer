@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 // import { ObjectLoader } from '@renderlayer/loaders';
 import { Object3D } from '@renderlayer/core';
@@ -16,6 +16,11 @@ describe('Lights', () => {
       expect(object).toBeInstanceOf(Object3D);
     });
 
+    test('isLight', () => {
+      const object = new Light(0xaaaaaa);
+      expect(object.isLight).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new Light(0xaaaaaa);
       expect(object.type === 'Light').toBeTruthy();
@@ -29,11 +34,6 @@ describe('Lights', () => {
     test('intensity', () => {
       const object = new Light(0xaaaaaa, 0.5);
       expect(object.intensity).toEqual(0.5);
-    });
-
-    test('isLight', () => {
-      const object = new Light(0xaaaaaa);
-      expect(object.isLight).toBeTruthy();
     });
 
     test('dispose', () => {
@@ -72,24 +72,50 @@ describe('Lights', () => {
       expect(a.color.getHex()).not.equal(b.color.getHex());
     });
 
-    test.todo('toJSON', () => {
+    test('toJSON', () => {
       const light = new Light(0xffc0d1);
-      const json = light.toJSON();
 
-      expect(json.metadata.version).toBe('4.5');
+      light.uuid = '43bbf855-85e8-4fab-93d8-31f471ff68e7';
 
-      const object = json.object;
-
-      expect(light.type).toBe(object.type);
-      expect(light.uuid).toBe(object.uuid);
-      expect(light.color.getHex()).toBe(object.color);
-      expect(light.intensity).toBe(object.intensity);
-
-      expect(object.id).toBeUndefined();
-
-      // const loader = new ObjectLoader();
-      // const outputLight = loader.parse(json);
-      // expect(outputLight).toEqual(light);
+      expect(light).toMatchInlineSnapshot(`
+        {
+          "metadata": {
+            "generator": "Object3D.toJSON",
+            "type": "Object",
+            "version": 4.5,
+          },
+          "object": {
+            "color": 16761041,
+            "intensity": 1,
+            "layers": 1,
+            "matrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+            ],
+            "type": "Light",
+            "up": [
+              0,
+              1,
+              0,
+            ],
+            "uuid": "43bbf855-85e8-4fab-93d8-31f471ff68e7",
+          },
+        }
+      `);
     });
   });
 });
