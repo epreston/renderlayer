@@ -73,8 +73,12 @@ describe('Maths', () => {
       // implement
     });
 
-    test.todo('clone', () => {
-      // implement
+    test('clone', () => {
+      const object = new Vector3(x, y, z);
+      const clonedObject = object.clone();
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
     test('copy', () => {
