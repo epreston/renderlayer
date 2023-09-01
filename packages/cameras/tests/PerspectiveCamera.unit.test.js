@@ -1,8 +1,8 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { Matrix4 } from '@renderlayer/math';
-import { Camera } from '../src/Camera.js';
 
+import { Camera } from '../src/Camera.js';
 import { PerspectiveCamera } from '../src/PerspectiveCamera.js';
 
 // see e.g. math/Matrix4.js
@@ -41,43 +41,52 @@ describe('Cameras', () => {
 
     test('type', () => {
       const object = new PerspectiveCamera();
-      expect(object.type === 'PerspectiveCamera').toBeTruthy();
+      expect(object.type).toBe('PerspectiveCamera');
     });
 
-    test.todo('fov', () => {
-      // implement
+    test('fov', () => {
+      const object = new PerspectiveCamera();
+      expect(object.fov).toBe(50);
     });
 
-    test.todo('zoom', () => {
-      // implement
+    test('zoom', () => {
+      const object = new PerspectiveCamera();
+      expect(object.zoom).toBe(1);
     });
 
-    test.todo('near', () => {
-      // implement
+    test('near', () => {
+      const object = new PerspectiveCamera();
+      expect(object.near).toBe(0.1);
     });
 
-    test.todo('far', () => {
-      // implement
+    test('far', () => {
+      const object = new PerspectiveCamera();
+      expect(object.far).toBe(2000);
     });
 
-    test.todo('focus', () => {
-      // implement
+    test('focus', () => {
+      const object = new PerspectiveCamera();
+      expect(object.focus).toBe(10);
     });
 
-    test.todo('aspect', () => {
-      // implement
+    test('aspect', () => {
+      const object = new PerspectiveCamera();
+      expect(object.aspect).toBe(1);
     });
 
-    test.todo('view', () => {
-      // implement
+    test('view', () => {
+      const object = new PerspectiveCamera();
+      expect(object.view).toBeNull();
     });
 
-    test.todo('filmGauge', () => {
-      // implement
+    test('filmGauge', () => {
+      const object = new PerspectiveCamera();
+      expect(object.filmGauge).toBe(35);
     });
 
-    test.todo('filmOffset', () => {
-      // implement
+    test('filmOffset', () => {
+      const object = new PerspectiveCamera();
+      expect(object.filmOffset).toBe(0);
     });
 
     test.todo('copy', () => {
