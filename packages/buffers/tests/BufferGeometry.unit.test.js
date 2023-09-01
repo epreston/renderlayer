@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 import { x, y, z } from './math-constants.js';
 
 import { EventDispatcher } from '@renderlayer/core';
@@ -71,8 +71,25 @@ describe('Buffers', () => {
       expect(object).toBeDefined();
     });
 
-    test.todo('id', () => {
-      // implement
+    test('isBufferGeometry', () => {
+      const object = new BufferGeometry();
+      expect(object.isBufferGeometry).toBeTruthy();
+    });
+
+    test('type', () => {
+      const object = new BufferGeometry();
+      expect(object.type).toBe('BufferGeometry');
+    });
+
+    test('id', () => {
+      const object = new BufferGeometry();
+      expect(object.id).toBeDefined();
+
+      // can change based on order of tests
+      const prevId = object.id;
+
+      const object2 = new BufferGeometry();
+      expect(object2.id).toBeGreaterThan(prevId);
     });
 
     test('uuid', () => {
@@ -84,11 +101,6 @@ describe('Buffers', () => {
 
     test.todo('name', () => {
       // implement
-    });
-
-    test('type', () => {
-      const object = new BufferGeometry();
-      expect(object.type === 'BufferGeometry').toBeTruthy();
     });
 
     test.todo('index', () => {
@@ -125,11 +137,6 @@ describe('Buffers', () => {
 
     test.todo('userData', () => {
       // implement
-    });
-
-    test('isBufferGeometry', () => {
-      const object = new BufferGeometry();
-      expect(object.isBufferGeometry).toBeTruthy();
     });
 
     test('setIndex/getIndex', () => {
