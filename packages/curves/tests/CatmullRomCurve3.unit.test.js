@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Vector3 } from '@renderlayer/math';
 import { Curve } from '../src/core/Curve.js';
@@ -25,9 +25,14 @@ describe('Curves', () => {
       expect(object).toBeInstanceOf(Curve);
     });
 
+    test('isCatmullRomCurve3', () => {
+      const object = new CatmullRomCurve3();
+      expect(object.isCatmullRomCurve3).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new CatmullRomCurve3();
-      expect(object.type === 'CatmullRomCurve3').toBeTruthy();
+      expect(object.type).toBe('CatmullRomCurve3');
     });
 
     test.todo('points', () => {
@@ -46,25 +51,89 @@ describe('Curves', () => {
       // implement
     });
 
-    test('isCatmullRomCurve3', () => {
-      const object = new CatmullRomCurve3();
-      expect(object.isCatmullRomCurve3).toBeTruthy();
-    });
-
     test.todo('getPoint', () => {
       // implement
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const curve = new CatmullRomCurve3();
+      const _curve = new CatmullRomCurve3(positions);
+
+      curve.copy(_curve);
+
+      expect(curve).not.toBe(_curve);
+      expect(curve).toStrictEqual(_curve);
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const curve = new CatmullRomCurve3(positions);
+      // @prettier-ignore
+      expect(curve).toMatchInlineSnapshot(`
+        {
+          "arcLengthDivisions": 200,
+          "closed": false,
+          "curveType": "centripetal",
+          "metadata": {
+            "generator": "Curve.toJSON",
+            "type": "Curve",
+            "version": 4.5,
+          },
+          "points": [
+            [
+              -60,
+              -100,
+              60,
+            ],
+            [
+              -60,
+              20,
+              60,
+            ],
+            [
+              -60,
+              120,
+              60,
+            ],
+            [
+              60,
+              20,
+              -60,
+            ],
+            [
+              60,
+              -100,
+              -60,
+            ],
+          ],
+          "tension": 0.5,
+          "type": "CatmullRomCurve3",
+        }
+      `);
     });
 
-    test.todo('fromJSON', () => {
-      // implement
+    test('fromJSON', () => {
+      const curve = new CatmullRomCurve3().fromJSON({
+        arcLengthDivisions: 200,
+        closed: false,
+        curveType: 'centripetal',
+        metadata: {
+          generator: 'Curve.toJSON',
+          type: 'Curve',
+          version: 4.5
+        },
+        points: [
+          [-60, -100, 60],
+          [-60, 20, 60],
+          [-60, 120, 60],
+          [60, 20, -60],
+          [60, -100, -60]
+        ],
+        tension: 0.5,
+        type: 'CatmullRomCurve3'
+      });
+
+      const curve2 = new CatmullRomCurve3(positions);
+      expect(curve2).toStrictEqual(curve);
     });
 
     test('catmullrom check', () => {
