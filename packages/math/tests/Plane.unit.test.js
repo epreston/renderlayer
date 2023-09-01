@@ -202,9 +202,11 @@ describe('Maths', () => {
       expect(point.equals(new Vector3(3, 0, 0))).toBeTruthy();
     });
 
-    test.todo('intersectsLine', () => {
-      // intersectsLine( line ) // - boolean variant of above
-      // implement
+    test('intersectsLine', () => {
+      const plane = new Plane(new Vector3(1, 0, 0), 0);
+      const line = new Line3(new Vector3(-10, 0, 0), new Vector3(10, 0, 0));
+
+      expect(plane.intersectsLine(line)).toBeTruthy();
     });
 
     test('intersectsBox', () => {
