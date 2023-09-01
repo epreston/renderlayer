@@ -21,8 +21,28 @@ describe('Core', () => {
       expect(object).toBeInstanceOf(EventDispatcher);
     });
 
-    test.todo('id', () => {
-      // implement
+    test('isObject3D', () => {
+      const object = new Object3D();
+      expect(object.isObject3D).toBeTruthy();
+
+      const object2 = {};
+      expect(object2.isObject3D).toBeUndefined();
+    });
+
+    test('type', () => {
+      const object = new Object3D();
+      expect(object.type).toBe('Object3D');
+    });
+
+    test('id', () => {
+      const object = new Object3D();
+      expect(object.id).toBeDefined();
+
+      // can change based on order of tests
+      const prevId = object.id;
+
+      const object2 = new Object3D();
+      expect(object2.id).toBeGreaterThan(prevId);
     });
 
     test('uuid', () => {
@@ -38,11 +58,6 @@ describe('Core', () => {
 
       object.name = 'root';
       expect(object.name).toEqual('root');
-    });
-
-    test('type', () => {
-      const object = new Object3D();
-      expect(object.type === 'Object3D').toBeTruthy();
     });
 
     test('parent', () => {
@@ -184,14 +199,6 @@ describe('Core', () => {
       } finally {
         Object3D.DEFAULT_MATRIX_AUTO_UPDATE = currentDefaultMatrixAutoUpdate;
       }
-    });
-
-    test('isObject3D', () => {
-      const object = new Object3D();
-      expect(object.isObject3D).toBeTruthy();
-
-      const object2 = {};
-      expect(object2.isObject3D).toBeUndefined();
     });
 
     test.todo('onBeforeRender', () => {
