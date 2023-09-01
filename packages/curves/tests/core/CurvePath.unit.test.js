@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Curve } from '../../src/core/Curve.js';
 import { CurvePath } from '../../src/core/CurvePath.js';
@@ -18,15 +18,17 @@ describe('Curves', () => {
 
       test('type', () => {
         const object = new Curve();
-        expect(object.type === 'Curve').toBeTruthy();
+        expect(object.type).toBe('Curve');
       });
 
-      test.todo('curves', () => {
-        // implement
+      test('curves', () => {
+        const object = new CurvePath();
+        expect(object.curves).toBeInstanceOf(Array);
       });
 
-      test.todo('autoClose', () => {
-        // implement
+      test('autoClose', () => {
+        const object = new CurvePath();
+        expect(object.autoClose).toBe(false);
       });
 
       test.todo('add', () => {
