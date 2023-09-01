@@ -133,6 +133,7 @@ describe('Curves', () => {
         v2: [10, 10]
       });
 
+      expect(_curve).not.toBe(curve);
       expect(_curve).toStrictEqual(curve);
     });
 
