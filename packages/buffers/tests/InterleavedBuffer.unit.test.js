@@ -104,8 +104,16 @@ describe('Buffers', () => {
       expect(instance.array[0] === 0 && instance.array[1] === -1).toBeTruthy();
     });
 
-    test.todo('clone', () => {
-      // implement
+    test('clone', () => {
+      const object = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const data = {};
+      const clonedObject = object.clone(data);
+
+      // will be different
+      clonedObject.uuid = object.uuid;
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
     test('onUpload', () => {
