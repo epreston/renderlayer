@@ -26,6 +26,16 @@ describe('Materials', () => {
       expect(object).toBeInstanceOf(EventDispatcher);
     });
 
+    test('isMaterial', () => {
+      const object = new Material();
+      expect(object.isMaterial).toBeTruthy();
+    });
+
+    test('type', () => {
+      const object = new Material();
+      expect(object.type).toBe('Material');
+    });
+
     test('id', () => {
       const object = new Material();
       expect(object.id).toBeDefined();
@@ -47,16 +57,6 @@ describe('Materials', () => {
     test('name', () => {
       const object = new Material();
       expect(object.name).toBe('');
-    });
-
-    test('isMaterial', () => {
-      const object = new Material();
-      expect(object.isMaterial).toBeTruthy();
-    });
-
-    test('type', () => {
-      const object = new Material();
-      expect(object.type).toBe('Material');
     });
 
     test('blending', () => {
@@ -254,9 +254,13 @@ describe('Materials', () => {
       expect(object.alphaTest).toBe(0);
     });
 
-    test.todo('needsUpdate', () => {
-      // set needsUpdate
-      // implement
+    test('needsUpdate', () => {
+      const object = new Material();
+      expect(object.version).toBe(0);
+
+      object.needsUpdate = true;
+
+      expect(object.version).toBe(1);
     });
 
     test.todo('onBuild', () => {
@@ -279,12 +283,43 @@ describe('Materials', () => {
       // implement
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const object = new Material();
+      object.uuid = 'c67ecd1b-cb30-456a-82e4-f07057001d31';
+      expect(object).toMatchInlineSnapshot(`
+        {
+          "colorWrite": true,
+          "depthFunc": 3,
+          "depthTest": true,
+          "depthWrite": true,
+          "metadata": {
+            "generator": "Material.toJSON",
+            "type": "Material",
+            "version": 4.5,
+          },
+          "stencilFail": 7680,
+          "stencilFunc": 519,
+          "stencilFuncMask": 255,
+          "stencilRef": 0,
+          "stencilWrite": false,
+          "stencilWriteMask": 255,
+          "stencilZFail": 7680,
+          "stencilZPass": 7680,
+          "type": "Material",
+          "uuid": "c67ecd1b-cb30-456a-82e4-f07057001d31",
+        }
+      `);
     });
 
-    test.todo('clone', () => {
-      // implement
+    test('clone', () => {
+      const object = new Material();
+      const clonedObject = object.clone();
+
+      // will be different
+      clonedObject.uuid = object.uuid;
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
     test.todo('copy', () => {
