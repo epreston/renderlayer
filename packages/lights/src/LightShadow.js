@@ -84,6 +84,8 @@ class LightShadow {
   }
 
   copy(source) {
+    // EP: bugged because of camera position not writable?
+
     this.camera = source.camera.clone();
 
     this.bias = source.bias;
@@ -96,6 +98,8 @@ class LightShadow {
 
   /** @returns {this} */
   clone() {
+    // EP: bugged because of camera position not writable?
+
     return new this.constructor().copy(this);
   }
 
