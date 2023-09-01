@@ -65,8 +65,9 @@ describe('Lights', () => {
       // implement
     });
 
-    test.todo('needsUpdate', () => {
-      // implement
+    test('needsUpdate', () => {
+      const object = new LightShadow();
+      expect(object.needsUpdate).toBe(false);
     });
 
     test.todo('getViewportCount', () => {
