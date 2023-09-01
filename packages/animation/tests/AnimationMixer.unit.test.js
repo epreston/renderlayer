@@ -38,16 +38,29 @@ describe('Animation', () => {
       expect(object).toBeInstanceOf(EventDispatcher);
     });
 
-    test.todo('time', () => {
-      // implement
+    test('time', () => {
+      const obj = new Object3D();
+      const animMixer = new AnimationMixer(obj);
+
+      expect(animMixer.time).toBe(0);
     });
 
-    test.todo('timeScale', () => {
-      // implement
+    test('timeScale', () => {
+      const obj = new Object3D();
+      const animMixer = new AnimationMixer(obj);
+
+      expect(animMixer.timeScale).toBe(1);
     });
 
-    test.todo('clipAction', () => {
-      // implement
+    test('clipAction', () => {
+      const obj = new Object3D();
+      const animMixer = new AnimationMixer(obj);
+      const clips = getClips(zero3, one3, two3, one3, 1);
+      const actionA = animMixer.clipAction(clips[0]);
+
+      expect(actionA).toBeDefined();
+      expect(actionA.time).toBe(0);
+      expect(actionA.timeScale).toBe(1);
     });
 
     test.todo('existingAction', () => {
