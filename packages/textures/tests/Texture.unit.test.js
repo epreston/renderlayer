@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { EventDispatcher } from '@renderlayer/core';
 import { Texture } from '../src/Texture.js';
@@ -14,6 +14,11 @@ describe('Textures', () => {
     test('extends', () => {
       const object = new Texture();
       expect(object).toBeInstanceOf(EventDispatcher);
+    });
+
+    test('isTexture', () => {
+      const object = new Texture();
+      expect(object.isTexture).toBeTruthy();
     });
 
     test.todo('image', () => {
@@ -139,11 +144,6 @@ describe('Textures', () => {
       // implement
     });
 
-    test('isTexture', () => {
-      const object = new Texture();
-      expect(object.isTexture).toBeTruthy();
-    });
-
     test.todo('updateMatrix', () => {
       // implement
     });
@@ -156,8 +156,55 @@ describe('Textures', () => {
       // implement
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const object = new Texture();
+
+      // source becomes image in output
+      object.source.uuid = '9ae69e66-9d0f-44a4-b9f2-c8bf45dde5b8';
+      object.uuid = 'd7f92a28-2076-4957-b10e-5427f9bc610c';
+
+      expect(object).toMatchInlineSnapshot(`
+        {
+          "anisotropy": 1,
+          "center": [
+            0,
+            0,
+          ],
+          "channel": 0,
+          "colorSpace": "",
+          "flipY": true,
+          "format": 1023,
+          "generateMipmaps": true,
+          "image": "9ae69e66-9d0f-44a4-b9f2-c8bf45dde5b8",
+          "internalFormat": null,
+          "magFilter": 1006,
+          "mapping": 300,
+          "metadata": {
+            "generator": "Texture.toJSON",
+            "type": "Texture",
+            "version": 4.5,
+          },
+          "minFilter": 1008,
+          "name": "",
+          "offset": [
+            0,
+            0,
+          ],
+          "premultiplyAlpha": false,
+          "repeat": [
+            1,
+            1,
+          ],
+          "rotation": 0,
+          "type": 1009,
+          "unpackAlignment": 4,
+          "uuid": "d7f92a28-2076-4957-b10e-5427f9bc610c",
+          "wrap": [
+            1001,
+            1001,
+          ],
+        }
+      `);
     });
 
     test('dispose', () => {
