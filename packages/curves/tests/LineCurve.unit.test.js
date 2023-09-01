@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 import { Vector2 } from '@renderlayer/math';
 import { Curve } from '../src/core/Curve.js';
@@ -31,9 +31,14 @@ describe('Curves', () => {
       expect(object).toBeDefined();
     });
 
+    test('isLineCurve', () => {
+      const object = new LineCurve();
+      expect(object.isLineCurve).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new LineCurve();
-      expect(object.type === 'LineCurve').toBeTruthy();
+      expect(object.type).toBe('LineCurve');
     });
 
     test.todo('v1', () => {
@@ -42,11 +47,6 @@ describe('Curves', () => {
 
     test.todo('v2', () => {
       // implement
-    });
-
-    test('isLineCurve', () => {
-      const object = new LineCurve();
-      expect(object.isLineCurve).toBeTruthy();
     });
 
     test.todo('getPoint', () => {
@@ -89,16 +89,51 @@ describe('Curves', () => {
       expect(tangent.y).toBeCloseTo(expectedTangent);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const curve = new LineCurve();
+
+      curve.copy(_curve);
+
+      expect(curve).not.toBe(_curve);
+      expect(curve).toStrictEqual(_curve);
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      expect(_curve).toMatchInlineSnapshot(`
+        {
+          "arcLengthDivisions": 200,
+          "metadata": {
+            "generator": "Curve.toJSON",
+            "type": "Curve",
+            "version": 4.5,
+          },
+          "type": "LineCurve",
+          "v1": [
+            0,
+            0,
+          ],
+          "v2": [
+            10,
+            10,
+          ],
+        }
+      `);
     });
 
-    test.todo('fromJSON', () => {
-      // implement
+    test('fromJSON', () => {
+      const curve = new LineCurve().fromJSON({
+        arcLengthDivisions: 200,
+        metadata: {
+          generator: 'Curve.toJSON',
+          type: 'Curve',
+          version: 4.5
+        },
+        type: 'LineCurve',
+        v1: [0, 0],
+        v2: [10, 10]
+      });
+
+      expect(_curve).toStrictEqual(curve);
     });
 
     test('Simple curve', () => {
