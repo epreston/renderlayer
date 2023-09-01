@@ -1,17 +1,23 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { InterleavedBuffer } from '../src/InterleavedBuffer.js';
 import { InterleavedBufferAttribute } from '../src/InterleavedBufferAttribute.js';
 
-describe('Core', () => {
+describe('Buffers', () => {
   describe('InterleavedBufferAttribute', () => {
     test('constructor', () => {
       const object = new InterleavedBufferAttribute();
       expect(object).toBeDefined();
     });
 
-    test.todo('name', () => {
-      // implement
+    test('isInterleavedBufferAttribute', () => {
+      const object = new InterleavedBufferAttribute();
+      expect(object.isInterleavedBufferAttribute).toBeTruthy();
+    });
+
+    test('name', () => {
+      const object = new InterleavedBufferAttribute();
+      expect(object.name).toBe('');
     });
 
     test.todo('data', () => {
@@ -35,7 +41,7 @@ describe('Core', () => {
       const instance = new InterleavedBufferAttribute(buffer, 2, 0);
 
       // count is calculated via array length / stride
-      expect(instance.count === 2).toBeTruthy();
+      expect(instance.count).toBe(2);
     });
 
     test.todo('array', () => {
@@ -45,11 +51,6 @@ describe('Core', () => {
     test.todo('needsUpdate', () => {
       // set needsUpdate( value )
       // implement
-    });
-
-    test('isInterleavedBufferAttribute', () => {
-      const object = new InterleavedBufferAttribute();
-      expect(object.isInterleavedBufferAttribute).toBeTruthy();
     });
 
     test.todo('applyMatrix4', () => {
@@ -127,8 +128,25 @@ describe('Core', () => {
       // implement
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const instance = new InterleavedBufferAttribute(buffer, 2, 0);
+
+      expect(instance).toMatchInlineSnapshot(`
+        {
+          "array": [
+            1,
+            2,
+            7,
+            8,
+          ],
+          "itemSize": 2,
+          "normalized": false,
+          "type": "Float32Array",
+        }
+      `);
+
+      expect('de-interleave buffer data').toHaveBeenWarnedTimes(1);
     });
   });
 });
