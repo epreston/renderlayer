@@ -108,6 +108,7 @@ class Texture extends EventDispatcher {
     return new this.constructor().copy(this);
   }
 
+  /** @param {Texture} source */
   copy(source) {
     this.name = source.name;
 
