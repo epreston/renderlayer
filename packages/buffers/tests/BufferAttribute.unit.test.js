@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { DynamicDrawUsage } from '@renderlayer/shared';
 import { toHalfFloat, fromHalfFloat } from '../src/BufferAttributeUtils.js';
@@ -26,6 +26,11 @@ describe('Buffers', () => {
       expect(
         () => new BufferAttribute([1, 2, 3, 4], 2, false)
       ).toThrow('array should be a Typed Array');
+    });
+
+    test('isBufferAttribute', () => {
+      const object = new BufferAttribute();
+      expect(object.isBufferAttribute).toBeTruthy();
     });
 
     test.todo('name', () => {
@@ -71,11 +76,6 @@ describe('Buffers', () => {
       // implement
     });
 
-    test('isBufferAttribute', () => {
-      const object = new BufferAttribute();
-      expect(object.isBufferAttribute).toBeTruthy();
-    });
-
     test('setUsage', () => {
       const attr = new BufferAttribute();
       attr.setUsage(DynamicDrawUsage);
@@ -90,10 +90,10 @@ describe('Buffers', () => {
 
       const attrCopy = new BufferAttribute().copy(attr);
 
-      expect(attr.count === attrCopy.count).toBeTruthy();
-      expect(attr.itemSize === attrCopy.itemSize).toBeTruthy();
-      expect(attr.usage === attrCopy.usage).toBeTruthy();
-      expect(attr.array.length === attrCopy.array.length).toBeTruthy();
+      expect(attr.count).toBe(attrCopy.count);
+      expect(attr.itemSize).toBe(attrCopy.itemSize);
+      expect(attr.usage).toBe(attrCopy.usage);
+      expect(attr.array.length).toBe(attrCopy.array.length);
       expect(attr.version === 1 && attrCopy.version === 0).toBeTruthy();
     });
 
