@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 import { Vector3 } from '@renderlayer/math';
 import { Curve } from '../src/core/Curve.js';
@@ -31,6 +31,11 @@ describe('Curves', () => {
       expect(object).toBeInstanceOf(Curve);
     });
 
+    test('isLineCurve3', () => {
+      const object = new LineCurve3();
+      expect(object.isLineCurve3).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new LineCurve3();
       expect(object.type === 'LineCurve3').toBeTruthy();
@@ -44,11 +49,6 @@ describe('Curves', () => {
     test.todo('v2', () => {
       // Vector3 exists
       // implement
-    });
-
-    test('isLineCurve3', () => {
-      const object = new LineCurve3();
-      expect(object.isLineCurve3).toBeTruthy();
     });
 
     test.todo('getPoint', () => {
@@ -75,16 +75,53 @@ describe('Curves', () => {
       expect(points).toEqual(expectedPoints);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const curve = new LineCurve3();
+
+      curve.copy(_curve);
+
+      expect(curve).not.toBe(_curve);
+      expect(curve).toStrictEqual(_curve);
     });
 
-    test.todo('toJSON', () => {
-      // implement
+    test('toJSON', () => {
+      expect(_curve).toMatchInlineSnapshot(`
+        {
+          "arcLengthDivisions": 200,
+          "metadata": {
+            "generator": "Curve.toJSON",
+            "type": "Curve",
+            "version": 4.5,
+          },
+          "type": "LineCurve3",
+          "v1": [
+            0,
+            0,
+            0,
+          ],
+          "v2": [
+            10,
+            10,
+            10,
+          ],
+        }
+      `);
     });
 
-    test.todo('fromJSON', () => {
-      // implement
+    test('fromJSON', () => {
+      const curve = new LineCurve3().fromJSON({
+        arcLengthDivisions: 200,
+        metadata: {
+          generator: 'Curve.toJSON',
+          type: 'Curve',
+          version: 4.5
+        },
+        type: 'LineCurve3',
+        v1: [0, 0, 0],
+        v2: [10, 10, 10]
+      });
+
+      expect(_curve).toStrictEqual(curve);
     });
 
     test('Simple curve', () => {
