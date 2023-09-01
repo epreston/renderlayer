@@ -4,7 +4,12 @@ import { Interpolant } from '../src/Interpolant.js';
 import { CubicInterpolant } from '../src/CubicInterpolant.js';
 
 function createCubicInterpolant() {
-  return new CubicInterpolant(new Float32Array(2), new Float32Array(2), 1, new Float32Array(1));
+  const positions = new Float32Array([1, 11, 2, 22, 3, 33]);
+  const values = new Float32Array([1, 11, 2, 22, 3, 33]);
+  const size = 1;
+  const result = new Float32Array(1);
+
+  return new CubicInterpolant(positions, values, size, result);
 }
 
 describe('Interpolants', () => {
@@ -24,26 +29,26 @@ describe('Interpolants', () => {
       const object = createCubicInterpolant();
       const evalResult = object.evaluate(0.5);
       expect(evalResult.length).toBe(1);
-      expect(evalResult[0]).toBe(0);
+      expect(evalResult[0]).toBe(1);
 
       object.intervalChanged_(1, 11, 22);
 
       expect(object._weightPrev).toBe(-0.5);
-      expect(object._weightNext).toBe(-0.5);
+      expect(object._weightNext).toBe(-0.275);
       expect(object._offsetPrev).toBe(1);
-      expect(object._offsetNext).toBe(0);
+      expect(object._offsetNext).toBe(2);
     });
 
     test('interpolate_', () => {
       const object = createCubicInterpolant();
       const evalResult = object.evaluate(0.5);
       expect(evalResult.length).toBe(1);
-      expect(evalResult[0]).toBe(0);
+      expect(evalResult[0]).toBe(1);
 
-      const result = object.interpolate_(1, 11, 11, 22);
+      const result = object.interpolate_(4, 3, 2, 1);
 
       expect(result.length).toBe(1);
-      expect(result[0]).toBe(0);
+      expect(result[0]).toBe(12.5);
     });
   });
 });
