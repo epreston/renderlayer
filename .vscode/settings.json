@@ -89,6 +89,7 @@
     "MORPHTARGETS",
     "multisampled",
     "multiscattering",
+    "neighboring",
     "NORMALMAP",
     "OBJECTSPACE",
     "Phong",
