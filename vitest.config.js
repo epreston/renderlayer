@@ -22,6 +22,7 @@ export default mergeConfig(
         exclude: [
           ...configDefaults.coverage.exclude,
           // mostly entries that skew coverage reports
+          'scripts/mocks',
           'packages/shaders/src/ShaderChunk/**',
           'packages/shaders/src/ShaderLib/**'
         ]
