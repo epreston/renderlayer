@@ -15,12 +15,13 @@ describe('Renderers', () => {
       expect(object).toBeInstanceOf(WebGLRenderTarget);
     });
 
-    test.todo('texture', () => {
-      // doc update needed, this needs to be a CubeTexture unlike parent class
-      // implement
+    test('isWebGLCubeRenderTarget', () => {
+      const object = new WebGLCubeRenderTarget();
+      expect(object.isWebGLCubeRenderTarget).toBeTruthy();
     });
 
-    test.todo('isWebGLCubeRenderTarget', () => {
+    test.todo('texture', () => {
+      // doc update needed, this needs to be a CubeTexture unlike parent class
       // implement
     });
 
@@ -30,6 +31,7 @@ describe('Renderers', () => {
 
     test.todo('clear', () => {
       // implement
+      // see CubeCamera
     });
   });
 });
