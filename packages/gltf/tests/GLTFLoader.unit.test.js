@@ -1,7 +1,18 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+// @vitest-environment jsdom
 
-import { GLTFLoader } from '../src/GLTFLoader.js';
+import { describe, expect, it, test, vi } from 'vitest';
+
 import { Loader } from '@renderlayer/loaders';
+import { GLTFLoader } from '../src/GLTFLoader.js';
+
+function resolveAfter(ms) {
+  // introduces a delay
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// will be intercepted by msw, not a real url
+const BoxTestFile = 'http://renderlayer.org/test/gltf/Box.gltf';
+const MissingTestFile = 'http://renderlayer.org/test/gltf/Missing.gltf';
 
 describe('GLTF', () => {
   describe('GLTFLoader', () => {
@@ -15,8 +26,35 @@ describe('GLTF', () => {
       expect(object).toBeInstanceOf(Loader);
     });
 
-    test.todo('load', () => {
-      // implement
+    test('load', async () => {
+      const onLoad = vi.fn();
+      const onProgress = vi.fn();
+      const onError = vi.fn();
+
+      const object = new GLTFLoader();
+
+      // --------------------
+      // good file
+      object.load(BoxTestFile, onLoad, onProgress, onError);
+
+      // allow time for fetch and async code to compete before asserts
+      await resolveAfter(100);
+      expect(onLoad).toHaveBeenCalled();
+      expect(onProgress).toHaveBeenCalled();
+      expect(onError).not.toHaveBeenCalled();
+
+      vi.clearAllMocks();
+
+      // --------------------
+      // bad file
+      object.load(MissingTestFile, onLoad, onProgress, onError);
+
+      // allow time for fetch and async code to compete before asserts
+      await resolveAfter(100);
+      expect(onLoad).not.toHaveBeenCalled();
+      expect(onProgress).not.toHaveBeenCalled();
+      expect(onError).toHaveBeenCalled();
+      expect('missing test file').toHaveBeenWarned();
     });
 
     test.todo('setDRACOLoader', () => {
