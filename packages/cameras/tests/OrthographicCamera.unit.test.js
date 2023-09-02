@@ -78,12 +78,8 @@ describe('Cameras', () => {
     });
 
     test('updateProjectionMatrix', () => {
-      const left = -1,
-        right = 1,
-        top = 1,
-        bottom = -1,
-        near = 1,
-        far = 3;
+      // prettier-ignore
+      const left = -1, right = 1, top = 1, bottom = -1, near = 1, far = 3;
       const cam = new OrthographicCamera(left, right, top, bottom, near, far);
 
       // updateProjectionMatrix is called in constructor
@@ -104,12 +100,8 @@ describe('Cameras', () => {
     });
 
     test('toJSON', () => {
-      const left = -1.5,
-        right = 1.5,
-        top = 1,
-        bottom = -1,
-        near = 0.1,
-        far = 42;
+      // prettier-ignore
+      const left = -1.5, right = 1.5, top = 1, bottom = -1, near = 0.1, far = 42;
       const cam = new OrthographicCamera(left, right, top, bottom, near, far);
       cam.uuid = 'b67e5706-a8aa-410b-b306-e71461b67e2f';
 
@@ -118,12 +110,8 @@ describe('Cameras', () => {
 
     // TODO: clone is a camera methods that relied to copy method
     test('clone', () => {
-      const left = -1.5,
-        right = 1.5,
-        top = 1,
-        bottom = -1,
-        near = 0.1,
-        far = 42;
+      // prettier-ignore
+      const left = -1.5, right = 1.5, top = 1, bottom = -1, near = 0.1, far = 42;
       const cam = new OrthographicCamera(left, right, top, bottom, near, far);
 
       const clonedCam = cam.clone();
