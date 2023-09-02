@@ -65,8 +65,17 @@ describe('Cameras', () => {
       expect(object.far).toBe(2000);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      // prettier-ignore
+      const left = -1.5, right = 1.5, top = 1, bottom = -1, near = 0.1, far = 42;
+      const object = new OrthographicCamera(left, right, top, bottom, near, far);
+      const clonedObject = new OrthographicCamera().copy(object, true);
+
+      // will be different
+      clonedObject.uuid = object.uuid;
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
     test('setViewOffset', () => {
