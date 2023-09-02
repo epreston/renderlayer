@@ -22,8 +22,11 @@ describe('Buffers', () => {
       expect(object.isInstancedInterleavedBuffer).toBeTruthy();
     });
 
-    test.todo('meshPerAttribute', () => {
-      // implement
+    test('meshPerAttribute', () => {
+      const array = new Float32Array([1, 2, 3, 7, 8, 9]);
+      const instance = new InstancedInterleavedBuffer(array, 3);
+
+      expect(instance.meshPerAttribute).toBe(1);
     });
 
     test('copy', () => {
@@ -31,7 +34,7 @@ describe('Buffers', () => {
       const instance = new InstancedInterleavedBuffer(array, 3);
       const copiedInstance = instance.copy(instance);
 
-      expect(copiedInstance.meshPerAttribute === 1).toBeTruthy();
+      expect(copiedInstance.meshPerAttribute).toBe(1);
     });
 
     test('clone', () => {
