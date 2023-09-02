@@ -121,24 +121,93 @@ describe('Cameras', () => {
       expect(cam.getFocalLength()).toBeCloseTo(17.0498);
     });
 
-    test.todo('getEffectiveFOV', () => {
-      // implement
+    test('getEffectiveFOV', () => {
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 60;
+      const cam = new PerspectiveCamera(fov, aspect, near, far);
+
+      expect(cam.getEffectiveFOV()).toBeCloseTo(59.9999);
+
+      cam.setFocalLength(50);
+
+      expect(cam.getEffectiveFOV()).toBeCloseTo(22.2753);
     });
 
-    test.todo('getFilmWidth', () => {
-      // implement
+    test('getFilmWidth', () => {
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 90;
+      const cam = new PerspectiveCamera(fov, aspect, near, far);
+
+      expect(cam.getFilmWidth()).toBeCloseTo(35);
     });
 
-    test.todo('getFilmHeight', () => {
-      // implement
+    test('getFilmHeight', () => {
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 90;
+      const cam = new PerspectiveCamera(fov, aspect, near, far);
+
+      expect(cam.getFilmHeight()).toBeCloseTo(19.6875);
     });
 
-    test.todo('setViewOffset', () => {
-      // implement
+    test('setViewOffset', () => {
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 90;
+      const cam = new PerspectiveCamera(fov, aspect, near, far);
+
+      const w = 1920;
+      const h = 1080;
+      const fullWidth = w * 3;
+      const fullHeight = h * 2;
+
+      /*
+       * In grid of 3x2 displays:
+       *
+       *   +---+---+---+
+       *   | A | B | C |
+       *   +---+---+---+
+       *   | D | E | F |
+       *   +---+---+---+
+       *
+       */
+
+      // set camera to render monitor A
+      cam.setViewOffset(fullWidth, fullHeight, w * 0, h * 0, w, h);
+
+      expect(cam.projectionMatrix).toMatchObject({
+        elements: [
+          1.1250000000000004, 0, 0, 0, 0, 2.0000000000000004, 0, 0, -2.0000000000000004, 1, -2, -1,
+          0, 0, -3, 0
+        ]
+      });
     });
 
-    test.todo('clearViewOffset', () => {
-      // implement
+    test('clearViewOffset', () => {
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 90;
+      const cam = new PerspectiveCamera(fov, aspect, near, far);
+
+      const w = 1920;
+      const h = 1080;
+      const fullWidth = w * 3;
+      const fullHeight = h * 2;
+
+      // set camera to render monitor A
+      cam.setViewOffset(fullWidth, fullHeight, w * 0, h * 0, w, h);
+
+      expect(cam.projectionMatrix).toMatchObject({
+        elements: [
+          1.1250000000000004, 0, 0, 0, 0, 2.0000000000000004, 0, 0, -2.0000000000000004, 1, -2, -1,
+          0, 0, -3, 0
+        ]
+      });
+
+      cam.clearViewOffset();
+
+      expect(cam.projectionMatrix).toMatchObject({
+        elements: [
+          0.3750000000000001, 0, 0, 0, 0, 1.0000000000000002, 0, 0, 0, 0, -2, -1, 0, 0, -3, 0
+        ]
+      });
     });
 
     test('updateProjectionMatrix', () => {
