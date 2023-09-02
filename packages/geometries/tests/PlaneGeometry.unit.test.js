@@ -112,8 +112,26 @@ describe('Geometries', () => {
       });
     });
 
-    test.todo('fromJSON', () => {
-      // implement
+    test('fromJSON', () => {
+      const geoFromJson = PlaneGeometry.fromJSON({
+        height: 30,
+        heightSegments: 5,
+        metadata: {
+          generator: 'BufferGeometry.toJSON',
+          type: 'BufferGeometry',
+          version: 4.5
+        },
+        type: 'PlaneGeometry',
+        uuid: 'a2a29151-ed0e-4440-99b2-fd7d56741a16',
+        width: 10,
+        widthSegments: 3
+      });
+
+      // will be different
+      geoFromJson.uuid = geometries[4].uuid;
+
+      expect(geoFromJson).not.toBe(geometries[4]);
+      expect(geoFromJson).toStrictEqual(geometries[4]);
     });
   });
 });
