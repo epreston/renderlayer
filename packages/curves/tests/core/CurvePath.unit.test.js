@@ -84,8 +84,22 @@ describe('Curves', () => {
         `);
       });
 
-      test.todo('fromJSON', () => {
-        // implement
+      test('fromJSON', () => {
+        const object = new CurvePath();
+        const objectFromJson = new CurvePath().fromJSON({
+          arcLengthDivisions: 200,
+          autoClose: false,
+          curves: [],
+          metadata: {
+            generator: 'Curve.toJSON',
+            type: 'Curve',
+            version: 4.5
+          },
+          type: 'CurvePath'
+        });
+
+        expect(objectFromJson).not.toBe(object);
+        expect(objectFromJson).toStrictEqual(object);
       });
     });
   });
