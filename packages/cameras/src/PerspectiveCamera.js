@@ -19,7 +19,7 @@ class PerspectiveCamera extends Camera {
     this.aspect = aspect;
     this.view = null;
 
-    this.filmGauge = 35; // width of the film (default in millimeters)
+    this.filmGauge = 35; // width of the film (default in millimetres)
     this.filmOffset = 0; // horizontal film offset (same unit as gauge)
 
     this.updateProjectionMatrix();
