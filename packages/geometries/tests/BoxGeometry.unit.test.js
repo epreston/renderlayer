@@ -114,8 +114,28 @@ describe('Geometries', () => {
       });
     });
 
-    test.todo('fromJSON', () => {
-      // implement
+    test('fromJSON', () => {
+      const geoFromJson = BoxGeometry.fromJSON({
+        depth: 30,
+        depthSegments: 4,
+        height: 20,
+        heightSegments: 3,
+        metadata: {
+          generator: 'BufferGeometry.toJSON',
+          type: 'BufferGeometry',
+          version: 4.5
+        },
+        type: 'BoxGeometry',
+        uuid: 'c70610e7-3112-40ec-99a4-a627bb9ad895',
+        width: 10,
+        widthSegments: 2
+      });
+
+      // will be different
+      geoFromJson.uuid = geometries[2].uuid;
+
+      expect(geoFromJson).not.toBe(geometries[2]);
+      expect(geoFromJson).toStrictEqual(geometries[2]);
     });
   });
 });
