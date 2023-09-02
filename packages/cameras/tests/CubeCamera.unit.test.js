@@ -57,6 +57,7 @@ describe('Cameras', () => {
 
       const object = new CubeCamera(near, far, renderTarget);
 
+      // mocks
       const renderer = new WebGLRenderer();
       const scene = new Scene();
 
