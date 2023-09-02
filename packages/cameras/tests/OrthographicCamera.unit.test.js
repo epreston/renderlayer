@@ -69,12 +69,64 @@ describe('Cameras', () => {
       // implement
     });
 
-    test.todo('setViewOffset', () => {
-      // implement
+    test('setViewOffset', () => {
+      // prettier-ignore
+      const left = -1.5, right = 1.5, top = 1, bottom = -1, near = 0.1, far = 42;
+      const cam = new OrthographicCamera(left, right, top, bottom, near, far);
+
+      const w = 1920;
+      const h = 1080;
+      const fullWidth = w * 3;
+      const fullHeight = h * 2;
+
+      /*
+       * In grid of 3x2 displays:
+       *
+       *   +---+---+---+
+       *   | A | B | C |
+       *   +---+---+---+
+       *   | D | E | F |
+       *   +---+---+---+
+       *
+       */
+
+      // set camera to render monitor A
+      cam.setViewOffset(fullWidth, fullHeight, w * 0, h * 0, w, h);
+
+      expect(cam.projectionMatrix).toMatchObject({
+        elements: [
+          2, 0, 0, 0, 0, 2, 0, 0, 0, 0, -0.0477326968973747, 0, 2, -1, -1.0047732696897376, 1
+        ]
+      });
     });
 
-    test.todo('clearViewOffset', () => {
-      // implement
+    test('clearViewOffset', () => {
+      // prettier-ignore
+      const left = -1.5, right = 1.5, top = 1, bottom = -1, near = 0.1, far = 42;
+      const cam = new OrthographicCamera(left, right, top, bottom, near, far);
+
+      const w = 1920;
+      const h = 1080;
+      const fullWidth = w * 3;
+      const fullHeight = h * 2;
+
+      // set camera to render monitor A
+      cam.setViewOffset(fullWidth, fullHeight, w * 0, h * 0, w, h);
+
+      expect(cam.projectionMatrix).toMatchObject({
+        elements: [
+          2, 0, 0, 0, 0, 2, 0, 0, 0, 0, -0.0477326968973747, 0, 2, -1, -1.0047732696897376, 1
+        ]
+      });
+
+      cam.clearViewOffset();
+
+      expect(cam.projectionMatrix).toMatchObject({
+        elements: [
+          0.6666666666666666, 0, 0, 0, 0, 1, 0, 0, 0, 0, -0.0477326968973747, 0, -0, -0,
+          -1.0047732696897376, 1
+        ]
+      });
     });
 
     test('updateProjectionMatrix', () => {
