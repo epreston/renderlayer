@@ -70,6 +70,7 @@ A convenience package is provided to make core packages available to your develo
 | Prettier     | https://prettier.io       |
 | EditorConfig | https://editorconfig.org  |
 | esbuild      | https://esbuild.github.io |
+| mswjs        | https://mswjs.io          |
 
 ## References
 
