@@ -40,6 +40,7 @@
     "execa": "^8.0.1",
     "jsdom": "^22.1.0",
     "minimist": "^1.2.8",
+    "msw": "^1.2.5",
     "nx": "^16.7.4",
     "prettier": "^3.0.3",
     "rollup-plugin-dts": "^6.0.0",

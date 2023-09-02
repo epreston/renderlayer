@@ -1,5 +1,12 @@
-import { beforeEach, afterEach, expect, vi } from 'vitest';
-import { TextEncoder as nodeTextEncoder, TextDecoder as nodeTextDecoder } from 'node:util';
+import { TextDecoder as nodeTextDecoder, TextEncoder as nodeTextEncoder } from 'node:util';
+import { afterAll, afterEach, beforeAll, beforeEach, expect, vi } from 'vitest';
+import { server } from './mocks/server.js';
+
+// mock service worker - test resources and api testing
+// catch unhandled requests { onUnhandledRequest: 'error' };
+beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
+afterAll(() => server.close());
+afterEach(() => server.resetHandlers());
 
 // import crypto from 'node:crypto';
 
