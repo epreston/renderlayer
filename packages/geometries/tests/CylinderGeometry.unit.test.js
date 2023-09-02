@@ -150,8 +150,30 @@ describe('Geometries', () => {
       });
     });
 
-    test.todo('fromJSON', () => {
-      // implement
+    test('fromJSON', () => {
+      const geoFromJson = CylinderGeometry.fromJSON({
+        height: 30,
+        heightSegments: 30,
+        metadata: {
+          generator: 'BufferGeometry.toJSON',
+          type: 'BufferGeometry',
+          version: 4.5
+        },
+        openEnded: true,
+        radialSegments: 20,
+        radiusBottom: 20,
+        radiusTop: 10,
+        thetaLength: 2,
+        thetaStart: 0.1,
+        type: 'CylinderGeometry',
+        uuid: '9559a72d-42b5-44d1-85f3-653e9f468ba0'
+      });
+
+      // will be different
+      geoFromJson.uuid = geometries[8].uuid;
+
+      expect(geoFromJson).not.toBe(geometries[8]);
+      expect(geoFromJson).toStrictEqual(geometries[8]);
     });
   });
 });
