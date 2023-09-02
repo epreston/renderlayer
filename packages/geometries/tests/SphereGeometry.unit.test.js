@@ -7,6 +7,7 @@ import { SphereGeometry } from '../src/SphereGeometry.js';
 
 describe('Geometries', () => {
   describe('SphereGeometry', () => {
+    /** @type {SphereGeometry[]} */
     let geometries = undefined;
 
     beforeEach(function () {
@@ -139,8 +140,29 @@ describe('Geometries', () => {
       });
     });
 
-    test.todo('fromJSON', () => {
-      // implement
+    test('fromJSON', () => {
+      const geoFromJson = SphereGeometry.fromJSON({
+        heightSegments: 30,
+        metadata: {
+          generator: 'BufferGeometry.toJSON',
+          type: 'BufferGeometry',
+          version: 4.5
+        },
+        phiLength: 1,
+        phiStart: 0.5,
+        radius: 10,
+        thetaLength: 2,
+        thetaStart: 0.4,
+        type: 'SphereGeometry',
+        uuid: '4a9a9495-8f45-401c-8103-b3094be35bb3',
+        widthSegments: 20
+      });
+
+      // will be different
+      geoFromJson.uuid = geometries[7].uuid;
+
+      expect(geoFromJson).not.toBe(geometries[7]);
+      expect(geoFromJson).toStrictEqual(geometries[7]);
     });
   });
 });
