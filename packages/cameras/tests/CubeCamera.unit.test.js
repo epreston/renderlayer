@@ -1,6 +1,21 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
+import { LinearMipmapLinearFilter } from '@renderlayer/shared';
+import { WebGLCubeRenderTarget } from '@renderlayer/targets';
+
+import { WebGLRenderer } from '@renderlayer/renderers';
+import { Scene } from '@renderlayer/scenes';
+
+vi.mock('@renderlayer/renderers', () => {
+  const WebGLRenderer = vi.fn();
+  WebGLRenderer.prototype.getRenderTarget = vi.fn();
+  WebGLRenderer.prototype.setRenderTarget = vi.fn();
+  WebGLRenderer.prototype.render = vi.fn();
+  return { WebGLRenderer };
+});
+
+vi.mock('@renderlayer/scenes');
 
 import { CubeCamera } from '../src/CubeCamera.js';
 
@@ -21,13 +36,34 @@ describe('Cameras', () => {
       expect(object.type).toBe('CubeCamera');
     });
 
-    test.todo('renderTarget', () => {
-      // implement
+    test('renderTarget', () => {
+      // prettier-ignore
+      const options = { generateMipmaps: true, minFilter: LinearMipmapLinearFilter };
+      const renderTarget = new WebGLCubeRenderTarget(128, options);
+      const near = 1;
+      const far = 3;
+
+      const object = new CubeCamera(near, far, renderTarget);
+
+      expect(object.renderTarget).toBe(renderTarget);
     });
 
-    test.todo('update', () => {
-      // update( renderer, scene )
-      // implement
+    test('update', () => {
+      // prettier-ignore
+      const options = { generateMipmaps: true, minFilter: LinearMipmapLinearFilter };
+      const renderTarget = new WebGLCubeRenderTarget(128, options);
+      const near = 1;
+      const far = 3;
+
+      const object = new CubeCamera(near, far, renderTarget);
+
+      const renderer = new WebGLRenderer();
+      const scene = new Scene();
+
+      object.update(renderer, scene);
+
+      // mock render all 6 faces
+      expect(renderer.render).toBeCalledTimes(6);
     });
   });
 });
