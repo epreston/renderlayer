@@ -89,8 +89,17 @@ describe('Cameras', () => {
       expect(object.filmOffset).toBe(0);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 90;
+      const object = new PerspectiveCamera(fov, aspect, near, far);
+      const clonedObject = new PerspectiveCamera().copy(object, true);
+
+      // will be different
+      clonedObject.uuid = object.uuid;
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
     test('setFocalLength', () => {
