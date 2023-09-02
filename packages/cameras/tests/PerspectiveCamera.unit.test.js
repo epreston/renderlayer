@@ -93,12 +93,32 @@ describe('Cameras', () => {
       // implement
     });
 
-    test.todo('setFocalLength', () => {
-      // implement
+    test('setFocalLength', () => {
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 90;
+      const cam = new PerspectiveCamera(fov, aspect, near, far);
+
+      cam.setFocalLength(50);
+      expect(cam.projectionMatrix).toMatchObject({
+        elements: [
+          2.857142857142857, 0, 0, 0, 0, 5.079365079365079, 0, 0, 0, 0, -2, -1, 0, 0, -3, 0
+        ]
+      });
+
+      cam.setFocalLength(40);
+      expect(cam.projectionMatrix).toMatchObject({
+        elements: [
+          2.2857142857142856, 0, 0, 0, 0, 4.063492063492063, 0, 0, 0, 0, -2, -1, 0, 0, -3, 0
+        ]
+      });
     });
 
-    test.todo('getFocalLength', () => {
-      // implement
+    test('getFocalLength', () => {
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 60;
+      const cam = new PerspectiveCamera(fov, aspect, near, far);
+
+      expect(cam.getFocalLength()).toBeCloseTo(17.0498);
     });
 
     test.todo('getEffectiveFOV', () => {
@@ -159,11 +179,8 @@ describe('Cameras', () => {
 
     // TODO: clone is a camera methods that relied to copy method
     test('clone', () => {
-      const near = 1,
-        far = 3,
-        aspect = 16 / 9,
-        fov = 90;
-
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 90;
       const cam = new PerspectiveCamera(fov, aspect, near, far);
 
       const clonedCam = cam.clone();
