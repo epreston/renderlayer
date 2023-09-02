@@ -90,8 +90,20 @@ describe('Curves', () => {
         `);
       });
 
-      test.todo('fromJSON', () => {
-        // implement
+      test('fromJSON', () => {
+        const object = new Curve();
+        const objectFromJson = new Curve().fromJSON({
+          arcLengthDivisions: 200,
+          metadata: {
+            generator: 'Curve.toJSON',
+            type: 'Curve',
+            version: 4.5
+          },
+          type: 'Curve'
+        });
+
+        expect(objectFromJson).not.toBe(object);
+        expect(objectFromJson).toStrictEqual(object);
       });
     });
   });
