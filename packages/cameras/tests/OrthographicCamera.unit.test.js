@@ -117,13 +117,13 @@ describe('Cameras', () => {
       const clonedCam = cam.clone();
       expect(cam).not.toBe(clonedCam);
 
-      expect(cam.left === clonedCam.left).toBeTruthy();
-      expect(cam.right === clonedCam.right).toBeTruthy();
-      expect(cam.top === clonedCam.top).toBeTruthy();
-      expect(cam.bottom === clonedCam.bottom).toBeTruthy();
-      expect(cam.near === clonedCam.near).toBeTruthy();
-      expect(cam.far === clonedCam.far).toBeTruthy();
-      expect(cam.zoom === clonedCam.zoom).toBeTruthy();
+      expect(cam.left).toBe(clonedCam.left);
+      expect(cam.right).toBe(clonedCam.right);
+      expect(cam.top).toBe(clonedCam.top);
+      expect(cam.bottom).toBe(clonedCam.bottom);
+      expect(cam.near).toBe(clonedCam.near);
+      expect(cam.far).toBe(clonedCam.far);
+      expect(cam.zoom).toBe(clonedCam.zoom);
     });
   });
 });
