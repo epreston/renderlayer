@@ -1,6 +1,6 @@
 # @renderlayer/gltf
 
-glTF library used by `@renderlayer` packages.
+glTF 2.0 library used by `@renderlayer` packages.
 
 [![NPM version][npm-badge]][npm-url]
 
