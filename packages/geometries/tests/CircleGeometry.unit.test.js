@@ -112,8 +112,26 @@ describe('Geometries', () => {
       });
     });
 
-    test.todo('fromJSON', () => {
-      // implement
+    test('fromJSON', () => {
+      const geoFromJson = CircleGeometry.fromJSON({
+        metadata: {
+          generator: 'BufferGeometry.toJSON',
+          type: 'BufferGeometry',
+          version: 4.5
+        },
+        radius: 10,
+        segments: 20,
+        thetaLength: 0.2,
+        thetaStart: 0.1,
+        type: 'CircleGeometry',
+        uuid: 'edc6a90a-4617-47b6-b4ca-c5e6f7749e2b'
+      });
+
+      // will be different
+      geoFromJson.uuid = geometries[4].uuid;
+
+      expect(geoFromJson).not.toBe(geometries[4]);
+      expect(geoFromJson).toStrictEqual(geometries[4]);
     });
   });
 });
