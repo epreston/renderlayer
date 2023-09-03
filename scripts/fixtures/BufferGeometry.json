@@ -1,0 +1,25 @@
+{
+  "data": {
+    "attributes": {
+      "attr": {
+        "array": [7, 8, 9, 10, 11, 12],
+        "itemSize": 2,
+        "name": "attribute",
+        "normalized": true,
+        "type": "Float32Array",
+        "updateRange": {
+          "count": 2,
+          "offset": 1
+        },
+        "usage": 35048
+      }
+    }
+  },
+  "metadata": {
+    "generator": "BufferGeometry.toJSON",
+    "type": "BufferGeometry",
+    "version": 4.5
+  },
+  "type": "BufferGeometry",
+  "uuid": "8ff324c5-a842-41a5-ad00-b436e304ebe1"
+}
