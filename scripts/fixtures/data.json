@@ -1,0 +1,7 @@
+{
+  "name": "renderlayer",
+  "description": "3D Rendering Layer for the Web",
+  "keywords": ["renderlayer", "3D", "webgl2", "browser", "HTML5"],
+  "author": "Ed Preston",
+  "license": "MIT"
+}
