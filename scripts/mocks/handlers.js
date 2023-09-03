@@ -141,7 +141,7 @@ export const handlers = [
       ctx.body(fileBuffer)
     );
   }),
-  // json
+  // JSON - BufferGeometryLoader, FileLoader
   rest.get('http://renderlayer.org/test/json/:fileName', (req, res, ctx) => {
     const { fileName } = req.params;
     const resolvedFileName = path.resolve(__dirname, `../fixtures/${fileName}`);
