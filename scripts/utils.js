@@ -3,8 +3,8 @@
 
 // based on vue/core mono repo build system
 
-import fs from 'node:fs';
 import chalk from 'chalk';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -51,4 +51,17 @@ export function fuzzyMatchTarget(partialTargets, includeAllMatching) {
 
     process.exit(1);
   }
+}
+
+export function resolveAfter(ms) {
+  // introduces a delay
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const scheduler = typeof setImmediate === 'function' ? setImmediate : setTimeout;
+// Credit to: https://github.com/kentor/flush-promises
+export function flushPromises() {
+  return new Promise(function (resolve) {
+    scheduler(resolve, 0);
+  });
 }
