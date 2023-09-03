@@ -16,6 +16,11 @@ export default mergeConfig(
       threads: !process.env.GITHUB_ACTIONS,
       setupFiles: ['./scripts/vitest-setup.js'],
       // includeSource: ['src/**/*.{js,ts}'], // enable inline tests
+      // environmentOptions: {
+      //   jsdom: {
+      //     resources: 'usable'
+      //   }
+      // },
       coverage: {
         provider: 'v8',
         reporter: ['text-summary', 'html'],
