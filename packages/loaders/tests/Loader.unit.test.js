@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { LoadingManager } from '../src/LoadingManager.js';
 import { Loader } from '../src/Loader.js';
@@ -46,36 +46,67 @@ describe('Loaders', () => {
       expect(actual).toEqual(expected);
     });
 
-    test.todo('load', () => {
-      // implement
+    test('load', () => {
+      // abstract method
+      const object = new Loader();
+      expect(object.load).toBeDefined();
+
+      const url = 'test/file.json';
+      const onLoad = vi.fn();
+      const onProgress = vi.fn();
+      const onError = vi.fn();
+
+      // @ts-ignore
+      object.load(url, onLoad, onProgress, onError);
     });
 
-    test.todo('loadAsync', () => {
-      // implement
+    test('loadAsync', async () => {
+      // promise wrapper for abstract load method
+      const object = new Loader();
+      expect(object.loadAsync).toBeDefined();
+
+      // abstract load method will not resolve
     });
 
-    test.todo('parse', () => {
-      // implement
+    test('parse', () => {
+      // abstract method
+      const object = new Loader();
+      expect(object.parse).toBeDefined();
+
+      const data = { test: 'test' };
+
+      // @ts-ignore
+      object.parse(data);
     });
 
-    test.todo('setCrossOrigin', () => {
-      // implement
+    test('setCrossOrigin', () => {
+      const object = new Loader();
+      object.setCrossOrigin('same-origin');
+      expect(object.crossOrigin).toBe('same-origin');
     });
 
-    test.todo('setWithCredentials', () => {
-      // implement
+    test('setWithCredentials', () => {
+      const object = new Loader();
+      object.setWithCredentials(true);
+      expect(object.withCredentials).toBe(true);
     });
 
-    test.todo('setPath', () => {
-      // implement
+    test('setPath', () => {
+      const object = new Loader();
+      object.setPath('./test/');
+      expect(object.path).toBe('./test/');
     });
 
-    test.todo('setResourcePath', () => {
-      // implement
+    test('setResourcePath', () => {
+      const object = new Loader();
+      object.setResourcePath('assets/');
+      expect(object.resourcePath).toBe('assets/');
     });
 
-    test.todo('setRequestHeader', () => {
-      // implement
+    test('setRequestHeader', () => {
+      const object = new Loader();
+      object.setRequestHeader({ 'Save-Data': 'off' });
+      expect(object.requestHeader).toStrictEqual({ 'Save-Data': 'off' });
     });
   });
 });
