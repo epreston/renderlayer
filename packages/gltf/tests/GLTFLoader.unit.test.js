@@ -1,14 +1,10 @@
 // @vitest-environment jsdom
 
 import { describe, expect, it, test, vi } from 'vitest';
+import { resolveAfter } from './test-helpers.js';
 
 import { Loader } from '@renderlayer/loaders';
 import { GLTFLoader } from '../src/GLTFLoader.js';
-
-function resolveAfter(ms) {
-  // introduces a delay
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 // will be intercepted by msw, not a real url
 const BoxTestFile = 'http://renderlayer.org/test/gltf/Box.gltf';
