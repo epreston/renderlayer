@@ -1,7 +1,7 @@
 const Cache = {
   enabled: false,
 
-  files: {},
+  files: {}, // EP: use map
 
   add: function (key, file) {
     if (this.enabled === false) return;
