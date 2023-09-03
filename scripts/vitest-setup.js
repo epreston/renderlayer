@@ -8,6 +8,8 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
 afterAll(() => server.close());
 afterEach(() => server.resetHandlers());
 
+// server.printHandlers();
+
 // import crypto from 'node:crypto';
 
 // beforeAll(() => {
