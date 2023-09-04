@@ -1,4 +1,4 @@
-// Replace -AT- to enable: -AT-vitest-environment jsdom
+// @vitest-environment jsdom
 
 import { describe, expect, it, test, vi } from 'vitest';
 import { resolveAfter, flushPromises } from './test-helpers.js';
@@ -22,7 +22,19 @@ describe('Loaders', () => {
       expect(object).toBeInstanceOf(Loader);
     });
 
-    test.todo('load', async () => {
+    test('load - partial', async () => {
+      const onLoad = vi.fn();
+      const onProgress = vi.fn(); // unused
+      const onError = vi.fn();
+
+      const object = new ImageLoader();
+
+      // will not make a network request
+      const imgEl = object.load(LogoTestFile, onLoad, onProgress, onError);
+      expect(imgEl).toBeInstanceOf(HTMLElement); // element provided immediately
+    });
+
+    test.todo('load - full', async () => {
       /**
        * The following code will work when running this test in a jsdom
        * context (see comment at top of file), provided that the "canvas"
