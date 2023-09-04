@@ -54,7 +54,7 @@ class LoaderUtils {
     // File URI - EP: Patch to avoid returning relative URL
     if (/^file:.*$/i.test(url)) return url;
 
-    // EP: infer paths ?
+    // EP: infer paths
     if (!path) {
       path = document.baseURI || window.location.href;
     }
@@ -67,7 +67,7 @@ class LoaderUtils {
     }
 
     // EP: Does not handle edge case 'file.txt' becomes
-    // //example.comfile.txt  (missing slash)
+    // example.comfile.txt  (missing slash)
 
     // Relative URL
     // return path + url;
