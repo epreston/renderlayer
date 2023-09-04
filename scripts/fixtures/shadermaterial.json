@@ -1,0 +1,42 @@
+{
+  "clipping": true,
+  "colorWrite": true,
+  "depthFunc": 3,
+  "depthTest": true,
+  "depthWrite": true,
+  "fragmentShader": "void main() {\n gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n }",
+  "glslVersion": null,
+  "lights": true,
+  "linewidth": 2,
+  "metadata": {
+    "generator": "Material.toJSON",
+    "type": "Material",
+    "version": 4.5
+  },
+  "stencilFail": 7680,
+  "stencilFunc": 519,
+  "stencilFuncMask": 255,
+  "stencilRef": 0,
+  "stencilWrite": false,
+  "stencilWriteMask": 255,
+  "stencilZFail": 7680,
+  "stencilZPass": 7680,
+  "type": "ShaderMaterial",
+  "uniforms": {
+    "background": {
+      "type": "c",
+      "value": 16777215
+    },
+    "resolution": {
+      "type": "v2",
+      "value": [0, 0]
+    },
+    "time": {
+      "value": 1
+    }
+  },
+  "uuid": "a382c8b6-3d7a-4ece-93e3-07f2faa2c241",
+  "vertexShader": "void main() {\n gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}",
+  "wireframe": true,
+  "wireframeLinewidth": 2
+}
