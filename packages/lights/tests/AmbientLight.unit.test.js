@@ -1,5 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
+import { ObjectLoader } from '@renderlayer/loaders';
+
 import { Light } from '../src/Light.js';
 import { AmbientLight } from '../src/AmbientLight.js';
 
@@ -92,9 +94,9 @@ describe('Lights', () => {
 
       expect(object.id).toBeUndefined();
 
-      // const loader = new ObjectLoader();
-      // const outputLight = loader.parse(json);
-      // expect(outputLight).toEqual(light);
+      const loader = new ObjectLoader();
+      const outputLight = loader.parse(json);
+      expect(outputLight).toEqual(light);
     });
   });
 });
