@@ -48,11 +48,36 @@ class LoaderUtils {
     // Data URI
     if (/^data:.*,.*$/i.test(url)) return url;
 
-    // Blob URL
+    // Blob URI
     if (/^blob:.*$/i.test(url)) return url;
 
+    // File URI - EP: Patch to avoid returning relative URL
+    if (/^file:.*$/i.test(url)) return url;
+
+    // EP: infer paths ?
+    if (!path) {
+      path = document.baseURI || window.location.href;
+    }
+
+    try {
+      return new URL(url, path).href;
+    } catch (e) {
+      // Bad url or baseURI structure. Do not attempt to resolve.
+      return '';
+    }
+
+    // EP: Does not handle edge case 'file.txt' becomes
+    // //example.comfile.txt  (missing slash)
+
     // Relative URL
-    return path + url;
+    // return path + url;
+  }
+
+  static withTrailingSlash(path) {
+    if (path[path.length - 1] !== '/') {
+      return `${path}/`;
+    }
+    return path;
   }
 }
 
