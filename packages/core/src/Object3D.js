@@ -44,17 +44,6 @@ class Object3D extends EventDispatcher {
     const quaternion = new Quaternion();
     const scale = new Vector3(1, 1, 1);
 
-    function onRotationChange() {
-      quaternion.setFromEuler(rotation, false);
-    }
-
-    function onQuaternionChange() {
-      rotation.setFromQuaternion(quaternion, undefined, false);
-    }
-
-    rotation._onChange(onRotationChange);
-    quaternion._onChange(onQuaternionChange);
-
     this.position = position;
     this.rotation = rotation;
     this.quaternion = quaternion;
@@ -86,6 +75,17 @@ class Object3D extends EventDispatcher {
         value: new Matrix3()
       }
     });
+
+    function onRotationChange() {
+      quaternion.setFromEuler(rotation, false);
+    }
+
+    function onQuaternionChange() {
+      rotation.setFromQuaternion(quaternion, undefined, false);
+    }
+
+    rotation._onChange(onRotationChange);
+    quaternion._onChange(onQuaternionChange);
 
     this.matrix = new Matrix4();
     this.matrixWorld = new Matrix4();
@@ -713,10 +713,10 @@ class Object3D extends EventDispatcher {
     this.up.copy(source.up);
 
     this.position.copy(source.position);
+    this.rotation.order = source.rotation.order;
 
-    // Rely on event calculations to set both values
-    // this.rotation.order = source.rotation.order;
-    // this.quaternion.copy( source.quaternion );
+    // Rely on event calculations to set both rotation and quaternion
+    // this.quaternion.copy(source.quaternion);
 
     // Optimisation: just set both values without events
     this.rotation.copy(source.rotation, false);
