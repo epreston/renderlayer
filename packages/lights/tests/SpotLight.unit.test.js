@@ -1,5 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
+import { ObjectLoader } from '@renderlayer/loaders';
+
 import { Light } from '../src/Light.js';
 import { SpotLight } from '../src/SpotLight.js';
 
@@ -163,9 +165,13 @@ describe('Lights', () => {
 
       expect(object.id).toBeUndefined();
 
-      // const loader = new ObjectLoader();
-      // const outputLight = loader.parse(json);
-      // expect(outputLight).toEqual(light);
+      const loader = new ObjectLoader();
+      const outputLight = loader.parse(json);
+
+      // will be different
+      outputLight.target.uuid = light.target.uuid;
+
+      expect(outputLight).toStrictEqual(light);
     });
   });
 });
