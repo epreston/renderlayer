@@ -82,6 +82,13 @@ class Euler {
   setFromRotationMatrix(m, order = this._order, update = true) {
     // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
+    // num + 0 is the most performant way to remove -0 when a potentially zero
+    // matrix component is set directly as the value. This avoids confusion with
+    // real underflows.
+    //
+    // -0+0 is positive zero. 0+0 is positive zero. negative numbers stay negative,
+    // positive numbers stay positive.
+
     const te = m.elements;
     const m11 = te[0],
       m12 = te[4],
@@ -98,8 +105,8 @@ class Euler {
         this._y = Math.asin(clamp(m13, -1, 1));
 
         if (Math.abs(m13) < 0.9999999) {
-          this._x = Math.atan2(-m23, m33);
-          this._z = Math.atan2(-m12, m11);
+          this._x = Math.atan2(-m23, m33) + 0;
+          this._z = Math.atan2(-m12, m11) + 0;
         } else {
           this._x = Math.atan2(m32, m22);
           this._z = 0;
@@ -114,7 +121,7 @@ class Euler {
           this._y = Math.atan2(m13, m33);
           this._z = Math.atan2(m21, m22);
         } else {
-          this._y = Math.atan2(-m31, m11);
+          this._y = Math.atan2(-m31, m11) + 0;
           this._z = 0;
         }
 
@@ -124,8 +131,8 @@ class Euler {
         this._x = Math.asin(clamp(m32, -1, 1));
 
         if (Math.abs(m32) < 0.9999999) {
-          this._y = Math.atan2(-m31, m33);
-          this._z = Math.atan2(-m12, m22);
+          this._y = Math.atan2(-m31, m33) + 0;
+          this._z = Math.atan2(-m12, m22) + 0;
         } else {
           this._y = 0;
           this._z = Math.atan2(m21, m11);
@@ -141,7 +148,7 @@ class Euler {
           this._z = Math.atan2(m21, m11);
         } else {
           this._x = 0;
-          this._z = Math.atan2(-m12, m22);
+          this._z = Math.atan2(-m12, m22) + 0;
         }
 
         break;
@@ -150,8 +157,8 @@ class Euler {
         this._z = Math.asin(clamp(m21, -1, 1));
 
         if (Math.abs(m21) < 0.9999999) {
-          this._x = Math.atan2(-m23, m22);
-          this._y = Math.atan2(-m31, m11);
+          this._x = Math.atan2(-m23, m22) + 0;
+          this._y = Math.atan2(-m31, m11) + 0;
         } else {
           this._x = 0;
           this._y = Math.atan2(m13, m33);
@@ -166,7 +173,7 @@ class Euler {
           this._x = Math.atan2(m32, m22);
           this._y = Math.atan2(m13, m11);
         } else {
-          this._x = Math.atan2(-m23, m33);
+          this._x = Math.atan2(-m23, m33) + 0;
           this._y = 0;
         }
 
