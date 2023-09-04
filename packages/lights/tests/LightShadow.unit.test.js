@@ -142,17 +142,19 @@ describe('Lights', () => {
 
       expect(a).not.toEqual(b);
 
-      // const c = a.clone();
-      // expect(a).toEqual(c);
+      const c = a.clone();
+      c.camera.uuid = a.camera.uuid; // cheat
+      expect(a).toStrictEqual(c);
 
-      // c.mapSize.set(256, 256);
-      // expect(a).not.toEqual(c);
+      c.mapSize.set(256, 256);
+      expect(a).not.toEqual(c);
 
-      // b.copy(a);
-      // expect(a).toEqual(b);
+      b.copy(a);
+      b.camera.uuid = a.camera.uuid; // cheat
+      expect(a).toStrictEqual(b);
 
-      // b.mapSize.set(512, 512);
-      // expect(a).not.toEqual(b);
+      b.mapSize.set(256, 256);
+      expect(a).not.toEqual(b);
     });
   });
 });
