@@ -20,6 +20,26 @@ afterEach(() => server.resetHandlers());
 //   delete global.crypto;
 // });
 
+if (typeof createImageBitmap === 'undefined') {
+  global.createImageBitmap = async function (image, options) {
+    // ImageBitmap interface
+    const imageBitmap = {
+      width: 128,
+      height: 128,
+      close() {
+        return;
+      }
+    };
+
+    // { size: 5653, type: 'image/png' }
+    if (image.type.slice(0, 5) === 'image') {
+      return imageBitmap;
+    }
+
+    throw new Error('missing test file');
+  };
+}
+
 if (typeof ResizeObserver === 'undefined') {
   global.ResizeObserver = class ResizeObserver {
     constructor(callback) {}
