@@ -8,8 +8,9 @@ describe('WebGL', () => {
       expect(WebGLAnimation).toBeDefined();
     });
 
-    test.todo('Instancing', () => {
-      // implement
+    test('constructor', () => {
+      const object = new WebGLAnimation();
+      expect(object).toBeDefined();
     });
 
     test.todo('start', () => {
