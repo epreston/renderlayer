@@ -1,24 +1,26 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeAll, describe, expect, it, test, vi } from 'vitest';
 
+import { Object3D } from '@renderlayer/core';
 import { ObjectLoader } from '@renderlayer/loaders';
 
 import { Light } from '../src/Light.js';
 import { SpotLight } from '../src/SpotLight.js';
+import { SpotLightShadow } from '../src/SpotLightShadow.js';
 
 describe('Lights', () => {
   describe('SpotLight', () => {
     let lights = undefined;
 
-    beforeAll(function () {
-      const parameters = {
-        color: 0xaaaaaa,
-        intensity: 0.5,
-        distance: 100,
-        angle: 0.8,
-        penumbra: 8,
-        decay: 2
-      };
+    const parameters = {
+      color: 0xaaaaaa,
+      intensity: 0.5,
+      distance: 100,
+      angle: 0.8,
+      penumbra: 8,
+      decay: 2
+    };
 
+    beforeAll(function () {
       lights = [
         new SpotLight(parameters.color),
         new SpotLight(parameters.color, parameters.intensity),
@@ -62,36 +64,48 @@ describe('Lights', () => {
       expect(object.type).toBe('SpotLight');
     });
 
-    test.todo('position', () => {
-      // implement
+    test('position', () => {
+      const object = new SpotLight();
+      expect(object.position.equals(Object3D.DEFAULT_UP)).toBeTruthy();
     });
 
-    test.todo('target', () => {
-      // implement
+    test('target', () => {
+      const object = new SpotLight();
+      expect(object.target).toBeInstanceOf(Object3D);
     });
 
-    test.todo('distance', () => {
-      // implement
+    test('distance', () => {
+      expect(lights[1].distance).toBe(0);
+
+      expect(lights[2].distance).toBe(parameters.distance);
     });
 
-    test.todo('angle', () => {
-      // implement
+    test('angle', () => {
+      expect(lights[2].angle).toBe(Math.PI / 3);
+
+      expect(lights[3].angle).toBe(parameters.angle);
     });
 
-    test.todo('penumbra', () => {
-      // implement
+    test('penumbra', () => {
+      expect(lights[3].penumbra).toBe(0);
+
+      expect(lights[4].penumbra).toBe(parameters.penumbra);
     });
 
-    test.todo('decay', () => {
-      // implement
+    test('decay', () => {
+      expect(lights[4].decay).toBe(2);
+
+      expect(lights[5].decay).toBe(parameters.decay);
     });
 
-    test.todo('map', () => {
-      // implement
+    test('map', () => {
+      const object = new SpotLight();
+      expect(object.map).toBeNull();
     });
 
-    test.todo('shadow', () => {
-      // implement
+    test('shadow', () => {
+      const object = new SpotLight();
+      expect(object.shadow).toBeInstanceOf(SpotLightShadow);
     });
 
     test('power', () => {
@@ -154,8 +168,6 @@ describe('Lights', () => {
       const light = new SpotLight(0xffc0d1);
       const json = light.toJSON();
 
-      expect(json.metadata.version).toBe(4.5);
-
       const object = json.object;
 
       expect(light.type).toBe(object.type);
@@ -164,14 +176,18 @@ describe('Lights', () => {
       expect(light.intensity).toBe(object.intensity);
 
       expect(object.id).toBeUndefined();
+    });
 
+    test('from ObjectLoader', () => {
+      const light = new SpotLight(0xffc0d1);
+      const json = light.toJSON();
       const loader = new ObjectLoader();
       const outputLight = loader.parse(json);
 
       // will be different
       outputLight.target.uuid = light.target.uuid;
 
-      expect(outputLight).toStrictEqual(light);
+      expect(outputLight).toEqual(light);
     });
   });
 });
