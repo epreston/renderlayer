@@ -1,5 +1,7 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { ObjectLoader } from '@renderlayer/loaders';
+
 import { Camera } from '../src/Camera.js';
 import { OrthographicCamera } from '../src/OrthographicCamera.js';
 
@@ -169,7 +171,6 @@ describe('Cameras', () => {
       expect(cam).toMatchSnapshot();
     });
 
-    // TODO: clone is a camera methods that relied to copy method
     test('clone', () => {
       // prettier-ignore
       const left = -1.5, right = 1.5, top = 1, bottom = -1, near = 0.1, far = 42;
@@ -185,6 +186,18 @@ describe('Cameras', () => {
       expect(cam.near).toBe(clonedCam.near);
       expect(cam.far).toBe(clonedCam.far);
       expect(cam.zoom).toBe(clonedCam.zoom);
+    });
+
+    test('from ObjectLoader', () => {
+      // prettier-ignore
+      const left = -1.5, right = 1.5, top = 1, bottom = -1, near = 0.1, far = 42;
+      const object = new OrthographicCamera(left, right, top, bottom, near, far);
+
+      const json = object.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      expect(outputObject).toStrictEqual(object);
     });
   });
 });
