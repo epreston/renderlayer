@@ -1,6 +1,10 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
-import { Object3D } from '@renderlayer/core';
+import { BufferGeometry } from '@renderlayer/buffers';
+import { Object3D, Raycaster } from '@renderlayer/core';
+import { LineBasicMaterial } from '@renderlayer/materials';
+import { Vector3 } from '@renderlayer/math';
+
 import { Line } from '../src/Line.js';
 
 describe('Objects', () => {
@@ -25,12 +29,14 @@ describe('Objects', () => {
       expect(object.type).toBe('Line');
     });
 
-    test.todo('geometry', () => {
-      // implement
+    test('geometry', () => {
+      const line = new Line();
+      expect(line.geometry).toBeInstanceOf(BufferGeometry);
     });
 
-    test.todo('material', () => {
-      // implement
+    test('material', () => {
+      const line = new Line();
+      expect(line.material).toBeInstanceOf(LineBasicMaterial);
     });
 
     test('copy', () => {
@@ -41,18 +47,58 @@ describe('Objects', () => {
 
       expect(dst.geometry).toBe(src.geometry);
       expect(dst.material).toBe(src.material);
+
+      // will be different
+      dst.uuid = src.uuid;
+
+      expect(dst).not.toBe(src);
+      expect(dst).toStrictEqual(src);
     });
 
-    test.todo('computeLineDistances', () => {
-      // implement
+    test('computeLineDistances', () => {
+      const points = [];
+      points.push(new Vector3(-10, 0, 0));
+      points.push(new Vector3(0, 10, 0));
+      points.push(new Vector3(10, 0, 0));
+
+      const geometry = new BufferGeometry().setFromPoints(points);
+      const object = new Line(geometry);
+
+      object.computeLineDistances();
+
+      // EP: asserts required
     });
 
-    test.todo('raycast', () => {
-      // implement
+    test('raycast', () => {
+      const points = [];
+      points.push(new Vector3(-10, 0, 0));
+      points.push(new Vector3(0, 10, 0));
+      points.push(new Vector3(10, 0, 0));
+
+      const geometry = new BufferGeometry().setFromPoints(points);
+
+      const object = new Line(geometry);
+
+      const raycaster = new Raycaster();
+      const intersections = [];
+
+      object.raycast(raycaster, intersections);
+      expect(intersections.length).toBe(0);
     });
 
-    test.todo('updateMorphTargets', () => {
-      // implement
+    test('updateMorphTargets', () => {
+      const points = [];
+      points.push(new Vector3(-10, 0, 0));
+      points.push(new Vector3(0, 10, 0));
+      points.push(new Vector3(10, 0, 0));
+
+      const geometry = new BufferGeometry().setFromPoints(points);
+
+      const object = new Line(geometry);
+
+      object.updateMorphTargets();
+
+      // EP: asserts required
     });
   });
 });
