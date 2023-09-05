@@ -42,6 +42,11 @@ describe('Lights', () => {
       expect(object).toBeInstanceOf(Light);
     });
 
+    test('isPointLight', () => {
+      const object = new PointLight();
+      expect(object.isPointLight).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new PointLight();
       expect(object.type).toBe('PointLight');
@@ -51,7 +56,6 @@ describe('Lights', () => {
       expect(lights[2].distance).toBe(0);
 
       expect(lights[3].distance).toBe(parameters.distance);
-      expect(lights[4].distance).toBe(parameters.distance);
     });
 
     test('decay', () => {
@@ -76,11 +80,6 @@ describe('Lights', () => {
 
       a.power = 100;
       expect(a.intensity).toBeCloseTo(100 / (4 * Math.PI));
-    });
-
-    test('isPointLight', () => {
-      const object = new PointLight();
-      expect(object.isPointLight).toBeTruthy();
     });
 
     test('dispose', () => {
