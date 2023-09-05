@@ -209,6 +209,7 @@ class Texture extends EventDispatcher {
     this.dispatchEvent({ type: 'dispose' });
   }
 
+  /** @param {Vector2} uv */
   transformUv(uv) {
     if (this.mapping !== UVMapping) return uv;
 
