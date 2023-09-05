@@ -3,6 +3,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 import { InstancedBufferAttribute } from '@renderlayer/buffers';
 import { Raycaster } from '@renderlayer/core';
 import { BoxGeometry } from '@renderlayer/geometries';
+import { ObjectLoader } from '@renderlayer/loaders';
 import { MeshBasicMaterial } from '@renderlayer/materials';
 import { Color, Matrix4 } from '@renderlayer/math';
 
@@ -210,6 +211,18 @@ describe('Objects', () => {
       object.dispose();
 
       expect(object).toBeDefined();
+    });
+
+    test('from ObjectLoader', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+
+      const json = object.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      expect(outputObject).toStrictEqual(object);
     });
   });
 });
