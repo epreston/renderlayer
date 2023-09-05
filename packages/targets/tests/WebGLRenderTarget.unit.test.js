@@ -89,18 +89,29 @@ describe('Renderers', () => {
       expect(object.height).toBe(64);
     });
 
-    test.todo('clone', () => {
-      // implement
+    test('clone', () => {
+      const object = new WebGLRenderTarget();
+      const clonedObject = object.clone();
+
+      // will be different
+      clonedObject.texture.uuid = object.texture.uuid;
+      clonedObject.texture.source = object.texture.source;
+      clonedObject.texture.version = object.texture.version;
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject).toStrictEqual(object);
     });
 
-    test.todo('copy', () => {
-      const object = new WebGLRenderTarget();
-      const copiedObject = new WebGLRenderTarget();
+    test('copy', () => {
+      const object = new WebGLRenderTarget(32, 32);
+      const copiedObject = new WebGLRenderTarget(64, 64);
 
       copiedObject.copy(object);
 
       // will be different
       copiedObject.texture.uuid = object.texture.uuid;
+      copiedObject.texture.source = object.texture.source;
+      copiedObject.texture.version = object.texture.version;
 
       expect(copiedObject).not.toBe(object);
       expect(copiedObject).toStrictEqual(object);
