@@ -1,6 +1,7 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { LightShadow } from '../src/LightShadow.js';
+import { PointLight } from '../src/PointLight.js';
 import { PointLightShadow } from '../src/PointLightShadow.js';
 
 describe('Lights', () => {
@@ -20,8 +21,11 @@ describe('Lights', () => {
       expect(object.isPointLightShadow).toBeTruthy();
     });
 
-    test.todo('updateMatrices', () => {
-      // implement
+    test('updateMatrices', () => {
+      const object = new PointLightShadow();
+      const light = new PointLight();
+
+      object.updateMatrices(light, 0);
     });
   });
 });
