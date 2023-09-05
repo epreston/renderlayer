@@ -1,8 +1,10 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
-import { Object3D, Raycaster } from '@renderlayer/core';
-import { LOD } from '../src/LOD.js';
 import { PerspectiveCamera } from '@renderlayer/cameras';
+import { Object3D, Raycaster } from '@renderlayer/core';
+import { ObjectLoader } from '@renderlayer/loaders';
+
+import { LOD } from '../src/LOD.js';
 
 describe('Objects', () => {
   describe('LOD', () => {
@@ -243,6 +245,16 @@ describe('Objects', () => {
           },
         }
       `);
+    });
+
+    test('from ObjectLoader', () => {
+      const object = new LOD();
+
+      const json = object.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      expect(outputObject).toStrictEqual(object);
     });
   });
 });
