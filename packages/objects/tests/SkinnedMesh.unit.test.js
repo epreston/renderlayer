@@ -1,6 +1,7 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D, Raycaster } from '@renderlayer/core';
+import { ObjectLoader } from '@renderlayer/loaders';
 import { Matrix4, Vector3 } from '@renderlayer/math';
 
 import { skinnedMeshFactory } from './skinnedMeshHelpers.js';
@@ -185,6 +186,17 @@ describe('Objects', () => {
           "z": -3.535533905029297,
         }
       `);
+    });
+
+    test('from ObjectLoader', () => {
+      // prettier-ignore
+      const { mesh } = skinnedMeshFactory();
+      const json = mesh.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      // other comparisons fail
+      expect(mesh.toJSON()).toStrictEqual(outputObject.toJSON());
     });
   });
 });
