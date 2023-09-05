@@ -20,20 +20,30 @@ describe('Textures', () => {
       expect(object.isDataTexture).toBeTruthy();
     });
 
-    test.todo('image', () => {
-      // implement
+    test('image', () => {
+      const object = new DataTexture();
+
+      const data = object.image;
+      expect(data).not.toBeNull();
+
+      const newData = { data: 'test', width: 4, height: 4 };
+      object.image = newData;
+      expect(object.image).toBe(newData);
     });
 
-    test.todo('generateMipmaps', () => {
-      // implement
+    test('generateMipmaps', () => {
+      const object = new DataTexture();
+      expect(object.generateMipmaps).toBe(false);
     });
 
-    test.todo('flipY', () => {
-      // implement
+    test('flipY', () => {
+      const object = new DataTexture();
+      expect(object.flipY).toBe(false);
     });
 
-    test.todo('unpackAlignment', () => {
-      // implement
+    test('unpackAlignment', () => {
+      const object = new DataTexture();
+      expect(object.unpackAlignment).toBe(1);
     });
   });
 });
