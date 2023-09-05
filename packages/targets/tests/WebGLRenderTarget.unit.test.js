@@ -8,11 +8,6 @@ import { WebGLRenderTarget } from '../src/WebGLRenderTarget.js';
 
 describe('Renderers', () => {
   describe('WebGLRenderTarget', () => {
-    const parameters = {
-      color: 0xaaaaaa,
-      intensity: 0.5
-    };
-
     test('constructor', () => {
       const object = new WebGLRenderTarget();
       expect(object).toBeDefined();
