@@ -172,7 +172,7 @@ describe('Objects', () => {
       const loader = new ObjectLoader();
       const outputObject = loader.parse(json);
 
-      expect(mesh).toStrictEqual(outputObject);
+      expect(outputObject).toStrictEqual(mesh);
     });
   });
 });
