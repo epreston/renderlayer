@@ -1,6 +1,10 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
+import { ObjectLoader } from '@renderlayer/loaders';
+import { Color } from '@renderlayer/math';
+
+import { Fog } from '../src/Fog.js';
 import { Scene } from '../src/Scene.js';
 
 describe('Scenes', () => {
@@ -20,36 +24,52 @@ describe('Scenes', () => {
       expect(object.isScene).toBeTruthy();
     });
 
-    test.todo('type', () => {
-      // implement
+    test('type', () => {
+      const object = new Scene();
+      expect(object.type).toBe('Scene');
     });
 
-    test.todo('background', () => {
-      // implement
+    test('background', () => {
+      const object = new Scene();
+      expect(object.background).toBeNull();
     });
 
-    test.todo('environment', () => {
-      // implement
+    test('environment', () => {
+      const object = new Scene();
+      expect(object.environment).toBeNull();
     });
 
-    test.todo('fog', () => {
-      // implement
+    test('fog', () => {
+      const object = new Scene();
+      expect(object.fog).toBeNull();
     });
 
-    test.todo('backgroundBlurriness', () => {
-      // implement
+    test('backgroundBlurriness', () => {
+      const object = new Scene();
+      expect(object.backgroundBlurriness).toBe(0);
     });
 
-    test.todo('backgroundIntensity', () => {
-      // implement
+    test('backgroundIntensity', () => {
+      const object = new Scene();
+      expect(object.backgroundIntensity).toBe(1);
     });
 
-    test.todo('overrideMaterial', () => {
-      // implement
+    test('overrideMaterial', () => {
+      const object = new Scene();
+      expect(object.overrideMaterial).toBeNull();
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const src = new Scene();
+      const dst = new Scene();
+
+      dst.copy(src);
+
+      // will be different
+      dst.uuid = src.uuid;
+
+      expect(dst).not.toBe(src);
+      expect(dst).toStrictEqual(src);
     });
 
     test('toJSON', () => {
@@ -92,6 +112,19 @@ describe('Scenes', () => {
           },
         }
       `);
+    });
+
+    test('from ObjectLoader', () => {
+      const object = new Scene();
+
+      object.background = new Color();
+      object.fog = new Fog();
+
+      const json = object.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      expect(outputObject).toStrictEqual(object);
     });
   });
 });
