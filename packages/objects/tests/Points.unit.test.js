@@ -1,6 +1,8 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
+import { ObjectLoader } from '@renderlayer/loaders';
+
 import { Points } from '../src/Points.js';
 
 describe('Objects', () => {
@@ -49,6 +51,16 @@ describe('Objects', () => {
 
     test.todo('updateMorphTargets', () => {
       // implement
+    });
+
+    test('from ObjectLoader', () => {
+      const object = new Points();
+
+      const json = object.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      expect(outputObject).toStrictEqual(object);
     });
   });
 });
