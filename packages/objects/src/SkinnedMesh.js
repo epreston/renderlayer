@@ -25,6 +25,8 @@ class SkinnedMesh extends Mesh {
     this.bindMatrix = new Matrix4();
     this.bindMatrixInverse = new Matrix4();
 
+    this.skeleton = null; // EP: added to avoid shape change
+
     this.boundingBox = null;
     this.boundingSphere = null;
   }
