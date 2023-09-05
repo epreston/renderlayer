@@ -1,10 +1,18 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
+
+import { Vector4 } from '@renderlayer/math';
+import { Texture } from '@renderlayer/textures';
 
 import { EventDispatcher } from '@renderlayer/core';
 import { WebGLRenderTarget } from '../src/WebGLRenderTarget.js';
 
 describe('Renderers', () => {
   describe('WebGLRenderTarget', () => {
+    const parameters = {
+      color: 0xaaaaaa,
+      intensity: 0.5
+    };
+
     test('constructor', () => {
       const object = new WebGLRenderTarget();
       expect(object).toBeDefined();
@@ -15,56 +23,73 @@ describe('Renderers', () => {
       expect(object).toBeInstanceOf(EventDispatcher);
     });
 
-    test.todo('width', () => {
-      // implement
+    test('isWebGLRenderTarget', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.isWebGLRenderTarget).toBeTruthy();
     });
 
-    test.todo('height', () => {
-      // implement
+    test('width', () => {
+      const object = new WebGLRenderTarget(64, 64);
+      expect(object.width).toBe(64);
     });
 
-    test.todo('depth', () => {
-      // implement
+    test('height', () => {
+      const object = new WebGLRenderTarget(32, 32);
+      expect(object.height).toBe(32);
     });
 
-    test.todo('scissor', () => {
-      // implement
+    test('depth', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.depth).toBe(1);
     });
 
-    test.todo('scissorTest', () => {
-      // implement
+    test('scissor', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.scissor).toBeInstanceOf(Vector4);
     });
 
-    test.todo('viewport', () => {
-      // implement
+    test('scissorTest', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.scissorTest).toBe(false);
     });
 
-    test.todo('texture', () => {
-      // implement
+    test('viewport', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.viewport).toBeInstanceOf(Vector4);
     });
 
-    test.todo('depthBuffer', () => {
-      // implement
+    test('texture', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.texture).toBeInstanceOf(Texture);
     });
 
-    test.todo('stencilBuffer', () => {
-      // implement
+    test('depthBuffer', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.depthBuffer).toBe(true);
     });
 
-    test.todo('depthTexture', () => {
-      // implement
+    test('stencilBuffer', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.stencilBuffer).toBe(false);
     });
 
-    test.todo('samples', () => {
-      // implement
+    test('depthTexture', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.depthTexture).toBeNull();
     });
 
-    test.todo('isWebGLRenderTarget', () => {
-      // implement
+    test('samples', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.samples).toBe(0);
     });
 
-    test.todo('setSize', () => {
-      // implement
+    test('setSize', () => {
+      const object = new WebGLRenderTarget(32, 32);
+
+      object.setSize(64, 64);
+
+      expect(object.width).toBe(64);
+      expect(object.height).toBe(64);
     });
 
     test.todo('clone', () => {
@@ -72,7 +97,16 @@ describe('Renderers', () => {
     });
 
     test.todo('copy', () => {
-      // implement
+      const object = new WebGLRenderTarget();
+      const copiedObject = new WebGLRenderTarget();
+
+      copiedObject.copy(object);
+
+      // will be different
+      copiedObject.texture.uuid = object.texture.uuid;
+
+      expect(copiedObject).not.toBe(object);
+      expect(copiedObject).toStrictEqual(object);
     });
 
     test('dispose', () => {
