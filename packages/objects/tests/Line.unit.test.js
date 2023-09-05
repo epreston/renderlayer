@@ -31,13 +31,13 @@ describe('Objects', () => {
     });
 
     test('geometry', () => {
-      const line = new Line();
-      expect(line.geometry).toBeInstanceOf(BufferGeometry);
+      const object = new Line();
+      expect(object.geometry).toBeInstanceOf(BufferGeometry);
     });
 
     test('material', () => {
-      const line = new Line();
-      expect(line.material).toBeInstanceOf(LineBasicMaterial);
+      const object = new Line();
+      expect(object.material).toBeInstanceOf(LineBasicMaterial);
     });
 
     test('copy', () => {
