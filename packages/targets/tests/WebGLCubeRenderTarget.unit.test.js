@@ -1,5 +1,7 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { CubeTexture } from '@renderlayer/textures';
+
 import { WebGLRenderTarget } from '../src/WebGLRenderTarget.js';
 import { WebGLCubeRenderTarget } from '../src/WebGLCubeRenderTarget.js';
 
@@ -20,18 +22,32 @@ describe('Renderers', () => {
       expect(object.isWebGLCubeRenderTarget).toBeTruthy();
     });
 
-    test.todo('texture', () => {
-      // doc update needed, this needs to be a CubeTexture unlike parent class
-      // implement
+    test('texture', () => {
+      const object = new WebGLCubeRenderTarget();
+      expect(object.texture).toBeInstanceOf(CubeTexture);
+      expect(object.texture.isRenderTargetTexture).toBeTruthy();
+      expect(object.texture.flipY).toBe(false);
+      expect(object.texture.images).toBeInstanceOf(Array);
+      expect(object.texture.images.length).toBe(6);
     });
 
     test.todo('fromEquirectangularTexture', () => {
       // implement
     });
 
-    test.todo('clear', () => {
-      // implement
-      // see CubeCamera
+    test('clear', () => {
+      // prettier-ignore
+      const color = {}, depth = {}, stencil = {};
+      const object = new WebGLCubeRenderTarget();
+      const renderer = {
+        getRenderTarget: vi.fn(),
+        setRenderTarget: vi.fn(),
+        clear: vi.fn()
+      };
+
+      object.clear(renderer, color, depth, stencil);
+
+      expect(renderer.clear).toHaveBeenCalledWith(color, depth, stencil);
     });
   });
 });
