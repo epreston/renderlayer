@@ -56,6 +56,8 @@ describe('Renderers', () => {
     test('texture', () => {
       const object = new WebGLRenderTarget();
       expect(object.texture).toBeInstanceOf(Texture);
+      expect(object.texture.isRenderTargetTexture).toBeTruthy();
+      expect(object.texture.flipY).toBe(false);
     });
 
     test('depthBuffer', () => {
