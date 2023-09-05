@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Texture } from '../src/Texture.js';
 import { DataTexture } from '../src/DataTexture.js';
@@ -15,6 +15,11 @@ describe('Textures', () => {
       expect(object).toBeInstanceOf(Texture);
     });
 
+    test('isDataTexture', () => {
+      const object = new DataTexture();
+      expect(object.isDataTexture).toBeTruthy();
+    });
+
     test.todo('image', () => {
       // implement
     });
@@ -29,11 +34,6 @@ describe('Textures', () => {
 
     test.todo('unpackAlignment', () => {
       // implement
-    });
-
-    test('isDataTexture', () => {
-      const object = new DataTexture();
-      expect(object.isDataTexture).toBeTruthy();
     });
   });
 });
