@@ -1,5 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { ObjectLoader } from '@renderlayer/loaders';
 import { Matrix4 } from '@renderlayer/math';
 
 import { Camera } from '../src/Camera.js';
@@ -255,7 +256,6 @@ describe('Cameras', () => {
       expect(object).toMatchSnapshot();
     });
 
-    // TODO: clone is a camera methods that relied to copy method
     test('clone', () => {
       // prettier-ignore
       const near = 1, far = 3, aspect = 16 / 9, fov = 90;
@@ -269,6 +269,18 @@ describe('Cameras', () => {
       expect(cam.far === clonedCam.far).toBeTruthy();
       expect(cam.zoom === clonedCam.zoom).toBeTruthy();
       expect(cam.projectionMatrix.equals(clonedCam.projectionMatrix)).toBeTruthy();
+    });
+
+    test('from ObjectLoader', () => {
+      // prettier-ignore
+      const near = 1, far = 3, aspect = 16 / 9, fov = 90;
+      const object = new PerspectiveCamera(fov, aspect, near, far);
+
+      const json = object.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      expect(outputObject).toStrictEqual(object);
     });
   });
 });
