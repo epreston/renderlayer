@@ -40,7 +40,7 @@ describe('Lights', () => {
 
     test('type', () => {
       const object = new AmbientLight();
-      expect(object.type === 'AmbientLight').toBeTruthy();
+      expect(object.type).toBe('AmbientLight');
     });
 
     test('dispose', () => {
