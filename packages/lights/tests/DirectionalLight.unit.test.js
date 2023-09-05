@@ -1,5 +1,6 @@
 import { beforeAll, describe, expect, it, test, vi } from 'vitest';
 
+import { Object3D } from '@renderlayer/core';
 import { ObjectLoader } from '@renderlayer/loaders';
 
 import { Light } from '../src/Light.js';
@@ -40,15 +41,16 @@ describe('Lights', () => {
 
     test('type', () => {
       const object = new DirectionalLight();
-      expect(object.type === 'DirectionalLight').toBeTruthy();
+      expect(object.type).toBe('DirectionalLight');
     });
 
     test.todo('position', () => {
       // implement
     });
 
-    test.todo('target', () => {
-      // implement
+    test('target', () => {
+      const object = new DirectionalLight();
+      expect(object.target).toBeInstanceOf(Object3D);
     });
 
     test('shadow', () => {
