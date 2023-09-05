@@ -106,7 +106,11 @@ describe('Lights', () => {
       expect(light.intensity).toBe(object.intensity);
 
       expect(object.id).toBeUndefined();
+    });
 
+    test('from ObjectLoader', () => {
+      const light = new DirectionalLight(0xffc0d1);
+      const json = light.toJSON();
       const loader = new ObjectLoader();
       const outputLight = loader.parse(json);
 
