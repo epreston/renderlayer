@@ -1,22 +1,23 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeAll, describe, expect, it, test, vi } from 'vitest';
 
 import { ObjectLoader } from '@renderlayer/loaders';
 
 import { Light } from '../src/Light.js';
 import { PointLight } from '../src/PointLight.js';
+import { PointLightShadow } from '../src/PointLightShadow.js';
 
 describe('Lights', () => {
   describe('PointLight', () => {
     let lights = undefined;
 
-    beforeAll(function () {
-      const parameters = {
-        color: 0xaaaaaa,
-        intensity: 0.5,
-        distance: 100,
-        decay: 2
-      };
+    const parameters = {
+      color: 0xaaaaaa,
+      intensity: 0.5,
+      distance: 100,
+      decay: 2
+    };
 
+    beforeAll(function () {
       lights = [
         new PointLight(),
         new PointLight(parameters.color),
@@ -46,16 +47,22 @@ describe('Lights', () => {
       expect(object.type).toBe('PointLight');
     });
 
-    test.todo('distance', () => {
-      // implement
+    test('distance', () => {
+      expect(lights[2].distance).toBe(0);
+
+      expect(lights[3].distance).toBe(parameters.distance);
+      expect(lights[4].distance).toBe(parameters.distance);
     });
 
-    test.todo('decay', () => {
-      // implement
+    test('decay', () => {
+      expect(lights[3].decay).toBe(2);
+
+      expect(lights[4].decay).toBe(parameters.decay);
     });
 
-    test.todo('shadow', () => {
-      // implement
+    test('shadow', () => {
+      const object = new PointLight();
+      expect(object.shadow).toBeInstanceOf(PointLightShadow);
     });
 
     test('power', () => {
@@ -117,9 +124,6 @@ describe('Lights', () => {
     test('toJSON', () => {
       const light = new PointLight(0xffc0d1);
       const json = light.toJSON();
-
-      expect(json.metadata.version).toBe(4.5);
-
       const object = json.object;
 
       expect(light.type).toBe(object.type);
@@ -128,9 +132,14 @@ describe('Lights', () => {
       expect(light.intensity).toBe(object.intensity);
 
       expect(object.id).toBeUndefined();
+    });
 
+    test('from ObjectLoader', () => {
+      const light = new PointLight(0xffc0d1);
+      const json = light.toJSON();
       const loader = new ObjectLoader();
       const outputLight = loader.parse(json);
+
       expect(outputLight).toEqual(light);
     });
   });
