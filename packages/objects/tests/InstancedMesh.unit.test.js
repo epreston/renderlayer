@@ -1,9 +1,13 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { InstancedBufferAttribute } from '@renderlayer/buffers';
+import { Raycaster } from '@renderlayer/core';
+import { BoxGeometry } from '@renderlayer/geometries';
+import { MeshBasicMaterial } from '@renderlayer/materials';
+import { Color, Matrix4 } from '@renderlayer/math';
 
-import { Mesh } from '../src/Mesh.js';
 import { InstancedMesh } from '../src/InstancedMesh.js';
+import { Mesh } from '../src/Mesh.js';
 
 describe('Objects', () => {
   describe('InstancedMesh', () => {
@@ -33,8 +37,12 @@ describe('Objects', () => {
       expect(object.instanceColor).toBeNull();
     });
 
-    test.todo('count', () => {
-      // implement
+    test('count', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+
+      expect(object.count).toBe(3);
     });
 
     test('boundingBox', () => {
@@ -47,41 +55,154 @@ describe('Objects', () => {
       expect(object.boundingSphere).toBeNull();
     });
 
-    test.todo('computeBoundingBox', () => {
-      // implement
+    test('computeBoundingBox', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+
+      expect(object.boundingBox).toBeNull();
+
+      object.computeBoundingBox();
+
+      expect(object.boundingBox).toBeDefined();
+      expect(object.boundingBox).toMatchInlineSnapshot(`
+        Box3 {
+          "isBox3": true,
+          "max": Vector3 {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5,
+          },
+          "min": Vector3 {
+            "x": -0.5,
+            "y": -0.5,
+            "z": -0.5,
+          },
+        }
+      `);
     });
 
-    test.todo('computeBoundingSphere', () => {
-      // implement
+    test('computeBoundingSphere', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+
+      expect(object.boundingSphere).toBeNull();
+
+      object.computeBoundingSphere();
+
+      expect(object.boundingSphere).toBeDefined();
+      expect(object.boundingSphere).toMatchInlineSnapshot(`
+        Sphere {
+          "center": Vector3 {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+          },
+          "radius": 0.8660254037844386,
+        }
+      `);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+      const copiedObject = new InstancedMesh();
+
+      copiedObject.copy(object);
+
+      // will be different
+      copiedObject.uuid = object.uuid;
+
+      expect(copiedObject).not.toBe(object);
+      expect(copiedObject).toStrictEqual(object);
     });
 
-    test.todo('getColorAt', () => {
-      // implement
+    test('setColorAt', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+      const white = new Color().setHex(0xffffff);
+
+      for (let x = 0; x < object.count; x++) {
+        object.setColorAt(x, white);
+      }
+
+      expect(object.instanceColor).not.toBeNull();
+      expect(object.instanceColor).toBeInstanceOf(InstancedBufferAttribute);
     });
 
-    test.todo('getMatrixAt', () => {
-      // implement
+    test('getColorAt', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+      const white = new Color().setHex(0xffffff);
+
+      for (let x = 0; x < object.count; x++) {
+        object.setColorAt(x, white);
+      }
+
+      const color = new Color();
+      object.getColorAt(2, color);
+
+      expect(color.equals(white)).toBeTruthy();
     });
 
-    test.todo('raycast', () => {
-      // implement
+    test('setMatrixAt', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+      const matrix = new Matrix4();
+      matrix.setPosition(0, 0, -1);
+
+      for (let x = 0; x < object.count; x++) {
+        object.setMatrixAt(x, matrix);
+      }
+
+      expect(object.instanceMatrix).toBeInstanceOf(InstancedBufferAttribute);
     });
 
-    test.todo('setColorAt', () => {
-      // implement
+    test('getMatrixAt', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+      const matrix = new Matrix4();
+      matrix.setPosition(0, 0, -1);
+
+      for (let x = 0; x < object.count; x++) {
+        object.setMatrixAt(x, matrix);
+      }
+
+      const instanceMatrix = new Matrix4();
+      object.getMatrixAt(2, instanceMatrix);
+
+      expect(instanceMatrix.equals(matrix)).toBeTruthy();
     });
 
-    test.todo('setMatrixAt', () => {
-      // implement
+    test('raycast', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const object = new InstancedMesh(geometry, material, 3);
+      const matrix = new Matrix4();
+      matrix.setPosition(0, 0, -1);
+
+      for (let x = 0; x < object.count; x++) {
+        object.setMatrixAt(x, matrix);
+      }
+
+      const raycaster = new Raycaster();
+      const intersects = [];
+
+      object.raycast(raycaster, intersects);
+
+      expect(intersects.length).toBe(6);
     });
 
-    test.todo('updateMorphTargets', () => {
+    test('updateMorphTargets', () => {
       // signature defined, no implementation
-      // implement
+      const object = new InstancedMesh();
+      expect(object.updateMorphTargets).toBeDefined();
     });
 
     test('dispose', () => {
