@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/loaders",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "@renderlayer/loaders",
   "type": "module",
   "module": "./dist/loaders.esm-bundler.js",
@@ -36,7 +36,7 @@
     "@renderlayer/geometries": "~0.0.5",
     "@renderlayer/lights": "~0.0.2",
     "@renderlayer/materials": "~0.0.9",
-    "@renderlayer/math": "~0.0.6",
+    "@renderlayer/math": "~0.0.9",
     "@renderlayer/objects": "~0.0.3",
     "@renderlayer/scenes": "~0.0.3",
     "@renderlayer/shared": "~0.0.4",

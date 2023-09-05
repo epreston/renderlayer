@@ -14,6 +14,7 @@ import { Skeleton, Bone, Group, Sprite, Points, LineSegments, LineLoop, Line, LO
 const Cache = {
   enabled: false,
   files: {},
+  // EP: use map
   add: function(key, file) {
     if (this.enabled === false)
       return;
@@ -589,7 +590,22 @@ class LoaderUtils {
       return url;
     if (/^blob:.*$/i.test(url))
       return url;
-    return path + url;
+    if (/^file:.*$/i.test(url))
+      return url;
+    if (!path) {
+      path = document.baseURI || window.location.href;
+    }
+    try {
+      return new URL(url, path).href;
+    } catch (e) {
+      return "";
+    }
+  }
+  static withTrailingSlash(path) {
+    if (path[path.length - 1] !== "/") {
+      return `${path}/`;
+    }
+    return path;
   }
 }
 
