@@ -94,8 +94,54 @@ describe('Lights', () => {
 
       expect(object.id).toBeUndefined();
 
+      light.uuid = '89b58cca-57ac-4a34-bc71-a82023b91a85';
+      expect(light.toJSON()).toMatchInlineSnapshot(`
+        {
+          "metadata": {
+            "generator": "Object3D.toJSON",
+            "type": "Object",
+            "version": 4.5,
+          },
+          "object": {
+            "color": 16761041,
+            "intensity": 1,
+            "layers": 1,
+            "matrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+            ],
+            "type": "AmbientLight",
+            "up": [
+              0,
+              1,
+              0,
+            ],
+            "uuid": "89b58cca-57ac-4a34-bc71-a82023b91a85",
+          },
+        }
+      `);
+    });
+
+    test('from ObjectLoader', () => {
+      const light = new AmbientLight(0xffc0d1);
+      const json = light.toJSON();
       const loader = new ObjectLoader();
       const outputLight = loader.parse(json);
+
       expect(outputLight).toEqual(light);
     });
   });
