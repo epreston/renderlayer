@@ -97,15 +97,21 @@ describe('Lights', () => {
       expect(shadow).toBeDefined();
     });
 
-    test.todo('copy', () => {
-      // EP: bugged ?
-      // implement
+    test('copy', () => {
+      const copiedObject = object.clone();
+
+      // will be different
+      copiedObject.camera.uuid = object.camera.uuid;
+
+      expect(copiedObject).not.toBe(object);
+      expect(copiedObject).toStrictEqual(object);
     });
 
-    test.todo('clone', () => {
-      // EP: bugged ?
-
+    test('clone', () => {
       const clonedObject = object.clone();
+
+      // will be different
+      clonedObject.camera.uuid = object.camera.uuid;
 
       expect(clonedObject).not.toBe(object);
       expect(clonedObject).toStrictEqual(object);
@@ -143,14 +149,14 @@ describe('Lights', () => {
       expect(a).not.toEqual(b);
 
       const c = a.clone();
-      c.camera.uuid = a.camera.uuid; // cheat
+      c.camera.uuid = a.camera.uuid;
       expect(a).toStrictEqual(c);
 
       c.mapSize.set(256, 256);
       expect(a).not.toEqual(c);
 
       b.copy(a);
-      b.camera.uuid = a.camera.uuid; // cheat
+      b.camera.uuid = a.camera.uuid;
       expect(a).toStrictEqual(b);
 
       b.mapSize.set(256, 256);
