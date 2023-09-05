@@ -1,7 +1,10 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
-import { Object3D } from '@renderlayer/core';
+import { BufferGeometry } from '@renderlayer/buffers';
+import { Object3D, Raycaster } from '@renderlayer/core';
 import { ObjectLoader } from '@renderlayer/loaders';
+import { PointsMaterial } from '@renderlayer/materials';
+import { Vector3 } from '@renderlayer/math';
 
 import { Points } from '../src/Points.js';
 
@@ -27,12 +30,14 @@ describe('Objects', () => {
       expect(object.type).toBe('Points');
     });
 
-    test.todo('geometry', () => {
-      // implement
+    test('geometry', () => {
+      const line = new Points();
+      expect(line.geometry).toBeInstanceOf(BufferGeometry);
     });
 
-    test.todo('material', () => {
-      // implement
+    test('material', () => {
+      const object = new Points();
+      expect(object.material).toBeInstanceOf(PointsMaterial);
     });
 
     test('copy', () => {
@@ -45,12 +50,34 @@ describe('Objects', () => {
       expect(dst.material).toBe(src.material);
     });
 
-    test.todo('raycast', () => {
-      // implement
+    test('raycast', () => {
+      const points = [];
+      points.push(new Vector3(-10, 0, 0));
+      points.push(new Vector3(0, 10, 0));
+      points.push(new Vector3(10, 0, 0));
+
+      const geometry = new BufferGeometry().setFromPoints(points);
+
+      const object = new Points(geometry);
+
+      const raycaster = new Raycaster();
+      const intersections = [];
+
+      object.raycast(raycaster, intersections);
+      expect(intersections.length).toBe(0);
     });
 
-    test.todo('updateMorphTargets', () => {
-      // implement
+    test('updateMorphTargets', () => {
+      const points = [];
+      points.push(new Vector3(-10, 0, 0));
+      points.push(new Vector3(0, 10, 0));
+      points.push(new Vector3(10, 0, 0));
+
+      const geometry = new BufferGeometry().setFromPoints(points);
+
+      const object = new Points(geometry);
+
+      object.updateMorphTargets();
     });
 
     test('from ObjectLoader', () => {
