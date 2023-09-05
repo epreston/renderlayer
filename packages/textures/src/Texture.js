@@ -89,8 +89,9 @@ class Texture extends EventDispatcher {
     return this.source.data;
   }
 
-  set image(value = null) {
-    this.source.data = value;
+  set image(value) {
+    // EP: check if undefined breaks
+    this.source.data = value ? value : null;
   }
 
   updateMatrix() {
