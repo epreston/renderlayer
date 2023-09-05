@@ -3,6 +3,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 import { BufferGeometry } from '@renderlayer/buffers';
 import { PerspectiveCamera } from '@renderlayer/cameras';
 import { Object3D, Raycaster } from '@renderlayer/core';
+import { ObjectLoader } from '@renderlayer/loaders';
 import { SpriteMaterial } from '@renderlayer/materials';
 import { Vector2 } from '@renderlayer/math';
 
@@ -74,6 +75,16 @@ describe('Objects', () => {
 
       expect(object).not.toBe(object2);
       expect(object).toStrictEqual(object2);
+    });
+
+    test('from ObjectLoader', () => {
+      const object = new Sprite();
+
+      const json = object.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      expect(outputObject).toStrictEqual(object);
     });
   });
 });
