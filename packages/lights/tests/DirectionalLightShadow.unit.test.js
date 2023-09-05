@@ -30,15 +30,17 @@ describe('Lights', () => {
       expect(a).not.toEqual(b);
 
       const c = a.clone();
-      // expect(a).toEqual(c); // Shadows are identical after clone
+      a.camera.uuid = c.camera.uuid;
+      expect(a).toEqual(c); // Shadows are identical after clone
 
       c.mapSize.set(1024, 1024);
       expect(a).not.toEqual(c);
 
-      // b.copy(a);
-      // expect(a).toEqual(b); // Shadows are identical after copy
+      b.copy(a);
+      a.camera.uuid = b.camera.uuid;
+      expect(a).toEqual(b); // Shadows are identical after copy
 
-      b.mapSize.set(512, 512);
+      b.mapSize.set(256, 256);
       expect(a).not.toEqual(b);
     });
 
@@ -51,8 +53,45 @@ describe('Lights', () => {
       shadow.mapSize.set(1024, 1024);
       light.shadow = shadow;
 
+      light.shadow.camera.uuid = 'a577697e-4765-49a2-9891-fe5042b5cb53';
+      expect(light.shadow).toMatchInlineSnapshot(`
+        {
+          "bias": 10,
+          "camera": {
+            "bottom": -5,
+            "far": 500,
+            "layers": 1,
+            "left": -5,
+            "near": 0.5,
+            "right": 5,
+            "top": 5,
+            "type": "OrthographicCamera",
+            "up": [
+              0,
+              1,
+              0,
+            ],
+            "uuid": "a577697e-4765-49a2-9891-fe5042b5cb53",
+            "zoom": 1,
+          },
+          "mapSize": [
+            1024,
+            1024,
+          ],
+          "radius": 5,
+        }
+      `);
+    });
+
+    test('from ObjectLoader', () => {
+      const light = new DirectionalLight();
+      const shadow = new DirectionalLightShadow();
+
+      light.shadow = shadow;
+
       const json = light.toJSON();
-      const newLight = new ObjectLoader().parse(json);
+      const loader = new ObjectLoader();
+      const newLight = loader.parse(json);
 
       // Reloaded shadow is identical to the original one
       expect(newLight.shadow).toEqual(light.shadow);
