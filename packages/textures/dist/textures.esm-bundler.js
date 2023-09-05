@@ -123,6 +123,7 @@ class Texture extends EventDispatcher {
   clone() {
     return new this.constructor().copy(this);
   }
+  /** @param {Texture} source */
   copy(source) {
     this.name = source.name;
     this.source = source.source;
