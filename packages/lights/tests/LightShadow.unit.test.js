@@ -116,7 +116,9 @@ describe('Lights', () => {
     });
 
     test('copy', () => {
-      const copiedObject = object.clone();
+      const copiedObject = new LightShadow();
+
+      copiedObject.copy(object);
 
       // will be different
       copiedObject.camera.uuid = object.camera.uuid;
