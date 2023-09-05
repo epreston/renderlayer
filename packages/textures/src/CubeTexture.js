@@ -4,8 +4,8 @@ import { Texture } from './Texture.js';
 
 class CubeTexture extends Texture {
   constructor(
-    images,
-    mapping,
+    images = [],
+    mapping = CubeReflectionMapping,
     wrapS,
     wrapT,
     magFilter,
@@ -15,10 +15,6 @@ class CubeTexture extends Texture {
     anisotropy,
     colorSpace
   ) {
-    // TODO: move to default parameters
-    images = images !== undefined ? images : [];
-    mapping = mapping !== undefined ? mapping : CubeReflectionMapping;
-
     super(
       images,
       mapping,
