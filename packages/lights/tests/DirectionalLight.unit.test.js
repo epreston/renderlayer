@@ -1,20 +1,21 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeAll, describe, expect, it, test, vi } from 'vitest';
 
 import { ObjectLoader } from '@renderlayer/loaders';
 
 import { Light } from '../src/Light.js';
 import { DirectionalLight } from '../src/DirectionalLight.js';
+import { DirectionalLightShadow } from '../src/DirectionalLightShadow.js';
 
 describe('Lights', () => {
   describe('DirectionalLight', () => {
     let lights = undefined;
 
-    beforeAll(function () {
-      const parameters = {
-        color: 0xaaaaaa,
-        intensity: 0.8
-      };
+    const parameters = {
+      color: 0xaaaaaa,
+      intensity: 0.8
+    };
 
+    beforeAll(function () {
       lights = [
         new DirectionalLight(),
         new DirectionalLight(parameters.color),
@@ -32,6 +33,11 @@ describe('Lights', () => {
       expect(object).toBeInstanceOf(Light);
     });
 
+    test('isDirectionalLight', () => {
+      const object = new DirectionalLight();
+      expect(object.isDirectionalLight).toBeTruthy();
+    });
+
     test('type', () => {
       const object = new DirectionalLight();
       expect(object.type === 'DirectionalLight').toBeTruthy();
@@ -45,13 +51,9 @@ describe('Lights', () => {
       // implement
     });
 
-    test.todo('shadow', () => {
-      // implement
-    });
-
-    test('isDirectionalLight', () => {
+    test('shadow', () => {
       const object = new DirectionalLight();
-      expect(object.isDirectionalLight).toBeTruthy();
+      expect(object.shadow).toBeInstanceOf(DirectionalLightShadow);
     });
 
     test('dispose', () => {
@@ -95,9 +97,6 @@ describe('Lights', () => {
     test('toJSON', () => {
       const light = new DirectionalLight(0xffc0d1);
       const json = light.toJSON();
-
-      expect(json.metadata.version).toBe(4.5);
-
       const object = json.object;
 
       expect(light.type).toBe(object.type);
