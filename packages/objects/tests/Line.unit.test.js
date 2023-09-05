@@ -2,6 +2,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 
 import { BufferGeometry } from '@renderlayer/buffers';
 import { Object3D, Raycaster } from '@renderlayer/core';
+import { ObjectLoader } from '@renderlayer/loaders';
 import { LineBasicMaterial } from '@renderlayer/materials';
 import { Vector3 } from '@renderlayer/math';
 
@@ -99,6 +100,22 @@ describe('Objects', () => {
       object.updateMorphTargets();
 
       // EP: asserts required
+    });
+
+    test('from ObjectLoader', () => {
+      const points = [];
+      points.push(new Vector3(-10, 0, 0));
+      points.push(new Vector3(0, 10, 0));
+      points.push(new Vector3(10, 0, 0));
+      const geometry = new BufferGeometry().setFromPoints(points);
+      const object = new Line(geometry);
+
+      const json = object.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      // EP: toJSON returns BufferAttribute instead of Float32BufferAttribute ?
+      expect(outputObject.toJSON()).toStrictEqual(object.toJSON());
     });
   });
 });
