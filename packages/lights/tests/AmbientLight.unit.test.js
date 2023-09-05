@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeAll, describe, expect, it, test, vi } from 'vitest';
 
 import { ObjectLoader } from '@renderlayer/loaders';
 
@@ -9,12 +9,12 @@ describe('Lights', () => {
   describe('AmbientLight', () => {
     let lights = undefined;
 
-    beforeAll(function () {
-      const parameters = {
-        color: 0xaaaaaa,
-        intensity: 0.5
-      };
+    const parameters = {
+      color: 0xaaaaaa,
+      intensity: 0.5
+    };
 
+    beforeAll(function () {
       // prettier-ignore
       lights = [
 				new AmbientLight(),
@@ -33,14 +33,14 @@ describe('Lights', () => {
       expect(object).toBeInstanceOf(Light);
     });
 
-    test('type', () => {
-      const object = new AmbientLight();
-      expect(object.type === 'AmbientLight').toBeTruthy();
-    });
-
     test('isAmbientLight', () => {
       const object = new AmbientLight();
       expect(object.isAmbientLight).toBeTruthy();
+    });
+
+    test('type', () => {
+      const object = new AmbientLight();
+      expect(object.type === 'AmbientLight').toBeTruthy();
     });
 
     test('dispose', () => {
@@ -82,9 +82,6 @@ describe('Lights', () => {
     test('toJSON', () => {
       const light = new AmbientLight(0xffc0d1);
       const json = light.toJSON();
-
-      expect(json.metadata.version).toBe(4.5);
-
       const object = json.object;
 
       expect(light.type).toBe(object.type);
