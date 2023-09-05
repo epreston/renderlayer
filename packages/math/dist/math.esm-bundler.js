@@ -78,7 +78,7 @@ function radToDeg(radians) {
   return radians * RAD2DEG;
 }
 function isPowerOfThree(n) {
-  return Math.log10(n) / Math.log10(3) % 1 == 0;
+  return Math.log10(n) / Math.log10(3) % 1 === 0;
 }
 function isPowerOfTwo(value) {
   return (value & value - 1) === 0 && value !== 0;
@@ -3038,8 +3038,8 @@ class Euler {
       case "XYZ":
         this._y = Math.asin(clamp(m13, -1, 1));
         if (Math.abs(m13) < 0.9999999) {
-          this._x = Math.atan2(-m23, m33);
-          this._z = Math.atan2(-m12, m11);
+          this._x = Math.atan2(-m23, m33) + 0;
+          this._z = Math.atan2(-m12, m11) + 0;
         } else {
           this._x = Math.atan2(m32, m22);
           this._z = 0;
@@ -3051,15 +3051,15 @@ class Euler {
           this._y = Math.atan2(m13, m33);
           this._z = Math.atan2(m21, m22);
         } else {
-          this._y = Math.atan2(-m31, m11);
+          this._y = Math.atan2(-m31, m11) + 0;
           this._z = 0;
         }
         break;
       case "ZXY":
         this._x = Math.asin(clamp(m32, -1, 1));
         if (Math.abs(m32) < 0.9999999) {
-          this._y = Math.atan2(-m31, m33);
-          this._z = Math.atan2(-m12, m22);
+          this._y = Math.atan2(-m31, m33) + 0;
+          this._z = Math.atan2(-m12, m22) + 0;
         } else {
           this._y = 0;
           this._z = Math.atan2(m21, m11);
@@ -3072,14 +3072,14 @@ class Euler {
           this._z = Math.atan2(m21, m11);
         } else {
           this._x = 0;
-          this._z = Math.atan2(-m12, m22);
+          this._z = Math.atan2(-m12, m22) + 0;
         }
         break;
       case "YZX":
         this._z = Math.asin(clamp(m21, -1, 1));
         if (Math.abs(m21) < 0.9999999) {
-          this._x = Math.atan2(-m23, m22);
-          this._y = Math.atan2(-m31, m11);
+          this._x = Math.atan2(-m23, m22) + 0;
+          this._y = Math.atan2(-m31, m11) + 0;
         } else {
           this._x = 0;
           this._y = Math.atan2(m13, m33);
@@ -3091,7 +3091,7 @@ class Euler {
           this._x = Math.atan2(m32, m22);
           this._y = Math.atan2(m13, m11);
         } else {
-          this._x = Math.atan2(-m23, m33);
+          this._x = Math.atan2(-m23, m33) + 0;
           this._y = 0;
         }
         break;
