@@ -1,6 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
-import { CubeTexture } from '@renderlayer/textures';
+import { CubeTexture, Texture } from '@renderlayer/textures';
 
 import { WebGLRenderTarget } from '../src/WebGLRenderTarget.js';
 import { WebGLCubeRenderTarget } from '../src/WebGLCubeRenderTarget.js';
@@ -31,8 +31,18 @@ describe('Renderers', () => {
       expect(object.texture.images.length).toBe(6);
     });
 
-    test.todo('fromEquirectangularTexture', () => {
-      // implement
+    test('fromEquirectangularTexture', () => {
+      const object = new WebGLCubeRenderTarget();
+      const texture = new Texture();
+      const renderer = {
+        getRenderTarget: vi.fn(),
+        setRenderTarget: vi.fn(),
+        render: vi.fn()
+      };
+
+      object.fromEquirectangularTexture(renderer, texture);
+
+      expect(renderer.render).toHaveBeenCalledTimes(6);
     });
 
     test('clear', () => {
