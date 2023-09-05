@@ -4,10 +4,10 @@ import { LinearFilter } from '@renderlayer/shared';
 import { Source, Texture } from '@renderlayer/textures';
 
 /*
- In options, we can specify:
+ * In options, we can specify:
  * Texture parameters for an auto-generated target texture
  * depthBuffer/stencilBuffer: Booleans to indicate if we should generate these buffers
-*/
+ */
 class WebGLRenderTarget extends EventDispatcher {
   constructor(width = 1, height = 1, options = {}) {
     super();
@@ -77,6 +77,7 @@ class WebGLRenderTarget extends EventDispatcher {
     return new this.constructor().copy(this);
   }
 
+  /** @param {WebGLRenderTarget} source */
   copy(source) {
     this.width = source.width;
     this.height = source.height;
