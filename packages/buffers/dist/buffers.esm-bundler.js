@@ -441,10 +441,10 @@ class BufferGeometry extends EventDispatcher {
   constructor() {
     super();
     this.isBufferGeometry = true;
+    this.type = "BufferGeometry";
     Object.defineProperty(this, "id", { value: _id++ });
     this.uuid = generateUUID();
     this.name = "";
-    this.type = "BufferGeometry";
     this.index = null;
     this.attributes = {};
     this.morphAttributes = {};
