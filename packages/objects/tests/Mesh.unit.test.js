@@ -3,6 +3,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 import { BufferGeometry } from '@renderlayer/buffers';
 import { Object3D, Raycaster } from '@renderlayer/core';
 import { BoxGeometry, PlaneGeometry } from '@renderlayer/geometries';
+import { ObjectLoader } from '@renderlayer/loaders';
 import { MeshBasicMaterial } from '@renderlayer/materials';
 import { Vector2, Vector3 } from '@renderlayer/math';
 import { DoubleSide } from '@renderlayer/shared';
@@ -160,6 +161,18 @@ describe('Objects', () => {
       mesh.raycast(raycaster, intersections);
 
       expect(intersections.length === 0).toBeTruthy();
+    });
+
+    test('from ObjectLoader', () => {
+      const geometry = new BoxGeometry(1, 1, 1);
+      const material = new MeshBasicMaterial({ side: DoubleSide });
+      const mesh = new Mesh(geometry, material);
+
+      const json = mesh.toJSON();
+      const loader = new ObjectLoader();
+      const outputObject = loader.parse(json);
+
+      expect(mesh).toStrictEqual(outputObject);
     });
   });
 });
