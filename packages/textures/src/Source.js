@@ -8,7 +8,7 @@ class Source {
     this.isSource = true;
     Object.defineProperty(this, 'id', { value: sourceid++ });
     this.uuid = generateUUID();
-    this.data = data;
+    this.data = data; // obj or array
     this.version = 0;
   }
 
