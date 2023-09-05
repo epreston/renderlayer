@@ -17,7 +17,14 @@ describe('WebGL', () => {
     });
 
     test.todo('id', () => {
-      // implement
+      const object = new WebGLProgram();
+      expect(object.id).toBeDefined();
+
+      // can change based on order of tests
+      const prevId = object.id;
+
+      const object2 = new WebGLProgram();
+      expect(object2.id).toBeGreaterThan(prevId);
     });
 
     test.todo('cacheKey', () => {
