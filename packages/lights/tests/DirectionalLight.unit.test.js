@@ -44,8 +44,9 @@ describe('Lights', () => {
       expect(object.type).toBe('DirectionalLight');
     });
 
-    test.todo('position', () => {
-      // implement
+    test('position', () => {
+      const object = new DirectionalLight();
+      expect(object.position.equals(Object3D.DEFAULT_UP)).toBeTruthy();
     });
 
     test('target', () => {
