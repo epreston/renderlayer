@@ -1,8 +1,8 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { InstancedBufferAttribute } from '@renderlayer/buffers';
-import { Mesh } from '../src/Mesh.js';
 
+import { Mesh } from '../src/Mesh.js';
 import { InstancedMesh } from '../src/InstancedMesh.js';
 
 describe('Objects', () => {
@@ -28,15 +28,30 @@ describe('Objects', () => {
       expect(instanceMatrix).toBeInstanceOf(InstancedBufferAttribute);
     });
 
-    test.todo('instanceColor', () => {
-      // implement
+    test('instanceColor', () => {
+      const object = new InstancedMesh();
+      expect(object.instanceColor).toBeNull();
     });
 
     test.todo('count', () => {
       // implement
     });
 
-    test.todo('frustumCulled', () => {
+    test('boundingBox', () => {
+      const object = new InstancedMesh();
+      expect(object.boundingBox).toBeNull();
+    });
+
+    test('boundingSphere', () => {
+      const object = new InstancedMesh();
+      expect(object.boundingSphere).toBeNull();
+    });
+
+    test.todo('computeBoundingBox', () => {
+      // implement
+    });
+
+    test.todo('computeBoundingSphere', () => {
       // implement
     });
 
