@@ -1,6 +1,10 @@
 import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 import { OrthographicCamera } from '@renderlayer/cameras';
+import { Object3D } from '@renderlayer/core';
+import { Frustum, Matrix4, Vector2, Vector4 } from '@renderlayer/math';
+
+import { Light } from '../src/Light.js';
 import { LightShadow } from '../src/LightShadow.js';
 
 describe('Lights', () => {
@@ -41,28 +45,34 @@ describe('Lights', () => {
       expect(object.radius).toBe(1);
     });
 
-    test.todo('blurSamples', () => {
-      // implement
+    test('blurSamples', () => {
+      expect(object.blurSamples).toBeDefined();
+      expect(object.blurSamples).toBe(8);
     });
 
-    test.todo('mapSize', () => {
-      // implement
+    test('mapSize', () => {
+      expect(object.mapSize).toBeDefined();
+      expect(object.mapSize.equals(new Vector2(512, 512))).toBeTruthy();
     });
 
-    test.todo('map', () => {
-      // implement
+    test('map', () => {
+      expect(object.map).toBeDefined();
+      expect(object.map).toBeNull();
     });
 
-    test.todo('mapPass', () => {
-      // implement
+    test('mapPass', () => {
+      expect(object.mapPass).toBeDefined();
+      expect(object.mapPass).toBeNull();
     });
 
-    test.todo('matrix', () => {
-      // implement
+    test('matrix', () => {
+      expect(object.matrix).toBeDefined();
+      expect(object.matrix).toBeInstanceOf(Matrix4);
     });
 
-    test.todo('autoUpdate', () => {
-      // implement
+    test('autoUpdate', () => {
+      expect(object.autoUpdate).toBeDefined();
+      expect(object.autoUpdate).toBe(true);
     });
 
     test('needsUpdate', () => {
@@ -70,24 +80,32 @@ describe('Lights', () => {
       expect(object.needsUpdate).toBe(false);
     });
 
-    test.todo('getViewportCount', () => {
-      // implement
+    test('getViewportCount', () => {
+      expect(object.getViewportCount()).toBe(1);
     });
 
-    test.todo('getFrustum', () => {
-      // implement
+    test('getFrustum', () => {
+      const frustum = object.getFrustum();
+      expect(frustum).toBeInstanceOf(Frustum);
     });
 
-    test.todo('updateMatrices', () => {
-      // implement
+    test('updateMatrices', () => {
+      const light = new Light();
+
+      // only apples to light types with a target
+      light.target = new Object3D();
+
+      object.updateMatrices(light);
     });
 
-    test.todo('getViewport', () => {
-      // implement
+    test('getViewport', () => {
+      const viewPort = object.getViewport(0);
+      expect(viewPort).toBeInstanceOf(Vector4);
     });
 
-    test.todo('getFrameExtents', () => {
-      // implement
+    test('getFrameExtents', () => {
+      const extents = object.getFrameExtents();
+      expect(extents).toBeInstanceOf(Vector2);
     });
 
     test('dispose', () => {
