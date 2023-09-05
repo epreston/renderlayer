@@ -87,7 +87,6 @@ class Mesh extends Object3D {
   /**
    * @param {Number} index
    * @param {Vector3} target
-   * @returns {Vector3}
    */
   getVertexPosition(index, target) {
     const geometry = this.geometry;
