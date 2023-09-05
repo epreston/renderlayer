@@ -196,7 +196,7 @@ describe('Objects', () => {
       const outputObject = loader.parse(json);
 
       // other comparisons fail
-      expect(mesh.toJSON()).toStrictEqual(outputObject.toJSON());
+      expect(outputObject.toJSON()).toStrictEqual(mesh.toJSON());
     });
   });
 });
