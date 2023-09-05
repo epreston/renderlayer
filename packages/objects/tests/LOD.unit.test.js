@@ -2,6 +2,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D, Raycaster } from '@renderlayer/core';
 import { LOD } from '../src/LOD.js';
+import { PerspectiveCamera } from '@renderlayer/cameras';
 
 describe('Objects', () => {
   describe('LOD', () => {
@@ -83,8 +84,19 @@ describe('Objects', () => {
       expect(lod.levels[2]).toStrictEqual({ distance: 50, object: low, hysteresis: 0.1 });
     });
 
-    test.todo('getCurrentLevel', () => {
-      // implement
+    test('getCurrentLevel', () => {
+      const lod = new LOD();
+
+      const high = new Object3D();
+      const mid = new Object3D();
+      const low = new Object3D();
+
+      lod.addLevel(high, 5, 0.0);
+      lod.addLevel(mid, 25, 0.05);
+      lod.addLevel(low, 50, 0.1);
+
+      const level = lod.getCurrentLevel();
+      expect(level).toBe(0);
     });
 
     test('getObjectForDistance', () => {
@@ -116,6 +128,10 @@ describe('Objects', () => {
 
     test('raycast', () => {
       const lod = new LOD();
+      const high = new Object3D();
+
+      lod.addLevel(high, 5, 0.0);
+
       const raycaster = new Raycaster();
       const intersections = [];
 
@@ -124,13 +140,35 @@ describe('Objects', () => {
       expect(intersections.length).toBe(0);
     });
 
-    test.todo('update', () => {
-      // implement
+    test('update', () => {
+      const lod = new LOD();
+
+      const high = new Object3D();
+      const mid = new Object3D();
+      const low = new Object3D();
+
+      lod.addLevel(high, 5, 0.0);
+      lod.addLevel(mid, 25, 0.05);
+      lod.addLevel(low, 50, 0.1);
+
+      const camera = new PerspectiveCamera();
+      camera.position.set(0, 0, 10);
+
+      lod.update(camera);
+
+      const level = lod.getCurrentLevel();
+      expect(level).toBe(0);
     });
 
     test('toJSON', () => {
       const object = new LOD();
+      const high = new Object3D();
+      object.addLevel(high, 5, 0.0);
+
+      // will be unique for each run
       object.uuid = 'c67c987a-930e-45f5-92f2-e4a6605184e3';
+      object.children[0].uuid = 'e13014b7-f640-48d5-9af5-11af67cf3cce';
+
       expect(object).toMatchInlineSnapshot(`
         {
           "metadata": {
@@ -139,8 +177,44 @@ describe('Objects', () => {
             "version": 4.5,
           },
           "object": {
+            "children": [
+              {
+                "layers": 1,
+                "matrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                ],
+                "type": "Object3D",
+                "up": [
+                  0,
+                  1,
+                  0,
+                ],
+                "uuid": "e13014b7-f640-48d5-9af5-11af67cf3cce",
+              },
+            ],
             "layers": 1,
-            "levels": [],
+            "levels": [
+              {
+                "distance": 5,
+                "hysteresis": 0,
+                "object": "e13014b7-f640-48d5-9af5-11af67cf3cce",
+              },
+            ],
             "matrix": [
               1,
               0,
