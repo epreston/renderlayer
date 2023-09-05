@@ -16,18 +16,23 @@ describe('Lights', () => {
       expect(object).toBeInstanceOf(LightShadow);
     });
 
-    test('focus', () => {
-      const object = new SpotLightShadow();
-      expect(object.focus).toBe(1);
-    });
-
     test('isSpotLightShadow', () => {
       const object = new SpotLightShadow();
       expect(object.isSpotLightShadow).toBeTruthy();
     });
 
-    test.todo('updateMatrices', () => {
-      // implement
+    test('focus', () => {
+      const object = new SpotLightShadow();
+      expect(object.focus).toBe(1);
+    });
+
+    test('updateMatrices', () => {
+      const object = new SpotLightShadow();
+      const light = new SpotLight();
+
+      object.updateMatrices(light);
+
+      // asserts required
     });
 
     test('copy', () => {
