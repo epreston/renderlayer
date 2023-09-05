@@ -104,14 +104,6 @@ class Object3D extends EventDispatcher {
     const rotation = new Euler();
     const quaternion = new Quaternion();
     const scale = new Vector3(1, 1, 1);
-    function onRotationChange() {
-      quaternion.setFromEuler(rotation, false);
-    }
-    function onQuaternionChange() {
-      rotation.setFromQuaternion(quaternion, void 0, false);
-    }
-    rotation._onChange(onRotationChange);
-    quaternion._onChange(onQuaternionChange);
     this.position = position;
     this.rotation = rotation;
     this.quaternion = quaternion;
@@ -142,6 +134,14 @@ class Object3D extends EventDispatcher {
         value: new Matrix3()
       }
     });
+    function onRotationChange() {
+      quaternion.setFromEuler(rotation, false);
+    }
+    function onQuaternionChange() {
+      rotation.setFromQuaternion(quaternion, void 0, false);
+    }
+    rotation._onChange(onRotationChange);
+    quaternion._onChange(onQuaternionChange);
     this.matrix = new Matrix4();
     this.matrixWorld = new Matrix4();
     this.matrixAutoUpdate = Object3D.DEFAULT_MATRIX_AUTO_UPDATE;
@@ -588,6 +588,7 @@ class Object3D extends EventDispatcher {
     this.name = source.name;
     this.up.copy(source.up);
     this.position.copy(source.position);
+    this.rotation.order = source.rotation.order;
     this.rotation.copy(source.rotation, false);
     this.quaternion.copy(source.quaternion, false);
     this.scale.copy(source.scale);
