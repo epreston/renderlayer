@@ -1,6 +1,19 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { EventDispatcher } from '@renderlayer/core';
+import { Matrix3, Vector2 } from '@renderlayer/math';
+import {
+  ClampToEdgeWrapping,
+  LinearFilter,
+  LinearMipmapLinearFilter,
+  MirroredRepeatWrapping,
+  NoColorSpace,
+  RGBAFormat,
+  RepeatWrapping,
+  UnsignedByteType
+} from '@renderlayer/shared';
+
+import { Source } from '../src/Source.js';
 import { Texture } from '../src/Texture.js';
 
 describe('Textures', () => {
@@ -21,8 +34,15 @@ describe('Textures', () => {
       expect(object.isTexture).toBeTruthy();
     });
 
-    test.todo('image', () => {
-      // implement
+    test('image', () => {
+      const object = new Texture();
+
+      const data = object.image;
+      expect(data).toBeNull();
+
+      const newData = { data: 'test', width: 4, height: 4 };
+      object.image = newData;
+      expect(object.image).toBe(newData);
     });
 
     test('id', () => {
@@ -48,116 +68,162 @@ describe('Textures', () => {
       expect(object.name).toBe('');
     });
 
-    test.todo('source', () => {
-      // implement
+    test('source', () => {
+      const object = new Texture();
+      expect(object.source).toBeInstanceOf(Source);
     });
 
-    test.todo('mipmaps', () => {
-      // implement
+    test('mipmaps', () => {
+      const object = new Texture();
+      expect(object.mipmaps).toBeInstanceOf(Array);
     });
 
-    test.todo('mapping', () => {
-      // implement
+    test('mapping', () => {
+      const object = new Texture();
+      expect(object.mapping).toBe(Texture.DEFAULT_MAPPING);
     });
 
-    test.todo('wrapS', () => {
-      // implement
+    test('wrapS', () => {
+      const object = new Texture();
+      expect(object.wrapS).toBe(ClampToEdgeWrapping);
     });
 
-    test.todo('wrapT', () => {
-      // implement
+    test('wrapT', () => {
+      const object = new Texture();
+      expect(object.wrapT).toBe(ClampToEdgeWrapping);
     });
 
-    test.todo('magFilter', () => {
-      // implement
+    test('magFilter', () => {
+      const object = new Texture();
+      expect(object.magFilter).toBe(LinearFilter);
     });
 
-    test.todo('minFilter', () => {
-      // implement
+    test('minFilter', () => {
+      const object = new Texture();
+      expect(object.minFilter).toBe(LinearMipmapLinearFilter);
     });
 
-    test.todo('anisotropy', () => {
-      // implement
+    test('anisotropy', () => {
+      const object = new Texture();
+      expect(object.anisotropy).toBe(Texture.DEFAULT_ANISOTROPY);
     });
 
-    test.todo('format', () => {
-      // implement
+    test('format', () => {
+      const object = new Texture();
+      expect(object.format).toBe(RGBAFormat);
     });
 
-    test.todo('internalFormat', () => {
-      // implement
+    test('internalFormat', () => {
+      const object = new Texture();
+      expect(object.internalFormat).toBeNull();
     });
 
-    test.todo('type', () => {
-      // implement
+    test('type', () => {
+      const object = new Texture();
+      expect(object.type).toBe(UnsignedByteType);
     });
 
-    test.todo('offset', () => {
-      // implement
+    test('offset', () => {
+      const object = new Texture();
+      expect(object.offset).toBeInstanceOf(Vector2);
     });
 
-    test.todo('repeat', () => {
-      // implement
+    test('repeat', () => {
+      const object = new Texture();
+      expect(object.repeat).toBeInstanceOf(Vector2);
     });
 
-    test.todo('center', () => {
-      // implement
+    test('center', () => {
+      const object = new Texture();
+      expect(object.center).toBeInstanceOf(Vector2);
     });
 
-    test.todo('rotation', () => {
-      // implement
+    test('rotation', () => {
+      const object = new Texture();
+      expect(object.rotation).toBe(0);
     });
 
-    test.todo('matrixAutoUpdate', () => {
-      // implement
+    test('matrixAutoUpdate', () => {
+      const object = new Texture();
+      expect(object.matrixAutoUpdate).toBe(true);
     });
 
-    test.todo('matrix', () => {
-      // implement
+    test('matrix', () => {
+      const object = new Texture();
+      expect(object.matrix).toBeInstanceOf(Matrix3);
     });
 
-    test.todo('generateMipmaps', () => {
-      // implement
+    test('generateMipmaps', () => {
+      const object = new Texture();
+      expect(object.generateMipmaps).toBe(true);
     });
 
-    test.todo('premultiplyAlpha', () => {
-      // implement
+    test('premultiplyAlpha', () => {
+      const object = new Texture();
+      expect(object.premultiplyAlpha).toBe(false);
     });
 
-    test.todo('flipY', () => {
-      // implement
+    test('flipY', () => {
+      const object = new Texture();
+      expect(object.flipY).toBe(true);
     });
 
-    test.todo('unpackAlignment', () => {
-      // implement
+    test('unpackAlignment', () => {
+      const object = new Texture();
+      expect(object.unpackAlignment).toBe(4);
     });
 
-    test.todo('colorSpace', () => {
-      // implement
+    test('colorSpace', () => {
+      const object = new Texture();
+      expect(object.colorSpace).toBe(NoColorSpace);
     });
 
-    test.todo('userData', () => {
-      // implement
+    test('userData', () => {
+      const object = new Texture();
+      expect(object.userData).toBeDefined();
+      expect(object.userData).toBeInstanceOf(Object);
     });
 
-    test.todo('version', () => {
-      // implement
+    test('version', () => {
+      const object = new Texture();
+      expect(object.version).toBe(0);
     });
 
-    test.todo('onUpdate', () => {
-      // implement
+    test('onUpdate', () => {
+      const object = new Texture();
+      expect(object.onUpdate).toBeNull();
     });
 
-    test.todo('needsPMREMUpdate', () => {
-      // implement
+    test('needsPMREMUpdate', () => {
+      // EP: no longer required ?
+
+      const object = new Texture();
+      expect(object.needsPMREMUpdate).toBe(false);
     });
 
-    test.todo('updateMatrix', () => {
-      // implement
+    test('updateMatrix', () => {
+      const object = new Texture();
+      object.updateMatrix();
+
+      expect(object.matrix).toMatchInlineSnapshot(`
+        Matrix3 {
+          "elements": [
+            1,
+            -0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1,
+          ],
+        }
+      `);
     });
 
     test('clone', () => {
-      const object = new Texture(0xffffff, 0.015, 100);
+      const object = new Texture();
       const clonedObject = object.clone();
 
       // will be different
@@ -168,8 +234,18 @@ describe('Textures', () => {
       expect(clonedObject).toStrictEqual(object);
     });
 
-    test.todo('copy', () => {
-      // implement
+    test('copy', () => {
+      const object = new Texture();
+      const copiedObject = new Texture();
+
+      copiedObject.copy(object);
+
+      // will be different
+      copiedObject.uuid = object.uuid;
+      copiedObject.version = object.version;
+
+      expect(copiedObject).not.toBe(object);
+      expect(copiedObject).toStrictEqual(object);
     });
 
     test('toJSON', () => {
@@ -230,8 +306,44 @@ describe('Textures', () => {
       expect(object).toBeDefined();
     });
 
-    test.todo('transformUv', () => {
-      // implement
+    test('transformUv', () => {
+      const object = new Texture();
+
+      const uvOne = object.transformUv(new Vector2(0.5, 0.5));
+      expect(uvOne).toStrictEqual(new Vector2(0.5, 0.5));
+
+      const uvClamp = object.transformUv(new Vector2(1.5, 1.5));
+      expect(uvClamp).toStrictEqual(new Vector2(1.0, 0.0));
+
+      object.wrapS = MirroredRepeatWrapping;
+      object.wrapT = MirroredRepeatWrapping;
+
+      const uvTwo = object.transformUv(new Vector2(0.5, 0.5));
+      expect(uvTwo).toStrictEqual(new Vector2(0.5, 0.5));
+
+      const uvThree = object.transformUv(new Vector2(1.5, 0.5));
+      expect(uvThree).toStrictEqual(new Vector2(0.5, 0.5));
+
+      const uvFour = object.transformUv(new Vector2(0.5, 1.5));
+      expect(uvFour).toStrictEqual(new Vector2(0.5, 0.5));
+
+      object.wrapS = RepeatWrapping;
+      object.wrapT = RepeatWrapping;
+
+      const uvFive = object.transformUv(new Vector2(0.5, 0.5));
+      expect(uvFive).toStrictEqual(new Vector2(0.5, 0.5));
+
+      const uvSix = object.transformUv(new Vector2(1.5, 1.5));
+      expect(uvSix).toStrictEqual(new Vector2(0.5, 0.5));
+    });
+
+    test('needsUpdate', () => {
+      const object = new Texture();
+      expect(object.version).toBe(0);
+
+      object.needsUpdate = true;
+
+      expect(object.version).toBe(1);
     });
   });
 });
