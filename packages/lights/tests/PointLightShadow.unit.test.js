@@ -26,6 +26,8 @@ describe('Lights', () => {
       const light = new PointLight();
 
       object.updateMatrices(light, 0);
+
+      // asserts required
     });
   });
 });
