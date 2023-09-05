@@ -56,11 +56,23 @@ describe('Textures', () => {
     });
 
     test('toJSON', () => {
-      const object = new Source();
+      const data = { data: 'test', width: 4, height: 4, depth: 1 };
+      const object = new Source(data);
+
       object.uuid = 'b933ce08-897c-4d50-bb3b-9cc6d72c89fa';
       expect(object).toMatchInlineSnapshot(`
         {
-          "url": "",
+          "url": {
+            "data": [
+              "t",
+              "e",
+              "s",
+              "t",
+            ],
+            "height": 4,
+            "type": "String",
+            "width": 4,
+          },
           "uuid": "b933ce08-897c-4d50-bb3b-9cc6d72c89fa",
         }
       `);
