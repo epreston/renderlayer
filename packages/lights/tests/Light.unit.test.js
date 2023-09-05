@@ -23,7 +23,7 @@ describe('Lights', () => {
 
     test('type', () => {
       const object = new Light(0xaaaaaa);
-      expect(object.type === 'Light').toBeTruthy();
+      expect(object.type).toBe('Light');
     });
 
     test('color', () => {
