@@ -35,6 +35,17 @@ describe('Buffers', () => {
 
     test('mergeAttributes', () => {
       expect(mergeAttributes).toBeDefined();
+
+      const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1);
+      const sphereGeometry = new SphereGeometry(1, 32, 16);
+
+      const boxPos = boxGeometry.getAttribute('position');
+      const spherePos = sphereGeometry.getAttribute('position');
+      const attributes = [boxPos, spherePos];
+
+      const mergedAttribute = mergeAttributes(attributes);
+
+      expect(mergedAttribute.count).toBe(boxPos.count + spherePos.count);
     });
 
     test('deepCloneAttribute', () => {
