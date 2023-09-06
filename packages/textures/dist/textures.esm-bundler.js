@@ -105,8 +105,8 @@ class Texture extends EventDispatcher {
   get image() {
     return this.source.data;
   }
-  set image(value = null) {
-    this.source.data = value;
+  set image(value) {
+    this.source.data = value ? value : null;
   }
   updateMatrix() {
     this.matrix.setUvTransform(
@@ -196,6 +196,7 @@ class Texture extends EventDispatcher {
   dispose() {
     this.dispatchEvent({ type: "dispose" });
   }
+  /** @param {Vector2} uv */
   transformUv(uv) {
     if (this.mapping !== UVMapping)
       return uv;
@@ -251,9 +252,7 @@ Texture.DEFAULT_MAPPING = UVMapping;
 Texture.DEFAULT_ANISOTROPY = 1;
 
 class CubeTexture extends Texture {
-  constructor(images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, colorSpace) {
-    images = images !== void 0 ? images : [];
-    mapping = mapping !== void 0 ? mapping : CubeReflectionMapping;
+  constructor(images = [], mapping = CubeReflectionMapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, colorSpace) {
     super(
       images,
       mapping,
