@@ -164,6 +164,15 @@ describe('Buffers', () => {
 
     test('mergeVertices', () => {
       expect(mergeVertices).toBeDefined();
+
+      const sphereGeometry = new SphereGeometry(1, 64, 32);
+
+      const optimisedSphere = mergeVertices(sphereGeometry, 0.1);
+
+      const sphereVertices = sphereGeometry.getAttribute('position');
+      const optimisedVertices = optimisedSphere.getAttribute('position');
+
+      expect(optimisedVertices.count).toBeLessThan(sphereVertices.count);
     });
 
     test('toTrianglesDrawMode', () => {
