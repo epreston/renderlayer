@@ -225,8 +225,8 @@ describe('Buffers', () => {
       const matrix = new Matrix4().set(
 				1, 0, 0, 1.5,
 				0, 1, 0, - 2,
-				0, 0, 1, 3,
-				0, 0, 0, 1
+				0, 0, 1,   3,
+				0, 0, 0,   1
 			);
 
       geometry.applyMatrix4(matrix);
@@ -348,11 +348,11 @@ describe('Buffers', () => {
       // prettier-ignore
       const vertices = new Float32Array([
 				- 1.0, - 1.0, 1.0,
-				1.0, - 1.0, 1.0,
-				1.0, 1.0, 1.0,
+				  1.0, - 1.0, 1.0,
+				  1.0,   1.0, 1.0,
 
-				1.0, 1.0, 1.0,
-				- 1.0, 1.0, 1.0,
+				  1.0,   1.0, 1.0,
+				- 1.0,   1.0, 1.0,
 				- 1.0, - 1.0, 1.0
 			]);
 
@@ -362,13 +362,13 @@ describe('Buffers', () => {
 
       // prettier-ignore
       const expected = new Float32Array([
-				1, 0, - sqrt,
-				- 1, 0, - sqrt,
-				- 1, sqrt, 0,
+				  1,    0, - sqrt,
+				- 1,    0, - sqrt,
+				- 1, sqrt,      0,
 
-				- 1, sqrt, 0,
-				1, sqrt, 0,
-				1, 0, - sqrt
+				- 1, sqrt,      0,
+				  1, sqrt,      0,
+				  1,    0, - sqrt
 			]);
 
       a.lookAt(new Vector3(0, 1, -1));
@@ -381,10 +381,11 @@ describe('Buffers', () => {
       const geometry = new BufferGeometry();
 
       // prettier-ignore
-      geometry.setAttribute('position', new BufferAttribute( new Float32Array([
-				- 1, - 1, - 1,
-				1, 1, 1,
-				4, 4, 4
+      geometry.setAttribute('position', new BufferAttribute(
+        new Float32Array([
+				  - 1, - 1, - 1,
+				    1,   1,   1,
+				    4,   4,   4
 			]), 3 ));
 
       geometry.center();
