@@ -145,6 +145,7 @@
     "PMREM",
     "Pettineo",
     "Schlick",
+    "XYZW",
     "catmullrom",
     "pluginutils",
     "unproject"
