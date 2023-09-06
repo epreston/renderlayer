@@ -1,31 +1,31 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
-import * as DataUtils from '../src/BufferAttributeUtils.js';
+import { toHalfFloat, fromHalfFloat } from '../src/BufferAttributeUtils.js';
 
 describe('Buffers', () => {
   describe('BufferAttributeUtils', () => {
     test('toHalfFloat', () => {
-      expect(DataUtils.toHalfFloat(0) === 0).toBeTruthy();
+      expect(toHalfFloat(0) === 0).toBeTruthy();
 
       // out of range
-      expect(DataUtils.toHalfFloat(100000) === 31743).toBeTruthy();
-      expect(DataUtils.toHalfFloat(-100000) === 64511).toBeTruthy();
+      expect(toHalfFloat(100000)).toBe(31743);
+      expect(toHalfFloat(-100000)).toBe(64511);
       expect('out of range').toHaveBeenWarnedTimes(2);
 
-      expect(DataUtils.toHalfFloat(65504) === 31743).toBeTruthy();
-      expect(DataUtils.toHalfFloat(-65504) === 64511).toBeTruthy();
-      expect(DataUtils.toHalfFloat(Math.PI) === 16968).toBeTruthy();
-      expect(DataUtils.toHalfFloat(-Math.PI) === 49736).toBeTruthy();
+      expect(toHalfFloat(65504)).toBe(31743);
+      expect(toHalfFloat(-65504)).toBe(64511);
+      expect(toHalfFloat(Math.PI)).toBe(16968);
+      expect(toHalfFloat(-Math.PI)).toBe(49736);
     });
 
     test('fromHalfFloat', () => {
-      expect(DataUtils.fromHalfFloat(0) === 0).toBeTruthy();
-      expect(DataUtils.fromHalfFloat(31744) === Infinity).toBeTruthy();
-      expect(DataUtils.fromHalfFloat(64512) === -Infinity).toBeTruthy();
-      expect(DataUtils.fromHalfFloat(31743) === 65504).toBeTruthy();
-      expect(DataUtils.fromHalfFloat(64511) === -65504).toBeTruthy();
-      expect(DataUtils.fromHalfFloat(16968) === 3.140625).toBeTruthy();
-      expect(DataUtils.fromHalfFloat(49736) === -3.140625).toBeTruthy();
+      expect(fromHalfFloat(0)).toBe(0);
+      expect(fromHalfFloat(31744)).toBe(Infinity);
+      expect(fromHalfFloat(64512)).toBe(-Infinity);
+      expect(fromHalfFloat(31743)).toBe(65504);
+      expect(fromHalfFloat(64511)).toBe(-65504);
+      expect(fromHalfFloat(16968)).toBe(3.140625);
+      expect(fromHalfFloat(49736)).toBe(-3.140625);
     });
   });
 });
