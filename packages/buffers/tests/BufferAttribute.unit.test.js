@@ -62,8 +62,9 @@ describe('Buffers', () => {
       // implement
     });
 
-    test.todo('version', () => {
-      // implement
+    test('version', () => {
+      const object = new BufferAttribute();
+      expect(object.version).toBe(0);
     });
 
     test.todo('onUploadCallback', () => {
