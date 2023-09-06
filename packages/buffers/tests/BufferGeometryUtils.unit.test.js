@@ -2,6 +2,8 @@ import { describe, expect, it, test, vi } from 'vitest';
 
 import { BoxGeometry, SphereGeometry } from '@renderlayer/geometries';
 
+import { InstancedBufferAttribute } from '../src/InstancedBufferAttribute.js';
+
 import {
   deepCloneAttribute,
   deinterleaveAttribute,
@@ -16,6 +18,8 @@ import {
   mergeGroups,
   toCreasedNormals
 } from '../src/BufferGeometryUtils.js';
+import { InterleavedBufferAttribute } from '../src/InterleavedBufferAttribute.js';
+import { InterleavedBuffer } from '../src/InterleavedBuffer.js';
 
 describe('Buffers', () => {
   describe('BufferGeometryUtils', () => {
@@ -48,8 +52,43 @@ describe('Buffers', () => {
       expect(mergedAttribute.count).toBe(boxPos.count + spherePos.count);
     });
 
-    test('deepCloneAttribute', () => {
+    test('deepCloneAttribute - Float32BufferAttribute', () => {
       expect(deepCloneAttribute).toBeDefined();
+
+      const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1);
+      const boxPos = boxGeometry.getAttribute('position');
+
+      // Float32BufferAttribute in, BufferAttribute out
+      const boxClone = deepCloneAttribute(boxPos);
+
+      expect(boxClone).not.toBe(boxPos);
+      expect(boxClone.array).toStrictEqual(boxPos.array);
+    });
+
+    test('deepCloneAttribute - InstancedBufferAttribute', () => {
+      const instancedAttrib = new InstancedBufferAttribute(new Float32Array(10), 2, false, 123);
+
+      // InstancedBufferAttribute in, InstancedBufferAttribute out
+      const instancedClone = deepCloneAttribute(instancedAttrib);
+
+      expect(instancedClone).not.toBe(instancedAttrib);
+      expect(instancedClone).toStrictEqual(instancedAttrib);
+    });
+
+    test('deepCloneAttribute - InterleavedBufferAttribute', () => {
+      const interleavedBuff = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const interleavedAttrib = new InterleavedBufferAttribute(interleavedBuff, 2, 0);
+
+      // InterleavedBufferAttribute in, BufferAttribute out
+      const interleavedClone = deepCloneAttribute(interleavedAttrib);
+
+      expect(interleavedClone).not.toBe(interleavedAttrib);
+
+      // expect('de-interleave buffer data').toHaveBeenWarned();
+    });
+
+    test('interleaveAttributes', () => {
+      expect(interleaveAttributes).toBeDefined();
     });
 
     test('deinterleaveAttribute', () => {
@@ -58,10 +97,6 @@ describe('Buffers', () => {
 
     test('deinterleaveGeometry', () => {
       expect(deinterleaveGeometry).toBeDefined();
-    });
-
-    test('interleaveAttributes', () => {
-      expect(interleaveAttributes).toBeDefined();
     });
 
     test('estimateBytesUsed', () => {
