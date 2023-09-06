@@ -1,5 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 import { x, y, z } from './math-constants.js';
+import { createBoxMorphGeometry } from './morphGeometryHelpers.js';
 
 import { EventDispatcher } from '@renderlayer/core';
 import { Matrix4, Quaternion, Sphere, Vector3 } from '@renderlayer/math';
@@ -485,8 +486,48 @@ describe('Buffers', () => {
       expect(bs.center.x === 0 && bs.center.y === 0 && bs.center.y === 0).toBeTruthy();
     });
 
-    test.todo('computeTangents', () => {
-      // implement
+    test('computeBoundingSphere - morph geometry', () => {
+      const geometry = createBoxMorphGeometry();
+      geometry.computeBoundingSphere();
+
+      const bs = geometry.boundingSphere;
+
+      expect(bs.radius).toBeCloseTo(2.44948);
+      expect(bs.center.x === 0 && bs.center.y === 0 && bs.center.y === 0).toBeTruthy();
+    });
+
+    test('computeBoundingBox - morph geometry', () => {
+      const geometry = createBoxMorphGeometry();
+      geometry.computeBoundingBox();
+
+      const bb = geometry.boundingBox;
+
+      expect(bb).toMatchInlineSnapshot(`
+        Box3 {
+          "isBox3": true,
+          "max": Vector3 {
+            "x": 2,
+            "y": 1.4142135381698608,
+            "z": 1.4142135381698608,
+          },
+          "min": Vector3 {
+            "x": -2,
+            "y": -1.4142135381698608,
+            "z": -1.4142135381698608,
+          },
+        }
+      `);
+    });
+
+    test('computeTangents', () => {
+      const geometry = createBoxMorphGeometry();
+
+      expect(geometry.hasAttribute('tangent')).toBeFalsy();
+
+      geometry.computeTangents();
+
+      expect(geometry.hasAttribute('tangent')).toBeTruthy();
+      expect(geometry.getAttribute('tangent')).toBeDefined();
     });
 
     test('computeVertexNormals', () => {
