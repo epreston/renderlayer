@@ -67,10 +67,11 @@ describe('Buffers', () => {
       expect(object.version).toBe(0);
     });
 
-    test.todo('onUploadCallback', () => {
+    test('onUploadCallback', () => {
+      const object = new BufferAttribute();
+      expect(object.onUploadCallback).toBeDefined();
       // onUploadCallback() {}
       // defined as member function but set property. refactor req
-      // implement
     });
 
     test('needsUpdate', () => {
