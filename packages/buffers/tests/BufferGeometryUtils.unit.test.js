@@ -103,10 +103,54 @@ describe('Buffers', () => {
 
     test('deinterleaveAttribute', () => {
       expect(deinterleaveAttribute).toBeDefined();
+
+      const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1);
+      const boxPos = boxGeometry.getAttribute('position');
+      const boxNormal = boxGeometry.getAttribute('normal');
+      const boxUV = boxGeometry.getAttribute('uv');
+      const attributes = [boxPos, boxNormal, boxUV];
+
+      const interleavedAttribs = interleaveAttributes(attributes);
+
+      expect(interleavedAttribs.length).toBe(attributes.length);
+
+      const deinterleavedAttrib = deinterleaveAttribute(interleavedAttribs[1]);
+
+      expect(deinterleavedAttrib.array).toStrictEqual(boxNormal.array);
     });
 
     test('deinterleaveGeometry', () => {
       expect(deinterleaveGeometry).toBeDefined();
+
+      const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1);
+
+      const boxPos = boxGeometry.getAttribute('position');
+      const boxNormal = boxGeometry.getAttribute('normal');
+      const boxUV = boxGeometry.getAttribute('uv');
+
+      const attributes = [boxPos, boxNormal, boxUV];
+      const interleavedAttribs = interleaveAttributes(attributes);
+
+      expect(interleavedAttribs.length).toBe(attributes.length);
+
+      boxGeometry.setAttribute('position', interleavedAttribs[0]);
+      boxGeometry.setAttribute('normal', interleavedAttribs[1]);
+      boxGeometry.setAttribute('uv', interleavedAttribs[2]);
+
+      const interleavedBoxPos = boxGeometry.getAttribute('position');
+      const interleavedBoxNormal = boxGeometry.getAttribute('normal');
+      const interleavedBoxUV = boxGeometry.getAttribute('uv');
+
+      expect(interleavedBoxPos).toBe(interleavedAttribs[0]);
+      expect(interleavedBoxNormal).toBe(interleavedAttribs[1]);
+      expect(interleavedBoxUV).toBe(interleavedAttribs[2]);
+
+      deinterleaveGeometry(boxGeometry);
+
+      // should have been returned to the starting state
+      expect(boxGeometry.getAttribute('position').array).toStrictEqual(attributes[0].array);
+      expect(boxGeometry.getAttribute('normal').array).toStrictEqual(attributes[1].array);
+      expect(boxGeometry.getAttribute('uv').array).toStrictEqual(attributes[2].array);
     });
 
     test('estimateBytesUsed', () => {
