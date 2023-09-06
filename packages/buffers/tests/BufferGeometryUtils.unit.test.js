@@ -20,6 +20,7 @@ import {
 } from '../src/BufferGeometryUtils.js';
 import { InterleavedBufferAttribute } from '../src/InterleavedBufferAttribute.js';
 import { InterleavedBuffer } from '../src/InterleavedBuffer.js';
+import { TriangleFanDrawMode, TriangleStripDrawMode } from '@renderlayer/shared';
 
 describe('Buffers', () => {
   describe('BufferGeometryUtils', () => {
@@ -175,20 +176,58 @@ describe('Buffers', () => {
       expect(optimisedVertices.count).toBeLessThan(sphereVertices.count);
     });
 
-    test('toTrianglesDrawMode', () => {
+    test('toTrianglesDrawMode - TriangleFanDrawMode', () => {
       expect(toTrianglesDrawMode).toBeDefined();
+
+      const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1);
+      const fanBox = toTrianglesDrawMode(boxGeometry, TriangleFanDrawMode);
+
+      expect(boxGeometry.getIndex().count).toBe(36);
+      expect(fanBox.getIndex().count).toBe(102);
     });
 
-    test('computeMorphedAttributes', () => {
+    test('toTrianglesDrawMode - TriangleStripDrawMode', () => {
+      const sphereGeometry = new SphereGeometry(1, 32, 16);
+      const stripSphere = toTrianglesDrawMode(sphereGeometry, TriangleStripDrawMode);
+
+      expect(sphereGeometry.getIndex().count).toBe(2880);
+      expect(stripSphere.getIndex().count).toBe(8634);
+    });
+
+    test('computeMorphedAttributes - declaration', () => {
       expect(computeMorphedAttributes).toBeDefined();
     });
 
-    test('mergeGroups', () => {
+    test.todo('computeMorphedAttributes - implementation', () => {
+      // implement
+    });
+
+    test('mergeGroups - 6 groups, same material', () => {
       expect(mergeGroups).toBeDefined();
+
+      const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1);
+      const geometry = mergeGroups(boxGeometry);
+
+      expect(geometry).toBe(boxGeometry);
+      expect(geometry.groups.length).toBe(6);
+    });
+
+    test('mergeGroups - 0 groups, same material', () => {
+      const sphereGeometry = new SphereGeometry(1, 32, 16);
+      const geometry = mergeGroups(sphereGeometry);
+
+      expect('No groups').toHaveBeenWarned();
+      expect(geometry).toBe(sphereGeometry);
     });
 
     test('toCreasedNormals', () => {
       expect(toCreasedNormals).toBeDefined();
+
+      const sphereGeometry = new SphereGeometry(1, 32, 16);
+      const geometry = toCreasedNormals(sphereGeometry);
+
+      expect(geometry).not.toBe(sphereGeometry);
+      expect(geometry.getIndex()).toBeNull();
     });
   });
 });
