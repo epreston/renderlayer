@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/webgl",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Webgl2 abstractions used by @renderlayer packages.",
   "type": "module",
   "module": "./dist/webgl.esm-bundler.js",
@@ -35,7 +35,7 @@
     "@renderlayer/materials": "~0.0.9",
     "@renderlayer/math": "~0.0.8",
     "@renderlayer/objects": "~0.0.3",
-    "@renderlayer/shaders": "~0.0.5",
+    "@renderlayer/shaders": "~0.0.6",
     "@renderlayer/shared": "~0.0.4",
     "@renderlayer/targets": "~0.0.2",
     "@renderlayer/textures": "~0.0.8"
