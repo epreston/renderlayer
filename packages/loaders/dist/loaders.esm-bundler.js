@@ -737,7 +737,7 @@ class MaterialLoader extends Loader {
       material.wireframeLinewidth = json.wireframeLinewidth;
     if (json.rotation !== void 0)
       material.rotation = json.rotation;
-    if (json.linewidth !== 1)
+    if (json.linewidth !== void 0 && json.linewidth !== 1)
       material.linewidth = json.linewidth;
     if (json.dashSize !== void 0)
       material.dashSize = json.dashSize;
