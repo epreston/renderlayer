@@ -1,6 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
-import { DynamicDrawUsage } from '@renderlayer/shared';
+import { DynamicDrawUsage, StaticDrawUsage } from '@renderlayer/shared';
 import { toHalfFloat, fromHalfFloat } from '../src/BufferAttributeUtils.js';
 
 import {
@@ -38,28 +38,39 @@ describe('Buffers', () => {
       expect(object.name).toBe('');
     });
 
-    test.todo('array', () => {
-      // implement
+    test('array', () => {
+      const object = new BufferAttribute();
+      expect(object.array).toBeUndefined();
     });
 
-    test.todo('itemSize', () => {
-      // implement
+    test('itemSize', () => {
+      const object = new BufferAttribute();
+      expect(object.itemSize).toBeUndefined();
     });
 
-    test.todo('count', () => {
-      // implement
+    test('count', () => {
+      const object = new BufferAttribute();
+      expect(object.count).toBe(0);
     });
 
-    test.todo('normalized', () => {
-      // implement
+    test('normalized', () => {
+      const object = new BufferAttribute();
+      expect(object.normalized).toBe(false);
     });
 
     test.todo('usage', () => {
-      // implement
+      const object = new BufferAttribute();
+      expect(object.usage).toBe(StaticDrawUsage);
     });
 
-    test.todo('updateRange', () => {
-      // implement
+    test('updateRange', () => {
+      const object = new BufferAttribute();
+      expect(object.updateRange).toMatchInlineSnapshot(`
+        {
+          "count": -1,
+          "offset": 0,
+        }
+      `);
     });
 
     test('version', () => {
