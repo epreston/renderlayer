@@ -1,5 +1,7 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { BoxGeometry, SphereGeometry } from '@renderlayer/geometries';
+
 import {
   deepCloneAttribute,
   deinterleaveAttribute,
@@ -19,6 +21,16 @@ describe('Buffers', () => {
   describe('BufferGeometryUtils', () => {
     test('mergeGeometries', () => {
       expect(mergeGeometries).toBeDefined();
+
+      const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1);
+      const sphereGeometry = new SphereGeometry(1, 32, 16);
+      const combinedGeometry = mergeGeometries([boxGeometry, sphereGeometry], true);
+
+      const boxPos = boxGeometry.getAttribute('position');
+      const spherePos = sphereGeometry.getAttribute('position');
+      const combinedPos = combinedGeometry.getAttribute('position');
+
+      expect(combinedPos.count).toBe(boxPos.count + spherePos.count);
     });
 
     test('mergeAttributes', () => {
