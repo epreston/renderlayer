@@ -80,6 +80,15 @@ describe('Buffers', () => {
       // implement
     });
 
+    test('getX', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+
+      const value = object.getX(1);
+
+      expect(value).toBe(7);
+    });
+
     test('setX', () => {
       let buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
       let instance = new InterleavedBufferAttribute(buffer, 2, 0);
@@ -87,7 +96,8 @@ describe('Buffers', () => {
       instance.setX(0, 123);
       instance.setX(1, 321);
 
-      expect(instance.data.array[0] === 123 && instance.data.array[3] === 321).toBeTruthy();
+      expect(instance.data.array[0]).toBe(123);
+      expect(instance.data.array[3]).toBe(321);
 
       buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
       instance = new InterleavedBufferAttribute(buffer, 2, 1);
@@ -95,54 +105,96 @@ describe('Buffers', () => {
       instance.setX(0, 123);
       instance.setX(1, 321);
 
-      // the offset was defined as 1, so go one step futher in the array
-      expect(instance.data.array[1] === 123 && instance.data.array[4] === 321).toBeTruthy();
+      // the offset was defined as 1, so go one step further in the array
+      expect(instance.data.array[1]).toBe(123);
+      expect(instance.data.array[4]).toBe(321);
     });
 
-    test.todo('setY', () => {
-      // implement
+    test('getY', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+
+      const value = object.getY(1);
+
+      expect(value).toBe(8);
     });
 
-    test.todo('setZ', () => {
-      // implement
+    test('setY', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+
+      object.setY(0, 42);
+
+      expect(object.getY(0)).toBe(42);
     });
 
-    test.todo('setW', () => {
-      // implement
+    test('getZ', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 3, 0);
+
+      const value = object.getZ(1);
+
+      expect(value).toBe(9);
     });
 
-    test.todo('getX', () => {
-      // implement
+    test('setZ', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 3, 0);
+
+      object.setZ(0, 42);
+
+      expect(object.getZ(0)).toBe(42);
     });
 
-    test.todo('getY', () => {
-      // implement
+    test('getW', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 4, 7, 8, 9, 10]), 4);
+      const object = new InterleavedBufferAttribute(buffer, 4, 0);
+
+      const value = object.getW(1);
+
+      expect(value).toBe(10);
     });
 
-    test.todo('getZ', () => {
-      // implement
+    test('setW', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 4, 7, 8, 9, 10]), 4);
+      const object = new InterleavedBufferAttribute(buffer, 4, 0);
+
+      object.setW(0, 42);
+
+      expect(object.getW(0)).toBe(42);
     });
 
-    test.todo('getW', () => {
-      // implement
+    test('setXY', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 4, 7, 8, 9, 10]), 4);
+      const object = new InterleavedBufferAttribute(buffer, 4, 0);
+
+      object.setXY(1, 11, 22);
+
+      expect(object.getY(1)).toBe(22);
     });
 
-    test.todo('setXY', () => {
-      // implement
+    test('setXYZ', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 4, 7, 8, 9, 10]), 4);
+      const object = new InterleavedBufferAttribute(buffer, 4, 0);
+
+      object.setXYZ(0, 11, 22, 33);
+
+      expect(object.getZ(0)).toBe(33);
     });
 
-    test.todo('setXYZ', () => {
-      // implement
-    });
+    test('setXYZW', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 4, 7, 8, 9, 10]), 4);
+      const object = new InterleavedBufferAttribute(buffer, 4, 0);
 
-    test.todo('setXYZW', () => {
-      // implement
+      object.setXYZW(1, 11, 22, 33, 44);
+
+      expect(object.getW(1)).toBe(44);
     });
 
     test('clone - with data param', () => {
       const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
       const object = new InterleavedBufferAttribute(buffer, 2, 0);
-      const data = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const data = {};
       const clonedObject = object.clone(data);
 
       // will be different
