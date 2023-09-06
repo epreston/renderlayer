@@ -1,6 +1,7 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
-import { DynamicDrawUsage } from '@renderlayer/shared';
+import { DynamicDrawUsage, StaticDrawUsage } from '@renderlayer/shared';
+
 import { InterleavedBuffer } from '../src/InterleavedBuffer.js';
 
 describe('Buffers', () => {
@@ -26,30 +27,34 @@ describe('Buffers', () => {
       expect(object.isInterleavedBuffer).toBeTruthy();
     });
 
-    test.todo('array', () => {
-      // implement
+    test('array', () => {
+      const dataArray = new Float32Array([1, 2, 3, 7, 8, 9]);
+      const object = new InterleavedBuffer(dataArray, 3);
+      expect(object.array).toBe(dataArray);
     });
 
-    test.todo('stride', () => {
-      // implement
+    test('stride', () => {
+      const object = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      expect(object.stride).toBe(3);
     });
 
     test('count', () => {
-      const instance = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
-
-      expect(instance.count).toBe(2);
+      const object = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      expect(object.count).toBe(2);
     });
 
-    test.todo('usage', () => {
-      // implement
+    test('usage', () => {
+      const object = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      expect(object.usage).toBe(StaticDrawUsage);
     });
 
     test.todo('updateRange', () => {
       // implement
     });
 
-    test.todo('version', () => {
-      // implement
+    test('version', () => {
+      const object = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      expect(object.version).toBe(0);
     });
 
     test('uuid', () => {
@@ -71,10 +76,10 @@ describe('Buffers', () => {
     });
 
     test('setUsage', () => {
-      const instance = new InterleavedBuffer();
-      instance.setUsage(DynamicDrawUsage);
+      const object = new InterleavedBuffer();
+      object.setUsage(DynamicDrawUsage);
 
-      expect(instance.usage).toBe(DynamicDrawUsage);
+      expect(object.usage).toBe(DynamicDrawUsage);
     });
 
     test('copy', () => {
@@ -126,13 +131,13 @@ describe('Buffers', () => {
     });
 
     test('toJSON', () => {
-      const instance = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
-      instance.uuid = '29bf3df6-7dcd-477a-ba66-21b15ac0ffe6';
-      instance.array.buffer._uuid = 'ef947120-656c-44f5-b9c6-bea826d1f4ce';
+      const object = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      object.uuid = '29bf3df6-7dcd-477a-ba66-21b15ac0ffe6';
+      object.array.buffer._uuid = 'ef947120-656c-44f5-b9c6-bea826d1f4ce';
 
       const data = {};
 
-      expect(instance.toJSON(data)).toMatchInlineSnapshot(`
+      expect(object.toJSON(data)).toMatchInlineSnapshot(`
         {
           "buffer": "ef947120-656c-44f5-b9c6-bea826d1f4ce",
           "stride": 3,
