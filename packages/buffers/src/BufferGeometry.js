@@ -47,6 +47,7 @@ class BufferGeometry extends EventDispatcher {
     this.userData = {};
   }
 
+  /** @returns {Uint32BufferAttribute | Uint16BufferAttribute} */
   getIndex() {
     return this.index;
   }
