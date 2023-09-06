@@ -8,6 +8,12 @@ import { InterleavedBuffer } from './InterleavedBuffer.js';
 import { InterleavedBufferAttribute } from './InterleavedBufferAttribute.js';
 
 /**
+ * @typedef {import('@renderlayer/objects').Mesh} Mesh
+ * @typedef {import('@renderlayer/objects').Line} Line
+ * @typedef {import('@renderlayer/objects').Points} Points
+ */
+
+/**
  * @param  {Array<BufferGeometry>} geometries
  * @param  {Boolean} useGroups
  * @return {BufferGeometry}
@@ -636,8 +642,8 @@ function toTrianglesDrawMode(geometry, drawMode) {
 /**
  * Calculates the morphed attributes of a morphed/skinned BufferGeometry.
  * Helpful for Ray tracing or Decals.
- * @param {Mesh | Line | Points} object An instance of Mesh, Line or Points.
- * @return {Object} An Object with original position/normal attributes and morphed ones.
+ * @param { Mesh | Line | Points} object An instance of Mesh, Line or Points.
+ * @return An Object with original position/normal attributes and morphed ones.
  */
 function computeMorphedAttributes(object) {
   const _vA = new Vector3();
