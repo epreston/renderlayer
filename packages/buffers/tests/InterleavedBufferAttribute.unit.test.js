@@ -139,10 +139,10 @@ describe('Buffers', () => {
       // implement
     });
 
-    test('clone', () => {
+    test('clone - with data param', () => {
       const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
       const object = new InterleavedBufferAttribute(buffer, 2, 0);
-      const data = {};
+      const data = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
       const clonedObject = object.clone(data);
 
       // will be different
@@ -150,6 +150,19 @@ describe('Buffers', () => {
 
       expect(clonedObject).not.toBe(object);
       expect(clonedObject).toStrictEqual(object);
+    });
+
+    test('clone - no data param', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+      const clonedObject = object.clone();
+
+      expect('de-interleave buffer data').toHaveBeenWarned();
+
+      expect(clonedObject).not.toBe(object);
+      expect(clonedObject.itemSize).toBe(object.itemSize);
+      expect(clonedObject.name).toBe(object.name);
+      expect(clonedObject.normalized).toBe(object.normalized);
     });
 
     test('toJSON', () => {
