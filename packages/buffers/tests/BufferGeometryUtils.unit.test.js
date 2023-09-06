@@ -17,51 +17,51 @@ import {
 
 describe('Buffers', () => {
   describe('BufferGeometryUtils', () => {
-    it('deepCloneAttribute', () => {
-      expect(deepCloneAttribute).toBeDefined();
-    });
-
-    it('deinterleaveAttribute', () => {
-      expect(deinterleaveAttribute).toBeDefined();
-    });
-
-    it('deinterleaveGeometry', () => {
-      expect(deinterleaveGeometry).toBeDefined();
-    });
-
-    it('mergeGeometries', () => {
+    test('mergeGeometries', () => {
       expect(mergeGeometries).toBeDefined();
     });
 
-    it('mergeAttributes', () => {
+    test('mergeAttributes', () => {
       expect(mergeAttributes).toBeDefined();
     });
 
-    it('interleaveAttributes', () => {
+    test('deepCloneAttribute', () => {
+      expect(deepCloneAttribute).toBeDefined();
+    });
+
+    test('deinterleaveAttribute', () => {
+      expect(deinterleaveAttribute).toBeDefined();
+    });
+
+    test('deinterleaveGeometry', () => {
+      expect(deinterleaveGeometry).toBeDefined();
+    });
+
+    test('interleaveAttributes', () => {
       expect(interleaveAttributes).toBeDefined();
     });
 
-    it('estimateBytesUsed', () => {
+    test('estimateBytesUsed', () => {
       expect(estimateBytesUsed).toBeDefined();
     });
 
-    it('mergeVertices', () => {
+    test('mergeVertices', () => {
       expect(mergeVertices).toBeDefined();
     });
 
-    it('toTrianglesDrawMode', () => {
+    test('toTrianglesDrawMode', () => {
       expect(toTrianglesDrawMode).toBeDefined();
     });
 
-    it('computeMorphedAttributes', () => {
+    test('computeMorphedAttributes', () => {
       expect(computeMorphedAttributes).toBeDefined();
     });
 
-    it('mergeGroups', () => {
+    test('mergeGroups', () => {
       expect(mergeGroups).toBeDefined();
     });
 
-    it('toCreasedNormals', () => {
+    test('toCreasedNormals', () => {
       expect(toCreasedNormals).toBeDefined();
     });
   });
