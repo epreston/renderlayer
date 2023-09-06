@@ -20,20 +20,30 @@ describe('Buffers', () => {
       expect(object.name).toBe('');
     });
 
-    test.todo('data', () => {
-      // implement
+    test('data', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const instance = new InterleavedBufferAttribute(buffer, 2, 0);
+
+      expect(instance.data).toBe(buffer);
     });
 
-    test.todo('itemSize', () => {
-      // implement
+    test('itemSize', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const instance = new InterleavedBufferAttribute(buffer, 2, 0);
+
+      expect(instance.itemSize).toBe(2);
     });
 
-    test.todo('offset', () => {
-      // implement
+    test('offset', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const instance = new InterleavedBufferAttribute(buffer, 2, 0);
+
+      expect(instance.offset).toBe(0);
     });
 
-    test.todo('normalized', () => {
-      // implement
+    test('normalized', () => {
+      const object = new InterleavedBufferAttribute();
+      expect(object.normalized).toBe(false);
     });
 
     test('count', () => {
