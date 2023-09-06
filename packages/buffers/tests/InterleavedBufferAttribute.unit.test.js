@@ -1,5 +1,7 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { Matrix3, Matrix4 } from '@renderlayer/math';
+
 import { InterleavedBuffer } from '../src/InterleavedBuffer.js';
 import { InterleavedBufferAttribute } from '../src/InterleavedBufferAttribute.js';
 
@@ -22,23 +24,23 @@ describe('Buffers', () => {
 
     test('data', () => {
       const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
-      const instance = new InterleavedBufferAttribute(buffer, 2, 0);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
 
-      expect(instance.data).toBe(buffer);
+      expect(object.data).toBe(buffer);
     });
 
     test('itemSize', () => {
       const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
-      const instance = new InterleavedBufferAttribute(buffer, 2, 0);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
 
-      expect(instance.itemSize).toBe(2);
+      expect(object.itemSize).toBe(2);
     });
 
     test('offset', () => {
       const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
-      const instance = new InterleavedBufferAttribute(buffer, 2, 0);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
 
-      expect(instance.offset).toBe(0);
+      expect(object.offset).toBe(0);
     });
 
     test('normalized', () => {
@@ -48,14 +50,17 @@ describe('Buffers', () => {
 
     test('count', () => {
       const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
-      const instance = new InterleavedBufferAttribute(buffer, 2, 0);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
 
       // count is calculated via array length / stride
-      expect(instance.count).toBe(2);
+      expect(object.count).toBe(2);
     });
 
-    test.todo('array', () => {
-      // implement
+    test('array', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+
+      expect(object.data.array).toBe(object.array);
     });
 
     test('needsUpdate', () => {
@@ -68,16 +73,95 @@ describe('Buffers', () => {
       expect(object.data.version).toBe(1);
     });
 
-    test.todo('applyMatrix4', () => {
-      // implement
+    test('applyMatrix4', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+      const matrix = new Matrix4();
+      matrix.setPosition(3, 2, 1);
+
+      expect(object.data.array).toMatchInlineSnapshot(`
+        Float32Array [
+          1,
+          2,
+          3,
+          7,
+          8,
+          9,
+        ]
+      `);
+
+      object.applyMatrix4(matrix);
+
+      expect(object.data.array).toMatchInlineSnapshot(`
+        Float32Array [
+          4,
+          4,
+          4,
+          10,
+          10,
+          10,
+        ]
+      `);
     });
 
-    test.todo('applyNormalMatrix', () => {
-      // implement
+    test('applyNormalMatrix', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+      const matrix = new Matrix3();
+
+      expect(object.data.array).toMatchInlineSnapshot(`
+        Float32Array [
+          1,
+          2,
+          3,
+          7,
+          8,
+          9,
+        ]
+      `);
+
+      object.applyNormalMatrix(matrix);
+
+      expect(object.data.array).toMatchInlineSnapshot(`
+        Float32Array [
+          0.26726123690605164,
+          0.5345224738121033,
+          0.8017837405204773,
+          0.5025706887245178,
+          0.5743665099143982,
+          0.6461623311042786,
+        ]
+      `);
     });
 
-    test.todo('transformDirection', () => {
-      // implement
+    test('transformDirection', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+      const matrix = new Matrix4();
+
+      expect(object.data.array).toMatchInlineSnapshot(`
+        Float32Array [
+          1,
+          2,
+          3,
+          7,
+          8,
+          9,
+        ]
+      `);
+
+      object.transformDirection(matrix);
+
+      expect(object.data.array).toMatchInlineSnapshot(`
+        Float32Array [
+          0.26726123690605164,
+          0.5345224738121033,
+          0.8017837405204773,
+          0.5025706887245178,
+          0.5743665099143982,
+          0.6461623311042786,
+        ]
+      `);
     });
 
     test('getX', () => {
@@ -91,23 +175,23 @@ describe('Buffers', () => {
 
     test('setX', () => {
       let buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
-      let instance = new InterleavedBufferAttribute(buffer, 2, 0);
+      let object = new InterleavedBufferAttribute(buffer, 2, 0);
 
-      instance.setX(0, 123);
-      instance.setX(1, 321);
+      object.setX(0, 123);
+      object.setX(1, 321);
 
-      expect(instance.data.array[0]).toBe(123);
-      expect(instance.data.array[3]).toBe(321);
+      expect(object.data.array[0]).toBe(123);
+      expect(object.data.array[3]).toBe(321);
 
       buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
-      instance = new InterleavedBufferAttribute(buffer, 2, 1);
+      object = new InterleavedBufferAttribute(buffer, 2, 1);
 
-      instance.setX(0, 123);
-      instance.setX(1, 321);
+      object.setX(0, 123);
+      object.setX(1, 321);
 
       // the offset was defined as 1, so go one step further in the array
-      expect(instance.data.array[1]).toBe(123);
-      expect(instance.data.array[4]).toBe(321);
+      expect(object.data.array[1]).toBe(123);
+      expect(object.data.array[4]).toBe(321);
     });
 
     test('getY', () => {
@@ -217,11 +301,31 @@ describe('Buffers', () => {
       expect(clonedObject.normalized).toBe(object.normalized);
     });
 
-    test('toJSON', () => {
+    test('toJSON - with data param', () => {
       const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
-      const instance = new InterleavedBufferAttribute(buffer, 2, 0);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+      const data = {};
+      const json = object.toJSON(data);
 
-      expect(instance).toMatchInlineSnapshot(`
+      // will be different
+      json.data = '932ee2e6-ca98-4b83-b0a1-83bd73af7e87';
+
+      expect(json).toMatchInlineSnapshot(`
+        {
+          "data": "932ee2e6-ca98-4b83-b0a1-83bd73af7e87",
+          "isInterleavedBufferAttribute": true,
+          "itemSize": 2,
+          "normalized": false,
+          "offset": 0,
+        }
+      `);
+    });
+
+    test('toJSON - no data param', () => {
+      const buffer = new InterleavedBuffer(new Float32Array([1, 2, 3, 7, 8, 9]), 3);
+      const object = new InterleavedBufferAttribute(buffer, 2, 0);
+
+      expect(object).toMatchInlineSnapshot(`
         {
           "array": [
             1,
@@ -235,7 +339,7 @@ describe('Buffers', () => {
         }
       `);
 
-      expect('de-interleave buffer data').toHaveBeenWarnedTimes(1);
+      expect('de-interleave buffer data').toHaveBeenWarned();
     });
   });
 });
