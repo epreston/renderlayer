@@ -1120,6 +1120,7 @@ class InterleavedBufferAttribute {
   set needsUpdate(value) {
     this.data.needsUpdate = value;
   }
+  /** @param {import('@renderlayer/math').Matrix4} m */
   applyMatrix4(m) {
     for (let i = 0, l = this.data.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
@@ -1128,6 +1129,7 @@ class InterleavedBufferAttribute {
     }
     return this;
   }
+  /** @param {import('@renderlayer/math').Matrix3} m */
   applyNormalMatrix(m) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
@@ -1136,6 +1138,7 @@ class InterleavedBufferAttribute {
     }
     return this;
   }
+  /** @param {import('@renderlayer/math').Matrix4} m */
   transformDirection(m) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
