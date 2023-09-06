@@ -1,26 +1,28 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { createBoxMorphGeometry, createBoxMorphMesh } from './morphGeometryHelpers.js';
+
 import { BoxGeometry, SphereGeometry } from '@renderlayer/geometries';
+import { TriangleFanDrawMode, TriangleStripDrawMode } from '@renderlayer/shared';
 
 import { InstancedBufferAttribute } from '../src/InstancedBufferAttribute.js';
+import { InterleavedBuffer } from '../src/InterleavedBuffer.js';
+import { InterleavedBufferAttribute } from '../src/InterleavedBufferAttribute.js';
 
 import {
+  computeMorphedAttributes,
   deepCloneAttribute,
   deinterleaveAttribute,
   deinterleaveGeometry,
-  mergeGeometries,
-  mergeAttributes,
-  interleaveAttributes,
   estimateBytesUsed,
-  mergeVertices,
-  toTrianglesDrawMode,
-  computeMorphedAttributes,
+  interleaveAttributes,
+  mergeAttributes,
+  mergeGeometries,
   mergeGroups,
-  toCreasedNormals
+  mergeVertices,
+  toCreasedNormals,
+  toTrianglesDrawMode
 } from '../src/BufferGeometryUtils.js';
-import { InterleavedBufferAttribute } from '../src/InterleavedBufferAttribute.js';
-import { InterleavedBuffer } from '../src/InterleavedBuffer.js';
-import { TriangleFanDrawMode, TriangleStripDrawMode } from '@renderlayer/shared';
 
 describe('Buffers', () => {
   describe('BufferGeometryUtils', () => {
@@ -36,6 +38,18 @@ describe('Buffers', () => {
       const combinedPos = combinedGeometry.getAttribute('position');
 
       expect(combinedPos.count).toBe(boxPos.count + spherePos.count);
+    });
+
+    test('mergeGeometries - morph geometries', () => {
+      const morphGeoOne = createBoxMorphGeometry();
+      const morphGeoTwo = createBoxMorphGeometry();
+      const combinedGeometry = mergeGeometries([morphGeoOne, morphGeoTwo], true);
+
+      const onePos = morphGeoOne.getAttribute('position');
+      const twoPos = morphGeoTwo.getAttribute('position');
+      const combinedPos = combinedGeometry.getAttribute('position');
+
+      expect(combinedPos.count).toBe(onePos.count + twoPos.count);
     });
 
     test('mergeAttributes', () => {
@@ -194,12 +208,25 @@ describe('Buffers', () => {
       expect(stripSphere.getIndex().count).toBe(8634);
     });
 
-    test('computeMorphedAttributes - declaration', () => {
+    test('computeMorphedAttributes', () => {
       expect(computeMorphedAttributes).toBeDefined();
-    });
 
-    test.todo('computeMorphedAttributes - implementation', () => {
-      // implement
+      const morphMesh = createBoxMorphMesh();
+      expect(morphMesh).toBeDefined();
+
+      const meshPosAttrib = morphMesh.geometry.getAttribute('position');
+      const meshNormalAttrib = morphMesh.geometry.getAttribute('normal');
+
+      morphMesh.morphTargetInfluences[0] = 0.5;
+      morphMesh.morphTargetInfluences[1] = 0.5;
+
+      const computedAttributes = computeMorphedAttributes(morphMesh);
+
+      expect(computedAttributes.positionAttribute).toStrictEqual(meshPosAttrib);
+      expect(computedAttributes.normalAttribute).toStrictEqual(meshNormalAttrib);
+
+      expect(computedAttributes.morphedPositionAttribute).toBeDefined();
+      expect(computedAttributes.morphedNormalAttribute).toBeDefined();
     });
 
     test('mergeGroups - 6 groups, same material', () => {
