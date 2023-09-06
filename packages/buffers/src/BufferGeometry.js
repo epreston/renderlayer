@@ -64,6 +64,7 @@ class BufferGeometry extends EventDispatcher {
     return this;
   }
 
+  /** @returns {BufferAttribute} */
   getAttribute(name) {
     return this.attributes[name];
   }
