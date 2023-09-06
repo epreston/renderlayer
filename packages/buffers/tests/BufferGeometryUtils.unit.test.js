@@ -89,6 +89,16 @@ describe('Buffers', () => {
 
     test('interleaveAttributes', () => {
       expect(interleaveAttributes).toBeDefined();
+
+      const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1);
+      const boxPos = boxGeometry.getAttribute('position');
+      const boxNormal = boxGeometry.getAttribute('normal');
+      const boxUV = boxGeometry.getAttribute('uv');
+      const attributes = [boxPos, boxNormal, boxUV];
+
+      const interleavedAttribs = interleaveAttributes(attributes);
+
+      expect(interleavedAttribs.length).toBe(attributes.length);
     });
 
     test('deinterleaveAttribute', () => {
@@ -101,6 +111,11 @@ describe('Buffers', () => {
 
     test('estimateBytesUsed', () => {
       expect(estimateBytesUsed).toBeDefined();
+
+      const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1);
+      const bytesUsed = estimateBytesUsed(boxGeometry);
+
+      expect(bytesUsed).toBe(840);
     });
 
     test('mergeVertices', () => {
