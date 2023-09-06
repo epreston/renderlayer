@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/shaders",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "GLSL shader library used by @renderlayer packages.",
   "type": "module",
   "module": "./dist/shaders.esm-bundler.js",
