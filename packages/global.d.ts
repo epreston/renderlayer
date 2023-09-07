@@ -1,4 +1,4 @@
-// imports required so we can add to / not overwrite interfaces for deprecation
+// deprecation: imports required so we can add to, not overwrite, interfaces
 import '@renderlayer/buffers';
 import '@renderlayer/math';
 import '@renderlayer/objects';
