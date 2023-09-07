@@ -1,4 +1,5 @@
 // imports so we can add to interfaces for deprecation
+import '@renderlayer/math';
 import '@renderlayer/renderers';
 
 /// <reference types="vite/client" />
@@ -30,6 +31,13 @@ declare namespace jest {
 
 // deprecations
 
+declare interface String {
+  /**
+   * @deprecated Please use String.prototype.slice instead of String.prototype.substring in the repository.
+   */
+  substring(start: number, end?: number): string;
+}
+
 /** @deprecated Removed. */
 declare const TwoPassDoubleSide = 2;
 
@@ -38,13 +46,6 @@ declare const LinearEncoding = 3000;
 
 /** @deprecated Removed: Use SRGBColorSpace */
 declare const sRGBEncoding = 3001;
-
-declare interface String {
-  /**
-   * @deprecated Please use String.prototype.slice instead of String.prototype.substring in the repository.
-   */
-  substring(start: number, end?: number): string;
-}
 
 declare interface Color {
   /** @deprecated Removed. */
@@ -71,17 +72,20 @@ declare interface ColorManagement {
   set workingColorSpace(colorSpace: string);
 }
 
-declare interface Triangle {
-  /**
-   * @deprecated Triangle.getUV() has been renamed to Triangle.getInterpolation().
-   */
-  getUV(point, p1, p2, p3, uv1, uv2, uv3, target);
+declare module '@renderlayer/math' {
+  declare class Triangle {
+    /**
+     * @deprecated Triangle.getUV() has been renamed to Triangle.getInterpolation().
+     */
+    getUV(point, p1, p2, p3, uv1, uv2, uv3, target);
 
-  /**
-   * @deprecated Triangle.getUV() has been renamed to Triangle.getInterpolation().
-   */
-  getUV(point, uv1, uv2, uv3, target);
+    /**
+     * @deprecated Triangle.getUV() has been renamed to Triangle.getInterpolation().
+     */
+    getUV(point, uv1, uv2, uv3, target);
+  }
 }
+
 
 declare interface Scene {
   /**
@@ -116,7 +120,6 @@ declare interface Texture {
 
 declare module '@renderlayer/renderers' {
   declare class WebGLRenderer {
-
     /** @deprecated Removed. Use .useLegacyLights instead. */
     get physicallyCorrectLights();
 
