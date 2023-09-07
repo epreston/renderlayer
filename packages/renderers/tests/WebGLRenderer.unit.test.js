@@ -1,4 +1,4 @@
-// @vitest-environment jsdom
+// -AT-vitest-environment jsdom
 
 // TODO: prep for browser testing, enable and test in browser manually
 
@@ -8,9 +8,9 @@ import { WebGLRenderer } from '../src/WebGLRenderer.js';
 
 describe('Renderers', () => {
   describe.todo('WebGLRenderer', () => {
-    test('constructor', () => {
-      const renderer = new WebGLRenderer();
-      expect(renderer).toBeDefined();
+    test.todo('constructor', () => {
+      const object = new WebGLRenderer();
+      expect(object).toBeDefined();
     });
 
     test.todo('isWebGLRenderer', () => {
