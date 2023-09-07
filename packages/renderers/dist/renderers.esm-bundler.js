@@ -54,7 +54,7 @@ class WebGLRenderer {
     this.clippingPlanes = [];
     this.localClippingEnabled = false;
     this.outputColorSpace = SRGBColorSpace;
-    this.useLegacyLights = true;
+    this.useLegacyLights = false;
     this.toneMapping = NoToneMapping;
     this.toneMappingExposure = 1;
     const _this = this;
