@@ -455,6 +455,7 @@ class BufferGeometry extends EventDispatcher {
     this.drawRange = { start: 0, count: Infinity };
     this.userData = {};
   }
+  /** @returns {Uint32BufferAttribute | Uint16BufferAttribute} */
   getIndex() {
     return this.index;
   }
@@ -469,6 +470,7 @@ class BufferGeometry extends EventDispatcher {
     }
     return this;
   }
+  /** @returns {BufferAttribute} */
   getAttribute(name) {
     return this.attributes[name];
   }
