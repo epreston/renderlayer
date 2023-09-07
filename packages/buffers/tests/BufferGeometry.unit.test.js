@@ -1,9 +1,10 @@
 import { describe, expect, it, test, vi } from 'vitest';
 import { x, y, z } from './math-constants.js';
-import { createBoxMorphGeometry } from './morphGeometryHelpers.js';
+import { createBoxMorphGeometry, addMorphAttributes } from './morphGeometryHelpers.js';
 
 import { EventDispatcher } from '@renderlayer/core';
 import { Matrix4, Quaternion, Sphere, Vector3 } from '@renderlayer/math';
+import { BufferGeometryLoader } from '@renderlayer/loaders';
 
 import {
   BufferAttribute,
@@ -775,6 +776,19 @@ describe('Buffers', () => {
     test('dispose', () => {
       const object = new BufferGeometry();
       object.dispose();
+
+      expect(object).toBeDefined();
+    });
+
+    test('from BufferGeometryLoader', () => {
+      const loader = new BufferGeometryLoader();
+      const geometry = new BufferGeometry();
+      geometry.setAttribute('position', new BufferAttribute(new Float32Array(6), 3));
+
+      // add morph attributes for coverage
+      addMorphAttributes(geometry);
+
+      const object = loader.parse(geometry.toJSON());
 
       expect(object).toBeDefined();
     });
