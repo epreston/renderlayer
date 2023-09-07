@@ -126,7 +126,7 @@ class WebGLRenderer {
 
     // physical lights
 
-    this.useLegacyLights = true;
+    this.useLegacyLights = false;
 
     // tone mapping
 
