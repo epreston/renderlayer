@@ -109,6 +109,7 @@ async function build(target) {
   await execa(
     'rollup',
     [
+      // '--experimentalLogSideEffects',
       '-c',
       '--environment',
       [
