@@ -24,12 +24,16 @@ export function createBoxMorphMesh() {
 export function createBoxMorphGeometry() {
   const geometry = new BoxGeometry(2, 2, 2, 32, 32, 32);
 
+  return addMorphAttributes(geometry);
+}
+
+export function addMorphAttributes(geometry) {
   // create an empty array to  hold targets for the attribute we want to morph
   // morphing positions and normals is supported
   geometry.morphAttributes.position = [];
 
   // the original positions of the cube's vertices
-  const positionAttribute = geometry.attributes.position;
+  const positionAttribute = geometry.getAttribute('position');
 
   // for the first morph target we'll move the cube's vertices onto the surface of a sphere
   const spherePositions = [];
