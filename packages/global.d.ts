@@ -1,6 +1,12 @@
-// imports so we can add to interfaces for deprecation
+// imports required so we can add to / not overwrite interfaces for deprecation
+import '@renderlayer/buffers';
 import '@renderlayer/math';
+import '@renderlayer/objects';
 import '@renderlayer/renderers';
+import '@renderlayer/scenes';
+import '@renderlayer/shared';
+import '@renderlayer/targets';
+import '@renderlayer/textures';
 
 /// <reference types="vite/client" />
 
@@ -38,41 +44,44 @@ declare interface String {
   substring(start: number, end?: number): string;
 }
 
-/** @deprecated Removed. */
-declare const TwoPassDoubleSide = 2;
-
-/** @deprecated Removed: Use LinearSRGBColorSpace or NoColorSpace */
-declare const LinearEncoding = 3000;
-
-/** @deprecated Removed: Use SRGBColorSpace */
-declare const sRGBEncoding = 3001;
-
-declare interface Color {
+declare module '@renderlayer/shared' {
   /** @deprecated Removed. */
-  setColorName(style: string, colorSpace?: string): this;
+  declare const TwoPassDoubleSide = 2;
 
-  /** @deprecated Removed. */
-  NAMES: object;
-}
+  /** @deprecated Removed: Use LinearSRGBColorSpace or NoColorSpace */
+  declare const LinearEncoding = 3000;
 
-declare interface ColorManagement {
-  /**
-   * @deprecated ColorManagement.legacyMode=false renamed to .enabled=true.
-   */
-  get legacyMode(): boolean;
-
-  /**
-   * @deprecated ColorManagement.legacyMode=false renamed to .enabled=true.
-   */
-  set legacyMode(legacyMode: boolean);
-
-  /**
-   * @deprecated ColorManagement.workingColorSpace is readonly.
-   */
-  set workingColorSpace(colorSpace: string);
+  /** @deprecated Removed: Use SRGBColorSpace */
+  declare const sRGBEncoding = 3001;
 }
 
 declare module '@renderlayer/math' {
+  declare class Color {
+    /** @deprecated Removed. */
+    setColorName(style: string, colorSpace?: string): this;
+
+    /** @deprecated Removed. */
+    NAMES: object;
+  }
+
+  // EP: not working : can not extend block-scoped variable
+  declare interface ColorManagement {
+    /**
+     * @deprecated ColorManagement.legacyMode=false renamed to .enabled=true.
+     */
+    get legacyMode(): boolean;
+
+    /**
+     * @deprecated ColorManagement.legacyMode=false renamed to .enabled=true.
+     */
+    set legacyMode(legacyMode: boolean);
+
+    /**
+     * @deprecated ColorManagement.workingColorSpace is readonly.
+     */
+    set workingColorSpace(colorSpace: string);
+  }
+
   declare class Triangle {
     /**
      * @deprecated Triangle.getUV() has been renamed to Triangle.getInterpolation().
@@ -86,36 +95,41 @@ declare module '@renderlayer/math' {
   }
 }
 
+declare module '@renderlayer/scenes' {
+  declare interface Scene {
+    /**
+     * @deprecated Scene: autoUpdate was renamed to matrixWorldAutoUpdate
+     */
+    get autoUpdate(): boolean;
 
-declare interface Scene {
-  /**
-   * @deprecated Scene: autoUpdate was renamed to matrixWorldAutoUpdate
-   */
-  get autoUpdate(): boolean;
-
-  /**
-   * @deprecated Scene: autoUpdate was renamed to matrixWorldAutoUpdate
-   */
-  set autoUpdate(value: boolean);
+    /**
+     * @deprecated Scene: autoUpdate was renamed to matrixWorldAutoUpdate
+     */
+    set autoUpdate(value: boolean);
+  }
 }
 
-declare interface BufferGeometry {
-  /** @deprecated Removed. Use mergeBufferGeometry */
-  merge(): this;
+declare module '@renderlayer/buffers' {
+  declare class BufferGeometry {
+    /** @deprecated Removed. Use mergeBufferGeometry */
+    merge(): this;
+  }
+
+  /** @deprecated Removed. Use BufferGeometryUtils: mergeBufferGeometries() has been renamed to mergeGeometries() */
+  function mergeBufferGeometries(geometries, useGroups = false);
+
+  /** @deprecated Removed. BufferGeometryUtils: mergeBufferAttributes() has been renamed to mergeAttributes() */
+  function mergeBufferAttributes(attributes);
 }
 
-/** @deprecated Removed. Use BufferGeometryUtils: mergeBufferGeometries() has been renamed to mergeGeometries() */
-function mergeBufferGeometries(geometries, useGroups = false);
+declare module '@renderlayer/textures' {
+  declare class Texture {
+    /** @deprecated Removed. replaced by .colorSpace.*/
+    get encoding();
 
-/** @deprecated Removed. BufferGeometryUtils: mergeBufferAttributes() has been renamed to mergeAttributes() */
-function mergeBufferAttributes(attributes);
-
-declare interface Texture {
-  /** @deprecated Removed. replaced by .colorSpace.*/
-  get encoding();
-
-  /** @deprecated Removed. replaced by .colorSpace. */
-  set encoding(encoding);
+    /** @deprecated Removed. replaced by .colorSpace. */
+    set encoding(encoding);
+  }
 }
 
 declare module '@renderlayer/renderers' {
@@ -134,15 +148,18 @@ declare module '@renderlayer/renderers' {
   }
 }
 
-declare interface WebGLRenderTarget {
-  // constructor option .encoding deprecated, use .colorSpace
+declare module '@renderlayer/targets' {
+  // declare class WebGLRenderTarget {
+  //   // constructor option .encoding deprecated, use .colorSpace
+  // }
+  // declare class WebGLCubeRenderTarget {
+  //   // constructor option .encoding deprecated, use .colorSpace
+  // }
 }
 
-declare interface WebGLCubeRenderTarget {
-  // constructor option .encoding deprecated, use .colorSpace
-}
-
-declare interface SkinnedMesh {
-  /** @deprecated Renamed to .applyBoneTransform() */
-  boneTransform(index, vector);
+declare module '@renderlayer/objects' {
+  declare class SkinnedMesh {
+    /** @deprecated Renamed to .applyBoneTransform() */
+    boneTransform(index, vector);
+  }
 }
