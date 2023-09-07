@@ -1,3 +1,6 @@
+// imports so we can add to interfaces for deprecation
+import '@renderlayer/renderers';
+
 /// <reference types="vite/client" />
 
 declare module '*.glsl' {
@@ -111,18 +114,21 @@ declare interface Texture {
   set encoding(encoding);
 }
 
-declare interface WebGLRenderer {
-  /** @deprecated Removed. Use .useLegacyLights instead. */
-  get physicallyCorrectLights();
+declare module '@renderlayer/renderers' {
+  declare class WebGLRenderer {
 
-  /** @deprecated Removed. Use .useLegacyLights instead. */
-  set physicallyCorrectLights(value);
+    /** @deprecated Removed. Use .useLegacyLights instead. */
+    get physicallyCorrectLights();
 
-  /** @deprecated Removed. Use .outputColorSpace instead. */
-  get outputEncoding();
+    /** @deprecated Removed. Use .useLegacyLights instead. */
+    set physicallyCorrectLights(value);
 
-  /** @deprecated Removed. Use .outputColorSpace instead. */
-  set outputEncoding(encoding);
+    /** @deprecated Removed. Use .outputColorSpace instead. */
+    get outputEncoding();
+
+    /** @deprecated Removed. Use .outputColorSpace instead. */
+    set outputEncoding(encoding);
+  }
 }
 
 declare interface WebGLRenderTarget {
