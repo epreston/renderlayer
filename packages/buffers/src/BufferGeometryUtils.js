@@ -8,12 +8,6 @@ import { InterleavedBuffer } from './InterleavedBuffer.js';
 import { InterleavedBufferAttribute } from './InterleavedBufferAttribute.js';
 
 /**
- * @typedef {import('@renderlayer/objects').Mesh} Mesh
- * @typedef {import('@renderlayer/objects').Line} Line
- * @typedef {import('@renderlayer/objects').Points} Points
- */
-
-/**
  * @param  {Array<BufferGeometry>} geometries
  * @param  {Boolean} useGroups
  * @return {BufferGeometry}
