@@ -10,11 +10,11 @@ describe('Buffers', () => {
       expect(copiedInstance).toBeInstanceOf(InterleavedBuffer);
 
       for (let i = 0; i < instance.array.length; i++) {
-        expect(copiedInstance.array[i] === instance.array[i]).toBeTruthy();
+        expect(copiedInstance.array[i]).toBe(instance.array[i]);
       }
 
-      expect(copiedInstance.stride === instance.stride).toBeTruthy();
-      expect(copiedInstance.usage === DynamicDrawUsage).toBeTruthy();
+      expect(copiedInstance.stride).toBe(instance.stride);
+      expect(copiedInstance.usage).toBe(DynamicDrawUsage);
     }
 
     test('constructor', () => {
