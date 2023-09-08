@@ -137,7 +137,9 @@ export const RGBA_ASTC_10x10_Format = 37819;
 export const RGBA_ASTC_12x10_Format = 37820;
 export const RGBA_ASTC_12x12_Format = 37821;
 
-export const RGBA_BPTC_Format = 36492;
+export const RGBA_BPTC_Format = 36492; // BC6H and BC7
+export const RGB_BPTC_SIGNED_Format = 36494;
+export const RGB_BPTC_UNSIGNED_Format = 36495;
 
 export const RED_RGTC1_Format = 36283;
 export const SIGNED_RED_RGTC1_Format = 36284;
@@ -175,6 +177,7 @@ export const NoColorSpace = '';
 export const SRGBColorSpace = 'srgb';
 export const LinearSRGBColorSpace = 'srgb-linear';
 export const DisplayP3ColorSpace = 'display-p3';
+export const LinearDisplayP3ColorSpace = 'display-p3-linear';
 
 export const ZeroStencilOp = 0;
 export const KeepStencilOp = 7680;
@@ -194,6 +197,15 @@ export const NotEqualStencilFunc = 517;
 export const GreaterEqualStencilFunc = 518;
 export const AlwaysStencilFunc = 519;
 
+export const NeverCompare = 512;
+export const LessCompare = 513;
+export const EqualCompare = 514;
+export const LessEqualCompare = 515;
+export const GreaterCompare = 516;
+export const NotEqualCompare = 517;
+export const GreaterEqualCompare = 518;
+export const AlwaysCompare = 519;
+
 export const StaticDrawUsage = 35044;
 export const DynamicDrawUsage = 35048;
 export const StreamDrawUsage = 35040;
@@ -208,3 +220,6 @@ export const GLSL1 = '100';
 export const GLSL3 = '300 es';
 
 export const _SRGBAFormat = 1035; // fallback for WebGL 1
+
+export const WebGLCoordinateSystem = 2000;
+export const WebGPUCoordinateSystem = 2001;
