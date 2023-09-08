@@ -1,7 +1,11 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
-import { LinearMipmapLinearFilter } from '@renderlayer/shared';
+import {
+  LinearMipmapLinearFilter,
+  WebGLCoordinateSystem,
+  WebGPUCoordinateSystem
+} from '@renderlayer/shared';
 import { WebGLCubeRenderTarget } from '@renderlayer/targets';
 
 import { WebGLRenderer } from '@renderlayer/renderers';
@@ -9,6 +13,7 @@ import { Scene } from '@renderlayer/scenes';
 
 vi.mock('@renderlayer/renderers', () => {
   const WebGLRenderer = vi.fn();
+  WebGLRenderer.prototype.coordinateSystem = WebGLCoordinateSystem;
   WebGLRenderer.prototype.getRenderTarget = vi.fn();
   WebGLRenderer.prototype.setRenderTarget = vi.fn();
   WebGLRenderer.prototype.render = vi.fn();
