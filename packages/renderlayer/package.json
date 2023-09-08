@@ -43,7 +43,7 @@
     "@renderlayer/keyframes": "~0.0.2",
     "@renderlayer/lights": "~0.0.3",
     "@renderlayer/loaders": "~0.0.11",
-    "@renderlayer/materials": "~0.0.10",
+    "@renderlayer/materials": "~0.0.11",
     "@renderlayer/math": "~0.0.9",
     "@renderlayer/objects": "~0.0.5",
     "@renderlayer/renderers": "~0.0.4",
