@@ -55,7 +55,7 @@ class Mesh extends Object3D {
       this.morphTargetDictionary = Object.assign({}, source.morphTargetDictionary);
     }
 
-    this.material = source.material;
+    this.material = Array.isArray(source.material) ? source.material.slice() : source.material;
     this.geometry = source.geometry;
 
     return this;
@@ -389,7 +389,7 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
         _uvC,
         new Vector2()
       );
-      intersection.uv2 = intersection.uv1; // Backwards compatibility
+      intersection.uv2 = intersection.uv1; // @deprecated backwards compatibility
     }
 
     if (normal) {
