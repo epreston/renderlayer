@@ -1030,9 +1030,7 @@ class PropertyBinding {
     this.getValue = this._getValue_unavailable;
     this.setValue = this._setValue_unavailable;
     if (!targetObject) {
-      console.error(
-        "PropertyBinding: Trying to update node for track: " + this.path + " but it wasn't found."
-      );
+      console.error("PropertyBinding: No target node found for track: " + this.path + ".");
       return;
     }
     if (objectName) {
