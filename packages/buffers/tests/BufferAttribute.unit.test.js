@@ -1,6 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
-import { DynamicDrawUsage, StaticDrawUsage } from '@renderlayer/shared';
+import { DynamicDrawUsage, StaticDrawUsage, FloatType } from '@renderlayer/shared';
 import { toHalfFloat, fromHalfFloat } from '../src/BufferAttributeUtils.js';
 
 import {
@@ -58,7 +58,7 @@ describe('Buffers', () => {
       expect(object.normalized).toBe(false);
     });
 
-    test.todo('usage', () => {
+    test('usage', () => {
       const object = new BufferAttribute();
       expect(object.usage).toBe(StaticDrawUsage);
     });
@@ -71,6 +71,11 @@ describe('Buffers', () => {
           "offset": 0,
         }
       `);
+    });
+
+    test('gpuType', () => {
+      const object = new BufferAttribute();
+      expect(object.gpuType).toBe(FloatType);
     });
 
     test('version', () => {
@@ -169,6 +174,14 @@ describe('Buffers', () => {
       a.set([8], 2);
 
       expect(a.array).toEqual(expected);
+    });
+
+    test.todo('getComponent', () => {
+      // implement
+    });
+
+    test.todo('setComponent', () => {
+      // implement
     });
 
     test('set[X, Y, Z, W, XYZ, XYZW]/get[X, Y, Z, W]', () => {
