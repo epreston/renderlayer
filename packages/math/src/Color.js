@@ -24,21 +24,24 @@ class Color {
     this.g = 1;
     this.b = 1;
 
-    if (g === undefined && b === undefined) {
-      // r is Color, hex or string
-      return this.set(r);
-    }
-
-    return this.setRGB(r, g, b);
+    return this.set(r, g, b);
   }
 
-  set(value) {
-    if (value && value.isColor) {
-      this.copy(value);
-    } else if (typeof value === 'number') {
-      this.setHex(value);
-    } else if (typeof value === 'string') {
-      this.setStyle(value);
+  set(r, g, b) {
+    if (g === undefined && b === undefined) {
+      // r is Color, hex or string
+
+      const value = r;
+
+      if (value && value.isColor) {
+        this.copy(value);
+      } else if (typeof value === 'number') {
+        this.setHex(value);
+      } else if (typeof value === 'string') {
+        this.setStyle(value);
+      }
+    } else {
+      this.setRGB(r, g, b);
     }
 
     return this;
