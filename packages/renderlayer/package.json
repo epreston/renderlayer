@@ -31,7 +31,7 @@
   "dependencies": {
     "@renderlayer/animation": "~0.0.4",
     "@renderlayer/buffers": "~0.0.4",
-    "@renderlayer/cameras": "~0.0.3",
+    "@renderlayer/cameras": "~0.0.4",
     "@renderlayer/controls": "~0.0.2",
     "@renderlayer/core": "~0.0.6",
     "@renderlayer/curves": "~0.0.3",
@@ -42,7 +42,7 @@
     "@renderlayer/interpolants": "~0.0.2",
     "@renderlayer/keyframes": "~0.0.2",
     "@renderlayer/lights": "~0.0.3",
-    "@renderlayer/loaders": "~0.0.11",
+    "@renderlayer/loaders": "~0.0.13",
     "@renderlayer/materials": "~0.0.11",
     "@renderlayer/math": "~0.0.9",
     "@renderlayer/objects": "~0.0.5",
@@ -50,7 +50,7 @@
     "@renderlayer/scenes": "~0.0.3",
     "@renderlayer/shaders": "~0.0.6",
     "@renderlayer/shared": "~0.0.5",
-    "@renderlayer/targets": "~0.0.3",
+    "@renderlayer/targets": "~0.0.4",
     "@renderlayer/textures": "~0.0.9",
     "@renderlayer/webgl": "~0.0.9"
   }
