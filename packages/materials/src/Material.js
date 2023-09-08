@@ -11,13 +11,13 @@ import {
 import { generateUUID } from '@renderlayer/math';
 import { EventDispatcher } from '@renderlayer/core';
 
-let materialId = 0;
+let _materialId = 0;
 
 class Material extends EventDispatcher {
   constructor() {
     super();
 
-    Object.defineProperty(this, 'id', { value: materialId++ });
+    Object.defineProperty(this, 'id', { value: _materialId++ });
     this.uuid = generateUUID();
 
     this.name = '';
@@ -30,6 +30,7 @@ class Material extends EventDispatcher {
 
     this.opacity = 1;
     this.transparent = false;
+    this.alphaHash = false;
 
     this.blendSrc = SrcAlphaFactor;
     this.blendDst = OneMinusSrcAlphaFactor;
@@ -203,6 +204,13 @@ class Material extends EventDispatcher {
       data.iridescenceThicknessMap = this.iridescenceThicknessMap.toJSON(meta).uuid;
     }
 
+    if (this.anisotropy !== undefined) data.anisotropy = this.anisotropy;
+    if (this.anisotropyRotation !== undefined) data.anisotropyRotation = this.anisotropyRotation;
+
+    if (this.anisotropyMap && this.anisotropyMap.isTexture) {
+      data.anisotropyMap = this.anisotropyMap.toJSON(meta).uuid;
+    }
+
     if (this.map && this.map.isTexture) data.map = this.map.toJSON(meta).uuid;
     if (this.matcap && this.matcap.isTexture) data.matcap = this.matcap.toJSON(meta).uuid;
     if (this.alphaMap && this.alphaMap.isTexture) data.alphaMap = this.alphaMap.toJSON(meta).uuid;
@@ -312,6 +320,7 @@ class Material extends EventDispatcher {
     if (this.dithering === true) data.dithering = true;
 
     if (this.alphaTest > 0) data.alphaTest = this.alphaTest;
+    if (this.alphaHash === true) data.alphaHash = this.alphaHash;
     if (this.alphaToCoverage === true) data.alphaToCoverage = this.alphaToCoverage;
     if (this.premultipliedAlpha === true) data.premultipliedAlpha = this.premultipliedAlpha;
     if (this.forceSinglePass === true) data.forceSinglePass = this.forceSinglePass;
@@ -422,6 +431,7 @@ class Material extends EventDispatcher {
     this.dithering = source.dithering;
 
     this.alphaTest = source.alphaTest;
+    this.alphaHash = source.alphaHash;
     this.alphaToCoverage = source.alphaToCoverage;
     this.premultipliedAlpha = source.premultipliedAlpha;
     this.forceSinglePass = source.forceSinglePass;
