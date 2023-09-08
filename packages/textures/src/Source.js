@@ -1,12 +1,12 @@
 import { ImageUtils } from '@renderlayer/shared';
 import { generateUUID } from '@renderlayer/math';
 
-let sourceid = 0;
+let _sourceId = 0;
 
 class Source {
   constructor(data = null) {
     this.isSource = true;
-    Object.defineProperty(this, 'id', { value: sourceid++ });
+    Object.defineProperty(this, 'id', { value: _sourceId++ });
     this.uuid = generateUUID();
     this.data = data; // obj or array
     this.version = 0;
