@@ -84,6 +84,11 @@ describe('Materials', () => {
       expect(object.transparent).toBe(false);
     });
 
+    test('alphaHash', () => {
+      const object = new Material();
+      expect(object.alphaHash).toBe(false);
+    });
+
     test('blendSrc', () => {
       const object = new Material();
       expect(object.blendSrc).toBe(SrcAlphaFactor);
