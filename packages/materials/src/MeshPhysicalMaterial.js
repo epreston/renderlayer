@@ -13,6 +13,9 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
       PHYSICAL: ''
     };
 
+    this.anisotropyRotation = 0;
+    this.anisotropyMap = null;
+
     this.clearcoatMap = null;
     this.clearcoatRoughness = 0.0;
     this.clearcoatRoughnessMap = null;
@@ -43,32 +46,25 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     this.specularColor = new Color(1, 1, 1);
     this.specularColorMap = null;
 
-    this._sheen = 0.0;
+    this._anisotropy = 0;
     this._clearcoat = 0;
     this._iridescence = 0;
+    this._sheen = 0.0;
     this._transmission = 0;
 
     this.setValues(parameters);
   }
 
-  get reflectivity() {
-    return clamp((2.5 * (this.ior - 1)) / (this.ior + 1), 0, 1);
+  get anisotropy() {
+    return this._anisotropy;
   }
 
-  set reflectivity(reflectivity) {
-    this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
-  }
-
-  get sheen() {
-    return this._sheen;
-  }
-
-  set sheen(value) {
-    if (this._sheen > 0 !== value > 0) {
+  set anisotropy(value) {
+    if (this._anisotropy > 0 !== value > 0) {
       this.version++;
     }
 
-    this._sheen = value;
+    this._anisotropy = value;
   }
 
   get clearcoat() {
@@ -95,6 +91,26 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     this._iridescence = value;
   }
 
+  get reflectivity() {
+    return clamp((2.5 * (this.ior - 1)) / (this.ior + 1), 0, 1);
+  }
+
+  set reflectivity(reflectivity) {
+    this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
+  }
+
+  get sheen() {
+    return this._sheen;
+  }
+
+  set sheen(value) {
+    if (this._sheen > 0 !== value > 0) {
+      this.version++;
+    }
+
+    this._sheen = value;
+  }
+
   get transmission() {
     return this._transmission;
   }
@@ -118,6 +134,10 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
       STANDARD: '',
       PHYSICAL: ''
     };
+
+    this.anisotropy = source.anisotropy;
+    this.anisotropyRotation = source.anisotropyRotation;
+    this.anisotropyMap = source.anisotropyMap;
 
     this.clearcoat = source.clearcoat;
     this.clearcoatMap = source.clearcoatMap;
