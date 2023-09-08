@@ -20,10 +20,24 @@ function WebGLObjects(gl, geometries, attributes, info) {
         object.addEventListener('dispose', onInstancedMeshDispose);
       }
 
-      attributes.update(object.instanceMatrix, gl.ARRAY_BUFFER);
+      if (updateMap.get(object) !== frame) {
+        attributes.update(object.instanceMatrix, gl.ARRAY_BUFFER);
 
-      if (object.instanceColor !== null) {
-        attributes.update(object.instanceColor, gl.ARRAY_BUFFER);
+        if (object.instanceColor !== null) {
+          attributes.update(object.instanceColor, gl.ARRAY_BUFFER);
+        }
+
+        updateMap.set(object, frame);
+      }
+    }
+
+    if (object.isSkinnedMesh) {
+      const skeleton = object.skeleton;
+
+      if (updateMap.get(skeleton) !== frame) {
+        skeleton.update();
+
+        updateMap.set(skeleton, frame);
       }
     }
 

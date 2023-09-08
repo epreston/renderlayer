@@ -1,4 +1,6 @@
-﻿function WebGLBindingStates(gl, extensions, attributes, capabilities) {
+﻿import { IntType } from '@renderlayer/shared';
+
+function WebGLBindingStates(gl, extensions, attributes, capabilities) {
   const maxVertexAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
 
   // const extension = capabilities.isWebGL2 ? null : extensions.get('OES_vertex_array_object');
@@ -255,8 +257,8 @@
     }
   }
 
-  function vertexAttribPointer(index, size, type, normalized, stride, offset) {
-    if (capabilities.isWebGL2 === true && (type === gl.INT || type === gl.UNSIGNED_INT)) {
+  function vertexAttribPointer(index, size, type, normalized, stride, offset, integer) {
+    if (integer === true) {
       gl.vertexAttribIPointer(index, size, type, stride, offset);
     } else {
       gl.vertexAttribPointer(index, size, type, normalized, stride, offset);
@@ -306,6 +308,12 @@
           const type = attribute.type;
           const bytesPerElement = attribute.bytesPerElement;
 
+          // check for integer attributes (WebGL 2 only)
+
+          const integer =
+            capabilities.isWebGL2 === true &&
+            (type === gl.INT || type === gl.UNSIGNED_INT || geometryAttribute.gpuType === IntType);
+
           if (geometryAttribute.isInterleavedBufferAttribute) {
             const data = geometryAttribute.data;
             const stride = data.stride;
@@ -334,7 +342,8 @@
                 type,
                 normalized,
                 stride * bytesPerElement,
-                (offset + (size / programAttribute.locationSize) * i) * bytesPerElement
+                (offset + (size / programAttribute.locationSize) * i) * bytesPerElement,
+                integer
               );
             }
           } else {
@@ -365,7 +374,8 @@
                 type,
                 normalized,
                 size * bytesPerElement,
-                (size / programAttribute.locationSize) * i * bytesPerElement
+                (size / programAttribute.locationSize) * i * bytesPerElement,
+                integer
               );
             }
           }

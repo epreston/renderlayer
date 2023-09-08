@@ -16,6 +16,14 @@ function WebGLGeometries(gl, attributes, info, bindingStates) {
       attributes.remove(geometry.attributes[name]);
     }
 
+    for (const name in geometry.morphAttributes) {
+      const array = geometry.morphAttributes[name];
+
+      for (let i = 0, l = array.length; i < l; i++) {
+        attributes.remove(array[i]);
+      }
+    }
+
     geometry.removeEventListener('dispose', onGeometryDispose);
 
     delete geometries[geometry.id];
@@ -90,7 +98,7 @@ function WebGLGeometries(gl, attributes, info, bindingStates) {
 
         indices.push(a, b, b, c, c, a);
       }
-    } else {
+    } else if (geometryPosition !== undefined) {
       const array = geometryPosition.array;
       version = geometryPosition.version;
 
@@ -101,6 +109,8 @@ function WebGLGeometries(gl, attributes, info, bindingStates) {
 
         indices.push(a, b, b, c, c, a);
       }
+    } else {
+      return;
     }
 
     const attribute = new (

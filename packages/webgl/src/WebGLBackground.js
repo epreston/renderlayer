@@ -43,23 +43,12 @@ function WebGLBackground(
       forceClear = true;
     }
 
-    // const xr = renderer.xr;
-    // const environmentBlendMode = xr.getEnvironmentBlendMode();
+    // const environmentBlendMode = renderer.xr.getEnvironmentBlendMode();
 
-    // switch (environmentBlendMode) {
-    //   case 'opaque':
-    //     forceClear = true;
-    //     break;
-
-    //   case 'additive':
-    //     state.buffers.color.setClear(0, 0, 0, 1, premultipliedAlpha);
-    //     forceClear = true;
-    //     break;
-
-    //   case 'alpha-blend':
-    //     state.buffers.color.setClear(0, 0, 0, 0, premultipliedAlpha);
-    //     forceClear = true;
-    //     break;
+    // if (environmentBlendMode === 'additive') {
+    //   state.buffers.color.setClear(0, 0, 0, 1, premultipliedAlpha);
+    // } else if (environmentBlendMode === 'alpha-blend') {
+    //   state.buffers.color.setClear(0, 0, 0, 0, premultipliedAlpha);
     // }
 
     if (renderer.autoClear || forceClear) {
