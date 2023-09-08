@@ -53,6 +53,12 @@ function createElementNS(name) {
   return document.createElementNS('http://www.w3.org/1999/xhtml', name);
 }
 
+function createCanvasElement() {
+  const canvas = createElementNS('canvas');
+  canvas.style.display = 'block';
+  return canvas;
+}
+
 const _cache = {};
 
 function warnOnce(message) {
@@ -63,4 +69,12 @@ function warnOnce(message) {
   console.warn(message);
 }
 
-export { arrayMin, arrayMax, arrayNeedsUint32, getTypedArray, createElementNS, warnOnce };
+export {
+  arrayMax,
+  arrayMin,
+  arrayNeedsUint32,
+  createCanvasElement,
+  createElementNS,
+  getTypedArray,
+  warnOnce
+};
