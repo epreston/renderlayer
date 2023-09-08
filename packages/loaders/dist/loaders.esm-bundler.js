@@ -691,6 +691,10 @@ class MaterialLoader extends Loader {
       material.attenuationDistance = json.attenuationDistance;
     if (json.attenuationColor !== void 0 && material.attenuationColor !== void 0)
       material.attenuationColor.setHex(json.attenuationColor);
+    if (json.anisotropy !== void 0)
+      material.anisotropy = json.anisotropy;
+    if (json.anisotropyRotation !== void 0)
+      material.anisotropyRotation = json.anisotropyRotation;
     if (json.fog !== void 0)
       material.fog = json.fog;
     if (json.flatShading !== void 0)
@@ -709,6 +713,8 @@ class MaterialLoader extends Loader {
       material.transparent = json.transparent;
     if (json.alphaTest !== void 0)
       material.alphaTest = json.alphaTest;
+    if (json.alphaHash !== void 0)
+      material.alphaHash = json.alphaHash;
     if (json.depthTest !== void 0)
       material.depthTest = json.depthTest;
     if (json.depthWrite !== void 0)
@@ -899,6 +905,8 @@ class MaterialLoader extends Loader {
       material.transmissionMap = getTexture(json.transmissionMap);
     if (json.thicknessMap !== void 0)
       material.thicknessMap = getTexture(json.thicknessMap);
+    if (json.anisotropyMap !== void 0)
+      material.anisotropyMap = getTexture(json.anisotropyMap);
     if (json.sheenColorMap !== void 0)
       material.sheenColorMap = getTexture(json.sheenColorMap);
     if (json.sheenRoughnessMap !== void 0)
@@ -1308,6 +1316,8 @@ class ObjectLoader extends Loader {
           texture.premultiplyAlpha = data.premultiplyAlpha;
         if (data.unpackAlignment !== void 0)
           texture.unpackAlignment = data.unpackAlignment;
+        if (data.compareFunction !== void 0)
+          texture.compareFunction = data.compareFunction;
         if (data.userData !== void 0)
           texture.userData = data.userData;
         textures[data.uuid] = texture;
