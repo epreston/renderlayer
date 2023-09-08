@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Scene } from '@renderlayer/scenes';
 import { WebGLRenderList, WebGLRenderLists } from '../src/WebGLRenderLists.js';
