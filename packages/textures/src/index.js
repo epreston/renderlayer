@@ -4,3 +4,4 @@ export * from './DataArrayTexture.js';
 export * from './DataTexture.js';
 export * from './Source.js';
 export * from './Texture.js';
+export * from './VideoTexture.js';
