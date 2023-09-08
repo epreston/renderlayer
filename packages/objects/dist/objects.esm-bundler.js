@@ -59,7 +59,7 @@ class Mesh extends Object3D {
     if (source.morphTargetDictionary !== void 0) {
       this.morphTargetDictionary = Object.assign({}, source.morphTargetDictionary);
     }
-    this.material = source.material;
+    this.material = Array.isArray(source.material) ? source.material.slice() : source.material;
     this.geometry = source.geometry;
     return this;
   }
@@ -419,6 +419,10 @@ class InstancedMesh extends Mesh {
     if (source.instanceColor !== null)
       this.instanceColor = source.instanceColor.clone();
     this.count = source.count;
+    if (source.boundingBox !== null)
+      this.boundingBox = source.boundingBox.clone();
+    if (source.boundingSphere !== null)
+      this.boundingSphere = source.boundingSphere.clone();
     return this;
   }
   getColorAt(index, color) {
@@ -489,7 +493,7 @@ class Line extends Object3D {
   }
   copy(source, recursive) {
     super.copy(source, recursive);
-    this.material = source.material;
+    this.material = Array.isArray(source.material) ? source.material.slice() : source.material;
     this.geometry = source.geometry;
     return this;
   }
@@ -772,7 +776,7 @@ class Points extends Object3D {
   }
   copy(source, recursive) {
     super.copy(source, recursive);
-    this.material = source.material;
+    this.material = Array.isArray(source.material) ? source.material.slice() : source.material;
     this.geometry = source.geometry;
     return this;
   }
@@ -860,7 +864,6 @@ class Skeleton {
     this.boneMatrices = null;
     this.boneTexture = null;
     this.boneTextureSize = 0;
-    this.frame = -1;
     this.init();
   }
   init() {
@@ -1045,6 +1048,10 @@ class SkinnedMesh extends Mesh {
     this.bindMatrix.copy(source.bindMatrix);
     this.bindMatrixInverse.copy(source.bindMatrixInverse);
     this.skeleton = source.skeleton;
+    if (source.boundingBox !== null)
+      this.boundingBox = source.boundingBox.clone();
+    if (source.boundingSphere !== null)
+      this.boundingSphere = source.boundingSphere.clone();
     return this;
   }
   raycast(raycaster, intersects) {

@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/objects",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "@renderlayer/objects",
   "type": "module",
   "module": "./dist/objects.esm-bundler.js",
