@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/targets",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "@renderlayer/targets",
   "type": "module",
   "module": "./dist/targets.esm-bundler.js",
@@ -29,14 +29,14 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/targets#readme",
   "dependencies": {
-    "@renderlayer/cameras": "~0.0.3",
-    "@renderlayer/core": "~0.0.3",
+    "@renderlayer/cameras": "~0.0.4",
+    "@renderlayer/core": "~0.0.5",
     "@renderlayer/geometries": "~0.0.5",
-    "@renderlayer/materials": "~0.0.7",
-    "@renderlayer/math": "~0.0.6",
-    "@renderlayer/objects": "~0.0.3",
+    "@renderlayer/materials": "~0.0.10",
+    "@renderlayer/math": "~0.0.9",
+    "@renderlayer/objects": "~0.0.4",
     "@renderlayer/shaders": "~0.0.6",
-    "@renderlayer/shared": "~0.0.4",
-    "@renderlayer/textures": "~0.0.7"
+    "@renderlayer/shared": "~0.0.5",
+    "@renderlayer/textures": "~0.0.8"
   }
 }

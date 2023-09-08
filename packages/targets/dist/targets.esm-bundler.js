@@ -1,17 +1,17 @@
-import { LinearFilter, BackSide, NoBlending, LinearMipmapLinearFilter } from '@renderlayer/shared';
+import { EventDispatcher } from '@renderlayer/core';
+import { Vector4 } from '@renderlayer/math';
+import { warnOnce, sRGBEncoding, SRGBColorSpace, NoColorSpace, LinearFilter, BackSide, NoBlending, LinearMipmapLinearFilter } from '@renderlayer/shared';
+import { Texture, Source, CubeTexture } from '@renderlayer/textures';
 import { BoxGeometry } from '@renderlayer/geometries';
 import { ShaderMaterial } from '@renderlayer/materials';
 import { Mesh } from '@renderlayer/objects';
 import { cloneUniforms } from '@renderlayer/shaders';
 import { CubeCamera } from '@renderlayer/cameras';
-import { Texture, Source, CubeTexture } from '@renderlayer/textures';
-import { EventDispatcher } from '@renderlayer/core';
-import { Vector4 } from '@renderlayer/math';
 
-class WebGLRenderTarget extends EventDispatcher {
+class RenderTarget extends EventDispatcher {
   constructor(width = 1, height = 1, options = {}) {
     super();
-    this.isWebGLRenderTarget = true;
+    this.isRenderTarget = true;
     this.width = width;
     this.height = height;
     this.depth = 1;
@@ -19,6 +19,10 @@ class WebGLRenderTarget extends EventDispatcher {
     this.scissorTest = false;
     this.viewport = new Vector4(0, 0, width, height);
     const image = { width, height, depth: 1 };
+    if (options.encoding !== void 0) {
+      warnOnce("WebGLRenderTarget: option.encoding has been replaced by option.colorSpace.");
+      options.colorSpace = options.encoding === sRGBEncoding ? SRGBColorSpace : NoColorSpace;
+    }
     this.texture = new Texture(
       image,
       options.mapping,
@@ -58,7 +62,7 @@ class WebGLRenderTarget extends EventDispatcher {
   clone() {
     return new this.constructor().copy(this);
   }
-  /** @param {WebGLRenderTarget} source */
+  /** @param {RenderTarget} source */
   copy(source) {
     this.width = source.width;
     this.height = source.height;
@@ -79,6 +83,13 @@ class WebGLRenderTarget extends EventDispatcher {
   }
   dispose() {
     this.dispatchEvent({ type: "dispose" });
+  }
+}
+
+class WebGLRenderTarget extends RenderTarget {
+  constructor(width = 1, height = 1, options = {}) {
+    super(width, height, options);
+    this.isWebGLRenderTarget = true;
   }
 }
 
@@ -167,4 +178,4 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
   }
 }
 
-export { WebGLCubeRenderTarget, WebGLRenderTarget };
+export { RenderTarget, WebGLCubeRenderTarget, WebGLRenderTarget };
