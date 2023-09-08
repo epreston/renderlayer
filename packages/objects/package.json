@@ -32,7 +32,7 @@
     "@renderlayer/buffers": "~0.0.2",
     "@renderlayer/core": "~0.0.3",
     "@renderlayer/materials": "~0.0.7",
-    "@renderlayer/math": "~0.0.6",
+    "@renderlayer/math": "~0.0.9",
     "@renderlayer/shared": "~0.0.4",
     "@renderlayer/textures": "~0.0.8"
   }
