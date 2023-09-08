@@ -257,8 +257,23 @@ describe('Maths', () => {
       expect(intersects).toBeTruthy();
     });
 
-    test.todo('containsPoint', () => {
-      // implement
+    test('containsPoint', () => {
+      const m = new Matrix4().makePerspective(-1, 1, 1, -1, 1, 100);
+      const a = new Frustum().setFromProjectionMatrix(m);
+
+      expect(!a.containsPoint(new Vector3(0, 0, 0))).toBeTruthy();
+      expect(a.containsPoint(new Vector3(0, 0, -50))).toBeTruthy();
+      expect(a.containsPoint(new Vector3(0, 0, -1.001))).toBeTruthy();
+      expect(a.containsPoint(new Vector3(-1, -1, -1.001))).toBeTruthy();
+      expect(!a.containsPoint(new Vector3(-1.1, -1.1, -1.001))).toBeTruthy();
+      expect(a.containsPoint(new Vector3(1, 1, -1.001))).toBeTruthy();
+      expect(!a.containsPoint(new Vector3(1.1, 1.1, -1.001))).toBeTruthy();
+      expect(a.containsPoint(new Vector3(0, 0, -99.999))).toBeTruthy();
+      expect(a.containsPoint(new Vector3(-99.999, -99.999, -99.999))).toBeTruthy();
+      expect(!a.containsPoint(new Vector3(-100.1, -100.1, -100.1))).toBeTruthy();
+      expect(a.containsPoint(new Vector3(99.999, 99.999, -99.999))).toBeTruthy();
+      expect(!a.containsPoint(new Vector3(100.1, 100.1, -100.1))).toBeTruthy();
+      expect(!a.containsPoint(new Vector3(0, 0, -101))).toBeTruthy();
     });
   });
 });
