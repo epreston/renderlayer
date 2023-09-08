@@ -1,4 +1,4 @@
-export default /* glsl */ `
+export default /* glsl */`
 
 #if NUM_SPOT_LIGHT_COORDS > 0
 

@@ -1,4 +1,4 @@
-export default /* glsl */ `
+export default /* glsl */`
 #if NUM_SPOT_LIGHT_COORDS > 0
 
 	varying vec4 vSpotLightCoord[ NUM_SPOT_LIGHT_COORDS ];

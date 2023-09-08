@@ -1,4 +1,4 @@
-export default /* glsl */ `
+export default /* glsl */`
 float getShadowMask() {
 
 	float shadow = 1.0;
