@@ -310,17 +310,7 @@ class Object3D extends EventDispatcher {
   }
 
   clear() {
-    for (let i = 0; i < this.children.length; i++) {
-      const object = this.children[i];
-
-      object.parent = null;
-
-      object.dispatchEvent(_removedEvent);
-    }
-
-    this.children.length = 0;
-
-    return this;
+    return this.remove(...this.children);
   }
 
   attach(object) {
@@ -741,7 +731,7 @@ class Object3D extends EventDispatcher {
     this.frustumCulled = source.frustumCulled;
     this.renderOrder = source.renderOrder;
 
-    this.animations = source.animations;
+    this.animations = source.animations.slice();
 
     this.userData = JSON.parse(JSON.stringify(source.userData));
 
