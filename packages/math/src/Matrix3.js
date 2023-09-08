@@ -1,5 +1,5 @@
 class Matrix3 {
-  constructor() {
+  constructor(n11, n12, n13, n21, n22, n23, n31, n32, n33) {
     Matrix3.prototype.isMatrix3 = true;
 
     // prettier-ignore
@@ -8,6 +8,10 @@ class Matrix3 {
 			0, 1, 0,
 			0, 0, 1
 		];
+
+    if (n11 !== undefined) {
+      this.set(n11, n12, n13, n21, n22, n23, n31, n32, n33);
+    }
   }
 
   set(n11, n12, n13, n21, n22, n23, n31, n32, n33) {
@@ -256,12 +260,21 @@ class Matrix3 {
 
   // for 2D Transforms
   makeTranslation(x, y) {
-    // prettier-ignore
-    this.set(
-			1, 0, x,
-			0, 1, y,
-			0, 0, 1
-		);
+    if (x.isVector2) {
+      // prettier-ignore
+      this.set(
+				1, 0, x.x,
+				0, 1, x.y,
+				0, 0, 1
+			);
+    } else {
+      // prettier-ignore
+      this.set(
+				1, 0, x,
+				0, 1, y,
+				0, 0, 1
+			);
+    }
 
     return this;
   }

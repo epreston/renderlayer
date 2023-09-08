@@ -2,7 +2,7 @@
   "type": "module",
   "sideEffects": false,
   "name": "@renderlayer/math",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Math library used by @renderlayer packages.",
   "module": "./dist/math.esm-bundler.js",
   "exports": "./dist/math.esm-bundler.js",
@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/epreston/renderlayer/issues"
   },
-  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/math#readme"
+  "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/math#readme",
+  "dependencies": {
+    "@renderlayer/shared": "~0.0.5"
+  }
 }

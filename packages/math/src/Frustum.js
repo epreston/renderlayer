@@ -1,3 +1,5 @@
+import { WebGLCoordinateSystem, WebGPUCoordinateSystem } from '@renderlayer/shared';
+
 import { Vector3 } from './Vector3.js';
 import { Sphere } from './Sphere.js';
 import { Plane } from './Plane.js';
@@ -40,7 +42,7 @@ class Frustum {
     return this;
   }
 
-  setFromProjectionMatrix(m) {
+  setFromProjectionMatrix(m, coordinateSystem = WebGLCoordinateSystem) {
     const planes = this.planes;
     const me = m.elements;
     const me0 = me[0],
@@ -65,7 +67,16 @@ class Frustum {
     planes[2].setComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13).normalize();
     planes[3].setComponents(me3 - me1, me7 - me5, me11 - me9, me15 - me13).normalize();
     planes[4].setComponents(me3 - me2, me7 - me6, me11 - me10, me15 - me14).normalize();
-    planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
+
+    if (coordinateSystem === WebGLCoordinateSystem) {
+      planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
+    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+      planes[5].setComponents(me2, me6, me10, me14).normalize();
+    } else {
+      throw new Error(
+        'Frustum.setFromProjectionMatrix(): Invalid coordinate system: ' + coordinateSystem
+      );
+    }
 
     return this;
   }
