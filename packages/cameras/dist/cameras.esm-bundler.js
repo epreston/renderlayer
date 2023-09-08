@@ -1,6 +1,6 @@
+import { WebGLCoordinateSystem, WebGPUCoordinateSystem } from '@renderlayer/shared';
 import { Matrix4, RAD2DEG, DEG2RAD } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
-import { NoToneMapping } from '@renderlayer/shared';
 
 class Camera extends Object3D {
   constructor() {
@@ -10,12 +10,14 @@ class Camera extends Object3D {
     this.matrixWorldInverse = new Matrix4();
     this.projectionMatrix = new Matrix4();
     this.projectionMatrixInverse = new Matrix4();
+    this.coordinateSystem = WebGLCoordinateSystem;
   }
   copy(source, recursive) {
     super.copy(source, recursive);
     this.matrixWorldInverse.copy(source.matrixWorldInverse);
     this.projectionMatrix.copy(source.projectionMatrix);
     this.projectionMatrixInverse.copy(source.projectionMatrixInverse);
+    this.coordinateSystem = source.coordinateSystem;
     return this;
   }
   getWorldDirection(target) {
@@ -175,7 +177,15 @@ class PerspectiveCamera extends Camera {
     const skew = this.filmOffset;
     if (skew !== 0)
       left += near * skew / this.getFilmWidth();
-    this.projectionMatrix.makePerspective(left, left + width, top, top - height, near, this.far);
+    this.projectionMatrix.makePerspective(
+      left,
+      left + width,
+      top,
+      top - height,
+      near,
+      this.far,
+      this.coordinateSystem
+    );
     this.projectionMatrixInverse.copy(this.projectionMatrix).invert();
   }
   toJSON(meta) {
@@ -201,45 +211,78 @@ class CubeCamera extends Object3D {
     super();
     this.type = "CubeCamera";
     this.renderTarget = renderTarget;
+    this.coordinateSystem = null;
     const cameraPX = new PerspectiveCamera(fov, aspect, near, far);
     cameraPX.layers = this.layers;
-    cameraPX.up.set(0, 1, 0);
-    cameraPX.lookAt(1, 0, 0);
     this.add(cameraPX);
     const cameraNX = new PerspectiveCamera(fov, aspect, near, far);
     cameraNX.layers = this.layers;
-    cameraNX.up.set(0, 1, 0);
-    cameraNX.lookAt(-1, 0, 0);
     this.add(cameraNX);
     const cameraPY = new PerspectiveCamera(fov, aspect, near, far);
     cameraPY.layers = this.layers;
-    cameraPY.up.set(0, 0, -1);
-    cameraPY.lookAt(0, 1, 0);
     this.add(cameraPY);
     const cameraNY = new PerspectiveCamera(fov, aspect, near, far);
     cameraNY.layers = this.layers;
-    cameraNY.up.set(0, 0, 1);
-    cameraNY.lookAt(0, -1, 0);
     this.add(cameraNY);
     const cameraPZ = new PerspectiveCamera(fov, aspect, near, far);
     cameraPZ.layers = this.layers;
-    cameraPZ.up.set(0, 1, 0);
-    cameraPZ.lookAt(0, 0, 1);
     this.add(cameraPZ);
     const cameraNZ = new PerspectiveCamera(fov, aspect, near, far);
     cameraNZ.layers = this.layers;
-    cameraNZ.up.set(0, 1, 0);
-    cameraNZ.lookAt(0, 0, -1);
     this.add(cameraNZ);
+  }
+  updateCoordinateSystem() {
+    const coordinateSystem = this.coordinateSystem;
+    const cameras = this.children.concat();
+    const [cameraPX, cameraNX, cameraPY, cameraNY, cameraPZ, cameraNZ] = cameras;
+    for (const camera of cameras)
+      this.remove(camera);
+    if (coordinateSystem === WebGLCoordinateSystem) {
+      cameraPX.up.set(0, 1, 0);
+      cameraPX.lookAt(1, 0, 0);
+      cameraNX.up.set(0, 1, 0);
+      cameraNX.lookAt(-1, 0, 0);
+      cameraPY.up.set(0, 0, -1);
+      cameraPY.lookAt(0, 1, 0);
+      cameraNY.up.set(0, 0, 1);
+      cameraNY.lookAt(0, -1, 0);
+      cameraPZ.up.set(0, 1, 0);
+      cameraPZ.lookAt(0, 0, 1);
+      cameraNZ.up.set(0, 1, 0);
+      cameraNZ.lookAt(0, 0, -1);
+    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+      cameraPX.up.set(0, -1, 0);
+      cameraPX.lookAt(-1, 0, 0);
+      cameraNX.up.set(0, -1, 0);
+      cameraNX.lookAt(1, 0, 0);
+      cameraPY.up.set(0, 0, 1);
+      cameraPY.lookAt(0, 1, 0);
+      cameraNY.up.set(0, 0, -1);
+      cameraNY.lookAt(0, -1, 0);
+      cameraPZ.up.set(0, -1, 0);
+      cameraPZ.lookAt(0, 0, 1);
+      cameraNZ.up.set(0, -1, 0);
+      cameraNZ.lookAt(0, 0, -1);
+    } else {
+      throw new Error(
+        "CubeCamera.updateCoordinateSystem(): Invalid coordinate system: " + coordinateSystem
+      );
+    }
+    for (const camera of cameras) {
+      this.add(camera);
+      camera.updateMatrixWorld();
+    }
   }
   update(renderer, scene) {
     if (this.parent === null)
       this.updateMatrixWorld();
     const renderTarget = this.renderTarget;
+    if (this.coordinateSystem !== renderer.coordinateSystem) {
+      this.coordinateSystem = renderer.coordinateSystem;
+      this.updateCoordinateSystem();
+    }
     const [cameraPX, cameraNX, cameraPY, cameraNY, cameraPZ, cameraNZ] = this.children;
     const currentRenderTarget = renderer.getRenderTarget();
-    const currentToneMapping = renderer.toneMapping;
-    renderer.toneMapping = NoToneMapping;
     const generateMipmaps = renderTarget.texture.generateMipmaps;
     renderTarget.texture.generateMipmaps = false;
     renderer.setRenderTarget(renderTarget, 0);
@@ -256,7 +299,6 @@ class CubeCamera extends Object3D {
     renderer.setRenderTarget(renderTarget, 5);
     renderer.render(scene, cameraNZ);
     renderer.setRenderTarget(currentRenderTarget);
-    renderer.toneMapping = currentToneMapping;
     renderTarget.texture.needsPMREMUpdate = true;
   }
 }
@@ -332,7 +374,15 @@ class OrthographicCamera extends Camera {
       top -= scaleH * this.view.offsetY;
       bottom = top - scaleH * this.view.height;
     }
-    this.projectionMatrix.makeOrthographic(left, right, top, bottom, this.near, this.far);
+    this.projectionMatrix.makeOrthographic(
+      left,
+      right,
+      top,
+      bottom,
+      this.near,
+      this.far,
+      this.coordinateSystem
+    );
     this.projectionMatrixInverse.copy(this.projectionMatrix).invert();
   }
   toJSON(meta) {

@@ -90,7 +90,15 @@ class OrthographicCamera extends Camera {
       bottom = top - scaleH * this.view.height;
     }
 
-    this.projectionMatrix.makeOrthographic(left, right, top, bottom, this.near, this.far);
+    this.projectionMatrix.makeOrthographic(
+      left,
+      right,
+      top,
+      bottom,
+      this.near,
+      this.far,
+      this.coordinateSystem
+    );
 
     this.projectionMatrixInverse.copy(this.projectionMatrix).invert();
   }

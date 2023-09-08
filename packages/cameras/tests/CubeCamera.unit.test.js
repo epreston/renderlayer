@@ -48,6 +48,18 @@ describe('Cameras', () => {
       expect(object.renderTarget).toBe(renderTarget);
     });
 
+    test('coordinateSystem', () => {
+      const object = new CubeCamera();
+      expect(object.coordinateSystem).toBeNull();
+    });
+
+    test.todo('updateCoordinateSystem', () => {
+      const object = new CubeCamera();
+      expect(object.updateCoordinateSystem).toBeDefined();
+
+      // EP: tests required
+    });
+
     test('update', () => {
       // prettier-ignore
       const options = { generateMipmaps: true, minFilter: LinearMipmapLinearFilter };

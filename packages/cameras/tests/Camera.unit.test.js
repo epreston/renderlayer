@@ -2,6 +2,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 
 import { Object3D } from '@renderlayer/core';
 import { Matrix4, Vector3 } from '@renderlayer/math';
+import { WebGLCoordinateSystem } from '@renderlayer/shared';
 
 import { Camera } from '../src/Camera.js';
 
@@ -40,6 +41,11 @@ describe('Cameras', () => {
     test('projectionMatrixInverse', () => {
       const object = new Camera();
       expect(object.projectionMatrixInverse).toBeInstanceOf(Matrix4);
+    });
+
+    test('coordinateSystem', () => {
+      const object = new Camera();
+      expect(object.coordinateSystem).toBe(WebGLCoordinateSystem);
     });
 
     test('copy', () => {

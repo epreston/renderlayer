@@ -1,3 +1,4 @@
+import { WebGLCoordinateSystem } from '@renderlayer/shared';
 import { Matrix4 } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
 
@@ -12,6 +13,8 @@ class Camera extends Object3D {
 
     this.projectionMatrix = new Matrix4();
     this.projectionMatrixInverse = new Matrix4();
+
+    this.coordinateSystem = WebGLCoordinateSystem;
   }
 
   copy(source, recursive) {
@@ -21,6 +24,8 @@ class Camera extends Object3D {
 
     this.projectionMatrix.copy(source.projectionMatrix);
     this.projectionMatrixInverse.copy(source.projectionMatrixInverse);
+
+    this.coordinateSystem = source.coordinateSystem;
 
     return this;
   }
