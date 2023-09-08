@@ -1,5 +1,5 @@
 import { clamp, denormalize, normalize, Vector3, Vector2, generateUUID, Matrix3, Box3, Sphere, Matrix4 } from '@renderlayer/math';
-import { StaticDrawUsage, arrayNeedsUint32, TrianglesDrawMode, TriangleFanDrawMode, TriangleStripDrawMode } from '@renderlayer/shared';
+import { StaticDrawUsage, FloatType, arrayNeedsUint32, TrianglesDrawMode, TriangleFanDrawMode, TriangleStripDrawMode } from '@renderlayer/shared';
 import { EventDispatcher, Object3D } from '@renderlayer/core';
 
 const _tables = /* @__PURE__ */ _generateTables();
@@ -109,6 +109,7 @@ class BufferAttribute {
     this.normalized = normalized;
     this.usage = StaticDrawUsage;
     this.updateRange = { offset: 0, count: -1 };
+    this.gpuType = FloatType;
     this.version = 0;
   }
   onUploadCallback() {
@@ -128,6 +129,7 @@ class BufferAttribute {
     this.count = source.count;
     this.normalized = source.normalized;
     this.usage = source.usage;
+    this.gpuType = source.gpuType;
     return this;
   }
   copyAt(index1, attribute, index2) {
@@ -184,6 +186,18 @@ class BufferAttribute {
   }
   set(value, offset = 0) {
     this.array.set(value, offset);
+    return this;
+  }
+  getComponent(index, component) {
+    let value = this.array[index * this.itemSize + component];
+    if (this.normalized)
+      value = denormalize(value, this.array);
+    return value;
+  }
+  setComponent(index, component, value) {
+    if (this.normalized)
+      value = normalize(value, this.array);
+    this.array[index * this.itemSize + component] = value;
     return this;
   }
   getX(index) {

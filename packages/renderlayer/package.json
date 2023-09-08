@@ -30,7 +30,7 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/README.md",
   "dependencies": {
     "@renderlayer/animation": "~0.0.4",
-    "@renderlayer/buffers": "~0.0.3",
+    "@renderlayer/buffers": "~0.0.4",
     "@renderlayer/cameras": "~0.0.3",
     "@renderlayer/controls": "~0.0.2",
     "@renderlayer/core": "~0.0.6",
