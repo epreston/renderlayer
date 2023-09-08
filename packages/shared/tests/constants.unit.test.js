@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import * as Constants from '../src/constants.js';
 
@@ -135,7 +135,11 @@ describe('Shared', () => {
       expect(Constants.RGBA_ASTC_10x10_Format).toBe(37819);
       expect(Constants.RGBA_ASTC_12x10_Format).toBe(37820);
       expect(Constants.RGBA_ASTC_12x12_Format).toBe(37821);
+
       expect(Constants.RGBA_BPTC_Format).toBe(36492);
+      expect(Constants.RGB_BPTC_SIGNED_Format).toBe(36494);
+      expect(Constants.RGB_BPTC_UNSIGNED_Format).toBe(36495);
+
       expect(Constants.RED_RGTC1_Format).toBe(36283);
       expect(Constants.SIGNED_RED_RGTC1_Format).toBe(36284);
       expect(Constants.RED_GREEN_RGTC2_Format).toBe(36285);
@@ -170,6 +174,7 @@ describe('Shared', () => {
       expect(Constants.SRGBColorSpace).toBe('srgb');
       expect(Constants.LinearSRGBColorSpace).toBe('srgb-linear');
       expect(Constants.DisplayP3ColorSpace).toBe('display-p3');
+      expect(Constants.LinearDisplayP3ColorSpace).toBe('display-p3-linear');
 
       expect(Constants.ZeroStencilOp).toBe(0);
       expect(Constants.KeepStencilOp).toBe(7680);
@@ -189,6 +194,15 @@ describe('Shared', () => {
       expect(Constants.GreaterEqualStencilFunc).toBe(518);
       expect(Constants.AlwaysStencilFunc).toBe(519);
 
+      expect(Constants.NeverCompare).toBe(512);
+      expect(Constants.LessCompare).toBe(513);
+      expect(Constants.EqualCompare).toBe(514);
+      expect(Constants.LessEqualCompare).toBe(515);
+      expect(Constants.GreaterCompare).toBe(516);
+      expect(Constants.NotEqualCompare).toBe(517);
+      expect(Constants.GreaterEqualCompare).toBe(518);
+      expect(Constants.AlwaysCompare).toBe(519);
+
       expect(Constants.StaticDrawUsage).toBe(35044);
       expect(Constants.DynamicDrawUsage).toBe(35048);
       expect(Constants.StreamDrawUsage).toBe(35040);
@@ -203,6 +217,9 @@ describe('Shared', () => {
       expect(Constants.GLSL3).toBe('300 es');
 
       expect(Constants._SRGBAFormat).toBe(1035);
+
+      expect(Constants.WebGLCoordinateSystem).toBe(2000);
+      expect(Constants.WebGPUCoordinateSystem).toBe(2001);
     });
   });
 });
