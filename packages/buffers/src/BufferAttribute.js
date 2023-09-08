@@ -1,5 +1,5 @@
 import { Vector2, Vector3, denormalize, normalize } from '@renderlayer/math';
-import { StaticDrawUsage } from '@renderlayer/shared';
+import { StaticDrawUsage, FloatType } from '@renderlayer/shared';
 
 import { fromHalfFloat, toHalfFloat } from './BufferAttributeUtils.js';
 
@@ -22,6 +22,7 @@ class BufferAttribute {
 
     this.usage = StaticDrawUsage;
     this.updateRange = { offset: 0, count: -1 };
+    this.gpuType = FloatType;
 
     this.version = 0;
   }
@@ -46,6 +47,7 @@ class BufferAttribute {
     this.normalized = source.normalized;
 
     this.usage = source.usage;
+    this.gpuType = source.gpuType;
 
     return this;
   }
@@ -126,6 +128,22 @@ class BufferAttribute {
   set(value, offset = 0) {
     // Matching BufferAttribute constructor, do not normalize the array.
     this.array.set(value, offset);
+
+    return this;
+  }
+
+  getComponent(index, component) {
+    let value = this.array[index * this.itemSize + component];
+
+    if (this.normalized) value = denormalize(value, this.array);
+
+    return value;
+  }
+
+  setComponent(index, component, value) {
+    if (this.normalized) value = normalize(value, this.array);
+
+    this.array[index * this.itemSize + component] = value;
 
     return this;
   }
