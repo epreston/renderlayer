@@ -116,7 +116,8 @@ var iridescence_fragment = `
 		float phi12 = 0.0;
 		if ( iridescenceIOR < outsideIOR ) phi12 = PI;
 		float phi21 = PI - phi12;
-		vec3 baseIOR = Fresnel0ToIor( clamp( baseF0, 0.0, 0.9999 ) );		vec3 R1 = IorToFresnel0( baseIOR, iridescenceIOR );
+		vec3 baseIOR = Fresnel0ToIor( clamp( baseF0, 0.0, 0.9999 ) );
+		vec3 R1 = IorToFresnel0( baseIOR, iridescenceIOR );
 		vec3 R23 = F_Schlick( R1, 1.0, cosTheta2 );
 		vec3 phi23 = vec3( 0.0 );
 		if ( baseIOR[ 0 ] < iridescenceIOR ) phi23[ 0 ] = PI;
@@ -328,7 +329,8 @@ vec3 F_Schlick( const in vec3 f0, const in float f90, const in float dotVH ) {
 float F_Schlick( const in float f0, const in float f90, const in float dotVH ) {
 	float fresnel = exp2( ( - 5.55473 * dotVH - 6.98316 ) * dotVH );
 	return f0 * ( 1.0 - fresnel ) + ( f90 * fresnel );
-}`;
+}
+`;
 
 var cube_uv_reflection_fragment = `
 #ifdef ENVMAP_TYPE_CUBE_UV
@@ -414,7 +416,8 @@ var cube_uv_reflection_fragment = `
 		} else if ( roughness >= cubeUV_r6 ) {
 			mip = ( cubeUV_r5 - roughness ) * ( cubeUV_m6 - cubeUV_m5 ) / ( cubeUV_r5 - cubeUV_r6 ) + cubeUV_m5;
 		} else {
-			mip = - 2.0 * log2( 1.16 * roughness );		}
+			mip = - 2.0 * log2( 1.16 * roughness );
+		}
 		return mip;
 	}
 	vec4 textureCubeUV( sampler2D envMap, vec3 sampleDir, float roughness ) {
@@ -785,7 +788,8 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 		vec3 halfWidth;
 		vec3 halfHeight;
 	};
-	uniform sampler2D ltc_1;	uniform sampler2D ltc_2;
+	uniform sampler2D ltc_1;
+	uniform sampler2D ltc_2;
 	uniform RectAreaLight rectAreaLights[ NUM_RECT_AREA_LIGHTS ];
 #endif
 #if NUM_HEMI_LIGHTS > 0
@@ -884,7 +888,8 @@ PhysicalMaterial material;
 material.diffuseColor = diffuseColor.rgb * ( 1.0 - metalnessFactor );
 vec3 dxy = max( abs( dFdx( geometryNormal ) ), abs( dFdy( geometryNormal ) ) );
 float geometryRoughness = max( max( dxy.x, dxy.y ), dxy.z );
-material.roughness = max( roughnessFactor, 0.0525 );material.roughness += geometryRoughness;
+material.roughness = max( roughnessFactor, 0.0525 );
+material.roughness += geometryRoughness;
 material.roughness = min( material.roughness, 1.0 );
 #ifdef IOR
 	material.ior = ior;
@@ -919,7 +924,8 @@ material.roughness = min( material.roughness, 1.0 );
 	#ifdef USE_CLEARCOAT_ROUGHNESSMAP
 		material.clearcoatRoughness *= texture2D( clearcoatRoughnessMap, vClearcoatRoughnessMapUv ).y;
 	#endif
-	material.clearcoat = saturate( material.clearcoat );	material.clearcoatRoughness = max( material.clearcoatRoughness, 0.0525 );
+	material.clearcoat = saturate( material.clearcoat );
+	material.clearcoatRoughness = max( material.clearcoatRoughness, 0.0525 );
 	material.clearcoatRoughness += geometryRoughness;
 	material.clearcoatRoughness = min( material.clearcoatRoughness, 1.0 );
 #endif
@@ -1139,7 +1145,8 @@ void computeMultiscattering( const in vec3 normal, const in vec3 viewDir, const 
 	vec3 FssEss = Fr * fab.x + specularF90 * fab.y;
 	float Ess = fab.x + fab.y;
 	float Ems = 1.0 - Ess;
-	vec3 Favg = Fr + ( 1.0 - Fr ) * 0.047619;	vec3 Fms = FssEss * Favg / ( 1.0 - Ems * Favg );
+	vec3 Favg = Fr + ( 1.0 - Fr ) * 0.047619;
+	vec3 Fms = FssEss * Favg / ( 1.0 - Ems * Favg );
 	singleScatter += FssEss;
 	multiScatter += Fms * Ems;
 }
@@ -1154,7 +1161,8 @@ void computeMultiscattering( const in vec3 normal, const in vec3 viewDir, const 
 		vec3 lightColor = rectAreaLight.color;
 		float roughness = material.roughness;
 		vec3 rectCoords[ 4 ];
-		rectCoords[ 0 ] = lightPos + halfWidth - halfHeight;		rectCoords[ 1 ] = lightPos - halfWidth - halfHeight;
+		rectCoords[ 0 ] = lightPos + halfWidth - halfHeight;
+		rectCoords[ 1 ] = lightPos - halfWidth - halfHeight;
 		rectCoords[ 2 ] = lightPos - halfWidth + halfHeight;
 		rectCoords[ 3 ] = lightPos + halfWidth + halfHeight;
 		vec2 uv = LTC_Uv( normal, viewDir, roughness );
@@ -1698,13 +1706,15 @@ vec3 packNormalToRGB( const in vec3 normal ) {
 vec3 unpackRGBToNormal( const in vec3 rgb ) {
 	return 2.0 * rgb.xyz - 1.0;
 }
-const float PackUpscale = 256. / 255.;const float UnpackDownscale = 255. / 256.;
+const float PackUpscale = 256. / 255.;
+const float UnpackDownscale = 255. / 256.;
 const vec3 PackFactors = vec3( 256. * 256. * 256., 256. * 256., 256. );
 const vec4 UnpackFactors = UnpackDownscale / vec4( PackFactors, 1. );
 const float ShiftRight8 = 1. / 256.;
 vec4 packDepthToRGBA( const in float v ) {
 	vec4 r = vec4( fract( v * PackFactors ), v );
-	r.yzw -= r.xyz * ShiftRight8;	return r * PackUpscale;
+	r.yzw -= r.xyz * ShiftRight8;
+	return r * PackUpscale;
 }
 float unpackRGBAToDepth( const in vec4 v ) {
 	return dot( v, UnpackFactors );
@@ -1837,7 +1847,9 @@ var shadowmap_pars_fragment = `
 		if (hard_shadow != 1.0 ) {
 			float distance = compare - distribution.x ;
 			float variance = max( 0.00000, distribution.y * distribution.y );
-			float softness_probability = variance / (variance + distance * distance );			softness_probability = clamp( ( softness_probability - 0.3 ) / ( 0.95 - 0.3 ), 0.0, 1.0 );			occlusion = clamp( max( hard_shadow, softness_probability ), 0.0, 1.0 );
+			float softness_probability = variance / (variance + distance * distance );
+			softness_probability = clamp( ( softness_probability - 0.3 ) / ( 0.95 - 0.3 ), 0.0, 1.0 );
+			occlusion = clamp( max( hard_shadow, softness_probability ), 0.0, 1.0 );
 		}
 		return occlusion;
 	}
@@ -1941,7 +1953,8 @@ var shadowmap_pars_fragment = `
 	float getPointShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord, float shadowCameraNear, float shadowCameraFar ) {
 		vec2 texelSize = vec2( 1.0 ) / ( shadowMapSize * vec2( 4.0, 2.0 ) );
 		vec3 lightToPosition = shadowCoord.xyz;
-		float dp = ( length( lightToPosition ) - shadowCameraNear ) / ( shadowCameraFar - shadowCameraNear );		dp += shadowBias;
+		float dp = ( length( lightToPosition ) - shadowCameraNear ) / ( shadowCameraFar - shadowCameraNear );
+		dp += shadowBias;
 		vec3 bd3D = normalize( lightToPosition );
 		#if defined( SHADOWMAP_TYPE_PCF ) || defined( SHADOWMAP_TYPE_PCF_SOFT ) || defined( SHADOWMAP_TYPE_VSM )
 			vec2 offset = vec2( - 1, 1 ) * shadowRadius * texelSize.y;
@@ -2182,11 +2195,13 @@ vec3 RRTAndODTFit( vec3 v ) {
 }
 vec3 ACESFilmicToneMapping( vec3 color ) {
 	const mat3 ACESInputMat = mat3(
-		vec3( 0.59719, 0.07600, 0.02840 ),		vec3( 0.35458, 0.90834, 0.13383 ),
+		vec3( 0.59719, 0.07600, 0.02840 ),
+		vec3( 0.35458, 0.90834, 0.13383 ),
 		vec3( 0.04823, 0.01566, 0.83777 )
 	);
 	const mat3 ACESOutputMat = mat3(
-		vec3(	1.60475, -0.10208, -0.00327 ),		vec3( -0.53108,	1.10813, -0.07276 ),
+		vec3(	1.60475, -0.10208, -0.00327 ),
+		vec3( -0.53108,	1.10813, -0.07276 ),
 		vec3( -0.07367, -0.00605,	1.07602 )
 	);
 	color *= toneMappingExposure / 0.6;
@@ -2310,7 +2325,8 @@ var transmission_pars_fragment = `
 			return radiance;
 		} else {
 			vec3 attenuationCoefficient = -log( attenuationColor ) / attenuationDistance;
-			vec3 transmittance = exp( - attenuationCoefficient * transmissionDistance );			return transmittance * radiance;
+			vec3 transmittance = exp( - attenuationCoefficient * transmissionDistance );
+			return transmittance * radiance;
 		}
 	}
 	vec4 getIBLVolumeRefraction( const in vec3 n, const in vec3 v, const in float roughness, const in vec3 diffuseColor,
