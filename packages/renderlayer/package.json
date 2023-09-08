@@ -49,7 +49,7 @@
     "@renderlayer/renderers": "~0.0.4",
     "@renderlayer/scenes": "~0.0.3",
     "@renderlayer/shaders": "~0.0.6",
-    "@renderlayer/shared": "~0.0.4",
+    "@renderlayer/shared": "~0.0.5",
     "@renderlayer/targets": "~0.0.3",
     "@renderlayer/textures": "~0.0.8",
     "@renderlayer/webgl": "~0.0.9"
