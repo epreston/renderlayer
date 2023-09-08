@@ -6,7 +6,7 @@ import { Texture } from '@renderlayer/textures';
 import { EventDispatcher } from '@renderlayer/core';
 import { RenderTarget } from '../src/RenderTarget.js';
 
-describe('Renderers', () => {
+describe('Targets', () => {
   describe('RenderTarget', () => {
     test('constructor', () => {
       const object = new RenderTarget();
