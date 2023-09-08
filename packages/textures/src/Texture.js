@@ -14,7 +14,7 @@ import {
 
 import { Source } from './Source.js';
 
-let textureId = 0;
+let _textureId = 0;
 
 class Texture extends EventDispatcher {
   constructor(
@@ -31,7 +31,7 @@ class Texture extends EventDispatcher {
   ) {
     super();
 
-    Object.defineProperty(this, 'id', { value: textureId++ });
+    Object.defineProperty(this, 'id', { value: _textureId++ });
     this.uuid = generateUUID();
 
     this.isTexture = true;
