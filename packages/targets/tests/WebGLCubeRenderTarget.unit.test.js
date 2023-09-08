@@ -1,11 +1,12 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { WebGLCoordinateSystem } from '@renderlayer/shared';
 import { CubeTexture, Texture } from '@renderlayer/textures';
 
-import { WebGLRenderTarget } from '../src/WebGLRenderTarget.js';
 import { WebGLCubeRenderTarget } from '../src/WebGLCubeRenderTarget.js';
+import { WebGLRenderTarget } from '../src/WebGLRenderTarget.js';
 
-describe('Renderers', () => {
+describe('Targets', () => {
   describe('WebGLCubeRenderTarget', () => {
     test('constructor', () => {
       const object = new WebGLCubeRenderTarget();
@@ -35,6 +36,7 @@ describe('Renderers', () => {
       const object = new WebGLCubeRenderTarget();
       const texture = new Texture();
       const renderer = {
+        coordinateSystem: WebGLCoordinateSystem,
         getRenderTarget: vi.fn(),
         setRenderTarget: vi.fn(),
         render: vi.fn()
