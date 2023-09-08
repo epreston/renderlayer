@@ -36,6 +36,16 @@ describe('Materials', () => {
       });
     });
 
+    test('anisotropyRotation', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.anisotropyRotation).toBe(0);
+    });
+
+    test('anisotropyMap', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.clearcoatMap).toBeNull();
+    });
+
     test('clearcoatMap', () => {
       const object = new MeshPhysicalMaterial();
       expect(object.clearcoatMap).toBeNull();
@@ -64,11 +74,6 @@ describe('Materials', () => {
     test('ior', () => {
       const object = new MeshPhysicalMaterial();
       expect(object.ior).toBe(1.5);
-    });
-
-    test('reflectivity', () => {
-      const object = new MeshPhysicalMaterial();
-      expect(object.reflectivity).toBe(0.5);
     });
 
     test('iridescenceMap', () => {
@@ -157,9 +162,9 @@ describe('Materials', () => {
       expect(object.specularColorMap).toBeNull();
     });
 
-    test('sheen', () => {
+    test('anisotropy', () => {
       const object = new MeshPhysicalMaterial();
-      expect(object.sheen).toBe(0.0);
+      expect(object.anisotropy).toBe(0);
     });
 
     test('clearcoat', () => {
@@ -172,6 +177,16 @@ describe('Materials', () => {
       expect(object.iridescence).toBe(0);
     });
 
+    test('reflectivity', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.reflectivity).toBe(0.5);
+    });
+
+    test('sheen', () => {
+      const object = new MeshPhysicalMaterial();
+      expect(object.sheen).toBe(0.0);
+    });
+
     test('transmission', () => {
       const object = new MeshPhysicalMaterial();
       expect(object.transmission).toBe(0);
@@ -180,6 +195,8 @@ describe('Materials', () => {
     test('copy', () => {
       const object = new MeshPhysicalMaterial();
       const object2 = new MeshPhysicalMaterial();
+
+      object2.anisotropy = 0.5;
 
       object2.clearcoatMap = new Texture();
       object2.clearcoatRoughness = 0.1;
