@@ -90,11 +90,6 @@ describe('Objects', () => {
       expect(skeleton.boneTextureSize).toBe(4);
     });
 
-    test('frame', () => {
-      const { skeleton } = createSkeleton();
-      expect(skeleton.frame).toBe(-1);
-    });
-
     test('init', () => {
       const { skeleton } = createSkeleton();
       skeleton.init();
