@@ -24,8 +24,10 @@
   },
   "cSpell.words": [
     "AABB",
+    "ALPHAHASH",
     "ALPHAMAP",
     "ALPHATEST",
+    "ANISOTROPYMAP",
     "AOMAP",
     "Barycoord",
     "beginnormal",
@@ -151,6 +153,7 @@
     "SRGBA",
     "Schlick",
     "XYZW",
+    "buffergeometry",
     "catmullrom",
     "pluginutils",
     "unproject"
