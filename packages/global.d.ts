@@ -134,11 +134,14 @@ declare module '@renderlayer/textures' {
 
 declare module '@renderlayer/renderers' {
   declare class WebGLRenderer {
-    /** @deprecated Multiply light intensity values by PI when false. */
-    get useLegacyLights();
 
-    /** @deprecated Multiply light intensity values by PI when false. */
-    set useLegacyLights(value);
+    // Enable the following when removed.
+
+    // /** @deprecated Multiply light intensity values by PI when false. */
+    // get useLegacyLights();
+
+    // /** @deprecated Multiply light intensity values by PI when false. */
+    // set useLegacyLights(value);
 
     /** @deprecated Removed. Use .useLegacyLights instead. */
     get physicallyCorrectLights();
