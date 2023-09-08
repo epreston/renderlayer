@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/textures",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "@renderlayer/textures",
   "type": "module",
   "module": "./dist/textures.esm-bundler.js",
@@ -30,7 +30,7 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/textures#readme",
   "dependencies": {
     "@renderlayer/core": "~0.0.3",
-    "@renderlayer/math": "~0.0.6",
+    "@renderlayer/math": "~0.0.9",
     "@renderlayer/shared": "~0.0.4"
   }
 }

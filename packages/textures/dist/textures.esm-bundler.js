@@ -2,11 +2,11 @@ import { ImageUtils, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter
 import { EventDispatcher } from '@renderlayer/core';
 import { generateUUID, Vector2, Matrix3 } from '@renderlayer/math';
 
-let sourceid = 0;
+let _sourceId = 0;
 class Source {
   constructor(data = null) {
     this.isSource = true;
-    Object.defineProperty(this, "id", { value: sourceid++ });
+    Object.defineProperty(this, "id", { value: _sourceId++ });
     this.uuid = generateUUID();
     this.data = data;
     this.version = 0;
@@ -65,11 +65,11 @@ function serializeImage(image) {
   }
 }
 
-let textureId = 0;
+let _textureId = 0;
 class Texture extends EventDispatcher {
   constructor(image = Texture.DEFAULT_IMAGE, mapping = Texture.DEFAULT_MAPPING, wrapS = ClampToEdgeWrapping, wrapT = ClampToEdgeWrapping, magFilter = LinearFilter, minFilter = LinearMipmapLinearFilter, format = RGBAFormat, type = UnsignedByteType, anisotropy = Texture.DEFAULT_ANISOTROPY, colorSpace = NoColorSpace) {
     super();
-    Object.defineProperty(this, "id", { value: textureId++ });
+    Object.defineProperty(this, "id", { value: _textureId++ });
     this.uuid = generateUUID();
     this.isTexture = true;
     this.name = "";
