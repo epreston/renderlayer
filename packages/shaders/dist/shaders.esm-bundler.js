@@ -1,6 +1,51 @@
 import { Color, Matrix3, Vector2, Vector3 } from '@renderlayer/math';
 import { LinearSRGBColorSpace } from '@renderlayer/shared';
 
+var alphahash_fragment = `
+#ifdef USE_ALPHAHASH
+	if ( diffuseColor.a < getAlphaHashThreshold( vPosition ) ) discard;
+#endif
+`;
+
+var alphahash_pars_fragment = `
+#ifdef USE_ALPHAHASH
+	const float ALPHA_HASH_SCALE = 0.05;
+	float hash2D( vec2 value ) {
+		return fract( 1.0e4 * sin( 17.0 * value.x + 0.1 * value.y ) * ( 0.1 + abs( sin( 13.0 * value.y + value.x ) ) ) );
+	}
+	float hash3D( vec3 value ) {
+		return hash2D( vec2( hash2D( value.xy ), value.z ) );
+	}
+	float getAlphaHashThreshold( vec3 position ) {
+		float maxDeriv = max(
+			length( dFdx( position.xyz ) ),
+			length( dFdy( position.xyz ) )
+		);
+		float pixScale = 1.0 / ( ALPHA_HASH_SCALE * maxDeriv );
+		vec2 pixScales = vec2(
+			exp2( floor( log2( pixScale ) ) ),
+			exp2( ceil( log2( pixScale ) ) )
+		);
+		vec2 alpha = vec2(
+			hash3D( floor( pixScales.x * position.xyz ) ),
+			hash3D( floor( pixScales.y * position.xyz ) )
+		);
+		float lerpFactor = fract( log2( pixScale ) );
+		float x = ( 1.0 - lerpFactor ) * alpha.x + lerpFactor * alpha.y;
+		float a = min( lerpFactor, 1.0 - lerpFactor );
+		vec3 cases = vec3(
+			x * x / ( 2.0 * a * ( 1.0 - a ) ),
+			( x - 0.5 * a ) / ( 1.0 - a ),
+			1.0 - ( ( 1.0 - x ) * ( 1.0 - x ) / ( 2.0 * a * ( 1.0 - a ) ) )
+		);
+		float threshold = ( x < ( 1.0 - a ) )
+			? ( ( x < a ) ? cases.x : cases.y )
+			: cases.z;
+		return clamp( threshold , 1.0e-6, 1.0 );
+	}
+#endif
+`;
+
 var alphamap_fragment = `
 #ifdef USE_ALPHAMAP
 	diffuseColor.a *= texture2D( alphaMap, vAlphaMapUv ).g;
@@ -45,6 +90,9 @@ var aomap_pars_fragment = `
 
 var begin_vertex = `
 vec3 transformed = vec3( position );
+#ifdef USE_ALPHAHASH
+	vPosition = vec3( position );
+#endif
 `;
 
 var beginnormal_vertex = `
@@ -106,12 +154,11 @@ var iridescence_fragment = `
 		float sinTheta2Sq = pow2( outsideIOR / iridescenceIOR ) * ( 1.0 - pow2( cosTheta1 ) );
 		float cosTheta2Sq = 1.0 - sinTheta2Sq;
 		if ( cosTheta2Sq < 0.0 ) {
-			 return vec3( 1.0 );
+			return vec3( 1.0 );
 		}
 		float cosTheta2 = sqrt( cosTheta2Sq );
 		float R0 = IorToFresnel0( iridescenceIOR, outsideIOR );
 		float R12 = F_Schlick( R0, 1.0, cosTheta1 );
-		float R21 = R12;
 		float T121 = 1.0 - R12;
 		float phi12 = 0.0;
 		if ( iridescenceIOR < outsideIOR ) phi12 = PI;
@@ -294,6 +341,9 @@ struct GeometricContext {
 	vec3 clearcoatNormal;
 #endif
 };
+#ifdef USE_ALPHAHASH
+	varying vec3 vPosition;
+#endif
 vec3 transformDirection( in vec3 dir, in mat4 matrix ) {
 	return normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );
 }
@@ -481,11 +531,11 @@ var emissivemap_pars_fragment = `
 #endif
 `;
 
-var encodings_fragment = `
+var colorspace_fragment = `
 gl_FragColor = linearToOutputTexel( gl_FragColor );
 `;
 
-var encodings_pars_fragment = `
+var colorspace_pars_fragment = `
 vec4 LinearToLinear( in vec4 value ) {
 	return value;
 }
@@ -809,9 +859,9 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 `;
 
 var envmap_physical_pars_fragment = `
-#if defined( USE_ENVMAP )
+#ifdef USE_ENVMAP
 	vec3 getIBLIrradiance( const in vec3 normal ) {
-		#if defined( ENVMAP_TYPE_CUBE_UV )
+		#ifdef ENVMAP_TYPE_CUBE_UV
 			vec3 worldNormal = inverseTransformDirection( normal, viewMatrix );
 			vec4 envMapColor = textureCubeUV( envMap, worldNormal, 1.0 );
 			return PI * envMapColor.rgb * envMapIntensity;
@@ -820,7 +870,7 @@ var envmap_physical_pars_fragment = `
 		#endif
 	}
 	vec3 getIBLRadiance( const in vec3 viewDir, const in vec3 normal, const in float roughness ) {
-		#if defined( ENVMAP_TYPE_CUBE_UV )
+		#ifdef ENVMAP_TYPE_CUBE_UV
 			vec3 reflectVec = reflect( - viewDir, normal );
 			reflectVec = normalize( mix( reflectVec, normal, roughness * roughness) );
 			reflectVec = inverseTransformDirection( reflectVec, viewMatrix );
@@ -830,6 +880,18 @@ var envmap_physical_pars_fragment = `
 			return vec3( 0.0 );
 		#endif
 	}
+	#ifdef USE_ANISOTROPY
+		vec3 getIBLAnisotropyRadiance( const in vec3 viewDir, const in vec3 normal, const in float roughness, const in vec3 bitangent, const in float anisotropy ) {
+			#ifdef ENVMAP_TYPE_CUBE_UV
+				vec3 bentNormal = cross( bitangent, viewDir );
+				bentNormal = normalize( cross( bentNormal, bitangent ) );
+				bentNormal = normalize( mix( bentNormal, normal, pow2( pow2( 1.0 - anisotropy * ( 1.0 - roughness ) ) ) ) );
+				return getIBLRadiance( viewDir, bentNormal, roughness );
+			#else
+				return vec3( 0.0 );
+			#endif
+		}
+	#endif
 #endif
 `;
 
@@ -951,6 +1013,21 @@ material.roughness = min( material.roughness, 1.0 );
 		material.sheenRoughness *= texture2D( sheenRoughnessMap, vSheenRoughnessMapUv ).a;
 	#endif
 #endif
+#ifdef USE_ANISOTROPY
+	#ifdef USE_ANISOTROPYMAP
+		mat2 anisotropyMat = mat2( anisotropyVector.x, anisotropyVector.y, - anisotropyVector.y, anisotropyVector.x );
+		vec3 anisotropyPolar = texture2D( anisotropyMap, vAnisotropyMapUv ).rgb;
+		vec2 anisotropyV = anisotropyMat * normalize( 2.0 * anisotropyPolar.rg - vec2( 1.0 ) ) * anisotropyPolar.b;
+	#else
+		vec2 anisotropyV = anisotropyVector;
+	#endif
+	material.anisotropy = length( anisotropyV );
+	anisotropyV /= material.anisotropy;
+	material.anisotropy = saturate( material.anisotropy );
+	material.alphaT = mix( pow2( material.roughness ), 1.0, pow2( material.anisotropy ) );
+	material.anisotropyT = tbn[ 0 ] * anisotropyV.x - tbn[ 1 ] * anisotropyV.y;
+	material.anisotropyB = tbn[ 1 ] * anisotropyV.x + tbn[ 0 ] * anisotropyV.y;
+#endif
 `;
 
 var lights_physical_pars_fragment = `
@@ -986,6 +1063,12 @@ struct PhysicalMaterial {
 		float attenuationDistance;
 		vec3 attenuationColor;
 	#endif
+	#ifdef USE_ANISOTROPY
+		float anisotropy;
+		float alphaT;
+		vec3 anisotropyT;
+		vec3 anisotropyB;
+	#endif
 };
 vec3 clearcoatSpecular = vec3( 0.0 );
 vec3 sheenSpecular = vec3( 0.0 );
@@ -1006,6 +1089,21 @@ float D_GGX( const in float alpha, const in float dotNH ) {
 	float denom = pow2( dotNH ) * ( a2 - 1.0 ) + 1.0;
 	return RECIPROCAL_PI * a2 / pow2( denom );
 }
+#ifdef USE_ANISOTROPY
+	float V_GGX_SmithCorrelated_Anisotropic( const in float alphaT, const in float alphaB, const in float dotTV, const in float dotBV, const in float dotTL, const in float dotBL, const in float dotNV, const in float dotNL ) {
+		float gv = dotNL * length( vec3( alphaT * dotTV, alphaB * dotBV, dotNV ) );
+		float gl = dotNV * length( vec3( alphaT * dotTL, alphaB * dotBL, dotNL ) );
+		float v = 0.5 / ( gv + gl );
+		return saturate(v);
+	}
+	float D_GGX_Anisotropic( const in float alphaT, const in float alphaB, const in float dotNH, const in float dotTH, const in float dotBH ) {
+		float a2 = alphaT * alphaB;
+		highp vec3 v = vec3( alphaB * dotTH, alphaT * dotBH, a2 * dotNH );
+		highp float v2 = dot( v, v );
+		float w2 = a2 / v2;
+		return RECIPROCAL_PI * a2 * pow2 ( w2 );
+	}
+#endif
 #ifdef USE_CLEARCOAT
 	vec3 BRDF_GGX_Clearcoat( const in vec3 lightDir, const in vec3 viewDir, const in vec3 normal, const in PhysicalMaterial material) {
 		vec3 f0 = material.clearcoatF0;
@@ -1037,8 +1135,19 @@ vec3 BRDF_GGX( const in vec3 lightDir, const in vec3 viewDir, const in vec3 norm
 	#ifdef USE_IRIDESCENCE
 		F = mix( F, material.iridescenceFresnel, material.iridescence );
 	#endif
-	float V = V_GGX_SmithCorrelated( alpha, dotNL, dotNV );
-	float D = D_GGX( alpha, dotNH );
+	#ifdef USE_ANISOTROPY
+		float dotTL = dot( material.anisotropyT, lightDir );
+		float dotTV = dot( material.anisotropyT, viewDir );
+		float dotTH = dot( material.anisotropyT, halfDir );
+		float dotBL = dot( material.anisotropyB, lightDir );
+		float dotBV = dot( material.anisotropyB, viewDir );
+		float dotBH = dot( material.anisotropyB, halfDir );
+		float V = V_GGX_SmithCorrelated_Anisotropic( material.alphaT, alpha, dotTV, dotBV, dotTL, dotBL, dotNV, dotNL );
+		float D = D_GGX_Anisotropic( material.alphaT, alpha, dotNH, dotTH, dotBH );
+	#else
+		float V = V_GGX_SmithCorrelated( alpha, dotNL, dotNV );
+		float D = D_GGX( alpha, dotNH );
+	#endif
 	return F * ( V * D );
 }
 vec2 LTC_Uv( const in vec3 N, const in vec3 V, const in float roughness ) {
@@ -1353,7 +1462,11 @@ var lights_fragment_maps = `
 	#endif
 #endif
 #if defined( USE_ENVMAP ) && defined( RE_IndirectSpecular )
-	radiance += getIBLRadiance( geometry.viewDir, geometry.normal, material.roughness );
+	#ifdef USE_ANISOTROPY
+		radiance += getIBLAnisotropyRadiance( geometry.viewDir, geometry.normal, material.roughness, material.anisotropyB, material.anisotropy );
+	#else
+		radiance += getIBLRadiance( geometry.viewDir, geometry.normal, material.roughness );
+	#endif
 	#ifdef USE_CLEARCOAT
 		clearcoatRadiance += getIBLRadiance( geometry.viewDir, geometry.clearcoatNormal, material.clearcoatRoughness );
 	#endif
@@ -1410,7 +1523,12 @@ var logdepthbuf_vertex = `
 
 var map_fragment = `
 #ifdef USE_MAP
-	diffuseColor *= texture2D( map, vMapUv );
+	vec4 sampledDiffuseColor = texture2D( map, vMapUv );
+	#ifdef DECODE_VIDEO_TEXTURE
+		sampledDiffuseColor = vec4( mix( pow( sampledDiffuseColor.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), sampledDiffuseColor.rgb * 0.0773993808, vec3( lessThanEqual( sampledDiffuseColor.rgb, vec3( 0.04045 ) ) ) ), sampledDiffuseColor.w );
+	
+	#endif
+	diffuseColor *= sampledDiffuseColor;
 #endif
 `;
 
@@ -1553,11 +1671,19 @@ float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;
 		normal *= faceDirection;
 	#endif
 #endif
-#ifdef USE_NORMALMAP_TANGENTSPACE
+#if defined( USE_NORMALMAP_TANGENTSPACE ) || defined( USE_CLEARCOAT_NORMALMAP ) || defined( USE_ANISOTROPY )
 	#ifdef USE_TANGENT
 		mat3 tbn = mat3( normalize( vTangent ), normalize( vBitangent ), normal );
 	#else
-		mat3 tbn = getTangentFrame( - vViewPosition, normal, vNormalMapUv );
+		mat3 tbn = getTangentFrame( - vViewPosition, normal,
+		#if defined( USE_NORMALMAP )
+			vNormalMapUv
+		#elif defined( USE_CLEARCOAT_NORMALMAP )
+			vClearcoatNormalMapUv
+		#else
+			vUv
+		#endif
+		);
 	#endif
 	#if defined( DOUBLE_SIDED ) && ! defined( FLAT_SHADED )
 		tbn[0] *= faceDirection;
@@ -1635,7 +1761,7 @@ var normalmap_pars_fragment = `
 #ifdef USE_NORMALMAP_OBJECTSPACE
 	uniform mat3 normalMatrix;
 #endif
-#if ! defined ( USE_TANGENT ) && ( defined ( USE_NORMALMAP_TANGENTSPACE ) || defined ( USE_CLEARCOAT_NORMALMAP ) )
+#if ! defined ( USE_TANGENT ) && ( defined ( USE_NORMALMAP_TANGENTSPACE ) || defined ( USE_CLEARCOAT_NORMALMAP ) || defined( USE_ANISOTROPY ) )
 	mat3 getTangentFrame( vec3 eye_pos, vec3 surf_norm, vec2 uv ) {
 		vec3 q0 = dFdx( eye_pos.xyz );
 		vec3 q1 = dFdy( eye_pos.xyz );
@@ -1689,12 +1815,12 @@ var iridescence_pars_fragment = `
 #endif
 `;
 
-var output_fragment = `
+var opaque_fragment = `
 #ifdef OPAQUE
 diffuseColor.a = 1.0;
 #endif
 #ifdef USE_TRANSMISSION
-diffuseColor.a *= material.transmissionAlpha + 0.1;
+diffuseColor.a *= material.transmissionAlpha;
 #endif
 gl_FragColor = vec4( outgoingLight, diffuseColor.a );
 `;
@@ -2177,7 +2303,7 @@ var tonemapping_pars_fragment = `
 #endif
 uniform float toneMappingExposure;
 vec3 LinearToneMapping( vec3 color ) {
-	return toneMappingExposure * color;
+	return saturate( toneMappingExposure * color );
 }
 vec3 ReinhardToneMapping( vec3 color ) {
 	color *= toneMappingExposure;
@@ -2229,12 +2355,12 @@ var transmission_fragment = `
 	vec3 pos = vWorldPosition;
 	vec3 v = normalize( cameraPosition - pos );
 	vec3 n = inverseTransformDirection( normal, viewMatrix );
-	vec4 transmission = getIBLVolumeRefraction(
+	vec4 transmitted = getIBLVolumeRefraction(
 		n, v, material.roughness, material.diffuseColor, material.specularColor, material.specularF90,
 		pos, modelMatrix, viewMatrix, projectionMatrix, material.ior, material.thickness,
 		material.attenuationColor, material.attenuationDistance );
-	material.transmissionAlpha = mix( material.transmissionAlpha, transmission.a, material.transmission );
-	totalDiffuse = mix( totalDiffuse, transmission.rgb, material.transmission );
+	material.transmissionAlpha = mix( material.transmissionAlpha, transmitted.a, material.transmission );
+	totalDiffuse = mix( totalDiffuse, transmitted.rgb, material.transmission );
 #endif
 `;
 
@@ -2320,13 +2446,13 @@ var transmission_pars_fragment = `
 		float lod = log2( transmissionSamplerSize.x ) * applyIorToRoughness( roughness, ior );
 		return textureBicubic( transmissionSamplerMap, fragCoord.xy, lod );
 	}
-	vec3 applyVolumeAttenuation( const in vec3 radiance, const in float transmissionDistance, const in vec3 attenuationColor, const in float attenuationDistance ) {
+	vec3 volumeAttenuation( const in float transmissionDistance, const in vec3 attenuationColor, const in float attenuationDistance ) {
 		if ( isinf( attenuationDistance ) ) {
-			return radiance;
+			return vec3( 1.0 );
 		} else {
 			vec3 attenuationCoefficient = -log( attenuationColor ) / attenuationDistance;
 			vec3 transmittance = exp( - attenuationCoefficient * transmissionDistance );
-			return transmittance * radiance;
+			return transmittance;
 		}
 	}
 	vec4 getIBLVolumeRefraction( const in vec3 n, const in vec3 v, const in float roughness, const in vec3 diffuseColor,
@@ -2340,15 +2466,17 @@ var transmission_pars_fragment = `
 		refractionCoords += 1.0;
 		refractionCoords /= 2.0;
 		vec4 transmittedLight = getTransmissionSample( refractionCoords, roughness, ior );
-		vec3 attenuatedColor = applyVolumeAttenuation( transmittedLight.rgb, length( transmissionRay ), attenuationColor, attenuationDistance );
+		vec3 transmittance = diffuseColor * volumeAttenuation( length( transmissionRay ), attenuationColor, attenuationDistance );
+		vec3 attenuatedColor = transmittance * transmittedLight.rgb;
 		vec3 F = EnvironmentBRDF( n, v, specularColor, specularF90, roughness );
-		return vec4( ( 1.0 - F ) * attenuatedColor * diffuseColor, transmittedLight.a );
+		float transmittanceFactor = ( transmittance.r + transmittance.g + transmittance.b ) / 3.0;
+		return vec4( ( 1.0 - F ) * attenuatedColor, 1.0 - ( 1.0 - transmittedLight.a ) * transmittanceFactor );
 	}
 #endif
 `;
 
 var uv_pars_fragment = `
-#ifdef USE_UV
+#if defined( USE_UV ) || defined( USE_ANISOTROPY )
 	varying vec2 vUv;
 #endif
 #ifdef USE_MAP
@@ -2377,6 +2505,9 @@ var uv_pars_fragment = `
 #endif
 #ifdef USE_ROUGHNESSMAP
 	varying vec2 vRoughnessMapUv;
+#endif
+#ifdef USE_ANISOTROPYMAP
+	varying vec2 vAnisotropyMapUv;
 #endif
 #ifdef USE_CLEARCOATMAP
 	varying vec2 vClearcoatMapUv;
@@ -2419,7 +2550,7 @@ var uv_pars_fragment = `
 `;
 
 var uv_pars_vertex = `
-#ifdef USE_UV
+#if defined( USE_UV ) || defined( USE_ANISOTROPY )
 	varying vec2 vUv;
 #endif
 #ifdef USE_MAP
@@ -2461,6 +2592,10 @@ var uv_pars_vertex = `
 #ifdef USE_ROUGHNESSMAP
 	uniform mat3 roughnessMapTransform;
 	varying vec2 vRoughnessMapUv;
+#endif
+#ifdef USE_ANISOTROPYMAP
+	uniform mat3 anisotropyMapTransform;
+	varying vec2 vAnisotropyMapUv;
 #endif
 #ifdef USE_CLEARCOATMAP
 	uniform mat3 clearcoatMapTransform;
@@ -2513,7 +2648,7 @@ var uv_pars_vertex = `
 `;
 
 var uv_vertex = `
-#ifdef USE_UV
+#if defined( USE_UV ) || defined( USE_ANISOTROPY )
 	vUv = vec3( uv, 1 ).xy;
 #endif
 #ifdef USE_MAP
@@ -2545,6 +2680,9 @@ var uv_vertex = `
 #endif
 #ifdef USE_ROUGHNESSMAP
 	vRoughnessMapUv = ( roughnessMapTransform * vec3( ROUGHNESSMAP_UV, 1 ) ).xy;
+#endif
+#ifdef USE_ANISOTROPYMAP
+	vAnisotropyMapUv = ( anisotropyMapTransform * vec3( ANISOTROPYMAP_UV, 1 ) ).xy;
 #endif
 #ifdef USE_CLEARCOATMAP
 	vClearcoatMapUv = ( clearcoatMapTransform * vec3( CLEARCOATMAP_UV, 1 ) ).xy;
@@ -2608,10 +2746,13 @@ uniform float backgroundIntensity;
 varying vec2 vUv;
 void main() {
 	vec4 texColor = texture2D( t2D, vUv );
+	#ifdef DECODE_VIDEO_TEXTURE
+		texColor = vec4( mix( pow( texColor.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), texColor.rgb * 0.0773993808, vec3( lessThanEqual( texColor.rgb, vec3( 0.04045 ) ) ) ), texColor.w );
+	#endif
 	texColor.rgb *= backgroundIntensity;
 	gl_FragColor = texColor;
 	#include <tonemapping_fragment>
-	#include <encodings_fragment>
+	#include <colorspace_fragment>
 }
 `;
 
@@ -2647,7 +2788,7 @@ void main() {
 	texColor.rgb *= backgroundIntensity;
 	gl_FragColor = texColor;
 	#include <tonemapping_fragment>
-	#include <encodings_fragment>
+	#include <colorspace_fragment>
 }
 `;
 
@@ -2671,7 +2812,7 @@ void main() {
 	gl_FragColor = texColor;
 	gl_FragColor.a *= opacity;
 	#include <tonemapping_fragment>
-	#include <encodings_fragment>
+	#include <colorspace_fragment>
 }
 `;
 
@@ -2712,6 +2853,7 @@ const fragment$8 = `
 #include <map_pars_fragment>
 #include <alphamap_pars_fragment>
 #include <alphatest_pars_fragment>
+#include <alphahash_pars_fragment>
 #include <logdepthbuf_pars_fragment>
 #include <clipping_planes_pars_fragment>
 varying vec2 vHighPrecisionZW;
@@ -2724,6 +2866,7 @@ void main() {
 	#include <map_fragment>
 	#include <alphamap_fragment>
 	#include <alphatest_fragment>
+	#include <alphahash_fragment>
 	#include <logdepthbuf_fragment>
 	float fragCoordZ = 0.5 * vHighPrecisionZW[0] / vHighPrecisionZW[1] + 0.5;
 	#if DEPTH_PACKING == 3200
@@ -2773,6 +2916,7 @@ varying vec3 vWorldPosition;
 #include <map_pars_fragment>
 #include <alphamap_pars_fragment>
 #include <alphatest_pars_fragment>
+#include <alphahash_pars_fragment>
 #include <clipping_planes_pars_fragment>
 void main () {
 	#include <clipping_planes_fragment>
@@ -2780,6 +2924,7 @@ void main () {
 	#include <map_fragment>
 	#include <alphamap_fragment>
 	#include <alphatest_fragment>
+	#include <alphahash_fragment>
 	float dist = length( vWorldPosition - referencePosition );
 	dist = ( dist - nearDistance ) / ( farDistance - nearDistance );
 	dist = saturate( dist );
@@ -2805,7 +2950,7 @@ void main() {
 	vec2 sampleUV = equirectUv( direction );
 	gl_FragColor = texture2D( tEquirect, sampleUV );
 	#include <tonemapping_fragment>
-	#include <encodings_fragment>
+	#include <colorspace_fragment>
 }
 `;
 
@@ -2854,6 +2999,7 @@ uniform float opacity;
 #include <map_pars_fragment>
 #include <alphamap_pars_fragment>
 #include <alphatest_pars_fragment>
+#include <alphahash_pars_fragment>
 #include <aomap_pars_fragment>
 #include <lightmap_pars_fragment>
 #include <envmap_common_pars_fragment>
@@ -2870,6 +3016,7 @@ void main() {
 	#include <color_fragment>
 	#include <alphamap_fragment>
 	#include <alphatest_fragment>
+	#include <alphahash_fragment>
 	#include <specularmap_fragment>
 	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
 	#ifdef USE_LIGHTMAP
@@ -2882,9 +3029,9 @@ void main() {
 	reflectedLight.indirectDiffuse *= diffuseColor.rgb;
 	vec3 outgoingLight = reflectedLight.indirectDiffuse;
 	#include <envmap_fragment>
-	#include <output_fragment>
+	#include <opaque_fragment>
 	#include <tonemapping_fragment>
-	#include <encodings_fragment>
+	#include <colorspace_fragment>
 	#include <fog_fragment>
 	#include <premultiplied_alpha_fragment>
 	#include <dithering_fragment>
@@ -3036,6 +3183,12 @@ uniform float opacity;
 		uniform sampler2D sheenRoughnessMap;
 	#endif
 #endif
+#ifdef USE_ANISOTROPY
+	uniform vec2 anisotropyVector;
+	#ifdef USE_ANISOTROPYMAP
+		uniform sampler2D anisotropyMap;
+	#endif
+#endif
 varying vec3 vViewPosition;
 #include <common>
 #include <packing>
@@ -3045,6 +3198,7 @@ varying vec3 vViewPosition;
 #include <map_pars_fragment>
 #include <alphamap_pars_fragment>
 #include <alphatest_pars_fragment>
+#include <alphahash_pars_fragment>
 #include <aomap_pars_fragment>
 #include <lightmap_pars_fragment>
 #include <emissivemap_pars_fragment>
@@ -3076,6 +3230,7 @@ void main() {
 	#include <color_fragment>
 	#include <alphamap_fragment>
 	#include <alphatest_fragment>
+	#include <alphahash_fragment>
 	#include <roughnessmap_fragment>
 	#include <metalnessmap_fragment>
 	#include <normal_fragment_begin>
@@ -3101,9 +3256,9 @@ void main() {
 		vec3 Fcc = F_Schlick( material.clearcoatF0, material.clearcoatF90, dotNVcc );
 		outgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + clearcoatSpecular * material.clearcoat;
 	#endif
-	#include <output_fragment>
+	#include <opaque_fragment>
 	#include <tonemapping_fragment>
-	#include <encodings_fragment>
+	#include <colorspace_fragment>
 	#include <fog_fragment>
 	#include <premultiplied_alpha_fragment>
 	#include <dithering_fragment>
@@ -3150,6 +3305,7 @@ uniform float opacity;
 #include <color_pars_fragment>
 #include <map_particle_pars_fragment>
 #include <alphatest_pars_fragment>
+#include <alphahash_pars_fragment>
 #include <fog_pars_fragment>
 #include <logdepthbuf_pars_fragment>
 #include <clipping_planes_pars_fragment>
@@ -3161,10 +3317,11 @@ void main() {
 	#include <map_particle_fragment>
 	#include <color_fragment>
 	#include <alphatest_fragment>
+	#include <alphahash_fragment>
 	outgoingLight = diffuseColor.rgb;
-	#include <output_fragment>
+	#include <opaque_fragment>
 	#include <tonemapping_fragment>
-	#include <encodings_fragment>
+	#include <colorspace_fragment>
 	#include <fog_fragment>
 	#include <premultiplied_alpha_fragment>
 }
@@ -3208,7 +3365,7 @@ void main() {
 	#include <logdepthbuf_fragment>
 	gl_FragColor = vec4( color, opacity * ( 1.0 - getShadowMask() ) );
 	#include <tonemapping_fragment>
-	#include <encodings_fragment>
+	#include <colorspace_fragment>
 	#include <fog_fragment>
 }
 `;
@@ -3250,6 +3407,7 @@ uniform float opacity;
 #include <map_pars_fragment>
 #include <alphamap_pars_fragment>
 #include <alphatest_pars_fragment>
+#include <alphahash_pars_fragment>
 #include <fog_pars_fragment>
 #include <logdepthbuf_pars_fragment>
 #include <clipping_planes_pars_fragment>
@@ -3261,15 +3419,18 @@ void main() {
 	#include <map_fragment>
 	#include <alphamap_fragment>
 	#include <alphatest_fragment>
+	#include <alphahash_fragment>
 	outgoingLight = diffuseColor.rgb;
-	#include <output_fragment>
+	#include <opaque_fragment>
 	#include <tonemapping_fragment>
-	#include <encodings_fragment>
+	#include <colorspace_fragment>
 	#include <fog_fragment>
 }
 `;
 
 const ShaderChunk = {
+  alphahash_fragment,
+  alphahash_pars_fragment,
   alphamap_fragment,
   alphamap_pars_fragment,
   alphatest_fragment,
@@ -3296,8 +3457,8 @@ const ShaderChunk = {
   displacementmap_vertex,
   emissivemap_fragment,
   emissivemap_pars_fragment,
-  encodings_fragment,
-  encodings_pars_fragment,
+  colorspace_fragment,
+  colorspace_pars_fragment,
   envmap_fragment,
   envmap_common_pars_fragment,
   envmap_pars_fragment,
@@ -3347,7 +3508,7 @@ const ShaderChunk = {
   clearcoat_normal_fragment_maps,
   clearcoat_pars_fragment,
   iridescence_pars_fragment,
-  output_fragment,
+  opaque_fragment,
   packing,
   premultiplied_alpha_fragment,
   project_vertex,
@@ -3575,6 +3736,7 @@ const UniformsLib = {
     scale: { value: 1 },
     map: { value: null },
     alphaMap: { value: null },
+    alphaMapTransform: { value: /* @__PURE__ */ new Matrix3() },
     alphaTest: { value: 0 },
     uvTransform: { value: /* @__PURE__ */ new Matrix3() }
   },
@@ -3586,6 +3748,7 @@ const UniformsLib = {
     map: { value: null },
     mapTransform: { value: /* @__PURE__ */ new Matrix3() },
     alphaMap: { value: null },
+    alphaMapTransform: { value: /* @__PURE__ */ new Matrix3() },
     alphaTest: { value: 0 }
   }
 };
@@ -3887,7 +4050,10 @@ ShaderLib.physical = {
       specularColorMapTransform: { value: /* @__PURE__ */ new Matrix3() },
       specularIntensity: { value: 1 },
       specularIntensityMap: { value: null },
-      specularIntensityMapTransform: { value: /* @__PURE__ */ new Matrix3() }
+      specularIntensityMapTransform: { value: /* @__PURE__ */ new Matrix3() },
+      anisotropyVector: { value: /* @__PURE__ */ new Vector2() },
+      anisotropyMap: { value: null },
+      anisotropyMapTransform: { value: /* @__PURE__ */ new Matrix3() }
     }
   ]),
   vertexShader: ShaderChunk.meshphysical_vert,
