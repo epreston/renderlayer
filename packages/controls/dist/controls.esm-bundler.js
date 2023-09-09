@@ -1,5 +1,5 @@
 import { EventDispatcher } from '@renderlayer/core';
-import { clamp, Vector3, Quaternion, Vector2 } from '@renderlayer/math';
+import { clamp, Ray, Plane, Vector3, Quaternion, Vector2, DEG2RAD } from '@renderlayer/math';
 
 class Spherical {
   constructor(radius = 1, phi = 0, theta = 0) {
@@ -51,6 +51,9 @@ const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
 const _changeEvent = { type: "change" };
 const _startEvent = { type: "start" };
 const _endEvent = { type: "end" };
+const _ray = new Ray();
+const _plane = new Plane();
+const TILT_LIMIT = Math.cos(70 * DEG2RAD);
 class OrbitControls extends EventDispatcher {
   constructor(object, domElement) {
     super();
@@ -77,6 +80,7 @@ class OrbitControls extends EventDispatcher {
     this.panSpeed = 1;
     this.screenSpacePanning = true;
     this.keyPanSpeed = 7;
+    this.zoomToCursor = false;
     this.autoRotate = false;
     this.autoRotateSpeed = 2;
     this.keys = { LEFT: "ArrowLeft", UP: "ArrowUp", RIGHT: "ArrowRight", BOTTOM: "ArrowDown" };
@@ -125,14 +129,15 @@ class OrbitControls extends EventDispatcher {
       const quatInverse = quat.clone().invert();
       const lastPosition = new Vector3();
       const lastQuaternion = new Quaternion();
+      const lastTargetPosition = new Vector3();
       const twoPI = 2 * Math.PI;
-      return function update() {
+      return function update(deltaTime = null) {
         const position = scope.object.position;
         offset.copy(position).sub(scope.target);
         offset.applyQuaternion(quat);
         spherical.setFromVector3(offset);
         if (scope.autoRotate && state === STATE.NONE) {
-          rotateLeft(getAutoRotationAngle());
+          rotateLeft(getAutoRotationAngle(deltaTime));
         }
         if (scope.enableDamping) {
           spherical.theta += sphericalDelta.theta * scope.dampingFactor;
@@ -160,15 +165,15 @@ class OrbitControls extends EventDispatcher {
         }
         spherical.phi = Math.max(scope.minPolarAngle, Math.min(scope.maxPolarAngle, spherical.phi));
         spherical.makeSafe();
-        spherical.radius *= scale;
-        spherical.radius = Math.max(
-          scope.minDistance,
-          Math.min(scope.maxDistance, spherical.radius)
-        );
         if (scope.enableDamping === true) {
           scope.target.addScaledVector(panOffset, scope.dampingFactor);
         } else {
           scope.target.add(panOffset);
+        }
+        if (scope.zoomToCursor && performCursorZoom || scope.object.isOrthographicCamera) {
+          spherical.radius = clampDistance(spherical.radius);
+        } else {
+          spherical.radius = clampDistance(spherical.radius * scale);
         }
         offset.setFromSpherical(spherical);
         offset.applyQuaternion(quatInverse);
@@ -182,11 +187,64 @@ class OrbitControls extends EventDispatcher {
           sphericalDelta.set(0, 0, 0);
           panOffset.set(0, 0, 0);
         }
+        let zoomChanged = false;
+        if (scope.zoomToCursor && performCursorZoom) {
+          let newRadius = null;
+          if (scope.object.isPerspectiveCamera) {
+            const prevRadius = offset.length();
+            newRadius = clampDistance(prevRadius * scale);
+            const radiusDelta = prevRadius - newRadius;
+            scope.object.position.addScaledVector(dollyDirection, radiusDelta);
+            scope.object.updateMatrixWorld();
+          } else if (scope.object.isOrthographicCamera) {
+            const mouseBefore = new Vector3(mouse.x, mouse.y, 0);
+            mouseBefore.unproject(scope.object);
+            scope.object.zoom = Math.max(
+              scope.minZoom,
+              Math.min(scope.maxZoom, scope.object.zoom / scale)
+            );
+            scope.object.updateProjectionMatrix();
+            zoomChanged = true;
+            const mouseAfter = new Vector3(mouse.x, mouse.y, 0);
+            mouseAfter.unproject(scope.object);
+            scope.object.position.sub(mouseAfter).add(mouseBefore);
+            scope.object.updateMatrixWorld();
+            newRadius = offset.length();
+          } else {
+            console.warn(
+              "WARNING: OrbitControls.js encountered an unknown camera type - zoom to cursor disabled."
+            );
+            scope.zoomToCursor = false;
+          }
+          if (newRadius !== null) {
+            if (this.screenSpacePanning) {
+              scope.target.set(0, 0, -1).transformDirection(scope.object.matrix).multiplyScalar(newRadius).add(scope.object.position);
+            } else {
+              _ray.origin.copy(scope.object.position);
+              _ray.direction.set(0, 0, -1).transformDirection(scope.object.matrix);
+              if (Math.abs(scope.object.up.dot(_ray.direction)) < TILT_LIMIT) {
+                object.lookAt(scope.target);
+              } else {
+                _plane.setFromNormalAndCoplanarPoint(scope.object.up, scope.target);
+                _ray.intersectPlane(_plane, scope.target);
+              }
+            }
+          }
+        } else if (scope.object.isOrthographicCamera) {
+          scope.object.zoom = Math.max(
+            scope.minZoom,
+            Math.min(scope.maxZoom, scope.object.zoom / scale)
+          );
+          scope.object.updateProjectionMatrix();
+          zoomChanged = true;
+        }
         scale = 1;
-        if (zoomChanged || lastPosition.distanceToSquared(scope.object.position) > EPS || 8 * (1 - lastQuaternion.dot(scope.object.quaternion)) > EPS) {
+        performCursorZoom = false;
+        if (zoomChanged || lastPosition.distanceToSquared(scope.object.position) > EPS || 8 * (1 - lastQuaternion.dot(scope.object.quaternion)) > EPS || lastTargetPosition.distanceToSquared(scope.target) > 0) {
           scope.dispatchEvent(_changeEvent);
           lastPosition.copy(scope.object.position);
           lastQuaternion.copy(scope.object.quaternion);
+          lastTargetPosition.copy(scope.target);
           zoomChanged = false;
           return true;
         }
@@ -222,7 +280,6 @@ class OrbitControls extends EventDispatcher {
     const sphericalDelta = new Spherical();
     let scale = 1;
     const panOffset = new Vector3();
-    let zoomChanged = false;
     const rotateStart = new Vector2();
     const rotateEnd = new Vector2();
     const rotateDelta = new Vector2();
@@ -232,10 +289,17 @@ class OrbitControls extends EventDispatcher {
     const dollyStart = new Vector2();
     const dollyEnd = new Vector2();
     const dollyDelta = new Vector2();
+    const dollyDirection = new Vector3();
+    const mouse = new Vector2();
+    let performCursorZoom = false;
     const pointers = [];
     const pointerPositions = {};
-    function getAutoRotationAngle() {
-      return 2 * Math.PI / 60 / 60 * scope.autoRotateSpeed;
+    function getAutoRotationAngle(deltaTime) {
+      if (deltaTime !== null) {
+        return 2 * Math.PI / 60 * scope.autoRotateSpeed * deltaTime;
+      } else {
+        return 2 * Math.PI / 60 / 60 * scope.autoRotateSpeed;
+      }
     }
     function getZoomScale() {
       return Math.pow(0.95, scope.zoomSpeed);
@@ -296,15 +360,8 @@ class OrbitControls extends EventDispatcher {
       };
     }();
     function dollyOut(dollyScale) {
-      if (scope.object.isPerspectiveCamera) {
+      if (scope.object.isPerspectiveCamera || scope.object.isOrthographicCamera) {
         scale /= dollyScale;
-      } else if (scope.object.isOrthographicCamera) {
-        scope.object.zoom = Math.max(
-          scope.minZoom,
-          Math.min(scope.maxZoom, scope.object.zoom * dollyScale)
-        );
-        scope.object.updateProjectionMatrix();
-        zoomChanged = true;
       } else {
         console.warn(
           "WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."
@@ -313,15 +370,8 @@ class OrbitControls extends EventDispatcher {
       }
     }
     function dollyIn(dollyScale) {
-      if (scope.object.isPerspectiveCamera) {
+      if (scope.object.isPerspectiveCamera || scope.object.isOrthographicCamera) {
         scale *= dollyScale;
-      } else if (scope.object.isOrthographicCamera) {
-        scope.object.zoom = Math.max(
-          scope.minZoom,
-          Math.min(scope.maxZoom, scope.object.zoom / dollyScale)
-        );
-        scope.object.updateProjectionMatrix();
-        zoomChanged = true;
       } else {
         console.warn(
           "WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."
@@ -329,10 +379,28 @@ class OrbitControls extends EventDispatcher {
         scope.enableZoom = false;
       }
     }
+    function updateMouseParameters(event) {
+      if (!scope.zoomToCursor) {
+        return;
+      }
+      performCursorZoom = true;
+      const rect = scope.domElement.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const w = rect.width;
+      const h = rect.height;
+      mouse.x = x / w * 2 - 1;
+      mouse.y = -(y / h) * 2 + 1;
+      dollyDirection.set(mouse.x, mouse.y, 1).unproject(scope.object).sub(scope.object.position).normalize();
+    }
+    function clampDistance(dist) {
+      return Math.max(scope.minDistance, Math.min(scope.maxDistance, dist));
+    }
     function handleMouseDownRotate(event) {
       rotateStart.set(event.clientX, event.clientY);
     }
     function handleMouseDownDolly(event) {
+      updateMouseParameters(event);
       dollyStart.set(event.clientX, event.clientY);
     }
     function handleMouseDownPan(event) {
@@ -366,6 +434,7 @@ class OrbitControls extends EventDispatcher {
       scope.update();
     }
     function handleMouseWheel(event) {
+      updateMouseParameters(event);
       if (event.deltaY < 0) {
         dollyIn(getZoomScale());
       } else if (event.deltaY > 0) {
