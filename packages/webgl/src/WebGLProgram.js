@@ -126,33 +126,6 @@ function getToneMappingFunction(functionName, toneMapping) {
   );
 }
 
-function generateExtensions(parameters) {
-  const chunks = [
-    parameters.extensionDerivatives ||
-    !!parameters.envMapCubeUVHeight ||
-    parameters.bumpMap ||
-    parameters.normalMapTangentSpace ||
-    parameters.clearcoatNormalMap ||
-    parameters.flatShading ||
-    parameters.shaderID === 'physical'
-      ? '#extension GL_OES_standard_derivatives : enable'
-      : '',
-    (parameters.extensionFragDepth || parameters.logarithmicDepthBuffer) &&
-    parameters.rendererExtensionFragDepth
-      ? '#extension GL_EXT_frag_depth : enable'
-      : '',
-    parameters.extensionDrawBuffers && parameters.rendererExtensionDrawBuffers
-      ? '#extension GL_EXT_draw_buffers : require'
-      : '',
-    (parameters.extensionShaderTextureLOD || parameters.envMap || parameters.transmission) &&
-    parameters.rendererExtensionShaderTextureLod
-      ? '#extension GL_EXT_shader_texture_lod : enable'
-      : ''
-  ];
-
-  return chunks.filter(filterEmptyLine).join('\n');
-}
-
 function generateDefines(defines) {
   const chunks = [];
 
@@ -396,7 +369,6 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
   const envMapBlendingDefine = generateEnvMapBlendingDefine(parameters);
   const envMapCubeUVSize = generateCubeUVSize(parameters);
 
-  // const customExtensions = parameters.isWebGL2 ? '' : generateExtensions(parameters);
   const customExtensions = '';
 
   const customDefines = generateDefines(defines);
@@ -552,22 +524,14 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
       parameters.morphTargets ? '#define USE_MORPHTARGETS' : '',
       parameters.morphNormals && parameters.flatShading === false ? '#define USE_MORPHNORMALS' : '',
 
-      // parameters.morphColors && parameters.isWebGL2 ? '#define USE_MORPHCOLORS' : '',
       parameters.morphColors ? '#define USE_MORPHCOLORS' : '',
 
-      // parameters.morphTargetsCount > 0 && parameters.isWebGL2 ? '#define MORPHTARGETS_TEXTURE' : '',
       parameters.morphTargetsCount > 0 ? '#define MORPHTARGETS_TEXTURE' : '',
 
-      // parameters.morphTargetsCount > 0 && parameters.isWebGL2
-      //   ? '#define MORPHTARGETS_TEXTURE_STRIDE ' + parameters.morphTextureStride
-      //   : '',
       parameters.morphTargetsCount > 0
         ? '#define MORPHTARGETS_TEXTURE_STRIDE ' + parameters.morphTextureStride
         : '',
 
-      // parameters.morphTargetsCount > 0 && parameters.isWebGL2
-      //   ? '#define MORPHTARGETS_COUNT ' + parameters.morphTargetsCount
-      //   : '',
       parameters.morphTargetsCount > 0
         ? '#define MORPHTARGETS_COUNT ' + parameters.morphTargetsCount
         : '',
@@ -808,7 +772,6 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
   vertexShader = unrollLoops(vertexShader);
   fragmentShader = unrollLoops(fragmentShader);
 
-  // if (parameters.isWebGL2 && parameters.isRawShaderMaterial !== true) {
   if (parameters.isRawShaderMaterial !== true) {
     // GLSL 3.0 conversion for built-in materials and ShaderMaterial
 
