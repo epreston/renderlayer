@@ -22,14 +22,13 @@ describe('GLTF', () => {
       expect(object).toBeInstanceOf(Loader);
     });
 
-    test('load', async () => {
+    test('load - good file', async () => {
       const onLoad = vi.fn();
       const onProgress = vi.fn();
       const onError = vi.fn();
 
       const object = new GLTFLoader();
 
-      // --------------------
       // good file
       object.load(BoxTestFile, onLoad, onProgress, onError);
 
@@ -38,10 +37,15 @@ describe('GLTF', () => {
       expect(onLoad).toHaveBeenCalled();
       expect(onProgress).toHaveBeenCalled();
       expect(onError).not.toHaveBeenCalled();
+    });
 
-      vi.clearAllMocks();
+    test('load - bad file', async () => {
+      const onLoad = vi.fn();
+      const onProgress = vi.fn();
+      const onError = vi.fn();
 
-      // --------------------
+      const object = new GLTFLoader();
+
       // bad file
       object.load(MissingTestFile, onLoad, onProgress, onError);
 
