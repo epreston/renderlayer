@@ -113,6 +113,7 @@ class DRACOLoader extends Loader {
       const attribute = new BufferAttribute(array, itemSize);
       if (name === "color") {
         this._assignVertexColorSpace(attribute, result.vertexColorSpace);
+        attribute.normalized = array instanceof Float32Array === false;
       }
       geometry.setAttribute(name, attribute);
     }
