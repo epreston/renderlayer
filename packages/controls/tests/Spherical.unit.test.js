@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Vector3 } from '@renderlayer/math';
 import { Spherical } from '../src/Spherical.js';
