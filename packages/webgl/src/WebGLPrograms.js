@@ -28,7 +28,6 @@ function WebGLPrograms(
   const _customShaders = new WebGLShaderCache();
   const programs = [];
 
-  // const IS_WEBGL2 = capabilities.isWebGL2;
   const logarithmicDepthBuffer = capabilities.logarithmicDepthBuffer;
   const SUPPORTS_VERTEX_TEXTURES = capabilities.vertexTextures;
 
@@ -190,7 +189,7 @@ function WebGLPrograms(
     }
 
     const parameters = {
-      isWebGL2: true, //IS_WEBGL2,
+      isWebGL2: true, // EP: always true, optimise
 
       shaderID: shaderID,
       shaderType: material.type,
@@ -383,9 +382,9 @@ function WebGLPrograms(
       extensionDrawBuffers: HAS_EXTENSIONS && material.extensions.drawBuffers === true,
       extensionShaderTextureLOD: HAS_EXTENSIONS && material.extensions.shaderTextureLOD === true,
 
-      rendererExtensionFragDepth: true, // IS_WEBGL2 || extensions.has('EXT_frag_depth'),
-      rendererExtensionDrawBuffers: true, // IS_WEBGL2 || extensions.has('WEBGL_draw_buffers'),
-      rendererExtensionShaderTextureLod: true, // IS_WEBGL2 || extensions.has('EXT_shader_texture_lod'),
+      rendererExtensionFragDepth: true, // EP: always true in webgl2, optimise
+      rendererExtensionDrawBuffers: true,
+      rendererExtensionShaderTextureLod: true,
 
       customProgramCacheKey: material.customProgramCacheKey()
     };
