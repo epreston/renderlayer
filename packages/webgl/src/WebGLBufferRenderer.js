@@ -1,31 +1,32 @@
-function WebGLBufferRenderer(gl, extensions, info, capabilities) {
-  // const isWebGL2 = capabilities.isWebGL2;
+class WebGLBufferRenderer {
+  constructor(gl, extensions, info, capabilities) {
+    // const isWebGL2 = capabilities.isWebGL2;
+    let mode;
 
-  let mode;
+    function setMode(value) {
+      mode = value;
+    }
 
-  function setMode(value) {
-    mode = value;
+    function render(start, count) {
+      gl.drawArrays(mode, start, count);
+
+      info.update(count, mode, 1);
+    }
+
+    function renderInstances(start, count, primcount) {
+      if (primcount === 0) return;
+
+      gl.drawArraysInstanced(mode, start, count, primcount);
+
+      info.update(count, mode, primcount);
+    }
+
+    //
+
+    this.setMode = setMode;
+    this.render = render;
+    this.renderInstances = renderInstances;
   }
-
-  function render(start, count) {
-    gl.drawArrays(mode, start, count);
-
-    info.update(count, mode, 1);
-  }
-
-  function renderInstances(start, count, primcount) {
-    if (primcount === 0) return;
-
-    gl.drawArraysInstanced(mode, start, count, primcount);
-
-    info.update(count, mode, primcount);
-  }
-
-  //
-
-  this.setMode = setMode;
-  this.render = render;
-  this.renderInstances = renderInstances;
 }
 
 export { WebGLBufferRenderer };
