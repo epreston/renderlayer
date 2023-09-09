@@ -1,8 +1,8 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Clock } from '../src/Clock.js';
 
-describe('Core', () => {
+describe('Extras', () => {
   describe('Clock', () => {
     // replace with vitest mock timers
     function mockPerformance() {
