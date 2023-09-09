@@ -3,12 +3,6 @@
 function WebGLBindingStates(gl, extensions, attributes, capabilities) {
   const maxVertexAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
 
-  // const extension = capabilities.isWebGL2 ? null : extensions.get('OES_vertex_array_object');
-  // const vaoAvailable = capabilities.isWebGL2 || extension !== null;
-
-  // const extension =  null;
-  // const vaoAvailable = true;
-
   const bindingStates = {};
 
   const defaultState = createBindingState(null);
@@ -18,7 +12,6 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
   function setup(object, material, program, geometry, index) {
     let updateBuffers = false;
 
-    // if (vaoAvailable) {
     const state = getBindingState(geometry, program, material);
 
     if (currentState !== state) {
@@ -29,21 +22,6 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     updateBuffers = needsUpdate(object, geometry, program, index);
 
     if (updateBuffers) saveCache(object, geometry, program, index);
-    // } else {
-    //   const wireframe = material.wireframe === true;
-
-    //   if (
-    //     currentState.geometry !== geometry.id ||
-    //     currentState.program !== program.id ||
-    //     currentState.wireframe !== wireframe
-    //   ) {
-    //     currentState.geometry = geometry.id;
-    //     currentState.program = program.id;
-    //     currentState.wireframe = wireframe;
-
-    //     updateBuffers = true;
-    //   }
-    // }
 
     if (index !== null) {
       attributes.update(index, gl.ELEMENT_ARRAY_BUFFER);
@@ -62,23 +40,14 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
 
   function createVertexArrayObject() {
     return gl.createVertexArray();
-
-    // if (capabilities.isWebGL2) return gl.createVertexArray();
-    // return extension.createVertexArrayOES();
   }
 
   function bindVertexArrayObject(vao) {
-    gl.bindVertexArray(vao);
-
-    // if (capabilities.isWebGL2) return gl.bindVertexArray(vao);
-    // return extension.bindVertexArrayOES(vao);
+    return gl.bindVertexArray(vao);
   }
 
   function deleteVertexArrayObject(vao) {
     return gl.deleteVertexArray(vao);
-
-    // if (capabilities.isWebGL2) return gl.deleteVertexArray(vao);
-    // return extension.deleteVertexArrayOES(vao);
   }
 
   function getBindingState(geometry, program, material) {
@@ -232,15 +201,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     }
 
     if (attributeDivisors[attribute] !== meshPerAttribute) {
-      // const extension = capabilities.isWebGL2 ? gl : extensions.get('ANGLE_instanced_arrays');
-
-      // extension[capabilities.isWebGL2 ? 'vertexAttribDivisor' : 'vertexAttribDivisorANGLE'](
-      //   attribute,
-      //   meshPerAttribute
-      // );
-
       gl.vertexAttribDivisor(attribute, meshPerAttribute);
-
       attributeDivisors[attribute] = meshPerAttribute;
     }
   }
