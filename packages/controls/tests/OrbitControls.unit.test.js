@@ -1,25 +1,31 @@
 // @vitest-environment jsdom
 
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
-// import { OrbitControls } from '../src/OrbitControls.js';
+import { PerspectiveCamera } from '@renderlayer/cameras';
+import { EventDispatcher } from '@renderlayer/core';
 
-describe.todo('OrbitControls', () => {
-  // let instance;
-  // beforeAll(() => {
-  //   instance = new OrbitControls(object, domElement);
-  // });
-  // beforeEach(() => {
-  //   instance = new OrbitControls(object, domElement);
-  // });
-  // it('can be instantiated', () => {
-  //   expect(instance).toBeDefined();
-  //   expect(instance).toBeInstanceOf(Object);
-  // });
-  // it('should be an instance of OrbitControls', () => {
-  //   expect(instance).toBeInstanceOf(OrbitControls);
-  // });
-  // it('extends from EventDispatcher', () => {
-  //   expect(instance).toBeInstanceOf(EventDispatcher);
-  // });
+import { OrbitControls } from '../src/OrbitControls.js';
+
+describe('Controls', () => {
+  describe('OrbitControls', () => {
+    const mockDomElement = {
+      style: vi.fn(),
+      addEventListener: vi.fn()
+    };
+
+    // prettier-ignore
+    const near = 1, far = 3, aspect = 16 / 9, fov = 60;
+    const camera = new PerspectiveCamera(fov, aspect, near, far);
+
+    test('constructor', () => {
+      const object = new OrbitControls(camera, mockDomElement);
+      expect(object).toBeDefined();
+    });
+
+    test('extends', () => {
+      const object = new OrbitControls(camera, mockDomElement);
+      expect(object).toBeInstanceOf(EventDispatcher);
+    });
+  });
 });
