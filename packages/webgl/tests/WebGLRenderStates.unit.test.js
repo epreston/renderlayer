@@ -12,7 +12,7 @@ describe('WebGL', () => {
       expect(WebGLRenderState).toBeDefined();
     });
 
-    test.todo('Instancing', () => {
+    test.todo('constructor', () => {
       // implement
     });
 
@@ -46,7 +46,7 @@ describe('WebGL', () => {
       expect(WebGLRenderStates).toBeDefined();
     });
 
-    test.todo('Instancing', () => {
+    test.todo('constructor', () => {
       // implement
     });
 

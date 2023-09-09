@@ -19,7 +19,7 @@ describe('WebGL', () => {
       expect(WebGLCubeMaps).toBeDefined();
     });
 
-    test.todo('Instancing', () => {
+    test.todo('constructor', () => {
       // implement
     });
 

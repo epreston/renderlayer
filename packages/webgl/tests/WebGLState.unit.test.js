@@ -8,7 +8,7 @@ describe('WebGL', () => {
       expect(WebGLState).toBeDefined();
     });
 
-    test.todo('Instancing', () => {
+    test.todo('constructor', () => {
       // implement
     });
 

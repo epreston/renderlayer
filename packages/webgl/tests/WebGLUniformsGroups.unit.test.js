@@ -8,7 +8,7 @@ describe('WebGL', () => {
       expect(WebGLUniformsGroups).toBeDefined();
     });
 
-    test.todo('Instancing', () => {
+    test.todo('constructor', () => {
       // implement
     });
 
