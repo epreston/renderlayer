@@ -1,4 +1,4 @@
-import { WebGLCoordinateSystem, WebGPUCoordinateSystem } from '@renderlayer/shared';
+import { WebGPUCoordinateSystem } from '@renderlayer/shared';
 import { Object3D } from '@renderlayer/core';
 
 import { PerspectiveCamera } from './PerspectiveCamera.js';
@@ -49,25 +49,7 @@ class CubeCamera extends Object3D {
 
     for (const camera of cameras) this.remove(camera);
 
-    if (coordinateSystem === WebGLCoordinateSystem) {
-      cameraPX.up.set(0, 1, 0);
-      cameraPX.lookAt(1, 0, 0);
-
-      cameraNX.up.set(0, 1, 0);
-      cameraNX.lookAt(-1, 0, 0);
-
-      cameraPY.up.set(0, 0, -1);
-      cameraPY.lookAt(0, 1, 0);
-
-      cameraNY.up.set(0, 0, 1);
-      cameraNY.lookAt(0, -1, 0);
-
-      cameraPZ.up.set(0, 1, 0);
-      cameraPZ.lookAt(0, 0, 1);
-
-      cameraNZ.up.set(0, 1, 0);
-      cameraNZ.lookAt(0, 0, -1);
-    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+    if (coordinateSystem === WebGPUCoordinateSystem) {
       cameraPX.up.set(0, -1, 0);
       cameraPX.lookAt(-1, 0, 0);
 
@@ -86,9 +68,23 @@ class CubeCamera extends Object3D {
       cameraNZ.up.set(0, -1, 0);
       cameraNZ.lookAt(0, 0, -1);
     } else {
-      throw new Error(
-        'CubeCamera.updateCoordinateSystem(): Invalid coordinate system: ' + coordinateSystem
-      );
+      cameraPX.up.set(0, 1, 0);
+      cameraPX.lookAt(1, 0, 0);
+
+      cameraNX.up.set(0, 1, 0);
+      cameraNX.lookAt(-1, 0, 0);
+
+      cameraPY.up.set(0, 0, -1);
+      cameraPY.lookAt(0, 1, 0);
+
+      cameraNY.up.set(0, 0, 1);
+      cameraNY.lookAt(0, -1, 0);
+
+      cameraPZ.up.set(0, 1, 0);
+      cameraPZ.lookAt(0, 0, 1);
+
+      cameraNZ.up.set(0, 1, 0);
+      cameraNZ.lookAt(0, 0, -1);
     }
 
     for (const camera of cameras) {

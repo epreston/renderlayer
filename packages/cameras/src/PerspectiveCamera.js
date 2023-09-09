@@ -1,3 +1,4 @@
+import { WebGPUCoordinateSystem } from '@renderlayer/shared';
 import { RAD2DEG, DEG2RAD } from '@renderlayer/math';
 
 import { Camera } from './Camera.js';
@@ -181,7 +182,7 @@ class PerspectiveCamera extends Camera {
       top - height,
       near,
       this.far,
-      this.coordinateSystem
+      this.coordinateSystem === WebGPUCoordinateSystem
     );
 
     this.projectionMatrixInverse.copy(this.projectionMatrix).invert();

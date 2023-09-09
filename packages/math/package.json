@@ -33,7 +33,5 @@
     "url": "https://github.com/epreston/renderlayer/issues"
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/math#readme",
-  "dependencies": {
-    "@renderlayer/shared": "~0.0.6"
-  }
+  "dependencies": {}
 }

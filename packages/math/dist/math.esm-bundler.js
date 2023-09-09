@@ -1,5 +1,3 @@
-import { WebGLCoordinateSystem, WebGPUCoordinateSystem } from '@renderlayer/shared';
-
 const _lut = [];
 for (let i = 0; i < 256; i++) {
   _lut[i] = (i < 16 ? "0" : "") + i.toString(16);
@@ -2949,26 +2947,24 @@ class Matrix4 {
     scale.z = sz;
     return this;
   }
-  makePerspective(left, right, top, bottom, near, far, coordinateSystem = WebGLCoordinateSystem) {
+  makePerspective(left, right, top, bottom, near, far, webgpu = false) {
     const te = this.elements;
     const x = 2 * near / (right - left);
     const y = 2 * near / (top - bottom);
     const a = (right + left) / (right - left);
     const b = (top + bottom) / (top - bottom);
     let c, d;
-    if (coordinateSystem === WebGLCoordinateSystem) {
-      c = -(far + near) / (far - near);
-      d = -2 * far * near / (far - near);
-    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+    if (webgpu) {
       c = -far / (far - near);
       d = -far * near / (far - near);
     } else {
-      throw new Error("Matrix4.makePerspective(): Invalid coordinate system: " + coordinateSystem);
+      c = -(far + near) / (far - near);
+      d = -2 * far * near / (far - near);
     }
     te[0] = x, te[4] = 0, te[8] = a, te[12] = 0, te[1] = 0, te[5] = y, te[9] = b, te[13] = 0, te[2] = 0, te[6] = 0, te[10] = c, te[14] = d, te[3] = 0, te[7] = 0, te[11] = -1, te[15] = 0;
     return this;
   }
-  makeOrthographic(left, right, top, bottom, near, far, coordinateSystem = WebGLCoordinateSystem) {
+  makeOrthographic(left, right, top, bottom, near, far, webgpu = false) {
     const te = this.elements;
     const w = 1 / (right - left);
     const h = 1 / (top - bottom);
@@ -2976,14 +2972,12 @@ class Matrix4 {
     const x = (right + left) * w;
     const y = (top + bottom) * h;
     let z, zInv;
-    if (coordinateSystem === WebGLCoordinateSystem) {
-      z = (far + near) * p;
-      zInv = -2 * p;
-    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+    if (webgpu) {
       z = near * p;
       zInv = -1 * p;
     } else {
-      throw new Error("Matrix4.makeOrthographic(): Invalid coordinate system: " + coordinateSystem);
+      z = (far + near) * p;
+      zInv = -2 * p;
     }
     te[0] = 2 * w, te[4] = 0, te[8] = 0, te[12] = -x, te[1] = 0, te[5] = 2 * h, te[9] = 0, te[13] = -y, te[2] = 0, te[6] = 0, te[10] = zInv, te[14] = -z, te[3] = 0, te[7] = 0, te[11] = 0, te[15] = 1;
     return this;
@@ -3461,7 +3455,7 @@ class Frustum {
     }
     return this;
   }
-  setFromProjectionMatrix(m, coordinateSystem = WebGLCoordinateSystem) {
+  setFromProjectionMatrix(m, webgpu = false) {
     const planes = this.planes;
     const me = m.elements;
     const me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
@@ -3473,14 +3467,10 @@ class Frustum {
     planes[2].setComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13).normalize();
     planes[3].setComponents(me3 - me1, me7 - me5, me11 - me9, me15 - me13).normalize();
     planes[4].setComponents(me3 - me2, me7 - me6, me11 - me10, me15 - me14).normalize();
-    if (coordinateSystem === WebGLCoordinateSystem) {
-      planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
-    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+    if (webgpu) {
       planes[5].setComponents(me2, me6, me10, me14).normalize();
     } else {
-      throw new Error(
-        "Frustum.setFromProjectionMatrix(): Invalid coordinate system: " + coordinateSystem
-      );
+      planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
     }
     return this;
   }

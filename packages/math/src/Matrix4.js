@@ -1,5 +1,3 @@
-import { WebGLCoordinateSystem, WebGPUCoordinateSystem } from '@renderlayer/shared';
-
 import { Vector3 } from './Vector3.js';
 
 class Matrix4 {
@@ -23,10 +21,10 @@ class Matrix4 {
     const te = this.elements;
 
     // prettier-ignore
-    te[ 0 ] = n11, te[ 4 ] = n12, te[ 8 ] = n13, te[ 12 ] = n14,
-		te[ 1 ] = n21, te[ 5 ] = n22, te[ 9 ] = n23, te[ 13 ] = n24,
-		te[ 2 ] = n31, te[ 6 ] = n32, te[ 10 ] = n33, te[ 14 ] = n34,
-		te[ 3 ] = n41, te[ 7 ] = n42, te[ 11 ] = n43, te[ 15 ] = n44;
+    te[0] = n11, te[4] = n12, te[8 ] = n13, te[12] = n14,
+		te[1] = n21, te[5] = n22, te[9 ] = n23, te[13] = n24,
+		te[2] = n31, te[6] = n32, te[10] = n33, te[14] = n34,
+		te[3] = n41, te[7] = n42, te[11] = n43, te[15] = n44;
 
     return this;
   }
@@ -76,9 +74,9 @@ class Matrix4 {
 
     // prettier-ignore
     this.set(
-			me[ 0 ], me[ 3 ], me[ 6 ], 0,
-			me[ 1 ], me[ 4 ], me[ 7 ], 0,
-			me[ 2 ], me[ 5 ], me[ 8 ], 0,
+			me[0], me[3], me[6], 0,
+			me[1], me[4], me[7], 0,
+			me[2], me[5], me[8], 0,
 			0, 0, 0, 1
 		);
 
@@ -410,14 +408,14 @@ class Matrix4 {
     let tmp;
 
     // prettier-ignore
-    tmp = te[ 1 ], te[ 1 ] = te[ 4 ], te[ 4 ] = tmp,
-		tmp = te[ 2 ], te[ 2 ] = te[ 8 ], te[ 8 ] = tmp,
-		tmp = te[ 6 ], te[ 6 ] = te[ 9 ], te[ 9 ] = tmp;
+    tmp = te[1 ], te[ 1 ] = te[ 4 ], te[ 4 ] = tmp,
+		tmp = te[2 ], te[ 2 ] = te[ 8 ], te[ 8 ] = tmp,
+		tmp = te[6 ], te[ 6 ] = te[ 9 ], te[ 9 ] = tmp;
 
     // prettier-ignore
-    tmp = te[ 3 ], te[ 3 ] = te[ 12 ], te[ 12 ] = tmp,
-		tmp = te[ 7 ], te[ 7 ] = te[ 13 ], te[ 13 ] = tmp,
-		tmp = te[ 11 ], te[ 11 ] = te[ 14 ], te[ 14 ] = tmp;
+    tmp = te[3 ], te[3 ] = te[12], te[12] = tmp,
+		tmp = te[7 ], te[7 ] = te[13], te[13] = tmp,
+		tmp = te[11], te[11] = te[14], te[14] = tmp;
 
     return this;
   }
@@ -709,7 +707,7 @@ class Matrix4 {
     return this;
   }
 
-  makePerspective(left, right, top, bottom, near, far, coordinateSystem = WebGLCoordinateSystem) {
+  makePerspective(left, right, top, bottom, near, far, webgpu = false) {
     const te = this.elements;
     const x = (2 * near) / (right - left);
     const y = (2 * near) / (top - bottom);
@@ -719,14 +717,12 @@ class Matrix4 {
 
     let c, d;
 
-    if (coordinateSystem === WebGLCoordinateSystem) {
-      c = -(far + near) / (far - near);
-      d = (-2 * far * near) / (far - near);
-    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+    if (webgpu) {
       c = -far / (far - near);
       d = (-far * near) / (far - near);
     } else {
-      throw new Error('Matrix4.makePerspective(): Invalid coordinate system: ' + coordinateSystem);
+      c = -(far + near) / (far - near);
+      d = (-2 * far * near) / (far - near);
     }
 
     // prettier-ignore
@@ -738,7 +734,7 @@ class Matrix4 {
     return this;
   }
 
-  makeOrthographic(left, right, top, bottom, near, far, coordinateSystem = WebGLCoordinateSystem) {
+  makeOrthographic(left, right, top, bottom, near, far, webgpu = false) {
     const te = this.elements;
     const w = 1.0 / (right - left);
     const h = 1.0 / (top - bottom);
@@ -749,14 +745,12 @@ class Matrix4 {
 
     let z, zInv;
 
-    if (coordinateSystem === WebGLCoordinateSystem) {
-      z = (far + near) * p;
-      zInv = -2 * p;
-    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+    if (webgpu) {
       z = near * p;
       zInv = -1 * p;
     } else {
-      throw new Error('Matrix4.makeOrthographic(): Invalid coordinate system: ' + coordinateSystem);
+      z = (far + near) * p;
+      zInv = -2 * p;
     }
 
     // prettier-ignore

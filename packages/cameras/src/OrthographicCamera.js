@@ -1,3 +1,4 @@
+import { WebGPUCoordinateSystem } from '@renderlayer/shared';
 import { Camera } from './Camera.js';
 
 class OrthographicCamera extends Camera {
@@ -97,7 +98,7 @@ class OrthographicCamera extends Camera {
       bottom,
       this.near,
       this.far,
-      this.coordinateSystem
+      this.coordinateSystem === WebGPUCoordinateSystem
     );
 
     this.projectionMatrixInverse.copy(this.projectionMatrix).invert();
