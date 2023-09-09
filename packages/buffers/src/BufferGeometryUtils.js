@@ -201,6 +201,7 @@ function mergeAttributes(attributes) {
   let TypedArray;
   let itemSize;
   let normalized;
+  let gpuType = -1;
   let arrayLength = 0;
 
   for (let i = 0; i < attributes.length; ++i) {
@@ -237,6 +238,14 @@ function mergeAttributes(attributes) {
       return null;
     }
 
+    if (gpuType === -1) gpuType = attribute.gpuType;
+    if (gpuType !== attribute.gpuType) {
+      console.error(
+        'BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.gpuType must be consistent across matching attributes.'
+      );
+      return null;
+    }
+
     arrayLength += attribute.array.length;
   }
 
@@ -249,7 +258,12 @@ function mergeAttributes(attributes) {
     offset += attributes[i].array.length;
   }
 
-  return new BufferAttribute(array, itemSize, normalized);
+  const result = new BufferAttribute(array, itemSize, normalized);
+  if (gpuType !== undefined) {
+    result.gpuType = gpuType;
+  }
+
+  return result;
 }
 
 /**
@@ -636,7 +650,7 @@ function toTrianglesDrawMode(geometry, drawMode) {
 /**
  * Calculates the morphed attributes of a morphed/skinned BufferGeometry.
  * Helpful for Ray tracing or Decals.
- * @param { Mesh | Line | Points} object An instance of Mesh, Line or Points.
+ * @param {Mesh | Line | Points} object An instance of Mesh, Line or Points.
  * @return An Object with original position/normal attributes and morphed ones.
  */
 function computeMorphedAttributes(object) {
@@ -969,8 +983,15 @@ function mergeGroups(geometry) {
   return geometry;
 }
 
-// Creates a new, non-indexed geometry with smooth normals everywhere except faces that meet at
-// an angle greater than the crease angle.
+/**
+ * Modifies the supplied geometry if it is non-indexed, otherwise creates a new,
+ * non-indexed geometry. Returns the geometry with smooth normals everywhere except
+ * faces that meet at an angle greater than the crease angle.
+ *
+ * @param {BufferGeometry} geometry
+ * @param {number} [creaseAngle]
+ * @return {BufferGeometry}
+ */
 function toCreasedNormals(geometry, creaseAngle = Math.PI / 3 /* 60 degrees */) {
   const creaseDot = Math.cos(creaseAngle);
   const hashMultiplier = (1 + 1e-10) * 1e2;
@@ -990,7 +1011,9 @@ function toCreasedNormals(geometry, creaseAngle = Math.PI / 3 /* 60 degrees */) 
     return `${x},${y},${z}`;
   }
 
-  const resultGeometry = geometry.toNonIndexed();
+  // BufferGeometry.toNonIndexed() warns if the geometry is non-indexed
+  // and returns the original geometry
+  const resultGeometry = geometry.index ? geometry.toNonIndexed() : geometry;
   const posAttr = resultGeometry.attributes.position;
   const vertexMap = {};
 
