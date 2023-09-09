@@ -122,6 +122,7 @@
     "treeshake",
     "Voronoi",
     "webdriverio",
+    "webgpu",
     "webxr",
     "wireframe",
     "WORLDPOS"
