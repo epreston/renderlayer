@@ -315,4 +315,33 @@ class DataTexture extends Texture {
   }
 }
 
-export { CubeTexture, Data3DTexture, DataArrayTexture, DataTexture, Source, Texture };
+class VideoTexture extends Texture {
+  constructor(video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy) {
+    super(video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy);
+    this.isVideoTexture = true;
+    this.minFilter = minFilter !== void 0 ? minFilter : LinearFilter;
+    this.magFilter = magFilter !== void 0 ? magFilter : LinearFilter;
+    this.generateMipmaps = false;
+    const scope = this;
+    function updateVideo() {
+      scope.needsUpdate = true;
+      video.requestVideoFrameCallback(updateVideo);
+    }
+    if ("requestVideoFrameCallback" in video) {
+      video.requestVideoFrameCallback(updateVideo);
+    }
+  }
+  /** @returns {this} */
+  clone() {
+    return new this.constructor(this.image).copy(this);
+  }
+  update() {
+    const video = this.image;
+    const hasVideoFrameCallback = "requestVideoFrameCallback" in video;
+    if (hasVideoFrameCallback === false && video.readyState >= video.HAVE_CURRENT_DATA) {
+      this.needsUpdate = true;
+    }
+  }
+}
+
+export { CubeTexture, Data3DTexture, DataArrayTexture, DataTexture, Source, Texture, VideoTexture };
