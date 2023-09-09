@@ -11,7 +11,8 @@ describe('Controls', () => {
   describe('OrbitControls', () => {
     const mockDomElement = {
       style: vi.fn(),
-      addEventListener: vi.fn()
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn()
     };
 
     // prettier-ignore
