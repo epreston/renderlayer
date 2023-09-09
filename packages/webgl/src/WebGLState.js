@@ -38,8 +38,6 @@ import {
 import { Vector4 } from '@renderlayer/math';
 
 function WebGLState(gl, extensions, capabilities) {
-  // const isWebGL2 = capabilities.isWebGL2;
-
   function ColorBuffer() {
     let locked = false;
 
@@ -321,7 +319,6 @@ function WebGLState(gl, extensions, capabilities) {
     gl.texParameteri(type, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
     for (let i = 0; i < count; i++) {
-      // if (isWebGL2 && (type === gl.TEXTURE_3D || type === gl.TEXTURE_2D_ARRAY)) {
       if (type === gl.TEXTURE_3D || type === gl.TEXTURE_2D_ARRAY) {
         gl.texImage3D(target, 0, gl.RGBA, 1, 1, dimensions, 0, gl.RGBA, gl.UNSIGNED_BYTE, data);
       } else {
@@ -340,7 +337,6 @@ function WebGLState(gl, extensions, capabilities) {
     6
   );
 
-  // if (isWebGL2) {
   emptyTextures[gl.TEXTURE_2D_ARRAY] = createTexture(
     gl.TEXTURE_2D_ARRAY,
     gl.TEXTURE_2D_ARRAY,
@@ -348,7 +344,6 @@ function WebGLState(gl, extensions, capabilities) {
     1
   );
   emptyTextures[gl.TEXTURE_3D] = createTexture(gl.TEXTURE_3D, gl.TEXTURE_3D, 1, 1);
-  // }
 
   // init
 
@@ -941,10 +936,8 @@ function WebGLState(gl, extensions, capabilities) {
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-    // if (isWebGL2 === true) {
     gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
     gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null);
-    // }
 
     gl.useProgram(null);
 
