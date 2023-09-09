@@ -63,7 +63,7 @@ const LinearTransferFunction = 0;
 const SRGBTransferFunction = 1;
 
 function WebGLUtils(gl, extensions, capabilities) {
-  const isWebGL2 = capabilities.isWebGL2;
+  // const isWebGL2 = capabilities.isWebGL2;
 
   function convert(p, colorSpace = NoColorSpace) {
     let extension;
@@ -85,17 +85,6 @@ function WebGLUtils(gl, extensions, capabilities) {
     if (p === FloatType) return gl.FLOAT;
 
     if (p === HalfFloatType) return gl.HALF_FLOAT;
-    // if (p === HalfFloatType) {
-    //   if (isWebGL2) return gl.HALF_FLOAT;
-
-    //   extension = extensions.get('OES_texture_half_float');
-
-    //   if (extension !== null) {
-    //     return extension.HALF_FLOAT_OES;
-    //   } else {
-    //     return null;
-    //   }
-    // }
 
     if (p === AlphaFormat) return gl.ALPHA;
     if (p === RGBAFormat) return gl.RGBA;
@@ -330,19 +319,10 @@ function WebGLUtils(gl, extensions, capabilities) {
 
     //
 
-    if (p === UnsignedInt248Type) {
-      if (isWebGL2) return gl.UNSIGNED_INT_24_8;
+    if (p === UnsignedInt248Type) return gl.UNSIGNED_INT_24_8;
 
-      extension = extensions.get('WEBGL_depth_texture');
-
-      if (extension !== null) {
-        return extension.UNSIGNED_INT_24_8_WEBGL;
-      } else {
-        return null;
-      }
-    }
-
-    // if "p" can't be resolved, assume the user defines a WebGL constant as a string (fallback/workaround for packed RGB formats)
+    // if "p" can't be resolved, assume the user defines a WebGL constant as
+    // a string (fallback/workaround for packed RGB formats)
 
     return gl[p] !== undefined ? gl[p] : null;
   }
