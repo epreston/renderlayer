@@ -63,8 +63,6 @@ const LinearTransferFunction = 0;
 const SRGBTransferFunction = 1;
 
 function WebGLUtils(gl, extensions, capabilities) {
-  // const isWebGL2 = capabilities.isWebGL2;
-
   function convert(p, colorSpace = NoColorSpace) {
     let extension;
 
