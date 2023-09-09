@@ -1,6 +1,6 @@
 {
   "name": "@renderlayer/renderers",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "@renderlayer/renderers",
   "type": "module",
   "module": "./dist/renderers.esm-bundler.js",
@@ -29,9 +29,9 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/renderers#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.6",
-    "@renderlayer/shared": "~0.0.4",
-    "@renderlayer/targets": "~0.0.2",
-    "@renderlayer/webgl": "~0.0.6"
+    "@renderlayer/math": "~0.0.9",
+    "@renderlayer/shared": "~0.0.5",
+    "@renderlayer/targets": "~0.0.4",
+    "@renderlayer/webgl": "~0.0.10"
   }
 }
