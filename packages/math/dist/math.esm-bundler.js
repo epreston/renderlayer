@@ -1,3 +1,5 @@
+import { WebGLCoordinateSystem, WebGPUCoordinateSystem } from '@renderlayer/shared';
+
 const _lut = [];
 for (let i = 0; i < 256; i++) {
   _lut[i] = (i < 16 ? "0" : "") + i.toString(16);
@@ -334,8 +336,8 @@ class Vector2 {
     return this;
   }
   roundToZero() {
-    this.x = this.x < 0 ? Math.ceil(this.x) : Math.floor(this.x);
-    this.y = this.y < 0 ? Math.ceil(this.y) : Math.floor(this.y);
+    this.x = Math.trunc(this.x);
+    this.y = Math.trunc(this.y);
     return this;
   }
   negate() {
@@ -1185,9 +1187,9 @@ class Vector3 {
     return this;
   }
   roundToZero() {
-    this.x = this.x < 0 ? Math.ceil(this.x) : Math.floor(this.x);
-    this.y = this.y < 0 ? Math.ceil(this.y) : Math.floor(this.y);
-    this.z = this.z < 0 ? Math.ceil(this.z) : Math.floor(this.z);
+    this.x = Math.trunc(this.x);
+    this.y = Math.trunc(this.y);
+    this.z = Math.trunc(this.z);
     return this;
   }
   negate() {
@@ -1665,7 +1667,7 @@ function satForAxes(axes, v0, v1, v2, extents) {
 }
 
 class Matrix3 {
-  constructor() {
+  constructor(n11, n12, n13, n21, n22, n23, n31, n32, n33) {
     Matrix3.prototype.isMatrix3 = true;
     this.elements = [
       1,
@@ -1678,6 +1680,9 @@ class Matrix3 {
       0,
       1
     ];
+    if (n11 !== void 0) {
+      this.set(n11, n12, n13, n21, n22, n23, n31, n32, n33);
+    }
   }
   set(n11, n12, n13, n21, n22, n23, n31, n32, n33) {
     const te = this.elements;
@@ -1862,17 +1867,31 @@ class Matrix3 {
   }
   // for 2D Transforms
   makeTranslation(x, y) {
-    this.set(
-      1,
-      0,
-      x,
-      0,
-      1,
-      y,
-      0,
-      0,
-      1
-    );
+    if (x.isVector2) {
+      this.set(
+        1,
+        0,
+        x.x,
+        0,
+        1,
+        x.y,
+        0,
+        0,
+        1
+      );
+    } else {
+      this.set(
+        1,
+        0,
+        x,
+        0,
+        1,
+        y,
+        0,
+        0,
+        1
+      );
+    }
     return this;
   }
   makeRotation(theta) {
@@ -2036,18 +2055,20 @@ class Color {
     this.r = 1;
     this.g = 1;
     this.b = 1;
-    if (g === void 0 && b === void 0) {
-      return this.set(r);
-    }
-    return this.setRGB(r, g, b);
+    return this.set(r, g, b);
   }
-  set(value) {
-    if (value && value.isColor) {
-      this.copy(value);
-    } else if (typeof value === "number") {
-      this.setHex(value);
-    } else if (typeof value === "string") {
-      this.setStyle(value);
+  set(r, g, b) {
+    if (g === void 0 && b === void 0) {
+      const value = r;
+      if (value && value.isColor) {
+        this.copy(value);
+      } else if (typeof value === "number") {
+        this.setHex(value);
+      } else if (typeof value === "string") {
+        this.setStyle(value);
+      }
+    } else {
+      this.setRGB(r, g, b);
     }
     return this;
   }
@@ -2357,7 +2378,7 @@ class Color {
 const _color = /* @__PURE__ */ new Color();
 
 class Matrix4 {
-  constructor() {
+  constructor(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
     Matrix4.prototype.isMatrix4 = true;
     this.elements = [
       1,
@@ -2377,6 +2398,9 @@ class Matrix4 {
       0,
       1
     ];
+    if (n11 !== void 0) {
+      this.set(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44);
+    }
   }
   set(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
     const te = this.elements;
@@ -2691,24 +2715,45 @@ class Matrix4 {
     return Math.sqrt(Math.max(scaleXSq, scaleYSq, scaleZSq));
   }
   makeTranslation(x, y, z) {
-    this.set(
-      1,
-      0,
-      0,
-      x,
-      0,
-      1,
-      0,
-      y,
-      0,
-      0,
-      1,
-      z,
-      0,
-      0,
-      0,
-      1
-    );
+    if (x.isVector3) {
+      this.set(
+        1,
+        0,
+        0,
+        x.x,
+        0,
+        1,
+        0,
+        x.y,
+        0,
+        0,
+        1,
+        x.z,
+        0,
+        0,
+        0,
+        1
+      );
+    } else {
+      this.set(
+        1,
+        0,
+        0,
+        x,
+        0,
+        1,
+        0,
+        y,
+        0,
+        0,
+        1,
+        z,
+        0,
+        0,
+        0,
+        1
+      );
+    }
     return this;
   }
   makeRotationX(theta) {
@@ -2904,26 +2949,43 @@ class Matrix4 {
     scale.z = sz;
     return this;
   }
-  makePerspective(left, right, top, bottom, near, far) {
+  makePerspective(left, right, top, bottom, near, far, coordinateSystem = WebGLCoordinateSystem) {
     const te = this.elements;
     const x = 2 * near / (right - left);
     const y = 2 * near / (top - bottom);
     const a = (right + left) / (right - left);
     const b = (top + bottom) / (top - bottom);
-    const c = -(far + near) / (far - near);
-    const d = -2 * far * near / (far - near);
+    let c, d;
+    if (coordinateSystem === WebGLCoordinateSystem) {
+      c = -(far + near) / (far - near);
+      d = -2 * far * near / (far - near);
+    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+      c = -far / (far - near);
+      d = -far * near / (far - near);
+    } else {
+      throw new Error("Matrix4.makePerspective(): Invalid coordinate system: " + coordinateSystem);
+    }
     te[0] = x, te[4] = 0, te[8] = a, te[12] = 0, te[1] = 0, te[5] = y, te[9] = b, te[13] = 0, te[2] = 0, te[6] = 0, te[10] = c, te[14] = d, te[3] = 0, te[7] = 0, te[11] = -1, te[15] = 0;
     return this;
   }
-  makeOrthographic(left, right, top, bottom, near, far) {
+  makeOrthographic(left, right, top, bottom, near, far, coordinateSystem = WebGLCoordinateSystem) {
     const te = this.elements;
     const w = 1 / (right - left);
     const h = 1 / (top - bottom);
     const p = 1 / (far - near);
     const x = (right + left) * w;
     const y = (top + bottom) * h;
-    const z = (far + near) * p;
-    te[0] = 2 * w, te[4] = 0, te[8] = 0, te[12] = -x, te[1] = 0, te[5] = 2 * h, te[9] = 0, te[13] = -y, te[2] = 0, te[6] = 0, te[10] = -2 * p, te[14] = -z, te[3] = 0, te[7] = 0, te[11] = 0, te[15] = 1;
+    let z, zInv;
+    if (coordinateSystem === WebGLCoordinateSystem) {
+      z = (far + near) * p;
+      zInv = -2 * p;
+    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+      z = near * p;
+      zInv = -1 * p;
+    } else {
+      throw new Error("Matrix4.makeOrthographic(): Invalid coordinate system: " + coordinateSystem);
+    }
+    te[0] = 2 * w, te[4] = 0, te[8] = 0, te[12] = -x, te[1] = 0, te[5] = 2 * h, te[9] = 0, te[13] = -y, te[2] = 0, te[6] = 0, te[10] = zInv, te[14] = -z, te[3] = 0, te[7] = 0, te[11] = 0, te[15] = 1;
     return this;
   }
   equals(matrix) {
@@ -3399,7 +3461,7 @@ class Frustum {
     }
     return this;
   }
-  setFromProjectionMatrix(m) {
+  setFromProjectionMatrix(m, coordinateSystem = WebGLCoordinateSystem) {
     const planes = this.planes;
     const me = m.elements;
     const me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
@@ -3411,7 +3473,15 @@ class Frustum {
     planes[2].setComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13).normalize();
     planes[3].setComponents(me3 - me1, me7 - me5, me11 - me9, me15 - me13).normalize();
     planes[4].setComponents(me3 - me2, me7 - me6, me11 - me10, me15 - me14).normalize();
-    planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
+    if (coordinateSystem === WebGLCoordinateSystem) {
+      planes[5].setComponents(me3 + me2, me7 + me6, me11 + me10, me15 + me14).normalize();
+    } else if (coordinateSystem === WebGPUCoordinateSystem) {
+      planes[5].setComponents(me2, me6, me10, me14).normalize();
+    } else {
+      throw new Error(
+        "Frustum.setFromProjectionMatrix(): Invalid coordinate system: " + coordinateSystem
+      );
+    }
     return this;
   }
   intersectsObject(object) {
@@ -4254,10 +4324,10 @@ class Vector4 {
     return this;
   }
   roundToZero() {
-    this.x = this.x < 0 ? Math.ceil(this.x) : Math.floor(this.x);
-    this.y = this.y < 0 ? Math.ceil(this.y) : Math.floor(this.y);
-    this.z = this.z < 0 ? Math.ceil(this.z) : Math.floor(this.z);
-    this.w = this.w < 0 ? Math.ceil(this.w) : Math.floor(this.w);
+    this.x = Math.trunc(this.x);
+    this.y = Math.trunc(this.y);
+    this.z = Math.trunc(this.z);
+    this.w = Math.trunc(this.w);
     return this;
   }
   negate() {
