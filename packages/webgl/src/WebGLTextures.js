@@ -36,7 +36,6 @@ import {
 import { floorPowerOfTwo, isPowerOfTwo as isPowerOfTwoLib } from '@renderlayer/math';
 
 function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info) {
-  // const isWebGL2 = capabilities.isWebGL2;
   const maxTextures = capabilities.maxTextures;
   const maxCubemapSize = capabilities.maxCubemapSize;
   const maxTextureSize = capabilities.maxTextureSize;
@@ -584,12 +583,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         return;
       if (texture.type === FloatType && extensions.has('OES_texture_float_linear') === false)
         return; // verify extension for WebGL 1 and WebGL 2
-      // if (
-      //   isWebGL2 === false &&
-      //   texture.type === HalfFloatType &&
-      //   extensions.has('OES_texture_half_float_linear') === false
-      // )
-      //   return; // verify extension for WebGL 1 only
 
       if (texture.anisotropy > 1 || properties.get(texture).__currentAnisotropy) {
         _gl.texParameterf(
@@ -695,7 +688,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       let image = resizeImage(texture.image, needsPowerOfTwo, false, maxTextureSize);
       image = verifyColorSpace(texture, image);
 
-      // const supportsMips = isPowerOfTwo(image) || isWebGL2;
       const supportsMips = true;
 
       const glFormat = utils.convert(texture.format, texture.colorSpace);
@@ -714,7 +706,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       let mipmap;
       const mipmaps = texture.mipmaps;
 
-      // const useTexStorage = isWebGL2 && texture.isVideoTexture !== true;
       const useTexStorage = texture.isVideoTexture !== true;
 
       const allocateMemory = sourceProperties.__version === undefined || forceUpload === true;
@@ -725,7 +716,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
         glInternalFormat = _gl.DEPTH_COMPONENT;
 
-        // if (isWebGL2) {
         if (texture.type === FloatType) {
           glInternalFormat = _gl.DEPTH_COMPONENT32F;
         } else if (texture.type === UnsignedIntType) {
@@ -735,11 +725,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         } else {
           glInternalFormat = _gl.DEPTH_COMPONENT16; // WebGL2 requires sized internalformat for glTexImage2D
         }
-        // } else {
-        //   if (texture.type === FloatType) {
-        //     console.error('WebGLRenderer: Floating point depth texture requires WebGL2.');
-        //   }
-        // }
 
         // validation checks for WebGL 1
 
@@ -1234,7 +1219,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       const image = cubeImage[0];
 
-      // const supportsMips = isPowerOfTwo(image) || isWebGL2;
       const supportsMips = true;
 
       const glFormat = utils.convert(texture.format, texture.colorSpace);
@@ -1246,7 +1230,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         texture.colorSpace
       );
 
-      // const useTexStorage = isWebGL2 && texture.isVideoTexture !== true;
       const useTexStorage = texture.isVideoTexture !== true;
 
       const allocateMemory = sourceProperties.__version === undefined || forceUpload === true;
@@ -1832,7 +1815,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     const isCube = renderTarget.isWebGLCubeRenderTarget === true;
     const isMultipleRenderTargets = renderTarget.isWebGLMultipleRenderTargets === true;
 
-    // const supportsMips = isPowerOfTwo(renderTarget) || isWebGL2;
     const supportsMips = true;
 
     // Setup framebuffer
@@ -1841,7 +1823,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       renderTargetProperties.__webglFramebuffer = [];
 
       for (let i = 0; i < 6; i++) {
-        // if ( isWebGL2 && texture.mipmaps && texture.mipmaps.length > 0 ) {
         if (texture.mipmaps && texture.mipmaps.length > 0) {
           renderTargetProperties.__webglFramebuffer[i] = [];
 
@@ -1853,7 +1834,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         }
       }
     } else {
-      // if ( isWebGL2 && texture.mipmaps && texture.mipmaps.length > 0 ) {
       if (texture.mipmaps && texture.mipmaps.length > 0) {
         renderTargetProperties.__webglFramebuffer = [];
 
@@ -1884,7 +1864,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         }
       }
 
-      // if (isWebGL2 && renderTarget.samples > 0 && useMultisampledRTT(renderTarget) === false) {
       if (renderTarget.samples > 0 && useMultisampledRTT(renderTarget) === false) {
         const textures = isMultipleRenderTargets ? texture : [texture];
 
@@ -1953,7 +1932,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       setTextureParameters(_gl.TEXTURE_CUBE_MAP, texture, supportsMips);
 
       for (let i = 0; i < 6; i++) {
-        // if ( isWebGL2 && texture.mipmaps && texture.mipmaps.length > 0 ) {
         if (texture.mipmaps && texture.mipmaps.length > 0) {
           for (let level = 0; level < texture.mipmaps.length; level++) {
             setupFrameBufferTexture(
@@ -2010,16 +1988,12 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       let glTextureType = _gl.TEXTURE_2D;
 
       if (renderTarget.isWebGL3DRenderTarget || renderTarget.isWebGLArrayRenderTarget) {
-        // if (isWebGL2) {
         glTextureType = renderTarget.isWebGL3DRenderTarget ? _gl.TEXTURE_3D : _gl.TEXTURE_2D_ARRAY;
-        // } else {
-        //   console.error('WebGLTextures: Data3DTexture and DataArrayTexture only supported with WebGL2.');
-        // }
       }
 
       state.bindTexture(glTextureType, textureProperties.__webglTexture);
       setTextureParameters(glTextureType, texture, supportsMips);
-      // if ( isWebGL2 && texture.mipmaps && texture.mipmaps.length > 0 ) {
+
       if (texture.mipmaps && texture.mipmaps.length > 0) {
         for (let level = 0; level < texture.mipmaps.length; level++) {
           setupFrameBufferTexture(
@@ -2057,7 +2031,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   }
 
   function updateRenderTargetMipmap(renderTarget) {
-    // const supportsMips = isPowerOfTwo(renderTarget) || isWebGL2;
     const supportsMips = true;
 
     const textures =
@@ -2080,7 +2053,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   }
 
   function updateMultisampleRenderTarget(renderTarget) {
-    // if (isWebGL2 && renderTarget.samples > 0 && useMultisampledRTT(renderTarget) === false) {
     if (renderTarget.samples > 0 && useMultisampledRTT(renderTarget) === false) {
       const textures = renderTarget.isWebGLMultipleRenderTargets
         ? renderTarget.texture
@@ -2220,7 +2192,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     const renderTargetProperties = properties.get(renderTarget);
 
     return (
-      // isWebGL2 &&
       renderTarget.samples > 0 &&
       extensions.has('WEBGL_multisampled_render_to_texture') === true &&
       renderTargetProperties.__useRenderToTexture !== false
@@ -2254,23 +2225,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       // sRGB
 
       if (colorSpace === SRGBColorSpace || colorSpace === DisplayP3ColorSpace) {
-        // if (isWebGL2 === false) {
-        //   // in WebGL 1, try to use EXT_sRGB extension and unsized formats
-
-        //   if (extensions.has('EXT_sRGB') === true && format === RGBAFormat) {
-        //     texture.format = _SRGBAFormat;
-
-        //     // it's not possible to generate mips in WebGL 1 with this extension
-
-        //     texture.minFilter = LinearFilter;
-        //     texture.generateMipmaps = false;
-        //   } else {
-        //     // slow fallback (CPU decode)
-
-        //     image = ImageUtils.sRGBToLinear(image);
-        //   }
-        // } else {
-
         // in WebGL 2 uncompressed textures can only be sRGB encoded if they have the RGBA8 format
 
         if (format !== RGBAFormat || type !== UnsignedByteType) {
@@ -2278,8 +2232,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
             'WebGLTextures: sRGB encoded textures have to use RGBAFormat and UnsignedByteType.'
           );
         }
-
-        // }
       } else {
         console.error('WebGLTextures: Unsupported texture color space:', colorSpace);
       }
