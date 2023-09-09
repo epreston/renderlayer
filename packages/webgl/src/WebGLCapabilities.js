@@ -39,6 +39,7 @@ function WebGLCapabilities(gl, extensions, parameters) {
     return 'lowp';
   }
 
+  // EP: Warn here.
   const isWebGL2 =
     typeof WebGL2RenderingContext !== 'undefined' &&
     gl.constructor.name === 'WebGL2RenderingContext';
