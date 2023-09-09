@@ -1,9 +1,10 @@
 {
   "private": true,
-  "name": "@renderlayer/utils",
-  "version": "0.0.2",
-  "description": "@renderlayer/utils",
   "type": "module",
+  "name": "@renderlayer/utils",
+  "version": "0.0.3",
+  "description": "@renderlayer/utils",
+
   "files": [
     "dist"
   ],
@@ -28,6 +29,6 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/utils#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.6"
+    "@renderlayer/math": "~0.0.11"
   }
 }

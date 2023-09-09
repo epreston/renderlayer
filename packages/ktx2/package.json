@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "@renderlayer/ktx2",
-  "version": "0.0.1",
-  "description": "@renderlayer/ktx2",
   "type": "module",
+  "name": "@renderlayer/ktx2",
+  "version": "0.0.2",
+  "description": "@renderlayer/ktx2",
   "files": [
     "dist"
   ],
@@ -19,7 +19,8 @@
     "directory": "packages/ktx2"
   },
   "keywords": [
-    "renderlayer", "ktx2"
+    "renderlayer",
+    "ktx2"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -27,6 +28,5 @@
     "url": "https://github.com/epreston/renderlayer/issues"
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/ktx2#readme",
-  "dependencies": {
-  }
+  "dependencies": {}
 }

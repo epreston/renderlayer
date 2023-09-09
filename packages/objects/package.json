@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/objects",
-  "version": "0.0.5",
-  "description": "@renderlayer/objects",
   "type": "module",
+  "name": "@renderlayer/objects",
+  "version": "0.0.6",
+  "description": "@renderlayer/objects",
   "module": "./dist/objects.esm-bundler.js",
   "exports": "./dist/objects.esm-bundler.js",
   "files": [
@@ -20,7 +20,8 @@
     "directory": "packages/objects"
   },
   "keywords": [
-    "renderlayer", "objects"
+    "renderlayer",
+    "objects"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -29,11 +30,11 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/objects#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.2",
-    "@renderlayer/core": "~0.0.3",
-    "@renderlayer/materials": "~0.0.7",
-    "@renderlayer/math": "~0.0.9",
-    "@renderlayer/shared": "~0.0.4",
-    "@renderlayer/textures": "~0.0.8"
+    "@renderlayer/buffers": "~0.0.5",
+    "@renderlayer/core": "~0.0.7",
+    "@renderlayer/materials": "~0.0.12",
+    "@renderlayer/math": "~0.0.11",
+    "@renderlayer/shared": "~0.0.6",
+    "@renderlayer/textures": "~0.0.11"
   }
 }

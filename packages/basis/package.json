@@ -1,9 +1,9 @@
 {
   "private": true,
+  "type": "module",
   "name": "@renderlayer/basis",
   "version": "0.0.1",
   "description": "@renderlayer/basis",
-  "type": "module",
   "files": [
     "dist"
   ],
@@ -19,7 +19,8 @@
     "directory": "packages/basis"
   },
   "keywords": [
-    "renderlayer", "basis"
+    "renderlayer",
+    "basis"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -27,6 +28,5 @@
     "url": "https://github.com/epreston/renderlayer/issues"
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/basis#readme",
-  "dependencies": {
-  }
+  "dependencies": {}
 }

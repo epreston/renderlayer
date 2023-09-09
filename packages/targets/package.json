@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/targets",
-  "version": "0.0.4",
-  "description": "@renderlayer/targets",
   "type": "module",
+  "name": "@renderlayer/targets",
+  "version": "0.0.5",
+  "description": "@renderlayer/targets",
   "module": "./dist/targets.esm-bundler.js",
   "exports": "./dist/targets.esm-bundler.js",
   "files": [
@@ -20,7 +20,10 @@
     "directory": "packages/targets"
   },
   "keywords": [
-    "renderlayer", "targets", "cube", "render"
+    "renderlayer",
+    "targets",
+    "cube",
+    "render"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -29,14 +32,14 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/targets#readme",
   "dependencies": {
-    "@renderlayer/cameras": "~0.0.4",
-    "@renderlayer/core": "~0.0.5",
-    "@renderlayer/geometries": "~0.0.5",
-    "@renderlayer/materials": "~0.0.10",
-    "@renderlayer/math": "~0.0.9",
-    "@renderlayer/objects": "~0.0.4",
-    "@renderlayer/shaders": "~0.0.6",
-    "@renderlayer/shared": "~0.0.5",
-    "@renderlayer/textures": "~0.0.8"
+    "@renderlayer/cameras": "~0.0.5",
+    "@renderlayer/core": "~0.0.7",
+    "@renderlayer/geometries": "~0.0.6",
+    "@renderlayer/materials": "~0.0.12",
+    "@renderlayer/math": "~0.0.11",
+    "@renderlayer/objects": "~0.0.6",
+    "@renderlayer/shaders": "~0.0.8",
+    "@renderlayer/shared": "~0.0.6",
+    "@renderlayer/textures": "~0.0.11"
   }
 }

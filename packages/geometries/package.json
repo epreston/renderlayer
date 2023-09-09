@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/geometries",
-  "version": "0.0.5",
-  "description": "Geometry library used by @renderlayer packages.",
   "type": "module",
+  "name": "@renderlayer/geometries",
+  "version": "0.0.6",
+  "description": "Geometry library used by @renderlayer packages.",
   "module": "./dist/geometries.esm-bundler.js",
   "exports": "./dist/geometries.esm-bundler.js",
   "files": [
@@ -20,7 +20,13 @@
     "directory": "packages/geometries"
   },
   "keywords": [
-    "renderlayer", "geometries", "box", "circle", "cylinder", "plane", "sphere"
+    "renderlayer",
+    "geometries",
+    "box",
+    "circle",
+    "cylinder",
+    "plane",
+    "sphere"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -29,7 +35,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/geometries#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.2",
-    "@renderlayer/math": "~0.0.6"
+    "@renderlayer/buffers": "~0.0.5",
+    "@renderlayer/math": "~0.0.11"
   }
 }

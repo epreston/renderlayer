@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/controls",
-  "version": "0.0.2",
-  "description": "@renderlayer/controls",
   "type": "module",
+  "name": "@renderlayer/controls",
+  "version": "0.0.3",
+  "description": "@renderlayer/controls",
   "module": "./dist/controls.esm-bundler.js",
   "exports": "./dist/controls.esm-bundler.js",
   "files": [
@@ -20,7 +20,10 @@
     "directory": "packages/controls"
   },
   "keywords": [
-    "renderlayer", "controls", "orbital", "spherical"
+    "renderlayer",
+    "controls",
+    "orbital",
+    "spherical"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -29,7 +32,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/controls#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.3",
-    "@renderlayer/math": "~0.0.6"
+    "@renderlayer/core": "~0.0.7",
+    "@renderlayer/math": "~0.0.11"
   }
 }

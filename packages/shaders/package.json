@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/shaders",
-  "version": "0.0.7",
-  "description": "GLSL shader library used by @renderlayer packages.",
   "type": "module",
+  "name": "@renderlayer/shaders",
+  "version": "0.0.8",
+  "description": "GLSL shader library used by @renderlayer packages.",
   "module": "./dist/shaders.esm-bundler.js",
   "exports": "./dist/shaders.esm-bundler.js",
   "files": [
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/shaders#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.6",
-    "@renderlayer/shared": "~0.0.5"
+    "@renderlayer/math": "~0.0.11",
+    "@renderlayer/shared": "~0.0.6"
   }
 }

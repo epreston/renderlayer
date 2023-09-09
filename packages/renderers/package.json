@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/renderers",
-  "version": "0.0.5",
-  "description": "@renderlayer/renderers",
   "type": "module",
+  "name": "@renderlayer/renderers",
+  "version": "0.0.6",
+  "description": "@renderlayer/renderers",
   "module": "./dist/renderers.esm-bundler.js",
   "exports": "./dist/renderers.esm-bundler.js",
   "files": [
@@ -20,7 +20,10 @@
     "directory": "packages/renderers"
   },
   "keywords": [
-    "renderlayer", "renderers", "webgl", "webgl2"
+    "renderlayer",
+    "renderers",
+    "webgl",
+    "webgl2"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -29,9 +32,9 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/renderers#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.9",
-    "@renderlayer/shared": "~0.0.5",
-    "@renderlayer/targets": "~0.0.4",
+    "@renderlayer/math": "~0.0.11",
+    "@renderlayer/shared": "~0.0.6",
+    "@renderlayer/targets": "~0.0.5",
     "@renderlayer/webgl": "~0.0.10"
   }
 }

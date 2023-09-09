@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/buffers",
-  "version": "0.0.4",
-  "description": "Geometry buffers used by @renderlayer packages.",
   "type": "module",
+  "name": "@renderlayer/buffers",
+  "version": "0.0.5",
+  "description": "Geometry buffers used by @renderlayer packages.",
   "module": "./dist/buffers.esm-bundler.js",
   "exports": "./dist/buffers.esm-bundler.js",
   "files": [
@@ -20,7 +20,8 @@
     "directory": "packages/buffers"
   },
   "keywords": [
-    "renderlayer", "buffers"
+    "renderlayer",
+    "buffers"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -29,8 +30,8 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/buffers#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.4",
-    "@renderlayer/math": "~0.0.9",
-    "@renderlayer/shared": "~0.0.4"
+    "@renderlayer/core": "~0.0.7",
+    "@renderlayer/math": "~0.0.11",
+    "@renderlayer/shared": "~0.0.6"
   }
 }

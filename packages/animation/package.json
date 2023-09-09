@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/animation",
-  "version": "0.0.4",
-  "description": "Animation library used by @renderlayer packages.",
   "type": "module",
+  "name": "@renderlayer/animation",
+  "version": "0.0.5",
+  "description": "Animation library used by @renderlayer packages.",
   "module": "./dist/animation.esm-bundler.js",
   "exports": "./dist/animation.esm-bundler.js",
   "files": [
@@ -20,7 +20,8 @@
     "directory": "packages/animation"
   },
   "keywords": [
-    "renderlayer", "animation"
+    "renderlayer",
+    "animation"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -29,10 +30,10 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/animation#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.4",
-    "@renderlayer/interpolants": "~0.0.2",
-    "@renderlayer/keyframes": "~0.0.2",
-    "@renderlayer/math": "~0.0.6",
-    "@renderlayer/shared": "~0.0.4"
+    "@renderlayer/core": "~0.0.7",
+    "@renderlayer/interpolants": "~0.0.3",
+    "@renderlayer/keyframes": "~0.0.3",
+    "@renderlayer/math": "~0.0.11",
+    "@renderlayer/shared": "~0.0.6"
   }
 }

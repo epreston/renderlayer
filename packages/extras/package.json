@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/extras",
-  "version": "0.0.2",
-  "description": "@renderlayer/extras",
   "type": "module",
+  "name": "@renderlayer/extras",
+  "version": "0.0.3",
+  "description": "@renderlayer/extras",
   "module": "./dist/extras.esm-bundler.js",
   "exports": "./dist/extras.esm-bundler.js",
   "files": [
@@ -20,7 +20,9 @@
     "directory": "packages/extras"
   },
   "keywords": [
-    "renderlayer", "extras", "clock"
+    "renderlayer",
+    "extras",
+    "clock"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -28,6 +30,5 @@
     "url": "https://github.com/epreston/renderlayer/issues"
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/extras#readme",
-  "dependencies": {
-  }
+  "dependencies": {}
 }

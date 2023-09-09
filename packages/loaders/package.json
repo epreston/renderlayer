@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/loaders",
-  "version": "0.0.13",
-  "description": "@renderlayer/loaders",
   "type": "module",
+  "name": "@renderlayer/loaders",
+  "version": "0.0.14",
+  "description": "@renderlayer/loaders",
   "module": "./dist/loaders.esm-bundler.js",
   "exports": "./dist/loaders.esm-bundler.js",
   "files": [
@@ -29,17 +29,17 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/loaders#readme",
   "dependencies": {
-    "@renderlayer/animation": "~0.0.3",
-    "@renderlayer/buffers": "~0.0.3",
-    "@renderlayer/cameras": "~0.0.3",
-    "@renderlayer/core": "~0.0.5",
-    "@renderlayer/geometries": "~0.0.5",
-    "@renderlayer/lights": "~0.0.3",
-    "@renderlayer/materials": "~0.0.9",
-    "@renderlayer/math": "~0.0.9",
-    "@renderlayer/objects": "~0.0.4",
-    "@renderlayer/scenes": "~0.0.3",
-    "@renderlayer/shared": "~0.0.5",
-    "@renderlayer/textures": "~0.0.8"
+    "@renderlayer/animation": "~0.0.5",
+    "@renderlayer/buffers": "~0.0.5",
+    "@renderlayer/cameras": "~0.0.5",
+    "@renderlayer/core": "~0.0.7",
+    "@renderlayer/geometries": "~0.0.6",
+    "@renderlayer/lights": "~0.0.4",
+    "@renderlayer/materials": "~0.0.12",
+    "@renderlayer/math": "~0.0.11",
+    "@renderlayer/objects": "~0.0.6",
+    "@renderlayer/scenes": "~0.0.4",
+    "@renderlayer/shared": "~0.0.6",
+    "@renderlayer/textures": "~0.0.11"
   }
 }

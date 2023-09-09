@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/shared",
-  "version": "0.0.5",
-  "description": "Constants and utility functions shared across @renderlayer packages",
   "type": "module",
+  "name": "@renderlayer/shared",
+  "version": "0.0.6",
+  "description": "Constants and utility functions shared across @renderlayer packages",
   "module": "./dist/shared.esm-bundler.js",
   "exports": "./dist/shared.esm-bundler.js",
   "files": [
@@ -20,7 +20,9 @@
     "directory": "packages/shared"
   },
   "keywords": [
-    "renderlayer", "shared", "constants"
+    "renderlayer",
+    "shared",
+    "constants"
   ],
   "author": "Ed Preston",
   "license": "MIT",

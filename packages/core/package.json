@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/core",
-  "version": "0.0.6",
-  "description": "@renderlayer/core",
   "type": "module",
+  "name": "@renderlayer/core",
+  "version": "0.0.7",
+  "description": "@renderlayer/core",
   "module": "./dist/core.esm-bundler.js",
   "exports": "./dist/core.esm-bundler.js",
   "files": [
@@ -20,7 +20,11 @@
     "directory": "packages/core"
   },
   "keywords": [
-    "renderlayer", "core", "events", "layers", "objects"
+    "renderlayer",
+    "core",
+    "events",
+    "layers",
+    "objects"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -29,6 +33,6 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/core#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.9"
+    "@renderlayer/math": "~0.0.11"
   }
 }

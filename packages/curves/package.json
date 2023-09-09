@@ -1,8 +1,8 @@
 {
-  "name": "@renderlayer/curves",
-  "version": "0.0.3",
-  "description": "@renderlayer/curves",
   "type": "module",
+  "name": "@renderlayer/curves",
+  "version": "0.0.4",
+  "description": "@renderlayer/curves",
   "module": "./dist/curves.esm-bundler.js",
   "exports": "./dist/curves.esm-bundler.js",
   "files": [
@@ -20,7 +20,10 @@
     "directory": "packages/curves"
   },
   "keywords": [
-    "renderlayer", "curves", "bezier", "catmull-rom"
+    "renderlayer",
+    "curves",
+    "bezier",
+    "catmull-rom"
   ],
   "author": "Ed Preston",
   "license": "MIT",
@@ -29,6 +32,6 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/curves#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.6"
+    "@renderlayer/math": "~0.0.11"
   }
 }
