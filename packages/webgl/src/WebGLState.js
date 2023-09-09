@@ -387,9 +387,6 @@ function WebGLState(gl, extensions, capabilities) {
 
       currentBoundFramebuffers[target] = framebuffer;
 
-      // if (isWebGL2) {
-      // gl.DRAW_FRAMEBUFFER is equivalent to gl.FRAMEBUFFER
-
       if (target === gl.DRAW_FRAMEBUFFER) {
         currentBoundFramebuffers[gl.FRAMEBUFFER] = framebuffer;
       }
@@ -397,7 +394,6 @@ function WebGLState(gl, extensions, capabilities) {
       if (target === gl.FRAMEBUFFER) {
         currentBoundFramebuffers[gl.DRAW_FRAMEBUFFER] = framebuffer;
       }
-      // }
 
       return true;
     }
@@ -446,11 +442,7 @@ function WebGLState(gl, extensions, capabilities) {
     }
 
     if (needsUpdate) {
-      // if (capabilities.isWebGL2) {
       gl.drawBuffers(drawBuffers);
-      // } else {
-      //   extensions.get('WEBGL_draw_buffers').drawBuffersWEBGL(drawBuffers);
-      // }
     }
   }
 
@@ -472,17 +464,8 @@ function WebGLState(gl, extensions, capabilities) {
     [ReverseSubtractEquation]: gl.FUNC_REVERSE_SUBTRACT
   };
 
-  // if (isWebGL2) {
   equationToGL[MinEquation] = gl.MIN;
   equationToGL[MaxEquation] = gl.MAX;
-  // } else {
-  //   const extension = extensions.get('EXT_blend_minmax');
-
-  //   if (extension !== null) {
-  //     equationToGL[MinEquation] = extension.MIN_EXT;
-  //     equationToGL[MaxEquation] = extension.MAX_EXT;
-  //   }
-  // }
 
   const factorToGL = {
     [ZeroFactor]: gl.ZERO,
