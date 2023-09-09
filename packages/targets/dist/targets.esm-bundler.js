@@ -1,6 +1,6 @@
 import { EventDispatcher } from '@renderlayer/core';
 import { Vector4 } from '@renderlayer/math';
-import { warnOnce, sRGBEncoding, SRGBColorSpace, NoColorSpace, LinearFilter, BackSide, NoBlending, LinearMipmapLinearFilter } from '@renderlayer/shared';
+import { warnOnce, NoColorSpace, LinearFilter, BackSide, NoBlending, LinearMipmapLinearFilter } from '@renderlayer/shared';
 import { Texture, Source, CubeTexture } from '@renderlayer/textures';
 import { BoxGeometry } from '@renderlayer/geometries';
 import { ShaderMaterial } from '@renderlayer/materials';
@@ -21,7 +21,7 @@ class RenderTarget extends EventDispatcher {
     const image = { width, height, depth: 1 };
     if (options.encoding !== void 0) {
       warnOnce("WebGLRenderTarget: option.encoding has been replaced by option.colorSpace.");
-      options.colorSpace = options.encoding === sRGBEncoding ? SRGBColorSpace : NoColorSpace;
+      options.colorSpace = NoColorSpace;
     }
     this.texture = new Texture(
       image,
