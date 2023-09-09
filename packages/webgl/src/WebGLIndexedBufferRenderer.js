@@ -1,6 +1,4 @@
 function WebGLIndexedBufferRenderer(gl, extensions, info, capabilities) {
-  // const isWebGL2 = capabilities.isWebGL2;
-
   let mode;
 
   function setMode(value) {
@@ -22,25 +20,6 @@ function WebGLIndexedBufferRenderer(gl, extensions, info, capabilities) {
 
   function renderInstances(start, count, primcount) {
     if (primcount === 0) return;
-
-    // let extension, methodName;
-
-    // if (isWebGL2) {
-    //   extension = gl;
-    //   methodName = 'drawElementsInstanced';
-    // } else {
-    //   extension = extensions.get('ANGLE_instanced_arrays');
-    //   methodName = 'drawElementsInstancedANGLE';
-
-    //   if (extension === null) {
-    //     console.error(
-    //       'WebGLIndexedBufferRenderer: using InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays.'
-    //     );
-    //     return;
-    //   }
-    // }
-
-    // extension[methodName](mode, count, type, start * bytesPerElement, primcount);
 
     gl.drawElementsInstanced(mode, count, type, start * bytesPerElement, primcount);
 
