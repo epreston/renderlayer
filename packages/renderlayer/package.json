@@ -52,6 +52,6 @@
     "@renderlayer/shared": "~0.0.6",
     "@renderlayer/targets": "~0.0.5",
     "@renderlayer/textures": "~0.0.11",
-    "@renderlayer/webgl": "~0.0.11"
+    "@renderlayer/webgl": "~0.0.12"
   }
 }
