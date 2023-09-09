@@ -12,7 +12,7 @@ import { DRACOLoader } from '../src/DRACOLoader.js';
 // vi.mock('@renderlayer/shared');
 
 describe('DRACO', () => {
-  describe.todo('DRACOLoader', () => {
+  describe('DRACOLoader', () => {
     let instance;
 
     beforeAll(() => {
@@ -27,67 +27,67 @@ describe('DRACO', () => {
       expect(instance).toBeInstanceOf(DRACOLoader);
     });
 
-    test('setDecoderPath()', () => {
+    test.todo('setDecoderPath()', () => {
       // instance.setDecoderPath(path);
     });
 
-    test('setDecoderConfig()', () => {
+    test.todo('setDecoderConfig()', () => {
       // instance.setDecoderConfig(config);
     });
 
-    test('setWorkerLimtest()', () => {
-      // instance.setWorkerLimtest(workerLimit);
+    test.todo('setWorkerLimit()', () => {
+      // instance.setWorkerLimit(workerLimit);
     });
 
-    test('load()', () => {
+    test.todo('load()', () => {
       // instance.load(url,onLoad,onProgress,onError);
     });
 
-    test('parse()', () => {
+    test.todo('parse()', () => {
       // instance.parse(buffer,onLoad,onError);
     });
 
-    test('decodeDracoFile()', () => {
+    test.todo('decodeDracoFile()', () => {
       // instance.decodeDracoFile(buffer,callback,attributeIDs,attributeTypes,vertexColorSpace);
     });
 
-    test('decodeGeometry()', () => {
+    test.todo('decodeGeometry()', () => {
       // instance.decodeGeometry(buffer,taskConfig);
     });
 
-    test('_createGeometry()', () => {
+    test.todo('_createGeometry()', () => {
       // instance._createGeometry(geometryData);
     });
 
-    test('_assignVertexColorSpace()', () => {
+    test.todo('_assignVertexColorSpace()', () => {
       // instance._assignVertexColorSpace(attribute,inputColorSpace);
     });
 
-    test('_loadLibrary()', () => {
+    test.todo('_loadLibrary()', () => {
       // instance._loadLibrary(url,responseType);
     });
 
-    test('preload()', () => {
+    test.todo('preload()', () => {
       // instance.preload();
     });
 
-    test('_initDecoder()', () => {
+    test.todo('_initDecoder()', () => {
       // instance._initDecoder();
     });
 
-    test('_getWorker()', () => {
+    test.todo('_getWorker()', () => {
       // instance._getWorker(taskID,taskCost);
     });
 
-    test('_releaseTask()', () => {
+    test.todo('_releaseTask()', () => {
       // instance._releaseTask(worker,taskID);
     });
 
-    test('debug()', () => {
+    test.todo('debug()', () => {
       // instance.debug();
     });
 
-    test('dispose()', () => {
+    test.todo('dispose()', () => {
       // instance.dispose();
     });
   });
