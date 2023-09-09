@@ -1429,6 +1429,7 @@ function mergeAttributes(attributes) {
   let TypedArray;
   let itemSize;
   let normalized;
+  let gpuType = -1;
   let arrayLength = 0;
   for (let i = 0; i < attributes.length; ++i) {
     const attribute = attributes[i];
@@ -1462,6 +1463,14 @@ function mergeAttributes(attributes) {
       );
       return null;
     }
+    if (gpuType === -1)
+      gpuType = attribute.gpuType;
+    if (gpuType !== attribute.gpuType) {
+      console.error(
+        "BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.gpuType must be consistent across matching attributes."
+      );
+      return null;
+    }
     arrayLength += attribute.array.length;
   }
   const array = new TypedArray(arrayLength);
@@ -1470,7 +1479,11 @@ function mergeAttributes(attributes) {
     array.set(attributes[i].array, offset);
     offset += attributes[i].array.length;
   }
-  return new BufferAttribute(array, itemSize, normalized);
+  const result = new BufferAttribute(array, itemSize, normalized);
+  if (gpuType !== void 0) {
+    result.gpuType = gpuType;
+  }
+  return result;
 }
 function deepCloneAttribute(attribute) {
   if (attribute.isInstancedInterleavedBufferAttribute || attribute.isInterleavedBufferAttribute) {
@@ -2007,7 +2020,7 @@ function toCreasedNormals(geometry, creaseAngle = Math.PI / 3) {
     const z = ~~(v.z * hashMultiplier);
     return `${x},${y},${z}`;
   }
-  const resultGeometry = geometry.toNonIndexed();
+  const resultGeometry = geometry.index ? geometry.toNonIndexed() : geometry;
   const posAttr = resultGeometry.attributes.position;
   const vertexMap = {};
   for (let i = 0, l = posAttr.count / 3; i < l; i++) {
