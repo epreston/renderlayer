@@ -5,7 +5,7 @@ import { Spherical } from '../src/Spherical.js';
 
 export const eps = 0.0001;
 
-describe('Maths', () => {
+describe('Controls', () => {
   describe('Spherical', () => {
     test('constructor', () => {
       const spherical = new Spherical();
