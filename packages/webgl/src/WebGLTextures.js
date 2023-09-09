@@ -142,17 +142,9 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     return isPowerOfTwoLib(image.width) && isPowerOfTwoLib(image.height);
   }
 
-  /** @deprecated always returns false */
+  /** @deprecated always returns false for webgl2 */
   function textureNeedsPowerOfTwo(texture) {
     return false;
-
-    // if (isWebGL2) return false;
-
-    // return (
-    //   texture.wrapS !== ClampToEdgeWrapping ||
-    //   texture.wrapT !== ClampToEdgeWrapping ||
-    //   (texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter)
-    // );
   }
 
   function textureNeedsGenerateMipmaps(texture, supportsMips) {
@@ -175,8 +167,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     colorSpace,
     forceLinearTransfer = false
   ) {
-    // if (isWebGL2 === false) return glFormat;
-
     if (internalFormatName !== null) {
       if (_gl[internalFormatName] !== undefined) return _gl[internalFormatName];
 
