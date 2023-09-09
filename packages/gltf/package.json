@@ -31,7 +31,7 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/gltf#readme",
   "dependencies": {
     "@renderlayer/animation": "~0.0.5",
-    "@renderlayer/buffers": "~0.0.5",
+    "@renderlayer/buffers": "~0.0.6",
     "@renderlayer/cameras": "~0.0.5",
     "@renderlayer/core": "~0.0.7",
     "@renderlayer/interpolants": "~0.0.3",

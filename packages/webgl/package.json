@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/webgl#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.5",
+    "@renderlayer/buffers": "~0.0.6",
     "@renderlayer/core": "~0.0.7",
     "@renderlayer/geometries": "~0.0.6",
     "@renderlayer/materials": "~0.0.12",

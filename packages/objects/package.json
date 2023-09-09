@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/objects#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.5",
+    "@renderlayer/buffers": "~0.0.6",
     "@renderlayer/core": "~0.0.7",
     "@renderlayer/materials": "~0.0.12",
     "@renderlayer/math": "~0.0.11",

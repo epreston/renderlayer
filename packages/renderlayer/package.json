@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "renderlayer",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "3D Rendering Layer for the Web",
   "module": "./dist/renderlayer.esm-bundler.js",
   "exports": "./dist/renderlayer.esm-bundler.js",
