@@ -11,7 +11,7 @@ function WebGLAnimation() {
   }
 
   return {
-    start: function () {
+    start() {
       if (isAnimating === true) return;
       if (animationLoop === null) return;
 
@@ -20,17 +20,17 @@ function WebGLAnimation() {
       isAnimating = true;
     },
 
-    stop: function () {
+    stop() {
       context.cancelAnimationFrame(requestId);
 
       isAnimating = false;
     },
 
-    setAnimationLoop: function (callback) {
+    setAnimationLoop(callback) {
       animationLoop = callback;
     },
 
-    setContext: function (value) {
+    setContext(value) {
       context = value;
     }
   };
