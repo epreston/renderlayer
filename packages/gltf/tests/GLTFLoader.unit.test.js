@@ -61,10 +61,6 @@ describe('GLTF', () => {
       // implement
     });
 
-    test.todo('setDDSLoader', () => {
-      // implement
-    });
-
     test.todo('setKTX2Loader', () => {
       // implement
     });
