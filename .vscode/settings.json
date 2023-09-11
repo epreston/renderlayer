@@ -82,6 +82,7 @@
     "metalness",
     "METALNESSMAP",
     "Microfacet",
+    "Mipmapped",
     "mipmaps",
     "morphcolor",
     "MORPHCOLORS",
@@ -152,12 +153,14 @@
     "PVRTC",
     "Pettineo",
     "RGTC",
+    "Reitz",
     "SRGBA",
     "Schlick",
     "XYZW",
     "buffergeometry",
     "catmullrom",
     "pluginutils",
+    "rgbe",
     "unproject"
   ]
 }
