@@ -8,46 +8,46 @@ import * as RL from 'renderlayer';
 import { DRACOLoader } from '@renderlayer/draco';
 import { GLTFLoader } from '@renderlayer/gltf';
 
-// glTF with DRACO support
-
-const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
-
-const gltfLoader = new GLTFLoader();
-gltfLoader.setDRACOLoader(dracoLoader);
+const decoderPath = 'https://www.gstatic.com/draco/versioned/decoders/1.5.6/';
 
 // load
 
 let scene = new RL.Scene();
+
+const onLoad = (gltf) => {
+  // const gltf = {
+  //   scene: dependencies[0][json.scene || 0],
+  //   scenes: dependencies[0],
+  //   animations: dependencies[1],
+  //   cameras: dependencies[2],
+  //   asset: json.asset,
+  //   parser: parser,
+  //   userData: {}
+  // };
+
+  console.log('loaded');
+  scene = gltf.scene;
+
+  const light = new RL.AmbientLight();
+  scene.add(light);
+};
+
 const onProgress = (status) => console.log((status.loaded / status.total) * 100 + '% loaded');
 const onError = (error) => console.log(error);
 
-gltfLoader.load(
-  gblFile,
-  (gltf) => {
-    // const gltf = {
-    //   scene: dependencies[0][json.scene || 0],
-    //   scenes: dependencies[0],
-    //   animations: dependencies[1],
-    //   cameras: dependencies[2],
-    //   asset: json.asset,
-    //   parser: parser,
-    //   userData: {}
-    // };
+// load glTF with DRACO support
 
-    console.log('loaded');
-    scene = gltf.scene;
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath(decoderPath);
 
-    const light = new RL.AmbientLight();
-    scene.add(light);
-  },
-  onProgress,
-  onError
-);
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
+
+gltfLoader.load(gblFile, onLoad, onProgress, onError);
 
 // camera
 
-const camera = new RL.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 10);
+const camera = new RL.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 100);
 camera.position.set(0, 1, 3);
 
 // renderer
@@ -61,6 +61,7 @@ document.body.appendChild(renderer.domElement);
 // controls
 
 const controls = new RL.OrbitControls(camera, renderer.domElement);
+controls.maxDistance = 50;
 controls.target.set(0, 1, 0);
 controls.update();
 
