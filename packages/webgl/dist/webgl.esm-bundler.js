@@ -2406,6 +2406,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
       parameters.normalMapTangentSpace ? "#define USE_NORMALMAP_TANGENTSPACE" : "",
       parameters.displacementMap ? "#define USE_DISPLACEMENTMAP" : "",
       parameters.emissiveMap ? "#define USE_EMISSIVEMAP" : "",
+      parameters.anisotropy ? "#define USE_ANISOTROPY" : "",
       parameters.anisotropyMap ? "#define USE_ANISOTROPYMAP" : "",
       parameters.clearcoatMap ? "#define USE_CLEARCOATMAP" : "",
       parameters.clearcoatRoughnessMap ? "#define USE_CLEARCOAT_ROUGHNESSMAP" : "",
