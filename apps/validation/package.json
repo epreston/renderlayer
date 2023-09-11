@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "validation",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --emptyOutDir",
+    "preview": "vite preview --open",
+    "start": "vite --open"
+  },
+  "dependencies": {
+    "renderlayer": "file:../../packages/renderlayer",
+    "@renderlayer/draco": "file:../../packages/draco",
+    "@renderlayer/gltf": "file:../../packages/gltf"
+  }
+}
