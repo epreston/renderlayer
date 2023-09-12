@@ -12,9 +12,13 @@ const decoderPath = 'https://www.gstatic.com/draco/versioned/decoders/1.5.6/';
 
 // load
 
-let scene = new RL.Scene();
+const scene = new RL.Scene();
+const light = new RL.AmbientLight(0xffffff, 1 * Math.PI);
+scene.add(light);
 
 const onLoad = (gltf) => {
+  console.log('loaded');
+
   // const gltf = {
   //   scene: dependencies[0][json.scene || 0],
   //   scenes: dependencies[0],
@@ -25,11 +29,7 @@ const onLoad = (gltf) => {
   //   userData: {}
   // };
 
-  console.log('loaded');
-  scene = gltf.scene;
-
-  const light = new RL.AmbientLight();
-  scene.add(light);
+  scene.add(gltf.scene);
 };
 
 const onProgress = (status) => console.log((status.loaded / status.total) * 100 + '% loaded');
@@ -47,8 +47,8 @@ gltfLoader.load(gblFile, onLoad, onProgress, onError);
 
 // camera
 
-const camera = new RL.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 100);
-camera.position.set(0, 1, 3);
+const camera = new RL.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.01, 100);
+camera.position.set(0, 1.5, 2);
 
 // renderer
 
