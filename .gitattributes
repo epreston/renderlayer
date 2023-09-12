@@ -10,7 +10,7 @@
 # *.py linguist-vendored
 CHANGELOG.md export-ignore
 
-LICENSE.txt eol=crlf
+LICENSE eol=crlf
 
 *.bat eol=crlf
 *.cmd eol=crlf
