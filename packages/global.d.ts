@@ -1,4 +1,3 @@
-
 // deprecation: imports required so we can add to, not overwrite, interfaces
 import '@renderlayer/buffers';
 import '@renderlayer/math';
@@ -140,7 +139,6 @@ declare module '@renderlayer/textures' {
 
 declare module '@renderlayer/renderers' {
   declare class WebGLRenderer {
-
     // Enable the following when removed.
 
     // /** @deprecated Multiply light intensity values by PI when false. */
