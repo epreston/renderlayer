@@ -32,12 +32,15 @@ const onLoad = (gltf) => {
   // };
 
   scene.add(gltf.scene);
+
+  const action = mixer.clipAction(gltf.animations[0], gltf.scene);
+  action.play();
 };
 
 const onProgress = (status) => console.log((status.loaded / status.total) * 100 + '% loaded');
 const onError = (error) => console.log(error);
 
-// load glTF with DRACO support
+// glTF with DRACO support
 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath(decoderPath);
@@ -49,7 +52,7 @@ gltfLoader.load(gblFile, onLoad, onProgress, onError);
 
 // camera
 
-const camera = new RL.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.01, 100);
+const camera = new RL.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.set(0, 1.5, 2);
 
 // renderer
@@ -69,8 +72,20 @@ controls.update();
 
 // animation
 
+const mixer = new RL.AnimationMixer();
+let previousRAF = null;
+
 function animation(time) {
+  if (previousRAF === null) {
+    previousRAF = time;
+  }
+
+  const timeElapsed = (time - previousRAF) * 0.001;
+
+  mixer.update(timeElapsed);
   renderer.render(scene, camera);
+
+  previousRAF = time;
 }
 
 // resize
