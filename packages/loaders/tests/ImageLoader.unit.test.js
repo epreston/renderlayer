@@ -29,7 +29,7 @@ describe('Loaders', () => {
 
       const object = new ImageLoader();
 
-      // will not make a network request
+      // will not make a network request in mocked environment
       const imgEl = object.load(LogoTestFile, onLoad, onProgress, onError);
       expect(imgEl).toBeInstanceOf(HTMLElement); // element provided immediately
     });
