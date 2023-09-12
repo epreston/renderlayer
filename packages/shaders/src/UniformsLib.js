@@ -1,6 +1,6 @@
 import { Color, Matrix3, Vector2 } from '@renderlayer/math';
 
-// TODO: Uniforms library for shared webgl shaders
+// Uniforms library for shared webgl shaders
 const UniformsLib = {
   common: {
     diffuse: { value: /*@__PURE__*/ new Color(0xffffff) },
