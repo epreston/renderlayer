@@ -10,11 +10,13 @@ import { GLTFLoader } from '@renderlayer/gltf';
 
 const decoderPath = 'https://www.gstatic.com/draco/versioned/decoders/1.5.6/';
 
-// load
+// scene
 
 const scene = new RL.Scene();
 const light = new RL.AmbientLight(0xffffff, 1 * Math.PI);
 scene.add(light);
+
+// load
 
 const onLoad = (gltf) => {
   console.log('loaded');
