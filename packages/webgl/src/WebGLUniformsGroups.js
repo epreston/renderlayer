@@ -59,7 +59,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
 
   function allocateBindingPointIndex() {
     for (let i = 0; i < maxBindingPoints; i++) {
-      if (allocatedBindingPoints.indexOf(i) === -1) {
+      if (!allocatedBindingPoints.includes(i)) {
         allocatedBindingPoints.push(i);
         return i;
       }
@@ -91,9 +91,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
 
         let arrayOffset = 0;
 
-        for (let i = 0; i < values.length; i++) {
-          const value = values[i];
-
+        for (const value of values) {
           const info = getUniformSize(value);
 
           if (typeof value === 'number') {
@@ -314,9 +312,9 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
   }
 
   return {
-    bind: bind,
-    update: update,
-    dispose: dispose
+    bind,
+    update,
+    dispose
   };
 }
 
