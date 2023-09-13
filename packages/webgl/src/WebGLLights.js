@@ -5,7 +5,7 @@ function UniformsCache() {
   const lights = {};
 
   return {
-    get: function (light) {
+    get(light) {
       if (lights[light.id] !== undefined) {
         return lights[light.id];
       }
@@ -70,7 +70,7 @@ function ShadowUniformsCache() {
   const lights = {};
 
   return {
-    get: function (light) {
+    get(light) {
       if (lights[light.id] !== undefined) {
         return lights[light.id];
       }
@@ -178,9 +178,9 @@ function WebGLLights(extensions, capabilities) {
   const matrix42 = new Matrix4();
 
   function setup(lights, useLegacyLights) {
-    let r = 0,
-      g = 0,
-      b = 0;
+    let r = 0;
+    let g = 0;
+    let b = 0;
 
     for (let i = 0; i < 9; i++) state.probe[i].set(0, 0, 0);
 
@@ -466,9 +466,9 @@ function WebGLLights(extensions, capabilities) {
   }
 
   return {
-    setup: setup,
-    setupView: setupView,
-    state: state
+    setup,
+    setupView,
+    state
   };
 }
 
