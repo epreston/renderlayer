@@ -20,13 +20,13 @@ class WebGLShadowMap {
   constructor(_renderer, _objects, _capabilities) {
     let _frustum = new Frustum();
 
-    const _shadowMapSize = new Vector2(),
-      _viewportSize = new Vector2(),
-      _viewport = new Vector4(),
-      _depthMaterial = new MeshDepthMaterial({ depthPacking: RGBADepthPacking }),
-      _distanceMaterial = new MeshDistanceMaterial(),
-      _materialCache = {},
-      _maxTextureSize = _capabilities.maxTextureSize;
+    const _shadowMapSize = new Vector2();
+    const _viewportSize = new Vector2();
+    const _viewport = new Vector4();
+    const _depthMaterial = new MeshDepthMaterial({ depthPacking: RGBADepthPacking });
+    const _distanceMaterial = new MeshDistanceMaterial();
+    const _materialCache = {};
+    const _maxTextureSize = _capabilities.maxTextureSize;
 
     const shadowSide = { [FrontSide]: BackSide, [BackSide]: FrontSide, [DoubleSide]: DoubleSide };
 
@@ -132,7 +132,7 @@ class WebGLShadowMap {
           }
 
           shadow.map = new WebGLRenderTarget(_shadowMapSize.x, _shadowMapSize.y, pars);
-          shadow.map.texture.name = light.name + '.shadowMap';
+          shadow.map.texture.name = `${light.name}.shadowMap`;
 
           shadow.camera.updateProjectionMatrix();
         }
@@ -244,8 +244,9 @@ class WebGLShadowMap {
         ) {
           // in this case we need a unique material instance reflecting the
           // appropriate state
-          const keyA = result.uuid,
-            keyB = material.uuid;
+          const keyA = result.uuid;
+
+          const keyB = material.uuid;
 
           let materialsForVariant = _materialCache[keyA];
 
