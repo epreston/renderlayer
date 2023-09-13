@@ -24,25 +24,25 @@ export class GLTFDracoMeshCompressionExtension {
     const dracoLoader = this.dracoLoader;
     const bufferViewIndex = primitive.extensions[this.name].bufferView;
     const gltfAttributeMap = primitive.extensions[this.name].attributes;
-    const threeAttributeMap = {};
+    const renderAttributeMap = {};
     const attributeNormalizedMap = {};
     const attributeTypeMap = {};
 
     for (const attributeName in gltfAttributeMap) {
-      const threeAttributeName = ATTRIBUTES[attributeName] || attributeName.toLowerCase();
+      const renderAttributeName = ATTRIBUTES[attributeName] || attributeName.toLowerCase();
 
-      threeAttributeMap[threeAttributeName] = gltfAttributeMap[attributeName];
+      renderAttributeMap[renderAttributeName] = gltfAttributeMap[attributeName];
     }
 
     for (const attributeName in primitive.attributes) {
-      const threeAttributeName = ATTRIBUTES[attributeName] || attributeName.toLowerCase();
+      const renderAttributeName = ATTRIBUTES[attributeName] || attributeName.toLowerCase();
 
       if (gltfAttributeMap[attributeName] !== undefined) {
         const accessorDef = json.accessors[primitive.attributes[attributeName]];
         const componentType = WEBGL_COMPONENT_TYPES[accessorDef.componentType];
 
-        attributeTypeMap[threeAttributeName] = componentType.name;
-        attributeNormalizedMap[threeAttributeName] = accessorDef.normalized === true;
+        attributeTypeMap[renderAttributeName] = componentType.name;
+        attributeNormalizedMap[renderAttributeName] = accessorDef.normalized === true;
       }
     }
 
@@ -60,7 +60,7 @@ export class GLTFDracoMeshCompressionExtension {
 
             resolve(geometry);
           },
-          threeAttributeMap,
+          renderAttributeMap,
           attributeTypeMap
         );
       });

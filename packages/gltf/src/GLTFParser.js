@@ -2066,12 +2066,12 @@ function addPrimitiveAttributes(geometry, primitiveDef, parser) {
   }
 
   for (const gltfAttributeName in attributes) {
-    const threeAttributeName = ATTRIBUTES[gltfAttributeName] || gltfAttributeName.toLowerCase();
+    const renderAttributeName = ATTRIBUTES[gltfAttributeName] || gltfAttributeName.toLowerCase();
 
     // Skip attributes already provided by e.g. Draco extension.
-    if (threeAttributeName in geometry.attributes) continue;
+    if (renderAttributeName in geometry.attributes) continue;
 
-    pending.push(assignAttributeAccessor(attributes[gltfAttributeName], threeAttributeName));
+    pending.push(assignAttributeAccessor(attributes[gltfAttributeName], renderAttributeName));
   }
 
   if (primitiveDef.indices !== undefined && !geometry.index) {

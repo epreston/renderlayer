@@ -905,20 +905,20 @@ class GLTFDracoMeshCompressionExtension {
     const dracoLoader = this.dracoLoader;
     const bufferViewIndex = primitive.extensions[this.name].bufferView;
     const gltfAttributeMap = primitive.extensions[this.name].attributes;
-    const threeAttributeMap = {};
+    const renderAttributeMap = {};
     const attributeNormalizedMap = {};
     const attributeTypeMap = {};
     for (const attributeName in gltfAttributeMap) {
-      const threeAttributeName = ATTRIBUTES[attributeName] || attributeName.toLowerCase();
-      threeAttributeMap[threeAttributeName] = gltfAttributeMap[attributeName];
+      const renderAttributeName = ATTRIBUTES[attributeName] || attributeName.toLowerCase();
+      renderAttributeMap[renderAttributeName] = gltfAttributeMap[attributeName];
     }
     for (const attributeName in primitive.attributes) {
-      const threeAttributeName = ATTRIBUTES[attributeName] || attributeName.toLowerCase();
+      const renderAttributeName = ATTRIBUTES[attributeName] || attributeName.toLowerCase();
       if (gltfAttributeMap[attributeName] !== void 0) {
         const accessorDef = json.accessors[primitive.attributes[attributeName]];
         const componentType = WEBGL_COMPONENT_TYPES[accessorDef.componentType];
-        attributeTypeMap[threeAttributeName] = componentType.name;
-        attributeNormalizedMap[threeAttributeName] = accessorDef.normalized === true;
+        attributeTypeMap[renderAttributeName] = componentType.name;
+        attributeNormalizedMap[renderAttributeName] = accessorDef.normalized === true;
       }
     }
     return parser.getDependency("bufferView", bufferViewIndex).then(function(bufferView) {
@@ -934,7 +934,7 @@ class GLTFDracoMeshCompressionExtension {
             }
             resolve(geometry);
           },
-          threeAttributeMap,
+          renderAttributeMap,
           attributeTypeMap
         );
       });
@@ -2474,10 +2474,10 @@ function addPrimitiveAttributes(geometry, primitiveDef, parser) {
     });
   }
   for (const gltfAttributeName in attributes) {
-    const threeAttributeName = ATTRIBUTES[gltfAttributeName] || gltfAttributeName.toLowerCase();
-    if (threeAttributeName in geometry.attributes)
+    const renderAttributeName = ATTRIBUTES[gltfAttributeName] || gltfAttributeName.toLowerCase();
+    if (renderAttributeName in geometry.attributes)
       continue;
-    pending.push(assignAttributeAccessor(attributes[gltfAttributeName], threeAttributeName));
+    pending.push(assignAttributeAccessor(attributes[gltfAttributeName], renderAttributeName));
   }
   if (primitiveDef.indices !== void 0 && !geometry.index) {
     const accessor = parser.getDependency("accessor", primitiveDef.indices).then(function(accessor2) {
