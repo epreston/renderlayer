@@ -71,8 +71,8 @@ function WebGLCubeMaps(renderer) {
   }
 
   return {
-    get: get,
-    dispose: dispose
+    get,
+    dispose
   };
 }
 
