@@ -107,26 +107,14 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         context.drawImage(image, 0, 0, width, height);
 
         console.warn(
-          'WebGLRenderer: Texture has been resized from (' +
-            image.width +
-            'x' +
-            image.height +
-            ') to (' +
-            width +
-            'x' +
-            height +
-            ').'
+          `WebGLRenderer: Texture has been resized from (${image.width}x${image.height}) to (${width}x${height}).`
         );
 
         return canvas;
       } else {
         if ('data' in image) {
           console.warn(
-            'WebGLRenderer: Image in DataTexture is too big (' +
-              image.width +
-              'x' +
-              image.height +
-              ').'
+            `WebGLRenderer: Image in DataTexture is too big (${image.width}x${image.height}).`
           );
         }
 
@@ -170,9 +158,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       if (_gl[internalFormatName] !== undefined) return _gl[internalFormatName];
 
       console.warn(
-        "WebGLRenderer: Attempt to use non-existing WebGL internal format '" +
-          internalFormatName +
-          "'"
+        `WebGLRenderer: Attempt to use non-existing WebGL internal format '${internalFormatName}'`
       );
     }
 
@@ -408,10 +394,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
     if (textureUnit >= maxTextures) {
       console.warn(
-        'WebGLTextures: Trying to use ' +
-          textureUnit +
-          ' texture units while this GPU supports only ' +
-          maxTextures
+        `WebGLTextures: Trying to use ${textureUnit} texture units while this GPU supports only ${maxTextures}`
       );
     }
 
@@ -1103,8 +1086,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
           if (useTexStorage) {
             state.texStorage2D(_gl.TEXTURE_2D, levels, glInternalFormat, image.width, image.height);
           } else {
-            let width = image.width,
-              height = image.height;
+            let width = image.width;
+            let height = image.height;
 
             for (let i = 0; i < levels; i++) {
               state.texImage2D(
@@ -1629,9 +1612,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
           ? renderTarget.texture
           : [renderTarget.texture];
 
-      for (let i = 0; i < textures.length; i++) {
-        const texture = textures[i];
-
+      for (const texture of textures) {
         const glFormat = utils.convert(texture.format, texture.colorSpace);
         const glType = utils.convert(texture.type);
         const glInternalFormat = getInternalFormat(
