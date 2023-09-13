@@ -46,22 +46,22 @@ function WebGLExtensions(gl) {
   }
 
   return {
-    has: function (name) {
+    has(name) {
       return getExtension(name) !== null;
     },
 
-    init: function (capabilities) {
+    init(capabilities) {
       getExtension('EXT_color_buffer_float');
       getExtension('OES_texture_float_linear');
       getExtension('EXT_color_buffer_half_float');
       getExtension('WEBGL_multisampled_render_to_texture');
     },
 
-    get: function (name) {
+    get(name) {
       const extension = getExtension(name);
 
       if (extension === null) {
-        console.warn('WebGLRenderer: ' + name + ' extension not supported.');
+        console.warn(`WebGLRenderer: ${name} extension not supported.`);
       }
 
       return extension;
