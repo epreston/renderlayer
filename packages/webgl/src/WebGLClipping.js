@@ -4,20 +4,19 @@ class WebGLClipping {
   constructor(properties) {
     const scope = this;
 
-    let globalState = null,
-      numGlobalPlanes = 0,
-      localClippingEnabled = false,
-      renderingShadows = false;
-
-    const plane = new Plane(),
-      viewNormalMatrix = new Matrix3(),
-      uniform = { value: null, needsUpdate: false };
+    let globalState = null;
+    let numGlobalPlanes = 0;
+    let localClippingEnabled = false;
+    let renderingShadows = false;
+    const plane = new Plane();
+    const viewNormalMatrix = new Matrix3();
+    const uniform = { value: null, needsUpdate: false };
 
     this.uniform = uniform;
     this.numPlanes = 0;
     this.numIntersection = 0;
 
-    this.init = function (planes, enableLocalClipping) {
+    this.init = (planes, enableLocalClipping) => {
       const enabled =
         planes.length !== 0 ||
         enableLocalClipping ||
@@ -33,23 +32,23 @@ class WebGLClipping {
       return enabled;
     };
 
-    this.beginShadows = function () {
+    this.beginShadows = () => {
       renderingShadows = true;
       projectPlanes(null);
     };
 
-    this.endShadows = function () {
+    this.endShadows = () => {
       renderingShadows = false;
     };
 
-    this.setGlobalState = function (planes, camera) {
+    this.setGlobalState = (planes, camera) => {
       globalState = projectPlanes(planes, camera, 0);
     };
 
     this.setState = function (material, camera, useCache) {
-      const planes = material.clippingPlanes,
-        clipIntersection = material.clipIntersection,
-        clipShadows = material.clipShadows;
+      const planes = material.clippingPlanes;
+      const clipIntersection = material.clipIntersection;
+      const clipShadows = material.clipShadows;
 
       const materialProperties = properties.get(material);
 
@@ -67,8 +66,8 @@ class WebGLClipping {
           resetGlobalState();
         }
       } else {
-        const nGlobal = renderingShadows ? 0 : numGlobalPlanes,
-          lGlobal = nGlobal * 4;
+        const nGlobal = renderingShadows ? 0 : numGlobalPlanes;
+        const lGlobal = nGlobal * 4;
 
         let dstArray = materialProperties.clippingState || null;
 
@@ -104,8 +103,8 @@ class WebGLClipping {
         dstArray = uniform.value;
 
         if (skipTransform !== true || dstArray === null) {
-          const flatSize = dstOffset + nPlanes * 4,
-            viewMatrix = camera.matrixWorldInverse;
+          const flatSize = dstOffset + nPlanes * 4;
+          const viewMatrix = camera.matrixWorldInverse;
 
           viewNormalMatrix.getNormalMatrix(viewMatrix);
 
