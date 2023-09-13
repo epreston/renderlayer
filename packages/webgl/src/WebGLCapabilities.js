@@ -73,31 +73,31 @@ function WebGLCapabilities(gl, extensions, parameters) {
   const maxSamples = isWebGL2 ? gl.getParameter(gl.MAX_SAMPLES) : 0;
 
   return {
-    isWebGL2: isWebGL2,
+    isWebGL2,
 
-    drawBuffers: drawBuffers,
+    drawBuffers,
 
-    getMaxAnisotropy: getMaxAnisotropy,
-    getMaxPrecision: getMaxPrecision,
+    getMaxAnisotropy,
+    getMaxPrecision,
 
-    precision: precision,
-    logarithmicDepthBuffer: logarithmicDepthBuffer,
+    precision,
+    logarithmicDepthBuffer,
 
-    maxTextures: maxTextures,
-    maxVertexTextures: maxVertexTextures,
-    maxTextureSize: maxTextureSize,
-    maxCubemapSize: maxCubemapSize,
+    maxTextures,
+    maxVertexTextures,
+    maxTextureSize,
+    maxCubemapSize,
 
-    maxAttributes: maxAttributes,
-    maxVertexUniforms: maxVertexUniforms,
-    maxVaryings: maxVaryings,
-    maxFragmentUniforms: maxFragmentUniforms,
+    maxAttributes,
+    maxVertexUniforms,
+    maxVaryings,
+    maxFragmentUniforms,
 
-    vertexTextures: vertexTextures,
-    floatFragmentTextures: floatFragmentTextures,
-    floatVertexTextures: floatVertexTextures,
+    vertexTextures,
+    floatFragmentTextures,
+    floatVertexTextures,
 
-    maxSamples: maxSamples
+    maxSamples
   };
 }
 
