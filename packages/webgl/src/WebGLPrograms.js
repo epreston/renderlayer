@@ -60,14 +60,11 @@ function WebGLPrograms(
   function getParameters(material, lights, shadows, scene, object) {
     const fog = scene.fog;
     const geometry = object.geometry;
-
-    // const environment = material.isMeshStandardMaterial ? scene.environment : null;
-    // const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(
-    //   material.envMap || environment
-    // );
     const environment = material.isMeshStandardMaterial ? scene.environment : null;
-    const envMap = cubemaps.get(material.envMap || environment);
 
+    const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(
+      material.envMap || environment
+    );
     const envMapCubeUVHeight =
       !!envMap && envMap.mapping === CubeUVReflectionMapping ? envMap.image.height : null;
 
@@ -106,8 +103,11 @@ function WebGLPrograms(
 
     //
 
-    let vertexShader, fragmentShader;
-    let customVertexShaderID, customFragmentShaderID;
+    let vertexShader;
+
+    let fragmentShader;
+    let customVertexShaderID;
+    let customFragmentShaderID;
 
     if (shaderID) {
       const shader = ShaderLib[shaderID];
@@ -191,21 +191,21 @@ function WebGLPrograms(
     const parameters = {
       isWebGL2: true, // EP: always true, optimise
 
-      shaderID: shaderID,
+      shaderID,
       shaderType: material.type,
       shaderName: material.name,
 
-      vertexShader: vertexShader,
-      fragmentShader: fragmentShader,
+      vertexShader,
+      fragmentShader,
       defines: material.defines,
 
-      customVertexShaderID: customVertexShaderID,
-      customFragmentShaderID: customFragmentShaderID,
+      customVertexShaderID,
+      customFragmentShaderID,
 
       isRawShaderMaterial: material.isRawShaderMaterial === true,
       glslVersion: material.glslVersion,
 
-      precision: precision,
+      precision,
 
       instancing: IS_INSTANCEDMESH,
       instancingColor: IS_INSTANCEDMESH && object.instanceColor !== null,
@@ -222,7 +222,7 @@ function WebGLPrograms(
       matcap: HAS_MATCAP,
       envMap: HAS_ENVMAP,
       envMapMode: HAS_ENVMAP && envMap.mapping,
-      envMapCubeUVHeight: envMapCubeUVHeight,
+      envMapCubeUVHeight,
       aoMap: HAS_AOMAP,
       lightMap: HAS_LIGHTMAP,
       bumpMap: HAS_BUMPMAP,
@@ -329,15 +329,15 @@ function WebGLPrograms(
       flatShading: material.flatShading === true,
 
       sizeAttenuation: material.sizeAttenuation === true,
-      logarithmicDepthBuffer: logarithmicDepthBuffer,
+      logarithmicDepthBuffer,
 
       skinning: object.isSkinnedMesh === true,
 
       morphTargets: geometry.morphAttributes.position !== undefined,
       morphNormals: geometry.morphAttributes.normal !== undefined,
       morphColors: geometry.morphAttributes.color !== undefined,
-      morphTargetsCount: morphTargetsCount,
-      morphTextureStride: morphTextureStride,
+      morphTargetsCount,
+      morphTextureStride,
 
       numDirLights: lights.directional.length,
       numPointLights: lights.point.length,
@@ -359,7 +359,7 @@ function WebGLPrograms(
       shadowMapEnabled: renderer.shadowMap.enabled && shadows.length > 0,
       shadowMapType: renderer.shadowMap.type,
 
-      toneMapping: toneMapping,
+      toneMapping,
       useLegacyLights: renderer._useLegacyLights,
 
       decodeVideoTexture:
@@ -577,15 +577,15 @@ function WebGLPrograms(
   }
 
   return {
-    getParameters: getParameters,
-    getProgramCacheKey: getProgramCacheKey,
-    getUniforms: getUniforms,
-    acquireProgram: acquireProgram,
-    releaseProgram: releaseProgram,
-    releaseShaderCache: releaseShaderCache,
+    getParameters,
+    getProgramCacheKey,
+    getUniforms,
+    acquireProgram,
+    releaseProgram,
+    releaseShaderCache,
     // Exposed for resource monitoring & error feedback via renderer.info:
-    programs: programs,
-    dispose: dispose
+    programs,
+    dispose
   };
 }
 

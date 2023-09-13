@@ -35,6 +35,7 @@
     "@renderlayer/materials": "~0.0.12",
     "@renderlayer/math": "~0.0.11",
     "@renderlayer/objects": "~0.0.6",
+    "@renderlayer/pmrem": "~0.0.1",
     "@renderlayer/shaders": "~0.0.8",
     "@renderlayer/shared": "~0.0.6",
     "@renderlayer/targets": "~0.0.5",

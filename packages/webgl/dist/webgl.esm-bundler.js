@@ -5,6 +5,7 @@ import { Mesh } from '@renderlayer/objects';
 import { cloneUniforms, ShaderLib, getUnlitUniformColorSpace, ShaderChunk, UniformsLib } from '@renderlayer/shaders';
 import { CubeUVReflectionMapping, BackSide, SRGBColorSpace, FrontSide, IntType, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeReflectionMapping, CubeRefractionMapping, arrayNeedsUint32, FloatType, NoToneMapping, GLSL3, CustomToneMapping, ACESFilmicToneMapping, CineonToneMapping, ReinhardToneMapping, LinearToneMapping, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, LinearSRGBColorSpace, AddOperation, MixOperation, MultiplyOperation, ObjectSpaceNormalMap, TangentSpaceNormalMap, NormalBlending, DoubleSide, RGBADepthPacking, NoBlending, NearestFilter, LessEqualDepth, AddEquation, SubtractEquation, ReverseSubtractEquation, ZeroFactor, OneFactor, SrcColorFactor, SrcAlphaFactor, SrcAlphaSaturateFactor, DstColorFactor, DstAlphaFactor, OneMinusSrcColorFactor, OneMinusSrcAlphaFactor, OneMinusDstColorFactor, OneMinusDstAlphaFactor, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, CullFaceNone, CullFaceBack, CullFaceFront, MinEquation, MaxEquation, NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessDepth, AlwaysDepth, NeverDepth, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter, NeverCompare, AlwaysCompare, LessCompare, LessEqualCompare, EqualCompare, GreaterEqualCompare, GreaterCompare, NotEqualCompare, UnsignedIntType, UnsignedInt248Type, DepthFormat, UnsignedShortType, DepthStencilFormat, RGBAFormat, _SRGBAFormat, NoColorSpace, DisplayP3ColorSpace, UnsignedByteType, createElementNS, UnsignedShort4444Type, UnsignedShort5551Type, ByteType, ShortType, HalfFloatType, AlphaFormat, LuminanceFormat, LuminanceAlphaFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format } from '@renderlayer/shared';
 import { WebGLCubeRenderTarget, WebGLRenderTarget } from '@renderlayer/targets';
+import { PMREMGenerator } from '@renderlayer/pmrem';
 import { Uint32BufferAttribute, Uint16BufferAttribute, BufferGeometry, BufferAttribute } from '@renderlayer/buffers';
 import { DataArrayTexture, Texture, Data3DTexture, CubeTexture } from '@renderlayer/textures';
 import { Layers } from '@renderlayer/core';
@@ -155,7 +156,8 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
     let forceClear = false;
     let background = scene.isScene === true ? scene.background : null;
     if (background && background.isTexture) {
-      background = cubemaps.get(background);
+      const usePMREM = scene.backgroundBlurriness > 0;
+      background = (usePMREM ? cubeuvmaps : cubemaps).get(background);
     }
     if (background === null) {
       setClear(clearColor, clearAlpha);
@@ -187,7 +189,7 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
           this.matrixWorld.copyPosition(camera.matrixWorld);
         };
         Object.defineProperty(boxMesh.material, "envMap", {
-          get: function() {
+          get() {
             return this.uniforms.envMap.value;
           }
         });
@@ -223,7 +225,7 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
         );
         planeMesh.geometry.deleteAttribute("normal");
         Object.defineProperty(planeMesh.material, "map", {
-          get: function() {
+          get() {
             return this.uniforms.t2D.value;
           }
         });
@@ -251,18 +253,18 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
     state.buffers.color.setClear(_rgb.r, _rgb.g, _rgb.b, alpha2, premultipliedAlpha);
   }
   return {
-    getClearColor: function() {
+    getClearColor() {
       return clearColor;
     },
-    setClearColor: function(color, alpha2 = 1) {
+    setClearColor(color, alpha2 = 1) {
       clearColor.set(color);
       clearAlpha = alpha2;
       setClear(clearColor, clearAlpha);
     },
-    getClearAlpha: function() {
+    getClearAlpha() {
       return clearAlpha;
     },
-    setClearAlpha: function(alpha2) {
+    setClearAlpha(alpha2) {
       clearAlpha = alpha2;
       setClear(clearColor, clearAlpha);
     },
@@ -841,6 +843,75 @@ function WebGLCubeMaps(renderer) {
   }
   function dispose() {
     cubemaps = /* @__PURE__ */ new WeakMap();
+  }
+  return {
+    get,
+    dispose
+  };
+}
+
+function WebGLCubeUVMaps(renderer) {
+  let cubeUVmaps = /* @__PURE__ */ new WeakMap();
+  let pmremGenerator = null;
+  function get(texture) {
+    if (texture && texture.isTexture) {
+      const mapping = texture.mapping;
+      const isEquirectMap = mapping === EquirectangularReflectionMapping || mapping === EquirectangularRefractionMapping;
+      const isCubeMap = mapping === CubeReflectionMapping || mapping === CubeRefractionMapping;
+      if (isEquirectMap || isCubeMap) {
+        if (texture.isRenderTargetTexture && texture.needsPMREMUpdate === true) {
+          texture.needsPMREMUpdate = false;
+          let renderTarget = cubeUVmaps.get(texture);
+          if (pmremGenerator === null)
+            pmremGenerator = new PMREMGenerator(renderer);
+          renderTarget = isEquirectMap ? pmremGenerator.fromEquirectangular(texture, renderTarget) : pmremGenerator.fromCubemap(texture, renderTarget);
+          cubeUVmaps.set(texture, renderTarget);
+          return renderTarget.texture;
+        } else {
+          if (cubeUVmaps.has(texture)) {
+            return cubeUVmaps.get(texture).texture;
+          } else {
+            const image = texture.image;
+            if (isEquirectMap && image && image.height > 0 || isCubeMap && image && isCubeTextureComplete(image)) {
+              if (pmremGenerator === null)
+                pmremGenerator = new PMREMGenerator(renderer);
+              const renderTarget = isEquirectMap ? pmremGenerator.fromEquirectangular(texture) : pmremGenerator.fromCubemap(texture);
+              cubeUVmaps.set(texture, renderTarget);
+              texture.addEventListener("dispose", onTextureDispose);
+              return renderTarget.texture;
+            } else {
+              return null;
+            }
+          }
+        }
+      }
+    }
+    return texture;
+  }
+  function isCubeTextureComplete(image) {
+    let count = 0;
+    const length = 6;
+    for (let i = 0; i < length; i++) {
+      if (image[i] !== void 0)
+        count++;
+    }
+    return count === length;
+  }
+  function onTextureDispose(event) {
+    const texture = event.target;
+    texture.removeEventListener("dispose", onTextureDispose);
+    const cubemapUV = cubeUVmaps.get(texture);
+    if (cubemapUV !== void 0) {
+      cubeUVmaps.delete(texture);
+      cubemapUV.dispose();
+    }
+  }
+  function dispose() {
+    cubeUVmaps = /* @__PURE__ */ new WeakMap();
+    if (pmremGenerator !== null) {
+      pmremGenerator.dispose();
+      pmremGenerator = null;
+    }
   }
   return {
     get,
@@ -2825,7 +2896,9 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
     const fog = scene.fog;
     const geometry = object.geometry;
     const environment = material.isMeshStandardMaterial ? scene.environment : null;
-    const envMap = cubemaps.get(material.envMap || environment);
+    const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(
+      material.envMap || environment
+    );
     const envMapCubeUVHeight = !!envMap && envMap.mapping === CubeUVReflectionMapping ? envMap.image.height : null;
     const shaderID = shaderIDs[material.type];
     if (material.precision !== null) {
@@ -2849,8 +2922,10 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
       morphTextureStride = 2;
     if (geometry.morphAttributes.color !== void 0)
       morphTextureStride = 3;
-    let vertexShader, fragmentShader;
-    let customVertexShaderID, customFragmentShaderID;
+    let vertexShader;
+    let fragmentShader;
+    let customVertexShaderID;
+    let customFragmentShaderID;
     if (shaderID) {
       const shader = ShaderLib[shaderID];
       vertexShader = shader.vertexShader;
@@ -7002,4 +7077,4 @@ function WebGLUtils(gl, extensions, capabilities) {
   return { convert };
 }
 
-export { WebGLAnimation, WebGLAttributes, WebGLBackground, WebGLBindingStates, WebGLBufferRenderer, WebGLCapabilities, WebGLClipping, WebGLCubeMaps, WebGLExtensions, WebGLGeometries, WebGLIndexedBufferRenderer, WebGLInfo, WebGLMaterials, WebGLMorphtargets, WebGLObjects, WebGLPrograms, WebGLProperties, WebGLRenderList, WebGLRenderLists, WebGLRenderState, WebGLRenderStates, WebGLShadowMap, WebGLState, WebGLTextures, WebGLUniforms, WebGLUniformsGroups, WebGLUtils };
+export { WebGLAnimation, WebGLAttributes, WebGLBackground, WebGLBindingStates, WebGLBufferRenderer, WebGLCapabilities, WebGLClipping, WebGLCubeMaps, WebGLCubeUVMaps, WebGLExtensions, WebGLGeometries, WebGLIndexedBufferRenderer, WebGLInfo, WebGLMaterials, WebGLMorphtargets, WebGLObjects, WebGLPrograms, WebGLProperties, WebGLRenderList, WebGLRenderLists, WebGLRenderState, WebGLRenderStates, WebGLShadowMap, WebGLState, WebGLTextures, WebGLUniforms, WebGLUniformsGroups, WebGLUtils };

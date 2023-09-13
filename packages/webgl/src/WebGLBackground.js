@@ -31,9 +31,8 @@ function WebGLBackground(
     let background = scene.isScene === true ? scene.background : null;
 
     if (background && background.isTexture) {
-      // const usePMREM = scene.backgroundBlurriness > 0; // use PMREM if the user wants to blur the background
-      // background = (usePMREM ? cubeuvmaps : cubemaps).get(background);
-      background = cubemaps.get(background);
+      const usePMREM = scene.backgroundBlurriness > 0; // use PMREM if the user wants to blur the background
+      background = (usePMREM ? cubeuvmaps : cubemaps).get(background);
     }
 
     if (background === null) {
@@ -84,7 +83,7 @@ function WebGLBackground(
         // add "envMap" material property so the renderer can evaluate it like
         // for built-in materials
         Object.defineProperty(boxMesh.material, 'envMap', {
-          get: function () {
+          get() {
             return this.uniforms.envMap.value;
           }
         });
@@ -135,7 +134,7 @@ function WebGLBackground(
 
         // add "map" material property so the renderer can evaluate it like for built-in materials
         Object.defineProperty(planeMesh.material, 'map', {
-          get: function () {
+          get() {
             return this.uniforms.t2D.value;
           }
         });
@@ -179,22 +178,22 @@ function WebGLBackground(
   }
 
   return {
-    getClearColor: function () {
+    getClearColor() {
       return clearColor;
     },
-    setClearColor: function (color, alpha = 1) {
+    setClearColor(color, alpha = 1) {
       clearColor.set(color);
       clearAlpha = alpha;
       setClear(clearColor, clearAlpha);
     },
-    getClearAlpha: function () {
+    getClearAlpha() {
       return clearAlpha;
     },
-    setClearAlpha: function (alpha) {
+    setClearAlpha(alpha) {
       clearAlpha = alpha;
       setClear(clearColor, clearAlpha);
     },
-    render: render
+    render
   };
 }
 
