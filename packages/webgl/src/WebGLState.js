@@ -46,18 +46,18 @@ function WebGLState(gl, extensions, capabilities) {
     const currentColorClear = new Vector4(0, 0, 0, 0);
 
     return {
-      setMask: function (colorMask) {
+      setMask(colorMask) {
         if (currentColorMask !== colorMask && !locked) {
           gl.colorMask(colorMask, colorMask, colorMask, colorMask);
           currentColorMask = colorMask;
         }
       },
 
-      setLocked: function (lock) {
+      setLocked(lock) {
         locked = lock;
       },
 
-      setClear: function (r, g, b, a, premultipliedAlpha) {
+      setClear(r, g, b, a, premultipliedAlpha) {
         if (premultipliedAlpha === true) {
           r *= a;
           g *= a;
@@ -72,7 +72,7 @@ function WebGLState(gl, extensions, capabilities) {
         }
       },
 
-      reset: function () {
+      reset() {
         locked = false;
 
         currentColorMask = null;
@@ -89,7 +89,7 @@ function WebGLState(gl, extensions, capabilities) {
     let currentDepthClear = null;
 
     return {
-      setTest: function (depthTest) {
+      setTest(depthTest) {
         if (depthTest) {
           enable(gl.DEPTH_TEST);
         } else {
@@ -97,14 +97,14 @@ function WebGLState(gl, extensions, capabilities) {
         }
       },
 
-      setMask: function (depthMask) {
+      setMask(depthMask) {
         if (currentDepthMask !== depthMask && !locked) {
           gl.depthMask(depthMask);
           currentDepthMask = depthMask;
         }
       },
 
-      setFunc: function (depthFunc) {
+      setFunc(depthFunc) {
         if (currentDepthFunc !== depthFunc) {
           switch (depthFunc) {
             case NeverDepth:
@@ -147,18 +147,18 @@ function WebGLState(gl, extensions, capabilities) {
         }
       },
 
-      setLocked: function (lock) {
+      setLocked(lock) {
         locked = lock;
       },
 
-      setClear: function (depth) {
+      setClear(depth) {
         if (currentDepthClear !== depth) {
           gl.clearDepth(depth);
           currentDepthClear = depth;
         }
       },
 
-      reset: function () {
+      reset() {
         locked = false;
 
         currentDepthMask = null;
@@ -181,7 +181,7 @@ function WebGLState(gl, extensions, capabilities) {
     let currentStencilClear = null;
 
     return {
-      setTest: function (stencilTest) {
+      setTest(stencilTest) {
         if (!locked) {
           if (stencilTest) {
             enable(gl.STENCIL_TEST);
@@ -191,14 +191,14 @@ function WebGLState(gl, extensions, capabilities) {
         }
       },
 
-      setMask: function (stencilMask) {
+      setMask(stencilMask) {
         if (currentStencilMask !== stencilMask && !locked) {
           gl.stencilMask(stencilMask);
           currentStencilMask = stencilMask;
         }
       },
 
-      setFunc: function (stencilFunc, stencilRef, stencilMask) {
+      setFunc(stencilFunc, stencilRef, stencilMask) {
         if (
           currentStencilFunc !== stencilFunc ||
           currentStencilRef !== stencilRef ||
@@ -212,7 +212,7 @@ function WebGLState(gl, extensions, capabilities) {
         }
       },
 
-      setOp: function (stencilFail, stencilZFail, stencilZPass) {
+      setOp(stencilFail, stencilZFail, stencilZPass) {
         if (
           currentStencilFail !== stencilFail ||
           currentStencilZFail !== stencilZFail ||
@@ -226,18 +226,18 @@ function WebGLState(gl, extensions, capabilities) {
         }
       },
 
-      setLocked: function (lock) {
+      setLocked(lock) {
         locked = lock;
       },
 
-      setClear: function (stencil) {
+      setClear(stencil) {
         if (currentStencilClear !== stencil) {
           gl.clearStencil(stencil);
           currentStencilClear = stencil;
         }
       },
 
-      reset: function () {
+      reset() {
         locked = false;
 
         currentStencilMask = null;
@@ -293,10 +293,10 @@ function WebGLState(gl, extensions, capabilities) {
   let version = 0;
   const glVersion = gl.getParameter(gl.VERSION);
 
-  if (glVersion.indexOf('WebGL') !== -1) {
+  if (glVersion.includes('WebGL')) {
     version = parseFloat(/^WebGL (\d)/.exec(glVersion)[1]);
     lineWidthAvailable = version >= 1.0;
-  } else if (glVersion.indexOf('OpenGL ES') !== -1) {
+  } else if (glVersion.includes('OpenGL ES')) {
     version = parseFloat(/^OpenGL ES (\d)/.exec(glVersion)[1]);
     lineWidthAvailable = version >= 2.0;
   }
@@ -772,81 +772,81 @@ function WebGLState(gl, extensions, capabilities) {
     }
   }
 
-  function compressedTexImage2D() {
+  function compressedTexImage2D(...args) {
     try {
-      gl.compressedTexImage2D.apply(gl, arguments);
+      gl.compressedTexImage2D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
   }
 
-  function compressedTexImage3D() {
+  function compressedTexImage3D(...args) {
     try {
-      gl.compressedTexImage3D.apply(gl, arguments);
+      gl.compressedTexImage3D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
   }
 
-  function texSubImage2D() {
+  function texSubImage2D(...args) {
     try {
-      gl.texSubImage2D.apply(gl, arguments);
+      gl.texSubImage2D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
   }
 
-  function texSubImage3D() {
+  function texSubImage3D(...args) {
     try {
-      gl.texSubImage3D.apply(gl, arguments);
+      gl.texSubImage3D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
   }
 
-  function compressedTexSubImage2D() {
+  function compressedTexSubImage2D(...args) {
     try {
-      gl.compressedTexSubImage2D.apply(gl, arguments);
+      gl.compressedTexSubImage2D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
   }
 
-  function compressedTexSubImage3D() {
+  function compressedTexSubImage3D(...args) {
     try {
-      gl.compressedTexSubImage3D.apply(gl, arguments);
+      gl.compressedTexSubImage3D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
   }
 
-  function texStorage2D() {
+  function texStorage2D(...args) {
     try {
-      gl.texStorage2D.apply(gl, arguments);
+      gl.texStorage2D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
   }
 
-  function texStorage3D() {
+  function texStorage3D(...args) {
     try {
-      gl.texStorage3D.apply(gl, arguments);
+      gl.texStorage3D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
   }
 
-  function texImage2D() {
+  function texImage2D(...args) {
     try {
-      gl.texImage2D.apply(gl, arguments);
+      gl.texImage2D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
   }
 
-  function texImage3D() {
+  function texImage3D(...args) {
     try {
-      gl.texImage3D.apply(gl, arguments);
+      gl.texImage3D(...args);
     } catch (error) {
       console.error('WebGLState:', error);
     }
@@ -992,47 +992,47 @@ function WebGLState(gl, extensions, capabilities) {
       stencil: stencilBuffer
     },
 
-    enable: enable,
-    disable: disable,
+    enable,
+    disable,
 
-    bindFramebuffer: bindFramebuffer,
-    drawBuffers: drawBuffers,
+    bindFramebuffer,
+    drawBuffers,
 
-    useProgram: useProgram,
+    useProgram,
 
-    setBlending: setBlending,
-    setMaterial: setMaterial,
+    setBlending,
+    setMaterial,
 
-    setFlipSided: setFlipSided,
-    setCullFace: setCullFace,
+    setFlipSided,
+    setCullFace,
 
-    setLineWidth: setLineWidth,
-    setPolygonOffset: setPolygonOffset,
+    setLineWidth,
+    setPolygonOffset,
 
-    setScissorTest: setScissorTest,
+    setScissorTest,
 
-    activeTexture: activeTexture,
-    bindTexture: bindTexture,
-    unbindTexture: unbindTexture,
-    compressedTexImage2D: compressedTexImage2D,
-    compressedTexImage3D: compressedTexImage3D,
-    texImage2D: texImage2D,
-    texImage3D: texImage3D,
+    activeTexture,
+    bindTexture,
+    unbindTexture,
+    compressedTexImage2D,
+    compressedTexImage3D,
+    texImage2D,
+    texImage3D,
 
-    updateUBOMapping: updateUBOMapping,
-    uniformBlockBinding: uniformBlockBinding,
+    updateUBOMapping,
+    uniformBlockBinding,
 
-    texStorage2D: texStorage2D,
-    texStorage3D: texStorage3D,
-    texSubImage2D: texSubImage2D,
-    texSubImage3D: texSubImage3D,
-    compressedTexSubImage2D: compressedTexSubImage2D,
-    compressedTexSubImage3D: compressedTexSubImage3D,
+    texStorage2D,
+    texStorage3D,
+    texSubImage2D,
+    texSubImage3D,
+    compressedTexSubImage2D,
+    compressedTexSubImage3D,
 
-    scissor: scissor,
-    viewport: viewport,
+    scissor,
+    viewport,
 
-    reset: reset
+    reset
   };
 }
 
