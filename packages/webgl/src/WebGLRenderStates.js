@@ -28,20 +28,20 @@ function WebGLRenderState(extensions, capabilities) {
   }
 
   const state = {
-    lightsArray: lightsArray,
-    shadowsArray: shadowsArray,
+    lightsArray,
+    shadowsArray,
 
-    lights: lights
+    lights
   };
 
   return {
-    init: init,
-    state: state,
-    setupLights: setupLights,
-    setupLightsView: setupLightsView,
+    init,
+    state,
+    setupLights,
+    setupLightsView,
 
-    pushLight: pushLight,
-    pushShadow: pushShadow
+    pushLight,
+    pushShadow
   };
 }
 
@@ -72,8 +72,8 @@ function WebGLRenderStates(extensions, capabilities) {
   }
 
   return {
-    get: get,
-    dispose: dispose
+    get,
+    dispose
   };
 }
 
