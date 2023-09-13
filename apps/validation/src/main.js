@@ -35,12 +35,14 @@ const cubeTexture = cubeLoader.load([leftx, rightx, upy, downy, frontz, backz]);
 // scene
 
 const scene = new RL.Scene();
+// scene.background = cubeTexture;
+scene.environment = hdrTexture;
+
+// debug light
+
 const light = new RL.AmbientLight(0xffffff, 1.0 * Math.PI);
 light.visible = false;
 scene.add(light);
-
-// scene.background = cubeTexture;
-scene.environment = hdrTexture;
 
 // load
 
@@ -111,7 +113,7 @@ function animation(time) {
 
   const timeElapsed = (time - previousRAF) * 0.001;
 
-  controls.update(); // not strictly required
+  controls.update(timeElapsed); // not strictly required
   mixer.update(timeElapsed);
   renderer.render(scene, camera);
 
