@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/renderers",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "@renderlayer/renderers",
   "module": "./dist/renderers.esm-bundler.js",
   "exports": "./dist/renderers.esm-bundler.js",
@@ -22,7 +22,6 @@
   "keywords": [
     "renderlayer",
     "renderers",
-    "webgl",
     "webgl2"
   ],
   "author": "Ed Preston",
