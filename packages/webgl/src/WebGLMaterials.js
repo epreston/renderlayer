@@ -423,8 +423,8 @@ function WebGLMaterials(renderer, properties) {
   }
 
   return {
-    refreshFogUniforms: refreshFogUniforms,
-    refreshMaterialUniforms: refreshMaterialUniforms
+    refreshFogUniforms,
+    refreshMaterialUniforms
   };
 }
 
