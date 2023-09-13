@@ -6,7 +6,8 @@ class WebGLIndexedBufferRenderer {
       mode = value;
     }
 
-    let type, bytesPerElement;
+    let type;
+    let bytesPerElement;
 
     function setIndex(value) {
       type = value.type;
