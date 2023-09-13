@@ -120,16 +120,16 @@ function WebGLRenderList() {
   }
 
   return {
-    opaque: opaque,
-    transmissive: transmissive,
-    transparent: transparent,
+    opaque,
+    transmissive,
+    transparent,
 
-    init: init,
-    push: push,
-    unshift: unshift,
-    finish: finish,
+    init,
+    push,
+    unshift,
+    finish,
 
-    sort: sort
+    sort
   };
 }
 
@@ -160,8 +160,8 @@ function WebGLRenderLists() {
   }
 
   return {
-    get: get,
-    dispose: dispose
+    get,
+    dispose
   };
 }
 
