@@ -159,6 +159,7 @@
     "XYZW",
     "buffergeometry",
     "catmullrom",
+    "mswjs",
     "pluginutils",
     "rgbe",
     "unproject"
