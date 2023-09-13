@@ -4,7 +4,6 @@ export * from '@renderlayer/cameras';
 export * from '@renderlayer/controls';
 export * from '@renderlayer/core';
 export * from '@renderlayer/curves';
-export * from '@renderlayer/extras';
 export * from '@renderlayer/geometries';
 export * from '@renderlayer/interpolants';
 export * from '@renderlayer/keyframes';
