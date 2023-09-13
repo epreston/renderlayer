@@ -447,16 +447,16 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
   }
 
   return {
-    setup: setup,
-    reset: reset,
-    resetDefaultState: resetDefaultState,
-    dispose: dispose,
-    releaseStatesOfGeometry: releaseStatesOfGeometry,
-    releaseStatesOfProgram: releaseStatesOfProgram,
+    setup,
+    reset,
+    resetDefaultState,
+    dispose,
+    releaseStatesOfGeometry,
+    releaseStatesOfProgram,
 
-    initAttributes: initAttributes,
-    enableAttribute: enableAttribute,
-    disableUnusedAttributes: disableUnusedAttributes
+    initAttributes,
+    enableAttribute,
+    disableUnusedAttributes
   };
 }
 
