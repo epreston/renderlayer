@@ -1,12 +1,12 @@
 import { InstancedBufferGeometry, BufferGeometry, BufferAttribute, InterleavedBufferAttribute, InstancedBufferAttribute, InterleavedBuffer } from '@renderlayer/buffers';
 import { Vector3, Sphere, Color, Matrix4, Matrix3, Vector4, Vector2 } from '@renderlayer/math';
-import { getTypedArray, createElementNS, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeUVReflectionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter } from '@renderlayer/shared';
+import { getTypedArray, createElementNS, SRGBColorSpace, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeUVReflectionMapping, RepeatWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearMipmapNearestFilter } from '@renderlayer/shared';
+import { CubeTexture, DataTexture, Source, Texture } from '@renderlayer/textures';
 import { ShadowMaterial, SpriteMaterial, RawShaderMaterial, ShaderMaterial, PointsMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshNormalMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshBasicMaterial, LineBasicMaterial, Material } from '@renderlayer/materials';
 import { AnimationClip } from '@renderlayer/animation';
 import { OrthographicCamera, PerspectiveCamera } from '@renderlayer/cameras';
 import { Object3D } from '@renderlayer/core';
 import { Scene, Fog, FogExp2 } from '@renderlayer/scenes';
-import { DataTexture, Source, CubeTexture, Texture } from '@renderlayer/textures';
 import * as Geometries from '@renderlayer/geometries';
 import { SpotLight, PointLight, DirectionalLight, AmbientLight } from '@renderlayer/lights';
 import { Skeleton, Bone, Group, Sprite, Points, LineSegments, LineLoop, Line, LOD, InstancedMesh, Mesh, SkinnedMesh } from '@renderlayer/objects';
@@ -452,6 +452,164 @@ class BufferGeometryLoader extends Loader {
   }
 }
 
+class ImageLoader extends Loader {
+  constructor(manager) {
+    super(manager);
+  }
+  load(url, onLoad, onProgress, onError) {
+    if (this.path !== void 0)
+      url = this.path + url;
+    url = this.manager.resolveURL(url);
+    const scope = this;
+    const cached = Cache.get(url);
+    if (cached !== void 0) {
+      scope.manager.itemStart(url);
+      setTimeout(function() {
+        if (onLoad)
+          onLoad(cached);
+        scope.manager.itemEnd(url);
+      }, 0);
+      return cached;
+    }
+    const image = createElementNS("img");
+    function onImageLoad() {
+      removeEventListeners();
+      Cache.add(url, this);
+      if (onLoad)
+        onLoad(this);
+      scope.manager.itemEnd(url);
+    }
+    function onImageError(event) {
+      removeEventListeners();
+      if (onError)
+        onError(event);
+      scope.manager.itemError(url);
+      scope.manager.itemEnd(url);
+    }
+    function removeEventListeners() {
+      image.removeEventListener("load", onImageLoad, false);
+      image.removeEventListener("error", onImageError, false);
+    }
+    image.addEventListener("load", onImageLoad, false);
+    image.addEventListener("error", onImageError, false);
+    if (url.slice(0, 5) !== "data:") {
+      if (this.crossOrigin !== void 0)
+        image.crossOrigin = this.crossOrigin;
+    }
+    scope.manager.itemStart(url);
+    image.src = url;
+    return image;
+  }
+}
+
+class CubeTextureLoader extends Loader {
+  constructor(manager) {
+    super(manager);
+  }
+  // EP: async interface ?
+  load(urls, onLoad, onProgress, onError) {
+    const texture = new CubeTexture();
+    texture.colorSpace = SRGBColorSpace;
+    const loader = new ImageLoader(this.manager);
+    loader.setCrossOrigin(this.crossOrigin);
+    loader.setPath(this.path);
+    let loaded = 0;
+    function loadTexture(i) {
+      loader.load(
+        urls[i],
+        function(image) {
+          texture.images[i] = image;
+          loaded++;
+          if (loaded === 6) {
+            texture.needsUpdate = true;
+            if (onLoad)
+              onLoad(texture);
+          }
+        },
+        void 0,
+        onError
+      );
+    }
+    for (let i = 0; i < urls.length; ++i) {
+      loadTexture(i);
+    }
+    return texture;
+  }
+}
+
+class DataTextureLoader extends Loader {
+  constructor(manager) {
+    super(manager);
+  }
+  load(url, onLoad, onProgress, onError) {
+    const scope = this;
+    const texture = new DataTexture();
+    const loader = new FileLoader(this.manager);
+    loader.setResponseType("arraybuffer");
+    loader.setRequestHeader(this.requestHeader);
+    loader.setPath(this.path);
+    loader.setWithCredentials(scope.withCredentials);
+    loader.load(
+      url,
+      function(buffer) {
+        let texData;
+        try {
+          texData = scope.parse(buffer);
+        } catch (error) {
+          if (onError !== void 0) {
+            onError(error);
+          } else {
+            console.error(error);
+            return;
+          }
+        }
+        if (texData.image !== void 0) {
+          texture.image = texData.image;
+        } else if (texData.data !== void 0) {
+          texture.image.width = texData.width;
+          texture.image.height = texData.height;
+          texture.image.data = texData.data;
+        }
+        texture.wrapS = texData.wrapS !== void 0 ? texData.wrapS : ClampToEdgeWrapping;
+        texture.wrapT = texData.wrapT !== void 0 ? texData.wrapT : ClampToEdgeWrapping;
+        texture.magFilter = texData.magFilter !== void 0 ? texData.magFilter : LinearFilter;
+        texture.minFilter = texData.minFilter !== void 0 ? texData.minFilter : LinearFilter;
+        texture.anisotropy = texData.anisotropy !== void 0 ? texData.anisotropy : 1;
+        if (texData.colorSpace !== void 0) {
+          texture.colorSpace = texData.colorSpace;
+        } else if (texData.encoding !== void 0) {
+          texture.encoding = texData.encoding;
+        }
+        if (texData.flipY !== void 0) {
+          texture.flipY = texData.flipY;
+        }
+        if (texData.format !== void 0) {
+          texture.format = texData.format;
+        }
+        if (texData.type !== void 0) {
+          texture.type = texData.type;
+        }
+        if (texData.mipmaps !== void 0) {
+          texture.mipmaps = texData.mipmaps;
+          texture.minFilter = LinearMipmapLinearFilter;
+        }
+        if (texData.mipmapCount === 1) {
+          texture.minFilter = LinearFilter;
+        }
+        if (texData.generateMipmaps !== void 0) {
+          texture.generateMipmaps = texData.generateMipmaps;
+        }
+        texture.needsUpdate = true;
+        if (onLoad)
+          onLoad(texture, texData);
+      },
+      onProgress,
+      onError
+    );
+    return texture;
+  }
+}
+
 class ImageBitmapLoader extends Loader {
   constructor(manager) {
     super(manager);
@@ -504,56 +662,6 @@ class ImageBitmapLoader extends Loader {
       scope.manager.itemEnd(url);
     });
     scope.manager.itemStart(url);
-  }
-}
-
-class ImageLoader extends Loader {
-  constructor(manager) {
-    super(manager);
-  }
-  load(url, onLoad, onProgress, onError) {
-    if (this.path !== void 0)
-      url = this.path + url;
-    url = this.manager.resolveURL(url);
-    const scope = this;
-    const cached = Cache.get(url);
-    if (cached !== void 0) {
-      scope.manager.itemStart(url);
-      setTimeout(function() {
-        if (onLoad)
-          onLoad(cached);
-        scope.manager.itemEnd(url);
-      }, 0);
-      return cached;
-    }
-    const image = createElementNS("img");
-    function onImageLoad() {
-      removeEventListeners();
-      Cache.add(url, this);
-      if (onLoad)
-        onLoad(this);
-      scope.manager.itemEnd(url);
-    }
-    function onImageError(event) {
-      removeEventListeners();
-      if (onError)
-        onError(event);
-      scope.manager.itemError(url);
-      scope.manager.itemEnd(url);
-    }
-    function removeEventListeners() {
-      image.removeEventListener("load", onImageLoad, false);
-      image.removeEventListener("error", onImageError, false);
-    }
-    image.addEventListener("load", onImageLoad, false);
-    image.addEventListener("error", onImageError, false);
-    if (url.slice(0, 5) !== "data:") {
-      if (this.crossOrigin !== void 0)
-        image.crossOrigin = this.crossOrigin;
-    }
-    scope.manager.itemStart(url);
-    image.src = url;
-    return image;
   }
 }
 
@@ -1628,4 +1736,4 @@ class TextureLoader extends Loader {
   }
 }
 
-export { BufferGeometryLoader, Cache, DefaultLoadingManager, FileLoader, ImageBitmapLoader, ImageLoader, Loader, LoaderUtils, LoadingManager, MaterialLoader, ObjectLoader, TextureLoader };
+export { BufferGeometryLoader, Cache, CubeTextureLoader, DataTextureLoader, DefaultLoadingManager, FileLoader, ImageBitmapLoader, ImageLoader, Loader, LoaderUtils, LoadingManager, MaterialLoader, ObjectLoader, TextureLoader };

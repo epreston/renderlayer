@@ -1,5 +1,7 @@
 export * from './BufferGeometryLoader.js';
 export * from './Cache.js';
+export * from './CubeTextureLoader.js';
+export * from './DataTextureLoader.js';
 export * from './FileLoader.js';
 export * from './ImageBitmapLoader.js';
 export * from './ImageLoader.js';
