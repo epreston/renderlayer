@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "shaders",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --emptyOutDir",
+    "preview": "vite preview --open",
+    "start": "vite --open"
+  },
+  "dependencies": {
+    "renderlayer": "file:../../packages/renderlayer",
+    "@renderlayer/extras": "file:../../packages/extras"
+  }
+}
