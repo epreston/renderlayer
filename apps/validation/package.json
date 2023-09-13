@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "validation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev": "vite",
     "build": "vite build --emptyOutDir",
@@ -11,6 +11,7 @@
   "dependencies": {
     "renderlayer": "file:../../packages/renderlayer",
     "@renderlayer/draco": "file:../../packages/draco",
+    "@renderlayer/extras": "file:../../packages/extras",
     "@renderlayer/gltf": "file:../../packages/gltf"
   }
 }
