@@ -37,7 +37,7 @@ function WebGLAttributes(gl, capabilities) {
     } else if (array instanceof Uint8ClampedArray) {
       type = gl.UNSIGNED_BYTE;
     } else {
-      throw new Error('WebGLAttributes: Unsupported buffer data format: ' + array);
+      throw new Error(`WebGLAttributes: Unsupported buffer data format: ${array}`);
     }
 
     return {
@@ -123,9 +123,9 @@ function WebGLAttributes(gl, capabilities) {
   }
 
   return {
-    get: get,
-    remove: remove,
-    update: update
+    get,
+    remove,
+    update
   };
 }
 
