@@ -833,20 +833,20 @@ function addUniform(container, uniformObject) {
 }
 
 function parseUniform(activeInfo, addr, container) {
-  const path = activeInfo.name,
-    pathLength = path.length;
+  const path = activeInfo.name;
+  const pathLength = path.length;
 
   // reset RegExp object, because of the early exit of a previous run
   RePathPart.lastIndex = 0;
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const match = RePathPart.exec(path),
-      matchEnd = RePathPart.lastIndex;
+    const match = RePathPart.exec(path);
+    const matchEnd = RePathPart.lastIndex;
 
     let id = match[1];
-    const idIsIndex = match[2] === ']',
-      subscript = match[3];
+    const idIsIndex = match[2] === ']';
+    const subscript = match[3];
 
     if (idIsIndex) id = id | 0; // convert to integer
 
@@ -887,8 +887,8 @@ class WebGLUniforms {
     const n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
 
     for (let i = 0; i < n; ++i) {
-      const info = gl.getActiveUniform(program, i),
-        addr = gl.getUniformLocation(program, info.name);
+      const info = gl.getActiveUniform(program, i);
+      const addr = gl.getUniformLocation(program, info.name);
 
       parseUniform(info, addr, this);
     }
@@ -908,8 +908,8 @@ class WebGLUniforms {
 
   static upload(gl, seq, values, textures) {
     for (let i = 0, n = seq.length; i !== n; ++i) {
-      const u = seq[i],
-        v = values[u.id];
+      const u = seq[i];
+      const v = values[u.id];
 
       if (v.needsUpdate !== false) {
         // note: always updating when .needsUpdate is undefined
