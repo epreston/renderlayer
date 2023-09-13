@@ -325,7 +325,7 @@ function WebGLUtils(gl, extensions, capabilities) {
     return gl[p] !== undefined ? gl[p] : null;
   }
 
-  return { convert: convert };
+  return { convert };
 }
 
 export { WebGLUtils };
