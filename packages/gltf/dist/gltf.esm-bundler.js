@@ -612,10 +612,10 @@ class GLTFTextureAVIFExtension {
       if (handler !== null)
         loader = handler;
     }
-    return this.detectSupport().then(function(isSupported) {
+    return this.detectSupport().then((isSupported) => {
       if (isSupported)
         return parser.loadTextureImage(textureIndex, extension.source, loader);
-      if (json.extensionsRequired && json.extensionsRequired.indexOf(name) >= 0) {
+      if (json.extensionsRequired && json.extensionsRequired.includes(name)) {
         throw new Error("GLTFLoader: AVIF required by asset but unsupported.");
       }
       return parser.loadTexture(textureIndex);
@@ -623,10 +623,10 @@ class GLTFTextureAVIFExtension {
   }
   detectSupport() {
     if (!this.isSupported) {
-      this.isSupported = new Promise(function(resolve) {
+      this.isSupported = new Promise((resolve) => {
         const image = new Image();
         image.src = "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAABcAAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQAMAAAAABNjb2xybmNseAACAAIABoAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAAB9tZGF0EgAKCBgABogQEDQgMgkQAAAAB8dSLfI=";
-        image.onload = image.onerror = function() {
+        image.onload = image.onerror = () => {
           resolve(image.height === 1);
         };
       });
