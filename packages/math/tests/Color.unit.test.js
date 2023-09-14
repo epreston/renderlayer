@@ -20,9 +20,9 @@ describe('Maths', () => {
 
       // default ctor
       let c = new Color();
-      expect(c.r).toBeTruthy();
-      expect(c.g).toBeTruthy();
-      expect(c.b).toBeTruthy();
+      expect(c.r).toBe(1);
+      expect(c.g).toBe(1);
+      expect(c.b).toBe(1);
 
       // rgb ctor
       c = new Color(1, 1, 1);
