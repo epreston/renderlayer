@@ -93,7 +93,7 @@ async function check(target) {
   console.log(target);
 
   await build({
-    tsconfig: path.resolve('jsconfig.json'),
+    tsconfig: path.resolve('tsconfig.json'),
     minify: false,
     target: 'es2022',
 
