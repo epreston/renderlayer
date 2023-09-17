@@ -26,6 +26,7 @@ permissions:
 
 env:
   VITEST_SEGFAULT_RETRY: 3
+  NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
   continuous-integration:
