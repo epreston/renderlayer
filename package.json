@@ -16,6 +16,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "check": "node scripts/circular.js",
+    "check-types": "tsc --project tsconfig.json --allowJs --checkJs --noEmit",
     "meta": "node scripts/meta.js",
     "size": "cd apps/size-check && vite build && node brotli",
     "lint": "eslint --ext .js --report-unused-disable-directives .",
