@@ -12,8 +12,8 @@ describe('Maths', () => {
       expect(ColorManagement.legacyMode).toBeFalsy();
     });
 
-    test.todo('workingColorSpace', () => {
-      // implement
+    test('workingColorSpace', () => {
+      expect(ColorManagement.workingColorSpace).toBe('srgb-linear');
     });
 
     test.todo('convert', () => {
