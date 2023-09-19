@@ -2556,6 +2556,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
       parameters.shadowMapEnabled ? "#define USE_SHADOWMAP" : "",
       parameters.shadowMapEnabled ? "#define " + shadowMapTypeDefine : "",
       parameters.sizeAttenuation ? "#define USE_SIZEATTENUATION" : "",
+      parameters.numLightProbes > 0 ? "#define USE_LIGHT_PROBES" : "",
       parameters.useLegacyLights ? "#define LEGACY_LIGHTS" : "",
       parameters.logarithmicDepthBuffer ? "#define USE_LOGDEPTHBUF" : "",
       parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth ? "#define USE_LOGDEPTHBUF_EXT" : "",
@@ -2676,6 +2677,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
       parameters.shadowMapEnabled ? "#define USE_SHADOWMAP" : "",
       parameters.shadowMapEnabled ? "#define " + shadowMapTypeDefine : "",
       parameters.premultipliedAlpha ? "#define PREMULTIPLIED_ALPHA" : "",
+      parameters.numLightProbes > 0 ? "#define USE_LIGHT_PROBES" : "",
       parameters.useLegacyLights ? "#define LEGACY_LIGHTS" : "",
       parameters.decodeVideoTexture ? "#define DECODE_VIDEO_TEXTURE" : "",
       parameters.logarithmicDepthBuffer ? "#define USE_LOGDEPTHBUF" : "",
@@ -3108,6 +3110,7 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
       numPointLightShadows: lights.pointShadowMap.length,
       numSpotLightShadows: lights.spotShadowMap.length,
       numSpotLightShadowsWithMaps: lights.numSpotLightShadowsWithMaps,
+      numLightProbes: lights.numLightProbes,
       numClippingPlanes: clipping.numPlanes,
       numClipIntersection: clipping.numIntersection,
       dithering: material.dithering,
@@ -3199,6 +3202,7 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
     array.push(parameters.numPointLightShadows);
     array.push(parameters.numSpotLightShadows);
     array.push(parameters.numSpotLightShadowsWithMaps);
+    array.push(parameters.numLightProbes);
     array.push(parameters.shadowMapType);
     array.push(parameters.toneMapping);
     array.push(parameters.numClippingPlanes);
@@ -3623,7 +3627,8 @@ function WebGLLights(extensions, capabilities) {
       numDirectionalShadows: -1,
       numPointShadows: -1,
       numSpotShadows: -1,
-      numSpotMaps: -1
+      numSpotMaps: -1,
+      numLightProbes: -1
     },
     ambient: [0, 0, 0],
     probe: [],
@@ -3644,7 +3649,8 @@ function WebGLLights(extensions, capabilities) {
     pointShadowMap: [],
     pointShadowMatrix: [],
     hemi: [],
-    numSpotLightShadowsWithMaps: 0
+    numSpotLightShadowsWithMaps: 0,
+    numLightProbes: 0
   };
   for (let i = 0; i < 9; i++)
     state.probe.push(new Vector3());
@@ -3667,6 +3673,7 @@ function WebGLLights(extensions, capabilities) {
     let numSpotShadows = 0;
     let numSpotMaps = 0;
     let numSpotShadowsWithMaps = 0;
+    let numLightProbes = 0;
     lights.sort(shadowCastingAndTexturingLightsFirst);
     const scaleFactor = useLegacyLights === true ? Math.PI : 1;
     for (let i = 0, l = lights.length; i < l; i++) {
@@ -3683,6 +3690,7 @@ function WebGLLights(extensions, capabilities) {
         for (let j = 0; j < 9; j++) {
           state.probe[j].addScaledVector(light.sh.coefficients[j], intensity);
         }
+        numLightProbes++;
       } else if (light.isDirectionalLight) {
         const uniforms = cache.get(light);
         uniforms.color.copy(light.color).multiplyScalar(light.intensity * scaleFactor);
@@ -3773,7 +3781,7 @@ function WebGLLights(extensions, capabilities) {
     state.ambient[1] = g;
     state.ambient[2] = b;
     const hash = state.hash;
-    if (hash.directionalLength !== directionalLength || hash.pointLength !== pointLength || hash.spotLength !== spotLength || hash.rectAreaLength !== rectAreaLength || hash.hemiLength !== hemiLength || hash.numDirectionalShadows !== numDirectionalShadows || hash.numPointShadows !== numPointShadows || hash.numSpotShadows !== numSpotShadows || hash.numSpotMaps !== numSpotMaps) {
+    if (hash.directionalLength !== directionalLength || hash.pointLength !== pointLength || hash.spotLength !== spotLength || hash.rectAreaLength !== rectAreaLength || hash.hemiLength !== hemiLength || hash.numDirectionalShadows !== numDirectionalShadows || hash.numPointShadows !== numPointShadows || hash.numSpotShadows !== numSpotShadows || hash.numSpotMaps !== numSpotMaps || hash.numLightProbes !== numLightProbes) {
       state.directional.length = directionalLength;
       state.spot.length = spotLength;
       state.rectArea.length = rectAreaLength;
@@ -3790,6 +3798,7 @@ function WebGLLights(extensions, capabilities) {
       state.spotLightMatrix.length = numSpotShadows + numSpotMaps - numSpotShadowsWithMaps;
       state.spotLightMap.length = numSpotMaps;
       state.numSpotLightShadowsWithMaps = numSpotShadowsWithMaps;
+      state.numLightProbes = numLightProbes;
       hash.directionalLength = directionalLength;
       hash.pointLength = pointLength;
       hash.spotLength = spotLength;
@@ -3799,6 +3808,7 @@ function WebGLLights(extensions, capabilities) {
       hash.numPointShadows = numPointShadows;
       hash.numSpotShadows = numSpotShadows;
       hash.numSpotMaps = numSpotMaps;
+      hash.numLightProbes = numLightProbes;
       state.version = nextVersion++;
     }
   }
