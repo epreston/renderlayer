@@ -2010,6 +2010,7 @@ const ColorManagement = {
   get workingColorSpace() {
     return LinearSRGBColorSpace;
   },
+  /** @param {Color} color */
   convert: function(color, sourceColorSpace, targetColorSpace) {
     if (this.enabled === false || sourceColorSpace === targetColorSpace || !sourceColorSpace || !targetColorSpace) {
       return color;
@@ -2023,9 +2024,11 @@ const ColorManagement = {
     }
     return targetFromLinear(sourceToLinear(color));
   },
+  /** @param {Color} color */
   fromWorkingColorSpace: function(color, targetColorSpace) {
     return this.convert(color, this.workingColorSpace, targetColorSpace);
   },
+  /** @param {Color} color */
   toWorkingColorSpace: function(color, sourceColorSpace) {
     return this.convert(color, sourceColorSpace, this.workingColorSpace);
   }
