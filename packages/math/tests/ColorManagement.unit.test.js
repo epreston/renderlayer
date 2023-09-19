@@ -59,7 +59,7 @@ describe('Math', () => {
       [0.5, 0.21404114],
       [0.75, 0.52252155],
       [1.0, 1.0]
-    ])('SRGBToLinear(%i) -> %i', (srgb, linear) => {
+    ])('SRGBToLinear(%f) -> %f', (srgb, linear) => {
       expect(SRGBToLinear(srgb)).toBeCloseTo(linear, 8);
     });
 
@@ -69,7 +69,7 @@ describe('Math', () => {
       [0.21404114, 0.5000057],
       [0.52252155, 0.75000348],
       [1.0, 1.0]
-    ])('LinearToSRGB(%i) -> %i', (linear, srgb) => {
+    ])('LinearToSRGB(%f) -> %f', (linear, srgb) => {
       expect(LinearToSRGB(linear)).toBeCloseTo(srgb, 8);
     });
   });
