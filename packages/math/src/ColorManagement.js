@@ -1,4 +1,5 @@
 import { Matrix3 } from './Matrix3.js';
+import { Color } from './Color.js';
 
 const NoColorSpace = '';
 const SRGBColorSpace = 'srgb';
@@ -45,11 +46,13 @@ const LINEAR_DISPLAY_P3_TO_LINEAR_SRGB = /*@__PURE__*/ new Matrix3().fromArray( 
 	0.0000001, 0.0000000, 1.0982735
 ] );
 
+/** @param {Color} color */
 function DisplayP3ToLinearSRGB(color) {
   // Display P3 uses the sRGB transfer functions
   return color.convertSRGBToLinear().applyMatrix3(LINEAR_DISPLAY_P3_TO_LINEAR_SRGB);
 }
 
+/** @param {Color} color */
 function LinearSRGBToDisplayP3(color) {
   // Display P3 uses the sRGB transfer functions
   return color.applyMatrix3(LINEAR_SRGB_TO_LINEAR_DISPLAY_P3).convertLinearToSRGB();
@@ -78,6 +81,7 @@ export const ColorManagement = {
     return LinearSRGBColorSpace;
   },
 
+  /** @param {Color} color */
   convert: function (color, sourceColorSpace, targetColorSpace) {
     if (
       this.enabled === false ||
@@ -100,10 +104,12 @@ export const ColorManagement = {
     return targetFromLinear(sourceToLinear(color));
   },
 
+  /** @param {Color} color */
   fromWorkingColorSpace: function (color, targetColorSpace) {
     return this.convert(color, this.workingColorSpace, targetColorSpace);
   },
 
+  /** @param {Color} color */
   toWorkingColorSpace: function (color, sourceColorSpace) {
     return this.convert(color, sourceColorSpace, this.workingColorSpace);
   }
