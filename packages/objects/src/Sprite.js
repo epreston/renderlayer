@@ -26,7 +26,7 @@ const _uvB = /*@__PURE__*/ new Vector2();
 const _uvC = /*@__PURE__*/ new Vector2();
 
 class Sprite extends Object3D {
-  constructor(material) {
+  constructor(material = new SpriteMaterial()) {
     super();
 
     this.isSprite = true;
@@ -50,7 +50,7 @@ class Sprite extends Object3D {
     }
 
     this.geometry = _geometry;
-    this.material = material !== undefined ? material : new SpriteMaterial();
+    this.material = material;
 
     this.center = new Vector2(0.5, 0.5);
   }
