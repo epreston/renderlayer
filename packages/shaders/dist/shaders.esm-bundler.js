@@ -735,7 +735,9 @@ void RE_IndirectDiffuse_Lambert( const in vec3 irradiance, const in GeometricCon
 var lights_pars_begin = `
 uniform bool receiveShadow;
 uniform vec3 ambientLightColor;
-uniform vec3 lightProbe[ 9 ];
+#if defined( USE_LIGHT_PROBES )
+	uniform vec3 lightProbe[ 9 ];
+#endif
 vec3 shGetIrradianceAt( in vec3 normal, in vec3 shCoefficients[ 9 ] ) {
 	float x = normal.x, y = normal.y, z = normal.z;
 	vec3 result = shCoefficients[ 0 ] * 0.886227;
@@ -1435,7 +1437,9 @@ IncidentLight directLight;
 #if defined( RE_IndirectDiffuse )
 	vec3 iblIrradiance = vec3( 0.0 );
 	vec3 irradiance = getAmbientLightIrradiance( ambientLightColor );
-	irradiance += getLightProbeIrradiance( lightProbe, geometry.normal );
+	#if defined( USE_LIGHT_PROBES )
+		irradiance += getLightProbeIrradiance( lightProbe, geometry.normal );
+	#endif
 	#if ( NUM_HEMI_LIGHTS > 0 )
 		#pragma unroll_loop_start
 		for ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {
