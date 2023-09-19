@@ -1151,7 +1151,7 @@ const _uvA = /* @__PURE__ */ new Vector2();
 const _uvB = /* @__PURE__ */ new Vector2();
 const _uvC = /* @__PURE__ */ new Vector2();
 class Sprite extends Object3D {
-  constructor(material) {
+  constructor(material = new SpriteMaterial()) {
     super();
     this.isSprite = true;
     this.type = "Sprite";
@@ -1188,7 +1188,7 @@ class Sprite extends Object3D {
       _geometry.setAttribute("uv", new InterleavedBufferAttribute(interleavedBuffer, 2, 3, false));
     }
     this.geometry = _geometry;
-    this.material = material !== void 0 ? material : new SpriteMaterial();
+    this.material = material;
     this.center = new Vector2(0.5, 0.5);
   }
   raycast(raycaster, intersects) {
