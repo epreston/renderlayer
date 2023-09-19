@@ -545,6 +545,8 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 
       parameters.sizeAttenuation ? '#define USE_SIZEATTENUATION' : '',
 
+      parameters.numLightProbes > 0 ? '#define USE_LIGHT_PROBES' : '',
+
       parameters.useLegacyLights ? '#define LEGACY_LIGHTS' : '',
 
       parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
@@ -728,6 +730,8 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
       parameters.shadowMapEnabled ? '#define ' + shadowMapTypeDefine : '',
 
       parameters.premultipliedAlpha ? '#define PREMULTIPLIED_ALPHA' : '',
+
+      parameters.numLightProbes > 0 ? '#define USE_LIGHT_PROBES' : '',
 
       parameters.useLegacyLights ? '#define LEGACY_LIGHTS' : '',
 

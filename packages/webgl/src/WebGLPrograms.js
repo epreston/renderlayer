@@ -351,6 +351,8 @@ function WebGLPrograms(
       numSpotLightShadows: lights.spotShadowMap.length,
       numSpotLightShadowsWithMaps: lights.numSpotLightShadowsWithMaps,
 
+      numLightProbes: lights.numLightProbes,
+
       numClippingPlanes: clipping.numPlanes,
       numClipIntersection: clipping.numIntersection,
 
@@ -463,6 +465,7 @@ function WebGLPrograms(
     array.push(parameters.numPointLightShadows);
     array.push(parameters.numSpotLightShadows);
     array.push(parameters.numSpotLightShadowsWithMaps);
+    array.push(parameters.numLightProbes);
     array.push(parameters.shadowMapType);
     array.push(parameters.toneMapping);
     array.push(parameters.numClippingPlanes);
