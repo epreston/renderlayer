@@ -38,6 +38,12 @@ describe('Math', () => {
       expect(ColorManagement.convert(testColor)).toBe(testColor);
     });
 
+    test('convert - color with same source or target, returns the color', () => {
+      expect(ColorManagement.convert(testColor, LinearSRGBColorSpace, LinearSRGBColorSpace)).toBe(
+        testColor
+      );
+    });
+
     test('convert - enabled is false, returns the color', () => {
       ColorManagement.enabled = false;
       expect(ColorManagement.convert(testColor, LinearSRGBColorSpace, SRGBColorSpace)).toBe(
@@ -45,12 +51,58 @@ describe('Math', () => {
       );
     });
 
-    test.todo('fromWorkingColorSpace', () => {
-      // implement
+    test('convert - unsupported throws error', () => {
+      expect(() => ColorManagement.convert(testColor, LinearSRGBColorSpace, 'ICtCp')).toThrowError(
+        'Unsupported'
+      );
     });
 
-    test.todo('toWorkingColorSpace', () => {
-      // implement
+    test('fromWorkingColorSpace - SRGBColorSpace', () => {
+      const color = ColorManagement.fromWorkingColorSpace(testColor, SRGBColorSpace);
+
+      expect(color.r).toBeCloseTo(0.73536064, 8);
+      expect(color.g).toBeCloseTo(0.73536064, 8);
+      expect(color.b).toBeCloseTo(0.73536064, 8);
+    });
+
+    test('fromWorkingColorSpace - LinearSRGBColorSpace', () => {
+      const color = ColorManagement.fromWorkingColorSpace(testColor, LinearSRGBColorSpace);
+
+      expect(color.r).toBeCloseTo(0.5);
+      expect(color.g).toBeCloseTo(0.5);
+      expect(color.b).toBeCloseTo(0.5);
+    });
+
+    test('fromWorkingColorSpace - DisplayP3ColorSpace', () => {
+      const color = ColorManagement.fromWorkingColorSpace(testColor, DisplayP3ColorSpace);
+
+      expect(color.r).toBeCloseTo(0.73536064, 8);
+      expect(color.g).toBeCloseTo(0.73536064, 8);
+      expect(color.b).toBeCloseTo(0.73536064, 8);
+    });
+
+    test('toWorkingColorSpace - SRGBColorSpace', () => {
+      const color = ColorManagement.toWorkingColorSpace(testColor, SRGBColorSpace);
+
+      expect(color.r).toBeCloseTo(0.21404114, 8);
+      expect(color.g).toBeCloseTo(0.21404114, 8);
+      expect(color.b).toBeCloseTo(0.21404114, 8);
+    });
+
+    test('toWorkingColorSpace - LinearSRGBColorSpace', () => {
+      const color = ColorManagement.toWorkingColorSpace(testColor, LinearSRGBColorSpace);
+
+      expect(color.r).toBeCloseTo(0.5);
+      expect(color.g).toBeCloseTo(0.5);
+      expect(color.b).toBeCloseTo(0.5);
+    });
+
+    test('toWorkingColorSpace - DisplayP3ColorSpace', () => {
+      const color = ColorManagement.toWorkingColorSpace(testColor, DisplayP3ColorSpace);
+
+      expect(color.r).toBeCloseTo(0.2140411, 8);
+      expect(color.g).toBeCloseTo(0.21404118, 8);
+      expect(color.b).toBeCloseTo(0.2140411, 8);
     });
 
     test.each([
