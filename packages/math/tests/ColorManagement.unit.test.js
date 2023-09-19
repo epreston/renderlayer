@@ -1,23 +1,48 @@
-import { describe, expect, it, test, vi } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
-import { ColorManagement, SRGBToLinear, LinearToSRGB } from '../src/ColorManagement.js';
+import {
+  DisplayP3ColorSpace,
+  LinearSRGBColorSpace,
+  NoColorSpace,
+  SRGBColorSpace
+} from '@renderlayer/shared';
 
-describe('Maths', () => {
+import { Color } from '../src/Color.js';
+import { ColorManagement, LinearToSRGB, SRGBToLinear } from '../src/ColorManagement.js';
+
+describe('Math', () => {
   describe('ColorManagement', () => {
+    let enabledState;
+    let testColor;
+
+    beforeAll(() => {
+      // capture default state
+      enabledState = ColorManagement.enabled;
+    });
+
+    beforeEach(() => {
+      // reset state
+      ColorManagement.enabled = enabledState;
+      testColor = new Color(0.5, 0.5, 0.5);
+    });
+
     test('enabled', () => {
       expect(ColorManagement.enabled).toBeTruthy();
     });
 
-    test('legacyMode', () => {
-      expect(ColorManagement.legacyMode).toBeFalsy();
-    });
-
     test('workingColorSpace', () => {
-      expect(ColorManagement.workingColorSpace).toBe('srgb-linear');
+      expect(ColorManagement.workingColorSpace).toBe(LinearSRGBColorSpace);
     });
 
-    test.todo('convert', () => {
-      // implement
+    test('convert - color without source or target, returns the color', () => {
+      expect(ColorManagement.convert(testColor)).toBe(testColor);
+    });
+
+    test('convert - enabled is false, returns the color', () => {
+      ColorManagement.enabled = false;
+      expect(ColorManagement.convert(testColor, LinearSRGBColorSpace, SRGBColorSpace)).toBe(
+        testColor
+      );
     });
 
     test.todo('fromWorkingColorSpace', () => {
