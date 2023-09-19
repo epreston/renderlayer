@@ -6118,7 +6118,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   function setupRenderBufferStorage(renderbuffer, renderTarget, isMultisample) {
     _gl.bindRenderbuffer(_gl.RENDERBUFFER, renderbuffer);
     if (renderTarget.depthBuffer && !renderTarget.stencilBuffer) {
-      let glInternalFormat = _gl.DEPTH_COMPONENT16;
+      let glInternalFormat = _gl.DEPTH_COMPONENT32F;
       if (isMultisample || useMultisampledRTT(renderTarget)) {
         const depthTexture = renderTarget.depthTexture;
         if (depthTexture && depthTexture.isDepthTexture) {
