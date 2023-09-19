@@ -252,7 +252,7 @@ class Material extends EventDispatcher {
     if (this.opacity < 1)
       data.opacity = this.opacity;
     if (this.transparent === true)
-      data.transparent = this.transparent;
+      data.transparent = true;
     data.depthFunc = this.depthFunc;
     data.depthTest = this.depthTest;
     data.depthWrite = this.depthWrite;
@@ -286,19 +286,19 @@ class Material extends EventDispatcher {
     if (this.alphaTest > 0)
       data.alphaTest = this.alphaTest;
     if (this.alphaHash === true)
-      data.alphaHash = this.alphaHash;
+      data.alphaHash = true;
     if (this.alphaToCoverage === true)
-      data.alphaToCoverage = this.alphaToCoverage;
+      data.alphaToCoverage = true;
     if (this.premultipliedAlpha === true)
-      data.premultipliedAlpha = this.premultipliedAlpha;
+      data.premultipliedAlpha = true;
     if (this.forceSinglePass === true)
-      data.forceSinglePass = this.forceSinglePass;
+      data.forceSinglePass = true;
     if (this.wireframe === true)
-      data.wireframe = this.wireframe;
+      data.wireframe = true;
     if (this.wireframeLinewidth > 1)
       data.wireframeLinewidth = this.wireframeLinewidth;
     if (this.flatShading === true)
-      data.flatShading = this.flatShading;
+      data.flatShading = true;
     if (this.visible === false)
       data.visible = false;
     if (this.toneMapped === false)
