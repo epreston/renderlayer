@@ -159,7 +159,10 @@
     "XYZW",
     "buffergeometry",
     "catmullrom",
+    "estree",
+    "iife",
     "mswjs",
+    "onwarn",
     "pluginutils",
     "rgbe",
     "unproject"
