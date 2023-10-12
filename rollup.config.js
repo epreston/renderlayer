@@ -285,7 +285,7 @@ function createConfig(format, output, plugins = []) {
       // enumPlugin,
       ...resolveReplace(),
       esbuild({
-        tsconfig: path.resolve(__dirname, 'jsconfig.json'),
+        tsconfig: path.resolve(__dirname, 'tsconfig.json'),
         sourceMap: output.sourcemap,
         minify: false,
         // minifyWhitespace: true,
