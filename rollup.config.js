@@ -15,7 +15,7 @@ import alias from '@rollup/plugin-alias';
 import { entries } from './scripts/aliases.js';
 // import { constEnum } from './scripts/const-enum.js';
 
-import { shaderChunks } from './scripts/rollup-glsl.js';
+import { shaderChunks } from '@renderlayer/rollup-shader-chunks';
 
 if (!process.env.TARGET) {
   throw new Error('TARGET package must be specified via --environment flag.');
