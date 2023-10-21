@@ -8,9 +8,6 @@
     "packages/*",
     "apps/*"
   ],
-  "engines": {
-    "node": ">=18.18.0 || >=20.0.0"
-  },
   "packageManager": "npm@9.8.1",
   "browserslist": "Chrome >= 112, ChromeAndroid >= 112, Edge >= 112, Firefox >= 112, FirefoxAndroid  >= 112,  Safari >= 16.4, iOS >= 16.4, not dead",
   "scripts": {
@@ -49,5 +46,8 @@
     "rollup-shader-chunks": "^1.0.1",
     "vite": "^4.5.0",
     "vitest": "^0.34.6"
+  },
+  "engines": {
+    "node": ">=18.18.0 || >=20.0.0"
   }
 }
