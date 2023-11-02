@@ -20,16 +20,17 @@ nr build core --formats esm
 */
 
 import fs from 'node:fs/promises';
-import { existsSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import minimist from 'minimist';
 import { gzipSync, brotliCompressSync } from 'node:zlib';
 import pico from 'picocolors';
 import { execa, execaSync } from 'execa';
-// import { cpus } from 'node:os';
+import { cpus } from 'node:os';
 import { createRequire } from 'node:module';
 import { targets as allTargets, fuzzyMatchTarget } from './utils.js';
 // import { scanEnums } from './const-enum.js';
+import prettyBytes from 'pretty-bytes';
 
 const require = createRequire(import.meta.url);
 const args = minimist(process.argv.slice(2));
@@ -41,7 +42,10 @@ const prodOnly = !devOnly && (args.prodOnly || args.p);
 const sourceMap = args.sourcemap || args.s;
 const isRelease = args.release;
 const buildAllMatching = args.all || args.a;
-const commit = execaSync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7);
+const writeSize = args.size;
+const commit = execaSync('git', ['rev-parse', '--short=7', 'HEAD']).stdout;
+
+const sizeDir = path.resolve('temp/size');
 
 run();
 
@@ -52,7 +56,7 @@ async function run() {
       ? fuzzyMatchTarget(targets, buildAllMatching)
       : allTargets;
     await buildAll(resolvedTargets);
-    checkAllSizes(resolvedTargets);
+    await checkAllSizes(resolvedTargets);
     // if (buildTypes) {
     //   await execa(
     //     'pnpm',
@@ -68,8 +72,8 @@ async function run() {
 }
 
 async function buildAll(targets) {
-  // await runParallel(cpus().length, targets, build);
-  await runParallel(1, targets, build);
+  await runParallel(cpus().length, targets, build);
+  // await runParallel(1, targets, build);
 }
 
 async function runParallel(maxConcurrency, source, iteratorFn) {
@@ -106,6 +110,7 @@ async function build(target) {
 
   const env =
     (pkg.buildOptions && pkg.buildOptions.env) || (devOnly ? 'development' : 'production');
+
   await execa(
     'rollup',
     [
@@ -127,44 +132,55 @@ async function build(target) {
   );
 }
 
-function checkAllSizes(targets) {
+async function checkAllSizes(targets) {
   if (devOnly || (formats && !formats.includes('global'))) {
     return;
   }
   console.log();
   for (const target of targets) {
-    checkSize(target);
+    await checkSize(target);
   }
   console.log();
 }
 
-function checkSize(target) {
+async function checkSize(target) {
   const pkgDir = path.resolve(`packages/${target}`);
 
   // EP: this only makes sense for build system debugging,
   // not for evaluating the size of source or applications.
-  checkFileSize(`${pkgDir}/dist/${target}.esm-bundler.js`);
+  await checkFileSize(`${pkgDir}/dist/${target}.esm-bundler.js`);
 
-  // checkFileSize(`${pkgDir}/dist/${target}.global.prod.js`);
   // if (!formats || formats.includes('global-runtime')) {
-  //   checkFileSize(`${pkgDir}/dist/${target}.runtime.global.prod.js`);
+  //   await checkFileSize(`${pkgDir}/dist/${target}.runtime.global.prod.js`);
   // }
 }
 
-function checkFileSize(filePath) {
+async function checkFileSize(filePath) {
   if (!existsSync(filePath)) {
     return;
   }
-  const file = readFileSync(filePath);
-  const minSize = (file.length / 1024).toFixed(2) + 'kb';
+  const file = await fs.readFile(filePath);
+  const fileName = path.basename(filePath);
+
   const gzipped = gzipSync(file);
-  const gzippedSize = (gzipped.length / 1024).toFixed(2) + 'kb';
-  const compressed = brotliCompressSync(file);
-  // @ts-ignore
-  const compressedSize = (compressed.length / 1024).toFixed(2) + 'kb';
+  const brotli = brotliCompressSync(file);
+
   console.log(
-    `${pico.gray(
-      pico.bold(path.basename(filePath))
-    )} min:${minSize} / gzip:${gzippedSize} / brotli:${compressedSize}`
+    `${pico.gray(pico.bold(fileName))} min:${prettyBytes(file.length)} / gzip:${prettyBytes(
+      gzipped.length
+    )} / brotli:${prettyBytes(brotli.length)}`
   );
+
+  if (writeSize) {
+    await fs.writeFile(
+      path.resolve(sizeDir, `${fileName}.json`),
+      JSON.stringify({
+        file: fileName,
+        size: file.length,
+        gzip: gzipped.length,
+        brotli: brotli.length
+      }),
+      'utf-8'
+    );
+  }
 }
