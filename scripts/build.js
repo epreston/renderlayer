@@ -24,7 +24,7 @@ import { existsSync, readFileSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import minimist from 'minimist';
 import { gzipSync, brotliCompressSync } from 'node:zlib';
-import chalk from 'chalk';
+import pico from 'picocolors';
 import { execa, execaSync } from 'execa';
 // import { cpus } from 'node:os';
 import { createRequire } from 'node:module';
@@ -163,8 +163,8 @@ function checkFileSize(filePath) {
   // @ts-ignore
   const compressedSize = (compressed.length / 1024).toFixed(2) + 'kb';
   console.log(
-    `${chalk.gray(
-      chalk.bold(path.basename(filePath))
+    `${pico.gray(
+      pico.bold(path.basename(filePath))
     )} min:${minSize} / gzip:${gzippedSize} / brotli:${compressedSize}`
   );
 }

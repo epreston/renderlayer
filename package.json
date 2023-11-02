@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "name": "@renderlayer/monorepo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "3D Rendering Layer for the Web",
   "workspaces": [
     "packages/*",
@@ -38,6 +38,7 @@
     "jsdom": "^22.1.0",
     "minimist": "^1.2.8",
     "msw": "^2.0.2",
+    "picocolors": "^1.0.0",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "rollup-plugin-dts": "^6.1.0",

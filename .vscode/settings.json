@@ -163,6 +163,7 @@
     "iife",
     "mswjs",
     "onwarn",
+    "picocolors",
     "pluginutils",
     "rgbe",
     "unproject"
