@@ -12,7 +12,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "check": "node scripts/circular.js",
-    "check-types": "tsc --project tsconfig.json --allowJs --checkJs --noEmit",
+    "check-types": "tsc --project tsconfig.json --incremental --allowJs --checkJs --noEmit",
     "clean": "rimraf -g packages/*/dist temp .eslintcache",
     "meta": "node scripts/meta.js",
     "size": "cd apps/size-check && vite build && node brotli",
@@ -24,12 +24,10 @@
     "format-fix": "prettier --write --cache \"**/*.[tj]s?(x)\""
   },
   "devDependencies": {
-    "@babel/parser": "^7.23.0",
     "@rollup/plugin-alias": "^5.0.1",
     "@rollup/plugin-json": "^6.0.1",
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-terser": "^0.4.4",
-    "@vitest/browser": "^0.34.6",
     "@vitest/coverage-v8": "^0.34.6",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
@@ -41,9 +39,9 @@
     "prettier": "^3.0.3",
     "pretty-bytes": "^6.1.1",
     "rimraf": "^5.0.5",
-    "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-esbuild": "^6.1.0",
     "rollup-shader-chunks": "^1.1.0",
+    "typescript": "^5.2.2",
     "vite": "^4.5.0",
     "vitest": "^0.34.6"
   },
