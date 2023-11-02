@@ -1,167 +1,174 @@
-import { rest } from 'msw';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import { http, HttpResponse } from 'msw';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export const handlers = [
   // GLTFLoader
-  rest.get('http://renderlayer.org/test/gltf/:fileName', (req, res, ctx) => {
-    const { fileName } = req.params;
+  http.get('http://renderlayer.org/test/gltf/:fileName', (info) => {
+    const { fileName } = info.params;
     const resolvedFileName = path.resolve(__dirname, `../fixtures/${fileName}`);
 
     if (!fs.existsSync(resolvedFileName)) {
       console.warn(`missing test file: ${fileName}`);
 
       // prettier-ignore
-      return res(
-        ctx.status(404),
-        ctx.json({ errorMessage: `File '${fileName}' not found.` })
+      return HttpResponse.json(
+        { errorMessage: `File '${fileName}' not found.` },
+        { status: 404 }
       );
     }
 
     const fileBuffer = fs.readFileSync(resolvedFileName);
 
-    return res(
-      ctx.set('Content-Length', fileBuffer.byteLength.toString()),
-      ctx.set('Content-Type', 'model/gltf+json'),
-      ctx.body(fileBuffer)
-    );
+    return new HttpResponse(fileBuffer, {
+      headers: {
+        'Content-Length': fileBuffer.byteLength.toString(),
+        'Content-Type': 'model/gltf+json'
+      }
+    });
   }),
   // ImageLoader
-  rest.get('http://renderlayer.org/test/png/:fileName', (req, res, ctx) => {
-    const { fileName } = req.params;
+  http.get('http://renderlayer.org/test/png/:fileName', (info) => {
+    const { fileName } = info.params;
     const resolvedFileName = path.resolve(__dirname, `../fixtures/${fileName}`);
 
     if (!fs.existsSync(resolvedFileName)) {
       console.warn(`missing test file: ${fileName}`);
 
       // prettier-ignore
-      return res(
-        ctx.status(404),
-        ctx.json({ errorMessage: `File '${fileName}' not found.` })
+      return HttpResponse.json(
+        { errorMessage: `File '${fileName}' not found.` },
+        { status: 404 }
       );
     }
 
     const fileBuffer = fs.readFileSync(resolvedFileName);
 
-    return res(
-      ctx.set('Content-Length', fileBuffer.byteLength.toString()),
-      ctx.set('Content-Type', 'image/png'),
-      ctx.body(fileBuffer)
-    );
+    return new HttpResponse(fileBuffer, {
+      headers: {
+        'Content-Length': fileBuffer.byteLength.toString(),
+        'Content-Type': 'image/png'
+      }
+    });
   }),
   // TextureLoader
-  rest.get('http://renderlayer.org/test/jpeg/:fileName', (req, res, ctx) => {
-    const { fileName } = req.params;
+  http.get('http://renderlayer.org/test/jpeg/:fileName', (info) => {
+    const { fileName } = info.params;
     const resolvedFileName = path.resolve(__dirname, `../fixtures/${fileName}`);
 
     if (!fs.existsSync(resolvedFileName)) {
       console.warn(`missing test file: ${fileName}`);
 
       // prettier-ignore
-      return res(
-        ctx.status(404),
-        ctx.json({ errorMessage: `File '${fileName}' not found.` })
+      return HttpResponse.json(
+        { errorMessage: `File '${fileName}' not found.` },
+        { status: 404 }
       );
     }
 
     const fileBuffer = fs.readFileSync(resolvedFileName);
 
-    return res(
-      ctx.set('Content-Length', fileBuffer.byteLength.toString()),
-      ctx.set('Content-Type', 'image/jpeg'),
-      ctx.body(fileBuffer)
-    );
+    return new HttpResponse(fileBuffer, {
+      headers: {
+        'Content-Length': fileBuffer.byteLength.toString(),
+        'Content-Type': 'image/jpeg'
+      }
+    });
   }),
   // FileLoader
-  rest.get('http://renderlayer.org/test/bin/:fileName', (req, res, ctx) => {
-    const { fileName } = req.params;
+  http.get('http://renderlayer.org/test/bin/:fileName', (info) => {
+    const { fileName } = info.params;
     const resolvedFileName = path.resolve(__dirname, `../fixtures/${fileName}`);
 
     if (!fs.existsSync(resolvedFileName)) {
       console.warn(`missing test file: ${fileName}`);
 
       // prettier-ignore
-      return res(
-        ctx.status(404),
-        ctx.json({ errorMessage: `File '${fileName}' not found.` })
+      return HttpResponse.json(
+        { errorMessage: `File '${fileName}' not found.` },
+        { status: 404 }
       );
     }
 
     const fileBuffer = fs.readFileSync(resolvedFileName);
 
-    return res(
-      ctx.set('Content-Length', fileBuffer.byteLength.toString()),
-      ctx.set('Content-Type', 'application/octet-stream'),
-      ctx.body(fileBuffer)
-    );
+    return new HttpResponse(fileBuffer, {
+      headers: {
+        'Content-Length': fileBuffer.byteLength.toString(),
+        'Content-Type': 'application/octet-stream'
+      }
+    });
   }),
   // Binary GLB
-  rest.get('http://renderlayer.org/test/glb/:fileName', (req, res, ctx) => {
-    const { fileName } = req.params;
+  http.get('http://renderlayer.org/test/glb/:fileName', (info) => {
+    const { fileName } = info.params;
     const resolvedFileName = path.resolve(__dirname, `../fixtures/${fileName}`);
 
     if (!fs.existsSync(resolvedFileName)) {
       console.warn(`missing test file: ${fileName}`);
 
       // prettier-ignore
-      return res(
-        ctx.status(404),
-        ctx.json({ errorMessage: `File '${fileName}' not found.` })
+      return HttpResponse.json(
+        { errorMessage: `File '${fileName}' not found.` },
+        { status: 404 }
       );
     }
 
     const fileBuffer = fs.readFileSync(resolvedFileName);
 
-    return res(
-      ctx.set('Content-Length', fileBuffer.byteLength.toString()),
-      ctx.set('Content-Type', 'model/gltf-binary'),
-      ctx.body(fileBuffer)
-    );
+    return new HttpResponse(fileBuffer, {
+      headers: {
+        'Content-Length': fileBuffer.byteLength.toString(),
+        'Content-Type': 'model/gltf-binary'
+      }
+    });
   }),
   // webp
-  rest.get('http://renderlayer.org/test/webp/:fileName', (req, res, ctx) => {
-    const { fileName } = req.params;
+  http.get('http://renderlayer.org/test/webp/:fileName', (info) => {
+    const { fileName } = info.params;
     const resolvedFileName = path.resolve(__dirname, `../fixtures/${fileName}`);
 
     if (!fs.existsSync(resolvedFileName)) {
       console.warn(`missing test file: ${fileName}`);
 
       // prettier-ignore
-      return res(
-        ctx.status(404),
-        ctx.json({ errorMessage: `File '${fileName}' not found.` })
+      return HttpResponse.json(
+        { errorMessage: `File '${fileName}' not found.` },
+        { status: 404 }
       );
     }
 
     const fileBuffer = fs.readFileSync(resolvedFileName);
 
-    return res(
-      ctx.set('Content-Length', fileBuffer.byteLength.toString()),
-      ctx.set('Content-Type', 'image/webp'),
-      ctx.body(fileBuffer)
-    );
+    return new HttpResponse(fileBuffer, {
+      headers: {
+        'Content-Length': fileBuffer.byteLength.toString(),
+        'Content-Type': 'image/webp'
+      }
+    });
   }),
   // JSON - BufferGeometryLoader, FileLoader
-  rest.get('http://renderlayer.org/test/json/:fileName', (req, res, ctx) => {
-    const { fileName } = req.params;
+  http.get('http://renderlayer.org/test/json/:fileName', (info) => {
+    const { fileName } = info.params;
     const resolvedFileName = path.resolve(__dirname, `../fixtures/${fileName}`);
 
     if (!fs.existsSync(resolvedFileName)) {
       console.warn(`missing test file: ${fileName}`);
 
       // prettier-ignore
-      return res(
-        ctx.status(404),
-        ctx.json({ errorMessage: `File '${fileName}' not found.` })
+      return HttpResponse.json(
+        { errorMessage: `File '${fileName}' not found.` },
+        { status: 404 }
       );
     }
 
     const fileBuffer = fs.readFileSync(resolvedFileName);
 
-    return res(
-      ctx.set('Content-Length', fileBuffer.byteLength.toString()),
-      ctx.set('Content-Type', 'application/json'),
-      ctx.body(fileBuffer)
-    );
+    return new HttpResponse(fileBuffer, {
+      headers: {
+        'Content-Length': fileBuffer.byteLength.toString(),
+        'Content-Type': 'application/json'
+      }
+    });
   })
 ];
