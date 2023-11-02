@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-// will return url, see vite.config.js and this app's global.d.ts
+// will return url, see vitest.config.js and this app's global.d.ts
 import gblFile from './assets/spriggen-opt-compress.glb';
 import hdrFile from './skybox/paul_lobe_haus_2k.hdr';
 

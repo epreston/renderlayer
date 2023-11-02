@@ -1,4 +1,4 @@
-// will return url, see vite.config.js and this app's global.d.ts
+// will return url, see vitest.config.js and this app's global.d.ts
 import hdrFile from './skybox/paul_lobe_haus_2k.hdr';
 
 // shaders
