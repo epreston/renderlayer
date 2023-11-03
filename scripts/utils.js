@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
-// @ts-check
 
 // based on vue/core mono repo build system
 
 import fs from 'node:fs';
-import pico from 'picocolors';
 import { createRequire } from 'node:module';
+
+import pico from 'picocolors';
 
 const require = createRequire(import.meta.url);
 
