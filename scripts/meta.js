@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// @ts-check
 
 // based on vue/core mono repo build system
 
@@ -14,17 +13,17 @@ npm run check test
 ```
 */
 
+// import { cpus } from 'node:os';
+import { existsSync } from 'node:fs';
+import fs from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { build } from 'esbuild';
 import minimist from 'minimist';
 
-// import { cpus } from 'node:os';
-import { createRequire } from 'node:module';
 import { targets as allTargets, fuzzyMatchTarget } from './utils.js';
-
-import fs from 'node:fs/promises';
-import { existsSync } from 'node:fs';
-import { build } from 'esbuild';
-import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const args = minimist(process.argv.slice(2));
