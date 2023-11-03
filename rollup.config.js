@@ -69,7 +69,6 @@ const outputConfigs = {
   // }
 };
 
-// const defaultFormats = ['esm-bundler', 'cjs'];
 const defaultFormats = ['esm-bundler'];
 const inlineFormats = process.env.FORMATS && process.env.FORMATS.split(',');
 const packageFormats = inlineFormats || packageOptions.formats || defaultFormats;
@@ -193,7 +192,7 @@ function createConfig(format, output, plugins = []) {
     if (isBundlerESMBuild) {
       Object.assign(replacements, {
         // preserve to be handled by bundlers
-        __DEV__: `process.env.NODE_ENV !== 'production'`
+        __DEV__: `!!(process.env.NODE_ENV !== 'production')`
       });
     }
 
