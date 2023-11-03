@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// @ts-check
 
 // based on vue/core mono repo build system
 
@@ -11,26 +10,27 @@ formats to output (defaults to `buildOptions.formats` specified in that package,
 or "esm"):
 
 ```
-# name supports fuzzy match. will build all packages with name containing "dom":
-nr build dom
+# name supports fuzzy match. will build all packages with name containing "math":
+npm run build math
 
 # specify the format to output
-nr build core --formats esm
+npm run build math --formats esm
 ```
 */
 
-import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import path from 'node:path';
-import minimist from 'minimist';
-import { gzipSync, brotliCompressSync } from 'node:zlib';
-import pico from 'picocolors';
-import { execa, execaSync } from 'execa';
-import { cpus } from 'node:os';
+import fs from 'node:fs/promises';
 import { createRequire } from 'node:module';
-import { targets as allTargets, fuzzyMatchTarget } from './utils.js';
-// import { scanEnums } from './const-enum.js';
+import { cpus } from 'node:os';
+import path from 'node:path';
+import { brotliCompressSync, gzipSync } from 'node:zlib';
+
+import { execa, execaSync } from 'execa';
+import minimist from 'minimist';
+import pico from 'picocolors';
 import prettyBytes from 'pretty-bytes';
+
+import { targets as allTargets, fuzzyMatchTarget } from './utils.js';
 
 const require = createRequire(import.meta.url);
 const args = minimist(process.argv.slice(2));
@@ -38,36 +38,24 @@ const targets = args._;
 const formats = args.formats || args.f;
 const devOnly = args.devOnly || args.d;
 const prodOnly = !devOnly && (args.prodOnly || args.p);
-// const buildTypes = args.withTypes || args.t;
 const sourceMap = args.sourcemap || args.s;
 const isRelease = args.release;
 const buildAllMatching = args.all || args.a;
 const writeSize = args.size;
 const commit = execaSync('git', ['rev-parse', '--short=7', 'HEAD']).stdout;
-
 const sizeDir = path.resolve('temp/size');
 
 run();
 
 async function run() {
-  // const removeCache = scanEnums();
   try {
     const resolvedTargets = targets.length
       ? fuzzyMatchTarget(targets, buildAllMatching)
       : allTargets;
     await buildAll(resolvedTargets);
     await checkAllSizes(resolvedTargets);
-    // if (buildTypes) {
-    //   await execa(
-    //     'pnpm',
-    //     ['run', 'build-dts', ...(targets.length ? ['--environment', `TARGETS:${resolvedTargets.join(',')}`] : [])],
-    //     {
-    //       stdio: 'inherit',
-    //     }
-    //   );
-    // }
   } finally {
-    // removeCache();
+    // cleanup
   }
 }
 
