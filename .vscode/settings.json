@@ -164,6 +164,8 @@
     "iife",
     "mswjs",
     "onwarn",
+    "outdir",
+    "outfile",
     "picocolors",
     "pluginutils",
     "rgbe",
