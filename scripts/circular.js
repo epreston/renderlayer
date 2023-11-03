@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// @ts-check
 
 // based on vue/core mono repo build system
 
@@ -14,12 +13,13 @@ npm run check test
 ```
 */
 
-import path from 'node:path';
-import minimist from 'minimist';
-
-import { execa } from 'execa';
 // import { cpus } from 'node:os';
 import { createRequire } from 'node:module';
+import path from 'node:path';
+
+import { execa } from 'execa';
+import minimist from 'minimist';
+
 import { targets as allTargets, fuzzyMatchTarget } from './utils.js';
 
 const require = createRequire(import.meta.url);
@@ -43,6 +43,7 @@ async function run() {
 }
 
 async function checkAll(targets) {
+  // will jumble console output but is very fast
   // await runParallel(cpus().length, targets, check);
 
   await runParallel(1, targets, check);
