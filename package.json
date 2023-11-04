@@ -13,6 +13,7 @@
     "root": true,
     "extends": "@epreston/eslint-config"
   },
+  "prettier": "@epreston/prettier-config",
   "scripts": {
     "build": "node scripts/build.js",
     "check": "node scripts/circular.js",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@epreston/eslint-config": "^1.1.0",
+    "@epreston/prettier-config": "^1.0.0",
     "@epreston/tsconfig": "^1.0.1",
     "@rollup/plugin-alias": "^5.0.1",
     "@rollup/plugin-json": "^6.0.1",
