@@ -9,6 +9,10 @@
     "apps/*"
   ],
   "browserslist": "Chrome >= 112, ChromeAndroid >= 112, Edge >= 112, Firefox >= 112, FirefoxAndroid  >= 112,  Safari >= 16.4, iOS >= 16.4, not dead",
+  "eslintConfig": {
+    "root": true,
+    "extends": "@epreston/eslint-config"
+  },
   "scripts": {
     "build": "node scripts/build.js",
     "check": "node scripts/circular.js",
@@ -24,14 +28,14 @@
     "format-fix": "prettier --write --cache \"**/*.[tj]s?(x)\""
   },
   "devDependencies": {
+    "@epreston/eslint-config": "^1.1.0",
     "@epreston/tsconfig": "^1.0.1",
     "@rollup/plugin-alias": "^5.0.1",
     "@rollup/plugin-json": "^6.0.1",
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-terser": "^0.4.4",
     "@vitest/coverage-v8": "^0.34.6",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^9.0.0",
+    "eslint": "^8.53.0",
     "execa": "^8.0.1",
     "jsdom": "^22.1.0",
     "minimist": "^1.2.8",
@@ -41,7 +45,7 @@
     "pretty-bytes": "^6.1.1",
     "rimraf": "^5.0.5",
     "rollup-plugin-esbuild": "^6.1.0",
-    "rollup-shader-chunks": "^1.1.0",
+    "rollup-shader-chunks": "^1.1.1",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
     "vitest": "^0.34.6"
