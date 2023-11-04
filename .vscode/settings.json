@@ -163,12 +163,14 @@
     "estree",
     "iife",
     "mswjs",
+    "nonconstructor",
     "onwarn",
     "outdir",
     "outfile",
     "picocolors",
     "pluginutils",
     "rgbe",
-    "unproject"
+    "unproject",
+    "vars"
   ]
 }
