@@ -2,36 +2,13 @@
 
 # Windows and OSX Specific System Files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-*.swp
-ehthumbs.db
-Thumbs.db
-Icon\?
 
 # dotenv environment variable files
 .env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
 
 # Logs
-logs
 *.log
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
 
 # Dependency directories
 node_modules
@@ -44,32 +21,15 @@ coverage
 
 # Distribution Directory
 dist/*
-dist-ssr
 
 # Optional eslint cache
 .eslintcache
 
-# Optional stylelint cache
-.stylelintcache
-
 # TypeScript cache
 *.tsbuildinfo
 
-# Yarn Integrity file
-.yarn-integrity
-
-# yarn v2
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
-
 # VS Code Counter Extension
 .VSCodeCounter
-
-# Rollup Visualizer
-stats.html
 
 # Private working notes
 /notes
