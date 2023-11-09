@@ -1,16 +1,5 @@
 // Do not export
 
-// same as Array.prototype.slice, but also works on typed arrays
-function arraySlice(array, from, to) {
-  if (isTypedArray(array)) {
-    // in ios9 array.subarray(from, undefined) will return empty array
-    // but array.subarray(from) or array.subarray(from, len) is correct
-    return new array.constructor(array.subarray(from, to !== undefined ? to : array.length));
-  }
-
-  return array.slice(from, to);
-}
-
 // converts an array to a specific type
 function convertArray(array, type, forceClone) {
   if (
@@ -30,4 +19,4 @@ function isTypedArray(object) {
   return ArrayBuffer.isView(object) && !(object instanceof DataView);
 }
 
-export { arraySlice, convertArray, isTypedArray };
+export { convertArray, isTypedArray };

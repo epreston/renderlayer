@@ -1,12 +1,6 @@
 import { InterpolateSmooth, InterpolateLinear, InterpolateDiscrete } from '@renderlayer/shared';
 import { DiscreteInterpolant, LinearInterpolant, CubicInterpolant, QuaternionLinearInterpolant } from '@renderlayer/interpolants';
 
-function arraySlice(array, from, to) {
-  if (isTypedArray(array)) {
-    return new array.constructor(array.subarray(from, to !== void 0 ? to : array.length));
-  }
-  return array.slice(from, to);
-}
 function convertArray(array, type, forceClone) {
   if (!array || // let 'undefined' and 'null' pass
   !forceClone && array.constructor === type)
@@ -142,8 +136,8 @@ class KeyframeTrack {
         from = to - 1;
       }
       const stride = this.getValueSize();
-      this.times = arraySlice(times, from, to);
-      this.values = arraySlice(this.values, from * stride, to * stride);
+      this.times = times.slice(from, to);
+      this.values = this.values.slice(from * stride, to * stride);
     }
     return this;
   }
@@ -192,7 +186,7 @@ class KeyframeTrack {
   // removes equivalent sequential keys as common in morph target sequences
   // (0,0,0,0,1,1,1,0,0,0,0,0,0,0) --> (0,0,1,1,0,0)
   optimize() {
-    const times = arraySlice(this.times), values = arraySlice(this.values), stride = this.getValueSize(), smoothInterpolation = this.getInterpolation() === InterpolateSmooth, lastIndex = times.length - 1;
+    const times = this.times.slice(), values = this.values.slice(), stride = this.getValueSize(), smoothInterpolation = this.getInterpolation() === InterpolateSmooth, lastIndex = times.length - 1;
     let writeIndex = 1;
     for (let i = 1; i < lastIndex; ++i) {
       let keep = false;
@@ -231,8 +225,8 @@ class KeyframeTrack {
       ++writeIndex;
     }
     if (writeIndex !== times.length) {
-      this.times = arraySlice(times, 0, writeIndex);
-      this.values = arraySlice(values, 0, writeIndex * stride);
+      this.times = times.slice(0, writeIndex);
+      this.values = values.slice(0, writeIndex * stride);
     } else {
       this.times = times;
       this.values = values;
@@ -241,8 +235,8 @@ class KeyframeTrack {
   }
   /** @returns {this} */
   clone() {
-    const times = arraySlice(this.times, 0);
-    const values = arraySlice(this.values, 0);
+    const times = this.times.slice();
+    const values = this.values.slice();
     const track = new this.constructor(this.name, times, values);
     track.createInterpolant = this.createInterpolant;
     return track;

@@ -181,8 +181,8 @@ class KeyframeTrack {
       }
 
       const stride = this.getValueSize();
-      this.times = KeyframeUtils.arraySlice(times, from, to);
-      this.values = KeyframeUtils.arraySlice(this.values, from * stride, to * stride);
+      this.times = times.slice(from, to);
+      this.values = this.values.slice(from * stride, to * stride);
     }
 
     return this;
@@ -248,8 +248,8 @@ class KeyframeTrack {
   // (0,0,0,0,1,1,1,0,0,0,0,0,0,0) --> (0,0,1,1,0,0)
   optimize() {
     // times or values may be shared with other tracks, so overwriting is unsafe
-    const times = KeyframeUtils.arraySlice(this.times),
-      values = KeyframeUtils.arraySlice(this.values),
+    const times = this.times.slice(),
+      values = this.values.slice(),
       stride = this.getValueSize(),
       smoothInterpolation = this.getInterpolation() === InterpolateSmooth,
       lastIndex = times.length - 1;
@@ -320,8 +320,8 @@ class KeyframeTrack {
     }
 
     if (writeIndex !== times.length) {
-      this.times = KeyframeUtils.arraySlice(times, 0, writeIndex);
-      this.values = KeyframeUtils.arraySlice(values, 0, writeIndex * stride);
+      this.times = times.slice(0, writeIndex);
+      this.values = values.slice(0, writeIndex * stride);
     } else {
       this.times = times;
       this.values = values;
@@ -332,8 +332,8 @@ class KeyframeTrack {
 
   /** @returns {this} */
   clone() {
-    const times = KeyframeUtils.arraySlice(this.times, 0);
-    const values = KeyframeUtils.arraySlice(this.values, 0);
+    const times = this.times.slice();
+    const values = this.values.slice();
 
     const track = new this.constructor(this.name, times, values);
 

@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/keyframes",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "@renderlayer/keyframes",
   "module": "./dist/keyframes.esm-bundler.js",
   "exports": "./dist/keyframes.esm-bundler.js",
