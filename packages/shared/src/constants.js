@@ -39,6 +39,10 @@ export const OneMinusDstAlphaFactor = 207;
 export const DstColorFactor = 208;
 export const OneMinusDstColorFactor = 209;
 export const SrcAlphaSaturateFactor = 210;
+export const ConstantColorFactor = 211;
+export const OneMinusConstantColorFactor = 212;
+export const ConstantAlphaFactor = 213;
+export const OneMinusConstantAlphaFactor = 214;
 
 export const NeverDepth = 0;
 export const AlwaysDepth = 1;
@@ -59,6 +63,9 @@ export const ReinhardToneMapping = 2;
 export const CineonToneMapping = 3;
 export const ACESFilmicToneMapping = 4;
 export const CustomToneMapping = 5;
+
+export const AttachedBindMode = 'attached';
+export const DetachedBindMode = 'detached';
 
 export const UVMapping = 300;
 export const CubeReflectionMapping = 301;
@@ -178,6 +185,12 @@ export const SRGBColorSpace = 'srgb';
 export const LinearSRGBColorSpace = 'srgb-linear';
 export const DisplayP3ColorSpace = 'display-p3';
 export const LinearDisplayP3ColorSpace = 'display-p3-linear';
+
+export const LinearTransfer = 'linear';
+export const SRGBTransfer = 'srgb';
+
+export const Rec709Primaries = 'rec709';
+export const P3Primaries = 'p3';
 
 export const ZeroStencilOp = 0;
 export const KeepStencilOp = 7680;

@@ -46,6 +46,10 @@ describe('Shared', () => {
       expect(Constants.DstColorFactor).toBe(208);
       expect(Constants.OneMinusDstColorFactor).toBe(209);
       expect(Constants.SrcAlphaSaturateFactor).toBe(210);
+      expect(Constants.ConstantColorFactor).toBe(211);
+      expect(Constants.OneMinusConstantColorFactor).toBe(212);
+      expect(Constants.ConstantAlphaFactor).toBe(213);
+      expect(Constants.OneMinusConstantAlphaFactor).toBe(214);
 
       expect(Constants.NeverDepth).toBe(0);
       expect(Constants.AlwaysDepth).toBe(1);
@@ -66,6 +70,9 @@ describe('Shared', () => {
       expect(Constants.CineonToneMapping).toBe(3);
       expect(Constants.ACESFilmicToneMapping).toBe(4);
       expect(Constants.CustomToneMapping).toBe(5);
+
+      expect(Constants.AttachedBindMode).toBe('attached');
+      expect(Constants.DetachedBindMode).toBe('detached');
 
       expect(Constants.UVMapping).toBe(300);
       expect(Constants.CubeReflectionMapping).toBe(301);
@@ -175,6 +182,12 @@ describe('Shared', () => {
       expect(Constants.LinearSRGBColorSpace).toBe('srgb-linear');
       expect(Constants.DisplayP3ColorSpace).toBe('display-p3');
       expect(Constants.LinearDisplayP3ColorSpace).toBe('display-p3-linear');
+
+      expect(Constants.LinearTransfer).toBe('linear');
+      expect(Constants.SRGBTransfer).toBe('srgb');
+
+      expect(Constants.Rec709Primaries).toBe('rec709');
+      expect(Constants.P3Primaries).toBe('p3');
 
       expect(Constants.ZeroStencilOp).toBe(0);
       expect(Constants.KeepStencilOp).toBe(7680);
