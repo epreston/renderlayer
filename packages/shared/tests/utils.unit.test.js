@@ -30,17 +30,17 @@ describe('Shared', () => {
     });
 
     test('getTypedArray', () => {
-      expect(getTypedArray('Int8Array', new ArrayBuffer())).toBeInstanceOf(Int8Array);
-      expect(getTypedArray('Uint8Array', new ArrayBuffer())).toBeInstanceOf(Uint8Array);
-      expect(getTypedArray('Uint8ClampedArray', new ArrayBuffer())).toBeInstanceOf(
+      expect(getTypedArray('Int8Array', new ArrayBuffer(0))).toBeInstanceOf(Int8Array);
+      expect(getTypedArray('Uint8Array', new ArrayBuffer(0))).toBeInstanceOf(Uint8Array);
+      expect(getTypedArray('Uint8ClampedArray', new ArrayBuffer(0))).toBeInstanceOf(
         Uint8ClampedArray
       );
-      expect(getTypedArray('Int16Array', new ArrayBuffer())).toBeInstanceOf(Int16Array);
-      expect(getTypedArray('Uint16Array', new ArrayBuffer())).toBeInstanceOf(Uint16Array);
-      expect(getTypedArray('Int32Array', new ArrayBuffer())).toBeInstanceOf(Int32Array);
-      expect(getTypedArray('Uint32Array', new ArrayBuffer())).toBeInstanceOf(Uint32Array);
-      expect(getTypedArray('Float32Array', new ArrayBuffer())).toBeInstanceOf(Float32Array);
-      expect(getTypedArray('Float64Array', new ArrayBuffer())).toBeInstanceOf(Float64Array);
+      expect(getTypedArray('Int16Array', new ArrayBuffer(0))).toBeInstanceOf(Int16Array);
+      expect(getTypedArray('Uint16Array', new ArrayBuffer(0))).toBeInstanceOf(Uint16Array);
+      expect(getTypedArray('Int32Array', new ArrayBuffer(0))).toBeInstanceOf(Int32Array);
+      expect(getTypedArray('Uint32Array', new ArrayBuffer(0))).toBeInstanceOf(Uint32Array);
+      expect(getTypedArray('Float32Array', new ArrayBuffer(0))).toBeInstanceOf(Float32Array);
+      expect(getTypedArray('Float64Array', new ArrayBuffer(0))).toBeInstanceOf(Float64Array);
     });
   });
 });
