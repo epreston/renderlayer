@@ -14,6 +14,8 @@ import { Scene } from '@renderlayer/scenes';
 vi.mock('@renderlayer/renderers', () => {
   const WebGLRenderer = vi.fn();
   WebGLRenderer.prototype.coordinateSystem = WebGLCoordinateSystem;
+  WebGLRenderer.prototype.getActiveCubeFace = vi.fn();
+  WebGLRenderer.prototype.getActiveMipmapLevel = vi.fn();
   WebGLRenderer.prototype.getRenderTarget = vi.fn();
   WebGLRenderer.prototype.setRenderTarget = vi.fn();
   WebGLRenderer.prototype.render = vi.fn();

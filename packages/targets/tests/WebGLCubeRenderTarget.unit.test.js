@@ -37,6 +37,8 @@ describe('Targets', () => {
       const texture = new Texture();
       const renderer = {
         coordinateSystem: WebGLCoordinateSystem,
+        getActiveCubeFace: vi.fn(),
+        getActiveMipmapLevel: vi.fn(),
         getRenderTarget: vi.fn(),
         setRenderTarget: vi.fn(),
         render: vi.fn()

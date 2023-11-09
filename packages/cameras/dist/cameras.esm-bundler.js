@@ -21,9 +21,7 @@ class Camera extends Object3D {
     return this;
   }
   getWorldDirection(target) {
-    this.updateWorldMatrix(true, false);
-    const e = this.matrixWorld.elements;
-    return target.set(-e[8], -e[9], -e[10]).normalize();
+    return super.getWorldDirection(target).negate();
   }
   updateMatrixWorld(force) {
     super.updateMatrixWorld(force);
@@ -212,6 +210,7 @@ class CubeCamera extends Object3D {
     this.type = "CubeCamera";
     this.renderTarget = renderTarget;
     this.coordinateSystem = null;
+    this.activeMipmapLevel = 0;
     const cameraPX = new PerspectiveCamera(fov, aspect, near, far);
     cameraPX.layers = this.layers;
     this.add(cameraPX);
@@ -237,7 +236,20 @@ class CubeCamera extends Object3D {
     const [cameraPX, cameraNX, cameraPY, cameraNY, cameraPZ, cameraNZ] = cameras;
     for (const camera of cameras)
       this.remove(camera);
-    if (coordinateSystem === WebGPUCoordinateSystem) {
+    if (coordinateSystem === WebGLCoordinateSystem) {
+      cameraPX.up.set(0, 1, 0);
+      cameraPX.lookAt(1, 0, 0);
+      cameraNX.up.set(0, 1, 0);
+      cameraNX.lookAt(-1, 0, 0);
+      cameraPY.up.set(0, 0, -1);
+      cameraPY.lookAt(0, 1, 0);
+      cameraNY.up.set(0, 0, 1);
+      cameraNY.lookAt(0, -1, 0);
+      cameraPZ.up.set(0, 1, 0);
+      cameraPZ.lookAt(0, 0, 1);
+      cameraNZ.up.set(0, 1, 0);
+      cameraNZ.lookAt(0, 0, -1);
+    } else if (coordinateSystem === WebGPUCoordinateSystem) {
       cameraPX.up.set(0, -1, 0);
       cameraPX.lookAt(-1, 0, 0);
       cameraNX.up.set(0, -1, 0);
@@ -251,18 +263,9 @@ class CubeCamera extends Object3D {
       cameraNZ.up.set(0, -1, 0);
       cameraNZ.lookAt(0, 0, -1);
     } else {
-      cameraPX.up.set(0, 1, 0);
-      cameraPX.lookAt(1, 0, 0);
-      cameraNX.up.set(0, 1, 0);
-      cameraNX.lookAt(-1, 0, 0);
-      cameraPY.up.set(0, 0, -1);
-      cameraPY.lookAt(0, 1, 0);
-      cameraNY.up.set(0, 0, 1);
-      cameraNY.lookAt(0, -1, 0);
-      cameraPZ.up.set(0, 1, 0);
-      cameraPZ.lookAt(0, 0, 1);
-      cameraNZ.up.set(0, 1, 0);
-      cameraNZ.lookAt(0, 0, -1);
+      throw new Error(
+        "CubeCamera.updateCoordinateSystem(): Invalid coordinate system: " + coordinateSystem
+      );
     }
     for (const camera of cameras) {
       this.add(camera);
@@ -272,29 +275,31 @@ class CubeCamera extends Object3D {
   update(renderer, scene) {
     if (this.parent === null)
       this.updateMatrixWorld();
-    const renderTarget = this.renderTarget;
+    const { renderTarget, activeMipmapLevel } = this;
     if (this.coordinateSystem !== renderer.coordinateSystem) {
       this.coordinateSystem = renderer.coordinateSystem;
       this.updateCoordinateSystem();
     }
     const [cameraPX, cameraNX, cameraPY, cameraNY, cameraPZ, cameraNZ] = this.children;
     const currentRenderTarget = renderer.getRenderTarget();
+    const currentActiveCubeFace = renderer.getActiveCubeFace();
+    const currentActiveMipmapLevel = renderer.getActiveMipmapLevel();
     const generateMipmaps = renderTarget.texture.generateMipmaps;
     renderTarget.texture.generateMipmaps = false;
-    renderer.setRenderTarget(renderTarget, 0);
+    renderer.setRenderTarget(renderTarget, 0, activeMipmapLevel);
     renderer.render(scene, cameraPX);
-    renderer.setRenderTarget(renderTarget, 1);
+    renderer.setRenderTarget(renderTarget, 1, activeMipmapLevel);
     renderer.render(scene, cameraNX);
-    renderer.setRenderTarget(renderTarget, 2);
+    renderer.setRenderTarget(renderTarget, 2, activeMipmapLevel);
     renderer.render(scene, cameraPY);
-    renderer.setRenderTarget(renderTarget, 3);
+    renderer.setRenderTarget(renderTarget, 3, activeMipmapLevel);
     renderer.render(scene, cameraNY);
-    renderer.setRenderTarget(renderTarget, 4);
+    renderer.setRenderTarget(renderTarget, 4, activeMipmapLevel);
     renderer.render(scene, cameraPZ);
     renderTarget.texture.generateMipmaps = generateMipmaps;
-    renderer.setRenderTarget(renderTarget, 5);
+    renderer.setRenderTarget(renderTarget, 5, activeMipmapLevel);
     renderer.render(scene, cameraNZ);
-    renderer.setRenderTarget(currentRenderTarget);
+    renderer.setRenderTarget(currentRenderTarget, currentActiveCubeFace, currentActiveMipmapLevel);
     renderTarget.texture.needsPMREMUpdate = true;
   }
 }
