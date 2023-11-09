@@ -1,6 +1,6 @@
 import { EventDispatcher } from '@renderlayer/core';
 import { Vector4 } from '@renderlayer/math';
-import { warnOnce, NoColorSpace, LinearFilter, BackSide, NoBlending, LinearMipmapLinearFilter } from '@renderlayer/shared';
+import { LinearFilter, BackSide, NoBlending, LinearMipmapLinearFilter } from '@renderlayer/shared';
 import { Texture, Source, CubeTexture } from '@renderlayer/textures';
 import { BoxGeometry } from '@renderlayer/geometries';
 import { ShaderMaterial } from '@renderlayer/materials';
@@ -19,10 +19,19 @@ class RenderTarget extends EventDispatcher {
     this.scissorTest = false;
     this.viewport = new Vector4(0, 0, width, height);
     const image = { width, height, depth: 1 };
-    if (options.encoding !== void 0) {
-      warnOnce("WebGLRenderTarget: option.encoding has been replaced by option.colorSpace.");
-      options.colorSpace = NoColorSpace;
-    }
+    const defaults = {
+      generateMipmaps: false,
+      internalFormat: null,
+      minFilter: LinearFilter,
+      depthBuffer: true,
+      stencilBuffer: false,
+      depthTexture: null,
+      samples: 0
+    };
+    options = {
+      ...defaults,
+      ...options
+    };
     this.texture = new Texture(
       image,
       options.mapping,
@@ -37,13 +46,12 @@ class RenderTarget extends EventDispatcher {
     );
     this.texture.isRenderTargetTexture = true;
     this.texture.flipY = false;
-    this.texture.generateMipmaps = options.generateMipmaps !== void 0 ? options.generateMipmaps : false;
-    this.texture.internalFormat = options.internalFormat !== void 0 ? options.internalFormat : null;
-    this.texture.minFilter = options.minFilter !== void 0 ? options.minFilter : LinearFilter;
-    this.depthBuffer = options.depthBuffer !== void 0 ? options.depthBuffer : true;
-    this.stencilBuffer = options.stencilBuffer !== void 0 ? options.stencilBuffer : false;
-    this.depthTexture = options.depthTexture !== void 0 ? options.depthTexture : null;
-    this.samples = options.samples !== void 0 ? options.samples : 0;
+    this.texture.generateMipmaps = options.generateMipmaps;
+    this.texture.internalFormat = options.internalFormat;
+    this.depthBuffer = options.depthBuffer;
+    this.stencilBuffer = options.stencilBuffer;
+    this.depthTexture = options.depthTexture;
+    this.samples = options.samples;
   }
   setSize(width, height, depth = 1) {
     if (this.width !== width || this.height !== height || this.depth !== depth) {

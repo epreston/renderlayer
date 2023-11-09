@@ -1,13 +1,13 @@
 import { EventDispatcher } from '@renderlayer/core';
 import { Vector4 } from '@renderlayer/math';
-import { LinearFilter, NoColorSpace, warnOnce } from '@renderlayer/shared';
+import { LinearFilter } from '@renderlayer/shared';
 import { Source, Texture } from '@renderlayer/textures';
 
 /*
- In options, we can specify:
+ * In options, we can specify:
  * Texture parameters for an auto-generated target texture
  * depthBuffer/stencilBuffer: Booleans to indicate if we should generate these buffers
-*/
+ */
 class RenderTarget extends EventDispatcher {
   constructor(width = 1, height = 1, options = {}) {
     super();
@@ -25,10 +25,20 @@ class RenderTarget extends EventDispatcher {
 
     const image = { width: width, height: height, depth: 1 };
 
-    if (options.encoding !== undefined) {
-      warnOnce('WebGLRenderTarget: option.encoding has been replaced by option.colorSpace.');
-      options.colorSpace = NoColorSpace; // SRGBColorSpace : NoColorSpace;
-    }
+    const defaults = {
+      generateMipmaps: false,
+      internalFormat: null,
+      minFilter: LinearFilter,
+      depthBuffer: true,
+      stencilBuffer: false,
+      depthTexture: null,
+      samples: 0
+    };
+
+    options = {
+      ...defaults,
+      ...options
+    };
 
     this.texture = new Texture(
       image,
@@ -46,18 +56,15 @@ class RenderTarget extends EventDispatcher {
     this.texture.isRenderTargetTexture = true;
 
     this.texture.flipY = false;
-    this.texture.generateMipmaps =
-      options.generateMipmaps !== undefined ? options.generateMipmaps : false;
-    this.texture.internalFormat =
-      options.internalFormat !== undefined ? options.internalFormat : null;
-    this.texture.minFilter = options.minFilter !== undefined ? options.minFilter : LinearFilter;
+    this.texture.generateMipmaps = options.generateMipmaps;
+    this.texture.internalFormat = options.internalFormat;
 
-    this.depthBuffer = options.depthBuffer !== undefined ? options.depthBuffer : true;
-    this.stencilBuffer = options.stencilBuffer !== undefined ? options.stencilBuffer : false;
+    this.depthBuffer = options.depthBuffer;
+    this.stencilBuffer = options.stencilBuffer;
 
-    this.depthTexture = options.depthTexture !== undefined ? options.depthTexture : null;
+    this.depthTexture = options.depthTexture;
 
-    this.samples = options.samples !== undefined ? options.samples : 0;
+    this.samples = options.samples;
   }
 
   setSize(width, height, depth = 1) {
