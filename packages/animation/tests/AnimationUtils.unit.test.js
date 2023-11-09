@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import * as AnimationUtils from '../src/AnimationUtils.js';
 
@@ -6,15 +6,7 @@ import * as AnimationUtils from '../src/AnimationUtils.js';
 
 describe('Animation', () => {
   describe('AnimationUtils', () => {
-    // test.todo('arraySlice', () => {
-    //   // implement
-    // });
-
     // test.todo('convertArray', () => {
-    //   // implement
-    // });
-
-    // test.todo('isTypedArray', () => {
     //   // implement
     // });
 

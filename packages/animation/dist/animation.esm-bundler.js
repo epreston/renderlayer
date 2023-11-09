@@ -371,12 +371,6 @@ class AnimationAction {
   }
 }
 
-function arraySlice(array, from, to) {
-  if (isTypedArray(array)) {
-    return new array.constructor(array.subarray(from, to !== void 0 ? to : array.length));
-  }
-  return array.slice(from, to);
-}
 function convertArray(array, type, forceClone) {
   if (!array || // let 'undefined' and 'null' pass
   !forceClone && array.constructor === type)
@@ -385,9 +379,6 @@ function convertArray(array, type, forceClone) {
     return new type(array);
   }
   return Array.prototype.slice.call(array);
-}
-function isTypedArray(object) {
-  return ArrayBuffer.isView(object) && !(object instanceof DataView);
 }
 function getKeyframeOrder(times) {
   function compareTime(a, b) {
@@ -517,17 +508,17 @@ function makeClipAdditive(targetClip, referenceFrame = 0, referenceClip = target
     if (referenceTime <= referenceTrack.times[0]) {
       const startIndex = referenceOffset;
       const endIndex = referenceValueSize - referenceOffset;
-      referenceValue = arraySlice(referenceTrack.values, startIndex, endIndex);
+      referenceValue = referenceTrack.values.slice(startIndex, endIndex);
     } else if (referenceTime >= referenceTrack.times[lastIndex]) {
       const startIndex = lastIndex * referenceValueSize + referenceOffset;
       const endIndex = startIndex + referenceValueSize - referenceOffset;
-      referenceValue = arraySlice(referenceTrack.values, startIndex, endIndex);
+      referenceValue = referenceTrack.values.slice(startIndex, endIndex);
     } else {
       const interpolant = referenceTrack.createInterpolant();
       const startIndex = referenceOffset;
       const endIndex = referenceValueSize - referenceOffset;
       interpolant.evaluate(referenceTime);
-      referenceValue = arraySlice(interpolant.resultBuffer, startIndex, endIndex);
+      referenceValue = interpolant.resultBuffer.slice(startIndex, endIndex);
     }
     if (referenceTrackType === "quaternion") {
       const referenceQuat = new Quaternion().fromArray(referenceValue).normalize().conjugate();

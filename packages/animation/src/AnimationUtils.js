@@ -1,17 +1,6 @@
 import { Quaternion } from '@renderlayer/math';
 import { AdditiveAnimationBlendMode } from '@renderlayer/shared';
 
-// // same as Array.prototype.slice, but also works on typed arrays
-function arraySlice(array, from, to) {
-  if (isTypedArray(array)) {
-    // in ios9 array.subarray(from, undefined) will return empty array
-    // but array.subarray(from) or array.subarray(from, len) is correct
-    return new array.constructor(array.subarray(from, to !== undefined ? to : array.length));
-  }
-
-  return array.slice(from, to);
-}
-
 // converts an array to a specific type
 function convertArray(array, type, forceClone) {
   if (
@@ -25,10 +14,6 @@ function convertArray(array, type, forceClone) {
   }
 
   return Array.prototype.slice.call(array); // create Array
-}
-
-function isTypedArray(object) {
-  return ArrayBuffer.isView(object) && !(object instanceof DataView);
 }
 
 // returns an array by which times and values can be sorted
@@ -216,19 +201,19 @@ function makeClipAdditive(targetClip, referenceFrame = 0, referenceClip = target
       // Reference frame is earlier than the first keyframe, so just use the first keyframe
       const startIndex = referenceOffset;
       const endIndex = referenceValueSize - referenceOffset;
-      referenceValue = arraySlice(referenceTrack.values, startIndex, endIndex);
+      referenceValue = referenceTrack.values.slice(startIndex, endIndex);
     } else if (referenceTime >= referenceTrack.times[lastIndex]) {
       // Reference frame is after the last keyframe, so just use the last keyframe
       const startIndex = lastIndex * referenceValueSize + referenceOffset;
       const endIndex = startIndex + referenceValueSize - referenceOffset;
-      referenceValue = arraySlice(referenceTrack.values, startIndex, endIndex);
+      referenceValue = referenceTrack.values.slice(startIndex, endIndex);
     } else {
       // Interpolate to the reference value
       const interpolant = referenceTrack.createInterpolant();
       const startIndex = referenceOffset;
       const endIndex = referenceValueSize - referenceOffset;
       interpolant.evaluate(referenceTime);
-      referenceValue = arraySlice(interpolant.resultBuffer, startIndex, endIndex);
+      referenceValue = interpolant.resultBuffer.slice(startIndex, endIndex);
     }
 
     // Conjugate the quaternion
@@ -271,9 +256,7 @@ function makeClipAdditive(targetClip, referenceFrame = 0, referenceClip = target
 
 // NOTE: Legacy deprecation required.  Do not use.
 // export const AnimationUtils = {
-//   arraySlice: arraySlice,
 //   convertArray: convertArray,
-//   isTypedArray: isTypedArray,
 //   getKeyframeOrder: getKeyframeOrder,
 //   sortedArray: sortedArray,
 //   flattenJSON: flattenJSON,
@@ -282,9 +265,7 @@ function makeClipAdditive(targetClip, referenceFrame = 0, referenceClip = target
 // };
 
 export {
-  // arraySlice,
   // convertArray,
-  // isTypedArray,
   getKeyframeOrder,
   sortedArray,
   flattenJSON,

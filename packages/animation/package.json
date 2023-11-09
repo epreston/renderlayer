@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/animation",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Animation library used by @renderlayer packages.",
   "module": "./dist/animation.esm-bundler.js",
   "exports": "./dist/animation.esm-bundler.js",
@@ -32,7 +32,7 @@
   "dependencies": {
     "@renderlayer/core": "~0.0.7",
     "@renderlayer/interpolants": "~0.0.3",
-    "@renderlayer/keyframes": "~0.0.3",
+    "@renderlayer/keyframes": "~0.0.4",
     "@renderlayer/math": "~0.0.11",
     "@renderlayer/shared": "~0.0.6"
   }
