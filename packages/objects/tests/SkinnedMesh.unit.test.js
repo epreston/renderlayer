@@ -3,6 +3,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 import { Object3D, Raycaster } from '@renderlayer/core';
 import { ObjectLoader } from '@renderlayer/loaders';
 import { Matrix4, Vector3 } from '@renderlayer/math';
+import { AttachedBindMode } from '@renderlayer/shared';
 
 import { skinnedMeshFactory } from './skinnedMeshHelpers.js';
 
@@ -35,7 +36,7 @@ describe('Objects', () => {
 
     test('bindMode', () => {
       const object = new SkinnedMesh();
-      expect(object.bindMode).toBe('attached');
+      expect(object.bindMode).toBe(AttachedBindMode);
     });
 
     test('bindMatrix', () => {

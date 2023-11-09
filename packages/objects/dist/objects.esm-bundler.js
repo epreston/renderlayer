@@ -2,7 +2,7 @@ import { Object3D } from '@renderlayer/core';
 import { BufferGeometry, InstancedBufferAttribute, Float32BufferAttribute, InterleavedBuffer, InterleavedBufferAttribute } from '@renderlayer/buffers';
 import { Triangle, Vector2, Vector3, Matrix4, Ray, Sphere, Box3, generateUUID, ceilPowerOfTwo, Vector4 } from '@renderlayer/math';
 import { MeshBasicMaterial, LineBasicMaterial, PointsMaterial, SpriteMaterial } from '@renderlayer/materials';
-import { BackSide, FrontSide, RGBAFormat, FloatType } from '@renderlayer/shared';
+import { BackSide, FrontSide, RGBAFormat, FloatType, AttachedBindMode, DetachedBindMode } from '@renderlayer/shared';
 import { DataTexture } from '@renderlayer/textures';
 
 class Bone extends Object3D {
@@ -1009,7 +1009,7 @@ class SkinnedMesh extends Mesh {
     super(geometry, material);
     this.isSkinnedMesh = true;
     this.type = "SkinnedMesh";
-    this.bindMode = "attached";
+    this.bindMode = AttachedBindMode;
     this.bindMatrix = new Matrix4();
     this.bindMatrixInverse = new Matrix4();
     this.skeleton = null;
@@ -1024,8 +1024,7 @@ class SkinnedMesh extends Mesh {
     this.boundingBox.makeEmpty();
     const positionAttribute = geometry.getAttribute("position");
     for (let i = 0; i < positionAttribute.count; i++) {
-      _vertex.fromBufferAttribute(positionAttribute, i);
-      this.applyBoneTransform(i, _vertex);
+      this.getVertexPosition(i, _vertex);
       this.boundingBox.expandByPoint(_vertex);
     }
   }
@@ -1037,8 +1036,7 @@ class SkinnedMesh extends Mesh {
     this.boundingSphere.makeEmpty();
     const positionAttribute = geometry.getAttribute("position");
     for (let i = 0; i < positionAttribute.count; i++) {
-      _vertex.fromBufferAttribute(positionAttribute, i);
-      this.applyBoneTransform(i, _vertex);
+      this.getVertexPosition(i, _vertex);
       this.boundingSphere.expandByPoint(_vertex);
     }
   }
@@ -1107,9 +1105,9 @@ class SkinnedMesh extends Mesh {
   }
   updateMatrixWorld(force) {
     super.updateMatrixWorld(force);
-    if (this.bindMode === "attached") {
+    if (this.bindMode === AttachedBindMode) {
       this.bindMatrixInverse.copy(this.matrixWorld).invert();
-    } else if (this.bindMode === "detached") {
+    } else if (this.bindMode === DetachedBindMode) {
       this.bindMatrixInverse.copy(this.bindMatrix).invert();
     } else {
       console.warn("SkinnedMesh: Unrecognized bindMode: " + this.bindMode);
