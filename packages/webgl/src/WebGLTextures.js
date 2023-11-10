@@ -1,39 +1,43 @@
 import {
+  ColorManagement,
+  floorPowerOfTwo,
+  isPowerOfTwo as isPowerOfTwoLib
+} from '@renderlayer/math';
+import {
+  AlwaysCompare,
   ClampToEdgeWrapping,
   DepthFormat,
   DepthStencilFormat,
+  EqualCompare,
   FloatType,
+  GreaterCompare,
+  GreaterEqualCompare,
   // HalfFloatType,
-  // ImageUtils,
+  LessCompare,
+  LessEqualCompare,
   LinearFilter,
   LinearMipmapLinearFilter,
   LinearMipmapNearestFilter,
   LinearSRGBColorSpace,
+  LinearTransfer,
   MirroredRepeatWrapping,
   NearestFilter,
   NearestMipmapLinearFilter,
   NearestMipmapNearestFilter,
+  NeverCompare,
   NoColorSpace,
+  NotEqualCompare,
   RGBAFormat,
+  RGB_ETC1_Format,
   RepeatWrapping,
-  SRGBColorSpace,
+  SRGBTransfer,
   UnsignedByteType,
   UnsignedInt248Type,
   UnsignedIntType,
   UnsignedShortType,
   _SRGBAFormat,
-  createElementNS,
-  NeverCompare,
-  AlwaysCompare,
-  LessCompare,
-  LessEqualCompare,
-  EqualCompare,
-  GreaterEqualCompare,
-  GreaterCompare,
-  NotEqualCompare,
-  DisplayP3ColorSpace
+  createElementNS
 } from '@renderlayer/shared';
-import { floorPowerOfTwo, isPowerOfTwo as isPowerOfTwoLib } from '@renderlayer/math';
 
 function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info) {
   const maxTextures = capabilities.maxTextures;
@@ -186,13 +190,14 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
 
     if (glFormat === _gl.RGBA) {
+      const transfer = forceLinearTransfer
+        ? LinearTransfer
+        : ColorManagement.getTransfer(colorSpace);
+
       if (glType === _gl.FLOAT) internalFormat = _gl.RGBA32F;
       if (glType === _gl.HALF_FLOAT) internalFormat = _gl.RGBA16F;
       if (glType === _gl.UNSIGNED_BYTE)
-        internalFormat =
-          colorSpace === SRGBColorSpace && forceLinearTransfer === false
-            ? _gl.SRGB8_ALPHA8
-            : _gl.RGBA8;
+        internalFormat = transfer === SRGBTransfer ? _gl.SRGB8_ALPHA8 : _gl.RGBA8;
       if (glType === _gl.UNSIGNED_SHORT_4_4_4_4) internalFormat = _gl.RGBA4;
       if (glType === _gl.UNSIGNED_SHORT_5_5_5_1) internalFormat = _gl.RGB5_A1;
     }
@@ -661,11 +666,22 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     if (source.version !== sourceProperties.__version || forceUpload === true) {
       state.activeTexture(_gl.TEXTURE0 + slot);
 
+      const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
+      const texturePrimaries =
+        texture.colorSpace === NoColorSpace
+          ? null
+          : ColorManagement.getPrimaries(texture.colorSpace);
+      const unpackConversion =
+        texture.colorSpace === NoColorSpace || workingPrimaries === texturePrimaries
+          ? _gl.NONE
+          : _gl.BROWSER_DEFAULT_WEBGL;
+
       _gl.pixelStorei(_gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
       _gl.pixelStorei(_gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
       _gl.pixelStorei(_gl.UNPACK_ALIGNMENT, texture.unpackAlignment);
-      _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, _gl.NONE);
+      _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion);
 
+      // EP: always false
       const needsPowerOfTwo =
         textureNeedsPowerOfTwo(texture) && isPowerOfTwo(texture.image) === false;
       let image = resizeImage(texture.image, needsPowerOfTwo, false, maxTextureSize);
@@ -689,8 +705,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       let mipmap;
       const mipmaps = texture.mipmaps;
 
-      const useTexStorage = texture.isVideoTexture !== true;
-
+      const useTexStorage = texture.isVideoTexture !== true && glInternalFormat !== RGB_ETC1_Format;
       const allocateMemory = sourceProperties.__version === undefined || forceUpload === true;
       const levels = getMipLevels(texture, image, supportsMips);
 
@@ -1180,10 +1195,20 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     if (source.version !== sourceProperties.__version || forceUpload === true) {
       state.activeTexture(_gl.TEXTURE0 + slot);
 
+      const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
+      const texturePrimaries =
+        texture.colorSpace === NoColorSpace
+          ? null
+          : ColorManagement.getPrimaries(texture.colorSpace);
+      const unpackConversion =
+        texture.colorSpace === NoColorSpace || workingPrimaries === texturePrimaries
+          ? _gl.NONE
+          : _gl.BROWSER_DEFAULT_WEBGL;
+
       _gl.pixelStorei(_gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
       _gl.pixelStorei(_gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
       _gl.pixelStorei(_gl.UNPACK_ALIGNMENT, texture.unpackAlignment);
-      _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, _gl.NONE);
+      _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion);
 
       const isCompressed = texture.isCompressedTexture || texture.image[0].isCompressedTexture;
       const isDataTexture = texture.image[0] && texture.image[0].isDataTexture;
@@ -2205,7 +2230,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     if (colorSpace !== LinearSRGBColorSpace && colorSpace !== NoColorSpace) {
       // sRGB
 
-      if (colorSpace === SRGBColorSpace || colorSpace === DisplayP3ColorSpace) {
+      if (ColorManagement.getTransfer(colorSpace) === SRGBTransfer) {
         // in WebGL 2 uncompressed textures can only be sRGB encoded if they have the RGBA8 format
 
         if (format !== RGBAFormat || type !== UnsignedByteType) {

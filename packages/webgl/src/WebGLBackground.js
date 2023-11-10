@@ -1,9 +1,9 @@
 import { BoxGeometry, PlaneGeometry } from '@renderlayer/geometries';
 import { ShaderMaterial } from '@renderlayer/materials';
-import { Color } from '@renderlayer/math';
+import { Color, ColorManagement } from '@renderlayer/math';
 import { Mesh } from '@renderlayer/objects';
 import { ShaderLib, cloneUniforms, getUnlitUniformColorSpace } from '@renderlayer/shaders';
-import { BackSide, CubeUVReflectionMapping, FrontSide, SRGBColorSpace } from '@renderlayer/shared';
+import { BackSide, CubeUVReflectionMapping, FrontSide, SRGBTransfer } from '@renderlayer/shared';
 
 const _rgb = { r: 0, b: 0, g: 0 };
 
@@ -96,7 +96,8 @@ function WebGLBackground(
         background.isCubeTexture && background.isRenderTargetTexture === false ? -1 : 1;
       boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
       boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
-      boxMesh.material.toneMapped = background.colorSpace === SRGBColorSpace ? false : true;
+      boxMesh.material.toneMapped =
+        ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
 
       if (
         currentBackground !== background ||
@@ -144,7 +145,8 @@ function WebGLBackground(
 
       planeMesh.material.uniforms.t2D.value = background;
       planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
-      planeMesh.material.toneMapped = background.colorSpace === SRGBColorSpace ? false : true;
+      planeMesh.material.toneMapped =
+        ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
 
       if (background.matrixAutoUpdate === true) {
         background.updateMatrix();

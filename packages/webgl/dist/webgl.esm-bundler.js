@@ -1,9 +1,9 @@
 import { BoxGeometry, PlaneGeometry } from '@renderlayer/geometries';
 import { ShaderMaterial, MeshDepthMaterial, MeshDistanceMaterial } from '@renderlayer/materials';
-import { Color, Plane, Matrix3, Vector4, Vector2, Vector3, Matrix4, Frustum, floorPowerOfTwo } from '@renderlayer/math';
+import { Color, ColorManagement, Plane, Matrix3, Vector4, Vector2, Vector3, Matrix4, Frustum, floorPowerOfTwo } from '@renderlayer/math';
 import { Mesh } from '@renderlayer/objects';
 import { cloneUniforms, ShaderLib, getUnlitUniformColorSpace, ShaderChunk, UniformsLib } from '@renderlayer/shaders';
-import { CubeUVReflectionMapping, BackSide, SRGBColorSpace, FrontSide, IntType, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeReflectionMapping, CubeRefractionMapping, arrayNeedsUint32, FloatType, NoToneMapping, GLSL3, CustomToneMapping, ACESFilmicToneMapping, CineonToneMapping, ReinhardToneMapping, LinearToneMapping, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, LinearSRGBColorSpace, AddOperation, MixOperation, MultiplyOperation, ObjectSpaceNormalMap, TangentSpaceNormalMap, NormalBlending, DoubleSide, RGBADepthPacking, NoBlending, NearestFilter, LessEqualDepth, AddEquation, SubtractEquation, ReverseSubtractEquation, ZeroFactor, OneFactor, SrcColorFactor, SrcAlphaFactor, SrcAlphaSaturateFactor, DstColorFactor, DstAlphaFactor, OneMinusSrcColorFactor, OneMinusSrcAlphaFactor, OneMinusDstColorFactor, OneMinusDstAlphaFactor, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, CullFaceNone, CullFaceBack, CullFaceFront, MinEquation, MaxEquation, NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessDepth, AlwaysDepth, NeverDepth, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter, NeverCompare, AlwaysCompare, LessCompare, LessEqualCompare, EqualCompare, GreaterEqualCompare, GreaterCompare, NotEqualCompare, UnsignedIntType, UnsignedInt248Type, DepthFormat, UnsignedShortType, DepthStencilFormat, RGBAFormat, _SRGBAFormat, NoColorSpace, DisplayP3ColorSpace, UnsignedByteType, createElementNS, UnsignedShort4444Type, UnsignedShort5551Type, ByteType, ShortType, HalfFloatType, AlphaFormat, LuminanceFormat, LuminanceAlphaFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format } from '@renderlayer/shared';
+import { CubeUVReflectionMapping, BackSide, SRGBTransfer, FrontSide, IntType, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeReflectionMapping, CubeRefractionMapping, arrayNeedsUint32, FloatType, NoToneMapping, GLSL3, CustomToneMapping, ACESFilmicToneMapping, CineonToneMapping, ReinhardToneMapping, LinearToneMapping, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, DisplayP3ColorSpace, SRGBColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, AddOperation, MixOperation, MultiplyOperation, P3Primaries, Rec709Primaries, ObjectSpaceNormalMap, TangentSpaceNormalMap, NormalBlending, DoubleSide, RGBADepthPacking, NoBlending, NearestFilter, LessEqualDepth, AddEquation, SubtractEquation, ReverseSubtractEquation, ZeroFactor, OneFactor, SrcColorFactor, SrcAlphaFactor, SrcAlphaSaturateFactor, DstColorFactor, DstAlphaFactor, OneMinusSrcColorFactor, OneMinusSrcAlphaFactor, OneMinusDstColorFactor, OneMinusDstAlphaFactor, ConstantColorFactor, OneMinusConstantColorFactor, ConstantAlphaFactor, OneMinusConstantAlphaFactor, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, CullFaceNone, CullFaceBack, CullFaceFront, MinEquation, MaxEquation, NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessDepth, AlwaysDepth, NeverDepth, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter, NeverCompare, AlwaysCompare, LessCompare, LessEqualCompare, EqualCompare, GreaterEqualCompare, GreaterCompare, NotEqualCompare, NoColorSpace, RGB_ETC1_Format, UnsignedIntType, UnsignedInt248Type, DepthFormat, UnsignedShortType, DepthStencilFormat, RGBAFormat, _SRGBAFormat, UnsignedByteType, LinearTransfer, createElementNS, UnsignedShort4444Type, UnsignedShort5551Type, ByteType, ShortType, HalfFloatType, AlphaFormat, LuminanceFormat, LuminanceAlphaFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format } from '@renderlayer/shared';
 import { WebGLCubeRenderTarget, WebGLRenderTarget } from '@renderlayer/targets';
 import { PMREMGenerator } from '@renderlayer/pmrem';
 import { Uint32BufferAttribute, Uint16BufferAttribute, BufferGeometry, BufferAttribute } from '@renderlayer/buffers';
@@ -199,7 +199,7 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
       boxMesh.material.uniforms.flipEnvMap.value = background.isCubeTexture && background.isRenderTargetTexture === false ? -1 : 1;
       boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
       boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
-      boxMesh.material.toneMapped = background.colorSpace === SRGBColorSpace ? false : true;
+      boxMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
       if (currentBackground !== background || currentBackgroundVersion !== background.version || currentTonemapping !== renderer.toneMapping) {
         boxMesh.material.needsUpdate = true;
         currentBackground = background;
@@ -233,7 +233,7 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
       }
       planeMesh.material.uniforms.t2D.value = background;
       planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
-      planeMesh.material.toneMapped = background.colorSpace === SRGBColorSpace ? false : true;
+      planeMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
       if (background.matrixAutoUpdate === true) {
         background.updateMatrix();
       }
@@ -2216,6 +2216,7 @@ class WebGLUniforms {
   }
 }
 
+const COMPLETION_STATUS_KHR = 37297;
 let programIdCount = 0;
 function handleSource(string, errorLine) {
   const lines = string.split("\n");
@@ -2229,14 +2230,26 @@ function handleSource(string, errorLine) {
   return lines2.join("\n");
 }
 function getEncodingComponents(colorSpace) {
+  const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
+  const encodingPrimaries = ColorManagement.getPrimaries(colorSpace);
+  let gamutMapping;
+  if (workingPrimaries === encodingPrimaries) {
+    gamutMapping = "";
+  } else if (workingPrimaries === P3Primaries && encodingPrimaries === Rec709Primaries) {
+    gamutMapping = "LinearDisplayP3ToLinearSRGB";
+  } else if (workingPrimaries === Rec709Primaries && encodingPrimaries === P3Primaries) {
+    gamutMapping = "LinearSRGBToLinearDisplayP3";
+  }
   switch (colorSpace) {
     case LinearSRGBColorSpace:
-      return ["Linear", "( value )"];
+    case LinearDisplayP3ColorSpace:
+      return [gamutMapping, "LinearTransferOETF"];
     case SRGBColorSpace:
-      return ["sRGB", "( value )"];
+    case DisplayP3ColorSpace:
+      return [gamutMapping, "sRGBTransferOETF"];
     default:
       console.warn("WebGLProgram: Unsupported color space:", colorSpace);
-      return ["Linear", "( value )"];
+      return [gamutMapping, "LinearTransferOETF"];
   }
 }
 function getShaderErrors(gl, shader, type) {
@@ -2254,7 +2267,7 @@ function getShaderErrors(gl, shader, type) {
 }
 function getTexelEncodingFunction(functionName, colorSpace) {
   const components = getEncodingComponents(colorSpace);
-  return "vec4 " + functionName + "( vec4 value ) { return LinearTo" + components[0] + components[1] + "; }";
+  return `vec4 ${functionName}( vec4 value ) { return ${components[0]}( ${components[1]}( value ) ); }`;
 }
 function getToneMappingFunction(functionName, toneMapping) {
   let toneMappingName;
@@ -2715,6 +2728,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
       "#define texture2D texture"
     ].join("\n") + "\n" + prefixVertex;
     prefixFragment = [
+      "precision mediump sampler2DArray;",
       "#define varying in",
       parameters.glslVersion === GLSL3 ? "" : "layout(location = 0) out highp vec4 pc_fragColor;",
       parameters.glslVersion === GLSL3 ? "" : "#define gl_FragColor pc_fragColor",
@@ -2742,58 +2756,69 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
     gl.bindAttribLocation(program, 0, "position");
   }
   gl.linkProgram(program);
-  if (renderer.debug.checkShaderErrors) {
-    const programLog = gl.getProgramInfoLog(program).trim();
-    const vertexLog = gl.getShaderInfoLog(glVertexShader).trim();
-    const fragmentLog = gl.getShaderInfoLog(glFragmentShader).trim();
-    let runnable = true;
-    let haveDiagnostics = true;
-    if (gl.getProgramParameter(program, gl.LINK_STATUS) === false) {
-      runnable = false;
-      if (typeof renderer.debug.onShaderError === "function") {
-        renderer.debug.onShaderError(gl, program, glVertexShader, glFragmentShader);
-      } else {
-        const vertexErrors = getShaderErrors(gl, glVertexShader, "vertex");
-        const fragmentErrors = getShaderErrors(gl, glFragmentShader, "fragment");
-        console.error(
-          "WebGLProgram: Shader Error " + gl.getError() + " - VALIDATE_STATUS " + gl.getProgramParameter(program, gl.VALIDATE_STATUS) + "\n\nProgram Info Log: " + programLog + "\n" + vertexErrors + "\n" + fragmentErrors
-        );
-      }
-    } else if (programLog !== "") {
-      console.warn("WebGLProgram: Program Info Log:", programLog);
-    } else if (vertexLog === "" || fragmentLog === "") {
-      haveDiagnostics = false;
-    }
-    if (haveDiagnostics) {
-      this.diagnostics = {
-        runnable,
-        programLog,
-        vertexShader: {
-          log: vertexLog,
-          prefix: prefixVertex
-        },
-        fragmentShader: {
-          log: fragmentLog,
-          prefix: prefixFragment
+  function onFirstUse(self) {
+    if (renderer.debug.checkShaderErrors) {
+      const programLog = gl.getProgramInfoLog(program).trim();
+      const vertexLog = gl.getShaderInfoLog(glVertexShader).trim();
+      const fragmentLog = gl.getShaderInfoLog(glFragmentShader).trim();
+      let runnable = true;
+      let haveDiagnostics = true;
+      if (gl.getProgramParameter(program, gl.LINK_STATUS) === false) {
+        runnable = false;
+        if (typeof renderer.debug.onShaderError === "function") {
+          renderer.debug.onShaderError(gl, program, glVertexShader, glFragmentShader);
+        } else {
+          const vertexErrors = getShaderErrors(gl, glVertexShader, "vertex");
+          const fragmentErrors = getShaderErrors(gl, glFragmentShader, "fragment");
+          console.error(
+            "WebGLProgram: Shader Error " + gl.getError() + " - VALIDATE_STATUS " + gl.getProgramParameter(program, gl.VALIDATE_STATUS) + "\n\nProgram Info Log: " + programLog + "\n" + vertexErrors + "\n" + fragmentErrors
+          );
         }
-      };
+      } else if (programLog !== "") {
+        console.warn("WebGLProgram: Program Info Log:", programLog);
+      } else if (vertexLog === "" || fragmentLog === "") {
+        haveDiagnostics = false;
+      }
+      if (haveDiagnostics) {
+        self.diagnostics = {
+          runnable,
+          programLog,
+          vertexShader: {
+            log: vertexLog,
+            prefix: prefixVertex
+          },
+          fragmentShader: {
+            log: fragmentLog,
+            prefix: prefixFragment
+          }
+        };
+      }
     }
+    gl.deleteShader(glVertexShader);
+    gl.deleteShader(glFragmentShader);
+    cachedUniforms = new WebGLUniforms(gl, program);
+    cachedAttributes = fetchAttributeLocations(gl, program);
   }
-  gl.deleteShader(glVertexShader);
-  gl.deleteShader(glFragmentShader);
   let cachedUniforms;
   this.getUniforms = function() {
     if (cachedUniforms === void 0) {
-      cachedUniforms = new WebGLUniforms(gl, program);
+      onFirstUse(this);
     }
     return cachedUniforms;
   };
   let cachedAttributes;
   this.getAttributes = function() {
     if (cachedAttributes === void 0) {
-      cachedAttributes = fetchAttributeLocations(gl, program);
+      onFirstUse(this);
     }
     return cachedAttributes;
+  };
+  let programReady = parameters.rendererExtensionParallelShaderCompile === false;
+  this.isReady = function() {
+    if (programReady === false) {
+      programReady = gl.getProgramParameter(program, COMPLETION_STATUS_KHR);
+    }
+    return programReady;
   };
   this.destroy = function() {
     bindingStates.releaseStatesOfProgram(this);
@@ -3118,7 +3143,7 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
       shadowMapType: renderer.shadowMap.type,
       toneMapping,
       useLegacyLights: renderer._useLegacyLights,
-      decodeVideoTexture: HAS_MAP && material.map.isVideoTexture === true && material.map.colorSpace === SRGBColorSpace,
+      decodeVideoTexture: HAS_MAP && material.map.isVideoTexture === true && ColorManagement.getTransfer(material.map.colorSpace) === SRGBTransfer,
       premultipliedAlpha: material.premultipliedAlpha,
       doubleSided: material.side === DoubleSide,
       flipSided: material.side === BackSide,
@@ -3133,6 +3158,7 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
       // EP: always true in webgl2, optimise
       rendererExtensionDrawBuffers: true,
       rendererExtensionShaderTextureLod: true,
+      rendererExtensionParallelShaderCompile: extensions.has("KHR_parallel_shader_compile"),
       customProgramCacheKey: material.customProgramCacheKey()
     };
     return parameters;
@@ -3247,6 +3273,8 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
       _programLayers.enable(16);
     if (parameters.anisotropy)
       _programLayers.enable(17);
+    if (parameters.alphaHash)
+      _programLayers.enable(18);
     array.push(_programLayers.mask);
     _programLayers.disableAll();
     if (parameters.fog)
@@ -4393,6 +4421,8 @@ function WebGLState(gl, extensions, capabilities) {
   let currentBlendEquationAlpha = null;
   let currentBlendSrcAlpha = null;
   let currentBlendDstAlpha = null;
+  let currentBlendColor = new Color(0, 0, 0);
+  let currentBlendAlpha = 0;
   let currentPremultipledAlpha = false;
   let currentFlipSided = null;
   let currentCullFace = null;
@@ -4540,9 +4570,13 @@ function WebGLState(gl, extensions, capabilities) {
     [OneMinusSrcColorFactor]: gl.ONE_MINUS_SRC_COLOR,
     [OneMinusSrcAlphaFactor]: gl.ONE_MINUS_SRC_ALPHA,
     [OneMinusDstColorFactor]: gl.ONE_MINUS_DST_COLOR,
-    [OneMinusDstAlphaFactor]: gl.ONE_MINUS_DST_ALPHA
+    [OneMinusDstAlphaFactor]: gl.ONE_MINUS_DST_ALPHA,
+    [ConstantColorFactor]: gl.CONSTANT_COLOR,
+    [OneMinusConstantColorFactor]: gl.ONE_MINUS_CONSTANT_COLOR,
+    [ConstantAlphaFactor]: gl.CONSTANT_ALPHA,
+    [OneMinusConstantAlphaFactor]: gl.ONE_MINUS_CONSTANT_ALPHA
   };
-  function setBlending(blending, blendEquation, blendSrc, blendDst, blendEquationAlpha, blendSrcAlpha, blendDstAlpha, premultipliedAlpha) {
+  function setBlending(blending, blendEquation, blendSrc, blendDst, blendEquationAlpha, blendSrcAlpha, blendDstAlpha, blendColor, blendAlpha, premultipliedAlpha) {
     if (blending === NoBlending) {
       if (currentBlendingEnabled === true) {
         disable(gl.BLEND);
@@ -4607,6 +4641,8 @@ function WebGLState(gl, extensions, capabilities) {
         currentBlendDst = null;
         currentBlendSrcAlpha = null;
         currentBlendDstAlpha = null;
+        currentBlendColor.set(0, 0, 0);
+        currentBlendAlpha = 0;
         currentBlending = blending;
         currentPremultipledAlpha = premultipliedAlpha;
       }
@@ -4632,6 +4668,11 @@ function WebGLState(gl, extensions, capabilities) {
       currentBlendSrcAlpha = blendSrcAlpha;
       currentBlendDstAlpha = blendDstAlpha;
     }
+    if (blendColor.equals(currentBlendColor) === false || blendAlpha !== currentBlendAlpha) {
+      gl.blendColor(blendColor.r, blendColor.g, blendColor.b, blendAlpha);
+      currentBlendColor.copy(blendColor);
+      currentBlendAlpha = blendAlpha;
+    }
     currentBlending = blending;
     currentPremultipledAlpha = false;
   }
@@ -4649,6 +4690,8 @@ function WebGLState(gl, extensions, capabilities) {
       material.blendEquationAlpha,
       material.blendSrcAlpha,
       material.blendDstAlpha,
+      material.blendColor,
+      material.blendAlpha,
       material.premultipliedAlpha
     );
     depthBuffer.setFunc(material.depthFunc);
@@ -4874,6 +4917,7 @@ function WebGLState(gl, extensions, capabilities) {
     gl.blendEquation(gl.FUNC_ADD);
     gl.blendFunc(gl.ONE, gl.ZERO);
     gl.blendFuncSeparate(gl.ONE, gl.ZERO, gl.ONE, gl.ZERO);
+    gl.blendColor(0, 0, 0, 0);
     gl.colorMask(true, true, true, true);
     gl.clearColor(0, 0, 0, 0);
     gl.depthMask(true);
@@ -4909,6 +4953,8 @@ function WebGLState(gl, extensions, capabilities) {
     currentBlendEquationAlpha = null;
     currentBlendSrcAlpha = null;
     currentBlendDstAlpha = null;
+    currentBlendColor = new Color(0, 0, 0);
+    currentBlendAlpha = 0;
     currentPremultipledAlpha = false;
     currentFlipSided = null;
     currentCullFace = null;
@@ -5059,12 +5105,13 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         internalFormat = _gl.RG8;
     }
     if (glFormat === _gl.RGBA) {
+      const transfer = forceLinearTransfer ? LinearTransfer : ColorManagement.getTransfer(colorSpace);
       if (glType === _gl.FLOAT)
         internalFormat = _gl.RGBA32F;
       if (glType === _gl.HALF_FLOAT)
         internalFormat = _gl.RGBA16F;
       if (glType === _gl.UNSIGNED_BYTE)
-        internalFormat = colorSpace === SRGBColorSpace && forceLinearTransfer === false ? _gl.SRGB8_ALPHA8 : _gl.RGBA8;
+        internalFormat = transfer === SRGBTransfer ? _gl.SRGB8_ALPHA8 : _gl.RGBA8;
       if (glType === _gl.UNSIGNED_SHORT_4_4_4_4)
         internalFormat = _gl.RGBA4;
       if (glType === _gl.UNSIGNED_SHORT_5_5_5_1)
@@ -5383,10 +5430,13 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     const sourceProperties = properties.get(source);
     if (source.version !== sourceProperties.__version || forceUpload === true) {
       state.activeTexture(_gl.TEXTURE0 + slot);
+      const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
+      const texturePrimaries = texture.colorSpace === NoColorSpace ? null : ColorManagement.getPrimaries(texture.colorSpace);
+      const unpackConversion = texture.colorSpace === NoColorSpace || workingPrimaries === texturePrimaries ? _gl.NONE : _gl.BROWSER_DEFAULT_WEBGL;
       _gl.pixelStorei(_gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
       _gl.pixelStorei(_gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
       _gl.pixelStorei(_gl.UNPACK_ALIGNMENT, texture.unpackAlignment);
-      _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, _gl.NONE);
+      _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion);
       const needsPowerOfTwo = textureNeedsPowerOfTwo() ;
       let image = resizeImage(texture.image, needsPowerOfTwo, false, maxTextureSize);
       image = verifyColorSpace(texture, image);
@@ -5403,7 +5453,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       setTextureParameters(textureType, texture, supportsMips);
       let mipmap;
       const mipmaps = texture.mipmaps;
-      const useTexStorage = texture.isVideoTexture !== true;
+      const useTexStorage = texture.isVideoTexture !== true && glInternalFormat !== RGB_ETC1_Format;
       const allocateMemory = sourceProperties.__version === void 0 || forceUpload === true;
       const levels = getMipLevels(texture, image, supportsMips);
       if (texture.isDepthTexture) {
@@ -5837,10 +5887,13 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     const sourceProperties = properties.get(source);
     if (source.version !== sourceProperties.__version || forceUpload === true) {
       state.activeTexture(_gl.TEXTURE0 + slot);
+      const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
+      const texturePrimaries = texture.colorSpace === NoColorSpace ? null : ColorManagement.getPrimaries(texture.colorSpace);
+      const unpackConversion = texture.colorSpace === NoColorSpace || workingPrimaries === texturePrimaries ? _gl.NONE : _gl.BROWSER_DEFAULT_WEBGL;
       _gl.pixelStorei(_gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
       _gl.pixelStorei(_gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
       _gl.pixelStorei(_gl.UNPACK_ALIGNMENT, texture.unpackAlignment);
-      _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, _gl.NONE);
+      _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion);
       const isCompressed = texture.isCompressedTexture || texture.image[0].isCompressedTexture;
       const isDataTexture = texture.image[0] && texture.image[0].isDataTexture;
       const cubeImage = [];
@@ -6675,7 +6728,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     if (texture.isCompressedTexture === true || texture.isVideoTexture === true || texture.format === _SRGBAFormat)
       return image;
     if (colorSpace !== LinearSRGBColorSpace && colorSpace !== NoColorSpace) {
-      if (colorSpace === SRGBColorSpace || colorSpace === DisplayP3ColorSpace) {
+      if (ColorManagement.getTransfer(colorSpace) === SRGBTransfer) {
         if (format !== RGBAFormat || type !== UnsignedByteType) {
           console.warn(
             "WebGLTextures: sRGB encoded textures have to use RGBAFormat and UnsignedByteType."
@@ -6919,12 +6972,10 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
   };
 }
 
-const LinearTransferFunction = 0;
-const SRGBTransferFunction = 1;
 function WebGLUtils(gl, extensions, capabilities) {
   function convert(p, colorSpace = NoColorSpace) {
     let extension;
-    const transferFunction = colorSpace === SRGBColorSpace || colorSpace === DisplayP3ColorSpace ? SRGBTransferFunction : LinearTransferFunction;
+    const transfer = ColorManagement.getTransfer(colorSpace);
     if (p === UnsignedByteType)
       return gl.UNSIGNED_BYTE;
     if (p === UnsignedShort4444Type)
@@ -6976,7 +7027,7 @@ function WebGLUtils(gl, extensions, capabilities) {
     if (p === RGBAIntegerFormat)
       return gl.RGBA_INTEGER;
     if (p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format || p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format) {
-      if (transferFunction === SRGBTransferFunction) {
+      if (transfer === SRGBTransfer) {
         extension = extensions.get("WEBGL_compressed_texture_s3tc_srgb");
         if (extension !== null) {
           if (p === RGB_S3TC_DXT1_Format)
@@ -7033,9 +7084,9 @@ function WebGLUtils(gl, extensions, capabilities) {
       extension = extensions.get("WEBGL_compressed_texture_etc");
       if (extension !== null) {
         if (p === RGB_ETC2_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ETC2 : extension.COMPRESSED_RGB8_ETC2;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ETC2 : extension.COMPRESSED_RGB8_ETC2;
         if (p === RGBA_ETC2_EAC_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ETC2_EAC : extension.COMPRESSED_RGBA8_ETC2_EAC;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ETC2_EAC : extension.COMPRESSED_RGBA8_ETC2_EAC;
       } else {
         return null;
       }
@@ -7044,33 +7095,33 @@ function WebGLUtils(gl, extensions, capabilities) {
       extension = extensions.get("WEBGL_compressed_texture_astc");
       if (extension !== null) {
         if (p === RGBA_ASTC_4x4_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR : extension.COMPRESSED_RGBA_ASTC_4x4_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR : extension.COMPRESSED_RGBA_ASTC_4x4_KHR;
         if (p === RGBA_ASTC_5x4_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR : extension.COMPRESSED_RGBA_ASTC_5x4_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR : extension.COMPRESSED_RGBA_ASTC_5x4_KHR;
         if (p === RGBA_ASTC_5x5_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR : extension.COMPRESSED_RGBA_ASTC_5x5_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR : extension.COMPRESSED_RGBA_ASTC_5x5_KHR;
         if (p === RGBA_ASTC_6x5_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR : extension.COMPRESSED_RGBA_ASTC_6x5_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR : extension.COMPRESSED_RGBA_ASTC_6x5_KHR;
         if (p === RGBA_ASTC_6x6_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR : extension.COMPRESSED_RGBA_ASTC_6x6_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR : extension.COMPRESSED_RGBA_ASTC_6x6_KHR;
         if (p === RGBA_ASTC_8x5_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR : extension.COMPRESSED_RGBA_ASTC_8x5_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR : extension.COMPRESSED_RGBA_ASTC_8x5_KHR;
         if (p === RGBA_ASTC_8x6_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR : extension.COMPRESSED_RGBA_ASTC_8x6_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR : extension.COMPRESSED_RGBA_ASTC_8x6_KHR;
         if (p === RGBA_ASTC_8x8_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR : extension.COMPRESSED_RGBA_ASTC_8x8_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR : extension.COMPRESSED_RGBA_ASTC_8x8_KHR;
         if (p === RGBA_ASTC_10x5_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR : extension.COMPRESSED_RGBA_ASTC_10x5_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR : extension.COMPRESSED_RGBA_ASTC_10x5_KHR;
         if (p === RGBA_ASTC_10x6_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR : extension.COMPRESSED_RGBA_ASTC_10x6_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR : extension.COMPRESSED_RGBA_ASTC_10x6_KHR;
         if (p === RGBA_ASTC_10x8_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR : extension.COMPRESSED_RGBA_ASTC_10x8_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR : extension.COMPRESSED_RGBA_ASTC_10x8_KHR;
         if (p === RGBA_ASTC_10x10_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR : extension.COMPRESSED_RGBA_ASTC_10x10_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR : extension.COMPRESSED_RGBA_ASTC_10x10_KHR;
         if (p === RGBA_ASTC_12x10_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR : extension.COMPRESSED_RGBA_ASTC_12x10_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR : extension.COMPRESSED_RGBA_ASTC_12x10_KHR;
         if (p === RGBA_ASTC_12x12_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR : extension.COMPRESSED_RGBA_ASTC_12x12_KHR;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR : extension.COMPRESSED_RGBA_ASTC_12x12_KHR;
       } else {
         return null;
       }
@@ -7079,7 +7130,7 @@ function WebGLUtils(gl, extensions, capabilities) {
       extension = extensions.get("EXT_texture_compression_bptc");
       if (extension !== null) {
         if (p === RGBA_BPTC_Format)
-          return transferFunction === SRGBTransferFunction ? extension.COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT : extension.COMPRESSED_RGBA_BPTC_UNORM_EXT;
+          return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT : extension.COMPRESSED_RGBA_BPTC_UNORM_EXT;
         if (p === RGB_BPTC_SIGNED_Format)
           return extension.COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT;
         if (p === RGB_BPTC_UNSIGNED_Format)

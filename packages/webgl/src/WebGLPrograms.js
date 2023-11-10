@@ -1,4 +1,5 @@
 import { Layers } from '@renderlayer/core';
+import { ColorManagement } from '@renderlayer/math';
 import { ShaderLib, cloneUniforms } from '@renderlayer/shaders';
 import {
   BackSide,
@@ -8,8 +9,8 @@ import {
   NoToneMapping,
   NormalBlending,
   ObjectSpaceNormalMap,
-  TangentSpaceNormalMap,
-  SRGBColorSpace
+  SRGBTransfer,
+  TangentSpaceNormalMap
 } from '@renderlayer/shared';
 
 import { WebGLProgram } from './WebGLProgram.js';
@@ -367,7 +368,7 @@ function WebGLPrograms(
       decodeVideoTexture:
         HAS_MAP &&
         material.map.isVideoTexture === true &&
-        material.map.colorSpace === SRGBColorSpace,
+        ColorManagement.getTransfer(material.map.colorSpace) === SRGBTransfer,
 
       premultipliedAlpha: material.premultipliedAlpha,
 
@@ -387,6 +388,7 @@ function WebGLPrograms(
       rendererExtensionFragDepth: true, // EP: always true in webgl2, optimise
       rendererExtensionDrawBuffers: true,
       rendererExtensionShaderTextureLod: true,
+      rendererExtensionParallelShaderCompile: extensions.has('KHR_parallel_shader_compile'),
 
       customProgramCacheKey: material.customProgramCacheKey()
     };
@@ -494,6 +496,7 @@ function WebGLPrograms(
     if (parameters.vertexUv3s) _programLayers.enable(15);
     if (parameters.vertexTangents) _programLayers.enable(16);
     if (parameters.anisotropy) _programLayers.enable(17);
+    if (parameters.alphaHash) _programLayers.enable(18);
 
     array.push(_programLayers.mask);
     _programLayers.disableAll();

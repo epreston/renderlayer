@@ -1,3 +1,4 @@
+import { ColorManagement } from '@renderlayer/math';
 import { ShaderChunk } from '@renderlayer/shaders';
 import {
   ACESFilmicToneMapping,
@@ -7,14 +8,18 @@ import {
   CubeRefractionMapping,
   CubeUVReflectionMapping,
   CustomToneMapping,
+  DisplayP3ColorSpace,
   GLSL3,
+  LinearDisplayP3ColorSpace,
   LinearSRGBColorSpace,
   LinearToneMapping,
   MixOperation,
   MultiplyOperation,
   NoToneMapping,
+  P3Primaries,
   PCFShadowMap,
   PCFSoftShadowMap,
+  Rec709Primaries,
   ReinhardToneMapping,
   SRGBColorSpace,
   VSMShadowMap
@@ -22,6 +27,9 @@ import {
 
 import { WebGLShader } from './WebGLShader.js';
 import { WebGLUniforms } from './WebGLUniforms.js';
+
+// From https://www.khronos.org/registry/webgl/extensions/KHR_parallel_shader_compile/
+const COMPLETION_STATUS_KHR = 0x91b1;
 
 let programIdCount = 0;
 
@@ -41,14 +49,31 @@ function handleSource(string, errorLine) {
 }
 
 function getEncodingComponents(colorSpace) {
+  const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
+  const encodingPrimaries = ColorManagement.getPrimaries(colorSpace);
+
+  let gamutMapping;
+
+  if (workingPrimaries === encodingPrimaries) {
+    gamutMapping = '';
+  } else if (workingPrimaries === P3Primaries && encodingPrimaries === Rec709Primaries) {
+    gamutMapping = 'LinearDisplayP3ToLinearSRGB';
+  } else if (workingPrimaries === Rec709Primaries && encodingPrimaries === P3Primaries) {
+    gamutMapping = 'LinearSRGBToLinearDisplayP3';
+  }
+
   switch (colorSpace) {
     case LinearSRGBColorSpace:
-      return ['Linear', '( value )'];
+    case LinearDisplayP3ColorSpace:
+      return [gamutMapping, 'LinearTransferOETF'];
+
     case SRGBColorSpace:
-      return ['sRGB', '( value )'];
+    case DisplayP3ColorSpace:
+      return [gamutMapping, 'sRGBTransferOETF'];
+
     default:
       console.warn('WebGLProgram: Unsupported color space:', colorSpace);
-      return ['Linear', '( value )'];
+      return [gamutMapping, 'LinearTransferOETF'];
   }
 }
 
@@ -78,14 +103,8 @@ function getShaderErrors(gl, shader, type) {
 
 function getTexelEncodingFunction(functionName, colorSpace) {
   const components = getEncodingComponents(colorSpace);
-  return (
-    'vec4 ' +
-    functionName +
-    '( vec4 value ) { return LinearTo' +
-    components[0] +
-    components[1] +
-    '; }'
-  );
+  // prettier-ignore
+  return `vec4 ${functionName}( vec4 value ) { return ${components[ 0 ]}( ${components[ 1 ]}( value ) ); }`;
 }
 
 function getToneMappingFunction(functionName, toneMapping) {
@@ -794,6 +813,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 
     prefixFragment =
       [
+        'precision mediump sampler2DArray;',
         '#define varying in',
         parameters.glslVersion === GLSL3 ? '' : 'layout(location = 0) out highp vec4 pc_fragColor;',
         parameters.glslVersion === GLSL3 ? '' : '#define gl_FragColor pc_fragColor',
@@ -835,74 +855,79 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 
   gl.linkProgram(program);
 
-  // check for link errors
-  if (renderer.debug.checkShaderErrors) {
-    const programLog = gl.getProgramInfoLog(program).trim();
-    const vertexLog = gl.getShaderInfoLog(glVertexShader).trim();
-    const fragmentLog = gl.getShaderInfoLog(glFragmentShader).trim();
+  function onFirstUse(self) {
+    // check for link errors
+    if (renderer.debug.checkShaderErrors) {
+      const programLog = gl.getProgramInfoLog(program).trim();
+      const vertexLog = gl.getShaderInfoLog(glVertexShader).trim();
+      const fragmentLog = gl.getShaderInfoLog(glFragmentShader).trim();
 
-    let runnable = true;
-    let haveDiagnostics = true;
+      let runnable = true;
+      let haveDiagnostics = true;
 
-    if (gl.getProgramParameter(program, gl.LINK_STATUS) === false) {
-      runnable = false;
+      if (gl.getProgramParameter(program, gl.LINK_STATUS) === false) {
+        runnable = false;
 
-      if (typeof renderer.debug.onShaderError === 'function') {
-        renderer.debug.onShaderError(gl, program, glVertexShader, glFragmentShader);
-      } else {
-        // default error reporting
+        if (typeof renderer.debug.onShaderError === 'function') {
+          renderer.debug.onShaderError(gl, program, glVertexShader, glFragmentShader);
+        } else {
+          // default error reporting
 
-        const vertexErrors = getShaderErrors(gl, glVertexShader, 'vertex');
-        const fragmentErrors = getShaderErrors(gl, glFragmentShader, 'fragment');
+          const vertexErrors = getShaderErrors(gl, glVertexShader, 'vertex');
+          const fragmentErrors = getShaderErrors(gl, glFragmentShader, 'fragment');
 
-        console.error(
-          'WebGLProgram: Shader Error ' +
-            gl.getError() +
-            ' - ' +
-            'VALIDATE_STATUS ' +
-            gl.getProgramParameter(program, gl.VALIDATE_STATUS) +
-            '\n\n' +
-            'Program Info Log: ' +
-            programLog +
-            '\n' +
-            vertexErrors +
-            '\n' +
-            fragmentErrors
-        );
-      }
-    } else if (programLog !== '') {
-      console.warn('WebGLProgram: Program Info Log:', programLog);
-    } else if (vertexLog === '' || fragmentLog === '') {
-      haveDiagnostics = false;
-    }
-
-    if (haveDiagnostics) {
-      this.diagnostics = {
-        runnable: runnable,
-
-        programLog: programLog,
-
-        vertexShader: {
-          log: vertexLog,
-          prefix: prefixVertex
-        },
-
-        fragmentShader: {
-          log: fragmentLog,
-          prefix: prefixFragment
+          console.error(
+            'WebGLProgram: Shader Error ' +
+              gl.getError() +
+              ' - ' +
+              'VALIDATE_STATUS ' +
+              gl.getProgramParameter(program, gl.VALIDATE_STATUS) +
+              '\n\n' +
+              'Program Info Log: ' +
+              programLog +
+              '\n' +
+              vertexErrors +
+              '\n' +
+              fragmentErrors
+          );
         }
-      };
+      } else if (programLog !== '') {
+        console.warn('WebGLProgram: Program Info Log:', programLog);
+      } else if (vertexLog === '' || fragmentLog === '') {
+        haveDiagnostics = false;
+      }
+
+      if (haveDiagnostics) {
+        self.diagnostics = {
+          runnable: runnable,
+
+          programLog: programLog,
+
+          vertexShader: {
+            log: vertexLog,
+            prefix: prefixVertex
+          },
+
+          fragmentShader: {
+            log: fragmentLog,
+            prefix: prefixFragment
+          }
+        };
+      }
     }
+
+    // Clean up
+
+    // Crashes in iOS9 and iOS10. #18402
+    // gl.detachShader( program, glVertexShader );
+    // gl.detachShader( program, glFragmentShader );
+
+    gl.deleteShader(glVertexShader);
+    gl.deleteShader(glFragmentShader);
+
+    cachedUniforms = new WebGLUniforms(gl, program);
+    cachedAttributes = fetchAttributeLocations(gl, program);
   }
-
-  // Clean up
-
-  // Crashes in iOS9 and iOS10. #18402
-  // gl.detachShader( program, glVertexShader );
-  // gl.detachShader( program, glFragmentShader );
-
-  gl.deleteShader(glVertexShader);
-  gl.deleteShader(glFragmentShader);
 
   // set up caching for uniform locations
 
@@ -910,7 +935,8 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 
   this.getUniforms = function () {
     if (cachedUniforms === undefined) {
-      cachedUniforms = new WebGLUniforms(gl, program);
+      // Populates cachedUniforms and cachedAttributes
+      onFirstUse(this);
     }
 
     return cachedUniforms;
@@ -922,10 +948,24 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 
   this.getAttributes = function () {
     if (cachedAttributes === undefined) {
-      cachedAttributes = fetchAttributeLocations(gl, program);
+      // Populates cachedAttributes and cachedUniforms
+      onFirstUse(this);
     }
 
     return cachedAttributes;
+  };
+
+  // indicate when the program is ready to be used. if the KHR_parallel_shader_compile extension isn't supported,
+  // flag the program as ready immediately. It may cause a stall when it's first used.
+
+  let programReady = parameters.rendererExtensionParallelShaderCompile === false;
+
+  this.isReady = function () {
+    if (programReady === false) {
+      programReady = gl.getProgramParameter(program, COMPLETION_STATUS_KHR);
+    }
+
+    return programReady;
   };
 
   // free resource

@@ -1,41 +1,45 @@
+import { Color, Vector4 } from '@renderlayer/math';
 import {
-  NotEqualDepth,
+  AddEquation,
+  AdditiveBlending,
+  AlwaysDepth,
+  BackSide,
+  ConstantAlphaFactor,
+  ConstantColorFactor,
+  CullFaceBack,
+  CullFaceFront,
+  CullFaceNone,
+  CustomBlending,
+  DoubleSide,
+  DstAlphaFactor,
+  DstColorFactor,
+  EqualDepth,
   GreaterDepth,
   GreaterEqualDepth,
-  EqualDepth,
-  LessEqualDepth,
   LessDepth,
-  AlwaysDepth,
-  NeverDepth,
-  CullFaceFront,
-  CullFaceBack,
-  CullFaceNone,
-  DoubleSide,
-  BackSide,
-  CustomBlending,
+  LessEqualDepth,
+  MaxEquation,
+  MinEquation,
   MultiplyBlending,
-  SubtractiveBlending,
-  AdditiveBlending,
+  NeverDepth,
   NoBlending,
   NormalBlending,
-  AddEquation,
-  SubtractEquation,
-  ReverseSubtractEquation,
-  MinEquation,
-  MaxEquation,
-  ZeroFactor,
+  NotEqualDepth,
   OneFactor,
-  SrcColorFactor,
+  OneMinusConstantAlphaFactor,
+  OneMinusConstantColorFactor,
+  OneMinusDstAlphaFactor,
+  OneMinusDstColorFactor,
+  OneMinusSrcAlphaFactor,
+  OneMinusSrcColorFactor,
+  ReverseSubtractEquation,
   SrcAlphaFactor,
   SrcAlphaSaturateFactor,
-  DstColorFactor,
-  DstAlphaFactor,
-  OneMinusSrcColorFactor,
-  OneMinusSrcAlphaFactor,
-  OneMinusDstColorFactor,
-  OneMinusDstAlphaFactor
+  SrcColorFactor,
+  SubtractEquation,
+  SubtractiveBlending,
+  ZeroFactor
 } from '@renderlayer/shared';
-import { Vector4 } from '@renderlayer/math';
 
 function WebGLState(gl, extensions, capabilities) {
   function ColorBuffer() {
@@ -277,6 +281,8 @@ function WebGLState(gl, extensions, capabilities) {
   let currentBlendEquationAlpha = null;
   let currentBlendSrcAlpha = null;
   let currentBlendDstAlpha = null;
+  let currentBlendColor = new Color(0, 0, 0);
+  let currentBlendAlpha = 0;
   let currentPremultipledAlpha = false;
 
   let currentFlipSided = null;
@@ -473,7 +479,11 @@ function WebGLState(gl, extensions, capabilities) {
     [OneMinusSrcColorFactor]: gl.ONE_MINUS_SRC_COLOR,
     [OneMinusSrcAlphaFactor]: gl.ONE_MINUS_SRC_ALPHA,
     [OneMinusDstColorFactor]: gl.ONE_MINUS_DST_COLOR,
-    [OneMinusDstAlphaFactor]: gl.ONE_MINUS_DST_ALPHA
+    [OneMinusDstAlphaFactor]: gl.ONE_MINUS_DST_ALPHA,
+    [ConstantColorFactor]: gl.CONSTANT_COLOR,
+    [OneMinusConstantColorFactor]: gl.ONE_MINUS_CONSTANT_COLOR,
+    [ConstantAlphaFactor]: gl.CONSTANT_ALPHA,
+    [OneMinusConstantAlphaFactor]: gl.ONE_MINUS_CONSTANT_ALPHA
   };
 
   function setBlending(
@@ -484,6 +494,8 @@ function WebGLState(gl, extensions, capabilities) {
     blendEquationAlpha,
     blendSrcAlpha,
     blendDstAlpha,
+    blendColor,
+    blendAlpha,
     premultipliedAlpha
   ) {
     if (blending === NoBlending) {
@@ -564,6 +576,8 @@ function WebGLState(gl, extensions, capabilities) {
         currentBlendDst = null;
         currentBlendSrcAlpha = null;
         currentBlendDstAlpha = null;
+        currentBlendColor.set(0, 0, 0);
+        currentBlendAlpha = 0;
 
         currentBlending = blending;
         currentPremultipledAlpha = premultipliedAlpha;
@@ -607,6 +621,13 @@ function WebGLState(gl, extensions, capabilities) {
       currentBlendDstAlpha = blendDstAlpha;
     }
 
+    if (blendColor.equals(currentBlendColor) === false || blendAlpha !== currentBlendAlpha) {
+      gl.blendColor(blendColor.r, blendColor.g, blendColor.b, blendAlpha);
+
+      currentBlendColor.copy(blendColor);
+      currentBlendAlpha = blendAlpha;
+    }
+
     currentBlending = blending;
     currentPremultipledAlpha = false;
   }
@@ -629,6 +650,8 @@ function WebGLState(gl, extensions, capabilities) {
           material.blendEquationAlpha,
           material.blendSrcAlpha,
           material.blendDstAlpha,
+          material.blendColor,
+          material.blendAlpha,
           material.premultipliedAlpha
         );
 
@@ -914,6 +937,7 @@ function WebGLState(gl, extensions, capabilities) {
     gl.blendEquation(gl.FUNC_ADD);
     gl.blendFunc(gl.ONE, gl.ZERO);
     gl.blendFuncSeparate(gl.ONE, gl.ZERO, gl.ONE, gl.ZERO);
+    gl.blendColor(0, 0, 0, 0);
 
     gl.colorMask(true, true, true, true);
     gl.clearColor(0, 0, 0, 0);
@@ -967,6 +991,8 @@ function WebGLState(gl, extensions, capabilities) {
     currentBlendEquationAlpha = null;
     currentBlendSrcAlpha = null;
     currentBlendDstAlpha = null;
+    currentBlendColor = new Color(0, 0, 0);
+    currentBlendAlpha = 0;
     currentPremultipledAlpha = false;
 
     currentFlipSided = null;
