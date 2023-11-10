@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/pmrem",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Pre-filtered, mipmapped radiance environment map generator.",
   "module": "./dist/pmrem.esm-bundler.js",
   "exports": "./dist/pmrem.esm-bundler.js",
@@ -31,12 +31,12 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/pmrem#readme",
   "dependencies": {
     "@renderlayer/buffers": "~0.0.6",
-    "@renderlayer/cameras": "~0.0.5",
+    "@renderlayer/cameras": "~0.0.6",
     "@renderlayer/geometries": "~0.0.6",
-    "@renderlayer/materials": "~0.0.12",
-    "@renderlayer/math": "~0.0.11",
-    "@renderlayer/objects": "~0.0.6",
-    "@renderlayer/targets": "~0.0.5",
-    "@renderlayer/shared": "~0.0.6"
+    "@renderlayer/materials": "~0.0.13",
+    "@renderlayer/math": "~0.0.12",
+    "@renderlayer/objects": "~0.0.8",
+    "@renderlayer/shared": "~0.0.7",
+    "@renderlayer/targets": "~0.0.6"
   }
 }
