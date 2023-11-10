@@ -33,6 +33,6 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/core#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.11"
+    "@renderlayer/math": "~0.0.12"
   }
 }

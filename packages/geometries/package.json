@@ -36,6 +36,6 @@
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/geometries#readme",
   "dependencies": {
     "@renderlayer/buffers": "~0.0.6",
-    "@renderlayer/math": "~0.0.11"
+    "@renderlayer/math": "~0.0.12"
   }
 }
