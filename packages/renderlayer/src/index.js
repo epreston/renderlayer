@@ -10,6 +10,7 @@ export * from '@renderlayer/geometries';
 // export * from '@renderlayer/gltf'; // not exported
 export * from '@renderlayer/interpolants';
 export * from '@renderlayer/keyframes';
+// export * from '@renderlayer/ktx2'; // not exported
 export * from '@renderlayer/lights';
 export * from '@renderlayer/loaders';
 export * from '@renderlayer/materials';
