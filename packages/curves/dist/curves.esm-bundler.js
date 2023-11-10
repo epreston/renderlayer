@@ -535,8 +535,10 @@ class CurvePath extends Curve {
     const startPoint = this.curves[0].getPoint(0);
     const endPoint = this.curves[this.curves.length - 1].getPoint(1);
     if (!startPoint.equals(endPoint)) {
-      this.curves.push(new LineCurve(endPoint, startPoint));
+      const lineType = startPoint.isVector2 === true ? "LineCurve" : "LineCurve3";
+      this.curves.push(new Curves[lineType](endPoint, startPoint));
     }
+    return this;
   }
   // To get accurate point with reference to
   // entire path distance at time t,
