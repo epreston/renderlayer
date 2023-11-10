@@ -823,14 +823,30 @@ class MaterialLoader extends Loader {
       material.alphaTest = json.alphaTest;
     if (json.alphaHash !== void 0)
       material.alphaHash = json.alphaHash;
+    if (json.depthFunc !== void 0)
+      material.depthFunc = json.depthFunc;
     if (json.depthTest !== void 0)
       material.depthTest = json.depthTest;
     if (json.depthWrite !== void 0)
       material.depthWrite = json.depthWrite;
     if (json.colorWrite !== void 0)
       material.colorWrite = json.colorWrite;
-    if (json.stencilWrite !== void 0)
-      material.stencilWrite = json.stencilWrite;
+    if (json.blendSrc !== void 0)
+      material.blendSrc = json.blendSrc;
+    if (json.blendDst !== void 0)
+      material.blendDst = json.blendDst;
+    if (json.blendEquation !== void 0)
+      material.blendEquation = json.blendEquation;
+    if (json.blendSrcAlpha !== void 0)
+      material.blendSrcAlpha = json.blendSrcAlpha;
+    if (json.blendDstAlpha !== void 0)
+      material.blendDstAlpha = json.blendDstAlpha;
+    if (json.blendEquationAlpha !== void 0)
+      material.blendEquationAlpha = json.blendEquationAlpha;
+    if (json.blendColor !== void 0 && material.blendColor !== void 0)
+      material.blendColor.setHex(json.blendColor);
+    if (json.blendAlpha !== void 0)
+      material.blendAlpha = json.blendAlpha;
     if (json.stencilWriteMask !== void 0)
       material.stencilWriteMask = json.stencilWriteMask;
     if (json.stencilFunc !== void 0)
@@ -845,13 +861,15 @@ class MaterialLoader extends Loader {
       material.stencilZFail = json.stencilZFail;
     if (json.stencilZPass !== void 0)
       material.stencilZPass = json.stencilZPass;
+    if (json.stencilWrite !== void 0)
+      material.stencilWrite = json.stencilWrite;
     if (json.wireframe !== void 0)
       material.wireframe = json.wireframe;
     if (json.wireframeLinewidth !== void 0)
       material.wireframeLinewidth = json.wireframeLinewidth;
     if (json.rotation !== void 0)
       material.rotation = json.rotation;
-    if (json.linewidth !== void 0 && json.linewidth !== 1)
+    if (json.linewidth !== void 0)
       material.linewidth = json.linewidth;
     if (json.dashSize !== void 0)
       material.dashSize = json.dashSize;
