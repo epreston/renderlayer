@@ -41,7 +41,7 @@
     "execa": "^8.0.1",
     "jsdom": "^22.1.0",
     "minimist": "^1.2.8",
-    "msw": "^2.0.4",
+    "msw": "^2.0.5",
     "picocolors": "^1.0.0",
     "prettier": "^3.0.3",
     "pretty-bytes": "^6.1.1",
