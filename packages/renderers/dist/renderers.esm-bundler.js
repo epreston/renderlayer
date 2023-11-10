@@ -1,5 +1,5 @@
-import { Vector4, Color, Frustum, Matrix4, Vector2, Vector3, floorPowerOfTwo } from '@renderlayer/math';
-import { createCanvasElement, SRGBColorSpace, NoToneMapping, HalfFloatType, UnsignedByteType, LinearMipmapLinearFilter, DoubleSide, BackSide, FrontSide, RGBAFormat, FloatType, WebGLCoordinateSystem, LinearSRGBColorSpace, RGBAIntegerFormat, RGIntegerFormat, RedIntegerFormat, UnsignedIntType, UnsignedShortType, UnsignedInt248Type, UnsignedShort4444Type, UnsignedShort5551Type } from '@renderlayer/shared';
+import { Vector4, Color, Frustum, Matrix4, Vector2, Vector3, floorPowerOfTwo, ColorManagement } from '@renderlayer/math';
+import { createCanvasElement, SRGBColorSpace, NoToneMapping, HalfFloatType, UnsignedByteType, LinearMipmapLinearFilter, DoubleSide, BackSide, FrontSide, RGBAFormat, FloatType, WebGLCoordinateSystem, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, RGBAIntegerFormat, RGIntegerFormat, RedIntegerFormat, UnsignedIntType, UnsignedShortType, UnsignedInt248Type, UnsignedShort4444Type, UnsignedShort5551Type } from '@renderlayer/shared';
 import { WebGLRenderTarget } from '@renderlayer/targets';
 import { WebGLAnimation, WebGLUniforms, WebGLExtensions, WebGLCapabilities, WebGLUtils, WebGLState, WebGLInfo, WebGLProperties, WebGLTextures, WebGLCubeMaps, WebGLCubeUVMaps, WebGLAttributes, WebGLBindingStates, WebGLGeometries, WebGLObjects, WebGLMorphtargets, WebGLClipping, WebGLPrograms, WebGLMaterials, WebGLRenderLists, WebGLRenderStates, WebGLBackground, WebGLShadowMap, WebGLUniformsGroups, WebGLBufferRenderer, WebGLIndexedBufferRenderer } from '@renderlayer/webgl';
 
@@ -50,7 +50,7 @@ class WebGLRenderer {
     this.sortObjects = true;
     this.clippingPlanes = [];
     this.localClippingEnabled = false;
-    this.outputColorSpace = SRGBColorSpace;
+    this._outputColorSpace = SRGBColorSpace;
     this._useLegacyLights = false;
     this.toneMapping = NoToneMapping;
     this.toneMappingExposure = 1;
@@ -324,8 +324,10 @@ class WebGLRenderer {
       }
       if (depth2)
         bits |= _gl.DEPTH_BUFFER_BIT;
-      if (stencil2)
+      if (stencil2) {
         bits |= _gl.STENCIL_BUFFER_BIT;
+        this.state.buffers.stencil.setMask(4294967295);
+      }
       _gl.clear(bits);
     };
     this.clearColor = function() {
@@ -476,24 +478,26 @@ class WebGLRenderer {
         renderer.render(drawStart, drawCount);
       }
     };
-    this.compile = (scene, camera) => {
-      function prepare(material, scene2, object) {
-        if (material.transparent === true && material.side === DoubleSide && material.forceSinglePass === false) {
-          material.side = BackSide;
-          material.needsUpdate = true;
-          getProgram(material, scene2, object);
-          material.side = FrontSide;
-          material.needsUpdate = true;
-          getProgram(material, scene2, object);
-          material.side = DoubleSide;
-        } else {
-          getProgram(material, scene2, object);
-        }
+    function prepareMaterial(material, scene, object) {
+      if (material.transparent === true && material.side === DoubleSide && material.forceSinglePass === false) {
+        material.side = BackSide;
+        material.needsUpdate = true;
+        getProgram(material, scene, object);
+        material.side = FrontSide;
+        material.needsUpdate = true;
+        getProgram(material, scene, object);
+        material.side = DoubleSide;
+      } else {
+        getProgram(material, scene, object);
       }
-      currentRenderState = renderStates.get(scene);
+    }
+    this.compile = function(scene, camera, targetScene = null) {
+      if (targetScene === null)
+        targetScene = scene;
+      currentRenderState = renderStates.get(targetScene);
       currentRenderState.init();
       renderStateStack.push(currentRenderState);
-      scene.traverseVisible((object) => {
+      targetScene.traverseVisible(function(object) {
         if (object.isLight && object.layers.test(camera.layers)) {
           currentRenderState.pushLight(object);
           if (object.castShadow) {
@@ -501,21 +505,60 @@ class WebGLRenderer {
           }
         }
       });
+      if (scene !== targetScene) {
+        scene.traverseVisible(function(object) {
+          if (object.isLight && object.layers.test(camera.layers)) {
+            currentRenderState.pushLight(object);
+            if (object.castShadow) {
+              currentRenderState.pushShadow(object);
+            }
+          }
+        });
+      }
       currentRenderState.setupLights(_this._useLegacyLights);
-      scene.traverse((object) => {
+      const materials2 = /* @__PURE__ */ new Set();
+      scene.traverse(function(object) {
         const material = object.material;
         if (material) {
           if (Array.isArray(material)) {
-            for (const material2 of material) {
-              prepare(material2, scene, object);
+            for (let i = 0; i < material.length; i++) {
+              const material2 = material[i];
+              prepareMaterial(material2, targetScene, object);
+              materials2.add(material2);
             }
           } else {
-            prepare(material, scene, object);
+            prepareMaterial(material, targetScene, object);
+            materials2.add(material);
           }
         }
       });
       renderStateStack.pop();
       currentRenderState = null;
+      return materials2;
+    };
+    this.compileAsync = function(scene, camera, targetScene = null) {
+      const materials2 = this.compile(scene, camera, targetScene);
+      return new Promise((resolve) => {
+        function checkMaterialsReady() {
+          materials2.forEach(function(material) {
+            const materialProperties = properties.get(material);
+            const program = materialProperties.currentProgram;
+            if (program.isReady()) {
+              materials2.delete(material);
+            }
+          });
+          if (materials2.size === 0) {
+            resolve(scene);
+            return;
+          }
+          setTimeout(checkMaterialsReady, 10);
+        }
+        if (extensions.get("KHR_parallel_shader_compile") !== null) {
+          checkMaterialsReady();
+        } else {
+          setTimeout(checkMaterialsReady, 10);
+        }
+      });
     };
     let onAnimationFrameCallback = null;
     function onAnimationFrame(time) {
@@ -692,6 +735,10 @@ class WebGLRenderer {
       state.setPolygonOffset(false);
     }
     function renderTransmissionPass(opaqueObjects, transmissiveObjects, scene, camera) {
+      const overrideMaterial = scene.isScene === true ? scene.overrideMaterial : null;
+      if (overrideMaterial !== null) {
+        return;
+      }
       const isWebGL2 = capabilities.isWebGL2;
       if (_transmissionRenderTarget === null) {
         _transmissionRenderTarget = new WebGLRenderTarget(1, 1, {
@@ -843,11 +890,19 @@ class WebGLRenderer {
         uniforms.pointShadowMap.value = lights.state.pointShadowMap;
         uniforms.pointShadowMatrix.value = lights.state.pointShadowMatrix;
       }
-      const progUniforms = program.getUniforms();
-      const uniformsList = WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
       materialProperties.currentProgram = program;
-      materialProperties.uniformsList = uniformsList;
+      materialProperties.uniformsList = null;
       return program;
+    }
+    function getUniformList(materialProperties) {
+      if (materialProperties.uniformsList === null) {
+        const progUniforms = materialProperties.currentProgram.getUniforms();
+        materialProperties.uniformsList = WebGLUniforms.seqWithValue(
+          progUniforms.seq,
+          materialProperties.uniforms
+        );
+      }
+      return materialProperties.uniformsList;
     }
     function updateCommonMaterialProperties(material, parameters2) {
       const materialProperties = properties.get(material);
@@ -871,7 +926,7 @@ class WebGLRenderer {
       textures.resetTextureUnits();
       const fog = scene.fog;
       const environment = material.isMeshStandardMaterial ? scene.environment : null;
-      const colorSpace = _currentRenderTarget === null ? _this.outputColorSpace : (
+      const colorSpace = _currentRenderTarget === null ? _this._outputColorSpace : (
         // : _currentRenderTarget.isXRRenderTarget === true
         // ? _currentRenderTarget.texture.colorSpace
         LinearSRGBColorSpace
@@ -989,7 +1044,6 @@ class WebGLRenderer {
             if (skeleton.boneTexture === null)
               skeleton.computeBoneTexture();
             p_uniforms.setValue(_gl, "boneTexture", skeleton.boneTexture, textures);
-            p_uniforms.setValue(_gl, "boneTextureSize", skeleton.boneTextureSize);
           } else {
             console.warn(
               "WebGLRenderer: SkinnedMesh can only be used with WebGL 2. With WebGL 1 OES_texture_float and vertex textures support is required."
@@ -1024,10 +1078,10 @@ class WebGLRenderer {
           _height,
           _transmissionRenderTarget
         );
-        WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
+        WebGLUniforms.upload(_gl, getUniformList(materialProperties), m_uniforms, textures);
       }
       if (material.isShaderMaterial && material.uniformsNeedUpdate === true) {
-        WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
+        WebGLUniforms.upload(_gl, getUniformList(materialProperties), m_uniforms, textures);
         material.uniformsNeedUpdate = false;
       }
       if (material.isSpriteMaterial) {
@@ -1387,6 +1441,15 @@ class WebGLRenderer {
   }
   get coordinateSystem() {
     return WebGLCoordinateSystem;
+  }
+  get outputColorSpace() {
+    return this._outputColorSpace;
+  }
+  set outputColorSpace(colorSpace) {
+    this._outputColorSpace = colorSpace;
+    const gl = this.getContext();
+    gl.drawingBufferColorSpace = colorSpace === DisplayP3ColorSpace ? "display-p3" : "srgb";
+    gl.unpackColorSpace = ColorManagement.workingColorSpace === LinearDisplayP3ColorSpace ? "display-p3" : "srgb";
   }
   /** @deprecated Multiply light intensity values by PI when false. */
   get useLegacyLights() {
