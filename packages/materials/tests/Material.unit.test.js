@@ -293,25 +293,16 @@ describe('Materials', () => {
       object.uuid = 'c67ecd1b-cb30-456a-82e4-f07057001d31';
       expect(object).toMatchInlineSnapshot(`
         {
-          "colorWrite": true,
-          "depthFunc": 3,
-          "depthTest": true,
-          "depthWrite": true,
+          "blendColor": 0,
           "metadata": {
             "generator": "Material.toJSON",
             "type": "Material",
             "version": 4.5,
           },
-          "stencilFail": 7680,
-          "stencilFunc": 519,
-          "stencilFuncMask": 255,
-          "stencilRef": 0,
-          "stencilWrite": false,
-          "stencilWriteMask": 255,
-          "stencilZFail": 7680,
-          "stencilZPass": 7680,
           "type": "Material",
           "uuid": "c67ecd1b-cb30-456a-82e4-f07057001d31",
+          "wireframeLinecap": undefined,
+          "wireframeLinejoin": undefined,
         }
       `);
     });

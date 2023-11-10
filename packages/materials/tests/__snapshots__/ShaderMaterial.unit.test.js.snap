@@ -2,11 +2,8 @@
 
 exports[`Materials > ShaderMaterial > toJSON 1`] = `
 {
+  "blendColor": 0,
   "clipping": false,
-  "colorWrite": true,
-  "depthFunc": 3,
-  "depthTest": true,
-  "depthWrite": true,
   "fog": false,
   "forceSinglePass": true,
   "fragmentShader": "
@@ -21,14 +18,6 @@ void main() {
     "type": "Material",
     "version": 4.5,
   },
-  "stencilFail": 7680,
-  "stencilFunc": 519,
-  "stencilFuncMask": 255,
-  "stencilRef": 0,
-  "stencilWrite": false,
-  "stencilWriteMask": 255,
-  "stencilZFail": 7680,
-  "stencilZPass": 7680,
   "type": "ShaderMaterial",
   "uniforms": {},
   "uuid": "d8c485c3-df12-4143-9149-b249facd67f7",
@@ -37,5 +26,7 @@ void main() {
 	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 }
 ",
+  "wireframeLinecap": undefined,
+  "wireframeLinejoin": undefined,
 }
 `;

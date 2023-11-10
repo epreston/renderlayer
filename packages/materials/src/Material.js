@@ -8,7 +8,7 @@ import {
   OneMinusSrcAlphaFactor,
   SrcAlphaFactor
 } from '@renderlayer/shared';
-import { generateUUID } from '@renderlayer/math';
+import { Color, generateUUID } from '@renderlayer/math';
 import { EventDispatcher } from '@renderlayer/core';
 
 let _materialId = 0;
@@ -38,6 +38,8 @@ class Material extends EventDispatcher {
     this.blendSrcAlpha = null;
     this.blendDstAlpha = null;
     this.blendEquationAlpha = null;
+    this.blendColor = new Color(0, 0, 0);
+    this.blendAlpha = 0;
 
     this.depthFunc = LessEqualDepth;
     this.depthTest = true;
@@ -286,24 +288,33 @@ class Material extends EventDispatcher {
 
     if (this.blending !== NormalBlending) data.blending = this.blending;
     if (this.side !== FrontSide) data.side = this.side;
-    if (this.vertexColors) data.vertexColors = true;
+    if (this.vertexColors === true) data.vertexColors = true;
 
     if (this.opacity < 1) data.opacity = this.opacity;
     if (this.transparent === true) data.transparent = true;
 
-    data.depthFunc = this.depthFunc;
-    data.depthTest = this.depthTest;
-    data.depthWrite = this.depthWrite;
-    data.colorWrite = this.colorWrite;
+    if (this.blendSrc !== SrcAlphaFactor) data.blendSrc = this.blendSrc;
+    if (this.blendDst !== OneMinusSrcAlphaFactor) data.blendDst = this.blendDst;
+    if (this.blendEquation !== AddEquation) data.blendEquation = this.blendEquation;
+    if (this.blendSrcAlpha !== null) data.blendSrcAlpha = this.blendSrcAlpha;
+    if (this.blendDstAlpha !== null) data.blendDstAlpha = this.blendDstAlpha;
+    if (this.blendEquationAlpha !== null) data.blendEquationAlpha = this.blendEquationAlpha;
+    if (this.blendColor && this.blendColor.isColor) data.blendColor = this.blendColor.getHex();
+    if (this.blendAlpha !== 0) data.blendAlpha = this.blendAlpha;
 
-    data.stencilWrite = this.stencilWrite;
-    data.stencilWriteMask = this.stencilWriteMask;
-    data.stencilFunc = this.stencilFunc;
-    data.stencilRef = this.stencilRef;
-    data.stencilFuncMask = this.stencilFuncMask;
-    data.stencilFail = this.stencilFail;
-    data.stencilZFail = this.stencilZFail;
-    data.stencilZPass = this.stencilZPass;
+    if (this.depthFunc !== LessEqualDepth) data.depthFunc = this.depthFunc;
+    if (this.depthTest === false) data.depthTest = this.depthTest;
+    if (this.depthWrite === false) data.depthWrite = this.depthWrite;
+    if (this.colorWrite === false) data.colorWrite = this.colorWrite;
+
+    if (this.stencilWriteMask !== 0xff) data.stencilWriteMask = this.stencilWriteMask;
+    if (this.stencilFunc !== AlwaysStencilFunc) data.stencilFunc = this.stencilFunc;
+    if (this.stencilRef !== 0) data.stencilRef = this.stencilRef;
+    if (this.stencilFuncMask !== 0xff) data.stencilFuncMask = this.stencilFuncMask;
+    if (this.stencilFail !== KeepStencilOp) data.stencilFail = this.stencilFail;
+    if (this.stencilZFail !== KeepStencilOp) data.stencilZFail = this.stencilZFail;
+    if (this.stencilZPass !== KeepStencilOp) data.stencilZPass = this.stencilZPass;
+    if (this.stencilWrite === true) data.stencilWrite = this.stencilWrite;
 
     // rotation (SpriteMaterial)
     if (this.rotation !== undefined && this.rotation !== 0) data.rotation = this.rotation;
@@ -327,6 +338,8 @@ class Material extends EventDispatcher {
 
     if (this.wireframe === true) data.wireframe = true;
     if (this.wireframeLinewidth > 1) data.wireframeLinewidth = this.wireframeLinewidth;
+    if (this.wireframeLinecap !== 'round') data.wireframeLinecap = this.wireframeLinecap;
+    if (this.wireframeLinejoin !== 'round') data.wireframeLinejoin = this.wireframeLinejoin;
 
     if (this.flatShading === true) data.flatShading = true;
 
@@ -388,6 +401,8 @@ class Material extends EventDispatcher {
     this.blendSrcAlpha = source.blendSrcAlpha;
     this.blendDstAlpha = source.blendDstAlpha;
     this.blendEquationAlpha = source.blendEquationAlpha;
+    this.blendColor.copy(source.blendColor);
+    this.blendAlpha = source.blendAlpha;
 
     this.depthFunc = source.depthFunc;
     this.depthTest = source.depthTest;
