@@ -1,4 +1,4 @@
-import { LinearSRGBColorSpace } from '@renderlayer/shared';
+import { ColorManagement } from '@renderlayer/math';
 
 // Uniform Utilities
 
@@ -76,7 +76,7 @@ export function getUnlitUniformColorSpace(renderer) {
     return renderer.outputColorSpace;
   }
 
-  return LinearSRGBColorSpace;
+  return ColorManagement.workingColorSpace;
 }
 
 // TODO: Legacy deprecation required.  Do not use.

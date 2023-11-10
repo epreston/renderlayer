@@ -1,5 +1,4 @@
-import { Color, Matrix3, Vector2, Vector3 } from '@renderlayer/math';
-import { LinearSRGBColorSpace } from '@renderlayer/shared';
+import { Color, Matrix3, Vector2, ColorManagement, Vector3 } from '@renderlayer/math';
 
 var alphahash_fragment = `
 #ifdef USE_ALPHAHASH
@@ -74,8 +73,14 @@ var aomap_fragment = `
 #ifdef USE_AOMAP
 	float ambientOcclusion = ( texture2D( aoMap, vAoMapUv ).r - 1.0 ) * aoMapIntensity + 1.0;
 	reflectedLight.indirectDiffuse *= ambientOcclusion;
+	#if defined( USE_CLEARCOAT )
+		clearcoatSpecularIndirect *= ambientOcclusion;
+	#endif
+	#if defined( USE_SHEEN )
+		sheenSpecularIndirect *= ambientOcclusion;
+	#endif
 	#if defined( USE_ENVMAP ) && defined( STANDARD )
-		float dotNV = saturate( dot( geometry.normal, geometry.viewDir ) );
+		float dotNV = saturate( dot( geometryNormal, geometryViewDir ) );
 		reflectedLight.indirectSpecular *= computeSpecularOcclusion( dotNV, ambientOcclusion, material.roughness );
 	#endif
 #endif
@@ -201,8 +206,8 @@ var bumpmap_pars_fragment = `
 		return vec2( dBx, dBy );
 	}
 	vec3 perturbNormalArb( vec3 surf_pos, vec3 surf_norm, vec2 dHdxy, float faceDirection ) {
-		vec3 vSigmaX = dFdx( surf_pos.xyz );
-		vec3 vSigmaY = dFdy( surf_pos.xyz );
+		vec3 vSigmaX = normalize( dFdx( surf_pos.xyz ) );
+		vec3 vSigmaY = normalize( dFdy( surf_pos.xyz ) );
 		vec3 vN = surf_norm;
 		vec3 R1 = cross( vSigmaY, vN );
 		vec3 R2 = cross( vN, vSigmaX );
@@ -332,14 +337,6 @@ struct ReflectedLight {
 	vec3 directSpecular;
 	vec3 indirectDiffuse;
 	vec3 indirectSpecular;
-};
-struct GeometricContext {
-	vec3 position;
-	vec3 normal;
-	vec3 viewDir;
-#ifdef USE_CLEARCOAT
-	vec3 clearcoatNormal;
-#endif
 };
 #ifdef USE_ALPHAHASH
 	varying vec3 vPosition;
@@ -536,11 +533,33 @@ gl_FragColor = linearToOutputTexel( gl_FragColor );
 `;
 
 var colorspace_pars_fragment = `
+const mat3 LINEAR_SRGB_TO_LINEAR_DISPLAY_P3 = mat3(
+	vec3( 0.8224621, 0.177538, 0.0 ),
+	vec3( 0.0331941, 0.9668058, 0.0 ),
+	vec3( 0.0170827, 0.0723974, 0.9105199 )
+);
+const mat3 LINEAR_DISPLAY_P3_TO_LINEAR_SRGB = mat3(
+	vec3( 1.2249401, - 0.2249404, 0.0 ),
+	vec3( - 0.0420569, 1.0420571, 0.0 ),
+	vec3( - 0.0196376, - 0.0786361, 1.0982735 )
+);
+vec4 LinearSRGBToLinearDisplayP3( in vec4 value ) {
+	return vec4( value.rgb * LINEAR_SRGB_TO_LINEAR_DISPLAY_P3, value.a );
+}
+vec4 LinearDisplayP3ToLinearSRGB( in vec4 value ) {
+	return vec4( value.rgb * LINEAR_DISPLAY_P3_TO_LINEAR_SRGB, value.a );
+}
+vec4 LinearTransferOETF( in vec4 value ) {
+	return value;
+}
+vec4 sRGBTransferOETF( in vec4 value ) {
+	return vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.a );
+}
 vec4 LinearToLinear( in vec4 value ) {
 	return value;
 }
 vec4 LinearTosRGB( in vec4 value ) {
-	return vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.a );
+	return sRGBTransferOETF( value );
 }
 `;
 
@@ -720,12 +739,12 @@ struct LambertMaterial {
 	vec3 diffuseColor;
 	float specularStrength;
 };
-void RE_Direct_Lambert( const in IncidentLight directLight, const in GeometricContext geometry, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
-	float dotNL = saturate( dot( geometry.normal, directLight.direction ) );
+void RE_Direct_Lambert( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
+	float dotNL = saturate( dot( geometryNormal, directLight.direction ) );
 	vec3 irradiance = dotNL * directLight.color;
 	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
-void RE_IndirectDiffuse_Lambert( const in vec3 irradiance, const in GeometricContext geometry, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
+void RE_IndirectDiffuse_Lambert( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
 	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
 #define RE_Direct				RE_Direct_Lambert
@@ -783,7 +802,7 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 		vec3 color;
 	};
 	uniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];
-	void getDirectionalLightInfo( const in DirectionalLight directionalLight, const in GeometricContext geometry, out IncidentLight light ) {
+	void getDirectionalLightInfo( const in DirectionalLight directionalLight, out IncidentLight light ) {
 		light.color = directionalLight.color;
 		light.direction = directionalLight.direction;
 		light.visible = true;
@@ -797,8 +816,8 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 		float decay;
 	};
 	uniform PointLight pointLights[ NUM_POINT_LIGHTS ];
-	void getPointLightInfo( const in PointLight pointLight, const in GeometricContext geometry, out IncidentLight light ) {
-		vec3 lVector = pointLight.position - geometry.position;
+	void getPointLightInfo( const in PointLight pointLight, const in vec3 geometryPosition, out IncidentLight light ) {
+		vec3 lVector = pointLight.position - geometryPosition;
 		light.direction = normalize( lVector );
 		float lightDistance = length( lVector );
 		light.color = pointLight.color;
@@ -817,8 +836,8 @@ float getSpotAttenuation( const in float coneCosine, const in float penumbraCosi
 		float penumbraCos;
 	};
 	uniform SpotLight spotLights[ NUM_SPOT_LIGHTS ];
-	void getSpotLightInfo( const in SpotLight spotLight, const in GeometricContext geometry, out IncidentLight light ) {
-		vec3 lVector = spotLight.position - geometry.position;
+	void getSpotLightInfo( const in SpotLight spotLight, const in vec3 geometryPosition, out IncidentLight light ) {
+		vec3 lVector = spotLight.position - geometryPosition;
 		light.direction = normalize( lVector );
 		float angleCos = dot( light.direction, spotLight.direction );
 		float spotAttenuation = getSpotAttenuation( spotLight.coneCos, spotLight.penumbraCos, angleCos );
@@ -907,11 +926,11 @@ varying vec3 vViewPosition;
 struct ToonMaterial {
 	vec3 diffuseColor;
 };
-void RE_Direct_Toon( const in IncidentLight directLight, const in GeometricContext geometry, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
-	vec3 irradiance = getGradientIrradiance( geometry.normal, directLight.direction ) * directLight.color;
+void RE_Direct_Toon( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
+	vec3 irradiance = getGradientIrradiance( geometryNormal, directLight.direction ) * directLight.color;
 	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
-void RE_IndirectDiffuse_Toon( const in vec3 irradiance, const in GeometricContext geometry, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
+void RE_IndirectDiffuse_Toon( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
 	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
 #define RE_Direct				RE_Direct_Toon
@@ -934,13 +953,13 @@ struct BlinnPhongMaterial {
 	float specularShininess;
 	float specularStrength;
 };
-void RE_Direct_BlinnPhong( const in IncidentLight directLight, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
-	float dotNL = saturate( dot( geometry.normal, directLight.direction ) );
+void RE_Direct_BlinnPhong( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
+	float dotNL = saturate( dot( geometryNormal, directLight.direction ) );
 	vec3 irradiance = dotNL * directLight.color;
 	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
-	reflectedLight.directSpecular += irradiance * BRDF_BlinnPhong( directLight.direction, geometry.viewDir, geometry.normal, material.specularColor, material.specularShininess ) * material.specularStrength;
+	reflectedLight.directSpecular += irradiance * BRDF_BlinnPhong( directLight.direction, geometryViewDir, geometryNormal, material.specularColor, material.specularShininess ) * material.specularStrength;
 }
-void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
+void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
 	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
 #define RE_Direct				RE_Direct_BlinnPhong
@@ -950,7 +969,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 var lights_physical_fragment = `
 PhysicalMaterial material;
 material.diffuseColor = diffuseColor.rgb * ( 1.0 - metalnessFactor );
-vec3 dxy = max( abs( dFdx( geometryNormal ) ), abs( dFdy( geometryNormal ) ) );
+vec3 dxy = max( abs( dFdx( nonPerturbedNormal ) ), abs( dFdy( nonPerturbedNormal ) ) );
 float geometryRoughness = max( max( dxy.x, dxy.y ), dxy.z );
 material.roughness = max( roughnessFactor, 0.0525 );
 material.roughness += geometryRoughness;
@@ -1024,11 +1043,15 @@ material.roughness = min( material.roughness, 1.0 );
 		vec2 anisotropyV = anisotropyVector;
 	#endif
 	material.anisotropy = length( anisotropyV );
-	anisotropyV /= material.anisotropy;
-	material.anisotropy = saturate( material.anisotropy );
+	if( material.anisotropy == 0.0 ) {
+		anisotropyV = vec2( 1.0, 0.0 );
+	} else {
+		anisotropyV /= material.anisotropy;
+		material.anisotropy = saturate( material.anisotropy );
+	}
 	material.alphaT = mix( pow2( material.roughness ), 1.0, pow2( material.anisotropy ) );
-	material.anisotropyT = tbn[ 0 ] * anisotropyV.x - tbn[ 1 ] * anisotropyV.y;
-	material.anisotropyB = tbn[ 1 ] * anisotropyV.x + tbn[ 0 ] * anisotropyV.y;
+	material.anisotropyT = tbn[ 0 ] * anisotropyV.x + tbn[ 1 ] * anisotropyV.y;
+	material.anisotropyB = tbn[ 1 ] * anisotropyV.x - tbn[ 0 ] * anisotropyV.y;
 #endif
 `;
 
@@ -1072,8 +1095,10 @@ struct PhysicalMaterial {
 		vec3 anisotropyB;
 	#endif
 };
-vec3 clearcoatSpecular = vec3( 0.0 );
-vec3 sheenSpecular = vec3( 0.0 );
+vec3 clearcoatSpecularDirect = vec3( 0.0 );
+vec3 clearcoatSpecularIndirect = vec3( 0.0 );
+vec3 sheenSpecularDirect = vec3( 0.0 );
+vec3 sheenSpecularIndirect = vec3(0.0 );
 vec3 Schlick_to_F0( const in vec3 f, const in float f90, const in float dotVH ) {
 		float x = clamp( 1.0 - dotVH, 0.0, 1.0 );
 		float x2 = x * x;
@@ -1262,10 +1287,10 @@ void computeMultiscattering( const in vec3 normal, const in vec3 viewDir, const 
 	multiScatter += Fms * Ems;
 }
 #if NUM_RECT_AREA_LIGHTS > 0
-	void RE_Direct_RectArea_Physical( const in RectAreaLight rectAreaLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
-		vec3 normal = geometry.normal;
-		vec3 viewDir = geometry.viewDir;
-		vec3 position = geometry.position;
+	void RE_Direct_RectArea_Physical( const in RectAreaLight rectAreaLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
+		vec3 normal = geometryNormal;
+		vec3 viewDir = geometryViewDir;
+		vec3 position = geometryPosition;
 		vec3 lightPos = rectAreaLight.position;
 		vec3 halfWidth = rectAreaLight.halfWidth;
 		vec3 halfHeight = rectAreaLight.halfHeight;
@@ -1289,37 +1314,37 @@ void computeMultiscattering( const in vec3 normal, const in vec3 viewDir, const 
 		reflectedLight.directDiffuse += lightColor * material.diffuseColor * LTC_Evaluate( normal, viewDir, position, mat3( 1.0 ), rectCoords );
 	}
 #endif
-void RE_Direct_Physical( const in IncidentLight directLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
-	float dotNL = saturate( dot( geometry.normal, directLight.direction ) );
+void RE_Direct_Physical( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
+	float dotNL = saturate( dot( geometryNormal, directLight.direction ) );
 	vec3 irradiance = dotNL * directLight.color;
 	#ifdef USE_CLEARCOAT
-		float dotNLcc = saturate( dot( geometry.clearcoatNormal, directLight.direction ) );
+		float dotNLcc = saturate( dot( geometryClearcoatNormal, directLight.direction ) );
 		vec3 ccIrradiance = dotNLcc * directLight.color;
-		clearcoatSpecular += ccIrradiance * BRDF_GGX_Clearcoat( directLight.direction, geometry.viewDir, geometry.clearcoatNormal, material );
+		clearcoatSpecularDirect += ccIrradiance * BRDF_GGX_Clearcoat( directLight.direction, geometryViewDir, geometryClearcoatNormal, material );
 	#endif
 	#ifdef USE_SHEEN
-		sheenSpecular += irradiance * BRDF_Sheen( directLight.direction, geometry.viewDir, geometry.normal, material.sheenColor, material.sheenRoughness );
+		sheenSpecularDirect += irradiance * BRDF_Sheen( directLight.direction, geometryViewDir, geometryNormal, material.sheenColor, material.sheenRoughness );
 	#endif
-	reflectedLight.directSpecular += irradiance * BRDF_GGX( directLight.direction, geometry.viewDir, geometry.normal, material );
+	reflectedLight.directSpecular += irradiance * BRDF_GGX( directLight.direction, geometryViewDir, geometryNormal, material );
 	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
-void RE_IndirectDiffuse_Physical( const in vec3 irradiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
+void RE_IndirectDiffuse_Physical( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {
 	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
 }
-void RE_IndirectSpecular_Physical( const in vec3 radiance, const in vec3 irradiance, const in vec3 clearcoatRadiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight) {
+void RE_IndirectSpecular_Physical( const in vec3 radiance, const in vec3 irradiance, const in vec3 clearcoatRadiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in PhysicalMaterial material, inout ReflectedLight reflectedLight) {
 	#ifdef USE_CLEARCOAT
-		clearcoatSpecular += clearcoatRadiance * EnvironmentBRDF( geometry.clearcoatNormal, geometry.viewDir, material.clearcoatF0, material.clearcoatF90, material.clearcoatRoughness );
+		clearcoatSpecularIndirect += clearcoatRadiance * EnvironmentBRDF( geometryClearcoatNormal, geometryViewDir, material.clearcoatF0, material.clearcoatF90, material.clearcoatRoughness );
 	#endif
 	#ifdef USE_SHEEN
-		sheenSpecular += irradiance * material.sheenColor * IBLSheenBRDF( geometry.normal, geometry.viewDir, material.sheenRoughness );
+		sheenSpecularIndirect += irradiance * material.sheenColor * IBLSheenBRDF( geometryNormal, geometryViewDir, material.sheenRoughness );
 	#endif
 	vec3 singleScattering = vec3( 0.0 );
 	vec3 multiScattering = vec3( 0.0 );
 	vec3 cosineWeightedIrradiance = irradiance * RECIPROCAL_PI;
 	#ifdef USE_IRIDESCENCE
-		computeMultiscatteringIridescence( geometry.normal, geometry.viewDir, material.specularColor, material.specularF90, material.iridescence, material.iridescenceFresnel, material.roughness, singleScattering, multiScattering );
+		computeMultiscatteringIridescence( geometryNormal, geometryViewDir, material.specularColor, material.specularF90, material.iridescence, material.iridescenceFresnel, material.roughness, singleScattering, multiScattering );
 	#else
-		computeMultiscattering( geometry.normal, geometry.viewDir, material.specularColor, material.specularF90, material.roughness, singleScattering, multiScattering );
+		computeMultiscattering( geometryNormal, geometryViewDir, material.specularColor, material.specularF90, material.roughness, singleScattering, multiScattering );
 	#endif
 	vec3 totalScattering = singleScattering + multiScattering;
 	vec3 diffuse = material.diffuseColor * ( 1.0 - max( max( totalScattering.r, totalScattering.g ), totalScattering.b ) );
@@ -1337,15 +1362,15 @@ float computeSpecularOcclusion( const in float dotNV, const in float ambientOccl
 `;
 
 var lights_fragment_begin = `
-GeometricContext geometry;
-geometry.position = - vViewPosition;
-geometry.normal = normal;
-geometry.viewDir = ( isOrthographic ) ? vec3( 0, 0, 1 ) : normalize( vViewPosition );
+vec3 geometryPosition = - vViewPosition;
+vec3 geometryNormal = normal;
+vec3 geometryViewDir = ( isOrthographic ) ? vec3( 0, 0, 1 ) : normalize( vViewPosition );
+vec3 geometryClearcoatNormal = vec3( 0.0 );
 #ifdef USE_CLEARCOAT
-	geometry.clearcoatNormal = clearcoatNormal;
+	geometryClearcoatNormal = clearcoatNormal;
 #endif
 #ifdef USE_IRIDESCENCE
-	float dotNVi = saturate( dot( normal, geometry.viewDir ) );
+	float dotNVi = saturate( dot( normal, geometryViewDir ) );
 	if ( material.iridescenceThickness == 0.0 ) {
 		material.iridescence = 0.0;
 	} else {
@@ -1365,12 +1390,12 @@ IncidentLight directLight;
 	#pragma unroll_loop_start
 	for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {
 		pointLight = pointLights[ i ];
-		getPointLightInfo( pointLight, geometry, directLight );
+		getPointLightInfo( pointLight, geometryPosition, directLight );
 		#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_POINT_LIGHT_SHADOWS )
 		pointLightShadow = pointLightShadows[ i ];
 		directLight.color *= ( directLight.visible && receiveShadow ) ? getPointShadow( pointShadowMap[ i ], pointLightShadow.shadowMapSize, pointLightShadow.shadowBias, pointLightShadow.shadowRadius, vPointShadowCoord[ i ], pointLightShadow.shadowCameraNear, pointLightShadow.shadowCameraFar ) : 1.0;
 		#endif
-		RE_Direct( directLight, geometry, material, reflectedLight );
+		RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
 	}
 	#pragma unroll_loop_end
 #endif
@@ -1385,7 +1410,7 @@ IncidentLight directLight;
 	#pragma unroll_loop_start
 	for ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {
 		spotLight = spotLights[ i ];
-		getSpotLightInfo( spotLight, geometry, directLight );
+		getSpotLightInfo( spotLight, geometryPosition, directLight );
 		#if ( UNROLLED_LOOP_INDEX < NUM_SPOT_LIGHT_SHADOWS_WITH_MAPS )
 		#define SPOT_LIGHT_MAP_INDEX UNROLLED_LOOP_INDEX
 		#elif ( UNROLLED_LOOP_INDEX < NUM_SPOT_LIGHT_SHADOWS )
@@ -1404,7 +1429,7 @@ IncidentLight directLight;
 		spotLightShadow = spotLightShadows[ i ];
 		directLight.color *= ( directLight.visible && receiveShadow ) ? getShadow( spotShadowMap[ i ], spotLightShadow.shadowMapSize, spotLightShadow.shadowBias, spotLightShadow.shadowRadius, vSpotLightCoord[ i ] ) : 1.0;
 		#endif
-		RE_Direct( directLight, geometry, material, reflectedLight );
+		RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
 	}
 	#pragma unroll_loop_end
 #endif
@@ -1416,12 +1441,12 @@ IncidentLight directLight;
 	#pragma unroll_loop_start
 	for ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {
 		directionalLight = directionalLights[ i ];
-		getDirectionalLightInfo( directionalLight, geometry, directLight );
+		getDirectionalLightInfo( directionalLight, directLight );
 		#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_DIR_LIGHT_SHADOWS )
 		directionalLightShadow = directionalLightShadows[ i ];
 		directLight.color *= ( directLight.visible && receiveShadow ) ? getShadow( directionalShadowMap[ i ], directionalLightShadow.shadowMapSize, directionalLightShadow.shadowBias, directionalLightShadow.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;
 		#endif
-		RE_Direct( directLight, geometry, material, reflectedLight );
+		RE_Direct( directLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
 	}
 	#pragma unroll_loop_end
 #endif
@@ -1430,7 +1455,7 @@ IncidentLight directLight;
 	#pragma unroll_loop_start
 	for ( int i = 0; i < NUM_RECT_AREA_LIGHTS; i ++ ) {
 		rectAreaLight = rectAreaLights[ i ];
-		RE_Direct_RectArea( rectAreaLight, geometry, material, reflectedLight );
+		RE_Direct_RectArea( rectAreaLight, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
 	}
 	#pragma unroll_loop_end
 #endif
@@ -1438,12 +1463,12 @@ IncidentLight directLight;
 	vec3 iblIrradiance = vec3( 0.0 );
 	vec3 irradiance = getAmbientLightIrradiance( ambientLightColor );
 	#if defined( USE_LIGHT_PROBES )
-		irradiance += getLightProbeIrradiance( lightProbe, geometry.normal );
+		irradiance += getLightProbeIrradiance( lightProbe, geometryNormal );
 	#endif
 	#if ( NUM_HEMI_LIGHTS > 0 )
 		#pragma unroll_loop_start
 		for ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {
-			irradiance += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry.normal );
+			irradiance += getHemisphereLightIrradiance( hemisphereLights[ i ], geometryNormal );
 		}
 		#pragma unroll_loop_end
 	#endif
@@ -1462,27 +1487,27 @@ var lights_fragment_maps = `
 		irradiance += lightMapIrradiance;
 	#endif
 	#if defined( USE_ENVMAP ) && defined( STANDARD ) && defined( ENVMAP_TYPE_CUBE_UV )
-		iblIrradiance += getIBLIrradiance( geometry.normal );
+		iblIrradiance += getIBLIrradiance( geometryNormal );
 	#endif
 #endif
 #if defined( USE_ENVMAP ) && defined( RE_IndirectSpecular )
 	#ifdef USE_ANISOTROPY
-		radiance += getIBLAnisotropyRadiance( geometry.viewDir, geometry.normal, material.roughness, material.anisotropyB, material.anisotropy );
+		radiance += getIBLAnisotropyRadiance( geometryViewDir, geometryNormal, material.roughness, material.anisotropyB, material.anisotropy );
 	#else
-		radiance += getIBLRadiance( geometry.viewDir, geometry.normal, material.roughness );
+		radiance += getIBLRadiance( geometryViewDir, geometryNormal, material.roughness );
 	#endif
 	#ifdef USE_CLEARCOAT
-		clearcoatRadiance += getIBLRadiance( geometry.viewDir, geometry.clearcoatNormal, material.clearcoatRoughness );
+		clearcoatRadiance += getIBLRadiance( geometryViewDir, geometryClearcoatNormal, material.clearcoatRoughness );
 	#endif
 #endif
 `;
 
 var lights_fragment_end = `
 #if defined( RE_IndirectDiffuse )
-	RE_IndirectDiffuse( irradiance, geometry, material, reflectedLight );
+	RE_IndirectDiffuse( irradiance, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
 #endif
 #if defined( RE_IndirectSpecular )
-	RE_IndirectSpecular( radiance, iblIrradiance, clearcoatRadiance, geometry, material, reflectedLight );
+	RE_IndirectSpecular( radiance, iblIrradiance, clearcoatRadiance, geometryPosition, geometryNormal, geometryViewDir, geometryClearcoatNormal, material, reflectedLight );
 #endif
 `;
 
@@ -1705,7 +1730,7 @@ float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;
 		tbn2[1] *= faceDirection;
 	#endif
 #endif
-vec3 geometryNormal = normal;
+vec3 nonPerturbedNormal = normal;
 `;
 
 var normal_fragment_maps = `
@@ -1785,7 +1810,7 @@ var normalmap_pars_fragment = `
 
 var clearcoat_normal_fragment_begin = `
 #ifdef USE_CLEARCOAT
-	vec3 clearcoatNormal = geometryNormal;
+	vec3 clearcoatNormal = nonPerturbedNormal;
 #endif
 `;
 
@@ -2234,20 +2259,16 @@ var skinning_pars_vertex = `
 	uniform mat4 bindMatrix;
 	uniform mat4 bindMatrixInverse;
 	uniform highp sampler2D boneTexture;
-	uniform int boneTextureSize;
 	mat4 getBoneMatrix( const in float i ) {
-		float j = i * 4.0;
-		float x = mod( j, float( boneTextureSize ) );
-		float y = floor( j / float( boneTextureSize ) );
-		float dx = 1.0 / float( boneTextureSize );
-		float dy = 1.0 / float( boneTextureSize );
-		y = dy * ( y + 0.5 );
-		vec4 v1 = texture2D( boneTexture, vec2( dx * ( x + 0.5 ), y ) );
-		vec4 v2 = texture2D( boneTexture, vec2( dx * ( x + 1.5 ), y ) );
-		vec4 v3 = texture2D( boneTexture, vec2( dx * ( x + 2.5 ), y ) );
-		vec4 v4 = texture2D( boneTexture, vec2( dx * ( x + 3.5 ), y ) );
-		mat4 bone = mat4( v1, v2, v3, v4 );
-		return bone;
+		int size = textureSize( boneTexture, 0 ).x;
+		int j = int( i ) * 4;
+		int x = j % size;
+		int y = j / size;
+		vec4 v1 = texelFetch( boneTexture, ivec2( x, y ), 0 );
+		vec4 v2 = texelFetch( boneTexture, ivec2( x + 1, y ), 0 );
+		vec4 v3 = texelFetch( boneTexture, ivec2( x + 2, y ), 0 );
+		vec4 v4 = texelFetch( boneTexture, ivec2( x + 3, y ), 0 );
+		return mat4( v1, v2, v3, v4 );
 	}
 #endif
 `;
@@ -3253,12 +3274,12 @@ void main() {
 	vec3 outgoingLight = totalDiffuse + totalSpecular + totalEmissiveRadiance;
 	#ifdef USE_SHEEN
 		float sheenEnergyComp = 1.0 - 0.157 * max3( material.sheenColor );
-		outgoingLight = outgoingLight * sheenEnergyComp + sheenSpecular;
+		outgoingLight = outgoingLight * sheenEnergyComp + sheenSpecularDirect + sheenSpecularIndirect;
 	#endif
 	#ifdef USE_CLEARCOAT
-		float dotNVcc = saturate( dot( geometry.clearcoatNormal, geometry.viewDir ) );
+		float dotNVcc = saturate( dot( geometryClearcoatNormal, geometryViewDir ) );
 		vec3 Fcc = F_Schlick( material.clearcoatF0, material.clearcoatF90, dotNVcc );
-		outgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + clearcoatSpecular * material.clearcoat;
+		outgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + ( clearcoatSpecularDirect + clearcoatSpecularIndirect ) * material.clearcoat;
 	#endif
 	#include <opaque_fragment>
 	#include <tonemapping_fragment>
@@ -3802,7 +3823,7 @@ function getUnlitUniformColorSpace(renderer) {
   if (renderer.getRenderTarget() === null) {
     return renderer.outputColorSpace;
   }
-  return LinearSRGBColorSpace;
+  return ColorManagement.workingColorSpace;
 }
 
 const ShaderLib = {

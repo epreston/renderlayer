@@ -4,7 +4,7 @@ export default /* glsl */`
 	uniform sampler2D bumpMap;
 	uniform float bumpScale;
 
-	// Bump Mapping Unparametrized Surfaces on the GPU by Morten S. Mikkelsen
+	// Bump Mapping Un-parametrized Surfaces on the GPU by Morten S. Mikkelsen
 	// https://mmikk.github.io/papers3d/mm_sfgrad_bump.pdf
 
 	// Evaluate the derivative of the height w.r.t. screen-space using forward differencing (listing 2)
@@ -24,8 +24,9 @@ export default /* glsl */`
 
 	vec3 perturbNormalArb( vec3 surf_pos, vec3 surf_norm, vec2 dHdxy, float faceDirection ) {
 
-		vec3 vSigmaX = dFdx( surf_pos.xyz );
-		vec3 vSigmaY = dFdy( surf_pos.xyz );
+		// normalize is done to ensure that the bump map looks the same regardless of the texture's scale
+		vec3 vSigmaX = normalize( dFdx( surf_pos.xyz ) );
+		vec3 vSigmaY = normalize( dFdy( surf_pos.xyz ) );
 		vec3 vN = surf_norm; // normalized
 
 		vec3 R1 = cross( vSigmaY, vN );

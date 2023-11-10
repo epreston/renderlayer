@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { Color, Matrix3, Matrix4, Quaternion, Vector2, Vector3, Vector4 } from '@renderlayer/math';
 import { CubeReflectionMapping, UVMapping } from '@renderlayer/shared';
@@ -10,14 +10,6 @@ describe('Shaders', () => {
   describe('UniformsUtils', () => {
     test('constructor', () => {
       expect(UniformsUtils).toBeTruthy();
-    });
-
-    test.todo('UniformsUtils.clone', () => {
-      // implement
-    });
-
-    test.todo('UniformsUtils.merge', () => {
-      // implement
     });
 
     test('cloneUniforms copies values', () => {
