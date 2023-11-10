@@ -108,7 +108,16 @@ class GLTFLoader extends Loader {
     if (this.resourcePath !== '') {
       resourcePath = this.resourcePath;
     } else if (this.path !== '') {
-      resourcePath = this.path;
+      // If a base path is set, resources will be relative paths from that plus the
+      // relative path of the gltf file
+
+      // Example  path = 'https://localhost/', url = 'assets/models/model.gltf'
+      // resourcePath = 'https://localhost/assets/models/'
+
+      // referenced resource 'model.bin' will be loaded from 'https://localhost/assets/models/model.bin'
+      // referenced resource '../textures/texture.png' will be loaded from 'https://localhost/assets/textures/texture.png'
+      const relativeUrl = LoaderUtils.extractUrlBase(url);
+      resourcePath = LoaderUtils.resolveURL(relativeUrl, this.path);
     } else {
       resourcePath = LoaderUtils.extractUrlBase(url);
     }

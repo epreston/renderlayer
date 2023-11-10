@@ -2556,7 +2556,8 @@ class GLTFLoader extends Loader {
     if (this.resourcePath !== "") {
       resourcePath = this.resourcePath;
     } else if (this.path !== "") {
-      resourcePath = this.path;
+      const relativeUrl = LoaderUtils.extractUrlBase(url);
+      resourcePath = LoaderUtils.resolveURL(relativeUrl, this.path);
     } else {
       resourcePath = LoaderUtils.extractUrlBase(url);
     }
