@@ -76,9 +76,9 @@ describe('Math', () => {
     test('fromWorkingColorSpace - DisplayP3ColorSpace', () => {
       const color = ColorManagement.fromWorkingColorSpace(testColor, DisplayP3ColorSpace);
 
-      expect(color.r).toBeCloseTo(0.73536064, 8);
-      expect(color.g).toBeCloseTo(0.73536064, 8);
-      expect(color.b).toBeCloseTo(0.73536064, 8);
+      expect(color.r).toBeCloseTo(0.735361, 6);
+      expect(color.g).toBeCloseTo(0.735361, 6);
+      expect(color.b).toBeCloseTo(0.735361, 6);
     });
 
     test('toWorkingColorSpace - SRGBColorSpace', () => {
@@ -100,9 +100,9 @@ describe('Math', () => {
     test('toWorkingColorSpace - DisplayP3ColorSpace', () => {
       const color = ColorManagement.toWorkingColorSpace(testColor, DisplayP3ColorSpace);
 
-      expect(color.r).toBeCloseTo(0.2140411, 8);
-      expect(color.g).toBeCloseTo(0.21404118, 8);
-      expect(color.b).toBeCloseTo(0.2140411, 8);
+      expect(color.r).toBeCloseTo(0.2140411, 6);
+      expect(color.g).toBeCloseTo(0.2140411, 6);
+      expect(color.b).toBeCloseTo(0.2140411, 6);
     });
 
     test.each([

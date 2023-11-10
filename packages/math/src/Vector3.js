@@ -211,24 +211,25 @@ class Vector3 {
   }
 
   applyQuaternion(q) {
-    const x = this.x,
-      y = this.y,
-      z = this.z;
+    // quaternion q is assumed to have unit length
+
+    const vx = this.x,
+      vy = this.y,
+      vz = this.z;
     const qx = q.x,
       qy = q.y,
       qz = q.z,
       qw = q.w;
 
-    // calculate quat * vector
-    const ix = qw * x + qy * z - qz * y;
-    const iy = qw * y + qz * x - qx * z;
-    const iz = qw * z + qx * y - qy * x;
-    const iw = -qx * x - qy * y - qz * z;
+    // t = 2 * cross( q.xyz, v );
+    const tx = 2 * (qy * vz - qz * vy);
+    const ty = 2 * (qz * vx - qx * vz);
+    const tz = 2 * (qx * vy - qy * vx);
 
-    // calculate result * inverse quat
-    this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
-    this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
-    this.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+    // v + q.w * t + cross( q.xyz, t );
+    this.x = vx + qw * tx + qy * tz - qz * ty;
+    this.y = vy + qw * ty + qz * tx - qx * tz;
+    this.z = vz + qw * tz + qx * ty - qy * tx;
 
     return this;
   }

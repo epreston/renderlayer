@@ -129,39 +129,47 @@ class Box3 {
 
     object.updateWorldMatrix(false, false);
 
-    if (object.boundingBox !== undefined) {
-      if (object.boundingBox === null) {
-        object.computeBoundingBox();
-      }
+    const geometry = object.geometry;
 
-      _box.copy(object.boundingBox);
-      _box.applyMatrix4(object.matrixWorld);
+    if (geometry !== undefined) {
+      const positionAttribute = geometry.getAttribute('position');
 
-      this.union(_box);
-    } else {
-      const geometry = object.geometry;
+      // precise AABB computation based on vertex data requires at least a position attribute.
+      // instancing isn't supported so far and uses the normal (conservative) code path.
 
-      if (geometry !== undefined) {
-        if (
-          precise &&
-          geometry.attributes !== undefined &&
-          geometry.attributes.position !== undefined
-        ) {
-          const position = geometry.attributes.position;
-          for (let i = 0, l = position.count; i < l; i++) {
-            _vector.fromBufferAttribute(position, i).applyMatrix4(object.matrixWorld);
-            this.expandByPoint(_vector);
+      if (precise === true && positionAttribute !== undefined && object.isInstancedMesh !== true) {
+        for (let i = 0, l = positionAttribute.count; i < l; i++) {
+          if (object.isMesh === true) {
+            object.getVertexPosition(i, _vector);
+          } else {
+            _vector.fromBufferAttribute(positionAttribute, i);
           }
+
+          _vector.applyMatrix4(object.matrixWorld);
+          this.expandByPoint(_vector);
+        }
+      } else {
+        if (object.boundingBox !== undefined) {
+          // object-level bounding box
+
+          if (object.boundingBox === null) {
+            object.computeBoundingBox();
+          }
+
+          _box.copy(object.boundingBox);
         } else {
+          // geometry-level bounding box
+
           if (geometry.boundingBox === null) {
             geometry.computeBoundingBox();
           }
 
           _box.copy(geometry.boundingBox);
-          _box.applyMatrix4(object.matrixWorld);
-
-          this.union(_box);
         }
+
+        _box.applyMatrix4(object.matrixWorld);
+
+        this.union(_box);
       }
     }
 

@@ -267,10 +267,11 @@ describe('Maths', () => {
       expect(a.y).toStrictEqual(y);
       expect(a.z).toStrictEqual(z);
 
-      a.applyQuaternion(new Quaternion(x, y, z, w));
-      expect(a.x).toStrictEqual(108);
-      expect(a.y).toStrictEqual(162);
-      expect(a.z).toStrictEqual(216);
+      const b = new Vector3(x, y, z);
+      b.applyQuaternion(new Quaternion(x, y, z, w));
+      expect(b.x).toStrictEqual(2);
+      expect(b.y).toStrictEqual(3);
+      expect(b.z).toStrictEqual(4);
     });
 
     test.todo('project', () => {

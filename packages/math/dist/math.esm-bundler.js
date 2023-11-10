@@ -1104,15 +1104,14 @@ class Vector3 {
     return this;
   }
   applyQuaternion(q) {
-    const x = this.x, y = this.y, z = this.z;
+    const vx = this.x, vy = this.y, vz = this.z;
     const qx = q.x, qy = q.y, qz = q.z, qw = q.w;
-    const ix = qw * x + qy * z - qz * y;
-    const iy = qw * y + qz * x - qx * z;
-    const iz = qw * z + qx * y - qy * x;
-    const iw = -qx * x - qy * y - qz * z;
-    this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
-    this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
-    this.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+    const tx = 2 * (qy * vz - qz * vy);
+    const ty = 2 * (qz * vx - qx * vz);
+    const tz = 2 * (qx * vy - qy * vx);
+    this.x = vx + qw * tx + qy * tz - qz * ty;
+    this.y = vy + qw * ty + qz * tx - qx * tz;
+    this.z = vz + qw * tz + qx * ty - qy * tx;
     return this;
   }
   project(camera) {
@@ -1449,30 +1448,33 @@ class Box3 {
   }
   expandByObject(object, precise = false) {
     object.updateWorldMatrix(false, false);
-    if (object.boundingBox !== void 0) {
-      if (object.boundingBox === null) {
-        object.computeBoundingBox();
-      }
-      _box$1.copy(object.boundingBox);
-      _box$1.applyMatrix4(object.matrixWorld);
-      this.union(_box$1);
-    } else {
-      const geometry = object.geometry;
-      if (geometry !== void 0) {
-        if (precise && geometry.attributes !== void 0 && geometry.attributes.position !== void 0) {
-          const position = geometry.attributes.position;
-          for (let i = 0, l = position.count; i < l; i++) {
-            _vector$2.fromBufferAttribute(position, i).applyMatrix4(object.matrixWorld);
-            this.expandByPoint(_vector$2);
+    const geometry = object.geometry;
+    if (geometry !== void 0) {
+      const positionAttribute = geometry.getAttribute("position");
+      if (precise === true && positionAttribute !== void 0 && object.isInstancedMesh !== true) {
+        for (let i = 0, l = positionAttribute.count; i < l; i++) {
+          if (object.isMesh === true) {
+            object.getVertexPosition(i, _vector$2);
+          } else {
+            _vector$2.fromBufferAttribute(positionAttribute, i);
           }
+          _vector$2.applyMatrix4(object.matrixWorld);
+          this.expandByPoint(_vector$2);
+        }
+      } else {
+        if (object.boundingBox !== void 0) {
+          if (object.boundingBox === null) {
+            object.computeBoundingBox();
+          }
+          _box$1.copy(object.boundingBox);
         } else {
           if (geometry.boundingBox === null) {
             geometry.computeBoundingBox();
           }
           _box$1.copy(geometry.boundingBox);
-          _box$1.applyMatrix4(object.matrixWorld);
-          this.union(_box$1);
         }
+        _box$1.applyMatrix4(object.matrixWorld);
+        this.union(_box$1);
       }
     }
     const children = object.children;
@@ -1958,79 +1960,111 @@ class Matrix3 {
 }
 const _m3 = /* @__PURE__ */ new Matrix3();
 
+const NoColorSpace = "";
 const SRGBColorSpace$1 = "srgb";
 const LinearSRGBColorSpace = "srgb-linear";
 const DisplayP3ColorSpace = "display-p3";
+const LinearDisplayP3ColorSpace = "display-p3-linear";
+const LinearTransfer = "linear";
+const SRGBTransfer = "srgb";
+const Rec709Primaries = "rec709";
+const P3Primaries = "p3";
 function SRGBToLinear(c) {
   return c < 0.04045 ? c * 0.0773993808 : Math.pow(c * 0.9478672986 + 0.0521327014, 2.4);
 }
 function LinearToSRGB(c) {
   return c < 31308e-7 ? c * 12.92 : 1.055 * Math.pow(c, 0.41666) - 0.055;
 }
-const LINEAR_SRGB_TO_LINEAR_DISPLAY_P3 = /* @__PURE__ */ new Matrix3().fromArray([
+const LINEAR_SRGB_TO_LINEAR_DISPLAY_P3 = /* @__PURE__ */ new Matrix3().set(
   0.8224621,
-  0.0331941,
-  0.0170827,
   0.177538,
-  0.9668058,
-  0.0723974,
-  -1e-7,
-  1e-7,
-  0.9105199
-]);
-const LINEAR_DISPLAY_P3_TO_LINEAR_SRGB = /* @__PURE__ */ new Matrix3().fromArray([
-  1.2249401,
-  -0.0420569,
-  -0.0196376,
-  -0.2249404,
-  1.0420571,
-  -0.0786361,
-  1e-7,
   0,
+  0.0331941,
+  0.9668058,
+  0,
+  0.0170827,
+  0.0723974,
+  0.9105199
+);
+const LINEAR_DISPLAY_P3_TO_LINEAR_SRGB = /* @__PURE__ */ new Matrix3().set(
+  1.2249401,
+  -0.2249404,
+  0,
+  -0.0420569,
+  1.0420571,
+  0,
+  -0.0196376,
+  -0.0786361,
   1.0982735
-]);
-function DisplayP3ToLinearSRGB(color) {
-  return color.convertSRGBToLinear().applyMatrix3(LINEAR_DISPLAY_P3_TO_LINEAR_SRGB);
-}
-function LinearSRGBToDisplayP3(color) {
-  return color.applyMatrix3(LINEAR_SRGB_TO_LINEAR_DISPLAY_P3).convertLinearToSRGB();
-}
-const TO_LINEAR = {
-  [LinearSRGBColorSpace]: (color) => color,
-  [SRGBColorSpace$1]: (color) => color.convertSRGBToLinear(),
-  [DisplayP3ColorSpace]: DisplayP3ToLinearSRGB
+);
+const COLOR_SPACES = {
+  [LinearSRGBColorSpace]: {
+    transfer: LinearTransfer,
+    primaries: Rec709Primaries,
+    toReference: (color) => color,
+    fromReference: (color) => color
+  },
+  [SRGBColorSpace$1]: {
+    transfer: SRGBTransfer,
+    primaries: Rec709Primaries,
+    toReference: (color) => color.convertSRGBToLinear(),
+    fromReference: (color) => color.convertLinearToSRGB()
+  },
+  [LinearDisplayP3ColorSpace]: {
+    transfer: LinearTransfer,
+    primaries: P3Primaries,
+    toReference: (color) => color.applyMatrix3(LINEAR_DISPLAY_P3_TO_LINEAR_SRGB),
+    fromReference: (color) => color.applyMatrix3(LINEAR_SRGB_TO_LINEAR_DISPLAY_P3)
+  },
+  [DisplayP3ColorSpace]: {
+    transfer: SRGBTransfer,
+    primaries: P3Primaries,
+    toReference: (color) => color.convertSRGBToLinear().applyMatrix3(LINEAR_DISPLAY_P3_TO_LINEAR_SRGB),
+    fromReference: (color) => color.applyMatrix3(LINEAR_SRGB_TO_LINEAR_DISPLAY_P3).convertLinearToSRGB()
+  }
 };
-const FROM_LINEAR = {
-  [LinearSRGBColorSpace]: (color) => color,
-  [SRGBColorSpace$1]: (color) => color.convertLinearToSRGB(),
-  [DisplayP3ColorSpace]: LinearSRGBToDisplayP3
-};
+const SUPPORTED_WORKING_COLOR_SPACES = /* @__PURE__ */ new Set([LinearSRGBColorSpace, LinearDisplayP3ColorSpace]);
 const ColorManagement = {
   enabled: true,
+  _workingColorSpace: LinearSRGBColorSpace,
   get workingColorSpace() {
-    return LinearSRGBColorSpace;
+    return this._workingColorSpace;
   },
-  /** @param {Color} color */
+  set workingColorSpace(colorSpace) {
+    if (!SUPPORTED_WORKING_COLOR_SPACES.has(colorSpace)) {
+      throw new Error(`Unsupported working color space, "${colorSpace}".`);
+    }
+    this._workingColorSpace = colorSpace;
+  },
+  /** @param {import('./Color.js').Color} color */
   convert: function(color, sourceColorSpace, targetColorSpace) {
     if (this.enabled === false || sourceColorSpace === targetColorSpace || !sourceColorSpace || !targetColorSpace) {
       return color;
     }
-    const sourceToLinear = TO_LINEAR[sourceColorSpace];
-    const targetFromLinear = FROM_LINEAR[targetColorSpace];
-    if (sourceToLinear === void 0 || targetFromLinear === void 0) {
+    if (COLOR_SPACES[sourceColorSpace] === void 0 || COLOR_SPACES[targetColorSpace] === void 0) {
       throw new Error(
         `Unsupported color space conversion, "${sourceColorSpace}" to "${targetColorSpace}".`
       );
     }
-    return targetFromLinear(sourceToLinear(color));
+    const sourceToReference = COLOR_SPACES[sourceColorSpace].toReference;
+    const targetFromReference = COLOR_SPACES[targetColorSpace].fromReference;
+    return targetFromReference(sourceToReference(color));
   },
-  /** @param {Color} color */
+  /** @param {import('./Color.js').Color} color */
   fromWorkingColorSpace: function(color, targetColorSpace) {
-    return this.convert(color, this.workingColorSpace, targetColorSpace);
+    return this.convert(color, this._workingColorSpace, targetColorSpace);
   },
-  /** @param {Color} color */
+  /** @param {import('./Color.js').Color} color */
   toWorkingColorSpace: function(color, sourceColorSpace) {
-    return this.convert(color, sourceColorSpace, this.workingColorSpace);
+    return this.convert(color, sourceColorSpace, this._workingColorSpace);
+  },
+  getPrimaries: function(colorSpace) {
+    return COLOR_SPACES[colorSpace].primaries;
+  },
+  getTransfer: function(colorSpace) {
+    if (colorSpace === NoColorSpace)
+      return LinearTransfer;
+    return COLOR_SPACES[colorSpace].transfer;
   }
 };
 
@@ -2269,11 +2303,7 @@ class Color {
   }
   offsetHSL(h, s, l) {
     this.getHSL(_hslA);
-    _hslA.h += h;
-    _hslA.s += s;
-    _hslA.l += l;
-    this.setHSL(_hslA.h, _hslA.s, _hslA.l);
-    return this;
+    return this.setHSL(_hslA.h + h, _hslA.s + s, _hslA.l + l);
   }
   add(color) {
     this.r += color.r;
