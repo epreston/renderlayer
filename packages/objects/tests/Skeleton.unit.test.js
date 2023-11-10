@@ -81,15 +81,6 @@ describe('Objects', () => {
       expect(skeleton.boneTexture).toBeInstanceOf(DataTexture);
     });
 
-    test('boneTextureSize', () => {
-      const { skeleton } = createSkeleton();
-      expect(skeleton.boneTextureSize).toBe(0);
-
-      skeleton.computeBoneTexture();
-
-      expect(skeleton.boneTextureSize).toBe(4);
-    });
-
     test('init', () => {
       const { skeleton } = createSkeleton();
       skeleton.init();
@@ -128,12 +119,10 @@ describe('Objects', () => {
 
     test('computeBoneTexture', () => {
       const { skeleton } = createSkeleton();
-      expect(skeleton.boneTextureSize).toBe(0);
 
       skeleton.computeBoneTexture();
 
       expect(skeleton.boneTexture).not.toBeNull();
-      expect(skeleton.boneTextureSize).toBe(4);
     });
 
     test('getBoneByName', () => {

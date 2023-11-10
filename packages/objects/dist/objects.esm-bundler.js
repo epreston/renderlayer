@@ -863,7 +863,6 @@ class Skeleton {
     this.boneInverses = boneInverses;
     this.boneMatrices = null;
     this.boneTexture = null;
-    this.boneTextureSize = 0;
     this.init();
   }
   init() {
@@ -939,7 +938,6 @@ class Skeleton {
     boneTexture.needsUpdate = true;
     this.boneMatrices = boneMatrices;
     this.boneTexture = boneTexture;
-    this.boneTextureSize = size;
     return this;
   }
   getBoneByName(name) {
