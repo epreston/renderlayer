@@ -44,8 +44,9 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   const maxCubemapSize = capabilities.maxCubemapSize;
   const maxTextureSize = capabilities.maxTextureSize;
   const maxSamples = capabilities.maxSamples;
-  const multisampledRTTExt = extensions.has('WEBGL_multisampled_render_to_texture')
-    ? extensions.get('WEBGL_multisampled_render_to_texture')
+  const multisampledRTTExt =
+    extensions.has('WEBGL_multisampled_render_to_texture') ?
+      extensions.get('WEBGL_multisampled_render_to_texture')
     : null;
   const supportsInvalidateFramebuffer =
     typeof navigator === 'undefined' ? false : /OculusBrowser/g.test(navigator.userAgent);
@@ -190,9 +191,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
 
     if (glFormat === _gl.RGBA) {
-      const transfer = forceLinearTransfer
-        ? LinearTransfer
-        : ColorManagement.getTransfer(colorSpace);
+      const transfer =
+        forceLinearTransfer ? LinearTransfer : ColorManagement.getTransfer(colorSpace);
 
       if (glType === _gl.FLOAT) internalFormat = _gl.RGBA32F;
       if (glType === _gl.HALF_FLOAT) internalFormat = _gl.RGBA16F;
@@ -668,13 +668,13 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
       const texturePrimaries =
-        texture.colorSpace === NoColorSpace
-          ? null
-          : ColorManagement.getPrimaries(texture.colorSpace);
+        texture.colorSpace === NoColorSpace ?
+          null
+        : ColorManagement.getPrimaries(texture.colorSpace);
       const unpackConversion =
-        texture.colorSpace === NoColorSpace || workingPrimaries === texturePrimaries
-          ? _gl.NONE
-          : _gl.BROWSER_DEFAULT_WEBGL;
+        texture.colorSpace === NoColorSpace || workingPrimaries === texturePrimaries ?
+          _gl.NONE
+        : _gl.BROWSER_DEFAULT_WEBGL;
 
       _gl.pixelStorei(_gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
       _gl.pixelStorei(_gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
@@ -1197,13 +1197,13 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
       const texturePrimaries =
-        texture.colorSpace === NoColorSpace
-          ? null
-          : ColorManagement.getPrimaries(texture.colorSpace);
+        texture.colorSpace === NoColorSpace ?
+          null
+        : ColorManagement.getPrimaries(texture.colorSpace);
       const unpackConversion =
-        texture.colorSpace === NoColorSpace || workingPrimaries === texturePrimaries
-          ? _gl.NONE
-          : _gl.BROWSER_DEFAULT_WEBGL;
+        texture.colorSpace === NoColorSpace || workingPrimaries === texturePrimaries ?
+          _gl.NONE
+        : _gl.BROWSER_DEFAULT_WEBGL;
 
       _gl.pixelStorei(_gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
       _gl.pixelStorei(_gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
@@ -1633,9 +1633,9 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       );
     } else {
       const textures =
-        renderTarget.isWebGLMultipleRenderTargets === true
-          ? renderTarget.texture
-          : [renderTarget.texture];
+        renderTarget.isWebGLMultipleRenderTargets === true ?
+          renderTarget.texture
+        : [renderTarget.texture];
 
       for (const texture of textures) {
         const glFormat = utils.convert(texture.format, texture.colorSpace);
@@ -2040,9 +2040,9 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     const supportsMips = true;
 
     const textures =
-      renderTarget.isWebGLMultipleRenderTargets === true
-        ? renderTarget.texture
-        : [renderTarget.texture];
+      renderTarget.isWebGLMultipleRenderTargets === true ?
+        renderTarget.texture
+      : [renderTarget.texture];
 
     for (let i = 0, il = textures.length; i < il; i++) {
       const texture = textures[i];
@@ -2060,16 +2060,14 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
   function updateMultisampleRenderTarget(renderTarget) {
     if (renderTarget.samples > 0 && useMultisampledRTT(renderTarget) === false) {
-      const textures = renderTarget.isWebGLMultipleRenderTargets
-        ? renderTarget.texture
-        : [renderTarget.texture];
+      const textures =
+        renderTarget.isWebGLMultipleRenderTargets ? renderTarget.texture : [renderTarget.texture];
       const width = renderTarget.width;
       const height = renderTarget.height;
       let mask = _gl.COLOR_BUFFER_BIT;
       const invalidationArray = [];
-      const depthStyle = renderTarget.stencilBuffer
-        ? _gl.DEPTH_STENCIL_ATTACHMENT
-        : _gl.DEPTH_ATTACHMENT;
+      const depthStyle =
+        renderTarget.stencilBuffer ? _gl.DEPTH_STENCIL_ATTACHMENT : _gl.DEPTH_ATTACHMENT;
       const renderTargetProperties = properties.get(renderTarget);
       const isMultipleRenderTargets = renderTarget.isWebGLMultipleRenderTargets === true;
 
@@ -2112,9 +2110,9 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         }
 
         const ignoreDepthValues =
-          renderTargetProperties.__ignoreDepthValues !== undefined
-            ? renderTargetProperties.__ignoreDepthValues
-            : false;
+          renderTargetProperties.__ignoreDepthValues !== undefined ?
+            renderTargetProperties.__ignoreDepthValues
+          : false;
 
         if (ignoreDepthValues === false) {
           if (renderTarget.depthBuffer) mask |= _gl.DEPTH_BUFFER_BIT;

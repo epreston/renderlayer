@@ -123,9 +123,9 @@ class WebGLShadowMap {
 
         if (shadow.map === null || toVSM === true || fromVSM === true) {
           const pars =
-            this.type !== VSMShadowMap
-              ? { minFilter: NearestFilter, magFilter: NearestFilter }
-              : {};
+            this.type !== VSMShadowMap ?
+              { minFilter: NearestFilter, magFilter: NearestFilter }
+            : {};
 
           if (shadow.map !== null) {
             shadow.map.dispose();

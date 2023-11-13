@@ -1448,11 +1448,11 @@ class WebGLRenderer {
       const environment = material.isMeshStandardMaterial ? scene.environment : null;
 
       const colorSpace =
-        _currentRenderTarget === null
-          ? _this._outputColorSpace
-          : // : _currentRenderTarget.isXRRenderTarget === true
-            // ? _currentRenderTarget.texture.colorSpace
-            LinearSRGBColorSpace;
+        _currentRenderTarget === null ?
+          _this._outputColorSpace
+          // : _currentRenderTarget.isXRRenderTarget === true
+          // ? _currentRenderTarget.texture.colorSpace
+        : LinearSRGBColorSpace;
 
       const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(
         material.envMap || environment
@@ -1989,9 +1989,9 @@ class WebGLRenderer {
           // restore framebuffer of current render target if necessary
 
           const framebuffer =
-            _currentRenderTarget !== null
-              ? properties.get(_currentRenderTarget).__webglFramebuffer
-              : null;
+            _currentRenderTarget !== null ?
+              properties.get(_currentRenderTarget).__webglFramebuffer
+            : null;
           state.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
         }
       }

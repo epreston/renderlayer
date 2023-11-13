@@ -487,43 +487,43 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
       parameters.emissiveMapUv ? '#define EMISSIVEMAP_UV ' + parameters.emissiveMapUv : '',
       parameters.bumpMapUv ? '#define BUMPMAP_UV ' + parameters.bumpMapUv : '',
       parameters.normalMapUv ? '#define NORMALMAP_UV ' + parameters.normalMapUv : '',
-      parameters.displacementMapUv
-        ? '#define DISPLACEMENTMAP_UV ' + parameters.displacementMapUv
-        : '',
+      parameters.displacementMapUv ?
+        '#define DISPLACEMENTMAP_UV ' + parameters.displacementMapUv
+      : '',
 
       parameters.metalnessMapUv ? '#define METALNESSMAP_UV ' + parameters.metalnessMapUv : '',
       parameters.roughnessMapUv ? '#define ROUGHNESSMAP_UV ' + parameters.roughnessMapUv : '',
       parameters.anisotropyMapUv ? '#define ANISOTROPYMAP_UV ' + parameters.anisotropyMapUv : '',
 
       parameters.clearcoatMapUv ? '#define CLEARCOATMAP_UV ' + parameters.clearcoatMapUv : '',
-      parameters.clearcoatNormalMapUv
-        ? '#define CLEARCOAT_NORMALMAP_UV ' + parameters.clearcoatNormalMapUv
-        : '',
-      parameters.clearcoatRoughnessMapUv
-        ? '#define CLEARCOAT_ROUGHNESSMAP_UV ' + parameters.clearcoatRoughnessMapUv
-        : '',
+      parameters.clearcoatNormalMapUv ?
+        '#define CLEARCOAT_NORMALMAP_UV ' + parameters.clearcoatNormalMapUv
+      : '',
+      parameters.clearcoatRoughnessMapUv ?
+        '#define CLEARCOAT_ROUGHNESSMAP_UV ' + parameters.clearcoatRoughnessMapUv
+      : '',
 
       parameters.iridescenceMapUv ? '#define IRIDESCENCEMAP_UV ' + parameters.iridescenceMapUv : '',
-      parameters.iridescenceThicknessMapUv
-        ? '#define IRIDESCENCE_THICKNESSMAP_UV ' + parameters.iridescenceThicknessMapUv
-        : '',
+      parameters.iridescenceThicknessMapUv ?
+        '#define IRIDESCENCE_THICKNESSMAP_UV ' + parameters.iridescenceThicknessMapUv
+      : '',
 
       parameters.sheenColorMapUv ? '#define SHEEN_COLORMAP_UV ' + parameters.sheenColorMapUv : '',
-      parameters.sheenRoughnessMapUv
-        ? '#define SHEEN_ROUGHNESSMAP_UV ' + parameters.sheenRoughnessMapUv
-        : '',
+      parameters.sheenRoughnessMapUv ?
+        '#define SHEEN_ROUGHNESSMAP_UV ' + parameters.sheenRoughnessMapUv
+      : '',
 
       parameters.specularMapUv ? '#define SPECULARMAP_UV ' + parameters.specularMapUv : '',
-      parameters.specularColorMapUv
-        ? '#define SPECULAR_COLORMAP_UV ' + parameters.specularColorMapUv
-        : '',
-      parameters.specularIntensityMapUv
-        ? '#define SPECULAR_INTENSITYMAP_UV ' + parameters.specularIntensityMapUv
-        : '',
+      parameters.specularColorMapUv ?
+        '#define SPECULAR_COLORMAP_UV ' + parameters.specularColorMapUv
+      : '',
+      parameters.specularIntensityMapUv ?
+        '#define SPECULAR_INTENSITYMAP_UV ' + parameters.specularIntensityMapUv
+      : '',
 
-      parameters.transmissionMapUv
-        ? '#define TRANSMISSIONMAP_UV ' + parameters.transmissionMapUv
-        : '',
+      parameters.transmissionMapUv ?
+        '#define TRANSMISSIONMAP_UV ' + parameters.transmissionMapUv
+      : '',
       parameters.thicknessMapUv ? '#define THICKNESSMAP_UV ' + parameters.thicknessMapUv : '',
 
       //
@@ -548,13 +548,13 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 
       parameters.morphTargetsCount > 0 ? '#define MORPHTARGETS_TEXTURE' : '',
 
-      parameters.morphTargetsCount > 0
-        ? '#define MORPHTARGETS_TEXTURE_STRIDE ' + parameters.morphTextureStride
-        : '',
+      parameters.morphTargetsCount > 0 ?
+        '#define MORPHTARGETS_TEXTURE_STRIDE ' + parameters.morphTextureStride
+      : '',
 
-      parameters.morphTargetsCount > 0
-        ? '#define MORPHTARGETS_COUNT ' + parameters.morphTargetsCount
-        : '',
+      parameters.morphTargetsCount > 0 ?
+        '#define MORPHTARGETS_COUNT ' + parameters.morphTargetsCount
+      : '',
 
       parameters.doubleSided ? '#define DOUBLE_SIDED' : '',
       parameters.flipSided ? '#define FLIP_SIDED' : '',
@@ -569,9 +569,9 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
       parameters.useLegacyLights ? '#define LEGACY_LIGHTS' : '',
 
       parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
-      parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth
-        ? '#define USE_LOGDEPTHBUF_EXT'
-        : '',
+      parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth ?
+        '#define USE_LOGDEPTHBUF_EXT'
+      : '',
 
       'uniform mat4 modelMatrix;',
       'uniform mat4 modelViewMatrix;',
@@ -757,9 +757,9 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
       parameters.decodeVideoTexture ? '#define DECODE_VIDEO_TEXTURE' : '',
 
       parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
-      parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth
-        ? '#define USE_LOGDEPTHBUF_EXT'
-        : '',
+      parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth ?
+        '#define USE_LOGDEPTHBUF_EXT'
+      : '',
 
       'uniform mat4 viewMatrix;',
       'uniform vec3 cameraPosition;',
@@ -767,9 +767,9 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 
       parameters.toneMapping !== NoToneMapping ? '#define TONE_MAPPING' : '',
       parameters.toneMapping !== NoToneMapping ? ShaderChunk['tonemapping_pars_fragment'] : '', // this code is required here because it is used by the toneMapping() function defined below
-      parameters.toneMapping !== NoToneMapping
-        ? getToneMappingFunction('toneMapping', parameters.toneMapping)
-        : '',
+      parameters.toneMapping !== NoToneMapping ?
+        getToneMappingFunction('toneMapping', parameters.toneMapping)
+      : '',
 
       parameters.dithering ? '#define DITHERING' : '',
       parameters.opaque ? '#define OPAQUE' : '',

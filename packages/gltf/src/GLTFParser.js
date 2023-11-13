@@ -519,9 +519,9 @@ export class GLTFParser {
       const itemBytes = elementBytes * itemSize;
       const byteOffset = accessorDef.byteOffset || 0;
       const byteStride =
-        accessorDef.bufferView !== undefined
-          ? json.bufferViews[accessorDef.bufferView].byteStride
-          : undefined;
+        accessorDef.bufferView !== undefined ?
+          json.bufferViews[accessorDef.bufferView].byteStride
+        : undefined;
       const normalized = accessorDef.normalized === true;
       let array, bufferAttribute;
 
@@ -771,9 +771,9 @@ export class GLTFParser {
 
       if (parser.extensions[EXTENSIONS.KHR_TEXTURE_TRANSFORM]) {
         const transform =
-          mapDef.extensions !== undefined
-            ? mapDef.extensions[EXTENSIONS.KHR_TEXTURE_TRANSFORM]
-            : undefined;
+          mapDef.extensions !== undefined ?
+            mapDef.extensions[EXTENSIONS.KHR_TEXTURE_TRANSFORM]
+          : undefined;
 
         if (transform) {
           const gltfReference = parser.associations.get(texture);
@@ -1125,9 +1125,9 @@ export class GLTFParser {
 
     for (let i = 0, il = primitives.length; i < il; i++) {
       const material =
-        primitives[i].material === undefined
-          ? createDefaultMaterial(this.cache)
-          : this.getDependency('material', primitives[i].material);
+        primitives[i].material === undefined ?
+          createDefaultMaterial(this.cache)
+        : this.getDependency('material', primitives[i].material);
 
       pending.push(material);
     }
@@ -1157,9 +1157,9 @@ export class GLTFParser {
         ) {
           // .isSkinnedMesh isn't in glTF spec. See ._markDefs()
           mesh =
-            meshDef.isSkinnedMesh === true
-              ? new SkinnedMesh(geometry, material)
-              : new Mesh(geometry, material);
+            meshDef.isSkinnedMesh === true ?
+              new SkinnedMesh(geometry, material)
+            : new Mesh(geometry, material);
 
           if (mesh.isSkinnedMesh === true) {
             // normalize skin weights to fix malformed assets (see #15319)
@@ -1340,13 +1340,13 @@ export class GLTFParser {
       const target = channel.target;
       const name = target.node;
       const input =
-        animationDef.parameters !== undefined
-          ? animationDef.parameters[sampler.input]
-          : sampler.input;
+        animationDef.parameters !== undefined ?
+          animationDef.parameters[sampler.input]
+        : sampler.input;
       const output =
-        animationDef.parameters !== undefined
-          ? animationDef.parameters[sampler.output]
-          : sampler.output;
+        animationDef.parameters !== undefined ?
+          animationDef.parameters[sampler.output]
+        : sampler.output;
 
       if (target.node === undefined) continue;
 
@@ -1450,9 +1450,9 @@ export class GLTFParser {
     }
 
     const skeletonPending =
-      nodeDef.skin === undefined
-        ? Promise.resolve(null)
-        : parser.getDependency('skin', nodeDef.skin);
+      nodeDef.skin === undefined ?
+        Promise.resolve(null)
+      : parser.getDependency('skin', nodeDef.skin);
 
     return Promise.all([nodePending, Promise.all(childPending), skeletonPending]).then(
       function (results) {
@@ -1690,9 +1690,9 @@ export class GLTFParser {
     }
 
     const interpolation =
-      sampler.interpolation !== undefined
-        ? INTERPOLATION[sampler.interpolation]
-        : InterpolateLinear;
+      sampler.interpolation !== undefined ?
+        INTERPOLATION[sampler.interpolation]
+      : InterpolateLinear;
 
     const outputArray = this._getArrayFromAccessor(outputAccessor);
 
@@ -1738,9 +1738,9 @@ export class GLTFParser {
       // representing inTangent, splineVertex, and outTangent. As a result, track.getValueSize()
       // must be divided by three to get the interpolant's sampleSize argument.
       const interpolantType =
-        this instanceof QuaternionKeyframeTrack
-          ? GLTFCubicSplineQuaternionInterpolant
-          : GLTFCubicSplineInterpolant;
+        this instanceof QuaternionKeyframeTrack ?
+          GLTFCubicSplineQuaternionInterpolant
+        : GLTFCubicSplineInterpolant;
 
       return new interpolantType(this.times, this.values, this.getValueSize() / 3, result);
     };
@@ -1813,27 +1813,27 @@ function addMorphTargets(geometry, targets, parser) {
 
     if (hasMorphPosition) {
       const pendingAccessor =
-        target.POSITION !== undefined
-          ? parser.getDependency('accessor', target.POSITION)
-          : geometry.attributes.position;
+        target.POSITION !== undefined ?
+          parser.getDependency('accessor', target.POSITION)
+        : geometry.attributes.position;
 
       pendingPositionAccessors.push(pendingAccessor);
     }
 
     if (hasMorphNormal) {
       const pendingAccessor =
-        target.NORMAL !== undefined
-          ? parser.getDependency('accessor', target.NORMAL)
-          : geometry.attributes.normal;
+        target.NORMAL !== undefined ?
+          parser.getDependency('accessor', target.NORMAL)
+        : geometry.attributes.normal;
 
       pendingNormalAccessors.push(pendingAccessor);
     }
 
     if (hasMorphColor) {
       const pendingAccessor =
-        target.COLOR_0 !== undefined
-          ? parser.getDependency('accessor', target.COLOR_0)
-          : geometry.attributes.color;
+        target.COLOR_0 !== undefined ?
+          parser.getDependency('accessor', target.COLOR_0)
+        : geometry.attributes.color;
 
       pendingColorAccessors.push(pendingAccessor);
     }
@@ -2095,8 +2095,8 @@ function addPrimitiveAttributes(geometry, primitiveDef, parser) {
   computeBounds(geometry, primitiveDef, parser);
 
   return Promise.all(pending).then(function () {
-    return primitiveDef.targets !== undefined
-      ? addMorphTargets(geometry, primitiveDef.targets, parser)
+    return primitiveDef.targets !== undefined ?
+        addMorphTargets(geometry, primitiveDef.targets, parser)
       : geometry;
   });
 }

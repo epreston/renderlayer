@@ -213,11 +213,9 @@ function WebGLPrograms(
 
       supportsVertexTextures: SUPPORTS_VERTEX_TEXTURES,
       outputColorSpace:
-        currentRenderTarget === null
-          ? renderer.outputColorSpace
-          : currentRenderTarget.isXRRenderTarget === true
-          ? currentRenderTarget.texture.colorSpace
-          : LinearSRGBColorSpace,
+        currentRenderTarget === null ? renderer.outputColorSpace
+        : currentRenderTarget.isXRRenderTarget === true ? currentRenderTarget.texture.colorSpace
+        : LinearSRGBColorSpace,
 
       map: HAS_MAP,
       matcap: HAS_MATCAP,

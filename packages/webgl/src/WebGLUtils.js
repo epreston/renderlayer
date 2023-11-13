@@ -177,12 +177,12 @@ function WebGLUtils(gl, extensions, capabilities) {
 
       if (extension !== null) {
         if (p === RGB_ETC2_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ETC2
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ETC2
             : extension.COMPRESSED_RGB8_ETC2;
         if (p === RGBA_ETC2_EAC_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ETC2_EAC
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ETC2_EAC
             : extension.COMPRESSED_RGBA8_ETC2_EAC;
       } else {
         return null;
@@ -211,60 +211,60 @@ function WebGLUtils(gl, extensions, capabilities) {
 
       if (extension !== null) {
         if (p === RGBA_ASTC_4x4_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR
             : extension.COMPRESSED_RGBA_ASTC_4x4_KHR;
         if (p === RGBA_ASTC_5x4_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR
             : extension.COMPRESSED_RGBA_ASTC_5x4_KHR;
         if (p === RGBA_ASTC_5x5_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR
             : extension.COMPRESSED_RGBA_ASTC_5x5_KHR;
         if (p === RGBA_ASTC_6x5_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR
             : extension.COMPRESSED_RGBA_ASTC_6x5_KHR;
         if (p === RGBA_ASTC_6x6_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR
             : extension.COMPRESSED_RGBA_ASTC_6x6_KHR;
         if (p === RGBA_ASTC_8x5_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR
             : extension.COMPRESSED_RGBA_ASTC_8x5_KHR;
         if (p === RGBA_ASTC_8x6_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR
             : extension.COMPRESSED_RGBA_ASTC_8x6_KHR;
         if (p === RGBA_ASTC_8x8_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR
             : extension.COMPRESSED_RGBA_ASTC_8x8_KHR;
         if (p === RGBA_ASTC_10x5_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR
             : extension.COMPRESSED_RGBA_ASTC_10x5_KHR;
         if (p === RGBA_ASTC_10x6_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR
             : extension.COMPRESSED_RGBA_ASTC_10x6_KHR;
         if (p === RGBA_ASTC_10x8_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR
             : extension.COMPRESSED_RGBA_ASTC_10x8_KHR;
         if (p === RGBA_ASTC_10x10_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR
             : extension.COMPRESSED_RGBA_ASTC_10x10_KHR;
         if (p === RGBA_ASTC_12x10_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR
             : extension.COMPRESSED_RGBA_ASTC_12x10_KHR;
         if (p === RGBA_ASTC_12x12_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR
             : extension.COMPRESSED_RGBA_ASTC_12x12_KHR;
       } else {
         return null;
@@ -278,8 +278,8 @@ function WebGLUtils(gl, extensions, capabilities) {
 
       if (extension !== null) {
         if (p === RGBA_BPTC_Format)
-          return transfer === SRGBTransfer
-            ? extension.COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT
+          return transfer === SRGBTransfer ?
+              extension.COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT
             : extension.COMPRESSED_RGBA_BPTC_UNORM_EXT;
         if (p === RGB_BPTC_SIGNED_Format) return extension.COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT;
         if (p === RGB_BPTC_UNSIGNED_Format) return extension.COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT;

@@ -52,8 +52,9 @@ const outputConfigs = {
 const defaultFormats = ['esm-bundler'];
 const inlineFormats = process.env.FORMATS && process.env.FORMATS.split(',');
 const packageFormats = inlineFormats || packageOptions.formats || defaultFormats;
-const packageConfigs = process.env.PROD_ONLY
-  ? []
+const packageConfigs =
+  process.env.PROD_ONLY ?
+    []
   : packageFormats.map((format) => createConfig(format, outputConfigs[format]));
 
 if (process.env.NODE_ENV === 'production') {

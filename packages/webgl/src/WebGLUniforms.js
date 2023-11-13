@@ -855,9 +855,9 @@ function parseUniform(activeInfo, addr, container) {
 
       addUniform(
         container,
-        subscript === undefined
-          ? new SingleUniform(id, activeInfo, addr)
-          : new PureArrayUniform(id, activeInfo, addr)
+        subscript === undefined ?
+          new SingleUniform(id, activeInfo, addr)
+        : new PureArrayUniform(id, activeInfo, addr)
       );
 
       break;

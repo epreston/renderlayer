@@ -431,13 +431,11 @@ class PMREMGenerator {
     const blurUniforms = blurMaterial.uniforms;
 
     const pixels = this._sizeLods[lodIn] - 1;
-    const radiansPerPixel = isFinite(sigmaRadians)
-      ? Math.PI / (2 * pixels)
-      : (2 * Math.PI) / (2 * MAX_SAMPLES - 1);
+    const radiansPerPixel =
+      isFinite(sigmaRadians) ? Math.PI / (2 * pixels) : (2 * Math.PI) / (2 * MAX_SAMPLES - 1);
     const sigmaPixels = sigmaRadians / radiansPerPixel;
-    const samples = isFinite(sigmaRadians)
-      ? 1 + Math.floor(STANDARD_DEVIATIONS * sigmaPixels)
-      : MAX_SAMPLES;
+    const samples =
+      isFinite(sigmaRadians) ? 1 + Math.floor(STANDARD_DEVIATIONS * sigmaPixels) : MAX_SAMPLES;
 
     if (samples > MAX_SAMPLES) {
       console.warn(

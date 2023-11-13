@@ -194,9 +194,9 @@ class OrbitControls extends EventDispatcher {
             spherical.theta = Math.max(min, Math.min(max, spherical.theta));
           } else {
             spherical.theta =
-              spherical.theta > (min + max) / 2
-                ? Math.max(min, spherical.theta)
-                : Math.min(max, spherical.theta);
+              spherical.theta > (min + max) / 2 ?
+                Math.max(min, spherical.theta)
+              : Math.min(max, spherical.theta);
           }
         }
 

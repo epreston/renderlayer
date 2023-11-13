@@ -640,20 +640,20 @@ function WebGLState(gl, extensions, capabilities) {
 
     setFlipSided(flipSided);
 
-    material.blending === NormalBlending && material.transparent === false
-      ? setBlending(NoBlending)
-      : setBlending(
-          material.blending,
-          material.blendEquation,
-          material.blendSrc,
-          material.blendDst,
-          material.blendEquationAlpha,
-          material.blendSrcAlpha,
-          material.blendDstAlpha,
-          material.blendColor,
-          material.blendAlpha,
-          material.premultipliedAlpha
-        );
+    material.blending === NormalBlending && material.transparent === false ?
+      setBlending(NoBlending)
+    : setBlending(
+        material.blending,
+        material.blendEquation,
+        material.blendSrc,
+        material.blendDst,
+        material.blendEquationAlpha,
+        material.blendSrcAlpha,
+        material.blendDstAlpha,
+        material.blendColor,
+        material.blendAlpha,
+        material.premultipliedAlpha
+      );
 
     depthBuffer.setFunc(material.depthFunc);
     depthBuffer.setTest(material.depthTest);
@@ -674,9 +674,9 @@ function WebGLState(gl, extensions, capabilities) {
       material.polygonOffsetUnits
     );
 
-    material.alphaToCoverage === true
-      ? enable(gl.SAMPLE_ALPHA_TO_COVERAGE)
-      : disable(gl.SAMPLE_ALPHA_TO_COVERAGE);
+    material.alphaToCoverage === true ?
+      enable(gl.SAMPLE_ALPHA_TO_COVERAGE)
+    : disable(gl.SAMPLE_ALPHA_TO_COVERAGE);
   }
 
   //

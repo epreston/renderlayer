@@ -77,9 +77,8 @@ class BufferGeometryLoader extends Loader {
       return ab;
     }
 
-    const geometry = json.isInstancedBufferGeometry
-      ? new InstancedBufferGeometry()
-      : new BufferGeometry();
+    const geometry =
+      json.isInstancedBufferGeometry ? new InstancedBufferGeometry() : new BufferGeometry();
 
     const index = json.data.index;
 
@@ -104,9 +103,8 @@ class BufferGeometryLoader extends Loader {
         );
       } else {
         const typedArray = getTypedArray(attribute.type, attribute.array);
-        const bufferAttributeConstr = attribute.isInstancedBufferAttribute
-          ? InstancedBufferAttribute
-          : BufferAttribute;
+        const bufferAttributeConstr =
+          attribute.isInstancedBufferAttribute ? InstancedBufferAttribute : BufferAttribute;
         bufferAttribute = new bufferAttributeConstr(
           typedArray,
           attribute.itemSize,

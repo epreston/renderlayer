@@ -31,8 +31,9 @@ function WebGLCubeUVMaps(renderer) {
 
           if (pmremGenerator === null) pmremGenerator = new PMREMGenerator(renderer);
 
-          renderTarget = isEquirectMap
-            ? pmremGenerator.fromEquirectangular(texture, renderTarget)
+          renderTarget =
+            isEquirectMap ?
+              pmremGenerator.fromEquirectangular(texture, renderTarget)
             : pmremGenerator.fromCubemap(texture, renderTarget);
           cubeUVmaps.set(texture, renderTarget);
 
@@ -49,8 +50,9 @@ function WebGLCubeUVMaps(renderer) {
             ) {
               if (pmremGenerator === null) pmremGenerator = new PMREMGenerator(renderer);
 
-              const renderTarget = isEquirectMap
-                ? pmremGenerator.fromEquirectangular(texture)
+              const renderTarget =
+                isEquirectMap ?
+                  pmremGenerator.fromEquirectangular(texture)
                 : pmremGenerator.fromCubemap(texture);
               cubeUVmaps.set(texture, renderTarget);
 

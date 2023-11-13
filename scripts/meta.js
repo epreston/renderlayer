@@ -43,9 +43,8 @@ async function run() {
   }
 
   try {
-    const resolvedTargets = targets.length
-      ? fuzzyMatchTarget(targets, buildAllMatching)
-      : allTargets;
+    const resolvedTargets =
+      targets.length ? fuzzyMatchTarget(targets, buildAllMatching) : allTargets;
 
     await checkAll(resolvedTargets);
   } finally {
