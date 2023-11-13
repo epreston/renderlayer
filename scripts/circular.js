@@ -42,6 +42,11 @@ async function run() {
   }
 }
 
+/**
+ * Check all the targets in parallel.
+ * @param {Array<string>} targets - An array of targets to build.
+ * @returns {Promise<void>} - A promise representing the build process.
+ */
 async function checkAll(targets) {
   // will jumble console output but is very fast
   // await runParallel(cpus().length, targets, check);
@@ -49,11 +54,23 @@ async function checkAll(targets) {
   await runParallel(1, targets, check);
 }
 
+/**
+ * Runs iterator function in parallel.
+ * @template T - The type of items in the data source
+ * @param {number} maxConcurrency - The maximum concurrency.
+ * @param {Array<T>} source - The data source
+ * @param {(item: T) => Promise<void>} iteratorFn - The iteratorFn
+ * @returns {Promise<void[]>} - A Promise array containing all iteration results.
+ */
 async function runParallel(maxConcurrency, source, iteratorFn) {
+  /**@type {Promise<void>[]} */
   const ret = [];
+
+  /**@type {Promise<void>[]} */
   const executing = [];
+
   for (const item of source) {
-    const p = Promise.resolve().then(() => iteratorFn(item, source));
+    const p = Promise.resolve().then(() => iteratorFn(item));
     ret.push(p);
 
     if (maxConcurrency <= source.length) {
@@ -64,9 +81,15 @@ async function runParallel(maxConcurrency, source, iteratorFn) {
       }
     }
   }
+
   return Promise.all(ret);
 }
 
+/**
+ * Check the target.
+ * @param {string} target - The target to build.
+ * @returns {Promise<void>} - A promise representing the build process.
+ */
 async function check(target) {
   const pkgDir = path.resolve(`packages/${target}`);
   const pkg = require(`${pkgDir}/package.json`);
