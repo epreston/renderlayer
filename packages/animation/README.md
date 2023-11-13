@@ -13,7 +13,7 @@ npm i @renderlayer/animation
 
 ## License
 
-This project is released under the [MIT License](license-url).
+This project is released under the [MIT License][license-url]
 
 [npm-badge]: https://img.shields.io/npm/v/@renderlayer/animation
 [npm-url]: https://www.npmjs.com/package/@renderlayer/animation
