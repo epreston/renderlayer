@@ -1,5 +1,8 @@
 // Settings in this file to overwrite default and user settings.
 {
+  // Use the project's typescript version
+  "typescript.tsdk": "node_modules/typescript/lib",
+
   "files.trimTrailingWhitespace": true,
   "files.exclude": {
     ".git": true,
@@ -11,6 +14,10 @@
   "files.insertFinalNewline": true,
   "[plaintext]": {
     "files.insertFinalNewline": false
+  },
+  // Use prettier to format typescript, javascript and JSON files
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascript]": {
     "editor.formatOnSave": true,
