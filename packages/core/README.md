@@ -11,12 +11,6 @@ Core abstractions used by `@renderlayer` packages.
 npm i @renderlayer/core
 ```
 
-## References
-
-| Website            | Reference                                     |
-| ------------------ | --------------------------------------------- |
-| eventdispatcher.js | https://github.com/mrdoob/eventdispatcher.js/ |
-
 ## License
 
 This package is released under the [MIT License][license-url]

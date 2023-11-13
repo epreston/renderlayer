@@ -11,12 +11,6 @@ Geometry buffers used by `@renderlayer` packages.
 npm i @renderlayer/buffers
 ```
 
-## References
-
-| Website                     | Reference                                                  |
-| --------------------------- | ---------------------------------------------------------- |
-| Fast Half Float Conversions | http://www.fox-toolkit.org/ftp/fasthalffloatconversion.pdf |
-
 ## License
 
 This package is released under the [MIT License][license-url]
