@@ -3,7 +3,7 @@
   "type": "module",
   "name": "@renderlayer/monorepo",
   "version": "0.0.3",
-  "packageManager": "npm@10.2.2",
+  "packageManager": "npm@10.2.3",
   "workspaces": [
     "packages/*",
     "apps/*"
