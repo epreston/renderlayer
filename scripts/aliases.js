@@ -14,7 +14,7 @@ const entries = {
   renderlayer: resolveEntryForPkg('renderlayer')
 };
 
-const nonSrcPackages = ['utils'];
+const nonSrcPackages = ['eslint-config', 'prettier-config', 'tsconfig', 'utils'];
 
 for (const dir of dirs) {
   const key = `@renderlayer/${dir}`;
