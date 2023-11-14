@@ -34,8 +34,8 @@
     "test": "vitest run",
     "test-watch": "vitest",
     "test-coverage": "vitest run --coverage.enabled",
-    "format": "prettier --check --cache \"**/*.[tj]s?(x)\"",
-    "format-fix": "prettier --write --cache \"**/*.[tj]s?(x)\""
+    "format": "prettier --check --cache \"**/*.?(c|m)[tj]s?(x)\"",
+    "format-fix": "prettier --write --cache \"**/*.?(c|m)[tj]s?(x)\""
   },
   "devDependencies": {
     "@epreston/eslint-config": "^1.1.0",
