@@ -926,11 +926,7 @@ class WebGLRenderer {
       textures.resetTextureUnits();
       const fog = scene.fog;
       const environment = material.isMeshStandardMaterial ? scene.environment : null;
-      const colorSpace = _currentRenderTarget === null ? _this._outputColorSpace : (
-        // : _currentRenderTarget.isXRRenderTarget === true
-        // ? _currentRenderTarget.texture.colorSpace
-        LinearSRGBColorSpace
-      );
+      const colorSpace = _currentRenderTarget === null ? _this._outputColorSpace : LinearSRGBColorSpace;
       const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(
         material.envMap || environment
       );
