@@ -57,7 +57,7 @@
     "pretty-bytes": "^6.1.1",
     "rimraf": "^5.0.5",
     "rollup-plugin-esbuild": "^6.1.0",
-    "rollup-shader-chunks": "^1.1.2",
+    "rollup-shader-chunks": "^1.2.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
     "vitest": "^0.34.6"
