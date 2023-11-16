@@ -38,7 +38,7 @@
     "format-fix": "prettier --write --cache \"**/*.?(c|m)[tj]s?(x)\""
   },
   "devDependencies": {
-    "@epreston/eslint-config": "^1.1.0",
+    "@epreston/eslint-config": "^1.1.1",
     "@epreston/prettier-config": "^2.0.0",
     "@epreston/tsconfig": "^1.0.1",
     "@rollup/plugin-alias": "^5.0.1",
@@ -51,7 +51,7 @@
     "jsdom": "^22.1.0",
     "madge": "^6.1.0",
     "minimist": "^1.2.8",
-    "msw": "^2.0.6",
+    "msw": "^2.0.7",
     "picocolors": "^1.0.0",
     "prettier": "^3.1.0",
     "pretty-bytes": "^6.1.1",
