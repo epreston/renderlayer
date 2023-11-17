@@ -223,7 +223,9 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         texture.minFilter !== NearestFilter &&
         texture.minFilter !== LinearFilter)
     ) {
-      return Math.log2(Math.max(image.width, image.height)) + 1;
+      // EP: floor mip map levels.
+      // return Math.log2(Math.max(image.width, image.height)) + 1;
+      return 1 + Math.floor(Math.log2(Math.max(image.width, image.height)));
     } else if (texture.mipmaps !== undefined && texture.mipmaps.length > 0) {
       // user-defined mipmaps
 
