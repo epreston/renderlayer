@@ -56,7 +56,7 @@ function createElementNS(name) {
 function createCanvasElement() {
   const canvas = createElementNS('canvas');
   canvas.style.display = 'block';
-  return canvas;
+  return /** @type { HTMLCanvasElement } */ (canvas);
 }
 
 const _cache = {};
