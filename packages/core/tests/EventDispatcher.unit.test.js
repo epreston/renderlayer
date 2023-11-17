@@ -15,13 +15,13 @@ describe('Core', () => {
       const listener = {};
       eventDispatcher.addEventListener('anyType', listener);
 
-      expect(eventDispatcher._listeners.anyType.length === 1).toBeTruthy();
-      expect(eventDispatcher._listeners.anyType[0] === listener).toBeTruthy();
+      expect(eventDispatcher._listeners.anyType.length).toBe(1);
+      expect(eventDispatcher._listeners.anyType[0]).toBe(listener);
 
       eventDispatcher.addEventListener('anyType', listener);
 
-      expect(eventDispatcher._listeners.anyType.length === 1).toBeTruthy();
-      expect(eventDispatcher._listeners.anyType[0] === listener).toBeTruthy();
+      expect(eventDispatcher._listeners.anyType.length).toBe(1);
+      expect(eventDispatcher._listeners.anyType[0]).toBe(listener);
     });
 
     test('hasEventListener', () => {
@@ -42,19 +42,17 @@ describe('Core', () => {
       expect(eventDispatcher._listeners).toBeUndefined();
 
       eventDispatcher.addEventListener('anyType', listener);
-      expect(
-        Object.keys(eventDispatcher._listeners).length === 1 &&
-          eventDispatcher._listeners.anyType.length === 1
-      ).toBeTruthy();
+      expect(Object.keys(eventDispatcher._listeners).length).toBe(1);
+      expect(eventDispatcher._listeners.anyType.length).toBe(1);
 
       eventDispatcher.removeEventListener('anyType', listener);
-      expect(eventDispatcher._listeners.anyType.length === 0).toBeTruthy();
+      expect(eventDispatcher._listeners.anyType.length).toBe(0);
 
       eventDispatcher.removeEventListener('unknownType', listener);
       expect(eventDispatcher._listeners.unknownType).toBeUndefined();
 
       eventDispatcher.removeEventListener('anyType', undefined);
-      expect(eventDispatcher._listeners.anyType.length === 0).toBeTruthy();
+      expect(eventDispatcher._listeners.anyType.length).toBe(0);
     });
 
     test('dispatchEvent', () => {
@@ -66,13 +64,13 @@ describe('Core', () => {
       };
 
       eventDispatcher.addEventListener('anyType', listener);
-      expect(callCount === 0).toBeTruthy();
+      expect(callCount).toBe(0);
 
       eventDispatcher.dispatchEvent({ type: 'anyType' });
-      expect(callCount === 1).toBeTruthy();
+      expect(callCount).toBe(1);
 
       eventDispatcher.dispatchEvent({ type: 'anyType' });
-      expect(callCount === 2).toBeTruthy();
+      expect(callCount).toBe(2);
     });
   });
 });
