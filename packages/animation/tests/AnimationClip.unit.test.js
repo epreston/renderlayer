@@ -27,7 +27,7 @@ describe('Animation', () => {
   describe('AnimationClip', () => {
     test('constructor', () => {
       const clip = new AnimationClip('clip1', 1000, [{}]);
-      expect(clip).toBeTruthy();
+      expect(clip).toBeDefined();
     });
 
     test('name', () => {
