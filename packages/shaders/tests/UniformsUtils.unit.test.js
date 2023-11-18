@@ -9,7 +9,7 @@ import * as UniformsUtils from '../src/UniformsUtils.js';
 describe('Shaders', () => {
   describe('UniformsUtils', () => {
     test('constructor', () => {
-      expect(UniformsUtils).toBeTruthy();
+      expect(UniformsUtils).toBeDefined();
     });
 
     test('cloneUniforms copies values', () => {
@@ -30,9 +30,9 @@ describe('Shaders', () => {
 
       const uniformClones = UniformsUtils.cloneUniforms(uniforms);
 
-      expect(uniforms.floatValue.value === uniformClones.floatValue.value).toBeTruthy();
-      expect(uniforms.intValue.value === uniformClones.intValue.value).toBeTruthy();
-      expect(uniforms.boolValue.value === uniformClones.boolValue.value).toBeTruthy();
+      expect(uniforms.floatValue.value).toEqual(uniformClones.floatValue.value);
+      expect(uniforms.intValue.value).toEqual(uniformClones.intValue.value);
+      expect(uniforms.boolValue.value).toEqual(uniformClones.boolValue.value);
       expect(uniforms.colorValue.value.equals(uniformClones.colorValue.value)).toBeTruthy();
       expect(uniforms.vector2Value.value.equals(uniformClones.vector2Value.value)).toBeTruthy();
       expect(uniforms.vector3Value.value.equals(uniformClones.vector3Value.value)).toBeTruthy();
