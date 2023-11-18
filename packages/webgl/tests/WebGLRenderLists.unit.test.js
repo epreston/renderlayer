@@ -19,7 +19,7 @@ describe('WebGL', () => {
 
       expect(Object.keys(listA)).toEqual(Object.keys(new WebGLRenderList()));
       expect(Object.keys(listB)).toEqual(Object.keys(new WebGLRenderList()));
-      expect(listA !== listB).toBeTruthy();
+      expect(listA).not.toBe(listB);
     });
 
     test.todo('dispose', () => {
@@ -47,19 +47,19 @@ describe('WebGL', () => {
     test('init', () => {
       const list = new WebGLRenderList();
 
-      expect(list.transparent.length === 0).toBeTruthy();
-      expect(list.opaque.length === 0).toBeTruthy();
+      expect(list.transparent.length).toBe(0);
+      expect(list.opaque.length).toBe(0);
 
       list.push({}, {}, { transparent: true }, 0, 0, {});
       list.push({}, {}, { transparent: false }, 0, 0, {});
 
-      expect(list.transparent.length === 1).toBeTruthy();
-      expect(list.opaque.length === 1).toBeTruthy();
+      expect(list.transparent.length).toBe(1);
+      expect(list.opaque.length).toBe(1);
 
       list.init();
 
-      expect(list.transparent.length === 0).toBeTruthy();
-      expect(list.opaque.length === 0).toBeTruthy();
+      expect(list.transparent.length).toBe(0);
+      expect(list.opaque.length).toBe(0);
     });
 
     test('push', () => {
@@ -82,8 +82,8 @@ describe('WebGL', () => {
 
       list.push(objA, geoA, matA, 0, 0.5, {});
 
-      expect(list.transparent.length === 1).toBeTruthy();
-      expect(list.opaque.length === 0).toBeTruthy();
+      expect(list.transparent.length).toBe(1);
+      expect(list.opaque.length).toBe(0);
       expect(list.transparent[0]).toEqual({
         id: 'A',
         object: objA,
@@ -97,8 +97,8 @@ describe('WebGL', () => {
 
       list.push(objB, geoB, matB, 1, 1.5, {});
 
-      expect(list.transparent.length === 2).toBeTruthy();
-      expect(list.opaque.length === 0).toBeTruthy();
+      expect(list.transparent.length).toBe(2);
+      expect(list.opaque.length).toBe(0);
       expect(list.transparent[1]).toEqual({
         id: 'B',
         object: objB,
@@ -112,8 +112,8 @@ describe('WebGL', () => {
 
       list.push(objC, geoC, matC, 2, 2.5, {});
 
-      expect(list.transparent.length === 2).toBeTruthy();
-      expect(list.opaque.length === 1).toBeTruthy();
+      expect(list.transparent.length).toBe(2);
+      expect(list.opaque.length).toBe(1);
       expect(list.opaque[0]).toEqual({
         id: 'C',
         object: objC,
@@ -127,8 +127,8 @@ describe('WebGL', () => {
 
       list.push(objD, geoD, matD, 3, 3.5, {});
 
-      expect(list.transparent.length === 2).toBeTruthy();
-      expect(list.opaque.length === 2).toBeTruthy();
+      expect(list.transparent.length).toBe(2);
+      expect(list.opaque.length).toBe(2);
       expect(list.opaque[1]).toEqual({
         id: 'D',
         object: objD,
@@ -161,8 +161,8 @@ describe('WebGL', () => {
 
       list.unshift(objA, geoA, matA, 0, 0.5, {});
 
-      expect(list.transparent.length === 1).toBeTruthy();
-      expect(list.opaque.length === 0).toBeTruthy();
+      expect(list.transparent.length).toBe(1);
+      expect(list.opaque.length).toBe(0);
       expect(list.transparent[0]).toEqual({
         id: 'A',
         object: objA,
@@ -176,8 +176,8 @@ describe('WebGL', () => {
 
       list.unshift(objB, geoB, matB, 1, 1.5, {});
 
-      expect(list.transparent.length === 2).toBeTruthy();
-      expect(list.opaque.length === 0).toBeTruthy();
+      expect(list.transparent.length).toBe(2);
+      expect(list.opaque.length).toBe(0);
       expect(list.transparent[0]).toEqual({
         id: 'B',
         object: objB,
@@ -191,8 +191,8 @@ describe('WebGL', () => {
 
       list.unshift(objC, geoC, matC, 2, 2.5, {});
 
-      expect(list.transparent.length === 2).toBeTruthy();
-      expect(list.opaque.length === 1).toBeTruthy();
+      expect(list.transparent.length).toBe(2);
+      expect(list.opaque.length).toBe(1);
       expect(list.opaque[0]).toEqual({
         id: 'C',
         object: objC,
@@ -206,8 +206,8 @@ describe('WebGL', () => {
 
       list.unshift(objD, geoD, matD, 3, 3.5, {});
 
-      expect(list.transparent.length === 2).toBeTruthy();
-      expect(list.opaque.length === 2).toBeTruthy();
+      expect(list.transparent.length).toBe(2);
+      expect(list.opaque.length).toBe(2);
       expect(list.opaque[0]).toEqual({
         id: 'D',
         object: objD,
