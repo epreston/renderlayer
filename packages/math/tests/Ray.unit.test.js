@@ -108,34 +108,36 @@ describe('Maths', () => {
 
     test('distanceToPoint', () => {
       const a = new Ray(one3.clone(), new Vector3(0, 0, 1));
+      expect(a).toBeDefined();
 
       // behind the ray
       const b = a.distanceToPoint(zero3);
-      expect(b === Math.sqrt(3)).toBeTruthy();
+      expect(b).toBe(Math.sqrt(3));
 
       // front of the ray
       const c = a.distanceToPoint(new Vector3(0, 0, 50));
-      expect(c === Math.sqrt(2)).toBeTruthy();
+      expect(c).toBe(Math.sqrt(2));
 
       // exactly on the ray
       const d = a.distanceToPoint(one3);
-      expect(d === 0).toBeTruthy();
+      expect(d).toBe(0);
     });
 
     test('distanceSqToPoint', () => {
       const a = new Ray(one3.clone(), new Vector3(0, 0, 1));
+      expect(a).toBeDefined();
 
       // behind the ray
       const b = a.distanceSqToPoint(zero3);
-      expect(b === 3).toBeTruthy();
+      expect(b).toBe(3);
 
       // front of the ray
       const c = a.distanceSqToPoint(new Vector3(0, 0, 50));
-      expect(c === 2).toBeTruthy();
+      expect(c).toBe(2);
 
       // exactly on the ray
       const d = a.distanceSqToPoint(one3);
-      expect(d === 0).toBeTruthy();
+      expect(d).toBe(0);
     });
 
     test('distanceSqToSegment', () => {
