@@ -34,7 +34,7 @@ describe('Curves', () => {
 
     test('type', () => {
       const object = new CubicBezierCurve3();
-      expect(object.type === 'CubicBezierCurve3').toBeTruthy();
+      expect(object.type).toBe('CubicBezierCurve3');
     });
 
     test.todo('v0', () => {
