@@ -23,7 +23,7 @@ describe('WebGL', () => {
       const gl = new WebglContextMock();
       const extensions = WebGLExtensions(gl);
 
-      expect(typeof extensions === 'object').toBeTruthy();
+      expect(extensions).toBeInstanceOf(Object);
     });
 
     test('has', () => {
@@ -58,7 +58,7 @@ describe('WebGL', () => {
       expect('extension not supported').toHaveBeenWarnedTimes(1);
     });
 
-    test('get (with aliasses)', () => {
+    test('get (with aliases)', () => {
       const gl = new WebglContextMock(['WEBKIT_WEBGL_depth_texture']);
       const extensions = WebGLExtensions(gl);
 
@@ -75,13 +75,13 @@ describe('WebGL', () => {
       const extensions = WebGLExtensions(gl);
       extensions.init({ isWebGL2: false });
 
-      expect(extensions).toBeTruthy();
+      expect(extensions).toBeDefined();
 
       const gl2 = new WebglContextMock();
       const extensions2 = WebGLExtensions(gl2);
       extensions2.init({ isWebGL2: true });
 
-      expect(extensions2).toBeTruthy();
+      expect(extensions2).toBeDefined();
     });
   });
 });
