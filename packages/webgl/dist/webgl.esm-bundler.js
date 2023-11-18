@@ -5124,7 +5124,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   }
   function getMipLevels(texture, image, supportsMips) {
     if (textureNeedsGenerateMipmaps(texture, supportsMips) === true || texture.isFramebufferTexture && texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter) {
-      return Math.log2(Math.max(image.width, image.height)) + 1;
+      return 1 + Math.floor(Math.log2(Math.max(image.width, image.height)));
     } else if (texture.mipmaps !== void 0 && texture.mipmaps.length > 0) {
       return texture.mipmaps.length;
     } else if (texture.isCompressedTexture && Array.isArray(texture.image)) {

@@ -3,7 +3,7 @@ import { generateUUID, Vector3, Euler, Quaternion, Matrix4, Matrix3, Ray } from 
 class EventDispatcher {
   addEventListener(type, listener) {
     if (this._listeners === void 0)
-      this._listeners = {};
+      this._listeners = /* @__PURE__ */ new Map();
     const listeners = this._listeners;
     if (listeners[type] === void 0) {
       listeners[type] = [];
