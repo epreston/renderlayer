@@ -119,7 +119,7 @@ describe('Objects', () => {
       intersections.length = 0;
       mesh.raycast(raycaster, intersections);
 
-      expect(intersections.length > 0).toBeTruthy();
+      expect(intersections.length).toBeGreaterThan(0);
 
       mesh.matrixWorld.identity();
       mesh.position.setX(raycaster.near);
@@ -127,7 +127,7 @@ describe('Objects', () => {
       intersections.length = 0;
       mesh.raycast(raycaster, intersections);
 
-      expect(intersections.length > 0).toBeTruthy();
+      expect(intersections.length).toBeGreaterThan(0);
 
       mesh.matrixWorld.identity();
       mesh.position.setX(raycaster.far);
@@ -135,7 +135,7 @@ describe('Objects', () => {
       intersections.length = 0;
       mesh.raycast(raycaster, intersections);
 
-      expect(intersections.length > 0).toBeTruthy();
+      expect(intersections.length).toBeGreaterThan(0);
 
       mesh.matrixWorld.identity();
       mesh.position.setX(150);
@@ -144,7 +144,7 @@ describe('Objects', () => {
       intersections.length = 0;
       mesh.raycast(raycaster, intersections);
 
-      expect(intersections.length > 0).toBeTruthy();
+      expect(intersections.length).toBeGreaterThan(0);
 
       mesh.matrixWorld.identity();
       mesh.position.setX(-9999);
@@ -152,7 +152,7 @@ describe('Objects', () => {
       intersections.length = 0;
       mesh.raycast(raycaster, intersections);
 
-      expect(intersections.length === 0).toBeTruthy();
+      expect(intersections.length).toBe(0);
 
       mesh.matrixWorld.identity();
       mesh.position.setX(9999);
@@ -160,7 +160,7 @@ describe('Objects', () => {
       intersections.length = 0;
       mesh.raycast(raycaster, intersections);
 
-      expect(intersections.length === 0).toBeTruthy();
+      expect(intersections.length).toBe(0);
     });
 
     test('from ObjectLoader', () => {
