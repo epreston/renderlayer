@@ -51,17 +51,17 @@ describe('Maths', () => {
 
     test('x', () => {
       let a = new Euler();
-      expect(a.x === 0).toBeTruthy();
+      expect(a.x).toBe(0);
 
       a = new Euler(1, 2, 3);
-      expect(a.x === 1).toBeTruthy();
+      expect(a.x).toBe(1);
 
       a = new Euler(4, 5, 6, 'XYZ');
-      expect(a.x === 4).toBeTruthy();
+      expect(a.x).toBe(4);
 
       a = new Euler(7, 8, 9, 'XYZ');
       a.x = 10;
-      expect(a.x === 10).toBeTruthy();
+      expect(a.x).toBe(10);
 
       a = new Euler(11, 12, 13, 'XYZ');
       let b = false;
@@ -69,22 +69,22 @@ describe('Maths', () => {
       a.x = 14;
 
       expect(b).toBeTruthy();
-      expect(a.x === 14).toBeTruthy();
+      expect(a.x).toBe(14);
     });
 
     test('y', () => {
       let a = new Euler();
-      expect(a.y === 0).toBeTruthy();
+      expect(a.y).toBe(0);
 
       a = new Euler(1, 2, 3);
-      expect(a.y === 2).toBeTruthy();
+      expect(a.y).toBe(2);
 
       a = new Euler(4, 5, 6, 'XYZ');
-      expect(a.y === 5).toBeTruthy();
+      expect(a.y).toBe(5);
 
       a = new Euler(7, 8, 9, 'XYZ');
       a.y = 10;
-      expect(a.y === 10).toBeTruthy();
+      expect(a.y).toBe(10);
 
       a = new Euler(11, 12, 13, 'XYZ');
       let b = false;
@@ -92,22 +92,22 @@ describe('Maths', () => {
       a.y = 14;
 
       expect(b).toBeTruthy();
-      expect(a.y === 14).toBeTruthy();
+      expect(a.y).toBe(14);
     });
 
     test('z', () => {
       let a = new Euler();
-      expect(a.z === 0).toBeTruthy();
+      expect(a.z).toBe(0);
 
       a = new Euler(1, 2, 3);
-      expect(a.z === 3).toBeTruthy();
+      expect(a.z).toBe(3);
 
       a = new Euler(4, 5, 6, 'XYZ');
-      expect(a.z === 6).toBeTruthy();
+      expect(a.z).toBe(6);
 
       a = new Euler(7, 8, 9, 'XYZ');
       a.z = 10;
-      expect(a.z === 10).toBeTruthy();
+      expect(a.z).toBe(10);
 
       a = new Euler(11, 12, 13, 'XYZ');
       let b = false;
@@ -115,22 +115,22 @@ describe('Maths', () => {
       a.z = 14;
 
       expect(b).toBeTruthy();
-      expect(a.z === 14).toBeTruthy();
+      expect(a.z).toBe(14);
     });
 
     test('order', () => {
       let a = new Euler();
-      expect(a.order === Euler.DEFAULT_ORDER).toBeTruthy();
+      expect(a.order).toBe(Euler.DEFAULT_ORDER);
 
       a = new Euler(1, 2, 3);
-      expect(a.order === Euler.DEFAULT_ORDER).toBeTruthy();
+      expect(a.order).toBe(Euler.DEFAULT_ORDER);
 
       a = new Euler(4, 5, 6, 'YZX');
-      expect(a.order === 'YZX').toBeTruthy();
+      expect(a.order).toBe('YZX');
 
       a = new Euler(7, 8, 9, 'YZX');
       a.order = 'ZXY';
-      expect(a.order === 'ZXY').toBeTruthy();
+      expect(a.order).toBe('ZXY');
 
       a = new Euler(11, 12, 13, 'YZX');
       let b = false;
@@ -138,7 +138,7 @@ describe('Maths', () => {
       a.order = 'ZXY';
 
       expect(b).toBeTruthy();
-      expect(a.order === 'ZXY').toBeTruthy();
+      expect(a.order).toBe('ZXY');
     });
 
     test('isEuler', () => {
