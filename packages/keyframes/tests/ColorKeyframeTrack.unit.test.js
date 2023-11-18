@@ -15,7 +15,7 @@ describe('Keyframes', () => {
     test('constructor', () => {
       // name, times, values
       const object = new ColorKeyframeTrack(parameters.name, parameters.times, parameters.values);
-      expect(object).toBeTruthy();
+      expect(object).toBeDefined();
 
       // name, times, values, interpolation
       const object_all = new ColorKeyframeTrack(
@@ -24,7 +24,7 @@ describe('Keyframes', () => {
         parameters.values,
         parameters.interpolation
       );
-      expect(object_all).toBeTruthy();
+      expect(object_all).toBeDefined();
     });
 
     test('extends', () => {
