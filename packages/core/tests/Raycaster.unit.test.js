@@ -27,22 +27,22 @@ function getObjectsToCheck() {
 
   const sphere1 = getSphere();
   sphere1.position.set(0, 0, -10);
-  sphere1.name = 1;
+  sphere1.name = '1';
   objects.push(sphere1);
 
   const sphere11 = getSphere();
   sphere11.position.set(0, 0, 1);
-  sphere11.name = 11;
+  sphere11.name = '11';
   sphere1.add(sphere11);
 
   const sphere12 = getSphere();
   sphere12.position.set(0, 0, -1);
-  sphere12.name = 12;
+  sphere12.name = '12';
   sphere1.add(sphere12);
 
   const sphere2 = getSphere();
   sphere2.position.set(-5, 0, -5);
-  sphere2.name = 2;
+  sphere2.name = '2';
   objects.push(sphere2);
 
   for (let i = 0; i < objects.length; i++) {
