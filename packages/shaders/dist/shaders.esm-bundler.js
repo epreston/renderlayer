@@ -727,30 +727,6 @@ var lightmap_pars_fragment = `
 #endif
 `;
 
-var lights_lambert_fragment = `
-LambertMaterial material;
-material.diffuseColor = diffuseColor.rgb;
-material.specularStrength = specularStrength;
-`;
-
-var lights_lambert_pars_fragment = `
-varying vec3 vViewPosition;
-struct LambertMaterial {
-	vec3 diffuseColor;
-	float specularStrength;
-};
-void RE_Direct_Lambert( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
-	float dotNL = saturate( dot( geometryNormal, directLight.direction ) );
-	vec3 irradiance = dotNL * directLight.color;
-	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
-}
-void RE_IndirectDiffuse_Lambert( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in LambertMaterial material, inout ReflectedLight reflectedLight ) {
-	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
-}
-#define RE_Direct				RE_Direct_Lambert
-#define RE_IndirectDiffuse		RE_IndirectDiffuse_Lambert
-`;
-
 var lights_pars_begin = `
 uniform bool receiveShadow;
 uniform vec3 ambientLightColor;
@@ -914,27 +890,6 @@ var envmap_physical_pars_fragment = `
 		}
 	#endif
 #endif
-`;
-
-var lights_toon_fragment = `
-ToonMaterial material;
-material.diffuseColor = diffuseColor.rgb;
-`;
-
-var lights_toon_pars_fragment = `
-varying vec3 vViewPosition;
-struct ToonMaterial {
-	vec3 diffuseColor;
-};
-void RE_Direct_Toon( const in IncidentLight directLight, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
-	vec3 irradiance = getGradientIrradiance( geometryNormal, directLight.direction ) * directLight.color;
-	reflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
-}
-void RE_IndirectDiffuse_Toon( const in vec3 irradiance, const in vec3 geometryPosition, const in vec3 geometryNormal, const in vec3 geometryViewDir, const in vec3 geometryClearcoatNormal, const in ToonMaterial material, inout ReflectedLight reflectedLight ) {
-	reflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );
-}
-#define RE_Direct				RE_Direct_Toon
-#define RE_IndirectDiffuse		RE_IndirectDiffuse_Toon
 `;
 
 var lights_phong_fragment = `
@@ -3497,11 +3452,11 @@ const ShaderChunk = {
   gradientmap_pars_fragment,
   lightmap_fragment,
   lightmap_pars_fragment,
-  lights_lambert_fragment,
-  lights_lambert_pars_fragment,
+  // lights_lambert_fragment: lights_lambert_fragment,
+  // lights_lambert_pars_fragment: lights_lambert_pars_fragment,
   lights_pars_begin,
-  lights_toon_fragment,
-  lights_toon_pars_fragment,
+  // lights_toon_fragment: lights_toon_fragment,
+  // lights_toon_pars_fragment: lights_toon_pars_fragment,
   lights_phong_fragment,
   lights_phong_pars_fragment,
   lights_physical_fragment,

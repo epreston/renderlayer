@@ -1022,7 +1022,12 @@ class WebGLRenderer {
         if (capabilities.logarithmicDepthBuffer) {
           p_uniforms.setValue(_gl, "logDepthBufFC", 2 / (Math.log(camera.far + 1) / Math.LN2));
         }
-        if (material.isMeshPhongMaterial || material.isMeshToonMaterial || material.isMeshLambertMaterial || material.isMeshBasicMaterial || material.isMeshStandardMaterial || material.isShaderMaterial) {
+        if (
+          // material.isMeshPhongMaterial ||
+          // material.isMeshToonMaterial ||
+          // material.isMeshLambertMaterial ||
+          material.isMeshBasicMaterial || material.isMeshStandardMaterial || material.isShaderMaterial
+        ) {
           p_uniforms.setValue(_gl, "isOrthographic", camera.isOrthographicCamera === true);
         }
         if (_currentCamera !== camera) {
@@ -1113,7 +1118,12 @@ class WebGLRenderer {
       uniforms.hemisphereLights.needsUpdate = value;
     }
     function materialNeedsLights(material) {
-      return material.isMeshLambertMaterial || material.isMeshToonMaterial || material.isMeshPhongMaterial || material.isMeshStandardMaterial || material.isShadowMaterial || material.isShaderMaterial && material.lights === true;
+      return (
+        // material.isMeshLambertMaterial ||
+        // material.isMeshToonMaterial ||
+        // material.isMeshPhongMaterial ||
+        material.isMeshStandardMaterial || material.isShadowMaterial || material.isShaderMaterial && material.lights === true
+      );
     }
     this.getActiveCubeFace = () => _currentActiveCubeFace;
     this.getActiveMipmapLevel = () => _currentActiveMipmapLevel;

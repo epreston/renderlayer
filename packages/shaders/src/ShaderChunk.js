@@ -40,12 +40,12 @@ import fog_pars_fragment from './ShaderChunk/fog_pars_fragment.glsl.js';
 import gradientmap_pars_fragment from './ShaderChunk/gradientmap_pars_fragment.glsl.js';
 import lightmap_fragment from './ShaderChunk/lightmap_fragment.glsl.js';
 import lightmap_pars_fragment from './ShaderChunk/lightmap_pars_fragment.glsl.js';
-import lights_lambert_fragment from './ShaderChunk/lights_lambert_fragment.glsl.js';
-import lights_lambert_pars_fragment from './ShaderChunk/lights_lambert_pars_fragment.glsl.js';
+// import lights_lambert_fragment from './ShaderChunk/lights_lambert_fragment.glsl.js';
+// import lights_lambert_pars_fragment from './ShaderChunk/lights_lambert_pars_fragment.glsl.js';
 import lights_pars_begin from './ShaderChunk/lights_pars_begin.glsl.js';
 import envmap_physical_pars_fragment from './ShaderChunk/envmap_physical_pars_fragment.glsl.js';
-import lights_toon_fragment from './ShaderChunk/lights_toon_fragment.glsl.js';
-import lights_toon_pars_fragment from './ShaderChunk/lights_toon_pars_fragment.glsl.js';
+// import lights_toon_fragment from './ShaderChunk/lights_toon_fragment.glsl.js';
+// import lights_toon_pars_fragment from './ShaderChunk/lights_toon_pars_fragment.glsl.js';
 import lights_phong_fragment from './ShaderChunk/lights_phong_fragment.glsl.js';
 import lights_phong_pars_fragment from './ShaderChunk/lights_phong_pars_fragment.glsl.js';
 import lights_physical_fragment from './ShaderChunk/lights_physical_fragment.glsl.js';
@@ -166,11 +166,11 @@ export const ShaderChunk = {
   gradientmap_pars_fragment: gradientmap_pars_fragment,
   lightmap_fragment: lightmap_fragment,
   lightmap_pars_fragment: lightmap_pars_fragment,
-  lights_lambert_fragment: lights_lambert_fragment,
-  lights_lambert_pars_fragment: lights_lambert_pars_fragment,
+  // lights_lambert_fragment: lights_lambert_fragment,
+  // lights_lambert_pars_fragment: lights_lambert_pars_fragment,
   lights_pars_begin: lights_pars_begin,
-  lights_toon_fragment: lights_toon_fragment,
-  lights_toon_pars_fragment: lights_toon_pars_fragment,
+  // lights_toon_fragment: lights_toon_fragment,
+  // lights_toon_pars_fragment: lights_toon_pars_fragment,
   lights_phong_fragment: lights_phong_fragment,
   lights_phong_pars_fragment: lights_phong_pars_fragment,
   lights_physical_fragment: lights_physical_fragment,

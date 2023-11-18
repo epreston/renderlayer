@@ -1605,9 +1605,9 @@ class WebGLRenderer {
         // consider moving isOrthographic to UniformLib and WebGLMaterials, see #26467# issuecomment-1645185067
 
         if (
-          material.isMeshPhongMaterial ||
-          material.isMeshToonMaterial ||
-          material.isMeshLambertMaterial ||
+          // material.isMeshPhongMaterial ||
+          // material.isMeshToonMaterial ||
+          // material.isMeshLambertMaterial ||
           material.isMeshBasicMaterial ||
           material.isMeshStandardMaterial ||
           material.isShaderMaterial
@@ -1756,9 +1756,9 @@ class WebGLRenderer {
 
     function materialNeedsLights(material) {
       return (
-        material.isMeshLambertMaterial ||
-        material.isMeshToonMaterial ||
-        material.isMeshPhongMaterial ||
+        // material.isMeshLambertMaterial ||
+        // material.isMeshToonMaterial ||
+        // material.isMeshPhongMaterial ||
         material.isMeshStandardMaterial ||
         material.isShadowMaterial ||
         (material.isShaderMaterial && material.lights === true)
