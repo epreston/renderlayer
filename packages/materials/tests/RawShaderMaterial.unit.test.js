@@ -17,7 +17,7 @@ describe('Materials', () => {
 
     test('type', () => {
       const object = new RawShaderMaterial();
-      expect(object.type === 'RawShaderMaterial').toBeTruthy();
+      expect(object.type).toBe('RawShaderMaterial');
     });
 
     test('isRawShaderMaterial', () => {

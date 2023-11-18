@@ -24,7 +24,7 @@ describe('Materials', () => {
 
     test('type', () => {
       const object = new MeshDistanceMaterial();
-      expect(object.type === 'MeshDistanceMaterial').toBeTruthy();
+      expect(object.type).toBe('MeshDistanceMaterial');
     });
 
     test('map', () => {

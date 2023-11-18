@@ -38,7 +38,7 @@ describe('Curves', () => {
 
     test('type', () => {
       const object = new LineCurve3();
-      expect(object.type === 'LineCurve3').toBeTruthy();
+      expect(object.type).toBe('LineCurve3');
     });
 
     test.todo('v1', () => {

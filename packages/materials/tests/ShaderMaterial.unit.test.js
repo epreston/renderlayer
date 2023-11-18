@@ -22,7 +22,7 @@ describe('Materials', () => {
 
     test('type', () => {
       const object = new ShaderMaterial();
-      expect(object.type === 'ShaderMaterial').toBeTruthy();
+      expect(object.type).toBe('ShaderMaterial');
     });
 
     test('defines', () => {
