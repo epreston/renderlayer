@@ -117,7 +117,8 @@ describe('Buffers', () => {
       expect(attr.itemSize).toBe(attrCopy.itemSize);
       expect(attr.usage).toBe(attrCopy.usage);
       expect(attr.array.length).toBe(attrCopy.array.length);
-      expect(attr.version === 1 && attrCopy.version === 0).toBeTruthy();
+      expect(attr.version).toBe(1);
+      expect(attrCopy.version).toBe(0);
     });
 
     test('copyAt', () => {
