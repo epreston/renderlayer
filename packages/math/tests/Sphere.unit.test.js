@@ -221,13 +221,13 @@ describe('Maths', () => {
       const a = new Sphere(zero3.clone(), 1);
       const p = new Vector3(2, 0, 0);
 
-      expect(a.containsPoint(p) === false).toBeTruthy();
+      expect(a.containsPoint(p)).toBeFalsy();
 
       a.expandByPoint(p);
 
       expect(a.containsPoint(p)).toBeTruthy();
       expect(a.center.equals(new Vector3(0.5, 0, 0))).toBeTruthy();
-      expect(a.radius === 1.5).toBeTruthy();
+      expect(a.radius).toBeCloseTo(1.5);
     });
 
     test('union', () => {
@@ -237,7 +237,7 @@ describe('Maths', () => {
       a.union(b);
 
       expect(a.center.equals(new Vector3(1, 0, 0))).toBeTruthy();
-      expect(a.radius === 2).toBeTruthy();
+      expect(a.radius).toBe(2);
 
       // d contains c (demonstrates why it is necessary to process two points in union)
 
@@ -247,7 +247,7 @@ describe('Maths', () => {
       c.union(d);
 
       expect(c.center.equals(new Vector3(1, 0, 0))).toBeTruthy();
-      expect(c.radius === 4).toBeTruthy();
+      expect(c.radius).toBe(4);
 
       // edge case: both spheres have the same center point
 
@@ -257,7 +257,7 @@ describe('Maths', () => {
       e.union(f);
 
       expect(e.center.equals(new Vector3(0, 0, 0))).toBeTruthy();
-      expect(e.radius === 4).toBeTruthy();
+      expect(e.radius).toBe(4);
     });
 
     test('equals', () => {
