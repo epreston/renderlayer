@@ -87,8 +87,8 @@ describe('Maths', () => {
       const high = 3;
       const a = MathUtils.randInt(low, high);
 
-      expect(a >= low).toBeTruthy();
-      expect(a <= high).toBeTruthy();
+      expect(a).toBeGreaterThanOrEqual(low);
+      expect(a).toBeLessThanOrEqual(high);
     });
 
     test('randFloat', () => {
@@ -96,8 +96,8 @@ describe('Maths', () => {
       const high = 3;
       const a = MathUtils.randFloat(low, high);
 
-      expect(a >= low).toBeTruthy();
-      expect(a <= high).toBeTruthy();
+      expect(a).toBeGreaterThanOrEqual(low);
+      expect(a).toBeLessThanOrEqual(high);
     });
 
     test('randFloatSpread', () => {
