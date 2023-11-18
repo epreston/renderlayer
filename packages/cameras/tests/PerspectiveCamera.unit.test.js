@@ -263,11 +263,11 @@ describe('Cameras', () => {
 
       const clonedCam = cam.clone();
 
-      expect(cam.fov === clonedCam.fov).toBeTruthy();
-      expect(cam.aspect === clonedCam.aspect).toBeTruthy();
-      expect(cam.near === clonedCam.near).toBeTruthy();
-      expect(cam.far === clonedCam.far).toBeTruthy();
-      expect(cam.zoom === clonedCam.zoom).toBeTruthy();
+      expect(cam.fov).toBe(clonedCam.fov);
+      expect(cam.aspect).toBe(clonedCam.aspect);
+      expect(cam.near).toBe(clonedCam.near);
+      expect(cam.far).toBe(clonedCam.far);
+      expect(cam.zoom).toBe(clonedCam.zoom);
       expect(cam.projectionMatrix.equals(clonedCam.projectionMatrix)).toBeTruthy();
     });
 
