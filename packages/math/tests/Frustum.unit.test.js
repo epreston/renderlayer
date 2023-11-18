@@ -20,8 +20,8 @@ describe('Maths', () => {
     test('constructor', () => {
       let a = new Frustum();
 
-      expect(a.planes !== undefined).toBeTruthy();
-      expect(a.planes.length === 6).toBeTruthy();
+      expect(a.planes).toBeDefined();
+      expect(a.planes.length).toBe(6);
 
       const pDefault = new Plane();
       for (let i = 0; i < 6; i++) {
