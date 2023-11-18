@@ -22,11 +22,11 @@ describe('Animation', () => {
 
       // mesh, path
       const object = new PropertyBinding(mesh, path);
-      expect(object).toBeTruthy();
+      expect(object).toBeDefined();
 
       // mesh, path, parsedPath
       const object_all = new PropertyBinding(mesh, path, parsedPath);
-      expect(object_all).toBeTruthy();
+      expect(object_all).toBeDefined();
     });
 
     test.todo('Composite', () => {
