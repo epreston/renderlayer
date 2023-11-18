@@ -80,9 +80,8 @@ describe('Animation', () => {
       animMixer.stopAllAction();
 
       // prettier-ignore
-      expect(
-        ! actionA.isRunning() &&
-        ! actionB.isRunning()).toBeTruthy();
+      expect(actionA.isRunning()).toBeFalsy();
+      expect(actionB.isRunning()).toBeFalsy();
 
       // prettier-ignore
       expect(
