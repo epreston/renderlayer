@@ -1,6 +1,7 @@
 {
   "private": true,
-  "name": "shaders",
+  "type": "module",
+  "name": "app-shaders",
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",

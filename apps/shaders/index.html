@@ -2,16 +2,26 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-  <link rel="stylesheet" href="./src/reset.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
 
-  <title>shaders</title>
+  <title>app-shaders</title>
 </head>
 
 <body>
+  <pre id="info">perf display</pre>
   <div id="app"></div>
+  <pre id="commands">
+| Key | Command           |
+| --- | ----------------- |
+| `c` | Use cube texture  |
+| `h` | Use HDR texture   |
+| `b` | Toggle background |
+| `f` | Toggle blur       |
+| `r` | Reset scene       |
+</pre>
+
   <script type="module" src="./src/main.js" defer="defer"></script>
 </body>
 
