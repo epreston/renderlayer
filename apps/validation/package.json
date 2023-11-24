@@ -1,6 +1,7 @@
 {
   "private": true,
-  "name": "validation",
+  "type": "module",
+  "name": "app-validation",
   "version": "0.0.2",
   "scripts": {
     "dev": "vite",

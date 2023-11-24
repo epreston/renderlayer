@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
 
+import './css/reset.css';
+import './css/style.css';
+
 // will return url, see vitest.config.js and this app's global.d.ts
 import gblFile from './assets/spriggen-opt-compress.glb';
 import hdrFile from './skybox/paul_lobe_haus_2k.hdr';
@@ -115,18 +118,36 @@ function animation(time) {
 
   controls.update(timeElapsed); // not strictly required
   mixer.update(timeElapsed);
-  renderer.render(scene, camera);
+  render();
 
   previousRAF = time;
+}
+
+// render
+
+let averageTime = 0;
+let timeSamples = 0;
+const infoEl = document.getElementById('info');
+
+function render() {
+  const start = window.performance.now();
+  renderer.render(scene, camera);
+  const delta = window.performance.now() - start;
+  averageTime += (delta - averageTime) / (timeSamples + 1);
+  if (timeSamples < 60) {
+    timeSamples++;
+  }
+
+  infoEl.innerHTML = `draw calls : ${renderer.info.render.calls}\n`;
+  infoEl.innerHTML += `cpu time : ${averageTime.toFixed(2)}ms`;
 }
 
 // resize
 
 window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 // keyboard
