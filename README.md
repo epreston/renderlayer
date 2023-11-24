@@ -62,11 +62,11 @@ A convenience package is provided to make core packages available to your develo
 
 | Tool         | Reference                 |
 | ------------ | ------------------------- |
-| Node.js      | https://nodejs.org/       |
-| Vite         | https://vitejs.dev/       |
-| Vitest       | https://vitest.dev/       |
+| Node.js      | https://nodejs.org        |
+| Vite         | https://vitejs.dev        |
+| Vitest       | https://vitest.dev        |
 | rollup.js    | https://rollupjs.org      |
-| ESLint       | https://eslint.org/       |
+| ESLint       | https://eslint.org        |
 | Prettier     | https://prettier.io       |
 | EditorConfig | https://editorconfig.org  |
 | esbuild      | https://esbuild.github.io |
