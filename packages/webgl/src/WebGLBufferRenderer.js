@@ -1,6 +1,5 @@
 class WebGLBufferRenderer {
   constructor(gl, extensions, info, capabilities) {
-    // const isWebGL2 = capabilities.isWebGL2;
     let mode;
 
     function setMode(value) {

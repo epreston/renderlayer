@@ -1,4 +1,4 @@
-import { Vector4, Color, Frustum, Matrix4, Vector2, Vector3, floorPowerOfTwo, ColorManagement } from '@renderlayer/math';
+import { Vector4, Color, Frustum, Matrix4, Vector2, Vector3, ColorManagement } from '@renderlayer/math';
 import { createCanvasElement, SRGBColorSpace, NoToneMapping, HalfFloatType, UnsignedByteType, LinearMipmapLinearFilter, DoubleSide, BackSide, FrontSide, RGBAFormat, FloatType, WebGLCoordinateSystem, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, RGBAIntegerFormat, RGIntegerFormat, RedIntegerFormat, UnsignedIntType, UnsignedShortType, UnsignedInt248Type, UnsignedShort4444Type, UnsignedShort5551Type } from '@renderlayer/shared';
 import { WebGLRenderTarget } from '@renderlayer/targets';
 import { WebGLAnimation, WebGLUniforms, WebGLExtensions, WebGLCapabilities, WebGLUtils, WebGLState, WebGLInfo, WebGLProperties, WebGLTextures, WebGLCubeMaps, WebGLCubeUVMaps, WebGLAttributes, WebGLBindingStates, WebGLGeometries, WebGLObjects, WebGLMorphtargets, WebGLClipping, WebGLPrograms, WebGLMaterials, WebGLRenderLists, WebGLRenderStates, WebGLBackground, WebGLShadowMap, WebGLUniformsGroups, WebGLBufferRenderer, WebGLIndexedBufferRenderer } from '@renderlayer/webgl';
@@ -745,21 +745,16 @@ class WebGLRenderer {
       if (overrideMaterial !== null) {
         return;
       }
-      const isWebGL2 = capabilities.isWebGL2;
       if (_transmissionRenderTarget === null) {
         _transmissionRenderTarget = new WebGLRenderTarget(1, 1, {
           generateMipmaps: true,
           type: extensions.has("EXT_color_buffer_half_float") ? HalfFloatType : UnsignedByteType,
           minFilter: LinearMipmapLinearFilter,
-          samples: isWebGL2 ? 4 : 0
+          samples: 4
         });
       }
       _this.getDrawingBufferSize(_vector2);
-      if (isWebGL2) {
-        _transmissionRenderTarget.setSize(_vector2.x, _vector2.y);
-      } else {
-        _transmissionRenderTarget.setSize(floorPowerOfTwo(_vector2.x), floorPowerOfTwo(_vector2.y));
-      }
+      _transmissionRenderTarget.setSize(_vector2.x, _vector2.y);
       const currentRenderTarget = _this.getRenderTarget();
       _this.setRenderTarget(_transmissionRenderTarget);
       _this.getClearColor(_currentClearColor);
@@ -993,7 +988,7 @@ class WebGLRenderer {
           needsProgramChange = true;
         } else if (materialProperties.toneMapping !== toneMapping) {
           needsProgramChange = true;
-        } else if (capabilities.isWebGL2 === true && materialProperties.morphTargetsCount !== morphTargetsCount) {
+        } else if (materialProperties.morphTargetsCount !== morphTargetsCount) {
           needsProgramChange = true;
         }
       } else {
@@ -1059,7 +1054,7 @@ class WebGLRenderer {
         }
       }
       const morphAttributes = geometry.morphAttributes;
-      if (morphAttributes.position !== void 0 || morphAttributes.normal !== void 0 || morphAttributes.color !== void 0 && capabilities.isWebGL2 === true) {
+      if (morphAttributes.position !== void 0 || morphAttributes.normal !== void 0 || morphAttributes.color !== void 0) {
         morphtargets.update(object, geometry, program);
       }
       if (refreshMaterial || materialProperties.receiveShadow !== object.receiveShadow) {
@@ -1100,13 +1095,9 @@ class WebGLRenderer {
       if (material.isShaderMaterial || material.isRawShaderMaterial) {
         const groups = material.uniformsGroups;
         for (let i = 0, l = groups.length; i < l; i++) {
-          if (capabilities.isWebGL2) {
-            const group = groups[i];
-            uniformsGroups.update(group, program);
-            uniformsGroups.bind(group, program);
-          } else {
-            console.warn("WebGLRenderer: Uniform Buffer Objects can only be used with WebGL 2.");
-          }
+          const group = groups[i];
+          uniformsGroups.update(group, program);
+          uniformsGroups.bind(group, program);
         }
       }
       return program;
@@ -1190,7 +1181,7 @@ class WebGLRenderer {
             framebuffer = __webglFramebuffer[activeCubeFace];
           }
           isCube = true;
-        } else if (capabilities.isWebGL2 && renderTarget.samples > 0 && textures.useMultisampledRTT(renderTarget) === false) {
+        } else if (renderTarget.samples > 0 && textures.useMultisampledRTT(renderTarget) === false) {
           framebuffer = properties.get(renderTarget).__webglMultisampledFramebuffer;
         } else {
           if (Array.isArray(__webglFramebuffer)) {
@@ -1259,9 +1250,9 @@ class WebGLRenderer {
             );
             return;
           }
-          const halfFloatSupportedByExt = textureType === HalfFloatType && (extensions.has("EXT_color_buffer_half_float") || capabilities.isWebGL2 && extensions.has("EXT_color_buffer_float"));
+          const halfFloatSupportedByExt = textureType === HalfFloatType && (extensions.has("EXT_color_buffer_half_float") || extensions.has("EXT_color_buffer_float"));
           if (textureType !== UnsignedByteType && utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // Edge and Chrome Mac < 52 (#9513)
-          !(textureType === FloatType && (capabilities.isWebGL2 || extensions.has("OES_texture_float") || extensions.has("WEBGL_color_buffer_float"))) && // Chrome Mac >= 52 and Firefox
+          !(textureType === FloatType && true) && // Chrome Mac >= 52 and Firefox
           !halfFloatSupportedByExt) {
             console.error(
               "WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type."

@@ -154,6 +154,7 @@
     "Fdez",
     "Heitz",
     "Hejl",
+    "INSTANCEDMESH",
     "Kaufmann",
     "Kulla",
     "Meshopt",
@@ -189,6 +190,8 @@
     "preexisting",
     "rgbe",
     "rightx",
+    "sessionend",
+    "sessionstart",
     "skybox",
     "unproject",
     "vars"

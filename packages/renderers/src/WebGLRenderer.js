@@ -1172,14 +1172,12 @@ class WebGLRenderer {
         return;
       }
 
-      const isWebGL2 = capabilities.isWebGL2;
-
       if (_transmissionRenderTarget === null) {
         _transmissionRenderTarget = new WebGLRenderTarget(1, 1, {
           generateMipmaps: true,
           type: extensions.has('EXT_color_buffer_half_float') ? HalfFloatType : UnsignedByteType,
           minFilter: LinearMipmapLinearFilter,
-          samples: isWebGL2 ? 4 : 0
+          samples: 4
         });
 
         // debug
@@ -1195,11 +1193,7 @@ class WebGLRenderer {
 
       _this.getDrawingBufferSize(_vector2);
 
-      if (isWebGL2) {
-        _transmissionRenderTarget.setSize(_vector2.x, _vector2.y);
-      } else {
-        _transmissionRenderTarget.setSize(floorPowerOfTwo(_vector2.x), floorPowerOfTwo(_vector2.y));
-      }
+      _transmissionRenderTarget.setSize(_vector2.x, _vector2.y);
 
       //
 
@@ -1556,10 +1550,7 @@ class WebGLRenderer {
           needsProgramChange = true;
         } else if (materialProperties.toneMapping !== toneMapping) {
           needsProgramChange = true;
-        } else if (
-          capabilities.isWebGL2 === true &&
-          materialProperties.morphTargetsCount !== morphTargetsCount
-        ) {
+        } else if (materialProperties.morphTargetsCount !== morphTargetsCount) {
           needsProgramChange = true;
         }
       } else {
@@ -1610,7 +1601,7 @@ class WebGLRenderer {
           p_uniforms.setValue(_gl, 'logDepthBufFC', 2.0 / (Math.log(camera.far + 1.0) / Math.LN2));
         }
 
-        // consider moving isOrthographic to UniformLib and WebGLMaterials, see #26467# issuecomment-1645185067
+        // consider moving isOrthographic to UniformLib and WebGLMaterials, see #26467# issue-comment-1645185067
 
         if (
           // material.isMeshPhongMaterial ||
@@ -1663,7 +1654,7 @@ class WebGLRenderer {
       if (
         morphAttributes.position !== undefined ||
         morphAttributes.normal !== undefined ||
-        (morphAttributes.color !== undefined && capabilities.isWebGL2 === true)
+        morphAttributes.color !== undefined
       ) {
         morphtargets.update(object, geometry, program);
       }
@@ -1732,14 +1723,10 @@ class WebGLRenderer {
         const groups = material.uniformsGroups;
 
         for (let i = 0, l = groups.length; i < l; i++) {
-          if (capabilities.isWebGL2) {
-            const group = groups[i];
+          const group = groups[i];
 
-            uniformsGroups.update(group, program);
-            uniformsGroups.bind(group, program);
-          } else {
-            console.warn('WebGLRenderer: Uniform Buffer Objects can only be used with WebGL 2.');
-          }
+          uniformsGroups.update(group, program);
+          uniformsGroups.bind(group, program);
         }
       }
 
@@ -1857,7 +1844,6 @@ class WebGLRenderer {
 
           isCube = true;
         } else if (
-          capabilities.isWebGL2 &&
           renderTarget.samples > 0 &&
           textures.useMultisampledRTT(renderTarget) === false
         ) {
@@ -1956,14 +1942,14 @@ class WebGLRenderer {
           const halfFloatSupportedByExt =
             textureType === HalfFloatType &&
             (extensions.has('EXT_color_buffer_half_float') ||
-              (capabilities.isWebGL2 && extensions.has('EXT_color_buffer_float')));
+              extensions.has('EXT_color_buffer_float'));
 
           if (
             textureType !== UnsignedByteType &&
             utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // Edge and Chrome Mac < 52 (#9513)
             !(
               textureType === FloatType &&
-              (capabilities.isWebGL2 ||
+              (true ||
                 extensions.has('OES_texture_float') ||
                 extensions.has('WEBGL_color_buffer_float'))
             ) && // Chrome Mac >= 52 and Firefox

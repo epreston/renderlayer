@@ -1,6 +1,4 @@
 function WebGLAttributes(gl, capabilities) {
-  // const isWebGL2 = capabilities.isWebGL2;
-
   const buffers = new WeakMap();
 
   function createBuffer(attribute, bufferType) {

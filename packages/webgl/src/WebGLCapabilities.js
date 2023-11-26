@@ -39,7 +39,6 @@ function WebGLCapabilities(gl, extensions, parameters) {
     return 'lowp';
   }
 
-  // EP: Warn here.
   const isWebGL2 =
     typeof WebGL2RenderingContext !== 'undefined' &&
     gl.constructor.name === 'WebGL2RenderingContext';
@@ -52,7 +51,7 @@ function WebGLCapabilities(gl, extensions, parameters) {
     precision = maxPrecision;
   }
 
-  const drawBuffers = isWebGL2 || extensions.has('WEBGL_draw_buffers');
+  const drawBuffers = true;
 
   const logarithmicDepthBuffer = parameters.logarithmicDepthBuffer === true;
 
@@ -67,10 +66,10 @@ function WebGLCapabilities(gl, extensions, parameters) {
   const maxFragmentUniforms = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);
 
   const vertexTextures = maxVertexTextures > 0;
-  const floatFragmentTextures = isWebGL2 || extensions.has('OES_texture_float');
+  const floatFragmentTextures = true;
   const floatVertexTextures = vertexTextures && floatFragmentTextures;
 
-  const maxSamples = isWebGL2 ? gl.getParameter(gl.MAX_SAMPLES) : 0;
+  const maxSamples = gl.getParameter(gl.MAX_SAMPLES);
 
   return {
     isWebGL2,

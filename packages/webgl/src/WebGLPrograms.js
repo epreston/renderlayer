@@ -190,7 +190,7 @@ function WebGLPrograms(
     }
 
     const parameters = {
-      isWebGL2: true, // EP: always true, optimise
+      isWebGL2: true, // EP: optimise
 
       shaderID,
       shaderType: material.type,

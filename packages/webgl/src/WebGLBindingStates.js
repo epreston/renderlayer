@@ -227,13 +227,6 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
   }
 
   function setupVertexAttributes(object, material, program, geometry) {
-    if (
-      capabilities.isWebGL2 === false &&
-      (object.isInstancedMesh || geometry.isInstancedBufferGeometry)
-    ) {
-      if (extensions.get('ANGLE_instanced_arrays') === null) return;
-    }
-
     initAttributes();
 
     const geometryAttributes = geometry.attributes;
@@ -272,8 +265,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
           // check for integer attributes (WebGL 2 only)
 
           const integer =
-            capabilities.isWebGL2 === true &&
-            (type === gl.INT || type === gl.UNSIGNED_INT || geometryAttribute.gpuType === IntType);
+            type === gl.INT || type === gl.UNSIGNED_INT || geometryAttribute.gpuType === IntType;
 
           if (geometryAttribute.isInterleavedBufferAttribute) {
             const data = geometryAttribute.data;

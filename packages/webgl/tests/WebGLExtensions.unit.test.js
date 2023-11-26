@@ -70,15 +70,9 @@ describe('WebGL', () => {
     test('init', () => {
       const gl = new WebglContextMock();
       const extensions = WebGLExtensions(gl);
-      extensions.init({ isWebGL2: false });
+      extensions.init();
 
       expect(extensions).toBeDefined();
-
-      const gl2 = new WebglContextMock();
-      const extensions2 = WebGLExtensions(gl2);
-      extensions2.init({ isWebGL2: true });
-
-      expect(extensions2).toBeDefined();
     });
   });
 });

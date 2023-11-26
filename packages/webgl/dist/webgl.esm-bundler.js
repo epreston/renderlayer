@@ -449,10 +449,6 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     }
   }
   function setupVertexAttributes(object, material, program, geometry) {
-    if (capabilities.isWebGL2 === false && (object.isInstancedMesh || geometry.isInstancedBufferGeometry)) {
-      if (extensions.get("ANGLE_instanced_arrays") === null)
-        return;
-    }
     initAttributes();
     const geometryAttributes = geometry.attributes;
     const programAttributes = program.getAttributes();
@@ -476,7 +472,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
           const buffer = attribute.buffer;
           const type = attribute.type;
           const bytesPerElement = attribute.bytesPerElement;
-          const integer = capabilities.isWebGL2 === true && (type === gl.INT || type === gl.UNSIGNED_INT || geometryAttribute.gpuType === IntType);
+          const integer = type === gl.INT || type === gl.UNSIGNED_INT || geometryAttribute.gpuType === IntType;
           if (geometryAttribute.isInterleavedBufferAttribute) {
             const data = geometryAttribute.data;
             const stride = data.stride;
@@ -680,7 +676,7 @@ function WebGLCapabilities(gl, extensions, parameters) {
     console.warn("WebGLRenderer:", precision, "not supported, using", maxPrecision, "instead.");
     precision = maxPrecision;
   }
-  const drawBuffers = isWebGL2 || extensions.has("WEBGL_draw_buffers");
+  const drawBuffers = true;
   const logarithmicDepthBuffer = parameters.logarithmicDepthBuffer === true;
   const maxTextures = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
   const maxVertexTextures = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
@@ -691,9 +687,9 @@ function WebGLCapabilities(gl, extensions, parameters) {
   const maxVaryings = gl.getParameter(gl.MAX_VARYING_VECTORS);
   const maxFragmentUniforms = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);
   const vertexTextures = maxVertexTextures > 0;
-  const floatFragmentTextures = isWebGL2 || extensions.has("OES_texture_float");
+  const floatFragmentTextures = true;
   const floatVertexTextures = vertexTextures && floatFragmentTextures;
-  const maxSamples = isWebGL2 ? gl.getParameter(gl.MAX_SAMPLES) : 0;
+  const maxSamples = gl.getParameter(gl.MAX_SAMPLES);
   return {
     isWebGL2,
     drawBuffers,
@@ -3018,7 +3014,7 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
     }
     const parameters = {
       isWebGL2: true,
-      // EP: always true, optimise
+      // EP: optimise
       shaderID,
       shaderType: material.type,
       shaderName: material.name,
