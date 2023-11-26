@@ -305,28 +305,28 @@ class WebGLRenderer {
     let uniformsGroups;
 
     function initGLContext() {
-      extensions = new WebGLExtensions(_gl);
+      extensions = WebGLExtensions(_gl);
 
-      capabilities = new WebGLCapabilities(_gl, extensions, parameters);
+      capabilities = WebGLCapabilities(_gl, extensions, parameters);
 
       extensions.init(capabilities);
 
-      utils = new WebGLUtils(_gl, extensions, capabilities);
+      utils = WebGLUtils(_gl, extensions, capabilities);
 
-      state = new WebGLState(_gl, extensions, capabilities);
+      state = WebGLState(_gl, extensions, capabilities);
 
-      info = new WebGLInfo(_gl);
-      properties = new WebGLProperties();
+      info = WebGLInfo(_gl);
+      properties = WebGLProperties();
       textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
-      cubemaps = new WebGLCubeMaps(_this);
-      cubeuvmaps = new WebGLCubeUVMaps(_this);
-      attributes = new WebGLAttributes(_gl, capabilities);
-      bindingStates = new WebGLBindingStates(_gl, extensions, attributes, capabilities);
-      geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
-      objects = new WebGLObjects(_gl, geometries, attributes, info);
-      morphtargets = new WebGLMorphtargets(_gl, capabilities, textures);
+      cubemaps = WebGLCubeMaps(_this);
+      cubeuvmaps = WebGLCubeUVMaps(_this);
+      attributes = WebGLAttributes(_gl, capabilities);
+      bindingStates = WebGLBindingStates(_gl, extensions, attributes, capabilities);
+      geometries = WebGLGeometries(_gl, attributes, info, bindingStates);
+      objects = WebGLObjects(_gl, geometries, attributes, info);
+      morphtargets = WebGLMorphtargets(_gl, capabilities, textures);
       clipping = new WebGLClipping(properties);
-      programCache = new WebGLPrograms(
+      programCache = WebGLPrograms(
         _this,
         cubemaps,
         cubeuvmaps,
@@ -335,10 +335,10 @@ class WebGLRenderer {
         bindingStates,
         clipping
       );
-      materials = new WebGLMaterials(_this, properties);
-      renderLists = new WebGLRenderLists();
-      renderStates = new WebGLRenderStates(extensions, capabilities);
-      background = new WebGLBackground(
+      materials = WebGLMaterials(_this, properties);
+      renderLists = WebGLRenderLists();
+      renderStates = WebGLRenderStates(extensions, capabilities);
+      background = WebGLBackground(
         _this,
         cubemaps,
         cubeuvmaps,
@@ -348,7 +348,7 @@ class WebGLRenderer {
         premultipliedAlpha
       );
       shadowMap = new WebGLShadowMap(_this, objects, capabilities);
-      uniformsGroups = new WebGLUniformsGroups(_gl, info, capabilities, state);
+      uniformsGroups = WebGLUniformsGroups(_gl, info, capabilities, state);
 
       bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info, capabilities);
       indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info, capabilities);
@@ -910,7 +910,7 @@ class WebGLRenderer {
     //   animation.start();
     // }
 
-    const animation = new WebGLAnimation();
+    const animation = WebGLAnimation();
     animation.setAnimationLoop(onAnimationFrame);
 
     if (typeof self !== 'undefined') animation.setContext(self);
