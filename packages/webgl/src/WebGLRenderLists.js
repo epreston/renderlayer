@@ -141,11 +141,11 @@ function WebGLRenderLists() {
     let list;
 
     if (listArray === undefined) {
-      list = new WebGLRenderList();
+      list = WebGLRenderList();
       lists.set(scene, [list]);
     } else {
       if (renderCallDepth >= listArray.length) {
-        list = new WebGLRenderList();
+        list = WebGLRenderList();
         listArray.push(list);
       } else {
         list = listArray[renderCallDepth];

@@ -9,7 +9,7 @@ describe('WebGL', () => {
     });
 
     test('constructor', () => {
-      const object = new WebGLAnimation();
+      const object = WebGLAnimation();
       expect(object).toBeDefined();
     });
 

@@ -1,4 +1,5 @@
 class WebGLIndexedBufferRenderer {
+  // EP: check signature
   constructor(gl, extensions, info, capabilities) {
     let mode;
 

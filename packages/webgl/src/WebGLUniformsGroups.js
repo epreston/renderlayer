@@ -236,8 +236,6 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
 
     uniformsGroup.__size = offset;
     uniformsGroup.__cache = {};
-
-    return this;
   }
 
   function getUniformSize(value) {

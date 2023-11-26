@@ -258,9 +258,9 @@ function WebGLState(gl, extensions, capabilities) {
 
   //
 
-  const colorBuffer = new ColorBuffer();
-  const depthBuffer = new DepthBuffer();
-  const stencilBuffer = new StencilBuffer();
+  const colorBuffer = ColorBuffer();
+  const depthBuffer = DepthBuffer();
+  const stencilBuffer = StencilBuffer();
 
   const uboBindings = new WeakMap();
   const uboProgramMap = new WeakMap();

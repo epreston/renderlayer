@@ -10,15 +10,15 @@ describe('WebGL', () => {
     });
 
     test('get', () => {
-      const renderLists = new WebGLRenderLists();
+      const renderLists = WebGLRenderLists();
       const sceneA = new Scene();
       const sceneB = new Scene();
 
       const listA = renderLists.get(sceneA);
       const listB = renderLists.get(sceneB);
 
-      expect(Object.keys(listA)).toEqual(Object.keys(new WebGLRenderList()));
-      expect(Object.keys(listB)).toEqual(Object.keys(new WebGLRenderList()));
+      expect(Object.keys(listA)).toEqual(Object.keys(WebGLRenderList()));
+      expect(Object.keys(listB)).toEqual(Object.keys(WebGLRenderList()));
       expect(listA).not.toBe(listB);
     });
 
@@ -45,7 +45,7 @@ describe('WebGL', () => {
     });
 
     test('init', () => {
-      const list = new WebGLRenderList();
+      const list = WebGLRenderList();
 
       expect(list.transparent.length).toBe(0);
       expect(list.opaque.length).toBe(0);
@@ -63,7 +63,7 @@ describe('WebGL', () => {
     });
 
     test('push', () => {
-      const list = new WebGLRenderList();
+      const list = WebGLRenderList();
       const objA = { id: 'A', renderOrder: 0 };
       const matA = { transparent: true };
       const geoA = {};
@@ -142,7 +142,7 @@ describe('WebGL', () => {
     });
 
     test('unshift', () => {
-      const list = new WebGLRenderList();
+      const list = WebGLRenderList();
       const objA = { id: 'A', renderOrder: 0 };
       const matA = { transparent: true };
       const geoA = {};
@@ -225,7 +225,7 @@ describe('WebGL', () => {
     });
 
     test('sort', () => {
-      const list = new WebGLRenderList();
+      const list = WebGLRenderList();
       const items = [{ id: 4 }, { id: 5 }, { id: 2 }, { id: 3 }];
 
       items.forEach((item) => {

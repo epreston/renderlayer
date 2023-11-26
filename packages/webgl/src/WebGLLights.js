@@ -129,7 +129,7 @@ function shadowCastingAndTexturingLightsFirst(lightA, lightB) {
 }
 
 function WebGLLights(extensions, capabilities) {
-  const cache = new UniformsCache();
+  const cache = UniformsCache();
 
   const shadowCache = ShadowUniformsCache();
 
