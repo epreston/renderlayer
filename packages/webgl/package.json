@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/webgl",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Webgl2 abstractions used by @renderlayer packages.",
   "module": "./dist/webgl.esm-bundler.js",
   "exports": "./dist/webgl.esm-bundler.js",

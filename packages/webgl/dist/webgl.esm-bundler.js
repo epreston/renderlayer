@@ -1080,6 +1080,7 @@ function WebGLGeometries(gl, attributes, info, bindingStates) {
 }
 
 class WebGLIndexedBufferRenderer {
+  // EP: check signature
   constructor(gl, extensions, info, capabilities) {
     let mode;
     function setMode(value) {
@@ -2378,15 +2379,15 @@ function loopReplacer(match, start, end, snippet) {
   return string;
 }
 function generatePrecision(parameters) {
-  let precisionstring = "precision " + parameters.precision + " float;\nprecision " + parameters.precision + " int;";
+  let precisionString = "precision " + parameters.precision + " float;\nprecision " + parameters.precision + " int;";
   if (parameters.precision === "highp") {
-    precisionstring += "\n#define HIGH_PRECISION";
+    precisionString += "\n#define HIGH_PRECISION";
   } else if (parameters.precision === "mediump") {
-    precisionstring += "\n#define MEDIUM_PRECISION";
+    precisionString += "\n#define MEDIUM_PRECISION";
   } else if (parameters.precision === "lowp") {
-    precisionstring += "\n#define LOW_PRECISION";
+    precisionString += "\n#define LOW_PRECISION";
   }
-  return precisionstring;
+  return precisionString;
 }
 function generateShadowMapTypeDefine(parameters) {
   let shadowMapTypeDefine = "SHADOWMAP_TYPE_BASIC";
@@ -3520,11 +3521,11 @@ function WebGLRenderLists() {
     const listArray = lists.get(scene);
     let list;
     if (listArray === void 0) {
-      list = new WebGLRenderList();
+      list = WebGLRenderList();
       lists.set(scene, [list]);
     } else {
       if (renderCallDepth >= listArray.length) {
-        list = new WebGLRenderList();
+        list = WebGLRenderList();
         listArray.push(list);
       } else {
         list = listArray[renderCallDepth];
@@ -3642,7 +3643,7 @@ function shadowCastingAndTexturingLightsFirst(lightA, lightB) {
   return (lightB.castShadow ? 2 : 0) - (lightA.castShadow ? 2 : 0) + (lightB.map ? 1 : 0) - (lightA.map ? 1 : 0);
 }
 function WebGLLights(extensions, capabilities) {
-  const cache = new UniformsCache();
+  const cache = UniformsCache();
   const shadowCache = ShadowUniformsCache();
   const state = {
     version: 0,
@@ -3899,7 +3900,7 @@ function WebGLLights(extensions, capabilities) {
 }
 
 function WebGLRenderState(extensions, capabilities) {
-  const lights = new WebGLLights();
+  const lights = WebGLLights();
   const lightsArray = [];
   const shadowsArray = [];
   function init() {
@@ -3938,11 +3939,11 @@ function WebGLRenderStates(extensions, capabilities) {
     const renderStateArray = renderStates.get(scene);
     let renderState;
     if (renderStateArray === void 0) {
-      renderState = new WebGLRenderState();
+      renderState = WebGLRenderState();
       renderStates.set(scene, [renderState]);
     } else {
       if (renderCallDepth >= renderStateArray.length) {
-        renderState = new WebGLRenderState();
+        renderState = WebGLRenderState();
         renderStateArray.push(renderState);
       } else {
         renderState = renderStateArray[renderCallDepth];
@@ -4403,9 +4404,9 @@ function WebGLState(gl, extensions, capabilities) {
       }
     };
   }
-  const colorBuffer = new ColorBuffer();
-  const depthBuffer = new DepthBuffer();
-  const stencilBuffer = new StencilBuffer();
+  const colorBuffer = ColorBuffer();
+  const depthBuffer = DepthBuffer();
+  const stencilBuffer = StencilBuffer();
   const uboBindings = /* @__PURE__ */ new WeakMap();
   const uboProgramMap = /* @__PURE__ */ new WeakMap();
   let enabledCapabilities = {};
@@ -6914,7 +6915,6 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
       offset += chunkSize - chunkOffset;
     uniformsGroup.__size = offset;
     uniformsGroup.__cache = {};
-    return this;
   }
   function getUniformSize(value) {
     const info2 = {
