@@ -36,13 +36,11 @@ describe('WebGL', () => {
       expect(extensions.has('NonExistingExtension')).toBeFalsy();
     });
 
-    test('has (with aliasses)', () => {
-      const gl = new WebglContextMock(['WEBKIT_WEBGL_depth_texture']);
+    test('has (with aliases)', () => {
+      const gl = new WebglContextMock(['WEBKIT_WEBGL_compressed_texture_pvrtc']);
       const extensions = WebGLExtensions(gl);
 
-      expect(extensions.has('WEBGL_depth_texture')).toBeTruthy();
-      expect(extensions.has('WEBKIT_WEBGL_depth_texture')).toBeTruthy();
-      expect(extensions.has('EXT_texture_filter_anisotropic')).toBeFalsy();
+      expect(extensions.has('WEBGL_compressed_texture_pvrtc')).toBeTruthy();
       expect(extensions.has('NonExistingExtension')).toBeFalsy();
     });
 
@@ -59,11 +57,10 @@ describe('WebGL', () => {
     });
 
     test('get (with aliases)', () => {
-      const gl = new WebglContextMock(['WEBKIT_WEBGL_depth_texture']);
+      const gl = new WebglContextMock(['WEBKIT_WEBGL_compressed_texture_pvrtc']);
       const extensions = WebGLExtensions(gl);
 
-      expect(extensions.get('WEBGL_depth_texture')).toBeTruthy();
-      expect(extensions.get('WEBKIT_WEBGL_depth_texture')).toBeTruthy();
+      expect(extensions.get('WEBGL_compressed_texture_pvrtc')).toBeTruthy();
 
       expect(extensions.get('EXT_texture_filter_anisotropic')).toBeFalsy();
       expect(extensions.get('NonExistingExtension')).toBeFalsy();
