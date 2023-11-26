@@ -232,6 +232,14 @@ class WebGLRenderer {
     }
 
     try {
+      if (typeof WebGL2RenderingContext == 'undefined') {
+        throw new Error('WebGL2 is not supported or enabled.');
+      }
+
+      if (_gl !== null && _gl.constructor.name !== 'WebGL2RenderingContext') {
+        throw new Error('Only a WebGL2 contexts can be provided.');
+      }
+
       const contextAttributes = {
         alpha: true,
         depth,
@@ -258,9 +266,9 @@ class WebGLRenderer {
 
         if (_gl === null) {
           if (getContext(contextNames)) {
-            throw new Error('Error creating WebGL context with your selected attributes.');
+            throw new Error('Error creating WebGL2 context with your selected attributes.');
           } else {
-            throw new Error('Error creating WebGL context.');
+            throw new Error('Error creating WebGL2 context.');
           }
         }
       }
