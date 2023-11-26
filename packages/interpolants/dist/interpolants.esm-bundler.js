@@ -100,10 +100,10 @@ class Interpolant {
     return result;
   }
   // Template methods for derived classes:
-  interpolate_() {
+  interpolate_(_i1, _t0, _t, _t1) {
     throw new Error("call to abstract method");
   }
-  intervalChanged_() {
+  intervalChanged_(_i1, _t0, _t1) {
   }
 }
 

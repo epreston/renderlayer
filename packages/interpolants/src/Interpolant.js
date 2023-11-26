@@ -178,12 +178,12 @@ class Interpolant {
 
   // Template methods for derived classes:
 
-  interpolate_(/* i1, t0, t, t1 */) {
+  interpolate_(_i1, _t0, _t, _t1) {
     throw new Error('call to abstract method');
     // implementations shall return this.resultBuffer
   }
 
-  intervalChanged_(/* i1, t0, t1 */) {
+  intervalChanged_(_i1, _t0, _t1) {
     // empty
   }
 }
