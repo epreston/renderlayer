@@ -1,8 +1,4 @@
-import {
-  ColorManagement,
-  floorPowerOfTwo,
-  isPowerOfTwo as isPowerOfTwoLib
-} from '@renderlayer/math';
+import { ColorManagement } from '@renderlayer/math';
 import {
   AlwaysCompare,
   ClampToEdgeWrapping,
@@ -75,7 +71,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     return useOffscreenCanvas ? new OffscreenCanvas(width, height) : createElementNS('canvas');
   }
 
-  function resizeImage(image, needsPowerOfTwo, needsNewCanvas, maxSize) {
+  function resizeImage(image, needsNewCanvas, maxSize) {
     let scale = 1;
 
     // handle case if texture exceeds max size
@@ -86,7 +82,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
     // only perform resize if necessary
 
-    if (scale < 1 || needsPowerOfTwo === true) {
+    if (scale < 1) {
       // only perform resize for certain image types
 
       if (
@@ -94,10 +90,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         (typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement) ||
         (typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap)
       ) {
-        const floor = needsPowerOfTwo ? floorPowerOfTwo : Math.floor;
-
-        const width = floor(scale * image.width);
-        const height = floor(scale * image.height);
+        const width = Math.floor(scale * image.width);
+        const height = Math.floor(scale * image.height);
 
         if (_canvas === undefined) _canvas = createCanvas(width, height);
 
@@ -128,15 +122,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
 
     return image;
-  }
-
-  function isPowerOfTwo(image) {
-    return isPowerOfTwoLib(image.width) && isPowerOfTwoLib(image.height);
-  }
-
-  /** @deprecated always returns false for webgl2 */
-  function textureNeedsPowerOfTwo(texture) {
-    return false;
   }
 
   function textureNeedsGenerateMipmaps(texture, supportsMips) {
@@ -291,13 +276,13 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       const webglTexture = webglTextures[textureProperties.__cacheKey];
       webglTexture.usedTimes--;
 
-      // the WebGLTexture object is not used anymore, remove it
+      // the WebGLTexture object is not used any more, remove it
 
       if (webglTexture.usedTimes === 0) {
         deleteTexture(texture);
       }
 
-      // remove the weak map entry if no WebGLTexture uses the source anymore
+      // remove the weak map entry if no WebGLTexture uses the source any more
 
       if (Object.keys(webglTextures).length === 0) {
         _sources.delete(source);
@@ -683,10 +668,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       _gl.pixelStorei(_gl.UNPACK_ALIGNMENT, texture.unpackAlignment);
       _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion);
 
-      // EP: always false
-      const needsPowerOfTwo =
-        textureNeedsPowerOfTwo(texture) && isPowerOfTwo(texture.image) === false;
-      let image = resizeImage(texture.image, needsPowerOfTwo, false, maxTextureSize);
+      let image = resizeImage(texture.image, false, maxTextureSize);
       image = verifyColorSpace(texture, image);
 
       const supportsMips = true;
@@ -1219,7 +1201,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       for (let i = 0; i < 6; i++) {
         if (!isCompressed && !isDataTexture) {
-          cubeImage[i] = resizeImage(texture.image[i], false, true, maxCubemapSize);
+          cubeImage[i] = resizeImage(texture.image[i], true, maxCubemapSize);
         } else {
           cubeImage[i] = isDataTexture ? texture.image[i].image : texture.image[i];
         }
