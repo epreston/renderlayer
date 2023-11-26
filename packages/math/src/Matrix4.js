@@ -781,6 +781,7 @@ class Matrix4 {
     return this;
   }
 
+  /** @param {RelativeIndexable<number>} array */
   toArray(array = [], offset = 0) {
     const te = this.elements;
 

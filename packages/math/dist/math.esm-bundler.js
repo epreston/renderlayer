@@ -1940,6 +1940,7 @@ class Matrix3 {
     }
     return this;
   }
+  /** @param {RelativeIndexable<any>} array */
   toArray(array = [], offset = 0) {
     const te = this.elements;
     array[offset] = te[0];
@@ -3030,6 +3031,7 @@ class Matrix4 {
     }
     return this;
   }
+  /** @param {RelativeIndexable<number>} array */
   toArray(array = [], offset = 0) {
     const te = this.elements;
     array[offset] = te[0];
