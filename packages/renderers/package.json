@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/renderers",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "@renderlayer/renderers",
   "module": "./dist/renderers.esm-bundler.js",
   "exports": "./dist/renderers.esm-bundler.js",
@@ -34,6 +34,6 @@
     "@renderlayer/math": "~0.0.12",
     "@renderlayer/shared": "~0.0.7",
     "@renderlayer/targets": "~0.0.6",
-    "@renderlayer/webgl": "~0.0.13"
+    "@renderlayer/webgl": "~0.0.14"
   }
 }

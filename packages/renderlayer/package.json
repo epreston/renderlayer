@@ -47,7 +47,7 @@
     "@renderlayer/math": "~0.0.12",
     "@renderlayer/objects": "~0.0.8",
     "@renderlayer/pmrem": "~0.0.2",
-    "@renderlayer/renderers": "~0.0.8",
+    "@renderlayer/renderers": "~0.0.9",
     "@renderlayer/scenes": "~0.0.4",
     "@renderlayer/shaders": "~0.0.9",
     "@renderlayer/shared": "~0.0.7",
