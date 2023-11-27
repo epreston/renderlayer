@@ -1,25 +1,11 @@
 # renderlayer
 
-Light, Modern, Stable - 3D Rendering Layer for the Web
+WebGL 2 rendering library targeting modern browsers.
 
 [![NPM version][npm-badge]][npm-url]
 [![License][license-badge]][license-url]
 [![CI][ci-badge]][ci-url]
 [![Coverage][codecov-badge]][codecov-url]
-
-## Scripts
-
-| Action        | Command                 | Description                        |
-| ------------- | ----------------------- | ---------------------------------- |
-| build         | `npm run build`         | Build all modules                  |
-| meta          | `npm run meta`          | Create esbuild meta for analysis   |
-| check         | `npm run check`         | Check for circular dependencies    |
-| lint          | `npm run lint`          | Run static code analysis           |
-| test          | `npm run test`          | Run unit tests and exit            |
-| test-watch    | `npm run test-watch`    | Watch for changes and re-run tests |
-| test-coverage | `npm run test-coverage` | Generate a test coverage report    |
-| format        | `npm run format`        | Check source file formatting       |
-| format-fix    | `npm run format-fix`    | Format source files                |
 
 ## Structure
 
@@ -57,6 +43,20 @@ A convenience package is provided to make core packages available to your develo
 | Package       | Version                              | Description |
 | ------------- | ------------------------------------ | ----------- |
 | `renderlayer` | [![NPM version][npm-badge]][npm-url] | bundle      |
+
+## Scripts
+
+| Action        | Command                 | Description                        |
+| ------------- | ----------------------- | ---------------------------------- |
+| build         | `npm run build`         | Build all modules                  |
+| meta          | `npm run meta`          | Create esbuild meta for analysis   |
+| check         | `npm run check`         | Check for circular dependencies    |
+| lint          | `npm run lint`          | Run static code analysis           |
+| test          | `npm run test`          | Run unit tests and exit            |
+| test-watch    | `npm run test-watch`    | Watch for changes and re-run tests |
+| test-coverage | `npm run test-coverage` | Generate a test coverage report    |
+| format        | `npm run format`        | Check source file formatting       |
+| format-fix    | `npm run format-fix`    | Format source files                |
 
 ## Tools
 
