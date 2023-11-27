@@ -48,7 +48,7 @@
     "@vitest/coverage-v8": "^0.34.6",
     "eslint": "^8.54.0",
     "execa": "^8.0.1",
-    "jsdom": "^22.1.0",
+    "jsdom": "^23.0.0",
     "madge": "^6.1.0",
     "minimist": "^1.2.8",
     "msw": "^2.0.9",
@@ -58,7 +58,7 @@
     "rimraf": "^5.0.5",
     "rollup": "^4.6.0",
     "rollup-plugin-esbuild": "^6.1.0",
-    "rollup-shader-chunks": "^1.2.0",
+    "rollup-shader-chunks": "^1.2.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.2",
     "vitest": "^0.34.6"
