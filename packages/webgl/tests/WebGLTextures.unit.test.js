@@ -59,9 +59,5 @@ describe('WebGL', () => {
     test.todo('setupFrameBufferTexture', () => {
       // implement
     });
-
-    test.todo('useMultisampledRTT', () => {
-      // implement
-    });
   });
 });

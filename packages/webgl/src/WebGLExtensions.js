@@ -31,10 +31,10 @@ function WebGLExtensions(gl) {
 
     init(capabilities) {
       // EP: some extensions need to be initialised by a query to function
-      getExtension('EXT_color_buffer_float');
-      getExtension('OES_texture_float_linear');
-      getExtension('EXT_color_buffer_half_float');
-      getExtension('WEBGL_multisampled_render_to_texture');
+      // Browser support percentages sourced from https://web3dsurvey.com/webgl2
+      getExtension('EXT_color_buffer_float'); // 99.8%
+      getExtension('OES_texture_float_linear'); // 86.31%
+      getExtension('EXT_color_buffer_half_float'); // 92.2%
     },
 
     get(name) {

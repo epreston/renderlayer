@@ -1132,14 +1132,6 @@ class WebGLRenderer {
       renderTargetProperties.__hasExternalTextures = true;
       if (renderTargetProperties.__hasExternalTextures) {
         renderTargetProperties.__autoAllocateDepthBuffer = depthTexture === void 0;
-        if (!renderTargetProperties.__autoAllocateDepthBuffer) {
-          if (extensions.has("WEBGL_multisampled_render_to_texture") === true) {
-            console.warn(
-              "WebGLRenderer: Render-to-texture extension was disabled because an external texture was provided"
-            );
-            renderTargetProperties.__useRenderToTexture = false;
-          }
-        }
       }
     };
     this.setRenderTargetFramebuffer = (renderTarget, defaultFramebuffer) => {
@@ -1181,7 +1173,7 @@ class WebGLRenderer {
             framebuffer = __webglFramebuffer[activeCubeFace];
           }
           isCube = true;
-        } else if (renderTarget.samples > 0 && textures.useMultisampledRTT(renderTarget) === false) {
+        } else if (renderTarget.samples > 0) {
           framebuffer = properties.get(renderTarget).__webglMultisampledFramebuffer;
         } else {
           if (Array.isArray(__webglFramebuffer)) {
