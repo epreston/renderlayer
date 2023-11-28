@@ -35,9 +35,7 @@ function mergeGeometries(geometries, useGroups = false) {
 
     if (isIndexed !== (geometry.index !== null)) {
       console.error(
-        'BufferGeometryUtils: .mergeGeometries() failed with geometry at index ' +
-          i +
-          '. All geometries must have compatible attributes; make sure index attribute exists among all geometries, or in none of them.'
+        `BufferGeometryUtils: .mergeGeometries() failed with geometry at index ${i}. All geometries must have compatible attributes; make sure index attribute exists among all geometries, or in none of them.`
       );
       return null;
     }
@@ -47,11 +45,7 @@ function mergeGeometries(geometries, useGroups = false) {
     for (const name in geometry.attributes) {
       if (!attributesUsed.has(name)) {
         console.error(
-          'BufferGeometryUtils: .mergeGeometries() failed with geometry at index ' +
-            i +
-            '. All geometries must have compatible attributes; make sure "' +
-            name +
-            '" attribute exists among all geometries, or in none of them.'
+          `BufferGeometryUtils: .mergeGeometries() failed with geometry at index ${i}. All geometries must have compatible attributes; make sure "${name}" attribute exists among all geometries, or in none of them.`
         );
         return null;
       }
@@ -67,9 +61,7 @@ function mergeGeometries(geometries, useGroups = false) {
 
     if (attributesCount !== attributesUsed.size) {
       console.error(
-        'BufferGeometryUtils: .mergeGeometries() failed with geometry at index ' +
-          i +
-          '. Make sure all geometries have the same number of attributes.'
+        `BufferGeometryUtils: .mergeGeometries() failed with geometry at index ${i}. Make sure all geometries have the same number of attributes.`
       );
       return null;
     }
@@ -78,9 +70,7 @@ function mergeGeometries(geometries, useGroups = false) {
 
     if (morphTargetsRelative !== geometry.morphTargetsRelative) {
       console.error(
-        'BufferGeometryUtils: .mergeGeometries() failed with geometry at index ' +
-          i +
-          '. .morphTargetsRelative must be consistent throughout all geometries.'
+        `BufferGeometryUtils: .mergeGeometries() failed with geometry at index ${i}. .morphTargetsRelative must be consistent throughout all geometries.`
       );
       return null;
     }
@@ -88,9 +78,7 @@ function mergeGeometries(geometries, useGroups = false) {
     for (const name in geometry.morphAttributes) {
       if (!morphAttributesUsed.has(name)) {
         console.error(
-          'BufferGeometryUtils: .mergeGeometries() failed with geometry at index ' +
-            i +
-            '.  .morphAttributes must be consistent throughout all geometries.'
+          `BufferGeometryUtils: .mergeGeometries() failed with geometry at index ${i}.  .morphAttributes must be consistent throughout all geometries.`
         );
         return null;
       }
@@ -109,9 +97,7 @@ function mergeGeometries(geometries, useGroups = false) {
         count = geometry.attributes.position.count;
       } else {
         console.error(
-          'BufferGeometryUtils: .mergeGeometries() failed with geometry at index ' +
-            i +
-            '. The geometry must have either an index or a position attribute'
+          `BufferGeometryUtils: .mergeGeometries() failed with geometry at index ${i}. The geometry must have either an index or a position attribute`
         );
         return null;
       }
@@ -148,9 +134,7 @@ function mergeGeometries(geometries, useGroups = false) {
 
     if (!mergedAttribute) {
       console.error(
-        'BufferGeometryUtils: .mergeGeometries() failed while trying to merge the ' +
-          name +
-          ' attribute.'
+        `BufferGeometryUtils: .mergeGeometries() failed while trying to merge the ${name} attribute.`
       );
       return null;
     }
@@ -179,9 +163,7 @@ function mergeGeometries(geometries, useGroups = false) {
 
       if (!mergedMorphAttribute) {
         console.error(
-          'BufferGeometryUtils: .mergeGeometries() failed while trying to merge the ' +
-            name +
-            ' morphAttribute.'
+          `BufferGeometryUtils: .mergeGeometries() failed while trying to merge the ${name} morphAttribute.`
         );
         return null;
       }
@@ -204,9 +186,7 @@ function mergeAttributes(attributes) {
   let gpuType = -1;
   let arrayLength = 0;
 
-  for (let i = 0; i < attributes.length; ++i) {
-    const attribute = attributes[i];
-
+  for (const attribute of attributes) {
     if (attribute.isInterleavedBufferAttribute) {
       console.error(
         'BufferGeometryUtils: .mergeAttributes() failed. InterleavedBufferAttributes are not supported.'
@@ -505,13 +485,13 @@ function mergeVertices(geometry, tolerance = 1e-4) {
         const attribute = geometry.getAttribute(name);
         const morphAttr = geometry.morphAttributes[name];
         const itemSize = attribute.itemSize;
-        const newarray = tmpAttributes[name];
+        const newArray = tmpAttributes[name];
         const newMorphArrays = tmpMorphAttributes[name];
 
         for (let k = 0; k < itemSize; k++) {
           const getterFunc = getters[k];
           const setterFunc = setters[k];
-          newarray[setterFunc](nextIndex, attribute[getterFunc](index));
+          newArray[setterFunc](nextIndex, attribute[getterFunc](index));
 
           if (morphAttr) {
             for (let m = 0, ml = morphAttr.length; m < ml; m++) {
@@ -733,7 +713,9 @@ function computeMorphedAttributes(object) {
   const geometry = object.geometry;
   const material = object.material;
 
-  let a, b, c;
+  let a;
+  let b;
+  let c;
   const index = geometry.index;
   const positionAttribute = geometry.attributes.position;
   const morphPosition = geometry.morphAttributes.position;
@@ -743,9 +725,13 @@ function computeMorphedAttributes(object) {
 
   const groups = geometry.groups;
   const drawRange = geometry.drawRange;
-  let i, j, il, jl;
+  let i;
+  let j;
+  let il;
+  let jl;
   let group;
-  let start, end;
+  let start;
+  let end;
 
   const modifiedPosition = new Float32Array(positionAttribute.count * positionAttribute.itemSize);
   const modifiedNormal = new Float32Array(normalAttribute.count * normalAttribute.itemSize);
@@ -938,9 +924,7 @@ function mergeGroups(geometry) {
 
   const newIndices = [];
 
-  for (let i = 0; i < groups.length; i++) {
-    const group = groups[i];
-
+  for (const group of groups) {
     const groupStart = group.start;
     const groupLength = groupStart + group.count;
 
@@ -956,9 +940,7 @@ function mergeGroups(geometry) {
 
   let start = 0;
 
-  for (let i = 0; i < groups.length; i++) {
-    const group = groups[i];
-
+  for (const group of groups) {
     group.start = start;
     start += group.count;
   }

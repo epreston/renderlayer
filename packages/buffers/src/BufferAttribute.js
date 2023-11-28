@@ -268,6 +268,7 @@ class BufferAttribute {
 
   /** @returns {this} */
   clone() {
+    // @ts-ignore
     return new this.constructor(this.array, this.itemSize).copy(this);
   }
 
