@@ -177,6 +177,8 @@
     "estree",
     "frontz",
     "highp",
+    "hoveroff",
+    "hoveron",
     "iife",
     "leftx",
     "mediump",

@@ -98,11 +98,11 @@ class OrbitControls extends EventDispatcher {
     // public methods
     //
 
-    this.getPolarAngle = function () {
+    this.getPolarAngle = () => {
       return spherical.phi;
     };
 
-    this.getAzimuthalAngle = function () {
+    this.getAzimuthalAngle = () => {
       return spherical.theta;
     };
 
@@ -122,13 +122,13 @@ class OrbitControls extends EventDispatcher {
       }
     };
 
-    this.saveState = function () {
+    this.saveState = () => {
       scope.target0.copy(scope.target);
       scope.position0.copy(scope.object.position);
       scope.zoom0 = scope.object.zoom;
     };
 
-    this.reset = function () {
+    this.reset = () => {
       scope.target.copy(scope.target0);
       scope.object.position.copy(scope.position0);
       scope.object.zoom = scope.zoom0;
@@ -142,7 +142,7 @@ class OrbitControls extends EventDispatcher {
     };
 
     // this method is exposed, but perhaps it would be better if we can make it private...
-    this.update = (function () {
+    this.update = (() => {
       const offset = new Vector3();
 
       // so camera.up is the orbit axis
@@ -275,7 +275,7 @@ class OrbitControls extends EventDispatcher {
             newRadius = offset.length();
           } else {
             console.warn(
-              'WARNING: OrbitControls.js encountered an unknown camera type - zoom to cursor disabled.'
+              'OrbitControls encountered an unknown camera type - zoom to cursor disabled.'
             );
             scope.zoomToCursor = false;
           }
@@ -341,7 +341,7 @@ class OrbitControls extends EventDispatcher {
       };
     })();
 
-    this.dispose = function () {
+    this.dispose = () => {
       scope.domElement.removeEventListener('contextmenu', onContextMenu);
 
       scope.domElement.removeEventListener('pointerdown', onPointerDown);
@@ -426,7 +426,7 @@ class OrbitControls extends EventDispatcher {
       sphericalDelta.phi -= angle;
     }
 
-    const panLeft = (function () {
+    const panLeft = (() => {
       const v = new Vector3();
 
       return function panLeft(distance, objectMatrix) {
@@ -437,7 +437,7 @@ class OrbitControls extends EventDispatcher {
       };
     })();
 
-    const panUp = (function () {
+    const panUp = (() => {
       const v = new Vector3();
 
       return function panUp(distance, objectMatrix) {
@@ -455,7 +455,7 @@ class OrbitControls extends EventDispatcher {
     })();
 
     // deltaX and deltaY are in pixels; right and down are positive
-    const pan = (function () {
+    const pan = (() => {
       const offset = new Vector3();
 
       return function pan(deltaX, deltaY) {
