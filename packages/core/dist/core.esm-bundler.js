@@ -5,24 +5,24 @@ class EventDispatcher {
     if (this._listeners === void 0)
       this._listeners = /* @__PURE__ */ new Map();
     const listeners = this._listeners;
-    if (listeners[type] === void 0) {
-      listeners[type] = [];
+    if (!listeners.has(type)) {
+      listeners.set(type, []);
     }
-    if (!listeners[type].includes(listener)) {
-      listeners[type].push(listener);
+    if (!listeners.get(type).includes(listener)) {
+      listeners.get(type).push(listener);
     }
   }
   hasEventListener(type, listener) {
     if (this._listeners === void 0)
       return false;
     const listeners = this._listeners;
-    return listeners[type] !== void 0 && listeners[type].includes(listener);
+    return listeners.has(type) && listeners.get(type).includes(listener);
   }
   removeEventListener(type, listener) {
     if (this._listeners === void 0)
       return;
     const listeners = this._listeners;
-    const listenerArray = listeners[type];
+    const listenerArray = listeners.get(type);
     if (listenerArray !== void 0) {
       const index = listenerArray.indexOf(listener);
       if (index !== -1) {
@@ -34,7 +34,7 @@ class EventDispatcher {
     if (this._listeners === void 0)
       return;
     const listeners = this._listeners;
-    const listenerArray = listeners[event.type];
+    const listenerArray = listeners.get(event.type);
     if (listenerArray !== void 0) {
       event.target = this;
       const array = listenerArray.slice(0);
