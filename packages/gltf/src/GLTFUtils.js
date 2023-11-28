@@ -7,7 +7,7 @@ export function assignExtrasToUserData(object, gltfDef) {
     if (typeof gltfDef.extras === 'object') {
       Object.assign(object.userData, gltfDef.extras);
     } else {
-      console.warn('GLTFLoader: Ignoring primitive type .extras, ' + gltfDef.extras);
+      console.warn(`GLTFLoader: Ignoring primitive type .extras, ${gltfDef.extras}`);
     }
   }
 }
