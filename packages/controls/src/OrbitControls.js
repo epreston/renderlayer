@@ -98,13 +98,9 @@ class OrbitControls extends EventDispatcher {
     // public methods
     //
 
-    this.getPolarAngle = () => {
-      return spherical.phi;
-    };
+    this.getPolarAngle = () => spherical.phi;
 
-    this.getAzimuthalAngle = () => {
-      return spherical.theta;
-    };
+    this.getAzimuthalAngle = () => spherical.theta;
 
     this.getDistance = function () {
       return this.object.position.distanceTo(this.target);
@@ -331,8 +327,6 @@ class OrbitControls extends EventDispatcher {
           lastPosition.copy(scope.object.position);
           lastQuaternion.copy(scope.object.quaternion);
           lastTargetPosition.copy(scope.target);
-
-          zoomChanged = false;
 
           return true;
         }
