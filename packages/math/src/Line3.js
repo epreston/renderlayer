@@ -79,6 +79,7 @@ class Line3 {
 
   /** @returns {this} */
   clone() {
+    // @ts-ignore
     return new this.constructor().copy(this);
   }
 }

@@ -48,6 +48,7 @@ class Camera extends Object3D {
 
   /** @returns {this} */
   clone() {
+    // @ts-ignore
     return new this.constructor().copy(this);
   }
 }

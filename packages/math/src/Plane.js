@@ -151,6 +151,7 @@ class Plane {
 
   /** @returns {this} */
   clone() {
+    // @ts-ignore
     return new this.constructor().copy(this);
   }
 }
