@@ -327,10 +327,6 @@ class Material extends EventDispatcher {
       data.wireframe = true;
     if (this.wireframeLinewidth > 1)
       data.wireframeLinewidth = this.wireframeLinewidth;
-    if (this.wireframeLinecap !== "round")
-      data.wireframeLinecap = this.wireframeLinecap;
-    if (this.wireframeLinejoin !== "round")
-      data.wireframeLinejoin = this.wireframeLinejoin;
     if (this.flatShading === true)
       data.flatShading = true;
     if (this.visible === false)

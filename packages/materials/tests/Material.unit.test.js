@@ -301,8 +301,6 @@ describe('Materials', () => {
           },
           "type": "Material",
           "uuid": "c67ecd1b-cb30-456a-82e4-f07057001d31",
-          "wireframeLinecap": undefined,
-          "wireframeLinejoin": undefined,
         }
       `);
     });
