@@ -27,11 +27,13 @@ describe('Core', () => {
     test('hasEventListener', () => {
       const eventDispatcher = new EventDispatcher();
 
+      expect(eventDispatcher.hasEventListener('anyType', {})).toBeFalsy();
+
       const listener = {};
       eventDispatcher.addEventListener('anyType', listener);
 
       expect(eventDispatcher.hasEventListener('anyType', listener)).toBeTruthy();
-      expect(!eventDispatcher.hasEventListener('anotherType', listener)).toBeTruthy();
+      expect(eventDispatcher.hasEventListener('anotherType', listener)).toBeFalsy();
     });
 
     test('removeEventListener', () => {
