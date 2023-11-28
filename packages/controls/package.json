@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/controls",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "@renderlayer/controls",
   "module": "./dist/controls.esm-bundler.js",
   "exports": "./dist/controls.esm-bundler.js",

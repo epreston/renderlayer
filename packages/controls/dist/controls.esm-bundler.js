@@ -1,5 +1,130 @@
-import { EventDispatcher } from '@renderlayer/core';
-import { clamp, Ray, Plane, Vector3, Quaternion, Vector2, DEG2RAD } from '@renderlayer/math';
+import { Raycaster, EventDispatcher } from '@renderlayer/core';
+import { Plane, Vector2, Vector3, Matrix4, clamp, Ray, Quaternion, DEG2RAD } from '@renderlayer/math';
+
+const _plane$1 = new Plane();
+const _raycaster = new Raycaster();
+const _pointer = new Vector2();
+const _offset = new Vector3();
+const _intersection = new Vector3();
+const _worldPosition = new Vector3();
+const _inverseMatrix = new Matrix4();
+class DragControls extends EventDispatcher {
+  constructor(_objects, _camera, _domElement) {
+    super();
+    _domElement.style.touchAction = "none";
+    let _selected = null;
+    let _hovered = null;
+    const _intersections = [];
+    const scope = this;
+    function activate() {
+      _domElement.addEventListener("pointermove", onPointerMove);
+      _domElement.addEventListener("pointerdown", onPointerDown);
+      _domElement.addEventListener("pointerup", onPointerCancel);
+      _domElement.addEventListener("pointerleave", onPointerCancel);
+    }
+    function deactivate() {
+      _domElement.removeEventListener("pointermove", onPointerMove);
+      _domElement.removeEventListener("pointerdown", onPointerDown);
+      _domElement.removeEventListener("pointerup", onPointerCancel);
+      _domElement.removeEventListener("pointerleave", onPointerCancel);
+      _domElement.style.cursor = "";
+    }
+    function dispose() {
+      deactivate();
+    }
+    function getObjects() {
+      return _objects;
+    }
+    function getRaycaster() {
+      return _raycaster;
+    }
+    function onPointerMove(event) {
+      if (scope.enabled === false)
+        return;
+      updatePointer(event);
+      _raycaster.setFromCamera(_pointer, _camera);
+      if (_selected) {
+        if (_raycaster.ray.intersectPlane(_plane$1, _intersection)) {
+          _selected.position.copy(_intersection.sub(_offset).applyMatrix4(_inverseMatrix));
+        }
+        scope.dispatchEvent({ type: "drag", object: _selected });
+        return;
+      }
+      if (event.pointerType === "mouse" || event.pointerType === "pen") {
+        _intersections.length = 0;
+        _raycaster.setFromCamera(_pointer, _camera);
+        _raycaster.intersectObjects(_objects, scope.recursive, _intersections);
+        if (_intersections.length > 0) {
+          const object = _intersections[0].object;
+          _plane$1.setFromNormalAndCoplanarPoint(
+            _camera.getWorldDirection(_plane$1.normal),
+            _worldPosition.setFromMatrixPosition(object.matrixWorld)
+          );
+          if (_hovered !== object && _hovered !== null) {
+            scope.dispatchEvent({ type: "hoveroff", object: _hovered });
+            _domElement.style.cursor = "auto";
+            _hovered = null;
+          }
+          if (_hovered !== object) {
+            scope.dispatchEvent({ type: "hoveron", object });
+            _domElement.style.cursor = "pointer";
+            _hovered = object;
+          }
+        } else {
+          if (_hovered !== null) {
+            scope.dispatchEvent({ type: "hoveroff", object: _hovered });
+            _domElement.style.cursor = "auto";
+            _hovered = null;
+          }
+        }
+      }
+    }
+    function onPointerDown(event) {
+      if (scope.enabled === false)
+        return;
+      updatePointer(event);
+      _intersections.length = 0;
+      _raycaster.setFromCamera(_pointer, _camera);
+      _raycaster.intersectObjects(_objects, scope.recursive, _intersections);
+      if (_intersections.length > 0) {
+        _selected = scope.transformGroup === true ? _objects[0] : _intersections[0].object;
+        _plane$1.setFromNormalAndCoplanarPoint(
+          _camera.getWorldDirection(_plane$1.normal),
+          _worldPosition.setFromMatrixPosition(_selected.matrixWorld)
+        );
+        if (_raycaster.ray.intersectPlane(_plane$1, _intersection)) {
+          _inverseMatrix.copy(_selected.parent.matrixWorld).invert();
+          _offset.copy(_intersection).sub(_worldPosition.setFromMatrixPosition(_selected.matrixWorld));
+        }
+        _domElement.style.cursor = "move";
+        scope.dispatchEvent({ type: "dragstart", object: _selected });
+      }
+    }
+    function onPointerCancel() {
+      if (scope.enabled === false)
+        return;
+      if (_selected) {
+        scope.dispatchEvent({ type: "dragend", object: _selected });
+        _selected = null;
+      }
+      _domElement.style.cursor = _hovered ? "pointer" : "auto";
+    }
+    function updatePointer(event) {
+      const rect = _domElement.getBoundingClientRect();
+      _pointer.x = (event.clientX - rect.left) / rect.width * 2 - 1;
+      _pointer.y = -(event.clientY - rect.top) / rect.height * 2 + 1;
+    }
+    activate();
+    this.enabled = true;
+    this.recursive = true;
+    this.transformGroup = false;
+    this.activate = activate;
+    this.deactivate = deactivate;
+    this.dispose = dispose;
+    this.getObjects = getObjects;
+    this.getRaycaster = getRaycaster;
+  }
+}
 
 class Spherical {
   constructor(radius = 1, phi = 0, theta = 0) {
@@ -90,10 +215,10 @@ class OrbitControls extends EventDispatcher {
     this.position0 = this.object.position.clone();
     this.zoom0 = this.object.zoom;
     this._domElementKeyEvents = null;
-    this.getPolarAngle = function() {
+    this.getPolarAngle = () => {
       return spherical.phi;
     };
-    this.getAzimuthalAngle = function() {
+    this.getAzimuthalAngle = () => {
       return spherical.theta;
     };
     this.getDistance = function() {
@@ -109,12 +234,12 @@ class OrbitControls extends EventDispatcher {
         this._domElementKeyEvents = null;
       }
     };
-    this.saveState = function() {
+    this.saveState = () => {
       scope.target0.copy(scope.target);
       scope.position0.copy(scope.object.position);
       scope.zoom0 = scope.object.zoom;
     };
-    this.reset = function() {
+    this.reset = () => {
       scope.target.copy(scope.target0);
       scope.object.position.copy(scope.position0);
       scope.object.zoom = scope.zoom0;
@@ -123,7 +248,7 @@ class OrbitControls extends EventDispatcher {
       scope.update();
       state = STATE.NONE;
     };
-    this.update = function() {
+    this.update = (() => {
       const offset = new Vector3();
       const quat = new Quaternion().setFromUnitVectors(object.up, new Vector3(0, 1, 0));
       const quatInverse = quat.clone().invert();
@@ -212,7 +337,7 @@ class OrbitControls extends EventDispatcher {
             newRadius = offset.length();
           } else {
             console.warn(
-              "WARNING: OrbitControls.js encountered an unknown camera type - zoom to cursor disabled."
+              "OrbitControls encountered an unknown camera type - zoom to cursor disabled."
             );
             scope.zoomToCursor = false;
           }
@@ -250,8 +375,8 @@ class OrbitControls extends EventDispatcher {
         }
         return false;
       };
-    }();
-    this.dispose = function() {
+    })();
+    this.dispose = () => {
       scope.domElement.removeEventListener("contextmenu", onContextMenu);
       scope.domElement.removeEventListener("pointerdown", onPointerDown);
       scope.domElement.removeEventListener("pointercancel", onPointerUp);
@@ -310,15 +435,15 @@ class OrbitControls extends EventDispatcher {
     function rotateUp(angle) {
       sphericalDelta.phi -= angle;
     }
-    const panLeft = function() {
+    const panLeft = (() => {
       const v = new Vector3();
       return function panLeft2(distance, objectMatrix) {
         v.setFromMatrixColumn(objectMatrix, 0);
         v.multiplyScalar(-distance);
         panOffset.add(v);
       };
-    }();
-    const panUp = function() {
+    })();
+    const panUp = (() => {
       const v = new Vector3();
       return function panUp2(distance, objectMatrix) {
         if (scope.screenSpacePanning === true) {
@@ -330,8 +455,8 @@ class OrbitControls extends EventDispatcher {
         v.multiplyScalar(distance);
         panOffset.add(v);
       };
-    }();
-    const pan = function() {
+    })();
+    const pan = (() => {
       const offset = new Vector3();
       return function pan2(deltaX, deltaY) {
         const element = scope.domElement;
@@ -358,7 +483,7 @@ class OrbitControls extends EventDispatcher {
           scope.enablePan = false;
         }
       };
-    }();
+    })();
     function dollyOut(dollyScale) {
       if (scope.object.isPerspectiveCamera || scope.object.isOrthographicCamera) {
         scale /= dollyScale;
@@ -804,4 +929,13 @@ class OrbitControls extends EventDispatcher {
   }
 }
 
-export { MOUSE, OrbitControls, Spherical, TOUCH };
+class MapControls extends OrbitControls {
+  constructor(object, domElement) {
+    super(object, domElement);
+    this.screenSpacePanning = false;
+    this.mouseButtons = { LEFT: MOUSE.PAN, MIDDLE: MOUSE.DOLLY, RIGHT: MOUSE.ROTATE };
+    this.touches = { ONE: TOUCH.PAN, TWO: TOUCH.DOLLY_ROTATE };
+  }
+}
+
+export { DragControls, MOUSE, MapControls, OrbitControls, Spherical, TOUCH };
