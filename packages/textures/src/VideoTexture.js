@@ -26,6 +26,7 @@ class VideoTexture extends Texture {
 
   /** @returns {this} */
   clone() {
+    // @ts-ignore
     return new this.constructor(this.image).copy(this);
   }
 
