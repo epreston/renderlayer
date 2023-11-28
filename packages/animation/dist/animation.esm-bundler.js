@@ -1394,15 +1394,15 @@ class AnimationMixer extends EventDispatcher {
     const interpolants = action._interpolants;
     const rootUuid = root.uuid;
     const bindingsByRoot = this._bindingsByRootAndName;
-    let bindingsByName = bindingsByRoot[rootUuid];
+    let bindingsByName = bindingsByRoot.get(rootUuid);
     if (bindingsByName === void 0) {
-      bindingsByName = {};
-      bindingsByRoot[rootUuid] = bindingsByName;
+      bindingsByName = /* @__PURE__ */ new Map();
+      bindingsByRoot.set(rootUuid, bindingsByName);
     }
     for (let i = 0; i !== nTracks; ++i) {
       const track = tracks[i];
       const trackName = track.name;
-      let binding = bindingsByName[trackName];
+      let binding = bindingsByName.get(trackName);
       if (binding !== void 0) {
         ++binding.referenceCount;
         bindings[i] = binding;
@@ -1433,7 +1433,7 @@ class AnimationMixer extends EventDispatcher {
       if (action._cacheIndex === null) {
         const rootUuid = (action._localRoot || this._root).uuid;
         const clipUuid = action._clip.uuid;
-        const actionsForClip = this._actionsByClip[clipUuid];
+        const actionsForClip = this._actionsByClip.get(clipUuid);
         this._bindAction(action, actionsForClip && actionsForClip.knownActions[0]);
         this._addInactiveAction(action, clipUuid, rootUuid);
       }
@@ -1465,10 +1465,10 @@ class AnimationMixer extends EventDispatcher {
   _initMemoryManager() {
     this._actions = [];
     this._nActiveActions = 0;
-    this._actionsByClip = {};
+    this._actionsByClip = /* @__PURE__ */ new Map();
     this._bindings = [];
     this._nActiveBindings = 0;
-    this._bindingsByRootAndName = {};
+    this._bindingsByRootAndName = /* @__PURE__ */ new Map();
     this._controlInterpolants = [];
     this._nActiveControlInterpolants = 0;
     const scope = this;
@@ -1507,14 +1507,14 @@ class AnimationMixer extends EventDispatcher {
   _addInactiveAction(action, clipUuid, rootUuid) {
     const actions = this._actions;
     const actionsByClip = this._actionsByClip;
-    let actionsForClip = actionsByClip[clipUuid];
+    let actionsForClip = actionsByClip.get(clipUuid);
     if (actionsForClip === void 0) {
       actionsForClip = {
         knownActions: [action],
-        actionByRoot: {}
+        actionByRoot: /* @__PURE__ */ new Map()
       };
       action._byClipCacheIndex = 0;
-      actionsByClip[clipUuid] = actionsForClip;
+      actionsByClip.set(clipUuid, actionsForClip);
     } else {
       const knownActions = actionsForClip.knownActions;
       action._byClipCacheIndex = knownActions.length;
@@ -1522,7 +1522,7 @@ class AnimationMixer extends EventDispatcher {
     }
     action._cacheIndex = actions.length;
     actions.push(action);
-    actionsForClip.actionByRoot[rootUuid] = action;
+    actionsForClip.actionByRoot.set(rootUuid, action);
   }
   _removeInactiveAction(action) {
     const actions = this._actions;
@@ -1534,7 +1534,7 @@ class AnimationMixer extends EventDispatcher {
     action._cacheIndex = null;
     const clipUuid = action._clip.uuid;
     const actionsByClip = this._actionsByClip;
-    const actionsForClip = actionsByClip[clipUuid];
+    const actionsForClip = actionsByClip.get(clipUuid);
     const knownActionsForClip = actionsForClip.knownActions;
     const lastKnownAction = knownActionsForClip[knownActionsForClip.length - 1];
     const byClipCacheIndex = action._byClipCacheIndex;
@@ -1544,9 +1544,9 @@ class AnimationMixer extends EventDispatcher {
     action._byClipCacheIndex = null;
     const actionByRoot = actionsForClip.actionByRoot;
     const rootUuid = (action._localRoot || this._root).uuid;
-    delete actionByRoot[rootUuid];
+    actionByRoot.delete(rootUuid);
     if (knownActionsForClip.length === 0) {
-      delete actionsByClip[clipUuid];
+      actionsByClip.delete(clipUuid);
     }
     this._removeInactiveBindingsForAction(action);
   }
@@ -1583,12 +1583,12 @@ class AnimationMixer extends EventDispatcher {
   _addInactiveBinding(binding, rootUuid, trackName) {
     const bindingsByRoot = this._bindingsByRootAndName;
     const bindings = this._bindings;
-    let bindingByName = bindingsByRoot[rootUuid];
+    let bindingByName = bindingsByRoot.get(rootUuid);
     if (bindingByName === void 0) {
-      bindingByName = {};
-      bindingsByRoot[rootUuid] = bindingByName;
+      bindingByName = /* @__PURE__ */ new Map();
+      bindingsByRoot.set(rootUuid, bindingByName);
     }
-    bindingByName[trackName] = binding;
+    bindingByName.set(trackName, binding);
     binding._cacheIndex = bindings.length;
     bindings.push(binding);
   }
@@ -1598,15 +1598,15 @@ class AnimationMixer extends EventDispatcher {
     const rootUuid = propBinding.rootNode.uuid;
     const trackName = propBinding.path;
     const bindingsByRoot = this._bindingsByRootAndName;
-    const bindingByName = bindingsByRoot[rootUuid];
+    const bindingByName = bindingsByRoot.get(rootUuid);
     const lastInactiveBinding = bindings[bindings.length - 1];
     const cacheIndex = binding._cacheIndex;
     lastInactiveBinding._cacheIndex = cacheIndex;
     bindings[cacheIndex] = lastInactiveBinding;
     bindings.pop();
-    delete bindingByName[trackName];
-    if (Object.keys(bindingByName).length === 0) {
-      delete bindingsByRoot[rootUuid];
+    bindingByName.delete(trackName);
+    if (bindingByName.size === 0) {
+      bindingsByRoot.delete(rootUuid);
     }
   }
   _lendBinding(binding) {
@@ -1665,7 +1665,7 @@ class AnimationMixer extends EventDispatcher {
     const rootUuid = root.uuid;
     let clipObject = typeof clip === "string" ? AnimationClip.findByName(root, clip) : clip;
     const clipUuid = clipObject !== null ? clipObject.uuid : clip;
-    const actionsForClip = this._actionsByClip[clipUuid];
+    const actionsForClip = this._actionsByClip.get(clipUuid);
     let prototypeAction = null;
     if (blendMode === void 0) {
       if (clipObject !== null) {
@@ -1675,7 +1675,7 @@ class AnimationMixer extends EventDispatcher {
       }
     }
     if (actionsForClip !== void 0) {
-      const existingAction = actionsForClip.actionByRoot[rootUuid];
+      const existingAction = actionsForClip.actionByRoot.get(rootUuid);
       if (existingAction !== void 0 && existingAction.blendMode === blendMode) {
         return existingAction;
       }
@@ -1696,9 +1696,9 @@ class AnimationMixer extends EventDispatcher {
     const rootUuid = root.uuid;
     const clipObject = typeof clip === "string" ? AnimationClip.findByName(root, clip) : clip;
     const clipUuid = clipObject ? clipObject.uuid : clip;
-    const actionsForClip = this._actionsByClip[clipUuid];
+    const actionsForClip = this._actionsByClip.get(clipUuid);
     if (actionsForClip !== void 0) {
-      return actionsForClip.actionByRoot[rootUuid] || null;
+      return actionsForClip.actionByRoot.get(rootUuid) || null;
     }
     return null;
   }
@@ -1747,7 +1747,7 @@ class AnimationMixer extends EventDispatcher {
     const actions = this._actions;
     const clipUuid = clip.uuid;
     const actionsByClip = this._actionsByClip;
-    const actionsForClip = actionsByClip[clipUuid];
+    const actionsForClip = actionsByClip.get(clipUuid);
     if (actionsForClip !== void 0) {
       const actionsToRemove = actionsForClip.knownActions;
       for (let i = 0, n = actionsToRemove.length; i !== n; ++i) {
@@ -1762,26 +1762,25 @@ class AnimationMixer extends EventDispatcher {
         actions.pop();
         this._removeInactiveBindingsForAction(action);
       }
-      delete actionsByClip[clipUuid];
+      actionsByClip.delete(clipUuid);
     }
   }
   // free all resources specific to a particular root target object
   uncacheRoot(root) {
     const rootUuid = root.uuid;
     const actionsByClip = this._actionsByClip;
-    for (const clipUuid in actionsByClip) {
-      const actionByRoot = actionsByClip[clipUuid].actionByRoot;
-      const action = actionByRoot[rootUuid];
+    for (const clipUuid of actionsByClip.keys()) {
+      const actionByRoot = actionsByClip.get(clipUuid).actionByRoot;
+      const action = actionByRoot.get(rootUuid);
       if (action !== void 0) {
         this._deactivateAction(action);
         this._removeInactiveAction(action);
       }
     }
     const bindingsByRoot = this._bindingsByRootAndName;
-    const bindingByName = bindingsByRoot[rootUuid];
+    const bindingByName = bindingsByRoot.get(rootUuid);
     if (bindingByName !== void 0) {
-      for (const trackName in bindingByName) {
-        const binding = bindingByName[trackName];
+      for (const binding of bindingByName.values()) {
         binding.restoreOriginalState();
         this._removeInactiveBinding(binding);
       }
