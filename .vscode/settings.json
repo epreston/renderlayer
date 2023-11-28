@@ -173,6 +173,7 @@
     "Tmapping",
     "UNORM",
     "XYZW",
+    "accus",
     "backz",
     "binormal",
     "binormals",
@@ -199,6 +200,7 @@
     "sessionend",
     "sessionstart",
     "skybox",
+    "uncache",
     "unproject",
     "vars"
   ],
