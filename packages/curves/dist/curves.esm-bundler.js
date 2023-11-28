@@ -7,7 +7,7 @@ class Curve {
   }
   // Virtual base class method to overwrite and implement in subclasses
   //	- t [0 .. 1]
-  getPoint() {
+  getPoint(_t, _optionalTarget) {
     console.warn("Curve: .getPoint() not implemented.");
     return null;
   }
