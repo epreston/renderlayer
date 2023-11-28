@@ -49,8 +49,8 @@ function sortedArray(values, stride, order) {
 
 // function for parsing AOS keyframe formats
 function flattenJSON(jsonKeys, times, values, valuePropertyName) {
-  let i = 1,
-    key = jsonKeys[0];
+  let i = 1;
+  let key = jsonKeys[0];
 
   while (key !== undefined && key[valuePropertyName] === undefined) {
     key = jsonKeys[i++];
@@ -67,7 +67,7 @@ function flattenJSON(jsonKeys, times, values, valuePropertyName) {
 
       if (value !== undefined) {
         times.push(key.time);
-        values.push.apply(values, value); // push all elements
+        values.push(...value); // push all elements
       }
 
       key = jsonKeys[i++];
@@ -108,8 +108,7 @@ function subclip(sourceClip, name, startFrame, endFrame, fps = 30) {
 
   const tracks = [];
 
-  for (let i = 0; i < clip.tracks.length; ++i) {
-    const track = clip.tracks[i];
+  for (const track of clip.tracks) {
     const valueSize = track.getValueSize();
 
     const times = [];
@@ -173,7 +172,7 @@ function makeClipAdditive(targetClip, referenceFrame = 0, referenceClip = target
     if (referenceTrackType === 'bool' || referenceTrackType === 'string') continue;
 
     // Find the track in the target clip whose name and type matches the reference track
-    const targetTrack = targetClip.tracks.find(function (track) {
+    const targetTrack = targetClip.tracks.find((track) => {
       return track.name === referenceTrack.name && track.ValueTypeName === referenceTrackType;
     });
 

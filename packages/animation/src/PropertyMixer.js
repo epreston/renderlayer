@@ -5,7 +5,9 @@ class PropertyMixer {
     this.binding = binding;
     this.valueSize = valueSize;
 
-    let mixFunction, mixFunctionAdditive, setIdentity;
+    let mixFunction;
+    let mixFunctionAdditive;
+    let setIdentity;
 
     // buffer layout: [ incoming | accu0 | accu1 | orig | addAccu | (optional work) ]
     //
@@ -72,9 +74,10 @@ class PropertyMixer {
     // note: happily accumulating nothing when weight = 0, the caller knows
     // the weight and shouldn't have made the call in the first place
 
-    const buffer = this.buffer,
-      stride = this.valueSize,
-      offset = accuIndex * stride + stride;
+    const buffer = this.buffer;
+
+    const stride = this.valueSize;
+    const offset = accuIndex * stride + stride;
 
     let currentWeight = this.cumulativeWeight;
 
@@ -97,9 +100,9 @@ class PropertyMixer {
 
   // accumulate data in the 'incoming' region into 'add'
   accumulateAdditive(weight) {
-    const buffer = this.buffer,
-      stride = this.valueSize,
-      offset = stride * this._addIndex;
+    const buffer = this.buffer;
+    const stride = this.valueSize;
+    const offset = stride * this._addIndex;
 
     if (this.cumulativeWeightAdditive === 0) {
       // add = identity
@@ -113,12 +116,12 @@ class PropertyMixer {
 
   // apply the state of 'accu<i>' to the binding when accus differ
   apply(accuIndex) {
-    const stride = this.valueSize,
-      buffer = this.buffer,
-      offset = accuIndex * stride + stride,
-      weight = this.cumulativeWeight,
-      weightAdditive = this.cumulativeWeightAdditive,
-      binding = this.binding;
+    const stride = this.valueSize;
+    const buffer = this.buffer;
+    const offset = accuIndex * stride + stride;
+    const weight = this.cumulativeWeight;
+    const weightAdditive = this.cumulativeWeightAdditive;
+    const binding = this.binding;
 
     this.cumulativeWeight = 0;
     this.cumulativeWeightAdditive = 0;
@@ -149,9 +152,9 @@ class PropertyMixer {
   saveOriginalState() {
     const binding = this.binding;
 
-    const buffer = this.buffer,
-      stride = this.valueSize,
-      originalValueOffset = stride * this._origIndex;
+    const buffer = this.buffer;
+    const stride = this.valueSize;
+    const originalValueOffset = stride * this._origIndex;
 
     binding.getValue(buffer, originalValueOffset);
 

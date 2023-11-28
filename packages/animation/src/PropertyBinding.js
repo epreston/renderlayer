@@ -1,12 +1,12 @@
 // Characters [].:/ are reserved for track binding syntax.
 const _RESERVED_CHARS_RE = '\\[\\]\\.:\\/';
-const _reservedRe = new RegExp('[' + _RESERVED_CHARS_RE + ']', 'g');
+const _reservedRe = new RegExp(`[${_RESERVED_CHARS_RE}]`, 'g');
 
 // Attempts to allow node names from any language. ES5's `\w` regexp matches
 // only latin characters, and the unicode \p{L} is not yet supported. So
 // instead, we exclude reserved characters and match everything else.
-const _wordChar = '[^' + _RESERVED_CHARS_RE + ']';
-const _wordCharOrDot = '[^' + _RESERVED_CHARS_RE.replace('\\.', '') + ']';
+const _wordChar = `[^${_RESERVED_CHARS_RE}]`;
+const _wordCharOrDot = `[^${_RESERVED_CHARS_RE.replace('\\.', '')}]`;
 
 // Parent directories, delimited by '/' or ':'. Currently unused, but must
 // be matched to parse the rest of the track name.
@@ -24,13 +24,7 @@ const _objectRe = /*@__PURE__*/ /(?:\.(WC+)(?:\[(.+)\])?)?/.source.replace('WC',
 const _propertyRe = /*@__PURE__*/ /\.(WC+)(?:\[(.+)\])?/.source.replace('WC', _wordChar);
 
 // prettier-ignore
-const _trackRe = new RegExp( ''
-	+ '^'
-	+ _directoryRe
-	+ _nodeRe
-	+ _objectRe
-	+ _propertyRe
-	+ '$'
+const _trackRe = new RegExp( `^${_directoryRe}${_nodeRe}${_objectRe}${_propertyRe}$`
 );
 
 const _supportedObjectNames = ['material', 'materials', 'bones', 'map'];
@@ -46,8 +40,8 @@ class Composite {
   getValue(array, offset) {
     this.bind(); // bind all binding
 
-    const firstValidIndex = this._targetGroup.nCachedObjects_,
-      binding = this._bindings[firstValidIndex];
+    const firstValidIndex = this._targetGroup.nCachedObjects_;
+    const binding = this._bindings[firstValidIndex];
 
     // and only call .getValue on the first
     if (binding !== undefined) binding.getValue(array, offset);
@@ -120,7 +114,7 @@ class PropertyBinding {
     const matches = _trackRe.exec(trackName);
 
     if (matches === null) {
-      throw new Error('PropertyBinding: Cannot parse trackName: ' + trackName);
+      throw new Error(`PropertyBinding: Cannot parse trackName: ${trackName}`);
     }
 
     const results = {
@@ -141,14 +135,14 @@ class PropertyBinding {
       // is no way to parse 'foo.bar.baz': 'baz' must be a property, but
       // 'bar' could be the objectName, or part of a nodeName (which can
       // include '.' characters).
-      if (_supportedObjectNames.indexOf(objectName) !== -1) {
+      if (_supportedObjectNames.includes(objectName)) {
         results.nodeName = results.nodeName.substring(0, lastDot);
         results.objectName = objectName;
       }
     }
 
     if (results.propertyName === null || results.propertyName.length === 0) {
-      throw new Error('PropertyBinding: can not parse propertyName from trackName: ' + trackName);
+      throw new Error(`PropertyBinding: can not parse propertyName from trackName: ${trackName}`);
     }
 
     return results;
@@ -177,10 +171,8 @@ class PropertyBinding {
 
     // search into node subtree.
     if (root.children) {
-      const searchNodeSubtree = function (children) {
-        for (let i = 0; i < children.length; i++) {
-          const childNode = children[i];
-
+      const searchNodeSubtree = (children) => {
+        for (const childNode of children) {
           if (childNode.name === nodeName || childNode.uuid === nodeName) {
             return childNode;
           }
@@ -203,7 +195,7 @@ class PropertyBinding {
     return null;
   }
 
-  // these are used to "bind" a nonexistent property
+  // these are used to "bind" a non-existent property
   _getValue_unavailable() {}
   _setValue_unavailable() {}
 
@@ -338,7 +330,7 @@ class PropertyBinding {
 
     // ensure there is a value node
     if (!targetObject) {
-      console.error('PropertyBinding: No target node found for track: ' + this.path + '.');
+      console.error(`PropertyBinding: No target node found for track: ${this.path}.`);
       return;
     }
 
@@ -447,11 +439,7 @@ class PropertyBinding {
       const nodeName = parsedPath.nodeName;
 
       console.error(
-        'PropertyBinding: Trying to update property for track: ' +
-          nodeName +
-          '.' +
-          propertyName +
-          " but it wasn't found.",
+        `PropertyBinding: Trying to update property for track: ${nodeName}.${propertyName} but it wasn't found.`,
         targetObject
       );
       return;

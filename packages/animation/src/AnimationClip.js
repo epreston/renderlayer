@@ -27,9 +27,9 @@ class AnimationClip {
   }
 
   static parse(json) {
-    const tracks = [],
-      jsonTracks = json.tracks,
-      frameTime = 1.0 / (json.fps || 1.0);
+    const tracks = [];
+    const jsonTracks = json.tracks;
+    const frameTime = 1.0 / (json.fps || 1.0);
 
     for (let i = 0, n = jsonTracks.length; i !== n; ++i) {
       tracks.push(parseKeyframeTrack(jsonTracks[i]).scale(frameTime));
@@ -42,8 +42,8 @@ class AnimationClip {
   }
 
   static toJSON(clip) {
-    const tracks = [],
-      clipTracks = clip.tracks;
+    const tracks = [];
+    const clipTracks = clip.tracks;
 
     const json = {
       name: clip.name,
@@ -85,7 +85,7 @@ class AnimationClip {
 
       tracks.push(
         new NumberKeyframeTrack(
-          '.morphTargetInfluences[' + morphTargetSequence[i].name + ']',
+          `.morphTargetInfluences[${morphTargetSequence[i].name}]`,
           times,
           values
         ).scale(1.0 / fps)
@@ -156,13 +156,7 @@ class AnimationClip {
       return null;
     }
 
-    const addNonemptyTrack = function (
-      trackType,
-      trackName,
-      animationKeys,
-      propertyName,
-      destTracks
-    ) {
+    const addNonemptyTrack = (trackType, trackName, animationKeys, propertyName, destTracks) => {
       // only return track if there are actually keys.
       if (animationKeys.length !== 0) {
         const times = [];
@@ -224,7 +218,7 @@ class AnimationClip {
           }
 
           tracks.push(
-            new NumberKeyframeTrack('.morphTargetInfluence[' + morphTargetName + ']', times, values)
+            new NumberKeyframeTrack(`.morphTargetInfluence[${morphTargetName}]`, times, values)
           );
         }
 
@@ -232,17 +226,17 @@ class AnimationClip {
       } else {
         // ...assume skeletal animation
 
-        const boneName = '.bones[' + bones[h].name + ']';
+        const boneName = `.bones[${bones[h].name}]`;
 
-        addNonemptyTrack(VectorKeyframeTrack, boneName + '.position', animationKeys, 'pos', tracks);
+        addNonemptyTrack(VectorKeyframeTrack, `${boneName}.position`, animationKeys, 'pos', tracks);
         addNonemptyTrack(
           QuaternionKeyframeTrack,
-          boneName + '.quaternion',
+          `${boneName}.quaternion`,
           animationKeys,
           'rot',
           tracks
         );
-        addNonemptyTrack(VectorKeyframeTrack, boneName + '.scale', animationKeys, 'scl', tracks);
+        addNonemptyTrack(VectorKeyframeTrack, `${boneName}.scale`, animationKeys, 'scl', tracks);
       }
     }
 
@@ -304,6 +298,7 @@ class AnimationClip {
       tracks.push(this.tracks[i].clone());
     }
 
+    // @ts-ignore
     return new this.constructor(this.name, this.duration, tracks, this.blendMode);
   }
 
@@ -341,7 +336,7 @@ function getTrackTypeForValueTypeName(typeName) {
       return StringKeyframeTrack;
   }
 
-  throw new Error('KeyframeTrack: unsupported typeName: ' + typeName);
+  throw new Error(`KeyframeTrack: unsupported typeName: ${typeName}`);
 }
 
 function parseKeyframeTrack(json) {
@@ -352,8 +347,8 @@ function parseKeyframeTrack(json) {
   const trackType = getTrackTypeForValueTypeName(json.type);
 
   if (json.times === undefined) {
-    const times = [],
-      values = [];
+    const times = [];
+    const values = [];
 
     AnimationUtils.flattenJSON(json.keys, times, values, 'value');
 

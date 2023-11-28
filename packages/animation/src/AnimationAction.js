@@ -16,9 +16,9 @@ class AnimationAction {
     this._localRoot = localRoot;
     this.blendMode = blendMode;
 
-    const tracks = clip.tracks,
-      nTracks = tracks.length,
-      interpolants = new Array(nTracks);
+    const tracks = clip.tracks;
+    const nTracks = tracks.length;
+    const interpolants = new Array(nTracks);
 
     const interpolantSettings = {
       endingStart: ZeroCurvatureEnding,
@@ -157,10 +157,10 @@ class AnimationAction {
     this.fadeIn(duration);
 
     if (warp) {
-      const fadeInDuration = this._clip.duration,
-        fadeOutDuration = fadeOutAction._clip.duration,
-        startEndRatio = fadeOutDuration / fadeInDuration,
-        endStartRatio = fadeInDuration / fadeOutDuration;
+      const fadeInDuration = this._clip.duration;
+      const fadeOutDuration = fadeOutAction._clip.duration;
+      const startEndRatio = fadeOutDuration / fadeInDuration;
+      const endStartRatio = fadeInDuration / fadeOutDuration;
 
       fadeOutAction.warp(1.0, startEndRatio, duration);
       this.warp(endStartRatio, 1.0, duration);
@@ -221,9 +221,9 @@ class AnimationAction {
   }
 
   warp(startTimeScale, endTimeScale, duration) {
-    const mixer = this._mixer,
-      now = mixer.time,
-      timeScale = this.timeScale;
+    const mixer = this._mixer;
+    const now = mixer.time;
+    const timeScale = this.timeScale;
 
     let interpolant = this._timeScaleInterpolant;
 
@@ -232,8 +232,8 @@ class AnimationAction {
       this._timeScaleInterpolant = interpolant;
     }
 
-    const times = interpolant.parameterPositions,
-      values = interpolant.sampleValues;
+    const times = interpolant.parameterPositions;
+    const values = interpolant.sampleValues;
 
     times[0] = now;
     times[1] = now + duration;
@@ -535,8 +535,8 @@ class AnimationAction {
   }
 
   _scheduleFading(duration, weightNow, weightThen) {
-    const mixer = this._mixer,
-      now = mixer.time;
+    const mixer = this._mixer;
+    const now = mixer.time;
     let interpolant = this._weightInterpolant;
 
     if (interpolant === null) {
@@ -544,8 +544,8 @@ class AnimationAction {
       this._weightInterpolant = interpolant;
     }
 
-    const times = interpolant.parameterPositions,
-      values = interpolant.sampleValues;
+    const times = interpolant.parameterPositions;
+    const values = interpolant.sampleValues;
 
     times[0] = now;
     values[0] = weightNow;

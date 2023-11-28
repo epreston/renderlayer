@@ -21,13 +21,13 @@ class AnimationMixer extends EventDispatcher {
   }
 
   _bindAction(action, prototypeAction) {
-    const root = action._localRoot || this._root,
-      tracks = action._clip.tracks,
-      nTracks = tracks.length,
-      bindings = action._propertyBindings,
-      interpolants = action._interpolants,
-      rootUuid = root.uuid,
-      bindingsByRoot = this._bindingsByRootAndName;
+    const root = action._localRoot || this._root;
+    const tracks = action._clip.tracks;
+    const nTracks = tracks.length;
+    const bindings = action._propertyBindings;
+    const interpolants = action._interpolants;
+    const rootUuid = root.uuid;
+    const bindingsByRoot = this._bindingsByRootAndName;
 
     let bindingsByName = bindingsByRoot[rootUuid];
 
@@ -37,8 +37,8 @@ class AnimationMixer extends EventDispatcher {
     }
 
     for (let i = 0; i !== nTracks; ++i) {
-      const track = tracks[i],
-        trackName = track.name;
+      const track = tracks[i];
+      const trackName = track.name;
 
       let binding = bindingsByName[trackName];
 
@@ -83,9 +83,10 @@ class AnimationMixer extends EventDispatcher {
         // this action has been forgotten by the cache, but the user
         // appears to be still using it -> rebind
 
-        const rootUuid = (action._localRoot || this._root).uuid,
-          clipUuid = action._clip.uuid,
-          actionsForClip = this._actionsByClip[clipUuid];
+        const rootUuid = (action._localRoot || this._root).uuid;
+
+        const clipUuid = action._clip.uuid;
+        const actionsForClip = this._actionsByClip[clipUuid];
 
         this._bindAction(action, actionsForClip && actionsForClip.knownActions[0]);
 
@@ -185,8 +186,8 @@ class AnimationMixer extends EventDispatcher {
   }
 
   _addInactiveAction(action, clipUuid, rootUuid) {
-    const actions = this._actions,
-      actionsByClip = this._actionsByClip;
+    const actions = this._actions;
+    const actionsByClip = this._actionsByClip;
 
     let actionsForClip = actionsByClip[clipUuid];
 
@@ -213,9 +214,9 @@ class AnimationMixer extends EventDispatcher {
   }
 
   _removeInactiveAction(action) {
-    const actions = this._actions,
-      lastInactiveAction = actions[actions.length - 1],
-      cacheIndex = action._cacheIndex;
+    const actions = this._actions;
+    const lastInactiveAction = actions[actions.length - 1];
+    const cacheIndex = action._cacheIndex;
 
     lastInactiveAction._cacheIndex = cacheIndex;
     actions[cacheIndex] = lastInactiveAction;
@@ -223,12 +224,12 @@ class AnimationMixer extends EventDispatcher {
 
     action._cacheIndex = null;
 
-    const clipUuid = action._clip.uuid,
-      actionsByClip = this._actionsByClip,
-      actionsForClip = actionsByClip[clipUuid],
-      knownActionsForClip = actionsForClip.knownActions,
-      lastKnownAction = knownActionsForClip[knownActionsForClip.length - 1],
-      byClipCacheIndex = action._byClipCacheIndex;
+    const clipUuid = action._clip.uuid;
+    const actionsByClip = this._actionsByClip;
+    const actionsForClip = actionsByClip[clipUuid];
+    const knownActionsForClip = actionsForClip.knownActions;
+    const lastKnownAction = knownActionsForClip[knownActionsForClip.length - 1];
+    const byClipCacheIndex = action._byClipCacheIndex;
 
     lastKnownAction._byClipCacheIndex = byClipCacheIndex;
     knownActionsForClip[byClipCacheIndex] = lastKnownAction;
@@ -236,8 +237,8 @@ class AnimationMixer extends EventDispatcher {
 
     action._byClipCacheIndex = null;
 
-    const actionByRoot = actionsForClip.actionByRoot,
-      rootUuid = (action._localRoot || this._root).uuid;
+    const actionByRoot = actionsForClip.actionByRoot;
+    const rootUuid = (action._localRoot || this._root).uuid;
 
     delete actionByRoot[rootUuid];
 
@@ -267,10 +268,11 @@ class AnimationMixer extends EventDispatcher {
     //                  <-swap->
     //                 a        s
 
-    const actions = this._actions,
-      prevIndex = action._cacheIndex,
-      lastActiveIndex = this._nActiveActions++,
-      firstInactiveAction = actions[lastActiveIndex];
+    const actions = this._actions;
+
+    const prevIndex = action._cacheIndex;
+    const lastActiveIndex = this._nActiveActions++;
+    const firstInactiveAction = actions[lastActiveIndex];
 
     action._cacheIndex = lastActiveIndex;
     actions[lastActiveIndex] = action;
@@ -286,10 +288,11 @@ class AnimationMixer extends EventDispatcher {
     //         <-swap->
     //        s        a
 
-    const actions = this._actions,
-      prevIndex = action._cacheIndex,
-      firstInactiveIndex = --this._nActiveActions,
-      lastActiveAction = actions[firstInactiveIndex];
+    const actions = this._actions;
+
+    const prevIndex = action._cacheIndex;
+    const firstInactiveIndex = --this._nActiveActions;
+    const lastActiveAction = actions[firstInactiveIndex];
 
     action._cacheIndex = firstInactiveIndex;
     actions[firstInactiveIndex] = action;
@@ -301,8 +304,8 @@ class AnimationMixer extends EventDispatcher {
   // Memory management for PropertyMixer objects
 
   _addInactiveBinding(binding, rootUuid, trackName) {
-    const bindingsByRoot = this._bindingsByRootAndName,
-      bindings = this._bindings;
+    const bindingsByRoot = this._bindingsByRootAndName;
+    const bindings = this._bindings;
 
     let bindingByName = bindingsByRoot[rootUuid];
 
@@ -318,14 +321,14 @@ class AnimationMixer extends EventDispatcher {
   }
 
   _removeInactiveBinding(binding) {
-    const bindings = this._bindings,
-      propBinding = binding.binding,
-      rootUuid = propBinding.rootNode.uuid,
-      trackName = propBinding.path,
-      bindingsByRoot = this._bindingsByRootAndName,
-      bindingByName = bindingsByRoot[rootUuid],
-      lastInactiveBinding = bindings[bindings.length - 1],
-      cacheIndex = binding._cacheIndex;
+    const bindings = this._bindings;
+    const propBinding = binding.binding;
+    const rootUuid = propBinding.rootNode.uuid;
+    const trackName = propBinding.path;
+    const bindingsByRoot = this._bindingsByRootAndName;
+    const bindingByName = bindingsByRoot[rootUuid];
+    const lastInactiveBinding = bindings[bindings.length - 1];
+    const cacheIndex = binding._cacheIndex;
 
     lastInactiveBinding._cacheIndex = cacheIndex;
     bindings[cacheIndex] = lastInactiveBinding;
@@ -339,10 +342,10 @@ class AnimationMixer extends EventDispatcher {
   }
 
   _lendBinding(binding) {
-    const bindings = this._bindings,
-      prevIndex = binding._cacheIndex,
-      lastActiveIndex = this._nActiveBindings++,
-      firstInactiveBinding = bindings[lastActiveIndex];
+    const bindings = this._bindings;
+    const prevIndex = binding._cacheIndex;
+    const lastActiveIndex = this._nActiveBindings++;
+    const firstInactiveBinding = bindings[lastActiveIndex];
 
     binding._cacheIndex = lastActiveIndex;
     bindings[lastActiveIndex] = binding;
@@ -352,10 +355,10 @@ class AnimationMixer extends EventDispatcher {
   }
 
   _takeBackBinding(binding) {
-    const bindings = this._bindings,
-      prevIndex = binding._cacheIndex,
-      firstInactiveIndex = --this._nActiveBindings,
-      lastActiveBinding = bindings[firstInactiveIndex];
+    const bindings = this._bindings;
+    const prevIndex = binding._cacheIndex;
+    const firstInactiveIndex = --this._nActiveBindings;
+    const lastActiveBinding = bindings[firstInactiveIndex];
 
     binding._cacheIndex = firstInactiveIndex;
     bindings[firstInactiveIndex] = binding;
@@ -367,8 +370,8 @@ class AnimationMixer extends EventDispatcher {
   // Memory management of Interpolants for weight and time scale
 
   _lendControlInterpolant() {
-    const interpolants = this._controlInterpolants,
-      lastActiveIndex = this._nActiveControlInterpolants++;
+    const interpolants = this._controlInterpolants;
+    const lastActiveIndex = this._nActiveControlInterpolants++;
 
     let interpolant = interpolants[lastActiveIndex];
 
@@ -388,10 +391,10 @@ class AnimationMixer extends EventDispatcher {
   }
 
   _takeBackControlInterpolant(interpolant) {
-    const interpolants = this._controlInterpolants,
-      prevIndex = interpolant.__cacheIndex,
-      firstInactiveIndex = --this._nActiveControlInterpolants,
-      lastActiveInterpolant = interpolants[firstInactiveIndex];
+    const interpolants = this._controlInterpolants;
+    const prevIndex = interpolant.__cacheIndex;
+    const firstInactiveIndex = --this._nActiveControlInterpolants;
+    const lastActiveInterpolant = interpolants[firstInactiveIndex];
 
     interpolant.__cacheIndex = firstInactiveIndex;
     interpolants[firstInactiveIndex] = interpolant;
@@ -405,8 +408,8 @@ class AnimationMixer extends EventDispatcher {
   // previously unknown clip/root combination is specified)
   /** @returns {AnimationAction | null} */
   clipAction(clip, optionalRoot, blendMode) {
-    const root = optionalRoot || this._root,
-      rootUuid = root.uuid;
+    const root = optionalRoot || this._root;
+    const rootUuid = root.uuid;
 
     let clipObject = typeof clip === 'string' ? AnimationClip.findByName(root, clip) : clip;
 
@@ -454,11 +457,11 @@ class AnimationMixer extends EventDispatcher {
 
   // get an existing action
   existingAction(clip, optionalRoot) {
-    const root = optionalRoot || this._root,
-      rootUuid = root.uuid,
-      clipObject = typeof clip === 'string' ? AnimationClip.findByName(root, clip) : clip,
-      clipUuid = clipObject ? clipObject.uuid : clip,
-      actionsForClip = this._actionsByClip[clipUuid];
+    const root = optionalRoot || this._root;
+    const rootUuid = root.uuid;
+    const clipObject = typeof clip === 'string' ? AnimationClip.findByName(root, clip) : clip;
+    const clipUuid = clipObject ? clipObject.uuid : clip;
+    const actionsForClip = this._actionsByClip[clipUuid];
 
     if (actionsForClip !== undefined) {
       return actionsForClip.actionByRoot[rootUuid] || null;
@@ -469,8 +472,8 @@ class AnimationMixer extends EventDispatcher {
 
   // deactivates all previously scheduled actions
   stopAllAction() {
-    const actions = this._actions,
-      nActions = this._nActiveActions;
+    const actions = this._actions;
+    const nActions = this._nActiveActions;
 
     for (let i = nActions - 1; i >= 0; --i) {
       actions[i].stop();
@@ -483,11 +486,11 @@ class AnimationMixer extends EventDispatcher {
   update(deltaTime) {
     deltaTime *= this.timeScale;
 
-    const actions = this._actions,
-      nActions = this._nActiveActions,
-      time = (this.time += deltaTime),
-      timeDirection = Math.sign(deltaTime),
-      accuIndex = (this._accuIndex ^= 1);
+    const actions = this._actions;
+    const nActions = this._nActiveActions;
+    const time = (this.time += deltaTime);
+    const timeDirection = Math.sign(deltaTime);
+    const accuIndex = (this._accuIndex ^= 1);
 
     // run active actions
 
@@ -499,8 +502,9 @@ class AnimationMixer extends EventDispatcher {
 
     // update scene graph
 
-    const bindings = this._bindings,
-      nBindings = this._nActiveBindings;
+    const bindings = this._bindings;
+
+    const nBindings = this._nActiveBindings;
 
     for (let i = 0; i !== nBindings; ++i) {
       bindings[i].apply(accuIndex);
@@ -526,10 +530,10 @@ class AnimationMixer extends EventDispatcher {
 
   // free all resources specific to a particular clip
   uncacheClip(clip) {
-    const actions = this._actions,
-      clipUuid = clip.uuid,
-      actionsByClip = this._actionsByClip,
-      actionsForClip = actionsByClip[clipUuid];
+    const actions = this._actions;
+    const clipUuid = clip.uuid;
+    const actionsByClip = this._actionsByClip;
+    const actionsForClip = actionsByClip[clipUuid];
 
     if (actionsForClip !== undefined) {
       // note: just calling _removeInactiveAction would mess up the
@@ -543,8 +547,8 @@ class AnimationMixer extends EventDispatcher {
 
         this._deactivateAction(action);
 
-        const cacheIndex = action._cacheIndex,
-          lastInactiveAction = actions[actions.length - 1];
+        const cacheIndex = action._cacheIndex;
+        const lastInactiveAction = actions[actions.length - 1];
 
         action._cacheIndex = null;
         action._byClipCacheIndex = null;
@@ -562,12 +566,12 @@ class AnimationMixer extends EventDispatcher {
 
   // free all resources specific to a particular root target object
   uncacheRoot(root) {
-    const rootUuid = root.uuid,
-      actionsByClip = this._actionsByClip;
+    const rootUuid = root.uuid;
+    const actionsByClip = this._actionsByClip;
 
     for (const clipUuid in actionsByClip) {
-      const actionByRoot = actionsByClip[clipUuid].actionByRoot,
-        action = actionByRoot[rootUuid];
+      const actionByRoot = actionsByClip[clipUuid].actionByRoot;
+      const action = actionByRoot[rootUuid];
 
       if (action !== undefined) {
         this._deactivateAction(action);
@@ -575,8 +579,8 @@ class AnimationMixer extends EventDispatcher {
       }
     }
 
-    const bindingsByRoot = this._bindingsByRootAndName,
-      bindingByName = bindingsByRoot[rootUuid];
+    const bindingsByRoot = this._bindingsByRootAndName;
+    const bindingByName = bindingsByRoot[rootUuid];
 
     if (bindingByName !== undefined) {
       for (const trackName in bindingByName) {

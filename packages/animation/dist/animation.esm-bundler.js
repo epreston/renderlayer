@@ -10,7 +10,9 @@ class AnimationAction {
     this._clip = clip;
     this._localRoot = localRoot;
     this.blendMode = blendMode;
-    const tracks = clip.tracks, nTracks = tracks.length, interpolants = new Array(nTracks);
+    const tracks = clip.tracks;
+    const nTracks = tracks.length;
+    const interpolants = new Array(nTracks);
     const interpolantSettings = {
       endingStart: ZeroCurvatureEnding,
       endingEnd: ZeroCurvatureEnding
@@ -98,7 +100,10 @@ class AnimationAction {
     fadeOutAction.fadeOut(duration);
     this.fadeIn(duration);
     if (warp) {
-      const fadeInDuration = this._clip.duration, fadeOutDuration = fadeOutAction._clip.duration, startEndRatio = fadeOutDuration / fadeInDuration, endStartRatio = fadeInDuration / fadeOutDuration;
+      const fadeInDuration = this._clip.duration;
+      const fadeOutDuration = fadeOutAction._clip.duration;
+      const startEndRatio = fadeOutDuration / fadeInDuration;
+      const endStartRatio = fadeInDuration / fadeOutDuration;
       fadeOutAction.warp(1, startEndRatio, duration);
       this.warp(endStartRatio, 1, duration);
     }
@@ -142,13 +147,16 @@ class AnimationAction {
     return this.warp(this._effectiveTimeScale, 0, duration);
   }
   warp(startTimeScale, endTimeScale, duration) {
-    const mixer = this._mixer, now = mixer.time, timeScale = this.timeScale;
+    const mixer = this._mixer;
+    const now = mixer.time;
+    const timeScale = this.timeScale;
     let interpolant = this._timeScaleInterpolant;
     if (interpolant === null) {
       interpolant = mixer._lendControlInterpolant();
       this._timeScaleInterpolant = interpolant;
     }
-    const times = interpolant.parameterPositions, values = interpolant.sampleValues;
+    const times = interpolant.parameterPositions;
+    const values = interpolant.sampleValues;
     times[0] = now;
     times[1] = now + duration;
     values[0] = startTimeScale / timeScale;
@@ -356,13 +364,15 @@ class AnimationAction {
     }
   }
   _scheduleFading(duration, weightNow, weightThen) {
-    const mixer = this._mixer, now = mixer.time;
+    const mixer = this._mixer;
+    const now = mixer.time;
     let interpolant = this._weightInterpolant;
     if (interpolant === null) {
       interpolant = mixer._lendControlInterpolant();
       this._weightInterpolant = interpolant;
     }
-    const times = interpolant.parameterPositions, values = interpolant.sampleValues;
+    const times = interpolant.parameterPositions;
+    const values = interpolant.sampleValues;
     times[0] = now;
     values[0] = weightNow;
     times[1] = now + duration;
@@ -403,7 +413,8 @@ function sortedArray(values, stride, order) {
   return result;
 }
 function flattenJSON(jsonKeys, times, values, valuePropertyName) {
-  let i = 1, key = jsonKeys[0];
+  let i = 1;
+  let key = jsonKeys[0];
   while (key !== void 0 && key[valuePropertyName] === void 0) {
     key = jsonKeys[i++];
   }
@@ -417,7 +428,7 @@ function flattenJSON(jsonKeys, times, values, valuePropertyName) {
       value = key[valuePropertyName];
       if (value !== void 0) {
         times.push(key.time);
-        values.push.apply(values, value);
+        values.push(...value);
       }
       key = jsonKeys[i++];
     } while (key !== void 0);
@@ -445,8 +456,7 @@ function subclip(sourceClip, name, startFrame, endFrame, fps = 30) {
   const clip = sourceClip.clone();
   clip.name = name;
   const tracks = [];
-  for (let i = 0; i < clip.tracks.length; ++i) {
-    const track = clip.tracks[i];
+  for (const track of clip.tracks) {
     const valueSize = track.getValueSize();
     const times = [];
     const values = [];
@@ -488,7 +498,7 @@ function makeClipAdditive(targetClip, referenceFrame = 0, referenceClip = target
     const referenceTrackType = referenceTrack.ValueTypeName;
     if (referenceTrackType === "bool" || referenceTrackType === "string")
       continue;
-    const targetTrack = targetClip.tracks.find(function(track) {
+    const targetTrack = targetClip.tracks.find((track) => {
       return track.name === referenceTrack.name && track.ValueTypeName === referenceTrackType;
     });
     if (targetTrack === void 0)
@@ -560,7 +570,9 @@ class AnimationClip {
     }
   }
   static parse(json) {
-    const tracks = [], jsonTracks = json.tracks, frameTime = 1 / (json.fps || 1);
+    const tracks = [];
+    const jsonTracks = json.tracks;
+    const frameTime = 1 / (json.fps || 1);
     for (let i = 0, n = jsonTracks.length; i !== n; ++i) {
       tracks.push(parseKeyframeTrack(jsonTracks[i]).scale(frameTime));
     }
@@ -569,7 +581,8 @@ class AnimationClip {
     return clip;
   }
   static toJSON(clip) {
-    const tracks = [], clipTracks = clip.tracks;
+    const tracks = [];
+    const clipTracks = clip.tracks;
     const json = {
       name: clip.name,
       duration: clip.duration,
@@ -599,7 +612,7 @@ class AnimationClip {
       }
       tracks.push(
         new NumberKeyframeTrack(
-          ".morphTargetInfluences[" + morphTargetSequence[i].name + "]",
+          `.morphTargetInfluences[${morphTargetSequence[i].name}]`,
           times,
           values
         ).scale(1 / fps)
@@ -649,7 +662,7 @@ class AnimationClip {
       console.error("AnimationClip: No animation in JSONLoader data.");
       return null;
     }
-    const addNonemptyTrack = function(trackType, trackName, animationKeys, propertyName, destTracks) {
+    const addNonemptyTrack = (trackType, trackName, animationKeys, propertyName, destTracks) => {
       if (animationKeys.length !== 0) {
         const times = [];
         const values = [];
@@ -688,21 +701,21 @@ class AnimationClip {
             values.push(animationKey.morphTarget === morphTargetName ? 1 : 0);
           }
           tracks.push(
-            new NumberKeyframeTrack(".morphTargetInfluence[" + morphTargetName + "]", times, values)
+            new NumberKeyframeTrack(`.morphTargetInfluence[${morphTargetName}]`, times, values)
           );
         }
         duration = morphTargetNames.length * fps;
       } else {
-        const boneName = ".bones[" + bones[h].name + "]";
-        addNonemptyTrack(VectorKeyframeTrack, boneName + ".position", animationKeys, "pos", tracks);
+        const boneName = `.bones[${bones[h].name}]`;
+        addNonemptyTrack(VectorKeyframeTrack, `${boneName}.position`, animationKeys, "pos", tracks);
         addNonemptyTrack(
           QuaternionKeyframeTrack,
-          boneName + ".quaternion",
+          `${boneName}.quaternion`,
           animationKeys,
           "rot",
           tracks
         );
-        addNonemptyTrack(VectorKeyframeTrack, boneName + ".scale", animationKeys, "scl", tracks);
+        addNonemptyTrack(VectorKeyframeTrack, `${boneName}.scale`, animationKeys, "scl", tracks);
       }
     }
     if (tracks.length === 0) {
@@ -775,7 +788,7 @@ function getTrackTypeForValueTypeName(typeName) {
     case "string":
       return StringKeyframeTrack;
   }
-  throw new Error("KeyframeTrack: unsupported typeName: " + typeName);
+  throw new Error(`KeyframeTrack: unsupported typeName: ${typeName}`);
 }
 function parseKeyframeTrack(json) {
   if (json.type === void 0) {
@@ -783,7 +796,8 @@ function parseKeyframeTrack(json) {
   }
   const trackType = getTrackTypeForValueTypeName(json.type);
   if (json.times === void 0) {
-    const times = [], values = [];
+    const times = [];
+    const values = [];
     flattenJSON(json.keys, times, values, "value");
     json.times = times;
     json.values = values;
@@ -796,15 +810,15 @@ function parseKeyframeTrack(json) {
 }
 
 const _RESERVED_CHARS_RE = "\\[\\]\\.:\\/";
-const _reservedRe = new RegExp("[" + _RESERVED_CHARS_RE + "]", "g");
-const _wordChar = "[^" + _RESERVED_CHARS_RE + "]";
-const _wordCharOrDot = "[^" + _RESERVED_CHARS_RE.replace("\\.", "") + "]";
+const _reservedRe = new RegExp(`[${_RESERVED_CHARS_RE}]`, "g");
+const _wordChar = `[^${_RESERVED_CHARS_RE}]`;
+const _wordCharOrDot = `[^${_RESERVED_CHARS_RE.replace("\\.", "")}]`;
 const _directoryRe = /* @__PURE__ */ /((?:WC+[/:])*)/.source.replace("WC", _wordChar);
 const _nodeRe = /* @__PURE__ */ /(WCOD+)?/.source.replace("WCOD", _wordCharOrDot);
 const _objectRe = /* @__PURE__ */ /(?:\.(WC+)(?:\[(.+)\])?)?/.source.replace("WC", _wordChar);
 const _propertyRe = /* @__PURE__ */ /\.(WC+)(?:\[(.+)\])?/.source.replace("WC", _wordChar);
 const _trackRe = new RegExp(
-  "^" + _directoryRe + _nodeRe + _objectRe + _propertyRe + "$"
+  `^${_directoryRe}${_nodeRe}${_objectRe}${_propertyRe}$`
 );
 const _supportedObjectNames = ["material", "materials", "bones", "map"];
 class Composite {
@@ -815,7 +829,8 @@ class Composite {
   }
   getValue(array, offset) {
     this.bind();
-    const firstValidIndex = this._targetGroup.nCachedObjects_, binding = this._bindings[firstValidIndex];
+    const firstValidIndex = this._targetGroup.nCachedObjects_;
+    const binding = this._bindings[firstValidIndex];
     if (binding !== void 0)
       binding.getValue(array, offset);
   }
@@ -867,7 +882,7 @@ class PropertyBinding {
   static parseTrackName(trackName) {
     const matches = _trackRe.exec(trackName);
     if (matches === null) {
-      throw new Error("PropertyBinding: Cannot parse trackName: " + trackName);
+      throw new Error(`PropertyBinding: Cannot parse trackName: ${trackName}`);
     }
     const results = {
       // directoryName: matches[ 1 ], // currently unused
@@ -881,13 +896,13 @@ class PropertyBinding {
     const lastDot = results.nodeName && results.nodeName.lastIndexOf(".");
     if (lastDot !== void 0 && lastDot !== -1) {
       const objectName = results.nodeName.substring(lastDot + 1);
-      if (_supportedObjectNames.indexOf(objectName) !== -1) {
+      if (_supportedObjectNames.includes(objectName)) {
         results.nodeName = results.nodeName.substring(0, lastDot);
         results.objectName = objectName;
       }
     }
     if (results.propertyName === null || results.propertyName.length === 0) {
-      throw new Error("PropertyBinding: can not parse propertyName from trackName: " + trackName);
+      throw new Error(`PropertyBinding: can not parse propertyName from trackName: ${trackName}`);
     }
     return results;
   }
@@ -902,9 +917,8 @@ class PropertyBinding {
       }
     }
     if (root.children) {
-      const searchNodeSubtree = function(children) {
-        for (let i = 0; i < children.length; i++) {
-          const childNode = children[i];
+      const searchNodeSubtree = (children) => {
+        for (const childNode of children) {
           if (childNode.name === nodeName || childNode.uuid === nodeName) {
             return childNode;
           }
@@ -921,7 +935,7 @@ class PropertyBinding {
     }
     return null;
   }
-  // these are used to "bind" a nonexistent property
+  // these are used to "bind" a non-existent property
   _getValue_unavailable() {
   }
   _setValue_unavailable() {
@@ -1021,7 +1035,7 @@ class PropertyBinding {
     this.getValue = this._getValue_unavailable;
     this.setValue = this._setValue_unavailable;
     if (!targetObject) {
-      console.error("PropertyBinding: No target node found for track: " + this.path + ".");
+      console.error(`PropertyBinding: No target node found for track: ${this.path}.`);
       return;
     }
     if (objectName) {
@@ -1104,7 +1118,7 @@ class PropertyBinding {
     if (nodeProperty === void 0) {
       const nodeName = parsedPath.nodeName;
       console.error(
-        "PropertyBinding: Trying to update property for track: " + nodeName + "." + propertyName + " but it wasn't found.",
+        `PropertyBinding: Trying to update property for track: ${nodeName}.${propertyName} but it wasn't found.`,
         targetObject
       );
       return;
@@ -1207,7 +1221,9 @@ class PropertyMixer {
   constructor(binding, typeName, valueSize) {
     this.binding = binding;
     this.valueSize = valueSize;
-    let mixFunction, mixFunctionAdditive, setIdentity;
+    let mixFunction;
+    let mixFunctionAdditive;
+    let setIdentity;
     switch (typeName) {
       case "quaternion":
         mixFunction = this._slerp;
@@ -1241,7 +1257,9 @@ class PropertyMixer {
   }
   // accumulate data in the 'incoming' region into 'accu<i>'
   accumulate(accuIndex, weight) {
-    const buffer = this.buffer, stride = this.valueSize, offset = accuIndex * stride + stride;
+    const buffer = this.buffer;
+    const stride = this.valueSize;
+    const offset = accuIndex * stride + stride;
     let currentWeight = this.cumulativeWeight;
     if (currentWeight === 0) {
       for (let i = 0; i !== stride; ++i) {
@@ -1257,7 +1275,9 @@ class PropertyMixer {
   }
   // accumulate data in the 'incoming' region into 'add'
   accumulateAdditive(weight) {
-    const buffer = this.buffer, stride = this.valueSize, offset = stride * this._addIndex;
+    const buffer = this.buffer;
+    const stride = this.valueSize;
+    const offset = stride * this._addIndex;
     if (this.cumulativeWeightAdditive === 0) {
       this._setIdentity();
     }
@@ -1266,7 +1286,12 @@ class PropertyMixer {
   }
   // apply the state of 'accu<i>' to the binding when accus differ
   apply(accuIndex) {
-    const stride = this.valueSize, buffer = this.buffer, offset = accuIndex * stride + stride, weight = this.cumulativeWeight, weightAdditive = this.cumulativeWeightAdditive, binding = this.binding;
+    const stride = this.valueSize;
+    const buffer = this.buffer;
+    const offset = accuIndex * stride + stride;
+    const weight = this.cumulativeWeight;
+    const weightAdditive = this.cumulativeWeightAdditive;
+    const binding = this.binding;
     this.cumulativeWeight = 0;
     this.cumulativeWeightAdditive = 0;
     if (weight < 1) {
@@ -1286,7 +1311,9 @@ class PropertyMixer {
   // remember the state of the bound property and copy it to both accus
   saveOriginalState() {
     const binding = this.binding;
-    const buffer = this.buffer, stride = this.valueSize, originalValueOffset = stride * this._origIndex;
+    const buffer = this.buffer;
+    const stride = this.valueSize;
+    const originalValueOffset = stride * this._origIndex;
     binding.getValue(buffer, originalValueOffset);
     for (let i = stride, e = originalValueOffset; i !== e; ++i) {
       buffer[i] = buffer[originalValueOffset + i % stride];
@@ -1360,14 +1387,21 @@ class AnimationMixer extends EventDispatcher {
     this.timeScale = 1;
   }
   _bindAction(action, prototypeAction) {
-    const root = action._localRoot || this._root, tracks = action._clip.tracks, nTracks = tracks.length, bindings = action._propertyBindings, interpolants = action._interpolants, rootUuid = root.uuid, bindingsByRoot = this._bindingsByRootAndName;
+    const root = action._localRoot || this._root;
+    const tracks = action._clip.tracks;
+    const nTracks = tracks.length;
+    const bindings = action._propertyBindings;
+    const interpolants = action._interpolants;
+    const rootUuid = root.uuid;
+    const bindingsByRoot = this._bindingsByRootAndName;
     let bindingsByName = bindingsByRoot[rootUuid];
     if (bindingsByName === void 0) {
       bindingsByName = {};
       bindingsByRoot[rootUuid] = bindingsByName;
     }
     for (let i = 0; i !== nTracks; ++i) {
-      const track = tracks[i], trackName = track.name;
+      const track = tracks[i];
+      const trackName = track.name;
       let binding = bindingsByName[trackName];
       if (binding !== void 0) {
         ++binding.referenceCount;
@@ -1397,7 +1431,9 @@ class AnimationMixer extends EventDispatcher {
   _activateAction(action) {
     if (!this._isActiveAction(action)) {
       if (action._cacheIndex === null) {
-        const rootUuid = (action._localRoot || this._root).uuid, clipUuid = action._clip.uuid, actionsForClip = this._actionsByClip[clipUuid];
+        const rootUuid = (action._localRoot || this._root).uuid;
+        const clipUuid = action._clip.uuid;
+        const actionsForClip = this._actionsByClip[clipUuid];
         this._bindAction(action, actionsForClip && actionsForClip.knownActions[0]);
         this._addInactiveAction(action, clipUuid, rootUuid);
       }
@@ -1469,7 +1505,8 @@ class AnimationMixer extends EventDispatcher {
     return index !== null && index < this._nActiveActions;
   }
   _addInactiveAction(action, clipUuid, rootUuid) {
-    const actions = this._actions, actionsByClip = this._actionsByClip;
+    const actions = this._actions;
+    const actionsByClip = this._actionsByClip;
     let actionsForClip = actionsByClip[clipUuid];
     if (actionsForClip === void 0) {
       actionsForClip = {
@@ -1488,17 +1525,25 @@ class AnimationMixer extends EventDispatcher {
     actionsForClip.actionByRoot[rootUuid] = action;
   }
   _removeInactiveAction(action) {
-    const actions = this._actions, lastInactiveAction = actions[actions.length - 1], cacheIndex = action._cacheIndex;
+    const actions = this._actions;
+    const lastInactiveAction = actions[actions.length - 1];
+    const cacheIndex = action._cacheIndex;
     lastInactiveAction._cacheIndex = cacheIndex;
     actions[cacheIndex] = lastInactiveAction;
     actions.pop();
     action._cacheIndex = null;
-    const clipUuid = action._clip.uuid, actionsByClip = this._actionsByClip, actionsForClip = actionsByClip[clipUuid], knownActionsForClip = actionsForClip.knownActions, lastKnownAction = knownActionsForClip[knownActionsForClip.length - 1], byClipCacheIndex = action._byClipCacheIndex;
+    const clipUuid = action._clip.uuid;
+    const actionsByClip = this._actionsByClip;
+    const actionsForClip = actionsByClip[clipUuid];
+    const knownActionsForClip = actionsForClip.knownActions;
+    const lastKnownAction = knownActionsForClip[knownActionsForClip.length - 1];
+    const byClipCacheIndex = action._byClipCacheIndex;
     lastKnownAction._byClipCacheIndex = byClipCacheIndex;
     knownActionsForClip[byClipCacheIndex] = lastKnownAction;
     knownActionsForClip.pop();
     action._byClipCacheIndex = null;
-    const actionByRoot = actionsForClip.actionByRoot, rootUuid = (action._localRoot || this._root).uuid;
+    const actionByRoot = actionsForClip.actionByRoot;
+    const rootUuid = (action._localRoot || this._root).uuid;
     delete actionByRoot[rootUuid];
     if (knownActionsForClip.length === 0) {
       delete actionsByClip[clipUuid];
@@ -1515,14 +1560,20 @@ class AnimationMixer extends EventDispatcher {
     }
   }
   _lendAction(action) {
-    const actions = this._actions, prevIndex = action._cacheIndex, lastActiveIndex = this._nActiveActions++, firstInactiveAction = actions[lastActiveIndex];
+    const actions = this._actions;
+    const prevIndex = action._cacheIndex;
+    const lastActiveIndex = this._nActiveActions++;
+    const firstInactiveAction = actions[lastActiveIndex];
     action._cacheIndex = lastActiveIndex;
     actions[lastActiveIndex] = action;
     firstInactiveAction._cacheIndex = prevIndex;
     actions[prevIndex] = firstInactiveAction;
   }
   _takeBackAction(action) {
-    const actions = this._actions, prevIndex = action._cacheIndex, firstInactiveIndex = --this._nActiveActions, lastActiveAction = actions[firstInactiveIndex];
+    const actions = this._actions;
+    const prevIndex = action._cacheIndex;
+    const firstInactiveIndex = --this._nActiveActions;
+    const lastActiveAction = actions[firstInactiveIndex];
     action._cacheIndex = firstInactiveIndex;
     actions[firstInactiveIndex] = action;
     lastActiveAction._cacheIndex = prevIndex;
@@ -1530,7 +1581,8 @@ class AnimationMixer extends EventDispatcher {
   }
   // Memory management for PropertyMixer objects
   _addInactiveBinding(binding, rootUuid, trackName) {
-    const bindingsByRoot = this._bindingsByRootAndName, bindings = this._bindings;
+    const bindingsByRoot = this._bindingsByRootAndName;
+    const bindings = this._bindings;
     let bindingByName = bindingsByRoot[rootUuid];
     if (bindingByName === void 0) {
       bindingByName = {};
@@ -1541,7 +1593,14 @@ class AnimationMixer extends EventDispatcher {
     bindings.push(binding);
   }
   _removeInactiveBinding(binding) {
-    const bindings = this._bindings, propBinding = binding.binding, rootUuid = propBinding.rootNode.uuid, trackName = propBinding.path, bindingsByRoot = this._bindingsByRootAndName, bindingByName = bindingsByRoot[rootUuid], lastInactiveBinding = bindings[bindings.length - 1], cacheIndex = binding._cacheIndex;
+    const bindings = this._bindings;
+    const propBinding = binding.binding;
+    const rootUuid = propBinding.rootNode.uuid;
+    const trackName = propBinding.path;
+    const bindingsByRoot = this._bindingsByRootAndName;
+    const bindingByName = bindingsByRoot[rootUuid];
+    const lastInactiveBinding = bindings[bindings.length - 1];
+    const cacheIndex = binding._cacheIndex;
     lastInactiveBinding._cacheIndex = cacheIndex;
     bindings[cacheIndex] = lastInactiveBinding;
     bindings.pop();
@@ -1551,14 +1610,20 @@ class AnimationMixer extends EventDispatcher {
     }
   }
   _lendBinding(binding) {
-    const bindings = this._bindings, prevIndex = binding._cacheIndex, lastActiveIndex = this._nActiveBindings++, firstInactiveBinding = bindings[lastActiveIndex];
+    const bindings = this._bindings;
+    const prevIndex = binding._cacheIndex;
+    const lastActiveIndex = this._nActiveBindings++;
+    const firstInactiveBinding = bindings[lastActiveIndex];
     binding._cacheIndex = lastActiveIndex;
     bindings[lastActiveIndex] = binding;
     firstInactiveBinding._cacheIndex = prevIndex;
     bindings[prevIndex] = firstInactiveBinding;
   }
   _takeBackBinding(binding) {
-    const bindings = this._bindings, prevIndex = binding._cacheIndex, firstInactiveIndex = --this._nActiveBindings, lastActiveBinding = bindings[firstInactiveIndex];
+    const bindings = this._bindings;
+    const prevIndex = binding._cacheIndex;
+    const firstInactiveIndex = --this._nActiveBindings;
+    const lastActiveBinding = bindings[firstInactiveIndex];
     binding._cacheIndex = firstInactiveIndex;
     bindings[firstInactiveIndex] = binding;
     lastActiveBinding._cacheIndex = prevIndex;
@@ -1566,7 +1631,8 @@ class AnimationMixer extends EventDispatcher {
   }
   // Memory management of Interpolants for weight and time scale
   _lendControlInterpolant() {
-    const interpolants = this._controlInterpolants, lastActiveIndex = this._nActiveControlInterpolants++;
+    const interpolants = this._controlInterpolants;
+    const lastActiveIndex = this._nActiveControlInterpolants++;
     let interpolant = interpolants[lastActiveIndex];
     if (interpolant === void 0) {
       interpolant = new LinearInterpolant(
@@ -1581,7 +1647,10 @@ class AnimationMixer extends EventDispatcher {
     return interpolant;
   }
   _takeBackControlInterpolant(interpolant) {
-    const interpolants = this._controlInterpolants, prevIndex = interpolant.__cacheIndex, firstInactiveIndex = --this._nActiveControlInterpolants, lastActiveInterpolant = interpolants[firstInactiveIndex];
+    const interpolants = this._controlInterpolants;
+    const prevIndex = interpolant.__cacheIndex;
+    const firstInactiveIndex = --this._nActiveControlInterpolants;
+    const lastActiveInterpolant = interpolants[firstInactiveIndex];
     interpolant.__cacheIndex = firstInactiveIndex;
     interpolants[firstInactiveIndex] = interpolant;
     lastActiveInterpolant.__cacheIndex = prevIndex;
@@ -1592,7 +1661,8 @@ class AnimationMixer extends EventDispatcher {
   // previously unknown clip/root combination is specified)
   /** @returns {AnimationAction | null} */
   clipAction(clip, optionalRoot, blendMode) {
-    const root = optionalRoot || this._root, rootUuid = root.uuid;
+    const root = optionalRoot || this._root;
+    const rootUuid = root.uuid;
     let clipObject = typeof clip === "string" ? AnimationClip.findByName(root, clip) : clip;
     const clipUuid = clipObject !== null ? clipObject.uuid : clip;
     const actionsForClip = this._actionsByClip[clipUuid];
@@ -1622,7 +1692,11 @@ class AnimationMixer extends EventDispatcher {
   }
   // get an existing action
   existingAction(clip, optionalRoot) {
-    const root = optionalRoot || this._root, rootUuid = root.uuid, clipObject = typeof clip === "string" ? AnimationClip.findByName(root, clip) : clip, clipUuid = clipObject ? clipObject.uuid : clip, actionsForClip = this._actionsByClip[clipUuid];
+    const root = optionalRoot || this._root;
+    const rootUuid = root.uuid;
+    const clipObject = typeof clip === "string" ? AnimationClip.findByName(root, clip) : clip;
+    const clipUuid = clipObject ? clipObject.uuid : clip;
+    const actionsForClip = this._actionsByClip[clipUuid];
     if (actionsForClip !== void 0) {
       return actionsForClip.actionByRoot[rootUuid] || null;
     }
@@ -1630,7 +1704,8 @@ class AnimationMixer extends EventDispatcher {
   }
   // deactivates all previously scheduled actions
   stopAllAction() {
-    const actions = this._actions, nActions = this._nActiveActions;
+    const actions = this._actions;
+    const nActions = this._nActiveActions;
     for (let i = nActions - 1; i >= 0; --i) {
       actions[i].stop();
     }
@@ -1639,12 +1714,17 @@ class AnimationMixer extends EventDispatcher {
   // advance the time and update apply the animation
   update(deltaTime) {
     deltaTime *= this.timeScale;
-    const actions = this._actions, nActions = this._nActiveActions, time = this.time += deltaTime, timeDirection = Math.sign(deltaTime), accuIndex = this._accuIndex ^= 1;
+    const actions = this._actions;
+    const nActions = this._nActiveActions;
+    const time = this.time += deltaTime;
+    const timeDirection = Math.sign(deltaTime);
+    const accuIndex = this._accuIndex ^= 1;
     for (let i = 0; i !== nActions; ++i) {
       const action = actions[i];
       action._update(time, deltaTime, timeDirection, accuIndex);
     }
-    const bindings = this._bindings, nBindings = this._nActiveBindings;
+    const bindings = this._bindings;
+    const nBindings = this._nActiveBindings;
     for (let i = 0; i !== nBindings; ++i) {
       bindings[i].apply(accuIndex);
     }
@@ -1664,13 +1744,17 @@ class AnimationMixer extends EventDispatcher {
   }
   // free all resources specific to a particular clip
   uncacheClip(clip) {
-    const actions = this._actions, clipUuid = clip.uuid, actionsByClip = this._actionsByClip, actionsForClip = actionsByClip[clipUuid];
+    const actions = this._actions;
+    const clipUuid = clip.uuid;
+    const actionsByClip = this._actionsByClip;
+    const actionsForClip = actionsByClip[clipUuid];
     if (actionsForClip !== void 0) {
       const actionsToRemove = actionsForClip.knownActions;
       for (let i = 0, n = actionsToRemove.length; i !== n; ++i) {
         const action = actionsToRemove[i];
         this._deactivateAction(action);
-        const cacheIndex = action._cacheIndex, lastInactiveAction = actions[actions.length - 1];
+        const cacheIndex = action._cacheIndex;
+        const lastInactiveAction = actions[actions.length - 1];
         action._cacheIndex = null;
         action._byClipCacheIndex = null;
         lastInactiveAction._cacheIndex = cacheIndex;
@@ -1683,15 +1767,18 @@ class AnimationMixer extends EventDispatcher {
   }
   // free all resources specific to a particular root target object
   uncacheRoot(root) {
-    const rootUuid = root.uuid, actionsByClip = this._actionsByClip;
+    const rootUuid = root.uuid;
+    const actionsByClip = this._actionsByClip;
     for (const clipUuid in actionsByClip) {
-      const actionByRoot = actionsByClip[clipUuid].actionByRoot, action = actionByRoot[rootUuid];
+      const actionByRoot = actionsByClip[clipUuid].actionByRoot;
+      const action = actionByRoot[rootUuid];
       if (action !== void 0) {
         this._deactivateAction(action);
         this._removeInactiveAction(action);
       }
     }
-    const bindingsByRoot = this._bindingsByRootAndName, bindingByName = bindingsByRoot[rootUuid];
+    const bindingsByRoot = this._bindingsByRootAndName;
+    const bindingByName = bindingsByRoot[rootUuid];
     if (bindingByName !== void 0) {
       for (const trackName in bindingByName) {
         const binding = bindingByName[trackName];
