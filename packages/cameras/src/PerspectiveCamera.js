@@ -163,8 +163,8 @@ class PerspectiveCamera extends Camera {
     const view = this.view;
 
     if (this.view !== null && this.view.enabled) {
-      const fullWidth = view.fullWidth,
-        fullHeight = view.fullHeight;
+      const fullWidth = view.fullWidth;
+      const fullHeight = view.fullHeight;
 
       left += (view.offsetX * width) / fullWidth;
       top -= (view.offsetY * height) / fullHeight;

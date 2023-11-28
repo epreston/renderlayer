@@ -88,7 +88,7 @@ class CubeCamera extends Object3D {
       cameraNZ.lookAt(0, 0, -1);
     } else {
       throw new Error(
-        'CubeCamera.updateCoordinateSystem(): Invalid coordinate system: ' + coordinateSystem
+        `CubeCamera.updateCoordinateSystem(): Invalid coordinate system: ${coordinateSystem}`
       );
     }
 

@@ -166,7 +166,8 @@ class PerspectiveCamera extends Camera {
     let left = -0.5 * width;
     const view = this.view;
     if (this.view !== null && this.view.enabled) {
-      const fullWidth = view.fullWidth, fullHeight = view.fullHeight;
+      const fullWidth = view.fullWidth;
+      const fullHeight = view.fullHeight;
       left += view.offsetX * width / fullWidth;
       top -= view.offsetY * height / fullHeight;
       width *= view.width / fullWidth;
@@ -264,7 +265,7 @@ class CubeCamera extends Object3D {
       cameraNZ.lookAt(0, 0, -1);
     } else {
       throw new Error(
-        "CubeCamera.updateCoordinateSystem(): Invalid coordinate system: " + coordinateSystem
+        `CubeCamera.updateCoordinateSystem(): Invalid coordinate system: ${coordinateSystem}`
       );
     }
     for (const camera of cameras) {
