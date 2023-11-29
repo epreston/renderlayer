@@ -288,11 +288,11 @@ class WebGLRenderer {
       _transparentSort = method;
     };
     this.getClearColor = (target) => target.copy(background.getClearColor());
-    this.setClearColor = function(...args) {
+    this.setClearColor = (...args) => {
       background.setClearColor(...args);
     };
     this.getClearAlpha = () => background.getClearAlpha();
-    this.setClearAlpha = function(...args) {
+    this.setClearAlpha = (...args) => {
       background.setClearAlpha(...args);
     };
     this.clear = (color = true, depth2 = true, stencil2 = true) => {
@@ -497,13 +497,13 @@ class WebGLRenderer {
         getProgram(material, scene, object);
       }
     }
-    this.compile = function(scene, camera, targetScene = null) {
+    this.compile = (scene, camera, targetScene = null) => {
       if (targetScene === null)
         targetScene = scene;
       currentRenderState = renderStates.get(targetScene);
       currentRenderState.init();
       renderStateStack.push(currentRenderState);
-      targetScene.traverseVisible(function(object) {
+      targetScene.traverseVisible((object) => {
         if (object.isLight && object.layers.test(camera.layers)) {
           currentRenderState.pushLight(object);
           if (object.castShadow) {
@@ -512,7 +512,7 @@ class WebGLRenderer {
         }
       });
       if (scene !== targetScene) {
-        scene.traverseVisible(function(object) {
+        scene.traverseVisible((object) => {
           if (object.isLight && object.layers.test(camera.layers)) {
             currentRenderState.pushLight(object);
             if (object.castShadow) {
@@ -523,12 +523,11 @@ class WebGLRenderer {
       }
       currentRenderState.setupLights(_this._useLegacyLights);
       const materials2 = /* @__PURE__ */ new Set();
-      scene.traverse(function(object) {
+      scene.traverse((object) => {
         const material = object.material;
         if (material) {
           if (Array.isArray(material)) {
-            for (let i = 0; i < material.length; i++) {
-              const material2 = material[i];
+            for (const material2 of material) {
               prepareMaterial(material2, targetScene, object);
               materials2.add(material2);
             }
@@ -546,7 +545,7 @@ class WebGLRenderer {
       const materials2 = this.compile(scene, camera, targetScene);
       return new Promise((resolve) => {
         function checkMaterialsReady() {
-          materials2.forEach(function(material) {
+          materials2.forEach((material) => {
             const materialProperties = properties.get(material);
             const program = materialProperties.currentProgram;
             if (program.isReady()) {

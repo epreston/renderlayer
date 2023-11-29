@@ -486,13 +486,13 @@ class WebGLRenderer {
 
     this.getClearColor = (target) => target.copy(background.getClearColor());
 
-    this.setClearColor = function (...args) {
+    this.setClearColor = (...args) => {
       background.setClearColor(...args);
     };
 
     this.getClearAlpha = () => background.getClearAlpha();
 
-    this.setClearAlpha = function (...args) {
+    this.setClearAlpha = (...args) => {
       background.setClearAlpha(...args);
     };
 
@@ -793,7 +793,7 @@ class WebGLRenderer {
       }
     }
 
-    this.compile = function (scene, camera, targetScene = null) {
+    this.compile = (scene, camera, targetScene = null) => {
       if (targetScene === null) targetScene = scene;
 
       currentRenderState = renderStates.get(targetScene);
@@ -803,7 +803,7 @@ class WebGLRenderer {
 
       // gather lights from both the target scene and the new object that will be added to the scene.
 
-      targetScene.traverseVisible(function (object) {
+      targetScene.traverseVisible((object) => {
         if (object.isLight && object.layers.test(camera.layers)) {
           currentRenderState.pushLight(object);
 
@@ -814,7 +814,7 @@ class WebGLRenderer {
       });
 
       if (scene !== targetScene) {
-        scene.traverseVisible(function (object) {
+        scene.traverseVisible((object) => {
           if (object.isLight && object.layers.test(camera.layers)) {
             currentRenderState.pushLight(object);
 
@@ -831,14 +831,12 @@ class WebGLRenderer {
 
       const materials = new Set();
 
-      scene.traverse(function (object) {
+      scene.traverse((object) => {
         const material = object.material;
 
         if (material) {
           if (Array.isArray(material)) {
-            for (let i = 0; i < material.length; i++) {
-              const material2 = material[i];
-
+            for (const material2 of material) {
               prepareMaterial(material2, targetScene, object);
               materials.add(material2);
             }
@@ -865,7 +863,7 @@ class WebGLRenderer {
 
       return new Promise((resolve) => {
         function checkMaterialsReady() {
-          materials.forEach(function (material) {
+          materials.forEach((material) => {
             const materialProperties = properties.get(material);
             const program = materialProperties.currentProgram;
 
