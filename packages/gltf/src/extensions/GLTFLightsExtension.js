@@ -69,6 +69,7 @@ export class GLTFLightsExtension {
       case 'point':
         lightNode = new PointLight(color);
         lightNode.distance = range;
+        lightNode.decay = 2;
         break;
 
       case 'spot':
@@ -84,6 +85,7 @@ export class GLTFLightsExtension {
         lightNode.penumbra = 1 - lightDef.spot.innerConeAngle / lightDef.spot.outerConeAngle;
         lightNode.target.position.set(0, 0, -1);
         lightNode.add(lightNode.target);
+        lightNode.decay = 2;
         break;
 
       default:
@@ -93,8 +95,6 @@ export class GLTFLightsExtension {
     // Some lights (e.g. spot) default to a position other than the origin. Reset the position
     // here, because node-level parsing will only override position if explicitly specified.
     lightNode.position.set(0, 0, 0);
-
-    lightNode.decay = 2;
 
     assignExtrasToUserData(lightNode, lightDef);
 
