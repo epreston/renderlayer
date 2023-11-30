@@ -40,7 +40,7 @@ function assignExtrasToUserData(object, gltfDef) {
     if (typeof gltfDef.extras === "object") {
       Object.assign(object.userData, gltfDef.extras);
     } else {
-      console.warn("GLTFLoader: Ignoring primitive type .extras, " + gltfDef.extras);
+      console.warn(`GLTFLoader: Ignoring primitive type .extras, ${gltfDef.extras}`);
     }
   }
 }
@@ -87,6 +87,7 @@ class GLTFLightsExtension {
       case "point":
         lightNode = new PointLight(color);
         lightNode.distance = range;
+        lightNode.decay = 2;
         break;
       case "spot":
         lightNode = new SpotLight(color);
@@ -98,12 +99,12 @@ class GLTFLightsExtension {
         lightNode.penumbra = 1 - lightDef.spot.innerConeAngle / lightDef.spot.outerConeAngle;
         lightNode.target.position.set(0, 0, -1);
         lightNode.add(lightNode.target);
+        lightNode.decay = 2;
         break;
       default:
         throw new Error("GLTFLoader: Unexpected light type: " + lightDef.type);
     }
     lightNode.position.set(0, 0, 0);
-    lightNode.decay = 2;
     assignExtrasToUserData(lightNode, lightDef);
     if (lightDef.intensity !== void 0)
       lightNode.intensity = lightDef.intensity;
