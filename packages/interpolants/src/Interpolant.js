@@ -35,9 +35,9 @@ class Interpolant {
 
   evaluate(t) {
     const pp = this.parameterPositions;
-    let i1 = this._cachedIndex,
-      t1 = pp[i1],
-      t0 = pp[i1 - 1];
+    let i1 = this._cachedIndex;
+    let t1 = pp[i1];
+    let t0 = pp[i1 - 1];
 
     validate_interval: {
       seek: {
@@ -164,10 +164,11 @@ class Interpolant {
   copySampleValue_(index) {
     // copies a sample value to the result buffer
 
-    const result = this.resultBuffer,
-      values = this.sampleValues,
-      stride = this.valueSize,
-      offset = index * stride;
+    const result = this.resultBuffer;
+
+    const values = this.sampleValues;
+    const stride = this.valueSize;
+    const offset = index * stride;
 
     for (let i = 0; i !== stride; ++i) {
       result[i] = values[offset + i];
