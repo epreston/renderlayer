@@ -54,11 +54,14 @@ class RGBELoader extends DataTextureLoader {
       const chunkSize = 128;
 
       lineLimit = !lineLimit ? 1024 : lineLimit;
-      let p = buffer.pos,
-        i = -1,
-        len = 0,
-        s = '',
-        chunk = String.fromCharCode.apply(null, new Uint16Array(buffer.subarray(p, p + chunkSize)));
+      let p = buffer.pos;
+      let i = -1;
+      let len = 0;
+      let s = '';
+      let chunk = String.fromCharCode.apply(
+        null,
+        new Uint16Array(buffer.subarray(p, p + chunkSize))
+      );
 
       while ((i = chunk.indexOf(NEWLINE)) < 0 && len < lineLimit && p < buffer.byteLength) {
         s += chunk;
@@ -87,12 +90,14 @@ class RGBELoader extends DataTextureLoader {
     const /* minimal header reading.  modify if you want to parse more information */
       RGBE_ReadHeader = (buffer) => {
         // regex to parse header info fields
-        const magic_token_re = /^#\?(\S+)/,
-          gamma_re = /^\s*GAMMA\s*=\s*(\d+(\.\d+)?)\s*$/,
-          exposure_re = /^\s*EXPOSURE\s*=\s*(\d+(\.\d+)?)\s*$/,
-          format_re = /^\s*FORMAT=(\S+)\s*$/,
-          dimensions_re = /^\s*-Y\s+(\d+)\s+\+X\s+(\d+)\s*$/,
-          // RGBE format header struct
+        const magic_token_re = /^#\?(\S+)/;
+
+        const gamma_re = /^\s*GAMMA\s*=\s*(\d+(\.\d+)?)\s*$/;
+        const exposure_re = /^\s*EXPOSURE\s*=\s*(\d+(\.\d+)?)\s*$/;
+        const format_re = /^\s*FORMAT=(\S+)\s*$/;
+        const dimensions_re = /^\s*-Y\s+(\d+)\s+\+X\s+(\d+)\s*$/;
+
+        const // RGBE format header struct
           header = {
             valid: 0 /* indicate which fields are valid */,
 
@@ -113,7 +118,8 @@ class RGBELoader extends DataTextureLoader {
             height: 0 /* image dimensions, width/height */
           };
 
-        let line, match;
+        let line;
+        let match;
 
         if (buffer.pos >= buffer.byteLength || !(line = fgets(buffer))) {
           rgbe_error(rgbe_read_error, 'no header found');
@@ -198,8 +204,8 @@ class RGBELoader extends DataTextureLoader {
         rgbe_error(rgbe_memory_error, 'unable to allocate buffer space');
       }
 
-      let offset = 0,
-        pos = 0;
+      let offset = 0;
+      let pos = 0;
 
       const ptr_end = 4 * scanline_width;
       const rgbeStart = new Uint8Array(4);
@@ -227,8 +233,9 @@ class RGBELoader extends DataTextureLoader {
 
         // read each of the four channels for the scanline into the buffer
         // first red, then green, then blue, then exponent
-        let ptr = 0,
-          count;
+        let ptr = 0;
+
+        let count;
 
         while (ptr < ptr_end && pos < buffer.byteLength) {
           count = buffer[pos++];
