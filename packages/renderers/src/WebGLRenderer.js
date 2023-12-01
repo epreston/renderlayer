@@ -312,7 +312,7 @@ class WebGLRenderer {
     let uniformsGroups;
 
     function initGLContext() {
-      extensions = WebGLExtensions(_gl);
+      extensions = new WebGLExtensions(_gl);
 
       capabilities = WebGLCapabilities(_gl, extensions, parameters);
 
