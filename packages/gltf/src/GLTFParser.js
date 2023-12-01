@@ -116,7 +116,7 @@ export class GLTFParser {
 
     if (typeof navigator !== 'undefined') {
       isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) === true;
-      isFirefox = navigator.userAgent.indexOf('Firefox') > -1;
+      isFirefox = navigator.userAgent.includes('Firefox');
       firefoxVersion = isFirefox ? navigator.userAgent.match(/Firefox\/([0-9]+)\./)[1] : -1;
     }
 
@@ -281,7 +281,7 @@ export class GLTFParser {
 
     updateMappings(object, ref);
 
-    ref.name += '_instance_' + cache.uses[index]++;
+    ref.name += `_instance_${cache.uses[index]++}`;
 
     return ref;
   }
@@ -321,7 +321,7 @@ export class GLTFParser {
    * @return {Promise<Object3D|Material|Texture|AnimationClip|ArrayBuffer|Object>}
    */
   getDependency(type, index) {
-    const cacheKey = type + ':' + index;
+    const cacheKey = `${type}:${index}`;
     let dependency = this.cache.get(cacheKey);
 
     if (!dependency) {
@@ -388,7 +388,7 @@ export class GLTFParser {
           });
 
           if (!dependency) {
-            throw new Error('Unknown type: ' + type);
+            throw new Error(`Unknown type: ${type}`);
           }
 
           break;
@@ -434,7 +434,7 @@ export class GLTFParser {
     const loader = this.fileLoader;
 
     if (bufferDef.type && bufferDef.type !== 'arraybuffer') {
-      throw new Error('GLTFLoader: ' + bufferDef.type + ' buffer type is not supported.');
+      throw new Error(`GLTFLoader: ${bufferDef.type} buffer type is not supported.`);
     }
 
     // If present, GLB container is required to be the first buffer.
@@ -450,7 +450,7 @@ export class GLTFParser {
         resolve,
         undefined,
         function () {
-          reject(new Error('GLTFLoader: Failed to load buffer "' + bufferDef.uri + '".'));
+          reject(new Error(`GLTFLoader: Failed to load buffer "${bufferDef.uri}".`));
         }
       );
     });
@@ -523,22 +523,15 @@ export class GLTFParser {
           json.bufferViews[accessorDef.bufferView].byteStride
         : undefined;
       const normalized = accessorDef.normalized === true;
-      let array, bufferAttribute;
+      let array;
+      let bufferAttribute;
 
       // The buffer is not interleaved if the stride is the item size in bytes.
       if (byteStride && byteStride !== itemBytes) {
         // Each "slice" of the buffer, as defined by 'count' elements of 'byteStride' bytes, gets its own InterleavedBuffer
         // This makes sure that IBA.count reflects accessor.count properly
         const ibSlice = Math.floor(byteOffset / byteStride);
-        const ibCacheKey =
-          'InterleavedBuffer:' +
-          accessorDef.bufferView +
-          ':' +
-          accessorDef.componentType +
-          ':' +
-          ibSlice +
-          ':' +
-          accessorDef.count;
+        const ibCacheKey = `InterleavedBuffer:${accessorDef.bufferView}:${accessorDef.componentType}:${ibSlice}:${accessorDef.count}`;
         let ib = parser.cache.get(ibCacheKey);
 
         if (!ib) {
@@ -643,7 +636,7 @@ export class GLTFParser {
     const textureDef = json.textures[textureIndex];
     const sourceDef = json.images[sourceIndex];
 
-    const cacheKey = (sourceDef.uri || sourceDef.bufferView) + ':' + textureDef.sampler;
+    const cacheKey = `${sourceDef.uri || sourceDef.bufferView}:${textureDef.sampler}`;
 
     if (this.textureCache[cacheKey]) {
       // See #21559.
@@ -712,7 +705,7 @@ export class GLTFParser {
           return sourceURI;
         });
     } else if (sourceDef.uri === undefined) {
-      throw new Error('GLTFLoader: Image ' + sourceIndex + ' is missing URI and bufferView');
+      throw new Error(`GLTFLoader: Image ${sourceIndex} is missing URI and bufferView`);
     }
 
     const promise = Promise.resolve(sourceURI)
@@ -812,7 +805,7 @@ export class GLTFParser {
     const useFlatShading = geometry.attributes.normal === undefined;
 
     if (mesh.isPoints) {
-      const cacheKey = 'PointsMaterial:' + material.uuid;
+      const cacheKey = `PointsMaterial:${material.uuid}`;
 
       let pointsMaterial = this.cache.get(cacheKey);
 
@@ -828,7 +821,7 @@ export class GLTFParser {
 
       material = pointsMaterial;
     } else if (mesh.isLine) {
-      const cacheKey = 'LineBasicMaterial:' + material.uuid;
+      const cacheKey = `LineBasicMaterial:${material.uuid}`;
 
       let lineMaterial = this.cache.get(cacheKey);
 
@@ -846,7 +839,7 @@ export class GLTFParser {
 
     // Clone the material if it will be modified
     if (useDerivativeTangents || useVertexColors || useFlatShading) {
-      let cacheKey = 'ClonedMaterial:' + material.uuid + ':';
+      let cacheKey = `ClonedMaterial:${material.uuid}:`;
 
       if (useDerivativeTangents) cacheKey += 'derivative-tangents:';
       if (useVertexColors) cacheKey += 'vertex-colors:';
@@ -1046,7 +1039,7 @@ export class GLTFParser {
     const sanitizedName = PropertyBinding.sanitizeNodeName(originalName || '');
 
     if (sanitizedName in this.nodeNamesUsed) {
-      return sanitizedName + '_' + ++this.nodeNamesUsed[sanitizedName];
+      return `${sanitizedName}_${++this.nodeNamesUsed[sanitizedName]}`;
     } else {
       this.nodeNamesUsed[sanitizedName] = 0;
 
@@ -1180,14 +1173,14 @@ export class GLTFParser {
         } else if (primitive.mode === WEBGL_CONSTANTS.POINTS) {
           mesh = new Points(geometry, material);
         } else {
-          throw new Error('GLTFLoader: Primitive mode unsupported: ' + primitive.mode);
+          throw new Error(`GLTFLoader: Primitive mode unsupported: ${primitive.mode}`);
         }
 
         if (Object.keys(mesh.geometry.morphAttributes).length > 0) {
           updateMorphTargets(mesh, meshDef);
         }
 
-        mesh.name = parser.createUniqueName(meshDef.name || 'mesh_' + meshIndex);
+        mesh.name = parser.createUniqueName(meshDef.name || `mesh_${meshIndex}`);
 
         assignExtrasToUserData(mesh, meshDef);
 
@@ -1326,7 +1319,7 @@ export class GLTFParser {
     const parser = this;
 
     const animationDef = json.animations[animationIndex];
-    const animationName = animationDef.name ? animationDef.name : 'animation_' + animationIndex;
+    const animationName = animationDef.name ? animationDef.name : `animation_${animationIndex}`;
 
     const pendingNodes = [];
     const pendingInputAccessors = [];
@@ -1698,7 +1691,7 @@ export class GLTFParser {
 
     for (let j = 0, jl = targetNames.length; j < jl; j++) {
       const track = new TypedKeyframeTrack(
-        targetNames[j] + '.' + PATH_PROPERTIES[target.path],
+        `${targetNames[j]}.${PATH_PROPERTIES[target.path]}`,
         inputAccessor.array,
         outputArray,
         interpolation
@@ -1893,25 +1886,18 @@ function createPrimitiveKey(primitiveDef) {
     primitiveDef.extensions && primitiveDef.extensions[EXTENSIONS.KHR_DRACO_MESH_COMPRESSION];
 
   if (dracoExtension) {
-    geometryKey =
-      'draco:' +
-      dracoExtension.bufferView +
-      ':' +
-      dracoExtension.indices +
-      ':' +
-      createAttributesKey(dracoExtension.attributes);
+    geometryKey = `draco:${dracoExtension.bufferView}:${
+      dracoExtension.indices
+    }:${createAttributesKey(dracoExtension.attributes)}`;
   } else {
-    geometryKey =
-      primitiveDef.indices +
-      ':' +
-      createAttributesKey(primitiveDef.attributes) +
-      ':' +
-      primitiveDef.mode;
+    geometryKey = `${primitiveDef.indices}:${createAttributesKey(primitiveDef.attributes)}:${
+      primitiveDef.mode
+    }`;
   }
 
   if (primitiveDef.targets !== undefined) {
     for (let i = 0, il = primitiveDef.targets.length; i < il; i++) {
-      geometryKey += ':' + createAttributesKey(primitiveDef.targets[i]);
+      geometryKey += `:${createAttributesKey(primitiveDef.targets[i])}`;
     }
   }
 
@@ -1924,16 +1910,16 @@ function createAttributesKey(attributes) {
   const keys = Object.keys(attributes).sort();
 
   for (let i = 0, il = keys.length; i < il; i++) {
-    attributesKey += keys[i] + ':' + attributes[keys[i]] + ';';
+    attributesKey += `${keys[i]}:${attributes[keys[i]]};`;
   }
 
   return attributesKey;
 }
 
-function getNormalizedComponentScale(constructor) {
+function getNormalizedComponentScale(constructor_type) {
   // Reference:
   // https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_mesh_quantization#encoding-quantized-data
-  switch (constructor) {
+  switch (constructor_type) {
     case Int8Array:
       return 1 / 127;
 
