@@ -42,14 +42,6 @@ function WebGLBackground(
       forceClear = true;
     }
 
-    // const environmentBlendMode = renderer.xr.getEnvironmentBlendMode();
-
-    // if (environmentBlendMode === 'additive') {
-    //   state.buffers.color.setClear(0, 0, 0, 1, premultipliedAlpha);
-    // } else if (environmentBlendMode === 'alpha-blend') {
-    //   state.buffers.color.setClear(0, 0, 0, 0, premultipliedAlpha);
-    // }
-
     if (renderer.autoClear || forceClear) {
       renderer.clear(renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil);
     }
