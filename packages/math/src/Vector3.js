@@ -58,7 +58,7 @@ class Vector3 {
         this.z = value;
         break;
       default:
-        throw new Error('index is out of range: ' + index);
+        throw new Error(`index is out of range: ${index}`);
     }
 
     return this;
@@ -73,7 +73,7 @@ class Vector3 {
       case 2:
         return this.z;
       default:
-        throw new Error('index is out of range: ' + index);
+        throw new Error(`index is out of range: ${index}`);
     }
   }
 
@@ -213,13 +213,14 @@ class Vector3 {
   applyQuaternion(q) {
     // quaternion q is assumed to have unit length
 
-    const vx = this.x,
-      vy = this.y,
-      vz = this.z;
-    const qx = q.x,
-      qy = q.y,
-      qz = q.z,
-      qw = q.w;
+    const vx = this.x;
+
+    const vy = this.y;
+    const vz = this.z;
+    const qx = q.x;
+    const qy = q.y;
+    const qz = q.z;
+    const qw = q.w;
 
     // t = 2 * cross( q.xyz, v );
     const tx = 2 * (qy * vz - qz * vy);
@@ -246,9 +247,10 @@ class Vector3 {
     // input: Matrix4 affine matrix
     // vector interpreted as a direction
 
-    const x = this.x,
-      y = this.y,
-      z = this.z;
+    const x = this.x;
+
+    const y = this.y;
+    const z = this.z;
     const e = m.elements;
 
     this.x = e[0] * x + e[4] * y + e[8] * z;
@@ -397,12 +399,12 @@ class Vector3 {
   }
 
   crossVectors(a, b) {
-    const ax = a.x,
-      ay = a.y,
-      az = a.z;
-    const bx = b.x,
-      by = b.y,
-      bz = b.z;
+    const ax = a.x;
+    const ay = a.y;
+    const az = a.z;
+    const bx = b.x;
+    const by = b.y;
+    const bz = b.z;
 
     this.x = ay * bz - az * by;
     this.y = az * bx - ax * bz;
@@ -450,9 +452,9 @@ class Vector3 {
   }
 
   distanceToSquared(v) {
-    const dx = this.x - v.x,
-      dy = this.y - v.y,
-      dz = this.z - v.z;
+    const dx = this.x - v.x;
+    const dy = this.y - v.y;
+    const dz = this.z - v.z;
 
     return dx * dx + dy * dy + dz * dz;
   }
