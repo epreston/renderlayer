@@ -4,7 +4,7 @@ import { WebGLBackground } from '../src/WebGLBackground.js';
 
 describe('WebGL', () => {
   describe('WebGLBackground', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLBackground).toBeDefined();
     });
 

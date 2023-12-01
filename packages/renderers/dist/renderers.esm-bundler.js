@@ -8,33 +8,46 @@ import { Mesh } from '@renderlayer/objects';
 import { cloneUniforms, ShaderLib, getUnlitUniformColorSpace } from '@renderlayer/shaders';
 
 const _rgb = { r: 0, b: 0, g: 0 };
-function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
-  const clearColor = new Color(0);
-  let clearAlpha = alpha === true ? 0 : 1;
-  let planeMesh;
-  let boxMesh;
-  let currentBackground = null;
-  let currentBackgroundVersion = 0;
-  let currentTonemapping = null;
-  function render(renderList, scene) {
+class WebGLBackground {
+  constructor(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
+    this.renderer = renderer;
+    this.cubemaps = cubemaps;
+    this.cubeuvmaps = cubeuvmaps;
+    this.state = state;
+    this.objects = objects;
+    this.alpha = alpha;
+    this.premultipliedAlpha = premultipliedAlpha;
+    this.clearColor = new Color(0);
+    this.clearAlpha = alpha === true ? 0 : 1;
+    this.planeMesh = void 0;
+    this.boxMesh = void 0;
+    this.currentBackground = null;
+    this.currentBackgroundVersion = 0;
+    this.currentTonemapping = null;
+  }
+  render(renderList, scene) {
     let forceClear = false;
     let background = scene.isScene === true ? scene.background : null;
     if (background && background.isTexture) {
       const usePMREM = scene.backgroundBlurriness > 0;
-      background = (usePMREM ? cubeuvmaps : cubemaps).get(background);
+      background = (usePMREM ? this.cubeuvmaps : this.cubemaps).get(background);
     }
     if (background === null) {
-      setClear(clearColor, clearAlpha);
+      this._setClear(this.clearColor, this.clearAlpha);
     } else if (background && background.isColor) {
-      setClear(background, 1);
+      this._setClear(background, 1);
       forceClear = true;
     }
-    if (renderer.autoClear || forceClear) {
-      renderer.clear(renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil);
+    if (this.renderer.autoClear || forceClear) {
+      this.renderer.clear(
+        this.renderer.autoClearColor,
+        this.renderer.autoClearDepth,
+        this.renderer.autoClearStencil
+      );
     }
     if (background && (background.isCubeTexture || background.mapping === CubeUVReflectionMapping)) {
-      if (boxMesh === void 0) {
-        boxMesh = new Mesh(
+      if (this.boxMesh === void 0) {
+        this.boxMesh = new Mesh(
           new BoxGeometry(1, 1, 1),
           new ShaderMaterial({
             name: "BackgroundCubeMaterial",
@@ -47,34 +60,34 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
             fog: false
           })
         );
-        boxMesh.geometry.deleteAttribute("normal");
-        boxMesh.geometry.deleteAttribute("uv");
-        boxMesh.onBeforeRender = function(renderer2, scene2, camera) {
+        this.boxMesh.geometry.deleteAttribute("normal");
+        this.boxMesh.geometry.deleteAttribute("uv");
+        this.boxMesh.onBeforeRender = function(renderer, scene2, camera) {
           this.matrixWorld.copyPosition(camera.matrixWorld);
         };
-        Object.defineProperty(boxMesh.material, "envMap", {
+        Object.defineProperty(this.boxMesh.material, "envMap", {
           get() {
             return this.uniforms.envMap.value;
           }
         });
-        objects.update(boxMesh);
+        this.objects.update(this.boxMesh);
       }
-      boxMesh.material.uniforms.envMap.value = background;
-      boxMesh.material.uniforms.flipEnvMap.value = background.isCubeTexture && background.isRenderTargetTexture === false ? -1 : 1;
-      boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
-      boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
-      boxMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
-      if (currentBackground !== background || currentBackgroundVersion !== background.version || currentTonemapping !== renderer.toneMapping) {
-        boxMesh.material.needsUpdate = true;
-        currentBackground = background;
-        currentBackgroundVersion = background.version;
-        currentTonemapping = renderer.toneMapping;
+      this.boxMesh.material.uniforms.envMap.value = background;
+      this.boxMesh.material.uniforms.flipEnvMap.value = background.isCubeTexture && background.isRenderTargetTexture === false ? -1 : 1;
+      this.boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
+      this.boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+      this.boxMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
+      if (this.currentBackground !== background || this.currentBackgroundVersion !== background.version || this.currentTonemapping !== this.renderer.toneMapping) {
+        this.boxMesh.material.needsUpdate = true;
+        this.currentBackground = background;
+        this.currentBackgroundVersion = background.version;
+        this.currentTonemapping = this.renderer.toneMapping;
       }
-      boxMesh.layers.enableAll();
-      renderList.unshift(boxMesh, boxMesh.geometry, boxMesh.material, 0, 0, null);
+      this.boxMesh.layers.enableAll();
+      renderList.unshift(this.boxMesh, this.boxMesh.geometry, this.boxMesh.material, 0, 0, null);
     } else if (background && background.isTexture) {
-      if (planeMesh === void 0) {
-        planeMesh = new Mesh(
+      if (this.planeMesh === void 0) {
+        this.planeMesh = new Mesh(
           new PlaneGeometry(2, 2),
           new ShaderMaterial({
             name: "BackgroundMaterial",
@@ -87,53 +100,57 @@ function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, 
             fog: false
           })
         );
-        planeMesh.geometry.deleteAttribute("normal");
-        Object.defineProperty(planeMesh.material, "map", {
+        this.planeMesh.geometry.deleteAttribute("normal");
+        Object.defineProperty(this.planeMesh.material, "map", {
           get() {
             return this.uniforms.t2D.value;
           }
         });
-        objects.update(planeMesh);
+        this.objects.update(this.planeMesh);
       }
-      planeMesh.material.uniforms.t2D.value = background;
-      planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
-      planeMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
+      this.planeMesh.material.uniforms.t2D.value = background;
+      this.planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+      this.planeMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
       if (background.matrixAutoUpdate === true) {
         background.updateMatrix();
       }
-      planeMesh.material.uniforms.uvTransform.value.copy(background.matrix);
-      if (currentBackground !== background || currentBackgroundVersion !== background.version || currentTonemapping !== renderer.toneMapping) {
-        planeMesh.material.needsUpdate = true;
-        currentBackground = background;
-        currentBackgroundVersion = background.version;
-        currentTonemapping = renderer.toneMapping;
+      this.planeMesh.material.uniforms.uvTransform.value.copy(background.matrix);
+      if (this.currentBackground !== background || this.currentBackgroundVersion !== background.version || this.currentTonemapping !== this.renderer.toneMapping) {
+        this.planeMesh.material.needsUpdate = true;
+        this.currentBackground = background;
+        this.currentBackgroundVersion = background.version;
+        this.currentTonemapping = this.renderer.toneMapping;
       }
-      planeMesh.layers.enableAll();
-      renderList.unshift(planeMesh, planeMesh.geometry, planeMesh.material, 0, 0, null);
+      this.planeMesh.layers.enableAll();
+      renderList.unshift(
+        this.planeMesh,
+        this.planeMesh.geometry,
+        this.planeMesh.material,
+        0,
+        0,
+        null
+      );
     }
   }
-  function setClear(color, alpha2) {
-    color.getRGB(_rgb, getUnlitUniformColorSpace(renderer));
-    state.buffers.color.setClear(_rgb.r, _rgb.g, _rgb.b, alpha2, premultipliedAlpha);
+  _setClear(color, alpha) {
+    color.getRGB(_rgb, getUnlitUniformColorSpace(this.renderer));
+    this.state.buffers.color.setClear(_rgb.r, _rgb.g, _rgb.b, alpha, this.premultipliedAlpha);
   }
-  return {
-    getClearColor() {
-      return clearColor;
-    },
-    setClearColor(color, alpha2 = 1) {
-      clearColor.set(color);
-      clearAlpha = alpha2;
-      setClear(clearColor, clearAlpha);
-    },
-    getClearAlpha() {
-      return clearAlpha;
-    },
-    setClearAlpha(alpha2) {
-      clearAlpha = alpha2;
-      setClear(clearColor, clearAlpha);
-    },
-    render
-  };
+  getClearColor() {
+    return this.clearColor;
+  }
+  setClearColor(color, alpha = 1) {
+    this.clearColor.set(color);
+    this.clearAlpha = alpha;
+    this._setClear(this.clearColor, this.clearAlpha);
+  }
+  getClearAlpha() {
+    return this.clearAlpha;
+  }
+  setClearAlpha(alpha) {
+    this.clearAlpha = alpha;
+    this._setClear(this.clearColor, this.clearAlpha);
+  }
 }
 
 class WebGLRenderer {
@@ -328,7 +345,7 @@ class WebGLRenderer {
       materials = WebGLMaterials(_this, properties);
       renderLists = WebGLRenderLists();
       renderStates = WebGLRenderStates(extensions, capabilities);
-      background = WebGLBackground(
+      background = new WebGLBackground(
         _this,
         cubemaps,
         cubeuvmaps,
