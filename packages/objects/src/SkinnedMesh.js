@@ -167,7 +167,7 @@ class SkinnedMesh extends Mesh {
     } else if (this.bindMode === DetachedBindMode) {
       this.bindMatrixInverse.copy(this.bindMatrix).invert();
     } else {
-      console.warn('SkinnedMesh: Unrecognized bindMode: ' + this.bindMode);
+      console.warn(`SkinnedMesh: Unrecognized bindMode: ${this.bindMode}`);
     }
   }
 
