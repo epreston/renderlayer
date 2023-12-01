@@ -59,8 +59,8 @@ class Matrix4 {
   }
 
   copyPosition(m) {
-    const te = this.elements,
-      me = m.elements;
+    const te = this.elements;
+    const me = m.elements;
 
     te[12] = me[12];
     te[13] = me[13];
@@ -140,7 +140,10 @@ class Matrix4 {
     const te = this.elements;
 
     // prettier-ignore
-    const x = euler.x, y = euler.y, z = euler.z;
+    const x = euler.x;
+
+    const y = euler.y;
+    const z = euler.z;
     const a = Math.cos(x);
     const b = Math.sin(x);
     const c = Math.cos(y);
@@ -150,7 +153,11 @@ class Matrix4 {
 
     if (euler.order === 'XYZ') {
       // prettier-ignore
-      const ae = a * e, af = a * f, be = b * e, bf = b * f;
+      const ae = a * e;
+
+      const af = a * f;
+      const be = b * e;
+      const bf = b * f;
 
       te[0] = c * e;
       te[4] = -c * f;
@@ -165,7 +172,11 @@ class Matrix4 {
       te[10] = a * c;
     } else if (euler.order === 'YXZ') {
       // prettier-ignore
-      const ce = c * e, cf = c * f, de = d * e, df = d * f;
+      const ce = c * e;
+
+      const cf = c * f;
+      const de = d * e;
+      const df = d * f;
 
       te[0] = ce + df * b;
       te[4] = de * b - cf;
@@ -180,7 +191,11 @@ class Matrix4 {
       te[10] = a * c;
     } else if (euler.order === 'ZXY') {
       // prettier-ignore
-      const ce = c * e,  cf = c * f, de = d * e, df = d * f;
+      const ce = c * e;
+
+      const cf = c * f;
+      const de = d * e;
+      const df = d * f;
 
       te[0] = ce - df * b;
       te[4] = -a * f;
@@ -195,7 +210,11 @@ class Matrix4 {
       te[10] = a * c;
     } else if (euler.order === 'ZYX') {
       // prettier-ignore
-      const ae = a * e, af = a * f, be = b * e, bf = b * f;
+      const ae = a * e;
+
+      const af = a * f;
+      const be = b * e;
+      const bf = b * f;
 
       te[0] = c * e;
       te[4] = be * d - af;
@@ -210,7 +229,11 @@ class Matrix4 {
       te[10] = a * c;
     } else if (euler.order === 'YZX') {
       // prettier-ignore
-      const ac = a * c, ad = a * d, bc = b * c, bd = b * d;
+      const ac = a * c;
+
+      const ad = a * d;
+      const bc = b * c;
+      const bd = b * d;
 
       te[0] = c * e;
       te[4] = bd - ac * f;
@@ -225,7 +248,11 @@ class Matrix4 {
       te[10] = ac - bd * f;
     } else if (euler.order === 'XZY') {
       // prettier-ignore
-      const ac = a * c, ad = a * d, bc = b * c, bd = b * d;
+      const ac = a * c;
+
+      const ad = a * d;
+      const bc = b * c;
+      const bd = b * d;
 
       te[0] = c * e;
       te[4] = -f;
@@ -308,16 +335,42 @@ class Matrix4 {
     const te = this.elements;
 
     // prettier-ignore
-    const a11 = ae[ 0 ], a12 = ae[ 4 ], a13 = ae[ 8 ], a14 = ae[ 12 ],
-      a21 = ae[ 1 ], a22 = ae[ 5 ], a23 = ae[ 9 ], a24 = ae[ 13 ],
-      a31 = ae[ 2 ], a32 = ae[ 6 ], a33 = ae[ 10 ], a34 = ae[ 14 ],
-      a41 = ae[ 3 ], a42 = ae[ 7 ], a43 = ae[ 11 ], a44 = ae[ 15 ];
+    const a11 = ae[ 0 ];
+
+    const a12 = ae[4];
+    const a13 = ae[8];
+    const a14 = ae[12];
+    const a21 = ae[1];
+    const a22 = ae[5];
+    const a23 = ae[9];
+    const a24 = ae[13];
+    const a31 = ae[2];
+    const a32 = ae[6];
+    const a33 = ae[10];
+    const a34 = ae[14];
+    const a41 = ae[3];
+    const a42 = ae[7];
+    const a43 = ae[11];
+    const a44 = ae[15];
 
     // prettier-ignore
-    const b11 = be[ 0 ], b12 = be[ 4 ], b13 = be[ 8 ], b14 = be[ 12 ],
-      b21 = be[ 1 ], b22 = be[ 5 ], b23 = be[ 9 ], b24 = be[ 13 ],
-      b31 = be[ 2 ], b32 = be[ 6 ], b33 = be[ 10 ], b34 = be[ 14 ],
-      b41 = be[ 3 ], b42 = be[ 7 ], b43 = be[ 11 ], b44 = be[ 15 ];
+    const b11 = be[ 0 ];
+
+    const b12 = be[4];
+    const b13 = be[8];
+    const b14 = be[12];
+    const b21 = be[1];
+    const b22 = be[5];
+    const b23 = be[9];
+    const b24 = be[13];
+    const b31 = be[2];
+    const b32 = be[6];
+    const b33 = be[10];
+    const b34 = be[14];
+    const b41 = be[3];
+    const b42 = be[7];
+    const b43 = be[11];
+    const b44 = be[15];
 
     te[0] = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
     te[4] = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;
@@ -358,10 +411,23 @@ class Matrix4 {
     const te = this.elements;
 
     // prettier-ignore
-    const n11 = te[ 0 ], n12 = te[ 4 ], n13 = te[ 8 ], n14 = te[ 12 ],
-      n21 = te[ 1 ], n22 = te[ 5 ], n23 = te[ 9 ], n24 = te[ 13 ],
-      n31 = te[ 2 ], n32 = te[ 6 ], n33 = te[ 10 ], n34 = te[ 14 ],
-      n41 = te[ 3 ], n42 = te[ 7 ], n43 = te[ 11 ], n44 = te[ 15 ];
+    const n11 = te[ 0 ];
+
+    const n12 = te[4];
+    const n13 = te[8];
+    const n14 = te[12];
+    const n21 = te[1];
+    const n22 = te[5];
+    const n23 = te[9];
+    const n24 = te[13];
+    const n31 = te[2];
+    const n32 = te[6];
+    const n33 = te[10];
+    const n34 = te[14];
+    const n41 = te[3];
+    const n42 = te[7];
+    const n43 = te[11];
+    const n44 = te[15];
 
     //TODO: make this more efficient
     //( based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm )
@@ -439,17 +505,52 @@ class Matrix4 {
   invert() {
     // based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
     // prettier-ignore
-    const te = this.elements,
+    const te = this.elements;
 
-			n11 = te[ 0 ], n21 = te[ 1 ], n31 = te[ 2 ], n41 = te[ 3 ],
-			n12 = te[ 4 ], n22 = te[ 5 ], n32 = te[ 6 ], n42 = te[ 7 ],
-			n13 = te[ 8 ], n23 = te[ 9 ], n33 = te[ 10 ], n43 = te[ 11 ],
-			n14 = te[ 12 ], n24 = te[ 13 ], n34 = te[ 14 ], n44 = te[ 15 ],
-
-			t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44,
-			t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 + n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44,
-			t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 - n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44,
-			t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
+    const n11 = te[0];
+    const n21 = te[1];
+    const n31 = te[2];
+    const n41 = te[3];
+    const n12 = te[4];
+    const n22 = te[5];
+    const n32 = te[6];
+    const n42 = te[7];
+    const n13 = te[8];
+    const n23 = te[9];
+    const n33 = te[10];
+    const n43 = te[11];
+    const n14 = te[12];
+    const n24 = te[13];
+    const n34 = te[14];
+    const n44 = te[15];
+    const t11 =
+      n23 * n34 * n42 -
+      n24 * n33 * n42 +
+      n24 * n32 * n43 -
+      n22 * n34 * n43 -
+      n23 * n32 * n44 +
+      n22 * n33 * n44;
+    const t12 =
+      n14 * n33 * n42 -
+      n13 * n34 * n42 -
+      n14 * n32 * n43 +
+      n12 * n34 * n43 +
+      n13 * n32 * n44 -
+      n12 * n33 * n44;
+    const t13 =
+      n13 * n24 * n42 -
+      n14 * n23 * n42 +
+      n14 * n22 * n43 -
+      n12 * n24 * n43 -
+      n13 * n22 * n44 +
+      n12 * n23 * n44;
+    const t14 =
+      n14 * n23 * n32 -
+      n13 * n24 * n32 -
+      n14 * n22 * n33 +
+      n12 * n24 * n33 +
+      n13 * n22 * n34 -
+      n12 * n23 * n34;
 
     const det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
 
@@ -626,20 +727,28 @@ class Matrix4 {
   compose(position, quaternion, scale) {
     const te = this.elements;
 
-    const x = quaternion._x,
-      y = quaternion._y,
-      z = quaternion._z,
-      w = quaternion._w;
+    const x = quaternion._x;
+    const y = quaternion._y;
+    const z = quaternion._z;
+    const w = quaternion._w;
 
     // prettier-ignore
-    const x2 = x + x,	y2 = y + y, z2 = z + z,
-          xx = x * x2, xy = x * y2, xz = x * z2,
-          yy = y * y2, yz = y * z2, zz = z * z2,
-          wx = w * x2, wy = w * y2, wz = w * z2;
+    const x2 = x + x;
 
-    const sx = scale.x,
-      sy = scale.y,
-      sz = scale.z;
+    const y2 = y + y;
+    const z2 = z + z;
+    const xx = x * x2;
+    const xy = x * y2;
+    const xz = x * z2;
+    const yy = y * y2;
+    const yz = y * z2;
+    const zz = z * z2;
+    const wx = w * x2;
+    const wy = w * y2;
+    const wz = w * z2;
+    const sx = scale.x;
+    const sy = scale.y;
+    const sz = scale.z;
 
     te[0] = (1 - (yy + zz)) * sx;
     te[1] = (xy + wz) * sx;
@@ -715,7 +824,8 @@ class Matrix4 {
     const a = (right + left) / (right - left);
     const b = (top + bottom) / (top - bottom);
 
-    let c, d;
+    let c;
+    let d;
 
     if (webgpu) {
       c = -far / (far - near);
@@ -743,7 +853,8 @@ class Matrix4 {
     const x = (right + left) * w;
     const y = (top + bottom) * h;
 
-    let z, zInv;
+    let z;
+    let zInv;
 
     if (webgpu) {
       z = near * p;
