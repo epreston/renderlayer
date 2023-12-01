@@ -13,15 +13,15 @@ class Quaternion {
   static slerpFlat(dst, dstOffset, src0, srcOffset0, src1, srcOffset1, t) {
     // fuzz-free, array-based Quaternion SLERP operation
 
-    let x0 = src0[srcOffset0 + 0],
-      y0 = src0[srcOffset0 + 1],
-      z0 = src0[srcOffset0 + 2],
-      w0 = src0[srcOffset0 + 3];
+    let x0 = src0[srcOffset0 + 0];
 
-    const x1 = src1[srcOffset1 + 0],
-      y1 = src1[srcOffset1 + 1],
-      z1 = src1[srcOffset1 + 2],
-      w1 = src1[srcOffset1 + 3];
+    let y0 = src0[srcOffset0 + 1];
+    let z0 = src0[srcOffset0 + 2];
+    let w0 = src0[srcOffset0 + 3];
+    const x1 = src1[srcOffset1 + 0];
+    const y1 = src1[srcOffset1 + 1];
+    const z1 = src1[srcOffset1 + 2];
+    const w1 = src1[srcOffset1 + 3];
 
     if (t === 0) {
       dst[dstOffset + 0] = x0;
@@ -163,10 +163,10 @@ class Quaternion {
   }
 
   setFromEuler(euler, update) {
-    const x = euler._x,
-      y = euler._y,
-      z = euler._z,
-      order = euler._order;
+    const x = euler._x;
+    const y = euler._y;
+    const z = euler._z;
+    const order = euler._order;
 
     // http://www.mathworks.com/matlabcentral/fileexchange/
     // 	20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/
@@ -227,7 +227,7 @@ class Quaternion {
         break;
 
       default:
-        console.warn('Quaternion: .setFromEuler() encountered an unknown order: ' + order);
+        console.warn(`Quaternion: .setFromEuler() encountered an unknown order: ${order}`);
     }
 
     if (update !== false) this._onChangeCallback();
@@ -259,12 +259,18 @@ class Quaternion {
     // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
     // prettier-ignore
-    const te = m.elements,
-			m11 = te[ 0 ], m12 = te[ 4 ], m13 = te[ 8 ],
-			m21 = te[ 1 ], m22 = te[ 5 ], m23 = te[ 9 ],
-			m31 = te[ 2 ], m32 = te[ 6 ], m33 = te[ 10 ],
+    const te = m.elements;
 
-			trace = m11 + m22 + m33;
+    const m11 = te[0];
+    const m12 = te[4];
+    const m13 = te[8];
+    const m21 = te[1];
+    const m22 = te[5];
+    const m23 = te[9];
+    const m31 = te[2];
+    const m32 = te[6];
+    const m33 = te[10];
+    const trace = m11 + m22 + m33;
 
     if (trace > 0) {
       const s = 0.5 / Math.sqrt(trace + 1.0);
@@ -414,14 +420,15 @@ class Quaternion {
   multiplyQuaternions(a, b) {
     // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
 
-    const qax = a._x,
-      qay = a._y,
-      qaz = a._z,
-      qaw = a._w;
-    const qbx = b._x,
-      qby = b._y,
-      qbz = b._z,
-      qbw = b._w;
+    const qax = a._x;
+
+    const qay = a._y;
+    const qaz = a._z;
+    const qaw = a._w;
+    const qbx = b._x;
+    const qby = b._y;
+    const qbz = b._z;
+    const qbw = b._w;
 
     this._x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
     this._y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
@@ -437,10 +444,10 @@ class Quaternion {
     if (t === 0) return this;
     if (t === 1) return this.copy(qb);
 
-    const x = this._x,
-      y = this._y,
-      z = this._z,
-      w = this._w;
+    const x = this._x;
+    const y = this._y;
+    const z = this._z;
+    const w = this._w;
 
     // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
 
