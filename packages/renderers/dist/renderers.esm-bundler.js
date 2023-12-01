@@ -1,7 +1,140 @@
-import { Vector4, Color, Frustum, Matrix4, Vector2, Vector3, ColorManagement } from '@renderlayer/math';
-import { createCanvasElement, SRGBColorSpace, NoToneMapping, HalfFloatType, UnsignedByteType, LinearMipmapLinearFilter, DoubleSide, BackSide, FrontSide, RGBAFormat, FloatType, WebGLCoordinateSystem, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, RGBAIntegerFormat, RGIntegerFormat, RedIntegerFormat, UnsignedIntType, UnsignedShortType, UnsignedInt248Type, UnsignedShort4444Type, UnsignedShort5551Type } from '@renderlayer/shared';
+import { BoxGeometry, PlaneGeometry } from '@renderlayer/geometries';
+import { ShaderMaterial } from '@renderlayer/materials';
+import { Color, ColorManagement, Vector4, Frustum, Matrix4, Vector2, Vector3 } from '@renderlayer/math';
+import { Mesh } from '@renderlayer/objects';
+import { cloneUniforms, ShaderLib, getUnlitUniformColorSpace } from '@renderlayer/shaders';
+import { CubeUVReflectionMapping, BackSide, SRGBTransfer, FrontSide, createCanvasElement, SRGBColorSpace, NoToneMapping, HalfFloatType, UnsignedByteType, LinearMipmapLinearFilter, DoubleSide, RGBAFormat, FloatType, WebGLCoordinateSystem, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, RGBAIntegerFormat, RGIntegerFormat, RedIntegerFormat, UnsignedIntType, UnsignedShortType, UnsignedInt248Type, UnsignedShort4444Type, UnsignedShort5551Type } from '@renderlayer/shared';
 import { WebGLRenderTarget } from '@renderlayer/targets';
-import { WebGLAnimation, WebGLUniforms, WebGLExtensions, WebGLCapabilities, WebGLUtils, WebGLState, WebGLInfo, WebGLProperties, WebGLTextures, WebGLCubeMaps, WebGLCubeUVMaps, WebGLAttributes, WebGLBindingStates, WebGLGeometries, WebGLObjects, WebGLMorphtargets, WebGLClipping, WebGLPrograms, WebGLMaterials, WebGLRenderLists, WebGLRenderStates, WebGLBackground, WebGLShadowMap, WebGLUniformsGroups, WebGLBufferRenderer, WebGLIndexedBufferRenderer } from '@renderlayer/webgl';
+import { WebGLAnimation, WebGLUniforms, WebGLExtensions, WebGLCapabilities, WebGLUtils, WebGLState, WebGLInfo, WebGLProperties, WebGLTextures, WebGLCubeMaps, WebGLCubeUVMaps, WebGLAttributes, WebGLBindingStates, WebGLGeometries, WebGLObjects, WebGLMorphtargets, WebGLClipping, WebGLPrograms, WebGLMaterials, WebGLRenderLists, WebGLRenderStates, WebGLShadowMap, WebGLUniformsGroups, WebGLBufferRenderer, WebGLIndexedBufferRenderer } from '@renderlayer/webgl';
+
+const _rgb = { r: 0, b: 0, g: 0 };
+function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
+  const clearColor = new Color(0);
+  let clearAlpha = alpha === true ? 0 : 1;
+  let planeMesh;
+  let boxMesh;
+  let currentBackground = null;
+  let currentBackgroundVersion = 0;
+  let currentTonemapping = null;
+  function render(renderList, scene) {
+    let forceClear = false;
+    let background = scene.isScene === true ? scene.background : null;
+    if (background && background.isTexture) {
+      const usePMREM = scene.backgroundBlurriness > 0;
+      background = (usePMREM ? cubeuvmaps : cubemaps).get(background);
+    }
+    if (background === null) {
+      setClear(clearColor, clearAlpha);
+    } else if (background && background.isColor) {
+      setClear(background, 1);
+      forceClear = true;
+    }
+    if (renderer.autoClear || forceClear) {
+      renderer.clear(renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil);
+    }
+    if (background && (background.isCubeTexture || background.mapping === CubeUVReflectionMapping)) {
+      if (boxMesh === void 0) {
+        boxMesh = new Mesh(
+          new BoxGeometry(1, 1, 1),
+          new ShaderMaterial({
+            name: "BackgroundCubeMaterial",
+            uniforms: cloneUniforms(ShaderLib.backgroundCube.uniforms),
+            vertexShader: ShaderLib.backgroundCube.vertexShader,
+            fragmentShader: ShaderLib.backgroundCube.fragmentShader,
+            side: BackSide,
+            depthTest: false,
+            depthWrite: false,
+            fog: false
+          })
+        );
+        boxMesh.geometry.deleteAttribute("normal");
+        boxMesh.geometry.deleteAttribute("uv");
+        boxMesh.onBeforeRender = function(renderer2, scene2, camera) {
+          this.matrixWorld.copyPosition(camera.matrixWorld);
+        };
+        Object.defineProperty(boxMesh.material, "envMap", {
+          get() {
+            return this.uniforms.envMap.value;
+          }
+        });
+        objects.update(boxMesh);
+      }
+      boxMesh.material.uniforms.envMap.value = background;
+      boxMesh.material.uniforms.flipEnvMap.value = background.isCubeTexture && background.isRenderTargetTexture === false ? -1 : 1;
+      boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
+      boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+      boxMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
+      if (currentBackground !== background || currentBackgroundVersion !== background.version || currentTonemapping !== renderer.toneMapping) {
+        boxMesh.material.needsUpdate = true;
+        currentBackground = background;
+        currentBackgroundVersion = background.version;
+        currentTonemapping = renderer.toneMapping;
+      }
+      boxMesh.layers.enableAll();
+      renderList.unshift(boxMesh, boxMesh.geometry, boxMesh.material, 0, 0, null);
+    } else if (background && background.isTexture) {
+      if (planeMesh === void 0) {
+        planeMesh = new Mesh(
+          new PlaneGeometry(2, 2),
+          new ShaderMaterial({
+            name: "BackgroundMaterial",
+            uniforms: cloneUniforms(ShaderLib.background.uniforms),
+            vertexShader: ShaderLib.background.vertexShader,
+            fragmentShader: ShaderLib.background.fragmentShader,
+            side: FrontSide,
+            depthTest: false,
+            depthWrite: false,
+            fog: false
+          })
+        );
+        planeMesh.geometry.deleteAttribute("normal");
+        Object.defineProperty(planeMesh.material, "map", {
+          get() {
+            return this.uniforms.t2D.value;
+          }
+        });
+        objects.update(planeMesh);
+      }
+      planeMesh.material.uniforms.t2D.value = background;
+      planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+      planeMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
+      if (background.matrixAutoUpdate === true) {
+        background.updateMatrix();
+      }
+      planeMesh.material.uniforms.uvTransform.value.copy(background.matrix);
+      if (currentBackground !== background || currentBackgroundVersion !== background.version || currentTonemapping !== renderer.toneMapping) {
+        planeMesh.material.needsUpdate = true;
+        currentBackground = background;
+        currentBackgroundVersion = background.version;
+        currentTonemapping = renderer.toneMapping;
+      }
+      planeMesh.layers.enableAll();
+      renderList.unshift(planeMesh, planeMesh.geometry, planeMesh.material, 0, 0, null);
+    }
+  }
+  function setClear(color, alpha2) {
+    color.getRGB(_rgb, getUnlitUniformColorSpace(renderer));
+    state.buffers.color.setClear(_rgb.r, _rgb.g, _rgb.b, alpha2, premultipliedAlpha);
+  }
+  return {
+    getClearColor() {
+      return clearColor;
+    },
+    setClearColor(color, alpha2 = 1) {
+      clearColor.set(color);
+      clearAlpha = alpha2;
+      setClear(clearColor, clearAlpha);
+    },
+    getClearAlpha() {
+      return clearAlpha;
+    },
+    setClearAlpha(alpha2) {
+      clearAlpha = alpha2;
+      setClear(clearColor, clearAlpha);
+    },
+    render
+  };
+}
 
 class WebGLRenderer {
   constructor(parameters = {}) {
@@ -177,7 +310,7 @@ class WebGLRenderer {
       textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
       cubemaps = WebGLCubeMaps(_this);
       cubeuvmaps = WebGLCubeUVMaps(_this);
-      attributes = WebGLAttributes(_gl, capabilities);
+      attributes = new WebGLAttributes(_gl, capabilities);
       bindingStates = WebGLBindingStates(_gl, extensions, attributes, capabilities);
       geometries = WebGLGeometries(_gl, attributes, info, bindingStates);
       objects = WebGLObjects(_gl, geometries, attributes, info);
@@ -1455,4 +1588,4 @@ class WebGLRenderer {
   }
 }
 
-export { WebGLRenderer };
+export { WebGLBackground, WebGLRenderer };
