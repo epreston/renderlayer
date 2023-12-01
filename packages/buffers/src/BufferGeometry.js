@@ -415,22 +415,22 @@ class BufferGeometry extends EventDispatcher {
 
     const tangents = this.getAttribute('tangent').array;
 
-    const tan1 = [],
-      tan2 = [];
+    const tan1 = [];
+    const tan2 = [];
 
     for (let i = 0; i < nVertices; i++) {
       tan1[i] = new Vector3();
       tan2[i] = new Vector3();
     }
 
-    const vA = new Vector3(),
-      vB = new Vector3(),
-      vC = new Vector3(),
-      uvA = new Vector2(),
-      uvB = new Vector2(),
-      uvC = new Vector2(),
-      sdir = new Vector3(),
-      tdir = new Vector3();
+    const vA = new Vector3();
+    const vB = new Vector3();
+    const vC = new Vector3();
+    const uvA = new Vector2();
+    const uvB = new Vector2();
+    const uvC = new Vector2();
+    const sdir = new Vector3();
+    const tdir = new Vector3();
 
     function handleTriangle(a, b, c) {
       vA.fromArray(positions, a * 3);
@@ -491,10 +491,10 @@ class BufferGeometry extends EventDispatcher {
       }
     }
 
-    const tmp = new Vector3(),
-      tmp2 = new Vector3();
-    const n = new Vector3(),
-      n2 = new Vector3();
+    const tmp = new Vector3();
+    const tmp2 = new Vector3();
+    const n = new Vector3();
+    const n2 = new Vector3();
 
     function handleVertex(v) {
       n.fromArray(normals, v * 3);
@@ -551,14 +551,14 @@ class BufferGeometry extends EventDispatcher {
         }
       }
 
-      const pA = new Vector3(),
-        pB = new Vector3(),
-        pC = new Vector3();
-      const nA = new Vector3(),
-        nB = new Vector3(),
-        nC = new Vector3();
-      const cb = new Vector3(),
-        ab = new Vector3();
+      const pA = new Vector3();
+      const pB = new Vector3();
+      const pC = new Vector3();
+      const nA = new Vector3();
+      const nB = new Vector3();
+      const nC = new Vector3();
+      const cb = new Vector3();
+      const ab = new Vector3();
 
       // indexed elements
 
@@ -632,8 +632,8 @@ class BufferGeometry extends EventDispatcher {
 
       const array2 = new array.constructor(indices.length * itemSize);
 
-      let index = 0,
-        index2 = 0;
+      let index = 0;
+      let index2 = 0;
 
       for (let i = 0, l = indices.length; i < l; i++) {
         if (attribute.isInterleavedBufferAttribute) {
