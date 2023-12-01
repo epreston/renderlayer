@@ -43,22 +43,22 @@ class Frustum {
   setFromProjectionMatrix(m, webgpu = false) {
     const planes = this.planes;
     const me = m.elements;
-    const me0 = me[0],
-      me1 = me[1],
-      me2 = me[2],
-      me3 = me[3];
-    const me4 = me[4],
-      me5 = me[5],
-      me6 = me[6],
-      me7 = me[7];
-    const me8 = me[8],
-      me9 = me[9],
-      me10 = me[10],
-      me11 = me[11];
-    const me12 = me[12],
-      me13 = me[13],
-      me14 = me[14],
-      me15 = me[15];
+    const me0 = me[0];
+    const me1 = me[1];
+    const me2 = me[2];
+    const me3 = me[3];
+    const me4 = me[4];
+    const me5 = me[5];
+    const me6 = me[6];
+    const me7 = me[7];
+    const me8 = me[8];
+    const me9 = me[9];
+    const me10 = me[10];
+    const me11 = me[11];
+    const me12 = me[12];
+    const me13 = me[13];
+    const me14 = me[14];
+    const me15 = me[15];
 
     planes[0].setComponents(me3 - me0, me7 - me4, me11 - me8, me15 - me12).normalize();
     planes[1].setComponents(me3 + me0, me7 + me4, me11 + me8, me15 + me12).normalize();
