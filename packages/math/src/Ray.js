@@ -92,7 +92,10 @@ class Ray {
     const b1 = -_diff.dot(_segDir);
     const c = _diff.lengthSq();
     const det = Math.abs(1 - a01 * a01);
-    let s0, s1, sqrDist, extDet;
+    let s0;
+    let s1;
+    let sqrDist;
+    let extDet;
 
     if (det > 0) {
       // The ray and segment are not parallel.
@@ -245,11 +248,15 @@ class Ray {
   }
 
   intersectBox(box, target) {
-    let tmin, tmax, tymin, tymax, tzmin, tzmax;
-
-    const invdirx = 1 / this.direction.x,
-      invdiry = 1 / this.direction.y,
-      invdirz = 1 / this.direction.z;
+    let tmin;
+    let tmax;
+    let tymin;
+    let tymax;
+    let tzmin;
+    let tzmax;
+    const invdirx = 1 / this.direction.x;
+    const invdiry = 1 / this.direction.y;
+    const invdirz = 1 / this.direction.z;
 
     const origin = this.origin;
 
