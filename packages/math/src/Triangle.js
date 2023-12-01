@@ -171,7 +171,8 @@ class Triangle {
     const a = this.a;
     const b = this.b;
     const c = this.c;
-    let v, w;
+    let v;
+    let w;
 
     // algorithm thanks to Real-Time Collision Detection by Christer Ericson,
     // published by Morgan Kaufmann Publishers, (c) 2005 Elsevier Inc.,
