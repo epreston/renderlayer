@@ -105,7 +105,7 @@ export const ColorManagement = {
   },
 
   /** @param {import('./Color.js').Color} color */
-  convert: function (color, sourceColorSpace, targetColorSpace) {
+  convert(color, sourceColorSpace, targetColorSpace) {
     if (
       this.enabled === false ||
       sourceColorSpace === targetColorSpace ||
@@ -131,20 +131,20 @@ export const ColorManagement = {
   },
 
   /** @param {import('./Color.js').Color} color */
-  fromWorkingColorSpace: function (color, targetColorSpace) {
+  fromWorkingColorSpace(color, targetColorSpace) {
     return this.convert(color, this._workingColorSpace, targetColorSpace);
   },
 
   /** @param {import('./Color.js').Color} color */
-  toWorkingColorSpace: function (color, sourceColorSpace) {
+  toWorkingColorSpace(color, sourceColorSpace) {
     return this.convert(color, sourceColorSpace, this._workingColorSpace);
   },
 
-  getPrimaries: function (colorSpace) {
+  getPrimaries(colorSpace) {
     return COLOR_SPACES[colorSpace].primaries;
   },
 
-  getTransfer: function (colorSpace) {
+  getTransfer(colorSpace) {
     if (colorSpace === NoColorSpace) return LinearTransfer;
 
     return COLOR_SPACES[colorSpace].transfer;
