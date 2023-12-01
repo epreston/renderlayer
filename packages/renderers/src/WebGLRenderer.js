@@ -36,7 +36,6 @@ import { WebGLRenderTarget } from '@renderlayer/targets';
 import {
   WebGLAnimation,
   WebGLAttributes,
-  WebGLBackground,
   WebGLBindingStates,
   WebGLBufferRenderer,
   WebGLCapabilities,
@@ -62,7 +61,7 @@ import {
   WebGLUtils
 } from '@renderlayer/webgl';
 
-// import { WebXRManager } from './webxr/WebXRManager.js';
+import { WebGLBackground } from './WebGLBackground.js';
 
 class WebGLRenderer {
   constructor(parameters = {}) {

@@ -1,6 +1,5 @@
 export * from './WebGLAnimation.js';
 export * from './WebGLAttributes.js';
-export * from './WebGLBackground.js';
 export * from './WebGLBindingStates.js';
 export * from './WebGLBufferRenderer.js';
 export * from './WebGLCapabilities.js';

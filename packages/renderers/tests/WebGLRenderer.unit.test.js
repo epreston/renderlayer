@@ -2,7 +2,7 @@
 
 // TODO: prep for browser testing, enable and test in browser manually
 
-import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { describe, expect, it, test, vi } from 'vitest';
 
 import { WebGLRenderer } from '../src/WebGLRenderer.js';
 
