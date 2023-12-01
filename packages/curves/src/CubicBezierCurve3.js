@@ -18,10 +18,10 @@ class CubicBezierCurve3 extends Curve {
   getPoint(t, optionalTarget = new Vector3()) {
     const point = optionalTarget;
 
-    const v0 = this.v0,
-      v1 = this.v1,
-      v2 = this.v2,
-      v3 = this.v3;
+    const v0 = this.v0;
+    const v1 = this.v1;
+    const v2 = this.v2;
+    const v3 = this.v3;
 
     point.set(
       CubicBezier(t, v0.x, v1.x, v2.x, v3.x),
