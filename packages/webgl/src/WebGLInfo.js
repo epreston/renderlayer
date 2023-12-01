@@ -1,19 +1,28 @@
-/** @param { WebGL2RenderingContext} gl */
-function WebGLInfo(gl) {
-  const memory = {
-    geometries: 0,
-    textures: 0
-  };
+class WebGLInfo {
+  /** @param { WebGL2RenderingContext} gl */
+  constructor(gl) {
+    this.gl = gl;
 
-  const render = {
-    frame: 0,
-    calls: 0,
-    triangles: 0,
-    points: 0,
-    lines: 0
-  };
+    this.memory = {
+      geometries: 0,
+      textures: 0
+    };
 
-  function update(count, mode, instanceCount) {
+    this.render = {
+      frame: 0,
+      calls: 0,
+      triangles: 0,
+      points: 0,
+      lines: 0
+    };
+
+    this.programs = null;
+    this.autoReset = true;
+  }
+
+  update(count, mode, instanceCount) {
+    const { render, gl } = this;
+
     render.calls++;
 
     switch (mode) {
@@ -43,21 +52,14 @@ function WebGLInfo(gl) {
     }
   }
 
-  function reset() {
+  reset() {
+    const { render } = this;
+
     render.calls = 0;
     render.triangles = 0;
     render.points = 0;
     render.lines = 0;
   }
-
-  return {
-    memory: memory,
-    render: render,
-    programs: null,
-    autoReset: true,
-    reset: reset,
-    update: update
-  };
 }
 
 export { WebGLInfo };
