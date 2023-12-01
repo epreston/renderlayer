@@ -4,7 +4,7 @@ import { WebGLObjects } from '../src/WebGLObjects.js';
 
 describe('WebGL', () => {
   describe('WebGLObjects', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLObjects).toBeDefined();
     });
 
