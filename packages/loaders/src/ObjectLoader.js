@@ -81,7 +81,7 @@ class ObjectLoader extends Loader {
         } catch (error) {
           if (onError !== undefined) onError(error);
 
-          console.error("ObjectLoader: Can't parse " + url + '.', error.message);
+          console.error(`ObjectLoader: Can't parse ${url}.`, error.message);
 
           return;
         }
@@ -93,9 +93,9 @@ class ObjectLoader extends Loader {
           metadata.type === undefined ||
           metadata.type.toLowerCase() === 'geometry'
         ) {
-          if (onError !== undefined) onError(new Error("ObjectLoader: Can't load " + url));
+          if (onError !== undefined) onError(new Error(`ObjectLoader: Can't load ${url}`));
 
-          console.error("ObjectLoader: Can't load " + url);
+          console.error(`ObjectLoader: Can't load ${url}`);
           return;
         }
 
@@ -128,7 +128,7 @@ class ObjectLoader extends Loader {
       metadata.type === undefined ||
       metadata.type.toLowerCase() === 'geometry'
     ) {
-      throw new Error("ObjectLoader: Can't load " + url);
+      throw new Error(`ObjectLoader: Can't load ${url}`);
     }
 
     return await scope.parseAsync(json);
@@ -288,9 +288,7 @@ class ObjectLoader extends Loader {
     const animations = {};
 
     if (json !== undefined) {
-      for (let i = 0; i < json.length; i++) {
-        const data = json[i];
-
+      for (const data of json) {
         const clip = AnimationClip.parse(data);
 
         animations[clip.uuid] = clip;
@@ -601,7 +599,8 @@ class ObjectLoader extends Loader {
       return textures[uuid];
     }
 
-    let geometry, material;
+    let geometry;
+    let material;
 
     switch (data.type) {
       case 'Scene':
@@ -836,9 +835,7 @@ class ObjectLoader extends Loader {
     if (data.animations !== undefined) {
       const objectAnimations = data.animations;
 
-      for (let i = 0; i < objectAnimations.length; i++) {
-        const uuid = objectAnimations[i];
-
+      for (const uuid of objectAnimations) {
         object.animations.push(animations[uuid]);
       }
     }
@@ -848,8 +845,7 @@ class ObjectLoader extends Loader {
 
       const levels = data.levels;
 
-      for (let l = 0; l < levels.length; l++) {
-        const level = levels[l];
+      for (const level of levels) {
         const child = object.getObjectByProperty('uuid', level.object);
 
         if (child !== undefined) {
