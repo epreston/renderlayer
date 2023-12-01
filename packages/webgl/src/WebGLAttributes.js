@@ -1,10 +1,14 @@
-/** @param { WebGL2RenderingContext} gl */
-function WebGLAttributes(gl, capabilities) {
-  const buffers = new WeakMap();
+class WebGLAttributes {
+  /** @param { WebGL2RenderingContext} gl */
+  constructor(gl, capabilities) {
+    this.gl = gl;
+    this.capabilities = capabilities;
+    this.buffers = new WeakMap();
+  }
 
-  function createBuffer(attribute, bufferType) {
-    const array = attribute.array;
-    const usage = attribute.usage;
+  _createBuffer(attribute, bufferType) {
+    const { array, usage } = attribute;
+    const { gl } = this;
 
     const buffer = gl.createBuffer();
 
@@ -47,15 +51,14 @@ function WebGLAttributes(gl, capabilities) {
     };
   }
 
-  function updateBuffer(buffer, attribute, bufferType) {
-    const array = attribute.array;
-    const updateRange = attribute.updateRange;
+  _updateBuffer(buffer, attribute, bufferType) {
+    const { array, updateRange } = attribute;
+    const { gl } = this;
 
     gl.bindBuffer(bufferType, buffer);
 
     if (updateRange.count === -1) {
       // Not using update ranges
-
       gl.bufferSubData(bufferType, 0, array);
     } else {
       gl.bufferSubData(
@@ -72,32 +75,29 @@ function WebGLAttributes(gl, capabilities) {
     attribute.onUploadCallback();
   }
 
-  //
-
-  function get(attribute) {
+  get(attribute) {
     if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-    return buffers.get(attribute);
+    return this.buffers.get(attribute);
   }
 
-  function remove(attribute) {
+  remove(attribute) {
     if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-    const data = buffers.get(attribute);
+    const data = this.buffers.get(attribute);
 
     if (data) {
-      gl.deleteBuffer(data.buffer);
-
-      buffers.delete(attribute);
+      this.gl.deleteBuffer(data.buffer);
+      this.buffers.delete(attribute);
     }
   }
 
-  function update(attribute, bufferType) {
+  update(attribute, bufferType) {
     if (attribute.isGLBufferAttribute) {
-      const cached = buffers.get(attribute);
+      const cached = this.buffers.get(attribute);
 
       if (!cached || cached.version < attribute.version) {
-        buffers.set(attribute, {
+        this.buffers.set(attribute, {
           buffer: attribute.buffer,
           type: attribute.type,
           bytesPerElement: attribute.elementSize,
@@ -110,22 +110,15 @@ function WebGLAttributes(gl, capabilities) {
 
     if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-    const data = buffers.get(attribute);
+    const data = this.buffers.get(attribute);
 
     if (data === undefined) {
-      buffers.set(attribute, createBuffer(attribute, bufferType));
+      this.buffers.set(attribute, this._createBuffer(attribute, bufferType));
     } else if (data.version < attribute.version) {
-      updateBuffer(data.buffer, attribute, bufferType);
-
+      this._updateBuffer(data.buffer, attribute, bufferType);
       data.version = attribute.version;
     }
   }
-
-  return {
-    get,
-    remove,
-    update
-  };
 }
 
 export { WebGLAttributes };
