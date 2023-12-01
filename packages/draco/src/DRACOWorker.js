@@ -72,7 +72,7 @@ export function DRACOWorker() {
     }
 
     if (!decodingStatus.ok() || dracoGeometry.ptr === 0) {
-      throw new Error('DRACOLoader: Decoding failed: ' + decodingStatus.error_msg());
+      throw new Error(`DRACOLoader: Decoding failed: ${decodingStatus.error_msg()}`);
     }
 
     const geometry = { index: null, attributes: [] };
