@@ -90,15 +90,15 @@ class Euler {
     // positive numbers stay positive.
 
     const te = m.elements;
-    const m11 = te[0],
-      m12 = te[4],
-      m13 = te[8];
-    const m21 = te[1],
-      m22 = te[5],
-      m23 = te[9];
-    const m31 = te[2],
-      m32 = te[6],
-      m33 = te[10];
+    const m11 = te[0];
+    const m12 = te[4];
+    const m13 = te[8];
+    const m21 = te[1];
+    const m22 = te[5];
+    const m23 = te[9];
+    const m31 = te[2];
+    const m32 = te[6];
+    const m33 = te[10];
 
     switch (order) {
       case 'XYZ':
@@ -180,7 +180,7 @@ class Euler {
         break;
 
       default:
-        console.warn('Euler: .setFromRotationMatrix() encountered an unknown order: ' + order);
+        console.warn(`Euler: .setFromRotationMatrix() encountered an unknown order: ${order}`);
     }
 
     this._order = order;
