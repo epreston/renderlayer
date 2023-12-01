@@ -39,7 +39,7 @@ export class GLTFLightsExtension {
 
   _loadLight(lightIndex) {
     const parser = this.parser;
-    const cacheKey = 'light:' + lightIndex;
+    const cacheKey = `light:${lightIndex}`;
     let dependency = parser.cache.get(cacheKey);
 
     if (dependency) return dependency;
@@ -89,7 +89,7 @@ export class GLTFLightsExtension {
         break;
 
       default:
-        throw new Error('GLTFLoader: Unexpected light type: ' + lightDef.type);
+        throw new Error(`GLTFLoader: Unexpected light type: ${lightDef.type}`);
     }
 
     // Some lights (e.g. spot) default to a position other than the origin. Reset the position
@@ -100,7 +100,7 @@ export class GLTFLightsExtension {
 
     if (lightDef.intensity !== undefined) lightNode.intensity = lightDef.intensity;
 
-    lightNode.name = parser.createUniqueName(lightDef.name || 'light_' + lightIndex);
+    lightNode.name = parser.createUniqueName(lightDef.name || `light_${lightIndex}`);
 
     dependency = Promise.resolve(lightNode);
 
