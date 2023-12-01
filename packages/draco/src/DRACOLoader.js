@@ -167,8 +167,7 @@ class DRACOLoader extends Loader {
       geometry.setIndex(new BufferAttribute(geometryData.index.array, 1));
     }
 
-    for (let i = 0; i < geometryData.attributes.length; i++) {
-      const result = geometryData.attributes[i];
+    for (const result of geometryData.attributes) {
       const name = result.name;
       const array = result.array;
       const itemSize = result.itemSize;
@@ -280,7 +279,7 @@ class DRACOLoader extends Loader {
               break;
 
             default:
-              console.error('DRACOLoader: Unexpected message, "' + message.type + '"');
+              console.error(`DRACOLoader: Unexpected message, "${message.type}"`);
           }
         };
 
