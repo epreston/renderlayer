@@ -3,7 +3,7 @@ const Cache = {
 
   files: {}, // EP: use map
 
-  add: function (key, file) {
+  add(key, file) {
     if (this.enabled === false) return;
 
     // console.log( 'Cache', 'Adding key:', key );
@@ -11,7 +11,7 @@ const Cache = {
     this.files[key] = file;
   },
 
-  get: function (key) {
+  get(key) {
     if (this.enabled === false) return;
 
     // console.log( 'Cache', 'Checking key:', key );
@@ -19,11 +19,11 @@ const Cache = {
     return this.files[key];
   },
 
-  remove: function (key) {
+  remove(key) {
     delete this.files[key];
   },
 
-  clear: function () {
+  clear() {
     this.files = {};
   }
 };
