@@ -22,7 +22,7 @@ export class GLTFMeshoptCompression {
       const decoder = this.parser.options.meshoptDecoder;
 
       if (!decoder || !decoder.supported) {
-        if (json.extensionsRequired && json.extensionsRequired.indexOf(this.name) >= 0) {
+        if (json.extensionsRequired && json.extensionsRequired.includes(this.name)) {
           throw new Error(
             'GLTFLoader: setMeshoptDecoder must be called before loading compressed files'
           );
