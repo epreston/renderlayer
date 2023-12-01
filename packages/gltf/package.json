@@ -35,7 +35,7 @@
     "@renderlayer/cameras": "~0.0.6",
     "@renderlayer/core": "~0.0.7",
     "@renderlayer/interpolants": "~0.0.3",
-    "@renderlayer/keyframes": "~0.0.4",
+    "@renderlayer/keyframes": "~0.0.5",
     "@renderlayer/lights": "~0.0.4",
     "@renderlayer/loaders": "~0.0.16",
     "@renderlayer/materials": "~0.0.13",

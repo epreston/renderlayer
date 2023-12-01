@@ -19,7 +19,7 @@ class KeyframeTrack {
     if (name === void 0)
       throw new Error("KeyframeTrack: track name is undefined");
     if (times === void 0 || times.length === 0)
-      throw new Error("KeyframeTrack: no keyframes in track named " + name);
+      throw new Error(`KeyframeTrack: no keyframes in track named ${name}`);
     this.name = name;
     this.times = convertArray(times, this.TimeBufferType);
     this.values = convertArray(values, this.ValueBufferType);
@@ -69,7 +69,7 @@ class KeyframeTrack {
         break;
     }
     if (factoryMethod === void 0) {
-      const message = "unsupported interpolation for " + this.ValueTypeName + " keyframe track named " + this.name;
+      const message = `unsupported interpolation for ${this.ValueTypeName} keyframe track named ${this.name}`;
       if (this.createInterpolant === void 0) {
         if (interpolation !== this.DefaultInterpolation) {
           this.setInterpolation(this.DefaultInterpolation);
@@ -121,8 +121,10 @@ class KeyframeTrack {
   // IMPORTANT: We do not shift around keys to the start of the track time, because
   // for interpolated keys this will change their values
   trim(startTime, endTime) {
-    const times = this.times, nKeys = times.length;
-    let from = 0, to = nKeys - 1;
+    const times = this.times;
+    const nKeys = times.length;
+    let from = 0;
+    let to = nKeys - 1;
     while (from !== nKeys && times[from] < startTime) {
       ++from;
     }
@@ -149,7 +151,9 @@ class KeyframeTrack {
       console.warn("KeyframeTrack: Invalid value size in track.", this);
       valid = false;
     }
-    const times = this.times, values = this.values, nKeys = times.length;
+    const times = this.times;
+    const values = this.values;
+    const nKeys = times.length;
     if (nKeys === 0) {
       console.warn("KeyframeTrack: Track is empty.", this);
       valid = false;
@@ -186,7 +190,11 @@ class KeyframeTrack {
   // removes equivalent sequential keys as common in morph target sequences
   // (0,0,0,0,1,1,1,0,0,0,0,0,0,0) --> (0,0,1,1,0,0)
   optimize() {
-    const times = this.times.slice(), values = this.values.slice(), stride = this.getValueSize(), smoothInterpolation = this.getInterpolation() === InterpolateSmooth, lastIndex = times.length - 1;
+    const times = this.times.slice();
+    const values = this.values.slice();
+    const stride = this.getValueSize();
+    const smoothInterpolation = this.getInterpolation() === InterpolateSmooth;
+    const lastIndex = times.length - 1;
     let writeIndex = 1;
     for (let i = 1; i < lastIndex; ++i) {
       let keep = false;
@@ -194,7 +202,9 @@ class KeyframeTrack {
       const timeNext = times[i + 1];
       if (time !== timeNext && (i !== 1 || time !== times[0])) {
         if (!smoothInterpolation) {
-          const offset = i * stride, offsetP = offset - stride, offsetN = offset + stride;
+          const offset = i * stride;
+          const offsetP = offset - stride;
+          const offsetN = offset + stride;
           for (let j = 0; j !== stride; ++j) {
             const value = values[offset + j];
             if (value !== values[offsetP + j] || value !== values[offsetN + j]) {
@@ -209,7 +219,8 @@ class KeyframeTrack {
       if (keep) {
         if (i !== writeIndex) {
           times[writeIndex] = times[i];
-          const readOffset = i * stride, writeOffset = writeIndex * stride;
+          const readOffset = i * stride;
+          const writeOffset = writeIndex * stride;
           for (let j = 0; j !== stride; ++j) {
             values[writeOffset + j] = values[readOffset + j];
           }
