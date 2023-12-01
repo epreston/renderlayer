@@ -26,10 +26,10 @@ class CubicInterpolant extends Interpolant {
 
   intervalChanged_(i1, t0, t1) {
     const pp = this.parameterPositions;
-    let iPrev = i1 - 2,
-      iNext = i1 + 1,
-      tPrev = pp[iPrev],
-      tNext = pp[iNext];
+    let iPrev = i1 - 2;
+    let iNext = i1 + 1;
+    let tPrev = pp[iPrev];
+    let tNext = pp[iNext];
 
     if (tPrev === undefined) {
       switch (this.getSettings_().endingStart) {
@@ -77,8 +77,8 @@ class CubicInterpolant extends Interpolant {
       }
     }
 
-    const halfDt = (t1 - t0) * 0.5,
-      stride = this.valueSize;
+    const halfDt = (t1 - t0) * 0.5;
+    const stride = this.valueSize;
 
     this._weightPrev = halfDt / (t0 - tPrev);
     this._weightNext = halfDt / (tNext - t1);
@@ -87,18 +87,18 @@ class CubicInterpolant extends Interpolant {
   }
 
   interpolate_(i1, t0, t, t1) {
-    const result = this.resultBuffer,
-      values = this.sampleValues,
-      stride = this.valueSize,
-      o1 = i1 * stride,
-      o0 = o1 - stride,
-      oP = this._offsetPrev,
-      oN = this._offsetNext,
-      wP = this._weightPrev,
-      wN = this._weightNext,
-      p = (t - t0) / (t1 - t0),
-      pp = p * p,
-      ppp = pp * p;
+    const result = this.resultBuffer;
+    const values = this.sampleValues;
+    const stride = this.valueSize;
+    const o1 = i1 * stride;
+    const o0 = o1 - stride;
+    const oP = this._offsetPrev;
+    const oN = this._offsetNext;
+    const wP = this._weightPrev;
+    const wN = this._weightNext;
+    const p = (t - t0) / (t1 - t0);
+    const pp = p * p;
+    const ppp = pp * p;
 
     // evaluate polynomials
 
