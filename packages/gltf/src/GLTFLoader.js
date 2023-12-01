@@ -184,7 +184,7 @@ class GLTFLoader extends Loader {
   }
 
   register(callback) {
-    if (this.pluginCallbacks.indexOf(callback) === -1) {
+    if (!this.pluginCallbacks.includes(callback)) {
       this.pluginCallbacks.push(callback);
     }
 
@@ -192,7 +192,7 @@ class GLTFLoader extends Loader {
   }
 
   unregister(callback) {
-    if (this.pluginCallbacks.indexOf(callback) !== -1) {
+    if (this.pluginCallbacks.includes(callback)) {
       this.pluginCallbacks.splice(this.pluginCallbacks.indexOf(callback), 1);
     }
 
@@ -255,8 +255,7 @@ class GLTFLoader extends Loader {
     }
 
     if (json.extensionsUsed) {
-      for (let i = 0; i < json.extensionsUsed.length; ++i) {
-        const extensionName = json.extensionsUsed[i];
+      for (const extensionName of json.extensionsUsed) {
         const extensionsRequired = json.extensionsRequired || [];
 
         switch (extensionName) {
@@ -281,10 +280,10 @@ class GLTFLoader extends Loader {
 
           default:
             if (
-              extensionsRequired.indexOf(extensionName) >= 0 &&
+              extensionsRequired.includes(extensionName) &&
               plugins[extensionName] === undefined
             ) {
-              console.warn('GLTFLoader: Unknown extension "' + extensionName + '".');
+              console.warn(`GLTFLoader: Unknown extension "${extensionName}".`);
             }
         }
       }
