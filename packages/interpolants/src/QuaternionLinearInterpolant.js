@@ -9,10 +9,10 @@ class QuaternionLinearInterpolant extends Interpolant {
   }
 
   interpolate_(i1, t0, t, t1) {
-    const result = this.resultBuffer,
-      values = this.sampleValues,
-      stride = this.valueSize,
-      alpha = (t - t0) / (t1 - t0);
+    const result = this.resultBuffer;
+    const values = this.sampleValues;
+    const stride = this.valueSize;
+    const alpha = (t - t0) / (t1 - t0);
 
     let offset = i1 * stride;
 
