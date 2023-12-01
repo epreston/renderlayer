@@ -95,7 +95,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
         for (const value of values) {
           const info = getUniformSize(value);
 
-          if (typeof value === 'number') {
+          if (typeof value === 'number' || typeof value === 'boolean') {
             uniform.__data[0] = value;
             gl.bufferSubData(gl.UNIFORM_BUFFER, offset + arrayOffset, uniform.__data);
           } else if (value.isMatrix3) {
@@ -133,7 +133,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
     if (cache[index] === undefined) {
       // cache entry does not exist so far
 
-      if (typeof value === 'number') {
+      if (typeof value === 'number' || typeof value === 'boolean') {
         cache[index] = value;
       } else {
         const values = Array.isArray(value) ? value : [value];
@@ -150,7 +150,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
     } else {
       // compare current value with cached entry
 
-      if (typeof value === 'number') {
+      if (typeof value === 'number' || typeof value === 'boolean') {
         if (cache[index] !== value) {
           cache[index] = value;
           return true;
@@ -162,7 +162,12 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
         for (let i = 0; i < cachedObjects.length; i++) {
           const cachedObject = cachedObjects[i];
 
-          if (cachedObject.equals(values[i]) === false) {
+          if (typeof cachedObject === 'number' || typeof cachedObject === 'boolean') {
+            if (cachedObject !== values[i]) {
+              cachedObjects[i] = values[i];
+              return true;
+            }
+          } else if (cachedObject.equals(values[i]) === false) {
             cachedObject.copy(values[i]);
             return true;
           }
@@ -247,8 +252,8 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
 
     // determine sizes according to STD140
 
-    if (typeof value === 'number') {
-      // float/int
+    if (typeof value === 'number' || typeof value === 'boolean') {
+      // float/int/bool
 
       info.boundary = 4;
       info.storage = 4;
