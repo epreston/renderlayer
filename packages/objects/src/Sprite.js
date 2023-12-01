@@ -74,7 +74,8 @@ class Sprite extends Object3D {
     }
 
     const rotation = this.material.rotation;
-    let sin, cos;
+    let sin;
+    let cos;
 
     if (rotation !== 0) {
       cos = Math.cos(rotation);
