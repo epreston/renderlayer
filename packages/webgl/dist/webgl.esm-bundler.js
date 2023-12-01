@@ -10,35 +10,35 @@ import { Uint32BufferAttribute, Uint16BufferAttribute, BufferGeometry, BufferAtt
 import { DataArrayTexture, Texture, Data3DTexture, CubeTexture } from '@renderlayer/textures';
 import { Layers } from '@renderlayer/core';
 
-function WebGLAnimation() {
-  let context = null;
-  let isAnimating = false;
-  let animationLoop = null;
-  let requestId = null;
-  function onAnimationFrame(time, frame) {
-    animationLoop(time, frame);
-    requestId = context.requestAnimationFrame(onAnimationFrame);
+class WebGLAnimation {
+  constructor() {
+    this.context = null;
+    this.isAnimating = false;
+    this.animationLoop = null;
+    this.requestId = null;
   }
-  return {
-    start() {
-      if (isAnimating === true)
-        return;
-      if (animationLoop === null)
-        return;
-      requestId = context.requestAnimationFrame(onAnimationFrame);
-      isAnimating = true;
-    },
-    stop() {
-      context.cancelAnimationFrame(requestId);
-      isAnimating = false;
-    },
-    setAnimationLoop(callback) {
-      animationLoop = callback;
-    },
-    setContext(value) {
-      context = value;
-    }
-  };
+  onAnimationFrame(time, frame) {
+    this.animationLoop(time, frame);
+    this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame.bind(this));
+  }
+  start() {
+    if (this.isAnimating === true)
+      return;
+    if (this.animationLoop === null)
+      return;
+    this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame.bind(this));
+    this.isAnimating = true;
+  }
+  stop() {
+    this.context.cancelAnimationFrame(this.requestId);
+    this.isAnimating = false;
+  }
+  setAnimationLoop(callback) {
+    this.animationLoop = callback;
+  }
+  setContext(value) {
+    this.context = value;
+  }
 }
 
 function WebGLAttributes(gl, capabilities) {
@@ -6758,7 +6758,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
         let arrayOffset = 0;
         for (const value of values) {
           const info2 = getUniformSize(value);
-          if (typeof value === "number") {
+          if (typeof value === "number" || typeof value === "boolean") {
             uniform.__data[0] = value;
             gl.bufferSubData(gl.UNIFORM_BUFFER, offset + arrayOffset, uniform.__data);
           } else if (value.isMatrix3) {
@@ -6787,7 +6787,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
   function hasUniformChanged(uniform, index, cache) {
     const value = uniform.value;
     if (cache[index] === void 0) {
-      if (typeof value === "number") {
+      if (typeof value === "number" || typeof value === "boolean") {
         cache[index] = value;
       } else {
         const values = Array.isArray(value) ? value : [value];
@@ -6799,7 +6799,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
       }
       return true;
     } else {
-      if (typeof value === "number") {
+      if (typeof value === "number" || typeof value === "boolean") {
         if (cache[index] !== value) {
           cache[index] = value;
           return true;
@@ -6809,7 +6809,12 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
         const values = Array.isArray(value) ? value : [value];
         for (let i = 0; i < cachedObjects.length; i++) {
           const cachedObject = cachedObjects[i];
-          if (cachedObject.equals(values[i]) === false) {
+          if (typeof cachedObject === "number" || typeof cachedObject === "boolean") {
+            if (cachedObject !== values[i]) {
+              cachedObjects[i] = values[i];
+              return true;
+            }
+          } else if (cachedObject.equals(values[i]) === false) {
             cachedObject.copy(values[i]);
             return true;
           }
@@ -6863,7 +6868,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
       storage: 0
       // bytes
     };
-    if (typeof value === "number") {
+    if (typeof value === "number" || typeof value === "boolean") {
       info2.boundary = 4;
       info2.storage = 4;
     } else if (value.isVector2) {

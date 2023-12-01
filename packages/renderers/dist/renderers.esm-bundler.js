@@ -570,7 +570,7 @@ class WebGLRenderer {
       if (onAnimationFrameCallback)
         onAnimationFrameCallback(time);
     }
-    const animation = WebGLAnimation();
+    const animation = new WebGLAnimation();
     animation.setAnimationLoop(onAnimationFrame);
     if (typeof self !== "undefined")
       animation.setContext(self);
