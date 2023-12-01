@@ -104,7 +104,7 @@ class Color {
       if (string === undefined) return;
 
       if (parseFloat(string) < 1) {
-        console.warn('Color: Alpha component of ' + style + ' will be ignored.');
+        console.warn(`Color: Alpha component of ${style} will be ignored.`);
       }
     }
 
@@ -179,7 +179,7 @@ class Color {
           break;
 
         default:
-          console.warn('Color: Unknown color model ' + style);
+          console.warn(`Color: Unknown color model ${style}`);
       }
     } else if ((m = /^#([A-Fa-f\d]+)$/.exec(style))) {
       // hex color
@@ -199,7 +199,7 @@ class Color {
         // #ff0000
         return this.setHex(parseInt(hex, 16), colorSpace);
       } else {
-        console.warn('Color: Invalid hex color ' + style);
+        console.warn(`Color: Invalid hex color ${style}`);
       }
     }
 
@@ -258,7 +258,7 @@ class Color {
   }
 
   getHexString(colorSpace = SRGBColorSpace) {
-    return ('000000' + this.getHex(colorSpace).toString(16)).slice(-6);
+    return `000000${this.getHex(colorSpace).toString(16)}`.slice(-6);
   }
 
   getHSL(target, colorSpace = ColorManagement.workingColorSpace) {
@@ -266,14 +266,15 @@ class Color {
 
     ColorManagement.fromWorkingColorSpace(_color.copy(this), colorSpace);
 
-    const r = _color.r,
-      g = _color.g,
-      b = _color.b;
+    const r = _color.r;
+    const g = _color.g;
+    const b = _color.b;
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
 
-    let hue, saturation;
+    let hue;
+    let saturation;
     const lightness = (min + max) / 2.0;
 
     if (min === max) {
@@ -319,9 +320,9 @@ class Color {
   getStyle(colorSpace = SRGBColorSpace) {
     ColorManagement.fromWorkingColorSpace(_color.copy(this), colorSpace);
 
-    const r = _color.r,
-      g = _color.g,
-      b = _color.b;
+    const r = _color.r;
+    const g = _color.g;
+    const b = _color.b;
 
     if (colorSpace !== SRGBColorSpace) {
       // Requires CSS Color Module Level 4 (https://www.w3.org/TR/css-color-4/).
@@ -423,9 +424,9 @@ class Color {
   }
 
   applyMatrix3(m) {
-    const r = this.r,
-      g = this.g,
-      b = this.b;
+    const r = this.r;
+    const g = this.g;
+    const b = this.b;
     const e = m.elements;
 
     this.r = e[0] * r + e[3] * g + e[6] * b;
