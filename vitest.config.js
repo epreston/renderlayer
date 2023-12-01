@@ -1,8 +1,5 @@
 // vitest.config.js
 
-// import types for vitest config autocomplete
-/// <reference types="vitest" />
-
 import { configDefaults, defineConfig } from 'vitest/config';
 import { entries } from './scripts/aliases.js';
 
@@ -22,6 +19,7 @@ export default defineConfig({
     alias: entries
   },
   test: {
+    pool: 'forks',
     // globals: true,
     // disable threads on GH actions to speed it up
     threads: !process.env.GITHUB_ACTIONS,
