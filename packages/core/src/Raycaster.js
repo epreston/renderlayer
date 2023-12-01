@@ -44,7 +44,7 @@ class Raycaster {
       this.ray.direction.set(0, 0, -1).transformDirection(camera.matrixWorld);
       this.camera = camera;
     } else {
-      console.error('Raycaster: Unsupported camera type: ' + camera.type);
+      console.error(`Raycaster: Unsupported camera type: ${camera.type}`);
     }
   }
 
