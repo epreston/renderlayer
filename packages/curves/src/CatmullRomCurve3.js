@@ -22,10 +22,10 @@ which can be placed in CurveUtils.
 
 // fixme: convert to class
 function CubicPoly() {
-  let c0 = 0,
-    c1 = 0,
-    c2 = 0,
-    c3 = 0;
+  let c0 = 0;
+  let c1 = 0;
+  let c2 = 0;
+  let c3 = 0;
 
   /*
    * Compute coefficients for a cubic polynomial
@@ -43,11 +43,11 @@ function CubicPoly() {
   }
 
   return {
-    initCatmullRom: function (x0, x1, x2, x3, tension) {
+    initCatmullRom(x0, x1, x2, x3, tension) {
       init(x1, x2, tension * (x2 - x0), tension * (x3 - x1));
     },
 
-    initNonuniformCatmullRom: function (x0, x1, x2, x3, dt0, dt1, dt2) {
+    initNonuniformCatmullRom(x0, x1, x2, x3, dt0, dt1, dt2) {
       // compute tangents when parameterized in [t1,t2]
       let t1 = (x1 - x0) / dt0 - (x2 - x0) / (dt0 + dt1) + (x2 - x1) / dt1;
       let t2 = (x2 - x1) / dt1 - (x3 - x1) / (dt1 + dt2) + (x3 - x2) / dt2;
@@ -59,7 +59,7 @@ function CubicPoly() {
       init(x1, x2, t1, t2);
     },
 
-    calc: function (t) {
+    calc(t) {
       const t2 = t * t;
       const t3 = t2 * t;
       return c0 + c1 * t + c2 * t2 + c3 * t3;
@@ -104,7 +104,8 @@ class CatmullRomCurve3 extends Curve {
       weight = 1;
     }
 
-    let p0, p3; // 4 points (p1 & p2 defined below)
+    let p0; // 4 points (p1 & p2 defined below)
+    let p3;
 
     if (this.closed || intPoint > 0) {
       p0 = points[(intPoint - 1) % l];
