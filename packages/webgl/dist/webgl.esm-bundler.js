@@ -142,10 +142,29 @@ class WebGLAttributes {
   }
 }
 
+class BindingState {
+  constructor(maxVertexAttributes, vao) {
+    this.newAttributes = [];
+    this.enabledAttributes = [];
+    this.attributeDivisors = [];
+    for (let i = 0; i < maxVertexAttributes; i++) {
+      this.newAttributes[i] = 0;
+      this.enabledAttributes[i] = 0;
+      this.attributeDivisors[i] = 0;
+    }
+    this.geometry = null;
+    this.program = null;
+    this.wireframe = false;
+    this.object = vao;
+    this.attributes = {};
+    this.attributesNum = 0;
+    this.index = null;
+  }
+}
 function WebGLBindingStates(gl, extensions, attributes, capabilities) {
   const maxVertexAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
   const bindingStates = {};
-  const defaultState = createBindingState(null);
+  const defaultState = new BindingState(maxVertexAttributes, null);
   let currentState = defaultState;
   let forceUpdate = false;
   function setup(object, material, program, geometry, index) {
@@ -192,32 +211,10 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     }
     let state = stateMap[wireframe];
     if (state === void 0) {
-      state = createBindingState(createVertexArrayObject());
+      state = new BindingState(maxVertexAttributes, createVertexArrayObject());
       stateMap[wireframe] = state;
     }
     return state;
-  }
-  function createBindingState(vao) {
-    const newAttributes = [];
-    const enabledAttributes = [];
-    const attributeDivisors = [];
-    for (let i = 0; i < maxVertexAttributes; i++) {
-      newAttributes[i] = 0;
-      enabledAttributes[i] = 0;
-      attributeDivisors[i] = 0;
-    }
-    return {
-      // for backward compatibility on non-VAO support browser
-      geometry: null,
-      program: null,
-      wireframe: false,
-      newAttributes,
-      enabledAttributes,
-      attributeDivisors,
-      object: vao,
-      attributes: {},
-      index: null
-    };
   }
   function needsUpdate(object, geometry, program, index) {
     const cachedAttributes = currentState.attributes;
