@@ -1,3 +1,4 @@
+/** @param { WebGL2RenderingContext} gl */
 function WebGLInfo(gl) {
   const memory = {
     geometries: 0,

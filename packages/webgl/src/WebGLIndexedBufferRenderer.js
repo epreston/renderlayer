@@ -1,5 +1,6 @@
 class WebGLIndexedBufferRenderer {
   // EP: check signature
+  /** @param { WebGL2RenderingContext} gl */
   constructor(gl, extensions, info, capabilities) {
     let mode;
 

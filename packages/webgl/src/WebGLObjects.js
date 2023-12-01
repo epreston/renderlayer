@@ -1,3 +1,4 @@
+/** @param { WebGL2RenderingContext} gl */
 function WebGLObjects(gl, geometries, attributes, info) {
   let updateMap = new WeakMap();
 

@@ -1,5 +1,6 @@
 ﻿import { IntType } from '@renderlayer/shared';
 
+/** @param { WebGL2RenderingContext} gl */
 function WebGLBindingStates(gl, extensions, attributes, capabilities) {
   const maxVertexAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
 

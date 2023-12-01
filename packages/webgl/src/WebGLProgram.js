@@ -77,6 +77,7 @@ function getEncodingComponents(colorSpace) {
   }
 }
 
+/** @param { WebGL2RenderingContext} gl */
 function getShaderErrors(gl, shader, type) {
   const status = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
   const errors = gl.getShaderInfoLog(shader).trim();

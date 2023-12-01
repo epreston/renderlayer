@@ -1,4 +1,5 @@
 class WebGLBufferRenderer {
+  /** @param { WebGL2RenderingContext} gl */
   constructor(gl, extensions, info, capabilities) {
     let mode;
 

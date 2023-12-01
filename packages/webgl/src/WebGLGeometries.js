@@ -1,6 +1,7 @@
 import { Uint16BufferAttribute, Uint32BufferAttribute } from '@renderlayer/buffers';
 import { arrayNeedsUint32 } from '@renderlayer/shared';
 
+/** @param { WebGL2RenderingContext} gl */
 function WebGLGeometries(gl, attributes, info, bindingStates) {
   const geometries = {};
   const wireframeAttributes = new WeakMap();

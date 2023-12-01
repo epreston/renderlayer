@@ -2,6 +2,7 @@ import { Vector2, Vector4 } from '@renderlayer/math';
 import { FloatType } from '@renderlayer/shared';
 import { DataArrayTexture } from '@renderlayer/textures';
 
+/** @param { WebGL2RenderingContext} gl */
 function WebGLMorphtargets(gl, capabilities, textures) {
   const morphTextures = new WeakMap();
   const morph = new Vector4();

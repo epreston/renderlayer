@@ -1,3 +1,4 @@
+/** @param { WebGL2RenderingContext} gl */
 function WebGLShader(gl, type, string) {
   const shader = gl.createShader(type);
 

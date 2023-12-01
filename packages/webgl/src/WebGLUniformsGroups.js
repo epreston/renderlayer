@@ -1,3 +1,4 @@
+/** @param { WebGL2RenderingContext} gl */
 function WebGLUniformsGroups(gl, info, capabilities, state) {
   let buffers = {};
   let updateList = {};

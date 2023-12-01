@@ -1,3 +1,4 @@
+/** @param { WebGL2RenderingContext} gl */
 function WebGLAttributes(gl, capabilities) {
   const buffers = new WeakMap();
 

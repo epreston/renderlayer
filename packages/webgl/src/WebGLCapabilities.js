@@ -1,3 +1,4 @@
+/** @param { WebGL2RenderingContext} gl */
 function WebGLCapabilities(gl, extensions, parameters) {
   let maxAnisotropy;
 
