@@ -167,7 +167,7 @@ class WebGLRenderer {
     let bindingStates;
     let uniformsGroups;
     function initGLContext() {
-      extensions = WebGLExtensions(_gl);
+      extensions = new WebGLExtensions(_gl);
       capabilities = WebGLCapabilities(_gl, extensions, parameters);
       extensions.init(capabilities);
       utils = WebGLUtils(_gl, extensions, capabilities);

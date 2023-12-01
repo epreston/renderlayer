@@ -10,7 +10,7 @@ function generateUUID() {
   const d1 = Math.random() * 4294967295 | 0;
   const d2 = Math.random() * 4294967295 | 0;
   const d3 = Math.random() * 4294967295 | 0;
-  const uuid = _lut[d0 & 255] + _lut[d0 >> 8 & 255] + _lut[d0 >> 16 & 255] + _lut[d0 >> 24 & 255] + "-" + _lut[d1 & 255] + _lut[d1 >> 8 & 255] + "-" + _lut[d1 >> 16 & 15 | 64] + _lut[d1 >> 24 & 255] + "-" + _lut[d2 & 63 | 128] + _lut[d2 >> 8 & 255] + "-" + _lut[d2 >> 16 & 255] + _lut[d2 >> 24 & 255] + _lut[d3 & 255] + _lut[d3 >> 8 & 255] + _lut[d3 >> 16 & 255] + _lut[d3 >> 24 & 255];
+  const uuid = `${_lut[d0 & 255] + _lut[d0 >> 8 & 255] + _lut[d0 >> 16 & 255] + _lut[d0 >> 24 & 255]}-${_lut[d1 & 255]}${_lut[d1 >> 8 & 255]}-${_lut[d1 >> 16 & 15 | 64]}${_lut[d1 >> 24 & 255]}-${_lut[d2 & 63 | 128]}${_lut[d2 >> 8 & 255]}-${_lut[d2 >> 16 & 255]}${_lut[d2 >> 24 & 255]}${_lut[d3 & 255]}${_lut[d3 >> 8 & 255]}${_lut[d3 >> 16 & 255]}${_lut[d3 >> 24 & 255]}`;
   return uuid.toLowerCase();
 }
 function clamp(value, min, max) {
@@ -121,7 +121,7 @@ function setQuaternionFromProperEuler(q, a, b, c, order) {
       break;
     default:
       console.warn(
-        "MathUtils: .setQuaternionFromProperEuler() encountered an unknown order: " + order
+        `MathUtils: .setQuaternionFromProperEuler() encountered an unknown order: ${order}`
       );
   }
 }
@@ -211,7 +211,7 @@ class Vector2 {
         this.y = value;
         break;
       default:
-        throw new Error("index is out of range: " + index);
+        throw new Error(`index is out of range: ${index}`);
     }
     return this;
   }
@@ -222,7 +222,7 @@ class Vector2 {
       case 1:
         return this.y;
       default:
-        throw new Error("index is out of range: " + index);
+        throw new Error(`index is out of range: ${index}`);
     }
   }
   /** @returns {this} */
@@ -288,7 +288,8 @@ class Vector2 {
     return this.multiplyScalar(1 / scalar);
   }
   applyMatrix3(m) {
-    const x = this.x, y = this.y;
+    const x = this.x;
+    const y = this.y;
     const e = m.elements;
     this.x = e[0] * x + e[3] * y + e[6];
     this.y = e[1] * x + e[4] * y + e[7];
@@ -376,7 +377,8 @@ class Vector2 {
     return Math.sqrt(this.distanceToSquared(v));
   }
   distanceToSquared(v) {
-    const dx = this.x - v.x, dy = this.y - v.y;
+    const dx = this.x - v.x;
+    const dy = this.y - v.y;
     return dx * dx + dy * dy;
   }
   manhattanDistanceTo(v) {
@@ -414,7 +416,8 @@ class Vector2 {
     return this;
   }
   rotateAround(center, angle) {
-    const c = Math.cos(angle), s = Math.sin(angle);
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
     const x = this.x - center.x;
     const y = this.y - center.y;
     this.x = x * c - y * s + center.x;
@@ -547,8 +550,14 @@ class Quaternion {
     this._w = w;
   }
   static slerpFlat(dst, dstOffset, src0, srcOffset0, src1, srcOffset1, t) {
-    let x0 = src0[srcOffset0 + 0], y0 = src0[srcOffset0 + 1], z0 = src0[srcOffset0 + 2], w0 = src0[srcOffset0 + 3];
-    const x1 = src1[srcOffset1 + 0], y1 = src1[srcOffset1 + 1], z1 = src1[srcOffset1 + 2], w1 = src1[srcOffset1 + 3];
+    let x0 = src0[srcOffset0 + 0];
+    let y0 = src0[srcOffset0 + 1];
+    let z0 = src0[srcOffset0 + 2];
+    let w0 = src0[srcOffset0 + 3];
+    const x1 = src1[srcOffset1 + 0];
+    const y1 = src1[srcOffset1 + 1];
+    const z1 = src1[srcOffset1 + 2];
+    const w1 = src1[srcOffset1 + 3];
     if (t === 0) {
       dst[dstOffset + 0] = x0;
       dst[dstOffset + 1] = y0;
@@ -657,7 +666,10 @@ class Quaternion {
     return this;
   }
   setFromEuler(euler, update) {
-    const x = euler._x, y = euler._y, z = euler._z, order = euler._order;
+    const x = euler._x;
+    const y = euler._y;
+    const z = euler._z;
+    const order = euler._order;
     const cos = Math.cos;
     const sin = Math.sin;
     const c1 = cos(x / 2);
@@ -704,7 +716,7 @@ class Quaternion {
         this._w = c1 * c2 * c3 + s1 * s2 * s3;
         break;
       default:
-        console.warn("Quaternion: .setFromEuler() encountered an unknown order: " + order);
+        console.warn(`Quaternion: .setFromEuler() encountered an unknown order: ${order}`);
     }
     if (update !== false)
       this._onChangeCallback();
@@ -721,7 +733,17 @@ class Quaternion {
     return this;
   }
   setFromRotationMatrix(m) {
-    const te = m.elements, m11 = te[0], m12 = te[4], m13 = te[8], m21 = te[1], m22 = te[5], m23 = te[9], m31 = te[2], m32 = te[6], m33 = te[10], trace = m11 + m22 + m33;
+    const te = m.elements;
+    const m11 = te[0];
+    const m12 = te[4];
+    const m13 = te[8];
+    const m21 = te[1];
+    const m22 = te[5];
+    const m23 = te[9];
+    const m31 = te[2];
+    const m32 = te[6];
+    const m33 = te[10];
+    const trace = m11 + m22 + m33;
     if (trace > 0) {
       const s = 0.5 / Math.sqrt(trace + 1);
       this._w = 0.25 / s;
@@ -830,8 +852,14 @@ class Quaternion {
     return this.multiplyQuaternions(q, this);
   }
   multiplyQuaternions(a, b) {
-    const qax = a._x, qay = a._y, qaz = a._z, qaw = a._w;
-    const qbx = b._x, qby = b._y, qbz = b._z, qbw = b._w;
+    const qax = a._x;
+    const qay = a._y;
+    const qaz = a._z;
+    const qaw = a._w;
+    const qbx = b._x;
+    const qby = b._y;
+    const qbz = b._z;
+    const qbw = b._w;
     this._x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
     this._y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
     this._z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
@@ -844,7 +872,10 @@ class Quaternion {
       return this;
     if (t === 1)
       return this.copy(qb);
-    const x = this._x, y = this._y, z = this._z, w = this._w;
+    const x = this._x;
+    const y = this._y;
+    const z = this._z;
+    const w = this._w;
     let cosHalfTheta = w * qb._w + x * qb._x + y * qb._y + z * qb._z;
     if (cosHalfTheta < 0) {
       this._w = -qb._w;
@@ -987,7 +1018,7 @@ class Vector3 {
         this.z = value;
         break;
       default:
-        throw new Error("index is out of range: " + index);
+        throw new Error(`index is out of range: ${index}`);
     }
     return this;
   }
@@ -1000,7 +1031,7 @@ class Vector3 {
       case 2:
         return this.z;
       default:
-        throw new Error("index is out of range: " + index);
+        throw new Error(`index is out of range: ${index}`);
     }
   }
   /** @returns {this} */
@@ -1104,8 +1135,13 @@ class Vector3 {
     return this;
   }
   applyQuaternion(q) {
-    const vx = this.x, vy = this.y, vz = this.z;
-    const qx = q.x, qy = q.y, qz = q.z, qw = q.w;
+    const vx = this.x;
+    const vy = this.y;
+    const vz = this.z;
+    const qx = q.x;
+    const qy = q.y;
+    const qz = q.z;
+    const qw = q.w;
     const tx = 2 * (qy * vz - qz * vy);
     const ty = 2 * (qz * vx - qx * vz);
     const tz = 2 * (qx * vy - qy * vx);
@@ -1121,7 +1157,9 @@ class Vector3 {
     return this.applyMatrix4(camera.projectionMatrixInverse).applyMatrix4(camera.matrixWorld);
   }
   transformDirection(m) {
-    const x = this.x, y = this.y, z = this.z;
+    const x = this.x;
+    const y = this.y;
+    const z = this.z;
     const e = m.elements;
     this.x = e[0] * x + e[4] * y + e[8] * z;
     this.y = e[1] * x + e[5] * y + e[9] * z;
@@ -1230,8 +1268,12 @@ class Vector3 {
     return this.crossVectors(this, v);
   }
   crossVectors(a, b) {
-    const ax = a.x, ay = a.y, az = a.z;
-    const bx = b.x, by = b.y, bz = b.z;
+    const ax = a.x;
+    const ay = a.y;
+    const az = a.z;
+    const bx = b.x;
+    const by = b.y;
+    const bz = b.z;
     this.x = ay * bz - az * by;
     this.y = az * bx - ax * bz;
     this.z = ax * by - ay * bx;
@@ -1262,7 +1304,9 @@ class Vector3 {
     return Math.sqrt(this.distanceToSquared(v));
   }
   distanceToSquared(v) {
-    const dx = this.x - v.x, dy = this.y - v.y, dz = this.z - v.z;
+    const dx = this.x - v.x;
+    const dy = this.y - v.y;
+    const dz = this.z - v.z;
     return dx * dx + dy * dy + dz * dz;
   }
   manhattanDistanceTo(v) {
@@ -1504,7 +1548,8 @@ class Box3 {
     return _vector$2.distanceToSquared(sphere.center) <= sphere.radius * sphere.radius;
   }
   intersectsPlane(plane) {
-    let min, max;
+    let min;
+    let max;
     if (plane.normal.x > 0) {
       min = plane.normal.x * this.min.x;
       max = plane.normal.x * this.max.x;
@@ -1756,12 +1801,24 @@ class Matrix3 {
     const ae = a.elements;
     const be = b.elements;
     const te = this.elements;
-    const a11 = ae[0], a12 = ae[3], a13 = ae[6];
-    const a21 = ae[1], a22 = ae[4], a23 = ae[7];
-    const a31 = ae[2], a32 = ae[5], a33 = ae[8];
-    const b11 = be[0], b12 = be[3], b13 = be[6];
-    const b21 = be[1], b22 = be[4], b23 = be[7];
-    const b31 = be[2], b32 = be[5], b33 = be[8];
+    const a11 = ae[0];
+    const a12 = ae[3];
+    const a13 = ae[6];
+    const a21 = ae[1];
+    const a22 = ae[4];
+    const a23 = ae[7];
+    const a31 = ae[2];
+    const a32 = ae[5];
+    const a33 = ae[8];
+    const b11 = be[0];
+    const b12 = be[3];
+    const b13 = be[6];
+    const b21 = be[1];
+    const b22 = be[4];
+    const b23 = be[7];
+    const b31 = be[2];
+    const b32 = be[5];
+    const b33 = be[8];
     te[0] = a11 * b11 + a12 * b21 + a13 * b31;
     te[3] = a11 * b12 + a12 * b22 + a13 * b32;
     te[6] = a11 * b13 + a12 * b23 + a13 * b33;
@@ -1788,11 +1845,32 @@ class Matrix3 {
   }
   determinant() {
     const te = this.elements;
-    const a = te[0], b = te[1], c = te[2], d = te[3], e = te[4], f = te[5], g = te[6], h = te[7], i = te[8];
+    const a = te[0];
+    const b = te[1];
+    const c = te[2];
+    const d = te[3];
+    const e = te[4];
+    const f = te[5];
+    const g = te[6];
+    const h = te[7];
+    const i = te[8];
     return a * e * i - a * f * h - b * d * i + b * f * g + c * d * h - c * e * g;
   }
   invert() {
-    const te = this.elements, n11 = te[0], n21 = te[1], n31 = te[2], n12 = te[3], n22 = te[4], n32 = te[5], n13 = te[6], n23 = te[7], n33 = te[8], t11 = n33 * n22 - n32 * n23, t12 = n32 * n13 - n33 * n12, t13 = n23 * n12 - n22 * n13, det = n11 * t11 + n21 * t12 + n31 * t13;
+    const te = this.elements;
+    const n11 = te[0];
+    const n21 = te[1];
+    const n31 = te[2];
+    const n12 = te[3];
+    const n22 = te[4];
+    const n32 = te[5];
+    const n13 = te[6];
+    const n23 = te[7];
+    const n33 = te[8];
+    const t11 = n33 * n22 - n32 * n23;
+    const t12 = n32 * n13 - n33 * n12;
+    const t13 = n23 * n12 - n22 * n13;
+    const det = n11 * t11 + n21 * t12 + n31 * t13;
     if (det === 0)
       return this.set(0, 0, 0, 0, 0, 0, 0, 0, 0);
     const detInv = 1 / det;
@@ -2038,7 +2116,7 @@ const ColorManagement = {
     this._workingColorSpace = colorSpace;
   },
   /** @param {import('./Color.js').Color} color */
-  convert: function(color, sourceColorSpace, targetColorSpace) {
+  convert(color, sourceColorSpace, targetColorSpace) {
     if (this.enabled === false || sourceColorSpace === targetColorSpace || !sourceColorSpace || !targetColorSpace) {
       return color;
     }
@@ -2052,17 +2130,17 @@ const ColorManagement = {
     return targetFromReference(sourceToReference(color));
   },
   /** @param {import('./Color.js').Color} color */
-  fromWorkingColorSpace: function(color, targetColorSpace) {
+  fromWorkingColorSpace(color, targetColorSpace) {
     return this.convert(color, this._workingColorSpace, targetColorSpace);
   },
   /** @param {import('./Color.js').Color} color */
-  toWorkingColorSpace: function(color, sourceColorSpace) {
+  toWorkingColorSpace(color, sourceColorSpace) {
     return this.convert(color, sourceColorSpace, this._workingColorSpace);
   },
-  getPrimaries: function(colorSpace) {
+  getPrimaries(colorSpace) {
     return COLOR_SPACES[colorSpace].primaries;
   },
-  getTransfer: function(colorSpace) {
+  getTransfer(colorSpace) {
     if (colorSpace === NoColorSpace)
       return LinearTransfer;
     return COLOR_SPACES[colorSpace].transfer;
@@ -2150,7 +2228,7 @@ class Color {
       if (string === void 0)
         return;
       if (parseFloat(string) < 1) {
-        console.warn("Color: Alpha component of " + style + " will be ignored.");
+        console.warn(`Color: Alpha component of ${style} will be ignored.`);
       }
     }
     let m;
@@ -2199,7 +2277,7 @@ class Color {
           }
           break;
         default:
-          console.warn("Color: Unknown color model " + style);
+          console.warn(`Color: Unknown color model ${style}`);
       }
     } else if (m = /^#([A-Fa-f\d]+)$/.exec(style)) {
       const hex = m[1];
@@ -2214,7 +2292,7 @@ class Color {
       } else if (size === 6) {
         return this.setHex(parseInt(hex, 16), colorSpace);
       } else {
-        console.warn("Color: Invalid hex color " + style);
+        console.warn(`Color: Invalid hex color ${style}`);
       }
     }
     return this;
@@ -2254,14 +2332,17 @@ class Color {
     return Math.round(clamp(_color.r * 255, 0, 255)) * 65536 + Math.round(clamp(_color.g * 255, 0, 255)) * 256 + Math.round(clamp(_color.b * 255, 0, 255));
   }
   getHexString(colorSpace = SRGBColorSpace) {
-    return ("000000" + this.getHex(colorSpace).toString(16)).slice(-6);
+    return `000000${this.getHex(colorSpace).toString(16)}`.slice(-6);
   }
   getHSL(target, colorSpace = ColorManagement.workingColorSpace) {
     ColorManagement.fromWorkingColorSpace(_color.copy(this), colorSpace);
-    const r = _color.r, g = _color.g, b = _color.b;
+    const r = _color.r;
+    const g = _color.g;
+    const b = _color.b;
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    let hue, saturation;
+    let hue;
+    let saturation;
     const lightness = (min + max) / 2;
     if (min === max) {
       hue = 0;
@@ -2296,7 +2377,9 @@ class Color {
   }
   getStyle(colorSpace = SRGBColorSpace) {
     ColorManagement.fromWorkingColorSpace(_color.copy(this), colorSpace);
-    const r = _color.r, g = _color.g, b = _color.b;
+    const r = _color.r;
+    const g = _color.g;
+    const b = _color.b;
     if (colorSpace !== SRGBColorSpace) {
       return `color(${colorSpace} ${r.toFixed(3)} ${g.toFixed(3)} ${b.toFixed(3)})`;
     }
@@ -2370,7 +2453,9 @@ class Color {
     return this;
   }
   applyMatrix3(m) {
-    const r = this.r, g = this.g, b = this.b;
+    const r = this.r;
+    const g = this.g;
+    const b = this.b;
     const e = m.elements;
     this.r = e[0] * r + e[3] * g + e[6] * b;
     this.g = e[1] * r + e[4] * g + e[7] * b;
@@ -2470,7 +2555,8 @@ class Matrix4 {
     return this;
   }
   copyPosition(m) {
-    const te = this.elements, me = m.elements;
+    const te = this.elements;
+    const me = m.elements;
     te[12] = me[12];
     te[13] = me[13];
     te[14] = me[14];
@@ -2551,7 +2637,9 @@ class Matrix4 {
   }
   makeRotationFromEuler(euler) {
     const te = this.elements;
-    const x = euler.x, y = euler.y, z = euler.z;
+    const x = euler.x;
+    const y = euler.y;
+    const z = euler.z;
     const a = Math.cos(x);
     const b = Math.sin(x);
     const c = Math.cos(y);
@@ -2559,7 +2647,10 @@ class Matrix4 {
     const e = Math.cos(z);
     const f = Math.sin(z);
     if (euler.order === "XYZ") {
-      const ae = a * e, af = a * f, be = b * e, bf = b * f;
+      const ae = a * e;
+      const af = a * f;
+      const be = b * e;
+      const bf = b * f;
       te[0] = c * e;
       te[4] = -c * f;
       te[8] = d;
@@ -2570,7 +2661,10 @@ class Matrix4 {
       te[6] = be + af * d;
       te[10] = a * c;
     } else if (euler.order === "YXZ") {
-      const ce = c * e, cf = c * f, de = d * e, df = d * f;
+      const ce = c * e;
+      const cf = c * f;
+      const de = d * e;
+      const df = d * f;
       te[0] = ce + df * b;
       te[4] = de * b - cf;
       te[8] = a * d;
@@ -2581,7 +2675,10 @@ class Matrix4 {
       te[6] = df + ce * b;
       te[10] = a * c;
     } else if (euler.order === "ZXY") {
-      const ce = c * e, cf = c * f, de = d * e, df = d * f;
+      const ce = c * e;
+      const cf = c * f;
+      const de = d * e;
+      const df = d * f;
       te[0] = ce - df * b;
       te[4] = -a * f;
       te[8] = de + cf * b;
@@ -2592,7 +2689,10 @@ class Matrix4 {
       te[6] = b;
       te[10] = a * c;
     } else if (euler.order === "ZYX") {
-      const ae = a * e, af = a * f, be = b * e, bf = b * f;
+      const ae = a * e;
+      const af = a * f;
+      const be = b * e;
+      const bf = b * f;
       te[0] = c * e;
       te[4] = be * d - af;
       te[8] = ae * d + bf;
@@ -2603,7 +2703,10 @@ class Matrix4 {
       te[6] = b * c;
       te[10] = a * c;
     } else if (euler.order === "YZX") {
-      const ac = a * c, ad = a * d, bc = b * c, bd = b * d;
+      const ac = a * c;
+      const ad = a * d;
+      const bc = b * c;
+      const bd = b * d;
       te[0] = c * e;
       te[4] = bd - ac * f;
       te[8] = bc * f + ad;
@@ -2614,7 +2717,10 @@ class Matrix4 {
       te[6] = ad * f + bc;
       te[10] = ac - bd * f;
     } else if (euler.order === "XZY") {
-      const ac = a * c, ad = a * d, bc = b * c, bd = b * d;
+      const ac = a * c;
+      const ad = a * d;
+      const bc = b * c;
+      const bd = b * d;
       te[0] = c * e;
       te[4] = -f;
       te[8] = d * e;
@@ -2669,8 +2775,38 @@ class Matrix4 {
     const ae = a.elements;
     const be = b.elements;
     const te = this.elements;
-    const a11 = ae[0], a12 = ae[4], a13 = ae[8], a14 = ae[12], a21 = ae[1], a22 = ae[5], a23 = ae[9], a24 = ae[13], a31 = ae[2], a32 = ae[6], a33 = ae[10], a34 = ae[14], a41 = ae[3], a42 = ae[7], a43 = ae[11], a44 = ae[15];
-    const b11 = be[0], b12 = be[4], b13 = be[8], b14 = be[12], b21 = be[1], b22 = be[5], b23 = be[9], b24 = be[13], b31 = be[2], b32 = be[6], b33 = be[10], b34 = be[14], b41 = be[3], b42 = be[7], b43 = be[11], b44 = be[15];
+    const a11 = ae[0];
+    const a12 = ae[4];
+    const a13 = ae[8];
+    const a14 = ae[12];
+    const a21 = ae[1];
+    const a22 = ae[5];
+    const a23 = ae[9];
+    const a24 = ae[13];
+    const a31 = ae[2];
+    const a32 = ae[6];
+    const a33 = ae[10];
+    const a34 = ae[14];
+    const a41 = ae[3];
+    const a42 = ae[7];
+    const a43 = ae[11];
+    const a44 = ae[15];
+    const b11 = be[0];
+    const b12 = be[4];
+    const b13 = be[8];
+    const b14 = be[12];
+    const b21 = be[1];
+    const b22 = be[5];
+    const b23 = be[9];
+    const b24 = be[13];
+    const b31 = be[2];
+    const b32 = be[6];
+    const b33 = be[10];
+    const b34 = be[14];
+    const b41 = be[3];
+    const b42 = be[7];
+    const b43 = be[11];
+    const b44 = be[15];
     te[0] = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
     te[4] = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;
     te[8] = a11 * b13 + a12 * b23 + a13 * b33 + a14 * b43;
@@ -2696,7 +2832,22 @@ class Matrix4 {
   }
   determinant() {
     const te = this.elements;
-    const n11 = te[0], n12 = te[4], n13 = te[8], n14 = te[12], n21 = te[1], n22 = te[5], n23 = te[9], n24 = te[13], n31 = te[2], n32 = te[6], n33 = te[10], n34 = te[14], n41 = te[3], n42 = te[7], n43 = te[11], n44 = te[15];
+    const n11 = te[0];
+    const n12 = te[4];
+    const n13 = te[8];
+    const n14 = te[12];
+    const n21 = te[1];
+    const n22 = te[5];
+    const n23 = te[9];
+    const n24 = te[13];
+    const n31 = te[2];
+    const n32 = te[6];
+    const n33 = te[10];
+    const n34 = te[14];
+    const n41 = te[3];
+    const n42 = te[7];
+    const n43 = te[11];
+    const n44 = te[15];
     return n41 * (+n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34) + n42 * (+n11 * n23 * n34 - n11 * n24 * n33 + n14 * n21 * n33 - n13 * n21 * n34 + n13 * n24 * n31 - n14 * n23 * n31) + n43 * (+n11 * n24 * n32 - n11 * n22 * n34 - n14 * n21 * n32 + n12 * n21 * n34 + n14 * n22 * n31 - n12 * n24 * n31) + n44 * (-n13 * n22 * n31 - n11 * n23 * n32 + n11 * n22 * n33 + n13 * n21 * n32 - n12 * n21 * n33 + n12 * n23 * n31);
   }
   transpose() {
@@ -2720,7 +2871,27 @@ class Matrix4 {
     return this;
   }
   invert() {
-    const te = this.elements, n11 = te[0], n21 = te[1], n31 = te[2], n41 = te[3], n12 = te[4], n22 = te[5], n32 = te[6], n42 = te[7], n13 = te[8], n23 = te[9], n33 = te[10], n43 = te[11], n14 = te[12], n24 = te[13], n34 = te[14], n44 = te[15], t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44, t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 + n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44, t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 - n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44, t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
+    const te = this.elements;
+    const n11 = te[0];
+    const n21 = te[1];
+    const n31 = te[2];
+    const n41 = te[3];
+    const n12 = te[4];
+    const n22 = te[5];
+    const n32 = te[6];
+    const n42 = te[7];
+    const n13 = te[8];
+    const n23 = te[9];
+    const n33 = te[10];
+    const n43 = te[11];
+    const n14 = te[12];
+    const n24 = te[13];
+    const n34 = te[14];
+    const n44 = te[15];
+    const t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44;
+    const t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 + n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44;
+    const t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 - n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44;
+    const t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
     const det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
     if (det === 0)
       return this.set(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -2930,9 +3101,25 @@ class Matrix4 {
   }
   compose(position, quaternion, scale) {
     const te = this.elements;
-    const x = quaternion._x, y = quaternion._y, z = quaternion._z, w = quaternion._w;
-    const x2 = x + x, y2 = y + y, z2 = z + z, xx = x * x2, xy = x * y2, xz = x * z2, yy = y * y2, yz = y * z2, zz = z * z2, wx = w * x2, wy = w * y2, wz = w * z2;
-    const sx = scale.x, sy = scale.y, sz = scale.z;
+    const x = quaternion._x;
+    const y = quaternion._y;
+    const z = quaternion._z;
+    const w = quaternion._w;
+    const x2 = x + x;
+    const y2 = y + y;
+    const z2 = z + z;
+    const xx = x * x2;
+    const xy = x * y2;
+    const xz = x * z2;
+    const yy = y * y2;
+    const yz = y * z2;
+    const zz = z * z2;
+    const wx = w * x2;
+    const wy = w * y2;
+    const wz = w * z2;
+    const sx = scale.x;
+    const sy = scale.y;
+    const sz = scale.z;
     te[0] = (1 - (yy + zz)) * sx;
     te[1] = (xy + wz) * sx;
     te[2] = (xz - wy) * sx;
@@ -2987,7 +3174,8 @@ class Matrix4 {
     const y = 2 * near / (top - bottom);
     const a = (right + left) / (right - left);
     const b = (top + bottom) / (top - bottom);
-    let c, d;
+    let c;
+    let d;
     if (webgpu) {
       c = -far / (far - near);
       d = -far * near / (far - near);
@@ -3005,7 +3193,8 @@ class Matrix4 {
     const p = 1 / (far - near);
     const x = (right + left) * w;
     const y = (top + bottom) * h;
-    let z, zInv;
+    let z;
+    let zInv;
     if (webgpu) {
       z = near * p;
       zInv = -1 * p;
@@ -3122,9 +3311,15 @@ class Euler {
   }
   setFromRotationMatrix(m, order = this._order, update = true) {
     const te = m.elements;
-    const m11 = te[0], m12 = te[4], m13 = te[8];
-    const m21 = te[1], m22 = te[5], m23 = te[9];
-    const m31 = te[2], m32 = te[6], m33 = te[10];
+    const m11 = te[0];
+    const m12 = te[4];
+    const m13 = te[8];
+    const m21 = te[1];
+    const m22 = te[5];
+    const m23 = te[9];
+    const m31 = te[2];
+    const m32 = te[6];
+    const m33 = te[10];
     switch (order) {
       case "XYZ":
         this._y = Math.asin(clamp(m13, -1, 1));
@@ -3187,7 +3382,7 @@ class Euler {
         }
         break;
       default:
-        console.warn("Euler: .setFromRotationMatrix() encountered an unknown order: " + order);
+        console.warn(`Euler: .setFromRotationMatrix() encountered an unknown order: ${order}`);
     }
     this._order = order;
     if (update === true)
@@ -3493,10 +3688,22 @@ class Frustum {
   setFromProjectionMatrix(m, webgpu = false) {
     const planes = this.planes;
     const me = m.elements;
-    const me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
-    const me4 = me[4], me5 = me[5], me6 = me[6], me7 = me[7];
-    const me8 = me[8], me9 = me[9], me10 = me[10], me11 = me[11];
-    const me12 = me[12], me13 = me[13], me14 = me[14], me15 = me[15];
+    const me0 = me[0];
+    const me1 = me[1];
+    const me2 = me[2];
+    const me3 = me[3];
+    const me4 = me[4];
+    const me5 = me[5];
+    const me6 = me[6];
+    const me7 = me[7];
+    const me8 = me[8];
+    const me9 = me[9];
+    const me10 = me[10];
+    const me11 = me[11];
+    const me12 = me[12];
+    const me13 = me[13];
+    const me14 = me[14];
+    const me15 = me[15];
     planes[0].setComponents(me3 - me0, me7 - me4, me11 - me8, me15 - me12).normalize();
     planes[1].setComponents(me3 + me0, me7 + me4, me11 + me8, me15 + me12).normalize();
     planes[2].setComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13).normalize();
@@ -3691,7 +3898,10 @@ class Ray {
     const b1 = -_diff.dot(_segDir);
     const c = _diff.lengthSq();
     const det = Math.abs(1 - a01 * a01);
-    let s0, s1, sqrDist, extDet;
+    let s0;
+    let s1;
+    let sqrDist;
+    let extDet;
     if (det > 0) {
       s0 = a01 * b1 - b0;
       s1 = a01 * b0 - b1;
@@ -3790,8 +4000,15 @@ class Ray {
     return false;
   }
   intersectBox(box, target) {
-    let tmin, tmax, tymin, tymax, tzmin, tzmax;
-    const invdirx = 1 / this.direction.x, invdiry = 1 / this.direction.y, invdirz = 1 / this.direction.z;
+    let tmin;
+    let tmax;
+    let tymin;
+    let tymax;
+    let tzmin;
+    let tzmax;
+    const invdirx = 1 / this.direction.x;
+    const invdiry = 1 / this.direction.y;
+    const invdirz = 1 / this.direction.z;
     const origin = this.origin;
     if (invdirx >= 0) {
       tmin = (box.min.x - origin.x) * invdirx;
@@ -4005,7 +4222,8 @@ class Triangle {
     const a = this.a;
     const b = this.b;
     const c = this.c;
-    let v, w;
+    let v;
+    let w;
     _vab.subVectors(b, a);
     _vac.subVectors(c, a);
     _vap.subVectors(p, a);
@@ -4117,7 +4335,7 @@ class Vector4 {
         this.w = value;
         break;
       default:
-        throw new Error("index is out of range: " + index);
+        throw new Error(`index is out of range: ${index}`);
     }
     return this;
   }
@@ -4132,7 +4350,7 @@ class Vector4 {
       case 3:
         return this.w;
       default:
-        throw new Error("index is out of range: " + index);
+        throw new Error(`index is out of range: ${index}`);
     }
   }
   /** @returns {this} */
@@ -4210,7 +4428,10 @@ class Vector4 {
     return this;
   }
   applyMatrix4(m) {
-    const x = this.x, y = this.y, z = this.z, w = this.w;
+    const x = this.x;
+    const y = this.y;
+    const z = this.z;
+    const w = this.w;
     const e = m.elements;
     this.x = e[0] * x + e[4] * y + e[8] * z + e[12] * w;
     this.y = e[1] * x + e[5] * y + e[9] * z + e[13] * w;
@@ -4236,10 +4457,22 @@ class Vector4 {
     return this;
   }
   setAxisAngleFromRotationMatrix(m) {
-    let angle, x, y, z;
+    let angle;
+    let x;
+    let y;
+    let z;
     const epsilon = 0.01;
     const epsilon2 = 0.1;
-    const te = m.elements, m11 = te[0], m12 = te[4], m13 = te[8], m21 = te[1], m22 = te[5], m23 = te[9], m31 = te[2], m32 = te[6], m33 = te[10];
+    const te = m.elements;
+    const m11 = te[0];
+    const m12 = te[4];
+    const m13 = te[8];
+    const m21 = te[1];
+    const m22 = te[5];
+    const m23 = te[9];
+    const m31 = te[2];
+    const m32 = te[6];
+    const m33 = te[10];
     if (Math.abs(m12 - m21) < epsilon && Math.abs(m13 - m31) < epsilon && Math.abs(m23 - m32) < epsilon) {
       if (Math.abs(m12 + m21) < epsilon2 && Math.abs(m13 + m31) < epsilon2 && Math.abs(m23 + m32) < epsilon2 && Math.abs(m11 + m22 + m33 - 3) < epsilon2) {
         this.set(1, 0, 0, 0);

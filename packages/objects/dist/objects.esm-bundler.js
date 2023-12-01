@@ -695,7 +695,8 @@ class LOD extends Object3D {
   getObjectForDistance(distance) {
     const levels = this.levels;
     if (levels.length > 0) {
-      let i, l;
+      let i;
+      let l;
       for (i = 1, l = levels.length; i < l; i++) {
         let levelDistance = levels[i].distance;
         if (levels[i].object.visible) {
@@ -724,7 +725,8 @@ class LOD extends Object3D {
       _v2.setFromMatrixPosition(this.matrixWorld);
       const distance = _v1.distanceTo(_v2) / camera.zoom;
       levels[0].object.visible = true;
-      let i, l;
+      let i;
+      let l;
       for (i = 1, l = levels.length; i < l; i++) {
         let levelDistance = levels[i].distance;
         if (levels[i].object.visible) {
@@ -1108,7 +1110,7 @@ class SkinnedMesh extends Mesh {
     } else if (this.bindMode === DetachedBindMode) {
       this.bindMatrixInverse.copy(this.bindMatrix).invert();
     } else {
-      console.warn("SkinnedMesh: Unrecognized bindMode: " + this.bindMode);
+      console.warn(`SkinnedMesh: Unrecognized bindMode: ${this.bindMode}`);
     }
   }
   applyBoneTransform(index, vector) {
@@ -1201,7 +1203,8 @@ class Sprite extends Object3D {
       _worldScale.multiplyScalar(-_mvPosition.z);
     }
     const rotation = this.material.rotation;
-    let sin, cos;
+    let sin;
+    let cos;
     if (rotation !== 0) {
       cos = Math.cos(rotation);
       sin = Math.sin(rotation);

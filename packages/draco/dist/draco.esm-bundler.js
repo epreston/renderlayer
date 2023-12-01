@@ -57,7 +57,7 @@ function DRACOWorker() {
       throw new Error("DRACOLoader: Unexpected geometry type.");
     }
     if (!decodingStatus.ok() || dracoGeometry.ptr === 0) {
-      throw new Error("DRACOLoader: Decoding failed: " + decodingStatus.error_msg());
+      throw new Error(`DRACOLoader: Decoding failed: ${decodingStatus.error_msg()}`);
     }
     const geometry = { index: null, attributes: [] };
     for (const attributeName in attributeIDs) {
@@ -240,8 +240,7 @@ class DRACOLoader extends Loader {
     if (geometryData.index) {
       geometry.setIndex(new BufferAttribute(geometryData.index.array, 1));
     }
-    for (let i = 0; i < geometryData.attributes.length; i++) {
-      const result = geometryData.attributes[i];
+    for (const result of geometryData.attributes) {
       const name = result.name;
       const array = result.array;
       const itemSize = result.itemSize;
@@ -322,7 +321,7 @@ class DRACOLoader extends Loader {
               worker2._callbacks[message.id].reject(message);
               break;
             default:
-              console.error('DRACOLoader: Unexpected message, "' + message.type + '"');
+              console.error(`DRACOLoader: Unexpected message, "${message.type}"`);
           }
         };
         this.workerPool.push(worker2);

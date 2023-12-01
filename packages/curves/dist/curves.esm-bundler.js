@@ -204,7 +204,10 @@ class Curve {
 }
 
 function CubicPoly() {
-  let c0 = 0, c1 = 0, c2 = 0, c3 = 0;
+  let c0 = 0;
+  let c1 = 0;
+  let c2 = 0;
+  let c3 = 0;
   function init(x0, x1, t0, t1) {
     c0 = x0;
     c1 = t0;
@@ -212,17 +215,17 @@ function CubicPoly() {
     c3 = 2 * x0 - 2 * x1 + t0 + t1;
   }
   return {
-    initCatmullRom: function(x0, x1, x2, x3, tension) {
+    initCatmullRom(x0, x1, x2, x3, tension) {
       init(x1, x2, tension * (x2 - x0), tension * (x3 - x1));
     },
-    initNonuniformCatmullRom: function(x0, x1, x2, x3, dt0, dt1, dt2) {
+    initNonuniformCatmullRom(x0, x1, x2, x3, dt0, dt1, dt2) {
       let t1 = (x1 - x0) / dt0 - (x2 - x0) / (dt0 + dt1) + (x2 - x1) / dt1;
       let t2 = (x2 - x1) / dt1 - (x3 - x1) / (dt1 + dt2) + (x3 - x2) / dt2;
       t1 *= dt1;
       t2 *= dt1;
       init(x1, x2, t1, t2);
     },
-    calc: function(t) {
+    calc(t) {
       const t2 = t * t;
       const t3 = t2 * t;
       return c0 + c1 * t + c2 * t2 + c3 * t3;
@@ -256,7 +259,8 @@ class CatmullRomCurve3 extends Curve {
       intPoint = l - 2;
       weight = 1;
     }
-    let p0, p3;
+    let p0;
+    let p3;
     if (this.closed || intPoint > 0) {
       p0 = points[(intPoint - 1) % l];
     } else {
@@ -381,7 +385,10 @@ class CubicBezierCurve3 extends Curve {
   }
   getPoint(t, optionalTarget = new Vector3()) {
     const point = optionalTarget;
-    const v0 = this.v0, v1 = this.v1, v2 = this.v2, v3 = this.v3;
+    const v0 = this.v0;
+    const v1 = this.v1;
+    const v2 = this.v2;
+    const v3 = this.v3;
     point.set(
       CubicBezier(t, v0.x, v1.x, v2.x, v3.x),
       CubicBezier(t, v0.y, v1.y, v2.y, v3.y),

@@ -63,7 +63,7 @@ class GLTFLightsExtension {
   }
   _loadLight(lightIndex) {
     const parser = this.parser;
-    const cacheKey = "light:" + lightIndex;
+    const cacheKey = `light:${lightIndex}`;
     let dependency = parser.cache.get(cacheKey);
     if (dependency)
       return dependency;
@@ -102,13 +102,13 @@ class GLTFLightsExtension {
         lightNode.decay = 2;
         break;
       default:
-        throw new Error("GLTFLoader: Unexpected light type: " + lightDef.type);
+        throw new Error(`GLTFLoader: Unexpected light type: ${lightDef.type}`);
     }
     lightNode.position.set(0, 0, 0);
     assignExtrasToUserData(lightNode, lightDef);
     if (lightDef.intensity !== void 0)
       lightNode.intensity = lightDef.intensity;
-    lightNode.name = parser.createUniqueName(lightDef.name || "light_" + lightIndex);
+    lightNode.name = parser.createUniqueName(lightDef.name || `light_${lightIndex}`);
     dependency = Promise.resolve(lightNode);
     parser.cache.add(cacheKey, dependency);
     return dependency;
@@ -536,7 +536,7 @@ class GLTFTextureBasisUExtension {
     const extension = textureDef.extensions[this.name];
     const loader = parser.options.ktx2Loader;
     if (!loader) {
-      if (json.extensionsRequired && json.extensionsRequired.indexOf(this.name) >= 0) {
+      if (json.extensionsRequired && json.extensionsRequired.includes(this.name)) {
         throw new Error("GLTFLoader: setKTX2Loader must be called before loading KTX2 textures");
       } else {
         return null;
@@ -571,7 +571,7 @@ class GLTFTextureWebPExtension {
     return this.detectSupport().then(function(isSupported) {
       if (isSupported)
         return parser.loadTextureImage(textureIndex, extension.source, loader);
-      if (json.extensionsRequired && json.extensionsRequired.indexOf(name) >= 0) {
+      if (json.extensionsRequired && json.extensionsRequired.includes(name)) {
         throw new Error("GLTFLoader: WebP required by asset but unsupported.");
       }
       return parser.loadTexture(textureIndex);
@@ -649,7 +649,7 @@ class GLTFMeshoptCompression {
       const buffer = this.parser.getDependency("buffer", extensionDef.buffer);
       const decoder = this.parser.options.meshoptDecoder;
       if (!decoder || !decoder.supported) {
-        if (json.extensionsRequired && json.extensionsRequired.indexOf(this.name) >= 0) {
+        if (json.extensionsRequired && json.extensionsRequired.includes(this.name)) {
           throw new Error(
             "GLTFLoader: setMeshoptDecoder must be called before loading compressed files"
           );
@@ -1061,7 +1061,7 @@ class GLTFParser {
     let firefoxVersion = -1;
     if (typeof navigator !== "undefined") {
       isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) === true;
-      isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
+      isFirefox = navigator.userAgent.includes("Firefox");
       firefoxVersion = isFirefox ? navigator.userAgent.match(/Firefox\/([0-9]+)\./)[1] : -1;
     }
     if (typeof createImageBitmap === "undefined" || isSafari || isFirefox && firefoxVersion < 98) {
@@ -1181,7 +1181,7 @@ class GLTFParser {
       }
     };
     updateMappings(object, ref);
-    ref.name += "_instance_" + cache.uses[index]++;
+    ref.name += `_instance_${cache.uses[index]++}`;
     return ref;
   }
   _invokeOne(func) {
@@ -1212,7 +1212,7 @@ class GLTFParser {
    * @return {Promise<Object3D|Material|Texture|AnimationClip|ArrayBuffer|Object>}
    */
   getDependency(type, index) {
-    const cacheKey = type + ":" + index;
+    const cacheKey = `${type}:${index}`;
     let dependency = this.cache.get(cacheKey);
     if (!dependency) {
       switch (type) {
@@ -1266,7 +1266,7 @@ class GLTFParser {
             return ext !== this && ext.getDependency && ext.getDependency(type, index);
           });
           if (!dependency) {
-            throw new Error("Unknown type: " + type);
+            throw new Error(`Unknown type: ${type}`);
           }
           break;
       }
@@ -1302,7 +1302,7 @@ class GLTFParser {
     const bufferDef = this.json.buffers[bufferIndex];
     const loader = this.fileLoader;
     if (bufferDef.type && bufferDef.type !== "arraybuffer") {
-      throw new Error("GLTFLoader: " + bufferDef.type + " buffer type is not supported.");
+      throw new Error(`GLTFLoader: ${bufferDef.type} buffer type is not supported.`);
     }
     if (bufferDef.uri === void 0 && bufferIndex === 0) {
       return Promise.resolve(this.extensions[EXTENSIONS.KHR_BINARY_GLTF].body);
@@ -1314,7 +1314,7 @@ class GLTFParser {
         resolve,
         void 0,
         function() {
-          reject(new Error('GLTFLoader: Failed to load buffer "' + bufferDef.uri + '".'));
+          reject(new Error(`GLTFLoader: Failed to load buffer "${bufferDef.uri}".`));
         }
       );
     });
@@ -1371,10 +1371,11 @@ class GLTFParser {
       const byteOffset = accessorDef.byteOffset || 0;
       const byteStride = accessorDef.bufferView !== void 0 ? json.bufferViews[accessorDef.bufferView].byteStride : void 0;
       const normalized = accessorDef.normalized === true;
-      let array, bufferAttribute;
+      let array;
+      let bufferAttribute;
       if (byteStride && byteStride !== itemBytes) {
         const ibSlice = Math.floor(byteOffset / byteStride);
-        const ibCacheKey = "InterleavedBuffer:" + accessorDef.bufferView + ":" + accessorDef.componentType + ":" + ibSlice + ":" + accessorDef.count;
+        const ibCacheKey = `InterleavedBuffer:${accessorDef.bufferView}:${accessorDef.componentType}:${ibSlice}:${accessorDef.count}`;
         let ib = parser.cache.get(ibCacheKey);
         if (!ib) {
           array = new TypedArray(
@@ -1461,7 +1462,7 @@ class GLTFParser {
     const json = this.json;
     const textureDef = json.textures[textureIndex];
     const sourceDef = json.images[sourceIndex];
-    const cacheKey = (sourceDef.uri || sourceDef.bufferView) + ":" + textureDef.sampler;
+    const cacheKey = `${sourceDef.uri || sourceDef.bufferView}:${textureDef.sampler}`;
     if (this.textureCache[cacheKey]) {
       return this.textureCache[cacheKey];
     }
@@ -1504,7 +1505,7 @@ class GLTFParser {
         return sourceURI;
       });
     } else if (sourceDef.uri === void 0) {
-      throw new Error("GLTFLoader: Image " + sourceIndex + " is missing URI and bufferView");
+      throw new Error(`GLTFLoader: Image ${sourceIndex} is missing URI and bufferView`);
     }
     const promise = Promise.resolve(sourceURI).then(function(sourceURI2) {
       return new Promise(function(resolve, reject) {
@@ -1580,7 +1581,7 @@ class GLTFParser {
     const useVertexColors = geometry.attributes.color !== void 0;
     const useFlatShading = geometry.attributes.normal === void 0;
     if (mesh.isPoints) {
-      const cacheKey = "PointsMaterial:" + material.uuid;
+      const cacheKey = `PointsMaterial:${material.uuid}`;
       let pointsMaterial = this.cache.get(cacheKey);
       if (!pointsMaterial) {
         pointsMaterial = new PointsMaterial();
@@ -1592,7 +1593,7 @@ class GLTFParser {
       }
       material = pointsMaterial;
     } else if (mesh.isLine) {
-      const cacheKey = "LineBasicMaterial:" + material.uuid;
+      const cacheKey = `LineBasicMaterial:${material.uuid}`;
       let lineMaterial = this.cache.get(cacheKey);
       if (!lineMaterial) {
         lineMaterial = new LineBasicMaterial();
@@ -1604,7 +1605,7 @@ class GLTFParser {
       material = lineMaterial;
     }
     if (useDerivativeTangents || useVertexColors || useFlatShading) {
-      let cacheKey = "ClonedMaterial:" + material.uuid + ":";
+      let cacheKey = `ClonedMaterial:${material.uuid}:`;
       if (useDerivativeTangents)
         cacheKey += "derivative-tangents:";
       if (useVertexColors)
@@ -1761,7 +1762,7 @@ class GLTFParser {
   createUniqueName(originalName) {
     const sanitizedName = PropertyBinding.sanitizeNodeName(originalName || "");
     if (sanitizedName in this.nodeNamesUsed) {
-      return sanitizedName + "_" + ++this.nodeNamesUsed[sanitizedName];
+      return `${sanitizedName}_${++this.nodeNamesUsed[sanitizedName]}`;
     } else {
       this.nodeNamesUsed[sanitizedName] = 0;
       return sanitizedName;
@@ -1849,12 +1850,12 @@ class GLTFParser {
         } else if (primitive.mode === WEBGL_CONSTANTS.POINTS) {
           mesh = new Points(geometry, material);
         } else {
-          throw new Error("GLTFLoader: Primitive mode unsupported: " + primitive.mode);
+          throw new Error(`GLTFLoader: Primitive mode unsupported: ${primitive.mode}`);
         }
         if (Object.keys(mesh.geometry.morphAttributes).length > 0) {
           updateMorphTargets(mesh, meshDef);
         }
-        mesh.name = parser.createUniqueName(meshDef.name || "mesh_" + meshIndex);
+        mesh.name = parser.createUniqueName(meshDef.name || `mesh_${meshIndex}`);
         assignExtrasToUserData(mesh, meshDef);
         if (primitive.extensions)
           addUnknownExtensionsToUserData(extensions, mesh, primitive);
@@ -1963,7 +1964,7 @@ class GLTFParser {
     const json = this.json;
     const parser = this;
     const animationDef = json.animations[animationIndex];
-    const animationName = animationDef.name ? animationDef.name : "animation_" + animationIndex;
+    const animationName = animationDef.name ? animationDef.name : `animation_${animationIndex}`;
     const pendingNodes = [];
     const pendingInputAccessors = [];
     const pendingOutputAccessors = [];
@@ -2240,7 +2241,7 @@ class GLTFParser {
     const outputArray = this._getArrayFromAccessor(outputAccessor);
     for (let j = 0, jl = targetNames.length; j < jl; j++) {
       const track = new TypedKeyframeTrack(
-        targetNames[j] + "." + PATH_PROPERTIES[target.path],
+        `${targetNames[j]}.${PATH_PROPERTIES[target.path]}`,
         inputAccessor.array,
         outputArray,
         interpolation
@@ -2370,13 +2371,13 @@ function createPrimitiveKey(primitiveDef) {
   let geometryKey;
   const dracoExtension = primitiveDef.extensions && primitiveDef.extensions[EXTENSIONS.KHR_DRACO_MESH_COMPRESSION];
   if (dracoExtension) {
-    geometryKey = "draco:" + dracoExtension.bufferView + ":" + dracoExtension.indices + ":" + createAttributesKey(dracoExtension.attributes);
+    geometryKey = `draco:${dracoExtension.bufferView}:${dracoExtension.indices}:${createAttributesKey(dracoExtension.attributes)}`;
   } else {
-    geometryKey = primitiveDef.indices + ":" + createAttributesKey(primitiveDef.attributes) + ":" + primitiveDef.mode;
+    geometryKey = `${primitiveDef.indices}:${createAttributesKey(primitiveDef.attributes)}:${primitiveDef.mode}`;
   }
   if (primitiveDef.targets !== void 0) {
     for (let i = 0, il = primitiveDef.targets.length; i < il; i++) {
-      geometryKey += ":" + createAttributesKey(primitiveDef.targets[i]);
+      geometryKey += `:${createAttributesKey(primitiveDef.targets[i])}`;
     }
   }
   return geometryKey;
@@ -2385,12 +2386,12 @@ function createAttributesKey(attributes) {
   let attributesKey = "";
   const keys = Object.keys(attributes).sort();
   for (let i = 0, il = keys.length; i < il; i++) {
-    attributesKey += keys[i] + ":" + attributes[keys[i]] + ";";
+    attributesKey += `${keys[i]}:${attributes[keys[i]]};`;
   }
   return attributesKey;
 }
-function getNormalizedComponentScale(constructor) {
-  switch (constructor) {
+function getNormalizedComponentScale(constructor_type) {
+  switch (constructor_type) {
     case Int8Array:
       return 1 / 127;
     case Uint8Array:
@@ -2611,13 +2612,13 @@ class GLTFLoader extends Loader {
     return this;
   }
   register(callback) {
-    if (this.pluginCallbacks.indexOf(callback) === -1) {
+    if (!this.pluginCallbacks.includes(callback)) {
       this.pluginCallbacks.push(callback);
     }
     return this;
   }
   unregister(callback) {
-    if (this.pluginCallbacks.indexOf(callback) !== -1) {
+    if (this.pluginCallbacks.includes(callback)) {
       this.pluginCallbacks.splice(this.pluginCallbacks.indexOf(callback), 1);
     }
     return this;
@@ -2666,8 +2667,7 @@ class GLTFLoader extends Loader {
       extensions[plugin.name] = true;
     }
     if (json.extensionsUsed) {
-      for (let i = 0; i < json.extensionsUsed.length; ++i) {
-        const extensionName = json.extensionsUsed[i];
+      for (const extensionName of json.extensionsUsed) {
         const extensionsRequired = json.extensionsRequired || [];
         switch (extensionName) {
           case EXTENSIONS.KHR_MATERIALS_UNLIT:
@@ -2686,8 +2686,8 @@ class GLTFLoader extends Loader {
             extensions[extensionName] = new GLTFMeshQuantizationExtension();
             break;
           default:
-            if (extensionsRequired.indexOf(extensionName) >= 0 && plugins[extensionName] === void 0) {
-              console.warn('GLTFLoader: Unknown extension "' + extensionName + '".');
+            if (extensionsRequired.includes(extensionName) && plugins[extensionName] === void 0) {
+              console.warn(`GLTFLoader: Unknown extension "${extensionName}".`);
             }
         }
       }

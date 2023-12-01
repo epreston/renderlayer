@@ -15,20 +15,20 @@ const Cache = {
   enabled: false,
   files: {},
   // EP: use map
-  add: function(key, file) {
+  add(key, file) {
     if (this.enabled === false)
       return;
     this.files[key] = file;
   },
-  get: function(key) {
+  get(key) {
     if (this.enabled === false)
       return;
     return this.files[key];
   },
-  remove: function(key) {
+  remove(key) {
     delete this.files[key];
   },
-  clear: function() {
+  clear() {
     this.files = {};
   }
 };
@@ -1089,14 +1089,14 @@ class ObjectLoader extends Loader {
         } catch (error) {
           if (onError !== void 0)
             onError(error);
-          console.error("ObjectLoader: Can't parse " + url + ".", error.message);
+          console.error(`ObjectLoader: Can't parse ${url}.`, error.message);
           return;
         }
         const metadata = json.metadata;
         if (metadata === void 0 || metadata.type === void 0 || metadata.type.toLowerCase() === "geometry") {
           if (onError !== void 0)
-            onError(new Error("ObjectLoader: Can't load " + url));
-          console.error("ObjectLoader: Can't load " + url);
+            onError(new Error(`ObjectLoader: Can't load ${url}`));
+          console.error(`ObjectLoader: Can't load ${url}`);
           return;
         }
         scope.parse(json, onLoad);
@@ -1117,7 +1117,7 @@ class ObjectLoader extends Loader {
     const json = JSON.parse(text);
     const metadata = json.metadata;
     if (metadata === void 0 || metadata.type === void 0 || metadata.type.toLowerCase() === "geometry") {
-      throw new Error("ObjectLoader: Can't load " + url);
+      throw new Error(`ObjectLoader: Can't load ${url}`);
     }
     return await scope.parseAsync(json);
   }
@@ -1232,8 +1232,7 @@ class ObjectLoader extends Loader {
   parseAnimations(json) {
     const animations = {};
     if (json !== void 0) {
-      for (let i = 0; i < json.length; i++) {
-        const data = json[i];
+      for (const data of json) {
         const clip = AnimationClip.parse(data);
         animations[clip.uuid] = clip;
       }
@@ -1484,7 +1483,8 @@ class ObjectLoader extends Loader {
       }
       return textures[uuid];
     }
-    let geometry, material;
+    let geometry;
+    let material;
     switch (data.type) {
       case "Scene":
         object = new Scene();
@@ -1673,8 +1673,7 @@ class ObjectLoader extends Loader {
     }
     if (data.animations !== void 0) {
       const objectAnimations = data.animations;
-      for (let i = 0; i < objectAnimations.length; i++) {
-        const uuid = objectAnimations[i];
+      for (const uuid of objectAnimations) {
         object.animations.push(animations[uuid]);
       }
     }
@@ -1682,8 +1681,7 @@ class ObjectLoader extends Loader {
       if (data.autoUpdate !== void 0)
         object.autoUpdate = data.autoUpdate;
       const levels = data.levels;
-      for (let l = 0; l < levels.length; l++) {
-        const level = levels[l];
+      for (const level of levels) {
         const child = object.getObjectByProperty("uuid", level.object);
         if (child !== void 0) {
           object.addLevel(child, level.distance, level.hysteresis);

@@ -13,7 +13,9 @@ class Interpolant {
   }
   evaluate(t) {
     const pp = this.parameterPositions;
-    let i1 = this._cachedIndex, t1 = pp[i1], t0 = pp[i1 - 1];
+    let i1 = this._cachedIndex;
+    let t1 = pp[i1];
+    let t0 = pp[i1 - 1];
     validate_interval: {
       seek: {
         let right;
@@ -93,7 +95,10 @@ class Interpolant {
     return this.settings || this.DefaultSettings_;
   }
   copySampleValue_(index) {
-    const result = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, offset = index * stride;
+    const result = this.resultBuffer;
+    const values = this.sampleValues;
+    const stride = this.valueSize;
+    const offset = index * stride;
     for (let i = 0; i !== stride; ++i) {
       result[i] = values[offset + i];
     }
@@ -121,7 +126,10 @@ class CubicInterpolant extends Interpolant {
   }
   intervalChanged_(i1, t0, t1) {
     const pp = this.parameterPositions;
-    let iPrev = i1 - 2, iNext = i1 + 1, tPrev = pp[iPrev], tNext = pp[iNext];
+    let iPrev = i1 - 2;
+    let iNext = i1 + 1;
+    let tPrev = pp[iPrev];
+    let tNext = pp[iNext];
     if (tPrev === void 0) {
       switch (this.getSettings_().endingStart) {
         case ZeroSlopeEnding:
@@ -152,14 +160,26 @@ class CubicInterpolant extends Interpolant {
           tNext = t0;
       }
     }
-    const halfDt = (t1 - t0) * 0.5, stride = this.valueSize;
+    const halfDt = (t1 - t0) * 0.5;
+    const stride = this.valueSize;
     this._weightPrev = halfDt / (t0 - tPrev);
     this._weightNext = halfDt / (tNext - t1);
     this._offsetPrev = iPrev * stride;
     this._offsetNext = iNext * stride;
   }
   interpolate_(i1, t0, t, t1) {
-    const result = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, o1 = i1 * stride, o0 = o1 - stride, oP = this._offsetPrev, oN = this._offsetNext, wP = this._weightPrev, wN = this._weightNext, p = (t - t0) / (t1 - t0), pp = p * p, ppp = pp * p;
+    const result = this.resultBuffer;
+    const values = this.sampleValues;
+    const stride = this.valueSize;
+    const o1 = i1 * stride;
+    const o0 = o1 - stride;
+    const oP = this._offsetPrev;
+    const oN = this._offsetNext;
+    const wP = this._weightPrev;
+    const wN = this._weightNext;
+    const p = (t - t0) / (t1 - t0);
+    const pp = p * p;
+    const ppp = pp * p;
     const sP = -wP * ppp + 2 * wP * pp - wP * p;
     const s0 = (1 + wP) * ppp + (-1.5 - 2 * wP) * pp + (-0.5 + wP) * p + 1;
     const s1 = (-1 - wN) * ppp + (1.5 + wN) * pp + 0.5 * p;
@@ -185,7 +205,13 @@ class LinearInterpolant extends Interpolant {
     super(parameterPositions, sampleValues, sampleSize, resultBuffer);
   }
   interpolate_(i1, t0, t, t1) {
-    const result = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, offset1 = i1 * stride, offset0 = offset1 - stride, weight1 = (t - t0) / (t1 - t0), weight0 = 1 - weight1;
+    const result = this.resultBuffer;
+    const values = this.sampleValues;
+    const stride = this.valueSize;
+    const offset1 = i1 * stride;
+    const offset0 = offset1 - stride;
+    const weight1 = (t - t0) / (t1 - t0);
+    const weight0 = 1 - weight1;
     for (let i = 0; i !== stride; ++i) {
       result[i] = values[offset0 + i] * weight0 + values[offset1 + i] * weight1;
     }
@@ -198,7 +224,10 @@ class QuaternionLinearInterpolant extends Interpolant {
     super(parameterPositions, sampleValues, sampleSize, resultBuffer);
   }
   interpolate_(i1, t0, t, t1) {
-    const result = this.resultBuffer, values = this.sampleValues, stride = this.valueSize, alpha = (t - t0) / (t1 - t0);
+    const result = this.resultBuffer;
+    const values = this.sampleValues;
+    const stride = this.valueSize;
+    const alpha = (t - t0) / (t1 - t0);
     let offset = i1 * stride;
     for (let end = offset + stride; offset !== end; offset += 4) {
       Quaternion.slerpFlat(result, 0, values, offset - stride, values, offset, alpha);

@@ -532,8 +532,7 @@ class Object3D extends EventDispatcher {
     }
     if (this.animations.length > 0) {
       object.animations = [];
-      for (let i = 0; i < this.animations.length; i++) {
-        const animation = this.animations[i];
+      for (const animation of this.animations) {
         object.animations.push(serialize(meta.animations, animation));
       }
     }
@@ -600,8 +599,7 @@ class Object3D extends EventDispatcher {
     this.animations = source.animations.slice();
     this.userData = JSON.parse(JSON.stringify(source.userData));
     if (recursive === true) {
-      for (let i = 0; i < source.children.length; i++) {
-        const child = source.children[i];
+      for (const child of source.children) {
         this.add(child.clone());
       }
     }
@@ -640,7 +638,7 @@ class Raycaster {
       this.ray.direction.set(0, 0, -1).transformDirection(camera.matrixWorld);
       this.camera = camera;
     } else {
-      console.error("Raycaster: Unsupported camera type: " + camera.type);
+      console.error(`Raycaster: Unsupported camera type: ${camera.type}`);
     }
   }
   intersectObject(object, recursive = true, intersects = []) {
