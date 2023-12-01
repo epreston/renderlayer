@@ -4,7 +4,7 @@ import { WebGLGeometries } from '../src/WebGLGeometries.js';
 
 describe('WebGL', () => {
   describe('WebGLGeometries', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLGeometries).toBeDefined();
     });
 
