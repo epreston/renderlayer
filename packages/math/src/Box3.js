@@ -230,7 +230,9 @@ class Box3 {
     // We compute the minimum and maximum dot product values. If those values
     // are on the same side (back or front) of the plane, then there is no intersection.
 
-    let min, max;
+    let min;
+
+    let max;
 
     if (plane.normal.x > 0) {
       min = plane.normal.x * this.min.x;
