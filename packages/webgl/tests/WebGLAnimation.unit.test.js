@@ -4,12 +4,12 @@ import { WebGLAnimation } from '../src/WebGLAnimation.js';
 
 describe('WebGL', () => {
   describe('WebGLAnimation', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLAnimation).toBeDefined();
     });
 
     test('constructor', () => {
-      const object = WebGLAnimation();
+      const object = new WebGLAnimation();
       expect(object).toBeDefined();
     });
 

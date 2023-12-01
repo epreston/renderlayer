@@ -1,39 +1,36 @@
-function WebGLAnimation() {
-  let context = null;
-  let isAnimating = false;
-  let animationLoop = null;
-  let requestId = null;
-
-  function onAnimationFrame(time, frame) {
-    animationLoop(time, frame);
-
-    requestId = context.requestAnimationFrame(onAnimationFrame);
+class WebGLAnimation {
+  constructor() {
+    this.context = null;
+    this.isAnimating = false;
+    this.animationLoop = null;
+    this.requestId = null;
   }
 
-  return {
-    start() {
-      if (isAnimating === true) return;
-      if (animationLoop === null) return;
+  onAnimationFrame(time, frame) {
+    this.animationLoop(time, frame);
+    this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame.bind(this));
+  }
 
-      requestId = context.requestAnimationFrame(onAnimationFrame);
+  start() {
+    if (this.isAnimating === true) return;
+    if (this.animationLoop === null) return;
 
-      isAnimating = true;
-    },
+    this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame.bind(this));
+    this.isAnimating = true;
+  }
 
-    stop() {
-      context.cancelAnimationFrame(requestId);
+  stop() {
+    this.context.cancelAnimationFrame(this.requestId);
+    this.isAnimating = false;
+  }
 
-      isAnimating = false;
-    },
+  setAnimationLoop(callback) {
+    this.animationLoop = callback;
+  }
 
-    setAnimationLoop(callback) {
-      animationLoop = callback;
-    },
-
-    setContext(value) {
-      context = value;
-    }
-  };
+  setContext(value) {
+    this.context = value;
+  }
 }
 
 export { WebGLAnimation };

@@ -907,28 +907,16 @@ class WebGLRenderer {
       if (onAnimationFrameCallback) onAnimationFrameCallback(time);
     }
 
-    // function onXRSessionStart() {
-    //   animation.stop();
-    // }
-
-    // function onXRSessionEnd() {
-    //   animation.start();
-    // }
-
-    const animation = WebGLAnimation();
+    const animation = new WebGLAnimation();
     animation.setAnimationLoop(onAnimationFrame);
 
     if (typeof self !== 'undefined') animation.setContext(self);
 
     this.setAnimationLoop = (callback) => {
       onAnimationFrameCallback = callback;
-      // xr.setAnimationLoop(callback);
 
       callback === null ? animation.stop() : animation.start();
     };
-
-    // xr.addEventListener('sessionstart', onXRSessionStart);
-    // xr.addEventListener('sessionend', onXRSessionEnd);
 
     // Rendering
 
@@ -948,12 +936,6 @@ class WebGLRenderer {
 
       if (camera.parent === null && camera.matrixWorldAutoUpdate === true)
         camera.updateMatrixWorld();
-
-      // if (xr.enabled === true && xr.isPresenting === true) {
-      //   if (xr.cameraAutoUpdate === true) xr.updateCamera(camera);
-
-      //   camera = xr.getCamera(); // use XR camera for rendering
-      // }
 
       //
       if (scene.isScene === true) scene.onBeforeRender(_this, scene, camera, _currentRenderTarget);
