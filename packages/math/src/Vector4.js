@@ -81,7 +81,7 @@ class Vector4 {
         this.w = value;
         break;
       default:
-        throw new Error('index is out of range: ' + index);
+        throw new Error(`index is out of range: ${index}`);
     }
 
     return this;
@@ -98,7 +98,7 @@ class Vector4 {
       case 3:
         return this.w;
       default:
-        throw new Error('index is out of range: ' + index);
+        throw new Error(`index is out of range: ${index}`);
     }
   }
 
@@ -198,10 +198,10 @@ class Vector4 {
   }
 
   applyMatrix4(m) {
-    const x = this.x,
-      y = this.y,
-      z = this.z,
-      w = this.w;
+    const x = this.x;
+    const y = this.y;
+    const z = this.z;
+    const w = this.w;
     const e = m.elements;
 
     this.x = e[0] * x + e[4] * y + e[8] * z + e[12] * w;
@@ -243,15 +243,26 @@ class Vector4 {
 
     // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
-    let angle, x, y, z; // variables for result
+    let angle; // variables for result
+
+    let x;
+    let y;
+    let z;
     const epsilon = 0.01; // margin to allow for rounding errors
     const epsilon2 = 0.1; // margin to distinguish between 0 and 180 degrees
 
     // prettier-ignore
-    const	te = m.elements,
-			m11 = te[ 0 ], m12 = te[ 4 ], m13 = te[ 8 ],
-			m21 = te[ 1 ], m22 = te[ 5 ], m23 = te[ 9 ],
-			m31 = te[ 2 ], m32 = te[ 6 ], m33 = te[ 10 ];
+    const te = m.elements;
+
+    const m11 = te[0];
+    const m12 = te[4];
+    const m13 = te[8];
+    const m21 = te[1];
+    const m22 = te[5];
+    const m23 = te[9];
+    const m31 = te[2];
+    const m32 = te[6];
+    const m33 = te[10];
 
     // prettier-ignore
     if ( ( Math.abs( m12 - m21 ) < epsilon ) &&
