@@ -35,7 +35,7 @@ export class GLTFTextureWebPExtension {
     return this.detectSupport().then(function (isSupported) {
       if (isSupported) return parser.loadTextureImage(textureIndex, extension.source, loader);
 
-      if (json.extensionsRequired && json.extensionsRequired.indexOf(name) >= 0) {
+      if (json.extensionsRequired && json.extensionsRequired.includes(name)) {
         throw new Error('GLTFLoader: WebP required by asset but unsupported.');
       }
 
