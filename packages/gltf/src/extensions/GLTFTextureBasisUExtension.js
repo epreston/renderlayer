@@ -25,7 +25,7 @@ export class GLTFTextureBasisUExtension {
     const loader = parser.options.ktx2Loader;
 
     if (!loader) {
-      if (json.extensionsRequired && json.extensionsRequired.indexOf(this.name) >= 0) {
+      if (json.extensionsRequired && json.extensionsRequired.includes(this.name)) {
         throw new Error('GLTFLoader: setKTX2Loader must be called before loading KTX2 textures');
       } else {
         // Assumes that the extension is optional and that a fallback texture is present
