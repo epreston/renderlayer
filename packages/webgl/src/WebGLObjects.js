@@ -1,6 +1,7 @@
 class WebGLObjects {
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, geometries, attributes, info) {
+    // EP: these are private
     this.gl = gl;
     this.geometries = geometries;
     this.attributes = attributes;
