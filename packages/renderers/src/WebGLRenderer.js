@@ -323,7 +323,7 @@ class WebGLRenderer {
       info = new WebGLInfo(_gl);
       properties = new WebGLProperties();
       textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
-      cubemaps = WebGLCubeMaps(_this);
+      cubemaps = new WebGLCubeMaps(_this);
       cubeuvmaps = new WebGLCubeUVMaps(_this);
       attributes = new WebGLAttributes(_gl, capabilities);
       bindingStates = WebGLBindingStates(_gl, extensions, attributes, capabilities);

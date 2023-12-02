@@ -15,7 +15,7 @@ import { WebGLCubeMaps } from '../src/WebGLCubeMaps.js';
 
 describe('WebGL', () => {
   describe('WebGLCubeMaps', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLCubeMaps).toBeDefined();
     });
 
