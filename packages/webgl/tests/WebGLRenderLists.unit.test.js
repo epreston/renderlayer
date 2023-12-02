@@ -32,16 +32,22 @@ describe('WebGL', () => {
       expect(WebGLRenderList).toBeDefined();
     });
 
-    test.todo('opaque', () => {
-      // implement
+    test('opaque', () => {
+      const list = WebGLRenderList();
+      expect(list.opaque).toBeDefined();
+      expect(list.opaque.length).toBe(0);
     });
 
-    test.todo('transmissive', () => {
-      // implement
+    test('transmissive', () => {
+      const list = WebGLRenderList();
+      expect(list.transmissive).toBeDefined();
+      expect(list.transmissive.length).toBe(0);
     });
 
-    test.todo('transparent', () => {
-      // implement
+    test('transparent', () => {
+      const list = WebGLRenderList();
+      expect(list.transparent).toBeDefined();
+      expect(list.transparent.length).toBe(0);
     });
 
     test('init', () => {
