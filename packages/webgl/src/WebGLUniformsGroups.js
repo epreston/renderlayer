@@ -1,5 +1,5 @@
-/** @param { WebGL2RenderingContext} gl */
 class WebGLUniformsGroups {
+  /** @param {WebGL2RenderingContext} gl */
   constructor(gl, info, capabilities, state) {
     this._gl = gl;
     this._info = info;
