@@ -831,58 +831,65 @@ class WebGLExtensions {
   }
 }
 
-function WebGLGeometries(gl, attributes, info, bindingStates) {
-  const geometries = {};
-  const wireframeAttributes = /* @__PURE__ */ new WeakMap();
-  function onGeometryDispose(event) {
+class WebGLGeometries {
+  /** @param { WebGL2RenderingContext} gl */
+  constructor(gl, attributes, info, bindingStates) {
+    this.gl = gl;
+    this.attributes = attributes;
+    this.info = info;
+    this.bindingStates = bindingStates;
+    this.geometries = {};
+    this.wireframeAttributes = /* @__PURE__ */ new WeakMap();
+  }
+  _onGeometryDispose(event) {
     const geometry = event.target;
     if (geometry.index !== null) {
-      attributes.remove(geometry.index);
+      this.attributes.remove(geometry.index);
     }
     for (const name in geometry.attributes) {
-      attributes.remove(geometry.attributes[name]);
+      this.attributes.remove(geometry.attributes[name]);
     }
     for (const name in geometry.morphAttributes) {
       const array = geometry.morphAttributes[name];
       for (let i = 0, l = array.length; i < l; i++) {
-        attributes.remove(array[i]);
+        this.attributes.remove(array[i]);
       }
     }
-    geometry.removeEventListener("dispose", onGeometryDispose);
-    delete geometries[geometry.id];
-    const attribute = wireframeAttributes.get(geometry);
+    geometry.removeEventListener("dispose", this._onGeometryDispose);
+    delete this.geometries[geometry.id];
+    const attribute = this.wireframeAttributes.get(geometry);
     if (attribute) {
-      attributes.remove(attribute);
-      wireframeAttributes.delete(geometry);
+      this.attributes.remove(attribute);
+      this.wireframeAttributes.delete(geometry);
     }
-    bindingStates.releaseStatesOfGeometry(geometry);
+    this.bindingStates.releaseStatesOfGeometry(geometry);
     if (geometry.isInstancedBufferGeometry === true) {
       delete geometry._maxInstanceCount;
     }
-    info.memory.geometries--;
+    this.info.memory.geometries--;
   }
-  function get(object, geometry) {
-    if (geometries[geometry.id] === true)
+  get(object, geometry) {
+    if (this.geometries[geometry.id] === true)
       return geometry;
-    geometry.addEventListener("dispose", onGeometryDispose);
-    geometries[geometry.id] = true;
-    info.memory.geometries++;
+    geometry.addEventListener("dispose", this._onGeometryDispose.bind(this));
+    this.geometries[geometry.id] = true;
+    this.info.memory.geometries++;
     return geometry;
   }
-  function update(geometry) {
+  update(geometry) {
     const geometryAttributes = geometry.attributes;
     for (const name in geometryAttributes) {
-      attributes.update(geometryAttributes[name], gl.ARRAY_BUFFER);
+      this.attributes.update(geometryAttributes[name], this.gl.ARRAY_BUFFER);
     }
     const morphAttributes = geometry.morphAttributes;
     for (const name in morphAttributes) {
       const array = morphAttributes[name];
       for (let i = 0, l = array.length; i < l; i++) {
-        attributes.update(array[i], gl.ARRAY_BUFFER);
+        this.attributes.update(array[i], this.gl.ARRAY_BUFFER);
       }
     }
   }
-  function updateWireframeAttribute(geometry) {
+  _updateWireframeAttribute(geometry) {
     const indices = [];
     const geometryIndex = geometry.index;
     const geometryPosition = geometry.attributes.position;
@@ -910,30 +917,25 @@ function WebGLGeometries(gl, attributes, info, bindingStates) {
     }
     const attribute = new (arrayNeedsUint32(indices) ? Uint32BufferAttribute : Uint16BufferAttribute)(indices, 1);
     attribute.version = version;
-    const previousAttribute = wireframeAttributes.get(geometry);
+    const previousAttribute = this.wireframeAttributes.get(geometry);
     if (previousAttribute)
-      attributes.remove(previousAttribute);
-    wireframeAttributes.set(geometry, attribute);
+      this.attributes.remove(previousAttribute);
+    this.wireframeAttributes.set(geometry, attribute);
   }
-  function getWireframeAttribute(geometry) {
-    const currentAttribute = wireframeAttributes.get(geometry);
+  getWireframeAttribute(geometry) {
+    const currentAttribute = this.wireframeAttributes.get(geometry);
     if (currentAttribute) {
       const geometryIndex = geometry.index;
       if (geometryIndex !== null) {
         if (currentAttribute.version < geometryIndex.version) {
-          updateWireframeAttribute(geometry);
+          this._updateWireframeAttribute(geometry);
         }
       }
     } else {
-      updateWireframeAttribute(geometry);
+      this._updateWireframeAttribute(geometry);
     }
-    return wireframeAttributes.get(geometry);
+    return this.wireframeAttributes.get(geometry);
   }
-  return {
-    get,
-    update,
-    getWireframeAttribute
-  };
 }
 
 class WebGLIndexedBufferRenderer {
@@ -967,19 +969,26 @@ class WebGLIndexedBufferRenderer {
   }
 }
 
-function WebGLInfo(gl) {
-  const memory = {
-    geometries: 0,
-    textures: 0
-  };
-  const render = {
-    frame: 0,
-    calls: 0,
-    triangles: 0,
-    points: 0,
-    lines: 0
-  };
-  function update(count, mode, instanceCount) {
+class WebGLInfo {
+  /** @param { WebGL2RenderingContext} gl */
+  constructor(gl) {
+    this.gl = gl;
+    this.memory = {
+      geometries: 0,
+      textures: 0
+    };
+    this.render = {
+      frame: 0,
+      calls: 0,
+      triangles: 0,
+      points: 0,
+      lines: 0
+    };
+    this.programs = null;
+    this.autoReset = true;
+  }
+  update(count, mode, instanceCount) {
+    const { render, gl } = this;
     render.calls++;
     switch (mode) {
       case gl.TRIANGLES:
@@ -1002,20 +1011,13 @@ function WebGLInfo(gl) {
         break;
     }
   }
-  function reset() {
+  reset() {
+    const { render } = this;
     render.calls = 0;
     render.triangles = 0;
     render.points = 0;
     render.lines = 0;
   }
-  return {
-    memory,
-    render,
-    programs: null,
-    autoReset: true,
-    reset,
-    update
-  };
 }
 
 function WebGLMaterials(renderer, properties) {
@@ -1391,51 +1393,54 @@ function WebGLMorphtargets(gl, capabilities, textures) {
   };
 }
 
-function WebGLObjects(gl, geometries, attributes, info) {
-  let updateMap = /* @__PURE__ */ new WeakMap();
-  function update(object) {
-    const frame = info.render.frame;
+class WebGLObjects {
+  /** @param { WebGL2RenderingContext} gl */
+  constructor(gl, geometries, attributes, info) {
+    this.gl = gl;
+    this.geometries = geometries;
+    this.attributes = attributes;
+    this.info = info;
+    this.updateMap = /* @__PURE__ */ new WeakMap();
+  }
+  update(object) {
+    const frame = this.info.render.frame;
     const geometry = object.geometry;
-    const buffergeometry = geometries.get(object, geometry);
-    if (updateMap.get(buffergeometry) !== frame) {
-      geometries.update(buffergeometry);
-      updateMap.set(buffergeometry, frame);
+    const buffergeometry = this.geometries.get(object, geometry);
+    if (this.updateMap.get(buffergeometry) !== frame) {
+      this.geometries.update(buffergeometry);
+      this.updateMap.set(buffergeometry, frame);
     }
     if (object.isInstancedMesh) {
-      if (object.hasEventListener("dispose", onInstancedMeshDispose) === false) {
-        object.addEventListener("dispose", onInstancedMeshDispose);
+      if (object.hasEventListener("dispose", this._onInstancedMeshDispose) === false) {
+        object.addEventListener("dispose", this._onInstancedMeshDispose);
       }
-      if (updateMap.get(object) !== frame) {
-        attributes.update(object.instanceMatrix, gl.ARRAY_BUFFER);
+      if (this.updateMap.get(object) !== frame) {
+        this.attributes.update(object.instanceMatrix, this.gl.ARRAY_BUFFER);
         if (object.instanceColor !== null) {
-          attributes.update(object.instanceColor, gl.ARRAY_BUFFER);
+          this.attributes.update(object.instanceColor, this.gl.ARRAY_BUFFER);
         }
-        updateMap.set(object, frame);
+        this.updateMap.set(object, frame);
       }
     }
     if (object.isSkinnedMesh) {
       const skeleton = object.skeleton;
-      if (updateMap.get(skeleton) !== frame) {
+      if (this.updateMap.get(skeleton) !== frame) {
         skeleton.update();
-        updateMap.set(skeleton, frame);
+        this.updateMap.set(skeleton, frame);
       }
     }
     return buffergeometry;
   }
-  function dispose() {
-    updateMap = /* @__PURE__ */ new WeakMap();
+  dispose() {
+    this.updateMap = /* @__PURE__ */ new WeakMap();
   }
-  function onInstancedMeshDispose(event) {
+  _onInstancedMeshDispose(event) {
     const instancedMesh = event.target;
-    instancedMesh.removeEventListener("dispose", onInstancedMeshDispose);
-    attributes.remove(instancedMesh.instanceMatrix);
+    instancedMesh.removeEventListener("dispose", this._onInstancedMeshDispose);
+    this.attributes.remove(instancedMesh.instanceMatrix);
     if (instancedMesh.instanceColor !== null)
-      attributes.remove(instancedMesh.instanceColor);
+      this.attributes.remove(instancedMesh.instanceColor);
   }
-  return {
-    update,
-    dispose
-  };
 }
 
 function WebGLShader(gl, type, string) {

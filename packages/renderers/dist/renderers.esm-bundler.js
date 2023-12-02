@@ -322,15 +322,15 @@ class WebGLRenderer {
       extensions.init(capabilities);
       utils = WebGLUtils(_gl, extensions, capabilities);
       state = WebGLState(_gl, extensions, capabilities);
-      info = WebGLInfo(_gl);
+      info = new WebGLInfo(_gl);
       properties = WebGLProperties();
       textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
       cubemaps = WebGLCubeMaps(_this);
       cubeuvmaps = WebGLCubeUVMaps(_this);
       attributes = new WebGLAttributes(_gl, capabilities);
       bindingStates = WebGLBindingStates(_gl, extensions, attributes, capabilities);
-      geometries = WebGLGeometries(_gl, attributes, info, bindingStates);
-      objects = WebGLObjects(_gl, geometries, attributes, info);
+      geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
+      objects = new WebGLObjects(_gl, geometries, attributes, info);
       morphtargets = WebGLMorphtargets(_gl, capabilities, textures);
       clipping = new WebGLClipping(properties);
       programCache = WebGLPrograms(
