@@ -3,7 +3,6 @@ export * from './WebGLAttributes.js';
 export * from './WebGLBindingStates.js';
 export * from './WebGLBufferRenderer.js';
 export * from './WebGLCapabilities.js';
-export * from './WebGLClipping.js';
 export * from './WebGLCubeMaps.js';
 export * from './WebGLCubeUVMaps.js';
 export * from './WebGLExtensions.js';

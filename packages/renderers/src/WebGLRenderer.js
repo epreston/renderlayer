@@ -39,7 +39,6 @@ import {
   WebGLBindingStates,
   WebGLBufferRenderer,
   WebGLCapabilities,
-  WebGLClipping,
   WebGLCubeMaps,
   WebGLCubeUVMaps,
   WebGLExtensions,
@@ -62,6 +61,7 @@ import {
 } from '@renderlayer/webgl';
 
 import { WebGLBackground } from './WebGLBackground.js';
+import { WebGLClipping } from './WebGLClipping.js';
 
 class WebGLRenderer {
   constructor(parameters = {}) {

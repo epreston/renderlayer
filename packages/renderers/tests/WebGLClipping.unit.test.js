@@ -2,7 +2,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 
 import { WebGLClipping } from '../src/WebGLClipping.js';
 
-describe('WebGL', () => {
+describe('Renderers', () => {
   describe('WebGLClipping', () => {
     it('should expose a function', () => {
       expect(WebGLClipping).toBeDefined();

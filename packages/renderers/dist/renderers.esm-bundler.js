@@ -1,7 +1,7 @@
-import { Color, ColorManagement, Vector4, Frustum, Matrix4, Vector2, Vector3 } from '@renderlayer/math';
+import { Color, ColorManagement, Plane, Matrix3, Vector4, Frustum, Matrix4, Vector2, Vector3 } from '@renderlayer/math';
 import { CubeUVReflectionMapping, BackSide, SRGBTransfer, FrontSide, createCanvasElement, SRGBColorSpace, NoToneMapping, HalfFloatType, UnsignedByteType, LinearMipmapLinearFilter, DoubleSide, RGBAFormat, FloatType, WebGLCoordinateSystem, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, RGBAIntegerFormat, RGIntegerFormat, RedIntegerFormat, UnsignedIntType, UnsignedShortType, UnsignedInt248Type, UnsignedShort4444Type, UnsignedShort5551Type } from '@renderlayer/shared';
 import { WebGLRenderTarget } from '@renderlayer/targets';
-import { WebGLAnimation, WebGLUniforms, WebGLExtensions, WebGLCapabilities, WebGLUtils, WebGLState, WebGLInfo, WebGLProperties, WebGLTextures, WebGLCubeMaps, WebGLCubeUVMaps, WebGLAttributes, WebGLBindingStates, WebGLGeometries, WebGLObjects, WebGLMorphtargets, WebGLClipping, WebGLPrograms, WebGLMaterials, WebGLRenderLists, WebGLRenderStates, WebGLShadowMap, WebGLUniformsGroups, WebGLBufferRenderer, WebGLIndexedBufferRenderer } from '@renderlayer/webgl';
+import { WebGLAnimation, WebGLUniforms, WebGLExtensions, WebGLCapabilities, WebGLUtils, WebGLState, WebGLInfo, WebGLProperties, WebGLTextures, WebGLCubeMaps, WebGLCubeUVMaps, WebGLAttributes, WebGLBindingStates, WebGLGeometries, WebGLObjects, WebGLMorphtargets, WebGLPrograms, WebGLMaterials, WebGLRenderLists, WebGLRenderStates, WebGLShadowMap, WebGLUniformsGroups, WebGLBufferRenderer, WebGLIndexedBufferRenderer } from '@renderlayer/webgl';
 import { BoxGeometry, PlaneGeometry } from '@renderlayer/geometries';
 import { ShaderMaterial } from '@renderlayer/materials';
 import { Mesh } from '@renderlayer/objects';
@@ -150,6 +150,98 @@ class WebGLBackground {
   setClearAlpha(alpha) {
     this.clearAlpha = alpha;
     this._setClear(this.clearColor, this.clearAlpha);
+  }
+}
+
+class WebGLClipping {
+  constructor(properties) {
+    const scope = this;
+    let globalState = null;
+    let numGlobalPlanes = 0;
+    let localClippingEnabled = false;
+    let renderingShadows = false;
+    const plane = new Plane();
+    const viewNormalMatrix = new Matrix3();
+    const uniform = { value: null, needsUpdate: false };
+    this.uniform = uniform;
+    this.numPlanes = 0;
+    this.numIntersection = 0;
+    this.init = (planes, enableLocalClipping) => {
+      const enabled = planes.length !== 0 || enableLocalClipping || // enable state of previous frame - the clipping code has to
+      // run another frame in order to reset the state:
+      numGlobalPlanes !== 0 || localClippingEnabled;
+      localClippingEnabled = enableLocalClipping;
+      numGlobalPlanes = planes.length;
+      return enabled;
+    };
+    this.beginShadows = () => {
+      renderingShadows = true;
+      projectPlanes(null);
+    };
+    this.endShadows = () => {
+      renderingShadows = false;
+    };
+    this.setGlobalState = (planes, camera) => {
+      globalState = projectPlanes(planes, camera, 0);
+    };
+    this.setState = function(material, camera, useCache) {
+      const planes = material.clippingPlanes;
+      const clipIntersection = material.clipIntersection;
+      const clipShadows = material.clipShadows;
+      const materialProperties = properties.get(material);
+      if (!localClippingEnabled || planes === null || planes.length === 0 || renderingShadows && !clipShadows) {
+        if (renderingShadows) {
+          projectPlanes(null);
+        } else {
+          resetGlobalState();
+        }
+      } else {
+        const nGlobal = renderingShadows ? 0 : numGlobalPlanes;
+        const lGlobal = nGlobal * 4;
+        let dstArray = materialProperties.clippingState || null;
+        uniform.value = dstArray;
+        dstArray = projectPlanes(planes, camera, lGlobal, useCache);
+        for (let i = 0; i !== lGlobal; ++i) {
+          dstArray[i] = globalState[i];
+        }
+        materialProperties.clippingState = dstArray;
+        this.numIntersection = clipIntersection ? this.numPlanes : 0;
+        this.numPlanes += nGlobal;
+      }
+    };
+    function resetGlobalState() {
+      if (uniform.value !== globalState) {
+        uniform.value = globalState;
+        uniform.needsUpdate = numGlobalPlanes > 0;
+      }
+      scope.numPlanes = numGlobalPlanes;
+      scope.numIntersection = 0;
+    }
+    function projectPlanes(planes, camera, dstOffset, skipTransform) {
+      const nPlanes = planes !== null ? planes.length : 0;
+      let dstArray = null;
+      if (nPlanes !== 0) {
+        dstArray = uniform.value;
+        if (skipTransform !== true || dstArray === null) {
+          const flatSize = dstOffset + nPlanes * 4;
+          const viewMatrix = camera.matrixWorldInverse;
+          viewNormalMatrix.getNormalMatrix(viewMatrix);
+          if (dstArray === null || dstArray.length < flatSize) {
+            dstArray = new Float32Array(flatSize);
+          }
+          for (let i = 0, i4 = dstOffset; i !== nPlanes; ++i, i4 += 4) {
+            plane.copy(planes[i]).applyMatrix4(viewMatrix, viewNormalMatrix);
+            plane.normal.toArray(dstArray, i4);
+            dstArray[i4 + 3] = plane.constant;
+          }
+        }
+        uniform.value = dstArray;
+        uniform.needsUpdate = true;
+      }
+      scope.numPlanes = nPlanes;
+      scope.numIntersection = 0;
+      return dstArray;
+    }
   }
 }
 
