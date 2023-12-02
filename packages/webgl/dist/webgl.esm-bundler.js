@@ -3928,51 +3928,52 @@ function WebGLLights(extensions, capabilities) {
   };
 }
 
-function WebGLRenderState(extensions, capabilities) {
-  const lights = WebGLLights();
-  const lightsArray = [];
-  const shadowsArray = [];
-  function init() {
-    lightsArray.length = 0;
-    shadowsArray.length = 0;
+class WebGLRenderState {
+  constructor(extensions, capabilities) {
+    const lights = WebGLLights();
+    const lightsArray = [];
+    const shadowsArray = [];
+    this.lights = lights;
+    this.lightsArray = lightsArray;
+    this.shadowsArray = shadowsArray;
+    this.state = {
+      lightsArray,
+      shadowsArray,
+      lights
+    };
   }
-  function pushLight(light) {
-    lightsArray.push(light);
+  init() {
+    this.lightsArray.length = 0;
+    this.shadowsArray.length = 0;
   }
-  function pushShadow(shadowLight) {
-    shadowsArray.push(shadowLight);
+  pushLight(light) {
+    this.lightsArray.push(light);
   }
-  function setupLights(useLegacyLights) {
-    lights.setup(lightsArray, useLegacyLights);
+  pushShadow(shadowLight) {
+    this.shadowsArray.push(shadowLight);
   }
-  function setupLightsView(camera) {
-    lights.setupView(lightsArray, camera);
+  setupLights(useLegacyLights) {
+    this.lights.setup(this.lightsArray, useLegacyLights);
   }
-  const state = {
-    lightsArray,
-    shadowsArray,
-    lights
-  };
-  return {
-    init,
-    state,
-    setupLights,
-    setupLightsView,
-    pushLight,
-    pushShadow
-  };
+  setupLightsView(camera) {
+    this.lights.setupView(this.lightsArray, camera);
+  }
 }
-function WebGLRenderStates(extensions, capabilities) {
-  let renderStates = /* @__PURE__ */ new WeakMap();
-  function get(scene, renderCallDepth = 0) {
-    const renderStateArray = renderStates.get(scene);
+class WebGLRenderStates {
+  constructor(extensions, capabilities) {
+    this.renderStates = /* @__PURE__ */ new WeakMap();
+    this.extensions = extensions;
+    this.capabilities = capabilities;
+  }
+  get(scene, renderCallDepth = 0) {
+    const renderStateArray = this.renderStates.get(scene);
     let renderState;
     if (renderStateArray === void 0) {
-      renderState = WebGLRenderState();
-      renderStates.set(scene, [renderState]);
+      renderState = new WebGLRenderState(this.extensions, this.capabilities);
+      this.renderStates.set(scene, [renderState]);
     } else {
       if (renderCallDepth >= renderStateArray.length) {
-        renderState = WebGLRenderState();
+        renderState = new WebGLRenderState(this.extensions, this.capabilities);
         renderStateArray.push(renderState);
       } else {
         renderState = renderStateArray[renderCallDepth];
@@ -3980,13 +3981,9 @@ function WebGLRenderStates(extensions, capabilities) {
     }
     return renderState;
   }
-  function dispose() {
-    renderStates = /* @__PURE__ */ new WeakMap();
+  dispose() {
+    this.renderStates = /* @__PURE__ */ new WeakMap();
   }
-  return {
-    get,
-    dispose
-  };
 }
 
 const vertex = `

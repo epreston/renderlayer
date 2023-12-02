@@ -1,63 +1,61 @@
 import { WebGLLights } from './WebGLLights.js';
 
-function WebGLRenderState(extensions, capabilities) {
-  const lights = WebGLLights(extensions, capabilities);
+class WebGLRenderState {
+  constructor(extensions, capabilities) {
+    const lights = WebGLLights(extensions, capabilities);
+    const lightsArray = [];
+    const shadowsArray = [];
 
-  const lightsArray = [];
-  const shadowsArray = [];
+    this.lights = lights;
+    this.lightsArray = lightsArray;
+    this.shadowsArray = shadowsArray;
 
-  function init() {
-    lightsArray.length = 0;
-    shadowsArray.length = 0;
+    this.state = {
+      lightsArray,
+      shadowsArray,
+      lights
+    };
   }
 
-  function pushLight(light) {
-    lightsArray.push(light);
+  init() {
+    this.lightsArray.length = 0;
+    this.shadowsArray.length = 0;
   }
 
-  function pushShadow(shadowLight) {
-    shadowsArray.push(shadowLight);
+  pushLight(light) {
+    this.lightsArray.push(light);
   }
 
-  function setupLights(useLegacyLights) {
-    lights.setup(lightsArray, useLegacyLights);
+  pushShadow(shadowLight) {
+    this.shadowsArray.push(shadowLight);
   }
 
-  function setupLightsView(camera) {
-    lights.setupView(lightsArray, camera);
+  setupLights(useLegacyLights) {
+    this.lights.setup(this.lightsArray, useLegacyLights);
   }
 
-  const state = {
-    lightsArray,
-    shadowsArray,
-
-    lights
-  };
-
-  return {
-    init,
-    state,
-    setupLights,
-    setupLightsView,
-
-    pushLight,
-    pushShadow
-  };
+  setupLightsView(camera) {
+    this.lights.setupView(this.lightsArray, camera);
+  }
 }
 
-function WebGLRenderStates(extensions, capabilities) {
-  let renderStates = new WeakMap();
+class WebGLRenderStates {
+  constructor(extensions, capabilities) {
+    this.renderStates = new WeakMap();
+    this.extensions = extensions;
+    this.capabilities = capabilities;
+  }
 
-  function get(scene, renderCallDepth = 0) {
-    const renderStateArray = renderStates.get(scene);
+  get(scene, renderCallDepth = 0) {
+    const renderStateArray = this.renderStates.get(scene);
     let renderState;
 
     if (renderStateArray === undefined) {
-      renderState = WebGLRenderState(extensions, capabilities);
-      renderStates.set(scene, [renderState]);
+      renderState = new WebGLRenderState(this.extensions, this.capabilities);
+      this.renderStates.set(scene, [renderState]);
     } else {
       if (renderCallDepth >= renderStateArray.length) {
-        renderState = WebGLRenderState(extensions, capabilities);
+        renderState = new WebGLRenderState(this.extensions, this.capabilities);
         renderStateArray.push(renderState);
       } else {
         renderState = renderStateArray[renderCallDepth];
@@ -67,14 +65,9 @@ function WebGLRenderStates(extensions, capabilities) {
     return renderState;
   }
 
-  function dispose() {
-    renderStates = new WeakMap();
+  dispose() {
+    this.renderStates = new WeakMap();
   }
-
-  return {
-    get,
-    dispose
-  };
 }
 
 export { WebGLRenderStates, WebGLRenderState };

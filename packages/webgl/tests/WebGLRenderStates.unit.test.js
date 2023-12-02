@@ -9,7 +9,7 @@ import { WebGLRenderStates } from '../src/WebGLRenderStates.js';
 
 describe('WebGL', () => {
   describe('WebGLRenderStates', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLRenderStates).toBeDefined();
     });
 
