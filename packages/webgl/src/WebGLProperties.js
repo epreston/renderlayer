@@ -1,35 +1,30 @@
-function WebGLProperties() {
-  let properties = new WeakMap();
+class WebGLProperties {
+  constructor() {
+    this._properties = new WeakMap();
+  }
 
-  function get(object) {
-    let map = properties.get(object);
+  get(object) {
+    let map = this._properties.get(object);
 
     if (map === undefined) {
       map = {};
-      properties.set(object, map);
+      this._properties.set(object, map);
     }
 
     return map;
   }
 
-  function remove(object) {
-    properties.delete(object);
+  remove(object) {
+    this._properties.delete(object);
   }
 
-  function update(object, key, value) {
-    properties.get(object)[key] = value;
+  update(object, key, value) {
+    this._properties.get(object)[key] = value;
   }
 
-  function dispose() {
-    properties = new WeakMap();
+  dispose() {
+    this._properties = new WeakMap();
   }
-
-  return {
-    get,
-    remove,
-    update,
-    dispose
-  };
 }
 
 export { WebGLProperties };

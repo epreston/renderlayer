@@ -4,7 +4,7 @@ import { WebGLProperties } from '../src/WebGLProperties.js';
 
 describe('WebGL', () => {
   describe('WebGLProperties', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLProperties).toBeDefined();
     });
 
