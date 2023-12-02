@@ -1,6 +1,6 @@
 import { Object3D } from '@renderlayer/core';
 import { BufferGeometry, InstancedBufferAttribute, Float32BufferAttribute, InterleavedBuffer, InterleavedBufferAttribute } from '@renderlayer/buffers';
-import { Triangle, Vector2, Vector3, Matrix4, Ray, Sphere, Box3, generateUUID, ceilPowerOfTwo, Vector4 } from '@renderlayer/math';
+import { Triangle, Vector2, Vector3, Matrix4, Ray, Sphere, Box3, generateUUID, Vector4 } from '@renderlayer/math';
 import { MeshBasicMaterial, LineBasicMaterial, PointsMaterial, SpriteMaterial } from '@renderlayer/materials';
 import { BackSide, FrontSide, RGBAFormat, FloatType, AttachedBindMode, DetachedBindMode } from '@renderlayer/shared';
 import { DataTexture } from '@renderlayer/textures';
@@ -932,7 +932,7 @@ class Skeleton {
   }
   computeBoneTexture() {
     let size = Math.sqrt(this.bones.length * 4);
-    size = ceilPowerOfTwo(size);
+    size = Math.ceil(size / 4) * 4;
     size = Math.max(size, 4);
     const boneMatrices = new Float32Array(size * size * 4);
     boneMatrices.set(this.boneMatrices);
