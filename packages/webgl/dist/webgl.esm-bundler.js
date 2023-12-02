@@ -3454,20 +3454,22 @@ function reversePainterSortStable(a, b) {
     return a.id - b.id;
   }
 }
-function WebGLRenderList() {
-  const renderItems = [];
-  let renderItemsIndex = 0;
-  const opaque = [];
-  const transmissive = [];
-  const transparent = [];
-  function init() {
-    renderItemsIndex = 0;
-    opaque.length = 0;
-    transmissive.length = 0;
-    transparent.length = 0;
+class WebGLRenderList {
+  constructor() {
+    this._renderItems = [];
+    this._renderItemsIndex = 0;
+    this.opaque = [];
+    this.transmissive = [];
+    this.transparent = [];
   }
-  function getNextRenderItem(object, geometry, material, groupOrder, z, group) {
-    let renderItem = renderItems[renderItemsIndex];
+  init() {
+    this._renderItemsIndex = 0;
+    this.opaque.length = 0;
+    this.transmissive.length = 0;
+    this.transparent.length = 0;
+  }
+  _getNextRenderItem(object, geometry, material, groupOrder, z, group) {
+    let renderItem = this._renderItems[this._renderItemsIndex];
     if (renderItem === void 0) {
       renderItem = {
         id: object.id,
@@ -3479,7 +3481,7 @@ function WebGLRenderList() {
         z,
         group
       };
-      renderItems[renderItemsIndex] = renderItem;
+      this._renderItems[this._renderItemsIndex] = renderItem;
     } else {
       renderItem.id = object.id;
       renderItem.object = object;
@@ -3490,40 +3492,40 @@ function WebGLRenderList() {
       renderItem.z = z;
       renderItem.group = group;
     }
-    renderItemsIndex++;
+    this._renderItemsIndex++;
     return renderItem;
   }
-  function push(object, geometry, material, groupOrder, z, group) {
-    const renderItem = getNextRenderItem(object, geometry, material, groupOrder, z, group);
+  push(object, geometry, material, groupOrder, z, group) {
+    const renderItem = this._getNextRenderItem(object, geometry, material, groupOrder, z, group);
     if (material.transmission > 0) {
-      transmissive.push(renderItem);
+      this.transmissive.push(renderItem);
     } else if (material.transparent === true) {
-      transparent.push(renderItem);
+      this.transparent.push(renderItem);
     } else {
-      opaque.push(renderItem);
+      this.opaque.push(renderItem);
     }
   }
-  function unshift(object, geometry, material, groupOrder, z, group) {
-    const renderItem = getNextRenderItem(object, geometry, material, groupOrder, z, group);
+  unshift(object, geometry, material, groupOrder, z, group) {
+    const renderItem = this._getNextRenderItem(object, geometry, material, groupOrder, z, group);
     if (material.transmission > 0) {
-      transmissive.unshift(renderItem);
+      this.transmissive.unshift(renderItem);
     } else if (material.transparent === true) {
-      transparent.unshift(renderItem);
+      this.transparent.unshift(renderItem);
     } else {
-      opaque.unshift(renderItem);
+      this.opaque.unshift(renderItem);
     }
   }
-  function sort(customOpaqueSort, customTransparentSort) {
-    if (opaque.length > 1)
-      opaque.sort(customOpaqueSort || painterSortStable);
-    if (transmissive.length > 1)
-      transmissive.sort(customTransparentSort || reversePainterSortStable);
-    if (transparent.length > 1)
-      transparent.sort(customTransparentSort || reversePainterSortStable);
+  sort(customOpaqueSort, customTransparentSort) {
+    if (this.opaque.length > 1)
+      this.opaque.sort(customOpaqueSort || painterSortStable);
+    if (this.transmissive.length > 1)
+      this.transmissive.sort(customTransparentSort || reversePainterSortStable);
+    if (this.transparent.length > 1)
+      this.transparent.sort(customTransparentSort || reversePainterSortStable);
   }
-  function finish() {
-    for (let i = renderItemsIndex, il = renderItems.length; i < il; i++) {
-      const renderItem = renderItems[i];
+  finish() {
+    for (let i = this._renderItemsIndex, il = this._renderItems.length; i < il; i++) {
+      const renderItem = this._renderItems[i];
       if (renderItem.id === null)
         break;
       renderItem.id = null;
@@ -3533,28 +3535,20 @@ function WebGLRenderList() {
       renderItem.group = null;
     }
   }
-  return {
-    opaque,
-    transmissive,
-    transparent,
-    init,
-    push,
-    unshift,
-    finish,
-    sort
-  };
 }
-function WebGLRenderLists() {
-  let lists = /* @__PURE__ */ new WeakMap();
-  function get(scene, renderCallDepth) {
-    const listArray = lists.get(scene);
+class WebGLRenderLists {
+  constructor() {
+    this.lists = /* @__PURE__ */ new WeakMap();
+  }
+  get(scene, renderCallDepth) {
+    const listArray = this.lists.get(scene);
     let list;
     if (listArray === void 0) {
-      list = WebGLRenderList();
-      lists.set(scene, [list]);
+      list = new WebGLRenderList();
+      this.lists.set(scene, [list]);
     } else {
       if (renderCallDepth >= listArray.length) {
-        list = WebGLRenderList();
+        list = new WebGLRenderList();
         listArray.push(list);
       } else {
         list = listArray[renderCallDepth];
@@ -3562,13 +3556,9 @@ function WebGLRenderLists() {
     }
     return list;
   }
-  function dispose() {
-    lists = /* @__PURE__ */ new WeakMap();
+  dispose() {
+    this.lists = /* @__PURE__ */ new WeakMap();
   }
-  return {
-    get,
-    dispose
-  };
 }
 
 function UniformsCache() {

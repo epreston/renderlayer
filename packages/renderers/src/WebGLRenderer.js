@@ -341,7 +341,7 @@ class WebGLRenderer {
         clipping
       );
       materials = WebGLMaterials(_this, properties);
-      renderLists = WebGLRenderLists();
+      renderLists = new WebGLRenderLists();
       renderStates = new WebGLRenderStates(extensions, capabilities);
       background = new WebGLBackground(
         _this,
