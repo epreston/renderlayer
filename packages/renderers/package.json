@@ -31,11 +31,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/renderers#readme",
   "dependencies": {
-    "@renderlayer/geometries": "~0.0.6",
-    "@renderlayer/materials": "~0.0.13",
     "@renderlayer/math": "~0.0.12",
-    "@renderlayer/objects": "~0.0.8",
-    "@renderlayer/shaders": "~0.0.9",
     "@renderlayer/shared": "~0.0.7",
     "@renderlayer/targets": "~0.0.6",
     "@renderlayer/webgl": "~0.0.14"

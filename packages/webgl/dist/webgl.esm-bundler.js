@@ -1,13 +1,14 @@
-import { IntType, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeReflectionMapping, CubeRefractionMapping, arrayNeedsUint32, BackSide, FloatType, NoToneMapping, GLSL3, CustomToneMapping, ACESFilmicToneMapping, CineonToneMapping, ReinhardToneMapping, LinearToneMapping, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, DisplayP3ColorSpace, SRGBColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, CubeUVReflectionMapping, AddOperation, MixOperation, MultiplyOperation, P3Primaries, Rec709Primaries, ObjectSpaceNormalMap, TangentSpaceNormalMap, NormalBlending, SRGBTransfer, DoubleSide, RGBADepthPacking, NoBlending, NearestFilter, FrontSide, LessEqualDepth, AddEquation, SubtractEquation, ReverseSubtractEquation, ZeroFactor, OneFactor, SrcColorFactor, SrcAlphaFactor, SrcAlphaSaturateFactor, DstColorFactor, DstAlphaFactor, OneMinusSrcColorFactor, OneMinusSrcAlphaFactor, OneMinusDstColorFactor, OneMinusDstAlphaFactor, ConstantColorFactor, OneMinusConstantColorFactor, ConstantAlphaFactor, OneMinusConstantAlphaFactor, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, CullFaceNone, CullFaceBack, CullFaceFront, MinEquation, MaxEquation, NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessDepth, AlwaysDepth, NeverDepth, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter, NeverCompare, AlwaysCompare, LessCompare, LessEqualCompare, EqualCompare, GreaterEqualCompare, GreaterCompare, NotEqualCompare, NoColorSpace, RGB_ETC1_Format, UnsignedIntType, UnsignedInt248Type, DepthFormat, UnsignedShortType, DepthStencilFormat, RGBAFormat, _SRGBAFormat, UnsignedByteType, LinearTransfer, createElementNS, UnsignedShort4444Type, UnsignedShort5551Type, ByteType, ShortType, HalfFloatType, AlphaFormat, LuminanceFormat, LuminanceAlphaFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format } from '@renderlayer/shared';
+import { BoxGeometry, PlaneGeometry } from '@renderlayer/geometries';
+import { ShaderMaterial, MeshDepthMaterial, MeshDistanceMaterial } from '@renderlayer/materials';
+import { Color, ColorManagement, Plane, Matrix3, Vector4, Vector2, Vector3, Matrix4, Frustum } from '@renderlayer/math';
+import { Mesh } from '@renderlayer/objects';
+import { cloneUniforms, ShaderLib, getUnlitUniformColorSpace, ShaderChunk, UniformsLib } from '@renderlayer/shaders';
+import { CubeUVReflectionMapping, BackSide, SRGBTransfer, FrontSide, IntType, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeReflectionMapping, CubeRefractionMapping, arrayNeedsUint32, FloatType, NoToneMapping, GLSL3, CustomToneMapping, ACESFilmicToneMapping, CineonToneMapping, ReinhardToneMapping, LinearToneMapping, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, DisplayP3ColorSpace, SRGBColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, AddOperation, MixOperation, MultiplyOperation, P3Primaries, Rec709Primaries, ObjectSpaceNormalMap, TangentSpaceNormalMap, NormalBlending, DoubleSide, RGBADepthPacking, NoBlending, NearestFilter, LessEqualDepth, AddEquation, SubtractEquation, ReverseSubtractEquation, ZeroFactor, OneFactor, SrcColorFactor, SrcAlphaFactor, SrcAlphaSaturateFactor, DstColorFactor, DstAlphaFactor, OneMinusSrcColorFactor, OneMinusSrcAlphaFactor, OneMinusDstColorFactor, OneMinusDstAlphaFactor, ConstantColorFactor, OneMinusConstantColorFactor, ConstantAlphaFactor, OneMinusConstantAlphaFactor, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, CullFaceNone, CullFaceBack, CullFaceFront, MinEquation, MaxEquation, NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessDepth, AlwaysDepth, NeverDepth, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter, NeverCompare, AlwaysCompare, LessCompare, LessEqualCompare, EqualCompare, GreaterEqualCompare, GreaterCompare, NotEqualCompare, NoColorSpace, RGB_ETC1_Format, UnsignedIntType, UnsignedInt248Type, DepthFormat, UnsignedShortType, DepthStencilFormat, RGBAFormat, _SRGBAFormat, UnsignedByteType, LinearTransfer, createElementNS, UnsignedShort4444Type, UnsignedShort5551Type, ByteType, ShortType, HalfFloatType, AlphaFormat, LuminanceFormat, LuminanceAlphaFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format } from '@renderlayer/shared';
 import { WebGLCubeRenderTarget, WebGLRenderTarget } from '@renderlayer/targets';
 import { PMREMGenerator } from '@renderlayer/pmrem';
 import { Uint32BufferAttribute, Uint16BufferAttribute, BufferGeometry, BufferAttribute } from '@renderlayer/buffers';
-import { getUnlitUniformColorSpace, ShaderChunk, ShaderLib, cloneUniforms, UniformsLib } from '@renderlayer/shaders';
-import { Vector4, Vector2, ColorManagement, Vector3, Matrix4, Color, Frustum } from '@renderlayer/math';
 import { DataArrayTexture, Texture, Data3DTexture, CubeTexture } from '@renderlayer/textures';
 import { Layers } from '@renderlayer/core';
-import { MeshDepthMaterial, MeshDistanceMaterial, ShaderMaterial } from '@renderlayer/materials';
-import { Mesh } from '@renderlayer/objects';
 
 class WebGLAnimation {
   constructor() {
@@ -139,6 +140,152 @@ class WebGLAttributes {
       this._updateBuffer(data.buffer, attribute, bufferType);
       data.version = attribute.version;
     }
+  }
+}
+
+const _rgb = { r: 0, b: 0, g: 0 };
+class WebGLBackground {
+  constructor(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
+    this.renderer = renderer;
+    this.cubemaps = cubemaps;
+    this.cubeuvmaps = cubeuvmaps;
+    this.state = state;
+    this.objects = objects;
+    this.alpha = alpha;
+    this.premultipliedAlpha = premultipliedAlpha;
+    this.clearColor = new Color(0);
+    this.clearAlpha = alpha === true ? 0 : 1;
+    this.planeMesh = void 0;
+    this.boxMesh = void 0;
+    this.currentBackground = null;
+    this.currentBackgroundVersion = 0;
+    this.currentTonemapping = null;
+  }
+  render(renderList, scene) {
+    let forceClear = false;
+    let background = scene.isScene === true ? scene.background : null;
+    if (background && background.isTexture) {
+      const usePMREM = scene.backgroundBlurriness > 0;
+      background = (usePMREM ? this.cubeuvmaps : this.cubemaps).get(background);
+    }
+    if (background === null) {
+      this._setClear(this.clearColor, this.clearAlpha);
+    } else if (background && background.isColor) {
+      this._setClear(background, 1);
+      forceClear = true;
+    }
+    if (this.renderer.autoClear || forceClear) {
+      this.renderer.clear(
+        this.renderer.autoClearColor,
+        this.renderer.autoClearDepth,
+        this.renderer.autoClearStencil
+      );
+    }
+    if (background && (background.isCubeTexture || background.mapping === CubeUVReflectionMapping)) {
+      if (this.boxMesh === void 0) {
+        this.boxMesh = new Mesh(
+          new BoxGeometry(1, 1, 1),
+          new ShaderMaterial({
+            name: "BackgroundCubeMaterial",
+            uniforms: cloneUniforms(ShaderLib.backgroundCube.uniforms),
+            vertexShader: ShaderLib.backgroundCube.vertexShader,
+            fragmentShader: ShaderLib.backgroundCube.fragmentShader,
+            side: BackSide,
+            depthTest: false,
+            depthWrite: false,
+            fog: false
+          })
+        );
+        this.boxMesh.geometry.deleteAttribute("normal");
+        this.boxMesh.geometry.deleteAttribute("uv");
+        this.boxMesh.onBeforeRender = function(renderer, scene2, camera) {
+          this.matrixWorld.copyPosition(camera.matrixWorld);
+        };
+        Object.defineProperty(this.boxMesh.material, "envMap", {
+          get() {
+            return this.uniforms.envMap.value;
+          }
+        });
+        this.objects.update(this.boxMesh);
+      }
+      this.boxMesh.material.uniforms.envMap.value = background;
+      this.boxMesh.material.uniforms.flipEnvMap.value = background.isCubeTexture && background.isRenderTargetTexture === false ? -1 : 1;
+      this.boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
+      this.boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+      this.boxMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
+      if (this.currentBackground !== background || this.currentBackgroundVersion !== background.version || this.currentTonemapping !== this.renderer.toneMapping) {
+        this.boxMesh.material.needsUpdate = true;
+        this.currentBackground = background;
+        this.currentBackgroundVersion = background.version;
+        this.currentTonemapping = this.renderer.toneMapping;
+      }
+      this.boxMesh.layers.enableAll();
+      renderList.unshift(this.boxMesh, this.boxMesh.geometry, this.boxMesh.material, 0, 0, null);
+    } else if (background && background.isTexture) {
+      if (this.planeMesh === void 0) {
+        this.planeMesh = new Mesh(
+          new PlaneGeometry(2, 2),
+          new ShaderMaterial({
+            name: "BackgroundMaterial",
+            uniforms: cloneUniforms(ShaderLib.background.uniforms),
+            vertexShader: ShaderLib.background.vertexShader,
+            fragmentShader: ShaderLib.background.fragmentShader,
+            side: FrontSide,
+            depthTest: false,
+            depthWrite: false,
+            fog: false
+          })
+        );
+        this.planeMesh.geometry.deleteAttribute("normal");
+        Object.defineProperty(this.planeMesh.material, "map", {
+          get() {
+            return this.uniforms.t2D.value;
+          }
+        });
+        this.objects.update(this.planeMesh);
+      }
+      this.planeMesh.material.uniforms.t2D.value = background;
+      this.planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+      this.planeMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
+      if (background.matrixAutoUpdate === true) {
+        background.updateMatrix();
+      }
+      this.planeMesh.material.uniforms.uvTransform.value.copy(background.matrix);
+      if (this.currentBackground !== background || this.currentBackgroundVersion !== background.version || this.currentTonemapping !== this.renderer.toneMapping) {
+        this.planeMesh.material.needsUpdate = true;
+        this.currentBackground = background;
+        this.currentBackgroundVersion = background.version;
+        this.currentTonemapping = this.renderer.toneMapping;
+      }
+      this.planeMesh.layers.enableAll();
+      renderList.unshift(
+        this.planeMesh,
+        this.planeMesh.geometry,
+        this.planeMesh.material,
+        0,
+        0,
+        null
+      );
+    }
+  }
+  _setClear(color, alpha) {
+    color.getRGB(_rgb, getUnlitUniformColorSpace(this.renderer));
+    this.state.buffers.color.setClear(_rgb.r, _rgb.g, _rgb.b, alpha, this.premultipliedAlpha);
+  }
+  getClearColor() {
+    return this.clearColor;
+  }
+  setClearColor(color, alpha = 1) {
+    this.clearColor.set(color);
+    this.clearAlpha = alpha;
+    this._setClear(this.clearColor, this.clearAlpha);
+  }
+  getClearAlpha() {
+    return this.clearAlpha;
+  }
+  setClearAlpha(alpha) {
+    this.clearAlpha = alpha;
+    this._setClear(this.clearColor, this.clearAlpha);
   }
 }
 
@@ -578,6 +725,100 @@ function WebGLCapabilities(gl, extensions, parameters) {
     floatVertexTextures,
     maxSamples
   };
+}
+
+class WebGLClipping {
+  constructor(properties) {
+    this._properties = properties;
+    this._globalState = null;
+    this._numGlobalPlanes = 0;
+    this._localClippingEnabled = false;
+    this._renderingShadows = false;
+    this._plane = new Plane();
+    this._viewNormalMatrix = new Matrix3();
+    this._uniform = { value: null, needsUpdate: false };
+    this.uniform = this._uniform;
+    this.numPlanes = 0;
+    this.numIntersection = 0;
+  }
+  init(planes, enableLocalClipping) {
+    const enabled = planes.length !== 0 || enableLocalClipping || // enable state of previous frame - the clipping code has to
+    // run another frame in order to reset the state:
+    this._numGlobalPlanes !== 0 || this._localClippingEnabled;
+    this._localClippingEnabled = enableLocalClipping;
+    this._numGlobalPlanes = planes.length;
+    return enabled;
+  }
+  beginShadows() {
+    this._renderingShadows = true;
+    this._projectPlanes(null);
+  }
+  endShadows() {
+    this._renderingShadows = false;
+  }
+  setGlobalState(planes, camera) {
+    this._globalState = this._projectPlanes(planes, camera, 0);
+  }
+  setState(material, camera, useCache) {
+    const planes = material.clippingPlanes;
+    const clipIntersection = material.clipIntersection;
+    const clipShadows = material.clipShadows;
+    const materialProperties = this._properties.get(material);
+    if (!this._localClippingEnabled || planes === null || planes.length === 0 || this._renderingShadows && !clipShadows) {
+      if (this._renderingShadows) {
+        this._projectPlanes(null);
+      } else {
+        this._resetGlobalState();
+      }
+    } else {
+      const nGlobal = this._renderingShadows ? 0 : this._numGlobalPlanes;
+      const lGlobal = nGlobal * 4;
+      let dstArray = materialProperties.clippingState || null;
+      this._uniform.value = dstArray;
+      dstArray = this._projectPlanes(planes, camera, lGlobal, useCache);
+      for (let i = 0; i !== lGlobal; ++i) {
+        dstArray[i] = this._globalState[i];
+      }
+      materialProperties.clippingState = dstArray;
+      this.numIntersection = clipIntersection ? this.numPlanes : 0;
+      this.numPlanes += nGlobal;
+    }
+  }
+  _resetGlobalState() {
+    const { _globalState, _numGlobalPlanes, _uniform } = this;
+    if (_uniform.value !== _globalState) {
+      _uniform.value = _globalState;
+      _uniform.needsUpdate = _numGlobalPlanes > 0;
+    }
+    this.numPlanes = _numGlobalPlanes;
+    this.numIntersection = 0;
+  }
+  _projectPlanes(planes, camera, dstOffset, skipTransform) {
+    const { _plane, _uniform, _viewNormalMatrix } = this;
+    const nPlanes = planes !== null ? planes.length : 0;
+    let dstArray = null;
+    if (nPlanes !== 0) {
+      dstArray = _uniform.value;
+      if (skipTransform !== true || dstArray === null) {
+        const flatSize = dstOffset + nPlanes * 4;
+        const viewMatrix = camera.matrixWorldInverse;
+        _viewNormalMatrix.getNormalMatrix(viewMatrix);
+        if (dstArray === null || dstArray.length < flatSize) {
+          dstArray = new Float32Array(flatSize);
+        }
+        for (let i = 0, i4 = dstOffset; i !== nPlanes; ++i, i4 += 4) {
+          _plane.copy(planes[i]).applyMatrix4(viewMatrix, _viewNormalMatrix);
+          _plane.normal.toArray(dstArray, i4);
+          dstArray[i4 + 3] = _plane.constant;
+        }
+      }
+      _uniform.value = dstArray;
+      _uniform.needsUpdate = true;
+    }
+    this.numPlanes = nPlanes;
+    this.numIntersection = 0;
+    return dstArray;
+  }
 }
 
 function WebGLCubeMaps(renderer) {
@@ -6886,4 +7127,4 @@ function WebGLUtils(gl, extensions, capabilities) {
   return { convert };
 }
 
-export { WebGLAnimation, WebGLAttributes, WebGLBindingStates, WebGLBufferRenderer, WebGLCapabilities, WebGLCubeMaps, WebGLCubeUVMaps, WebGLExtensions, WebGLGeometries, WebGLIndexedBufferRenderer, WebGLInfo, WebGLMaterials, WebGLMorphtargets, WebGLObjects, WebGLPrograms, WebGLProperties, WebGLRenderList, WebGLRenderLists, WebGLRenderState, WebGLRenderStates, WebGLShadowMap, WebGLState, WebGLTextures, WebGLUniforms, WebGLUniformsGroups, WebGLUtils };
+export { WebGLAnimation, WebGLAttributes, WebGLBackground, WebGLBindingStates, WebGLBufferRenderer, WebGLCapabilities, WebGLClipping, WebGLCubeMaps, WebGLCubeUVMaps, WebGLExtensions, WebGLGeometries, WebGLIndexedBufferRenderer, WebGLInfo, WebGLMaterials, WebGLMorphtargets, WebGLObjects, WebGLPrograms, WebGLProperties, WebGLRenderList, WebGLRenderLists, WebGLRenderState, WebGLRenderStates, WebGLShadowMap, WebGLState, WebGLTextures, WebGLUniforms, WebGLUniformsGroups, WebGLUtils };

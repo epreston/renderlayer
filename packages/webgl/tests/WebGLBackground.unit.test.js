@@ -2,7 +2,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 
 import { WebGLBackground } from '../src/WebGLBackground.js';
 
-describe('Renderers', () => {
+describe('WebGL', () => {
   describe('WebGLBackground', () => {
     it('should expose a class', () => {
       expect(WebGLBackground).toBeDefined();
