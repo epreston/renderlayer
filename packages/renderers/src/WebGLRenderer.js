@@ -329,7 +329,7 @@ class WebGLRenderer {
       bindingStates = WebGLBindingStates(_gl, extensions, attributes, capabilities);
       geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
       objects = new WebGLObjects(_gl, geometries, attributes, info);
-      morphtargets = WebGLMorphtargets(_gl, capabilities, textures);
+      morphtargets = new WebGLMorphtargets(_gl, capabilities, textures);
       clipping = new WebGLClipping(properties);
       programCache = WebGLPrograms(
         _this,

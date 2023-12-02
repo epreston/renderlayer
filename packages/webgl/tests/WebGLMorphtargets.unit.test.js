@@ -4,7 +4,7 @@ import { WebGLMorphtargets } from '../src/WebGLMorphtargets.js';
 
 describe('WebGL', () => {
   describe('WebGLMorphtargets', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLMorphtargets).toBeDefined();
     });
 
