@@ -105,6 +105,8 @@ class WebGLRenderList {
   }
 
   finish() {
+    // Clear references from inactive renderItems in the list
+
     for (let i = this._renderItemsIndex, il = this._renderItems.length; i < il; i++) {
       const renderItem = this._renderItems[i];
 
