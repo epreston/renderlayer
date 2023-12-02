@@ -173,15 +173,15 @@ class WebGLRenderer {
       utils = WebGLUtils(_gl, extensions, capabilities);
       state = WebGLState(_gl, extensions, capabilities);
       info = new WebGLInfo(_gl);
-      properties = WebGLProperties();
+      properties = new WebGLProperties();
       textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
-      cubemaps = WebGLCubeMaps(_this);
-      cubeuvmaps = WebGLCubeUVMaps(_this);
+      cubemaps = new WebGLCubeMaps(_this);
+      cubeuvmaps = new WebGLCubeUVMaps(_this);
       attributes = new WebGLAttributes(_gl, capabilities);
       bindingStates = WebGLBindingStates(_gl, extensions, attributes, capabilities);
       geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
       objects = new WebGLObjects(_gl, geometries, attributes, info);
-      morphtargets = WebGLMorphtargets(_gl, capabilities, textures);
+      morphtargets = new WebGLMorphtargets(_gl, capabilities, textures);
       clipping = new WebGLClipping(properties);
       programCache = WebGLPrograms(
         _this,

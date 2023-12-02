@@ -3,7 +3,7 @@ import { ShaderMaterial, MeshDepthMaterial, MeshDistanceMaterial } from '@render
 import { Color, ColorManagement, Plane, Matrix3, Vector4, Vector2, Vector3, Matrix4, Frustum } from '@renderlayer/math';
 import { Mesh } from '@renderlayer/objects';
 import { cloneUniforms, ShaderLib, getUnlitUniformColorSpace, ShaderChunk, UniformsLib } from '@renderlayer/shaders';
-import { CubeUVReflectionMapping, BackSide, SRGBTransfer, FrontSide, IntType, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeReflectionMapping, CubeRefractionMapping, arrayNeedsUint32, FloatType, NoToneMapping, GLSL3, CustomToneMapping, ACESFilmicToneMapping, CineonToneMapping, ReinhardToneMapping, LinearToneMapping, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, DisplayP3ColorSpace, SRGBColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, AddOperation, MixOperation, MultiplyOperation, P3Primaries, Rec709Primaries, ObjectSpaceNormalMap, TangentSpaceNormalMap, NormalBlending, DoubleSide, RGBADepthPacking, NoBlending, NearestFilter, LessEqualDepth, AddEquation, SubtractEquation, ReverseSubtractEquation, ZeroFactor, OneFactor, SrcColorFactor, SrcAlphaFactor, SrcAlphaSaturateFactor, DstColorFactor, DstAlphaFactor, OneMinusSrcColorFactor, OneMinusSrcAlphaFactor, OneMinusDstColorFactor, OneMinusDstAlphaFactor, ConstantColorFactor, OneMinusConstantColorFactor, ConstantAlphaFactor, OneMinusConstantAlphaFactor, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, CullFaceNone, CullFaceBack, CullFaceFront, MinEquation, MaxEquation, NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessDepth, AlwaysDepth, NeverDepth, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter, NeverCompare, AlwaysCompare, LessCompare, LessEqualCompare, EqualCompare, GreaterEqualCompare, GreaterCompare, NotEqualCompare, NoColorSpace, RGB_ETC1_Format, UnsignedIntType, UnsignedInt248Type, DepthFormat, UnsignedShortType, DepthStencilFormat, RGBAFormat, _SRGBAFormat, UnsignedByteType, LinearTransfer, createElementNS, UnsignedShort4444Type, UnsignedShort5551Type, ByteType, ShortType, HalfFloatType, AlphaFormat, LuminanceFormat, LuminanceAlphaFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format } from '@renderlayer/shared';
+import { CubeUVReflectionMapping, BackSide, SRGBTransfer, FrontSide, IntType, EquirectangularReflectionMapping, CubeReflectionMapping, EquirectangularRefractionMapping, CubeRefractionMapping, arrayNeedsUint32, FloatType, NoToneMapping, GLSL3, CustomToneMapping, ACESFilmicToneMapping, CineonToneMapping, ReinhardToneMapping, LinearToneMapping, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, DisplayP3ColorSpace, SRGBColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, AddOperation, MixOperation, MultiplyOperation, P3Primaries, Rec709Primaries, ObjectSpaceNormalMap, TangentSpaceNormalMap, NormalBlending, DoubleSide, RGBADepthPacking, NoBlending, NearestFilter, LessEqualDepth, AddEquation, SubtractEquation, ReverseSubtractEquation, ZeroFactor, OneFactor, SrcColorFactor, SrcAlphaFactor, SrcAlphaSaturateFactor, DstColorFactor, DstAlphaFactor, OneMinusSrcColorFactor, OneMinusSrcAlphaFactor, OneMinusDstColorFactor, OneMinusDstAlphaFactor, ConstantColorFactor, OneMinusConstantColorFactor, ConstantAlphaFactor, OneMinusConstantAlphaFactor, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, CullFaceNone, CullFaceBack, CullFaceFront, MinEquation, MaxEquation, NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessDepth, AlwaysDepth, NeverDepth, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearFilter, LinearMipmapNearestFilter, LinearMipmapLinearFilter, NeverCompare, AlwaysCompare, LessCompare, LessEqualCompare, EqualCompare, GreaterEqualCompare, GreaterCompare, NotEqualCompare, NoColorSpace, RGB_ETC1_Format, UnsignedIntType, UnsignedInt248Type, DepthFormat, UnsignedShortType, DepthStencilFormat, RGBAFormat, _SRGBAFormat, UnsignedByteType, LinearTransfer, createElementNS, UnsignedShort4444Type, UnsignedShort5551Type, ByteType, ShortType, HalfFloatType, AlphaFormat, LuminanceFormat, LuminanceAlphaFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format } from '@renderlayer/shared';
 import { WebGLCubeRenderTarget, WebGLRenderTarget } from '@renderlayer/targets';
 import { PMREMGenerator } from '@renderlayer/pmrem';
 import { Uint32BufferAttribute, Uint16BufferAttribute, BufferGeometry, BufferAttribute } from '@renderlayer/buffers';
@@ -821,9 +821,12 @@ class WebGLClipping {
   }
 }
 
-function WebGLCubeMaps(renderer) {
-  let cubemaps = /* @__PURE__ */ new WeakMap();
-  function mapTextureMapping(texture, mapping) {
+class WebGLCubeMaps {
+  constructor(renderer) {
+    this._renderer = renderer;
+    this._cubemaps = /* @__PURE__ */ new WeakMap();
+  }
+  _mapTextureMapping(texture, mapping) {
     if (mapping === EquirectangularReflectionMapping) {
       texture.mapping = CubeReflectionMapping;
     } else if (mapping === EquirectangularRefractionMapping) {
@@ -831,21 +834,21 @@ function WebGLCubeMaps(renderer) {
     }
     return texture;
   }
-  function get(texture) {
+  get(texture) {
     if (texture && texture.isTexture) {
       const mapping = texture.mapping;
       if (mapping === EquirectangularReflectionMapping || mapping === EquirectangularRefractionMapping) {
-        if (cubemaps.has(texture)) {
-          const cubemap = cubemaps.get(texture).texture;
-          return mapTextureMapping(cubemap, texture.mapping);
+        if (this._cubemaps.has(texture)) {
+          const cubemap = this._cubemaps.get(texture).texture;
+          return this._mapTextureMapping(cubemap, texture.mapping);
         } else {
           const image = texture.image;
           if (image && image.height > 0) {
             const renderTarget = new WebGLCubeRenderTarget(image.height / 2);
-            renderTarget.fromEquirectangularTexture(renderer, texture);
-            cubemaps.set(texture, renderTarget);
-            texture.addEventListener("dispose", onTextureDispose);
-            return mapTextureMapping(renderTarget.texture, texture.mapping);
+            renderTarget.fromEquirectangularTexture(this._renderer, texture);
+            this._cubemaps.set(texture, renderTarget);
+            texture.addEventListener("dispose", this._onTextureDispose);
+            return this._mapTextureMapping(renderTarget.texture, texture.mapping);
           } else {
             return null;
           }
@@ -854,28 +857,27 @@ function WebGLCubeMaps(renderer) {
     }
     return texture;
   }
-  function onTextureDispose(event) {
+  _onTextureDispose(event) {
     const texture = event.target;
-    texture.removeEventListener("dispose", onTextureDispose);
-    const cubemap = cubemaps.get(texture);
+    texture.removeEventListener("dispose", this._onTextureDispose);
+    const cubemap = this._cubemaps.get(texture);
     if (cubemap !== void 0) {
-      cubemaps.delete(texture);
+      this._cubemaps.delete(texture);
       cubemap.dispose();
     }
   }
-  function dispose() {
-    cubemaps = /* @__PURE__ */ new WeakMap();
+  dispose() {
+    this._cubemaps = /* @__PURE__ */ new WeakMap();
   }
-  return {
-    get,
-    dispose
-  };
 }
 
-function WebGLCubeUVMaps(renderer) {
-  let cubeUVmaps = /* @__PURE__ */ new WeakMap();
-  let pmremGenerator = null;
-  function get(texture) {
+class WebGLCubeUVMaps {
+  constructor(renderer) {
+    this._renderer = renderer;
+    this._cubeUVmaps = /* @__PURE__ */ new WeakMap();
+    this._pmremGenerator = null;
+  }
+  get(texture) {
     if (texture && texture.isTexture) {
       const mapping = texture.mapping;
       const isEquirectMap = mapping === EquirectangularReflectionMapping || mapping === EquirectangularRefractionMapping;
@@ -883,23 +885,23 @@ function WebGLCubeUVMaps(renderer) {
       if (isEquirectMap || isCubeMap) {
         if (texture.isRenderTargetTexture && texture.needsPMREMUpdate === true) {
           texture.needsPMREMUpdate = false;
-          let renderTarget = cubeUVmaps.get(texture);
-          if (pmremGenerator === null)
-            pmremGenerator = new PMREMGenerator(renderer);
-          renderTarget = isEquirectMap ? pmremGenerator.fromEquirectangular(texture, renderTarget) : pmremGenerator.fromCubemap(texture, renderTarget);
-          cubeUVmaps.set(texture, renderTarget);
+          let renderTarget = this._cubeUVmaps.get(texture);
+          if (this._pmremGenerator === null)
+            this._pmremGenerator = new PMREMGenerator(this._renderer);
+          renderTarget = isEquirectMap ? this._pmremGenerator.fromEquirectangular(texture, renderTarget) : this._pmremGenerator.fromCubemap(texture, renderTarget);
+          this._cubeUVmaps.set(texture, renderTarget);
           return renderTarget.texture;
         } else {
-          if (cubeUVmaps.has(texture)) {
-            return cubeUVmaps.get(texture).texture;
+          if (this._cubeUVmaps.has(texture)) {
+            return this._cubeUVmaps.get(texture).texture;
           } else {
             const image = texture.image;
-            if (isEquirectMap && image && image.height > 0 || isCubeMap && image && isCubeTextureComplete(image)) {
-              if (pmremGenerator === null)
-                pmremGenerator = new PMREMGenerator(renderer);
-              const renderTarget = isEquirectMap ? pmremGenerator.fromEquirectangular(texture) : pmremGenerator.fromCubemap(texture);
-              cubeUVmaps.set(texture, renderTarget);
-              texture.addEventListener("dispose", onTextureDispose);
+            if (isEquirectMap && image && image.height > 0 || isCubeMap && image && this._isCubeTextureComplete(image)) {
+              if (this._pmremGenerator === null)
+                this._pmremGenerator = new PMREMGenerator(this._renderer);
+              const renderTarget = isEquirectMap ? this._pmremGenerator.fromEquirectangular(texture) : this._pmremGenerator.fromCubemap(texture);
+              this._cubeUVmaps.set(texture, renderTarget);
+              texture.addEventListener("dispose", this._onTextureDispose);
               return renderTarget.texture;
             } else {
               return null;
@@ -910,7 +912,7 @@ function WebGLCubeUVMaps(renderer) {
     }
     return texture;
   }
-  function isCubeTextureComplete(image) {
+  _isCubeTextureComplete(image) {
     let count = 0;
     const length = 6;
     for (let i = 0; i < length; i++) {
@@ -919,26 +921,22 @@ function WebGLCubeUVMaps(renderer) {
     }
     return count === length;
   }
-  function onTextureDispose(event) {
+  _onTextureDispose(event) {
     const texture = event.target;
-    texture.removeEventListener("dispose", onTextureDispose);
-    const cubemapUV = cubeUVmaps.get(texture);
+    texture.removeEventListener("dispose", this._onTextureDispose);
+    const cubemapUV = this._cubeUVmaps.get(texture);
     if (cubemapUV !== void 0) {
-      cubeUVmaps.delete(texture);
+      this._cubeUVmaps.delete(texture);
       cubemapUV.dispose();
     }
   }
-  function dispose() {
-    cubeUVmaps = /* @__PURE__ */ new WeakMap();
-    if (pmremGenerator !== null) {
-      pmremGenerator.dispose();
-      pmremGenerator = null;
+  dispose() {
+    this._cubeUVmaps = /* @__PURE__ */ new WeakMap();
+    if (this._pmremGenerator !== null) {
+      this._pmremGenerator.dispose();
+      this._pmremGenerator = null;
     }
   }
-  return {
-    get,
-    dispose
-  };
 }
 
 class WebGLExtensions {
@@ -1449,14 +1447,25 @@ function WebGLMaterials(renderer, properties) {
   };
 }
 
-function WebGLMorphtargets(gl, capabilities, textures) {
-  const morphTextures = /* @__PURE__ */ new WeakMap();
-  const morph = new Vector4();
-  function update(object, geometry, program) {
+class WebGLMorphtargets {
+  /** @param { WebGL2RenderingContext} gl */
+  constructor(gl, capabilities, textures) {
+    this.gl = gl;
+    this.capabilities = capabilities;
+    this.textures = textures;
+    this._morphTextures = /* @__PURE__ */ new WeakMap();
+    this._morph = new Vector4();
+    this._workInfluences = [];
+    for (let i = 0; i < 8; i++) {
+      this._workInfluences[i] = [i, 0];
+    }
+  }
+  update(object, geometry, program) {
+    const { gl, capabilities, textures } = this;
     const objectInfluences = object.morphTargetInfluences;
     const morphAttribute = geometry.morphAttributes.position || geometry.morphAttributes.normal || geometry.morphAttributes.color;
     const morphTargetsCount = morphAttribute !== void 0 ? morphAttribute.length : 0;
-    let entry = morphTextures.get(geometry);
+    let entry = this._morphTextures.get(geometry);
     if (entry === void 0 || entry.count !== morphTargetsCount) {
       if (entry !== void 0)
         entry.texture.dispose();
@@ -1492,25 +1501,25 @@ function WebGLMorphtargets(gl, capabilities, textures) {
         for (let j = 0; j < morphTarget.count; j++) {
           const stride = j * vertexDataStride;
           if (hasMorphPosition === true) {
-            morph.fromBufferAttribute(morphTarget, j);
-            buffer[offset + stride + 0] = morph.x;
-            buffer[offset + stride + 1] = morph.y;
-            buffer[offset + stride + 2] = morph.z;
+            this._morph.fromBufferAttribute(morphTarget, j);
+            buffer[offset + stride + 0] = this._morph.x;
+            buffer[offset + stride + 1] = this._morph.y;
+            buffer[offset + stride + 2] = this._morph.z;
             buffer[offset + stride + 3] = 0;
           }
           if (hasMorphNormals === true) {
-            morph.fromBufferAttribute(morphNormal, j);
-            buffer[offset + stride + 4] = morph.x;
-            buffer[offset + stride + 5] = morph.y;
-            buffer[offset + stride + 6] = morph.z;
+            this._morph.fromBufferAttribute(morphNormal, j);
+            buffer[offset + stride + 4] = this._morph.x;
+            buffer[offset + stride + 5] = this._morph.y;
+            buffer[offset + stride + 6] = this._morph.z;
             buffer[offset + stride + 7] = 0;
           }
           if (hasMorphColors === true) {
-            morph.fromBufferAttribute(morphColor, j);
-            buffer[offset + stride + 8] = morph.x;
-            buffer[offset + stride + 9] = morph.y;
-            buffer[offset + stride + 10] = morph.z;
-            buffer[offset + stride + 11] = morphColor.itemSize === 4 ? morph.w : 1;
+            this._morph.fromBufferAttribute(morphColor, j);
+            buffer[offset + stride + 8] = this._morph.x;
+            buffer[offset + stride + 9] = this._morph.y;
+            buffer[offset + stride + 10] = this._morph.z;
+            buffer[offset + stride + 11] = morphColor.itemSize === 4 ? this._morph.w : 1;
           }
         }
       }
@@ -1519,10 +1528,10 @@ function WebGLMorphtargets(gl, capabilities, textures) {
         texture,
         size: new Vector2(width, height)
       };
-      morphTextures.set(geometry, entry);
+      this._morphTextures.set(geometry, entry);
       const disposeTexture = () => {
         texture.dispose();
-        morphTextures.delete(geometry);
+        this._morphTextures.delete(geometry);
         geometry.removeEventListener("dispose", disposeTexture);
       };
       geometry.addEventListener("dispose", disposeTexture);
@@ -1537,9 +1546,6 @@ function WebGLMorphtargets(gl, capabilities, textures) {
     program.getUniforms().setValue(gl, "morphTargetsTexture", entry.texture, textures);
     program.getUniforms().setValue(gl, "morphTargetsTextureSize", entry.size);
   }
-  return {
-    update
-  };
 }
 
 class WebGLObjects {
@@ -3421,31 +3427,27 @@ function WebGLPrograms(renderer, cubemaps, cubeuvmaps, extensions, capabilities,
   };
 }
 
-function WebGLProperties() {
-  let properties = /* @__PURE__ */ new WeakMap();
-  function get(object) {
-    let map = properties.get(object);
+class WebGLProperties {
+  constructor() {
+    this._properties = /* @__PURE__ */ new WeakMap();
+  }
+  get(object) {
+    let map = this._properties.get(object);
     if (map === void 0) {
       map = {};
-      properties.set(object, map);
+      this._properties.set(object, map);
     }
     return map;
   }
-  function remove(object) {
-    properties.delete(object);
+  remove(object) {
+    this._properties.delete(object);
   }
-  function update(object, key, value) {
-    properties.get(object)[key] = value;
+  update(object, key, value) {
+    this._properties.get(object)[key] = value;
   }
-  function dispose() {
-    properties = /* @__PURE__ */ new WeakMap();
+  dispose() {
+    this._properties = /* @__PURE__ */ new WeakMap();
   }
-  return {
-    get,
-    remove,
-    update,
-    dispose
-  };
 }
 
 function painterSortStable(a, b) {
