@@ -353,7 +353,7 @@ class WebGLRenderer {
         premultipliedAlpha
       );
       shadowMap = new WebGLShadowMap(_this, objects, capabilities);
-      uniformsGroups = WebGLUniformsGroups(_gl, info, capabilities, state);
+      uniformsGroups = new WebGLUniformsGroups(_gl, info, capabilities, state);
 
       bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info, capabilities);
       indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info, capabilities);

@@ -6704,47 +6704,53 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   this.setupFrameBufferTexture = setupFrameBufferTexture;
 }
 
-function WebGLUniformsGroups(gl, info, capabilities, state) {
-  let buffers = {};
-  let updateList = {};
-  let allocatedBindingPoints = [];
-  const maxBindingPoints = gl.getParameter(gl.MAX_UNIFORM_BUFFER_BINDINGS);
-  function bind(uniformsGroup, program) {
-    const webglProgram = program.program;
-    state.uniformBlockBinding(uniformsGroup, webglProgram);
+class WebGLUniformsGroups {
+  constructor(gl, info, capabilities, state) {
+    this._gl = gl;
+    this._info = info;
+    this._capabilities = capabilities;
+    this._state = state;
+    this._buffers = {};
+    this._updateList = {};
+    this._allocatedBindingPoints = [];
+    this._maxBindingPoints = gl.getParameter(gl.MAX_UNIFORM_BUFFER_BINDINGS);
   }
-  function update(uniformsGroup, program) {
-    let buffer = buffers[uniformsGroup.id];
+  bind(uniformsGroup, program) {
+    const webglProgram = program.program;
+    this._state.uniformBlockBinding(uniformsGroup, webglProgram);
+  }
+  update(uniformsGroup, program) {
+    let buffer = this._buffers[uniformsGroup.id];
     if (buffer === void 0) {
-      prepareUniformsGroup(uniformsGroup);
-      buffer = createBuffer(uniformsGroup);
-      buffers[uniformsGroup.id] = buffer;
-      uniformsGroup.addEventListener("dispose", onUniformsGroupsDispose);
+      this._prepareUniformsGroup(uniformsGroup);
+      buffer = this._createBuffer(uniformsGroup);
+      this._buffers[uniformsGroup.id] = buffer;
+      uniformsGroup.addEventListener("dispose", this._onUniformsGroupsDispose);
     }
     const webglProgram = program.program;
-    state.updateUBOMapping(uniformsGroup, webglProgram);
-    const frame = info.render.frame;
-    if (updateList[uniformsGroup.id] !== frame) {
-      updateBufferData(uniformsGroup);
-      updateList[uniformsGroup.id] = frame;
+    this._state.updateUBOMapping(uniformsGroup, webglProgram);
+    const frame = this._info.render.frame;
+    if (this._updateList[uniformsGroup.id] !== frame) {
+      this._updateBufferData(uniformsGroup);
+      this._updateList[uniformsGroup.id] = frame;
     }
   }
-  function createBuffer(uniformsGroup) {
-    const bindingPointIndex = allocateBindingPointIndex();
+  _createBuffer(uniformsGroup) {
+    const bindingPointIndex = this._allocateBindingPointIndex();
     uniformsGroup.__bindingPointIndex = bindingPointIndex;
-    const buffer = gl.createBuffer();
+    const buffer = this._gl.createBuffer();
     const size = uniformsGroup.__size;
     const usage = uniformsGroup.usage;
-    gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
-    gl.bufferData(gl.UNIFORM_BUFFER, size, usage);
-    gl.bindBuffer(gl.UNIFORM_BUFFER, null);
-    gl.bindBufferBase(gl.UNIFORM_BUFFER, bindingPointIndex, buffer);
+    this._gl.bindBuffer(this._gl.UNIFORM_BUFFER, buffer);
+    this._gl.bufferData(this._gl.UNIFORM_BUFFER, size, usage);
+    this._gl.bindBuffer(this._gl.UNIFORM_BUFFER, null);
+    this._gl.bindBufferBase(this._gl.UNIFORM_BUFFER, bindingPointIndex, buffer);
     return buffer;
   }
-  function allocateBindingPointIndex() {
-    for (let i = 0; i < maxBindingPoints; i++) {
-      if (!allocatedBindingPoints.includes(i)) {
-        allocatedBindingPoints.push(i);
+  _allocateBindingPointIndex() {
+    for (let i = 0; i < this._maxBindingPoints; i++) {
+      if (!this._allocatedBindingPoints.includes(i)) {
+        this._allocatedBindingPoints.push(i);
         return i;
       }
     }
@@ -6753,46 +6759,46 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
     );
     return 0;
   }
-  function updateBufferData(uniformsGroup) {
-    const buffer = buffers[uniformsGroup.id];
+  _updateBufferData(uniformsGroup) {
+    const buffer = this._buffers[uniformsGroup.id];
     const uniforms = uniformsGroup.uniforms;
     const cache = uniformsGroup.__cache;
-    gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
+    this._gl.bindBuffer(this._gl.UNIFORM_BUFFER, buffer);
     for (let i = 0, il = uniforms.length; i < il; i++) {
       const uniform = uniforms[i];
-      if (hasUniformChanged(uniform, i, cache) === true) {
+      if (this._hasUniformChanged(uniform, i, cache) === true) {
         const offset = uniform.__offset;
         const values = Array.isArray(uniform.value) ? uniform.value : [uniform.value];
         let arrayOffset = 0;
         for (const value of values) {
-          const info2 = getUniformSize(value);
+          const info = this._getUniformSize(value);
           if (typeof value === "number" || typeof value === "boolean") {
             uniform.__data[0] = value;
-            gl.bufferSubData(gl.UNIFORM_BUFFER, offset + arrayOffset, uniform.__data);
+            this._gl.bufferSubData(this._gl.UNIFORM_BUFFER, offset + arrayOffset, uniform.__data);
           } else if (value.isMatrix3) {
             uniform.__data[0] = value.elements[0];
             uniform.__data[1] = value.elements[1];
             uniform.__data[2] = value.elements[2];
-            uniform.__data[3] = value.elements[0];
+            uniform.__data[3] = 0;
             uniform.__data[4] = value.elements[3];
             uniform.__data[5] = value.elements[4];
             uniform.__data[6] = value.elements[5];
-            uniform.__data[7] = value.elements[0];
+            uniform.__data[7] = 0;
             uniform.__data[8] = value.elements[6];
             uniform.__data[9] = value.elements[7];
             uniform.__data[10] = value.elements[8];
-            uniform.__data[11] = value.elements[0];
+            uniform.__data[11] = 0;
           } else {
             value.toArray(uniform.__data, arrayOffset);
-            arrayOffset += info2.storage / Float32Array.BYTES_PER_ELEMENT;
+            arrayOffset += info.storage / Float32Array.BYTES_PER_ELEMENT;
           }
         }
-        gl.bufferSubData(gl.UNIFORM_BUFFER, offset, uniform.__data);
+        this._gl.bufferSubData(this._gl.UNIFORM_BUFFER, offset, uniform.__data);
       }
     }
-    gl.bindBuffer(gl.UNIFORM_BUFFER, null);
+    this._gl.bindBuffer(this._gl.UNIFORM_BUFFER, null);
   }
-  function hasUniformChanged(uniform, index, cache) {
+  _hasUniformChanged(uniform, index, cache) {
     const value = uniform.value;
     if (cache[index] === void 0) {
       if (typeof value === "number" || typeof value === "boolean") {
@@ -6831,7 +6837,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
     }
     return false;
   }
-  function prepareUniformsGroup(uniformsGroup) {
+  _prepareUniformsGroup(uniformsGroup) {
     const uniforms = uniformsGroup.uniforms;
     let offset = 0;
     const chunkSize = 16;
@@ -6847,9 +6853,9 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
       const values = Array.isArray(uniform.value) ? uniform.value : [uniform.value];
       for (let j = 0, jl = values.length; j < jl; j++) {
         const value = values[j];
-        const info2 = getUniformSize(value);
-        infos.boundary += info2.boundary;
-        infos.storage += info2.storage;
+        const info = this._getUniformSize(value);
+        infos.boundary += info.boundary;
+        infos.storage += info.storage;
       }
       uniform.__data = new Float32Array(infos.storage / Float32Array.BYTES_PER_ELEMENT);
       uniform.__offset = offset;
@@ -6869,60 +6875,55 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
     uniformsGroup.__size = offset;
     uniformsGroup.__cache = {};
   }
-  function getUniformSize(value) {
-    const info2 = {
+  _getUniformSize(value) {
+    const info = {
       boundary: 0,
       // bytes
       storage: 0
       // bytes
     };
     if (typeof value === "number" || typeof value === "boolean") {
-      info2.boundary = 4;
-      info2.storage = 4;
+      info.boundary = 4;
+      info.storage = 4;
     } else if (value.isVector2) {
-      info2.boundary = 8;
-      info2.storage = 8;
+      info.boundary = 8;
+      info.storage = 8;
     } else if (value.isVector3 || value.isColor) {
-      info2.boundary = 16;
-      info2.storage = 12;
+      info.boundary = 16;
+      info.storage = 12;
     } else if (value.isVector4) {
-      info2.boundary = 16;
-      info2.storage = 16;
+      info.boundary = 16;
+      info.storage = 16;
     } else if (value.isMatrix3) {
-      info2.boundary = 48;
-      info2.storage = 48;
+      info.boundary = 48;
+      info.storage = 48;
     } else if (value.isMatrix4) {
-      info2.boundary = 64;
-      info2.storage = 64;
+      info.boundary = 64;
+      info.storage = 64;
     } else if (value.isTexture) {
       console.warn("WebGLRenderer: Texture samplers can not be part of an uniforms group.");
     } else {
       console.warn("WebGLRenderer: Unsupported uniform value type.", value);
     }
-    return info2;
+    return info;
   }
-  function onUniformsGroupsDispose(event) {
+  _onUniformsGroupsDispose(event) {
     const uniformsGroup = event.target;
-    uniformsGroup.removeEventListener("dispose", onUniformsGroupsDispose);
-    const index = allocatedBindingPoints.indexOf(uniformsGroup.__bindingPointIndex);
-    allocatedBindingPoints.splice(index, 1);
-    gl.deleteBuffer(buffers[uniformsGroup.id]);
-    delete buffers[uniformsGroup.id];
-    delete updateList[uniformsGroup.id];
+    uniformsGroup.removeEventListener("dispose", this._onUniformsGroupsDispose);
+    const index = this._allocatedBindingPoints.indexOf(uniformsGroup.__bindingPointIndex);
+    this._allocatedBindingPoints.splice(index, 1);
+    this._gl.deleteBuffer(this._buffers[uniformsGroup.id]);
+    delete this._buffers[uniformsGroup.id];
+    delete this._updateList[uniformsGroup.id];
   }
-  function dispose() {
-    for (const id in buffers) {
-      gl.deleteBuffer(buffers[id]);
+  dispose() {
+    for (const id in this._buffers) {
+      this._gl.deleteBuffer(this._buffers[id]);
     }
-    allocatedBindingPoints = [];
-    buffers = {};
-    updateList = {};
+    this._allocatedBindingPoints = [];
+    this._buffers = {};
+    this._updateList = {};
   }
-  return {
-    bind,
-    update,
-    dispose
-  };
 }
 
 function WebGLUtils(gl, extensions, capabilities) {

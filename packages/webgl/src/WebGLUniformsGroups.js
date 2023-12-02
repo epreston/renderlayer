@@ -1,67 +1,72 @@
 /** @param { WebGL2RenderingContext} gl */
-function WebGLUniformsGroups(gl, info, capabilities, state) {
-  let buffers = {};
-  let updateList = {};
-  let allocatedBindingPoints = [];
+class WebGLUniformsGroups {
+  constructor(gl, info, capabilities, state) {
+    this._gl = gl;
+    this._info = info;
+    this._capabilities = capabilities;
+    this._state = state;
+    this._buffers = {};
+    this._updateList = {};
+    this._allocatedBindingPoints = [];
 
-  const maxBindingPoints = gl.getParameter(gl.MAX_UNIFORM_BUFFER_BINDINGS);
-
-  function bind(uniformsGroup, program) {
-    const webglProgram = program.program;
-
-    state.uniformBlockBinding(uniformsGroup, webglProgram);
+    this._maxBindingPoints = gl.getParameter(gl.MAX_UNIFORM_BUFFER_BINDINGS);
   }
 
-  function update(uniformsGroup, program) {
-    let buffer = buffers[uniformsGroup.id];
+  bind(uniformsGroup, program) {
+    const webglProgram = program.program;
+    this._state.uniformBlockBinding(uniformsGroup, webglProgram);
+  }
+
+  update(uniformsGroup, program) {
+    let buffer = this._buffers[uniformsGroup.id];
 
     if (buffer === undefined) {
-      prepareUniformsGroup(uniformsGroup);
+      this._prepareUniformsGroup(uniformsGroup);
 
-      buffer = createBuffer(uniformsGroup);
-      buffers[uniformsGroup.id] = buffer;
+      buffer = this._createBuffer(uniformsGroup);
+      this._buffers[uniformsGroup.id] = buffer;
 
-      uniformsGroup.addEventListener('dispose', onUniformsGroupsDispose);
+      uniformsGroup.addEventListener('dispose', this._onUniformsGroupsDispose);
     }
 
     // ensure to update the binding points/block indices mapping for this program
 
     const webglProgram = program.program;
-    state.updateUBOMapping(uniformsGroup, webglProgram);
+    this._state.updateUBOMapping(uniformsGroup, webglProgram);
 
     // update UBO once per frame
 
-    const frame = info.render.frame;
+    const frame = this._info.render.frame;
 
-    if (updateList[uniformsGroup.id] !== frame) {
-      updateBufferData(uniformsGroup);
+    if (this._updateList[uniformsGroup.id] !== frame) {
+      this._updateBufferData(uniformsGroup);
 
-      updateList[uniformsGroup.id] = frame;
+      this._updateList[uniformsGroup.id] = frame;
     }
   }
 
-  function createBuffer(uniformsGroup) {
+  _createBuffer(uniformsGroup) {
     // the setup of an UBO is independent of a particular shader program but global
 
-    const bindingPointIndex = allocateBindingPointIndex();
+    const bindingPointIndex = this._allocateBindingPointIndex();
     uniformsGroup.__bindingPointIndex = bindingPointIndex;
 
-    const buffer = gl.createBuffer();
+    const buffer = this._gl.createBuffer();
     const size = uniformsGroup.__size;
     const usage = uniformsGroup.usage;
 
-    gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
-    gl.bufferData(gl.UNIFORM_BUFFER, size, usage);
-    gl.bindBuffer(gl.UNIFORM_BUFFER, null);
-    gl.bindBufferBase(gl.UNIFORM_BUFFER, bindingPointIndex, buffer);
+    this._gl.bindBuffer(this._gl.UNIFORM_BUFFER, buffer);
+    this._gl.bufferData(this._gl.UNIFORM_BUFFER, size, usage);
+    this._gl.bindBuffer(this._gl.UNIFORM_BUFFER, null);
+    this._gl.bindBufferBase(this._gl.UNIFORM_BUFFER, bindingPointIndex, buffer);
 
     return buffer;
   }
 
-  function allocateBindingPointIndex() {
-    for (let i = 0; i < maxBindingPoints; i++) {
-      if (!allocatedBindingPoints.includes(i)) {
-        allocatedBindingPoints.push(i);
+  _allocateBindingPointIndex() {
+    for (let i = 0; i < this._maxBindingPoints; i++) {
+      if (!this._allocatedBindingPoints.includes(i)) {
+        this._allocatedBindingPoints.push(i);
         return i;
       }
     }
@@ -73,19 +78,19 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
     return 0;
   }
 
-  function updateBufferData(uniformsGroup) {
-    const buffer = buffers[uniformsGroup.id];
+  _updateBufferData(uniformsGroup) {
+    const buffer = this._buffers[uniformsGroup.id];
     const uniforms = uniformsGroup.uniforms;
     const cache = uniformsGroup.__cache;
 
-    gl.bindBuffer(gl.UNIFORM_BUFFER, buffer);
+    this._gl.bindBuffer(this._gl.UNIFORM_BUFFER, buffer);
 
     for (let i = 0, il = uniforms.length; i < il; i++) {
       const uniform = uniforms[i];
 
       // partly update the buffer if necessary
 
-      if (hasUniformChanged(uniform, i, cache) === true) {
+      if (this._hasUniformChanged(uniform, i, cache) === true) {
         const offset = uniform.__offset;
 
         const values = Array.isArray(uniform.value) ? uniform.value : [uniform.value];
@@ -93,26 +98,26 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
         let arrayOffset = 0;
 
         for (const value of values) {
-          const info = getUniformSize(value);
+          const info = this._getUniformSize(value);
 
           if (typeof value === 'number' || typeof value === 'boolean') {
             uniform.__data[0] = value;
-            gl.bufferSubData(gl.UNIFORM_BUFFER, offset + arrayOffset, uniform.__data);
+            this._gl.bufferSubData(this._gl.UNIFORM_BUFFER, offset + arrayOffset, uniform.__data);
           } else if (value.isMatrix3) {
             // manually converting 3x3 to 3x4
 
             uniform.__data[0] = value.elements[0];
             uniform.__data[1] = value.elements[1];
             uniform.__data[2] = value.elements[2];
-            uniform.__data[3] = value.elements[0];
+            uniform.__data[3] = 0;
             uniform.__data[4] = value.elements[3];
             uniform.__data[5] = value.elements[4];
             uniform.__data[6] = value.elements[5];
-            uniform.__data[7] = value.elements[0];
+            uniform.__data[7] = 0;
             uniform.__data[8] = value.elements[6];
             uniform.__data[9] = value.elements[7];
             uniform.__data[10] = value.elements[8];
-            uniform.__data[11] = value.elements[0];
+            uniform.__data[11] = 0;
           } else {
             value.toArray(uniform.__data, arrayOffset);
 
@@ -120,14 +125,14 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
           }
         }
 
-        gl.bufferSubData(gl.UNIFORM_BUFFER, offset, uniform.__data);
+        this._gl.bufferSubData(this._gl.UNIFORM_BUFFER, offset, uniform.__data);
       }
     }
 
-    gl.bindBuffer(gl.UNIFORM_BUFFER, null);
+    this._gl.bindBuffer(this._gl.UNIFORM_BUFFER, null);
   }
 
-  function hasUniformChanged(uniform, index, cache) {
+  _hasUniformChanged(uniform, index, cache) {
     const value = uniform.value;
 
     if (cache[index] === undefined) {
@@ -178,7 +183,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
     return false;
   }
 
-  function prepareUniformsGroup(uniformsGroup) {
+  _prepareUniformsGroup(uniformsGroup) {
     // determine total buffer size according to the STD140 layout
     // Hint: STD140 is the only supported layout in WebGL 2
 
@@ -201,7 +206,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
       for (let j = 0, jl = values.length; j < jl; j++) {
         const value = values[j];
 
-        const info = getUniformSize(value);
+        const info = this._getUniformSize(value);
 
         infos.boundary += info.boundary;
         infos.storage += info.storage;
@@ -244,7 +249,7 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
     uniformsGroup.__cache = {};
   }
 
-  function getUniformSize(value) {
+  _getUniformSize(value) {
     const info = {
       boundary: 0, // bytes
       storage: 0 // bytes
@@ -291,35 +296,29 @@ function WebGLUniformsGroups(gl, info, capabilities, state) {
     return info;
   }
 
-  function onUniformsGroupsDispose(event) {
+  _onUniformsGroupsDispose(event) {
     const uniformsGroup = event.target;
 
-    uniformsGroup.removeEventListener('dispose', onUniformsGroupsDispose);
+    uniformsGroup.removeEventListener('dispose', this._onUniformsGroupsDispose);
 
-    const index = allocatedBindingPoints.indexOf(uniformsGroup.__bindingPointIndex);
-    allocatedBindingPoints.splice(index, 1);
+    const index = this._allocatedBindingPoints.indexOf(uniformsGroup.__bindingPointIndex);
+    this._allocatedBindingPoints.splice(index, 1);
 
-    gl.deleteBuffer(buffers[uniformsGroup.id]);
+    this._gl.deleteBuffer(this._buffers[uniformsGroup.id]);
 
-    delete buffers[uniformsGroup.id];
-    delete updateList[uniformsGroup.id];
+    delete this._buffers[uniformsGroup.id];
+    delete this._updateList[uniformsGroup.id];
   }
 
-  function dispose() {
-    for (const id in buffers) {
-      gl.deleteBuffer(buffers[id]);
+  dispose() {
+    for (const id in this._buffers) {
+      this._gl.deleteBuffer(this._buffers[id]);
     }
 
-    allocatedBindingPoints = [];
-    buffers = {};
-    updateList = {};
+    this._allocatedBindingPoints = [];
+    this._buffers = {};
+    this._updateList = {};
   }
-
-  return {
-    bind,
-    update,
-    dispose
-  };
 }
 
 export { WebGLUniformsGroups };
