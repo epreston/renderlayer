@@ -8,6 +8,7 @@ class WebGLGeometries {
     this.attributes = attributes;
     this.info = info;
     this.bindingStates = bindingStates;
+
     this.geometries = {};
     this.wireframeAttributes = new WeakMap();
   }
