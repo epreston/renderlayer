@@ -1,6 +1,7 @@
-import { Matrix4, ceilPowerOfTwo, generateUUID } from '@renderlayer/math';
+import { Matrix4, generateUUID } from '@renderlayer/math';
 import { FloatType, RGBAFormat } from '@renderlayer/shared';
 import { DataTexture } from '@renderlayer/textures';
+
 import { Bone } from './Bone.js';
 
 const _offsetMatrix = /*@__PURE__*/ new Matrix4();
@@ -122,7 +123,7 @@ class Skeleton {
     //       64x64 pixel texture max 1024 bones * 4 pixels = (64 * 64)
 
     let size = Math.sqrt(this.bones.length * 4); // 4 pixels needed for 1 matrix
-    size = ceilPowerOfTwo(size);
+    size = Math.ceil(size / 4) * 4; // size = ceilPowerOfTwo(size);
     size = Math.max(size, 4);
 
     const boneMatrices = new Float32Array(size * size * 4); // 4 floats per RGBA pixel
