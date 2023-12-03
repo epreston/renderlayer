@@ -1,7 +1,7 @@
 class WebGLInfo {
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl) {
-    this.gl = gl;
+    this._gl = gl;
 
     this.memory = {
       geometries: 0,
@@ -21,7 +21,7 @@ class WebGLInfo {
   }
 
   update(count, mode, instanceCount) {
-    const { render, gl } = this;
+    const { render, _gl: gl } = this;
 
     render.calls++;
 
