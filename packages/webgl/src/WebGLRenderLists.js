@@ -28,6 +28,7 @@ class WebGLRenderList {
   constructor() {
     this._renderItems = [];
     this._renderItemsIndex = 0;
+
     this.opaque = [];
     this.transmissive = [];
     this.transparent = [];
@@ -35,6 +36,7 @@ class WebGLRenderList {
 
   init() {
     this._renderItemsIndex = 0;
+
     this.opaque.length = 0;
     this.transmissive.length = 0;
     this.transparent.length = 0;
