@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "name": "@renderlayer/monorepo",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "packageManager": "npm@10.2.3",
   "workspaces": [
     "packages/*",
@@ -35,7 +35,8 @@
     "test-watch": "vitest",
     "test-coverage": "vitest run --coverage.enabled",
     "format": "prettier --check --cache \"**/*.?(c|m)[tj]s?(x)\"",
-    "format-fix": "prettier --write --cache \"**/*.?(c|m)[tj]s?(x)\""
+    "format-fix": "prettier --write --cache \"**/*.?(c|m)[tj]s?(x)\"",
+    "release": "node scripts/release.js"
   },
   "devDependencies": {
     "@epreston/eslint-config": "^1.1.1",
@@ -46,6 +47,7 @@
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-terser": "^0.4.4",
     "@vitest/coverage-v8": "^0.34.6",
+    "enquirer": "^2.4.1",
     "eslint": "^8.55.0",
     "execa": "^8.0.1",
     "jsdom": "^23.0.1",
