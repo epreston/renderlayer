@@ -1,14 +1,14 @@
 class WebGLAttributes {
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, capabilities) {
-    this.gl = gl;
-    this.capabilities = capabilities;
-    this.buffers = new WeakMap();
+    this._gl = gl;
+
+    this._buffers = new WeakMap();
   }
 
   _createBuffer(attribute, bufferType) {
     const { array, usage } = attribute;
-    const { gl } = this;
+    const { _gl: gl } = this;
 
     const buffer = gl.createBuffer();
 
@@ -53,7 +53,7 @@ class WebGLAttributes {
 
   _updateBuffer(buffer, attribute, bufferType) {
     const { array, updateRange } = attribute;
-    const { gl } = this;
+    const { _gl: gl } = this;
 
     gl.bindBuffer(bufferType, buffer);
 
@@ -78,26 +78,26 @@ class WebGLAttributes {
   get(attribute) {
     if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-    return this.buffers.get(attribute);
+    return this._buffers.get(attribute);
   }
 
   remove(attribute) {
     if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-    const data = this.buffers.get(attribute);
+    const data = this._buffers.get(attribute);
 
     if (data) {
-      this.gl.deleteBuffer(data.buffer);
-      this.buffers.delete(attribute);
+      this._gl.deleteBuffer(data.buffer);
+      this._buffers.delete(attribute);
     }
   }
 
   update(attribute, bufferType) {
     if (attribute.isGLBufferAttribute) {
-      const cached = this.buffers.get(attribute);
+      const cached = this._buffers.get(attribute);
 
       if (!cached || cached.version < attribute.version) {
-        this.buffers.set(attribute, {
+        this._buffers.set(attribute, {
           buffer: attribute.buffer,
           type: attribute.type,
           bytesPerElement: attribute.elementSize,
@@ -110,10 +110,10 @@ class WebGLAttributes {
 
     if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-    const data = this.buffers.get(attribute);
+    const data = this._buffers.get(attribute);
 
     if (data === undefined) {
-      this.buffers.set(attribute, this._createBuffer(attribute, bufferType));
+      this._buffers.set(attribute, this._createBuffer(attribute, bufferType));
     } else if (data.version < attribute.version) {
       this._updateBuffer(data.buffer, attribute, bufferType);
       data.version = attribute.version;
