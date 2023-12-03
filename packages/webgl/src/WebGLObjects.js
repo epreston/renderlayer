@@ -1,26 +1,26 @@
 class WebGLObjects {
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, geometries, attributes, info) {
-    // EP: these are private
-    this.gl = gl;
-    this.geometries = geometries;
-    this.attributes = attributes;
-    this.info = info;
-    this.updateMap = new WeakMap();
+    this._gl = gl;
+    this._geometries = geometries;
+    this._attributes = attributes;
+    this._info = info;
+
+    this._updateMap = new WeakMap();
   }
 
   update(object) {
-    const frame = this.info.render.frame;
+    const frame = this._info.render.frame;
 
     const geometry = object.geometry;
-    const buffergeometry = this.geometries.get(object, geometry);
+    const buffergeometry = this._geometries.get(object, geometry);
 
     // Update once per frame
 
-    if (this.updateMap.get(buffergeometry) !== frame) {
-      this.geometries.update(buffergeometry);
+    if (this._updateMap.get(buffergeometry) !== frame) {
+      this._geometries.update(buffergeometry);
 
-      this.updateMap.set(buffergeometry, frame);
+      this._updateMap.set(buffergeometry, frame);
     }
 
     if (object.isInstancedMesh) {
@@ -28,24 +28,24 @@ class WebGLObjects {
         object.addEventListener('dispose', this._onInstancedMeshDispose);
       }
 
-      if (this.updateMap.get(object) !== frame) {
-        this.attributes.update(object.instanceMatrix, this.gl.ARRAY_BUFFER);
+      if (this._updateMap.get(object) !== frame) {
+        this._attributes.update(object.instanceMatrix, this._gl.ARRAY_BUFFER);
 
         if (object.instanceColor !== null) {
-          this.attributes.update(object.instanceColor, this.gl.ARRAY_BUFFER);
+          this._attributes.update(object.instanceColor, this._gl.ARRAY_BUFFER);
         }
 
-        this.updateMap.set(object, frame);
+        this._updateMap.set(object, frame);
       }
     }
 
     if (object.isSkinnedMesh) {
       const skeleton = object.skeleton;
 
-      if (this.updateMap.get(skeleton) !== frame) {
+      if (this._updateMap.get(skeleton) !== frame) {
         skeleton.update();
 
-        this.updateMap.set(skeleton, frame);
+        this._updateMap.set(skeleton, frame);
       }
     }
 
@@ -53,7 +53,7 @@ class WebGLObjects {
   }
 
   dispose() {
-    this.updateMap = new WeakMap();
+    this._updateMap = new WeakMap();
   }
 
   _onInstancedMeshDispose(event) {
@@ -61,9 +61,9 @@ class WebGLObjects {
 
     instancedMesh.removeEventListener('dispose', this._onInstancedMeshDispose);
 
-    this.attributes.remove(instancedMesh.instanceMatrix);
+    this._attributes.remove(instancedMesh.instanceMatrix);
 
-    if (instancedMesh.instanceColor !== null) this.attributes.remove(instancedMesh.instanceColor);
+    if (instancedMesh.instanceColor !== null) this._attributes.remove(instancedMesh.instanceColor);
   }
 }
 
