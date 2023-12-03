@@ -4,7 +4,7 @@ import { WebGLBufferRenderer } from '../src/WebGLBufferRenderer.js';
 
 describe('WebGL', () => {
   describe('WebGLBufferRenderer', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLBufferRenderer).toBeDefined();
     });
 
