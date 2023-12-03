@@ -5,10 +5,9 @@ import { DataArrayTexture } from '@renderlayer/textures';
 class WebGLMorphtargets {
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, capabilities, textures) {
-    // EP: these are private
-    this.gl = gl;
-    this.capabilities = capabilities;
-    this.textures = textures;
+    this._gl = gl;
+    this._capabilities = capabilities;
+    this._textures = textures;
 
     this._morphTextures = new WeakMap();
     this._morph = new Vector4();
@@ -20,7 +19,7 @@ class WebGLMorphtargets {
   }
 
   update(object, geometry, program) {
-    const { gl, capabilities, textures } = this;
+    const { _gl, _capabilities, _textures } = this;
 
     const objectInfluences = object.morphTargetInfluences;
 
@@ -56,9 +55,9 @@ class WebGLMorphtargets {
       let width = geometry.attributes.position.count * vertexDataCount;
       let height = 1;
 
-      if (width > capabilities.maxTextureSize) {
-        height = Math.ceil(width / capabilities.maxTextureSize);
-        width = capabilities.maxTextureSize;
+      if (width > _capabilities.maxTextureSize) {
+        height = Math.ceil(width / _capabilities.maxTextureSize);
+        width = _capabilities.maxTextureSize;
       }
 
       const buffer = new Float32Array(width * height * 4 * morphTargetsCount);
@@ -137,11 +136,11 @@ class WebGLMorphtargets {
 
     const morphBaseInfluence = geometry.morphTargetsRelative ? 1 : 1 - morphInfluencesSum;
 
-    program.getUniforms().setValue(gl, 'morphTargetBaseInfluence', morphBaseInfluence);
-    program.getUniforms().setValue(gl, 'morphTargetInfluences', objectInfluences);
+    program.getUniforms().setValue(_gl, 'morphTargetBaseInfluence', morphBaseInfluence);
+    program.getUniforms().setValue(_gl, 'morphTargetInfluences', objectInfluences);
 
-    program.getUniforms().setValue(gl, 'morphTargetsTexture', entry.texture, textures);
-    program.getUniforms().setValue(gl, 'morphTargetsTextureSize', entry.size);
+    program.getUniforms().setValue(_gl, 'morphTargetsTexture', entry.texture, _textures);
+    program.getUniforms().setValue(_gl, 'morphTargetsTextureSize', entry.size);
   }
 }
 
