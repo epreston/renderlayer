@@ -371,12 +371,6 @@ class WebGLRenderer {
 
     initGLContext();
 
-    // xr
-
-    // const xr = new WebXRManager(_this, _gl);
-
-    // this.xr = xr;
-
     // API
 
     this.getContext = () => _gl;
@@ -406,11 +400,6 @@ class WebGLRenderer {
     this.getSize = (target) => target.set(_width, _height);
 
     this.setSize = function (width, height, updateStyle = true) {
-      // if (xr.isPresenting) {
-      //   console.warn("WebGLRenderer: Can't change size while VR device is presenting.");
-      //   return;
-      // }
-
       _width = width;
       _height = height;
 
@@ -581,11 +570,6 @@ class WebGLRenderer {
       bindingStates.dispose();
       uniformsGroups.dispose();
       programCache.dispose();
-
-      // // xr.dispose();
-
-      // // xr.removeEventListener('sessionstart', onXRSessionStart);
-      // // xr.removeEventListener('sessionend', onXRSessionEnd);
 
       if (_transmissionRenderTarget) {
         _transmissionRenderTarget.dispose();
