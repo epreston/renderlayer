@@ -214,7 +214,7 @@ class Material extends EventDispatcher {
     }
 
     if (this.map && this.map.isTexture) data.map = this.map.toJSON(meta).uuid;
-    // if (this.matcap && this.matcap.isTexture) data.matcap = this.matcap.toJSON(meta).uuid;
+    if (this.matcap && this.matcap.isTexture) data.matcap = this.matcap.toJSON(meta).uuid;
     if (this.alphaMap && this.alphaMap.isTexture) data.alphaMap = this.alphaMap.toJSON(meta).uuid;
 
     if (this.lightMap && this.lightMap.isTexture) {
