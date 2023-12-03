@@ -12,45 +12,44 @@ import { Layers } from '@renderlayer/core';
 
 class WebGLAnimation {
   constructor() {
-    this.context = null;
-    this.isAnimating = false;
-    this.animationLoop = null;
-    this.requestId = null;
+    this._context = null;
+    this._isAnimating = false;
+    this._animationLoop = null;
+    this._requestId = null;
   }
-  onAnimationFrame(time, frame) {
-    this.animationLoop(time, frame);
-    this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame.bind(this));
+  _onAnimationFrame(time, frame) {
+    this._animationLoop(time, frame);
+    this._requestId = this._context.requestAnimationFrame(this._onAnimationFrame.bind(this));
   }
   start() {
-    if (this.isAnimating === true)
+    if (this._isAnimating === true)
       return;
-    if (this.animationLoop === null)
+    if (this._animationLoop === null)
       return;
-    this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame.bind(this));
-    this.isAnimating = true;
+    this._requestId = this._context.requestAnimationFrame(this._onAnimationFrame.bind(this));
+    this._isAnimating = true;
   }
   stop() {
-    this.context.cancelAnimationFrame(this.requestId);
-    this.isAnimating = false;
+    this._context.cancelAnimationFrame(this._requestId);
+    this._isAnimating = false;
   }
   setAnimationLoop(callback) {
-    this.animationLoop = callback;
+    this._animationLoop = callback;
   }
   setContext(value) {
-    this.context = value;
+    this._context = value;
   }
 }
 
 class WebGLAttributes {
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, capabilities) {
-    this.gl = gl;
-    this.capabilities = capabilities;
-    this.buffers = /* @__PURE__ */ new WeakMap();
+    this._gl = gl;
+    this._buffers = /* @__PURE__ */ new WeakMap();
   }
   _createBuffer(attribute, bufferType) {
     const { array, usage } = attribute;
-    const { gl } = this;
+    const { _gl: gl } = this;
     const buffer = gl.createBuffer();
     gl.bindBuffer(bufferType, buffer);
     gl.bufferData(bufferType, array, usage);
@@ -88,7 +87,7 @@ class WebGLAttributes {
   }
   _updateBuffer(buffer, attribute, bufferType) {
     const { array, updateRange } = attribute;
-    const { gl } = this;
+    const { _gl: gl } = this;
     gl.bindBuffer(bufferType, buffer);
     if (updateRange.count === -1) {
       gl.bufferSubData(bufferType, 0, array);
@@ -107,22 +106,22 @@ class WebGLAttributes {
   get(attribute) {
     if (attribute.isInterleavedBufferAttribute)
       attribute = attribute.data;
-    return this.buffers.get(attribute);
+    return this._buffers.get(attribute);
   }
   remove(attribute) {
     if (attribute.isInterleavedBufferAttribute)
       attribute = attribute.data;
-    const data = this.buffers.get(attribute);
+    const data = this._buffers.get(attribute);
     if (data) {
-      this.gl.deleteBuffer(data.buffer);
-      this.buffers.delete(attribute);
+      this._gl.deleteBuffer(data.buffer);
+      this._buffers.delete(attribute);
     }
   }
   update(attribute, bufferType) {
     if (attribute.isGLBufferAttribute) {
-      const cached = this.buffers.get(attribute);
+      const cached = this._buffers.get(attribute);
       if (!cached || cached.version < attribute.version) {
-        this.buffers.set(attribute, {
+        this._buffers.set(attribute, {
           buffer: attribute.buffer,
           type: attribute.type,
           bytesPerElement: attribute.elementSize,
@@ -133,9 +132,9 @@ class WebGLAttributes {
     }
     if (attribute.isInterleavedBufferAttribute)
       attribute = attribute.data;
-    const data = this.buffers.get(attribute);
+    const data = this._buffers.get(attribute);
     if (data === void 0) {
-      this.buffers.set(attribute, this._createBuffer(attribute, bufferType));
+      this._buffers.set(attribute, this._createBuffer(attribute, bufferType));
     } else if (data.version < attribute.version) {
       this._updateBuffer(data.buffer, attribute, bufferType);
       data.version = attribute.version;
@@ -146,44 +145,44 @@ class WebGLAttributes {
 const _rgb = { r: 0, b: 0, g: 0 };
 class WebGLBackground {
   constructor(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
-    this.renderer = renderer;
-    this.cubemaps = cubemaps;
-    this.cubeuvmaps = cubeuvmaps;
-    this.state = state;
-    this.objects = objects;
-    this.alpha = alpha;
-    this.premultipliedAlpha = premultipliedAlpha;
-    this.clearColor = new Color(0);
-    this.clearAlpha = alpha === true ? 0 : 1;
-    this.planeMesh = void 0;
-    this.boxMesh = void 0;
-    this.currentBackground = null;
-    this.currentBackgroundVersion = 0;
-    this.currentTonemapping = null;
+    this._renderer = renderer;
+    this._cubemaps = cubemaps;
+    this._cubeuvmaps = cubeuvmaps;
+    this._state = state;
+    this._objects = objects;
+    this._alpha = alpha;
+    this._premultipliedAlpha = premultipliedAlpha;
+    this._clearColor = new Color(0);
+    this._clearAlpha = alpha === true ? 0 : 1;
+    this._planeMesh = void 0;
+    this._boxMesh = void 0;
+    this._currentBackground = null;
+    this._currentBackgroundVersion = 0;
+    this._currentTonemapping = null;
   }
   render(renderList, scene) {
     let forceClear = false;
     let background = scene.isScene === true ? scene.background : null;
     if (background && background.isTexture) {
       const usePMREM = scene.backgroundBlurriness > 0;
-      background = (usePMREM ? this.cubeuvmaps : this.cubemaps).get(background);
+      background = (usePMREM ? this._cubeuvmaps : this._cubemaps).get(background);
     }
     if (background === null) {
-      this._setClear(this.clearColor, this.clearAlpha);
+      this._setClear(this._clearColor, this._clearAlpha);
     } else if (background && background.isColor) {
       this._setClear(background, 1);
       forceClear = true;
     }
-    if (this.renderer.autoClear || forceClear) {
-      this.renderer.clear(
-        this.renderer.autoClearColor,
-        this.renderer.autoClearDepth,
-        this.renderer.autoClearStencil
+    if (this._renderer.autoClear || forceClear) {
+      this._renderer.clear(
+        this._renderer.autoClearColor,
+        this._renderer.autoClearDepth,
+        this._renderer.autoClearStencil
       );
     }
     if (background && (background.isCubeTexture || background.mapping === CubeUVReflectionMapping)) {
-      if (this.boxMesh === void 0) {
-        this.boxMesh = new Mesh(
+      if (this._boxMesh === void 0) {
+        this._boxMesh = new Mesh(
           new BoxGeometry(1, 1, 1),
           new ShaderMaterial({
             name: "BackgroundCubeMaterial",
@@ -196,34 +195,34 @@ class WebGLBackground {
             fog: false
           })
         );
-        this.boxMesh.geometry.deleteAttribute("normal");
-        this.boxMesh.geometry.deleteAttribute("uv");
-        this.boxMesh.onBeforeRender = function(renderer, scene2, camera) {
+        this._boxMesh.geometry.deleteAttribute("normal");
+        this._boxMesh.geometry.deleteAttribute("uv");
+        this._boxMesh.onBeforeRender = function(renderer, scene2, camera) {
           this.matrixWorld.copyPosition(camera.matrixWorld);
         };
-        Object.defineProperty(this.boxMesh.material, "envMap", {
+        Object.defineProperty(this._boxMesh.material, "envMap", {
           get() {
             return this.uniforms.envMap.value;
           }
         });
-        this.objects.update(this.boxMesh);
+        this._objects.update(this._boxMesh);
       }
-      this.boxMesh.material.uniforms.envMap.value = background;
-      this.boxMesh.material.uniforms.flipEnvMap.value = background.isCubeTexture && background.isRenderTargetTexture === false ? -1 : 1;
-      this.boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
-      this.boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
-      this.boxMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
-      if (this.currentBackground !== background || this.currentBackgroundVersion !== background.version || this.currentTonemapping !== this.renderer.toneMapping) {
-        this.boxMesh.material.needsUpdate = true;
-        this.currentBackground = background;
-        this.currentBackgroundVersion = background.version;
-        this.currentTonemapping = this.renderer.toneMapping;
+      this._boxMesh.material.uniforms.envMap.value = background;
+      this._boxMesh.material.uniforms.flipEnvMap.value = background.isCubeTexture && background.isRenderTargetTexture === false ? -1 : 1;
+      this._boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
+      this._boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+      this._boxMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
+      if (this._currentBackground !== background || this._currentBackgroundVersion !== background.version || this._currentTonemapping !== this._renderer.toneMapping) {
+        this._boxMesh.material.needsUpdate = true;
+        this._currentBackground = background;
+        this._currentBackgroundVersion = background.version;
+        this._currentTonemapping = this._renderer.toneMapping;
       }
-      this.boxMesh.layers.enableAll();
-      renderList.unshift(this.boxMesh, this.boxMesh.geometry, this.boxMesh.material, 0, 0, null);
+      this._boxMesh.layers.enableAll();
+      renderList.unshift(this._boxMesh, this._boxMesh.geometry, this._boxMesh.material, 0, 0, null);
     } else if (background && background.isTexture) {
-      if (this.planeMesh === void 0) {
-        this.planeMesh = new Mesh(
+      if (this._planeMesh === void 0) {
+        this._planeMesh = new Mesh(
           new PlaneGeometry(2, 2),
           new ShaderMaterial({
             name: "BackgroundMaterial",
@@ -236,32 +235,32 @@ class WebGLBackground {
             fog: false
           })
         );
-        this.planeMesh.geometry.deleteAttribute("normal");
-        Object.defineProperty(this.planeMesh.material, "map", {
+        this._planeMesh.geometry.deleteAttribute("normal");
+        Object.defineProperty(this._planeMesh.material, "map", {
           get() {
             return this.uniforms.t2D.value;
           }
         });
-        this.objects.update(this.planeMesh);
+        this._objects.update(this._planeMesh);
       }
-      this.planeMesh.material.uniforms.t2D.value = background;
-      this.planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
-      this.planeMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
+      this._planeMesh.material.uniforms.t2D.value = background;
+      this._planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+      this._planeMesh.material.toneMapped = ColorManagement.getTransfer(background.colorSpace) !== SRGBTransfer;
       if (background.matrixAutoUpdate === true) {
         background.updateMatrix();
       }
-      this.planeMesh.material.uniforms.uvTransform.value.copy(background.matrix);
-      if (this.currentBackground !== background || this.currentBackgroundVersion !== background.version || this.currentTonemapping !== this.renderer.toneMapping) {
-        this.planeMesh.material.needsUpdate = true;
-        this.currentBackground = background;
-        this.currentBackgroundVersion = background.version;
-        this.currentTonemapping = this.renderer.toneMapping;
+      this._planeMesh.material.uniforms.uvTransform.value.copy(background.matrix);
+      if (this._currentBackground !== background || this._currentBackgroundVersion !== background.version || this._currentTonemapping !== this._renderer.toneMapping) {
+        this._planeMesh.material.needsUpdate = true;
+        this._currentBackground = background;
+        this._currentBackgroundVersion = background.version;
+        this._currentTonemapping = this._renderer.toneMapping;
       }
-      this.planeMesh.layers.enableAll();
+      this._planeMesh.layers.enableAll();
       renderList.unshift(
-        this.planeMesh,
-        this.planeMesh.geometry,
-        this.planeMesh.material,
+        this._planeMesh,
+        this._planeMesh.geometry,
+        this._planeMesh.material,
         0,
         0,
         null
@@ -269,23 +268,23 @@ class WebGLBackground {
     }
   }
   _setClear(color, alpha) {
-    color.getRGB(_rgb, getUnlitUniformColorSpace(this.renderer));
-    this.state.buffers.color.setClear(_rgb.r, _rgb.g, _rgb.b, alpha, this.premultipliedAlpha);
+    color.getRGB(_rgb, getUnlitUniformColorSpace(this._renderer));
+    this._state.buffers.color.setClear(_rgb.r, _rgb.g, _rgb.b, alpha, this._premultipliedAlpha);
   }
   getClearColor() {
-    return this.clearColor;
+    return this._clearColor;
   }
   setClearColor(color, alpha = 1) {
-    this.clearColor.set(color);
-    this.clearAlpha = alpha;
-    this._setClear(this.clearColor, this.clearAlpha);
+    this._clearColor.set(color);
+    this._clearAlpha = alpha;
+    this._setClear(this._clearColor, this._clearAlpha);
   }
   getClearAlpha() {
-    return this.clearAlpha;
+    return this._clearAlpha;
   }
   setClearAlpha(alpha) {
-    this.clearAlpha = alpha;
-    this._setClear(this.clearColor, this.clearAlpha);
+    this._clearAlpha = alpha;
+    this._setClear(this._clearColor, this._clearAlpha);
   }
 }
 
@@ -635,25 +634,24 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
 }
 
 class WebGLBufferRenderer {
-  /** @param { WebGL2RenderingContext} gl */
+  /** @param {WebGL2RenderingContext} gl */
   constructor(gl, extensions, info, capabilities) {
-    let mode;
-    function setMode(value) {
-      mode = value;
-    }
-    function render(start, count) {
-      gl.drawArrays(mode, start, count);
-      info.update(count, mode, 1);
-    }
-    function renderInstances(start, count, primcount) {
-      if (primcount === 0)
-        return;
-      gl.drawArraysInstanced(mode, start, count, primcount);
-      info.update(count, mode, primcount);
-    }
-    this.setMode = setMode;
-    this.render = render;
-    this.renderInstances = renderInstances;
+    this._gl = gl;
+    this._info = info;
+    this._mode = null;
+  }
+  setMode(value) {
+    this._mode = value;
+  }
+  render(start, count) {
+    this._gl.drawArrays(this._mode, start, count);
+    this._info.update(count, this._mode, 1);
+  }
+  renderInstances(start, count, primcount) {
+    if (primcount === 0)
+      return;
+    this._gl.drawArraysInstanced(this._mode, start, count, primcount);
+    this._info.update(count, this._mode, primcount);
   }
 }
 
@@ -942,22 +940,22 @@ class WebGLCubeUVMaps {
 class WebGLExtensions {
   /** !param { WebGL2RenderingContext} gl */
   constructor(gl) {
-    this.gl = gl;
-    this.extensions = [];
+    this._gl = gl;
+    this._extensions = [];
   }
   _getExtension(name) {
-    if (this.extensions[name] !== void 0) {
-      return this.extensions[name];
+    if (this._extensions[name] !== void 0) {
+      return this._extensions[name];
     }
     let extension;
     switch (name) {
       case "WEBGL_compressed_texture_pvrtc":
-        extension = this.gl.getExtension("WEBGL_compressed_texture_pvrtc") || this.gl.getExtension("WEBKIT_WEBGL_compressed_texture_pvrtc");
+        extension = this._gl.getExtension("WEBGL_compressed_texture_pvrtc") || this._gl.getExtension("WEBKIT_WEBGL_compressed_texture_pvrtc");
         break;
       default:
-        extension = this.gl.getExtension(name);
+        extension = this._gl.getExtension(name);
     }
-    this.extensions[name] = extension;
+    this._extensions[name] = extension;
     return extension;
   }
   //
@@ -981,58 +979,58 @@ class WebGLExtensions {
 class WebGLGeometries {
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, attributes, info, bindingStates) {
-    this.gl = gl;
-    this.attributes = attributes;
-    this.info = info;
-    this.bindingStates = bindingStates;
-    this.geometries = {};
-    this.wireframeAttributes = /* @__PURE__ */ new WeakMap();
+    this._gl = gl;
+    this._attributes = attributes;
+    this._info = info;
+    this._bindingStates = bindingStates;
+    this._geometries = {};
+    this._wireframeAttributes = /* @__PURE__ */ new WeakMap();
   }
   _onGeometryDispose(event) {
     const geometry = event.target;
     if (geometry.index !== null) {
-      this.attributes.remove(geometry.index);
+      this._attributes.remove(geometry.index);
     }
     for (const name in geometry.attributes) {
-      this.attributes.remove(geometry.attributes[name]);
+      this._attributes.remove(geometry.attributes[name]);
     }
     for (const name in geometry.morphAttributes) {
       const array = geometry.morphAttributes[name];
       for (let i = 0, l = array.length; i < l; i++) {
-        this.attributes.remove(array[i]);
+        this._attributes.remove(array[i]);
       }
     }
     geometry.removeEventListener("dispose", this._onGeometryDispose);
-    delete this.geometries[geometry.id];
-    const attribute = this.wireframeAttributes.get(geometry);
+    delete this._geometries[geometry.id];
+    const attribute = this._wireframeAttributes.get(geometry);
     if (attribute) {
-      this.attributes.remove(attribute);
-      this.wireframeAttributes.delete(geometry);
+      this._attributes.remove(attribute);
+      this._wireframeAttributes.delete(geometry);
     }
-    this.bindingStates.releaseStatesOfGeometry(geometry);
+    this._bindingStates.releaseStatesOfGeometry(geometry);
     if (geometry.isInstancedBufferGeometry === true) {
       delete geometry._maxInstanceCount;
     }
-    this.info.memory.geometries--;
+    this._info.memory.geometries--;
   }
   get(object, geometry) {
-    if (this.geometries[geometry.id] === true)
+    if (this._geometries[geometry.id] === true)
       return geometry;
     geometry.addEventListener("dispose", this._onGeometryDispose.bind(this));
-    this.geometries[geometry.id] = true;
-    this.info.memory.geometries++;
+    this._geometries[geometry.id] = true;
+    this._info.memory.geometries++;
     return geometry;
   }
   update(geometry) {
     const geometryAttributes = geometry.attributes;
     for (const name in geometryAttributes) {
-      this.attributes.update(geometryAttributes[name], this.gl.ARRAY_BUFFER);
+      this._attributes.update(geometryAttributes[name], this._gl.ARRAY_BUFFER);
     }
     const morphAttributes = geometry.morphAttributes;
     for (const name in morphAttributes) {
       const array = morphAttributes[name];
       for (let i = 0, l = array.length; i < l; i++) {
-        this.attributes.update(array[i], this.gl.ARRAY_BUFFER);
+        this._attributes.update(array[i], this._gl.ARRAY_BUFFER);
       }
     }
   }
@@ -1064,13 +1062,13 @@ class WebGLGeometries {
     }
     const attribute = new (arrayNeedsUint32(indices) ? Uint32BufferAttribute : Uint16BufferAttribute)(indices, 1);
     attribute.version = version;
-    const previousAttribute = this.wireframeAttributes.get(geometry);
+    const previousAttribute = this._wireframeAttributes.get(geometry);
     if (previousAttribute)
-      this.attributes.remove(previousAttribute);
-    this.wireframeAttributes.set(geometry, attribute);
+      this._attributes.remove(previousAttribute);
+    this._wireframeAttributes.set(geometry, attribute);
   }
   getWireframeAttribute(geometry) {
-    const currentAttribute = this.wireframeAttributes.get(geometry);
+    const currentAttribute = this._wireframeAttributes.get(geometry);
     if (currentAttribute) {
       const geometryIndex = geometry.index;
       if (geometryIndex !== null) {
@@ -1081,38 +1079,41 @@ class WebGLGeometries {
     } else {
       this._updateWireframeAttribute(geometry);
     }
-    return this.wireframeAttributes.get(geometry);
+    return this._wireframeAttributes.get(geometry);
   }
 }
 
 class WebGLIndexedBufferRenderer {
-  // EP: check signature
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, extensions, info, capabilities) {
-    let mode;
-    function setMode(value) {
-      mode = value;
-    }
-    let type;
-    let bytesPerElement;
-    function setIndex(value) {
-      type = value.type;
-      bytesPerElement = value.bytesPerElement;
-    }
-    function render(start, count) {
-      gl.drawElements(mode, count, type, start * bytesPerElement);
-      info.update(count, mode, 1);
-    }
-    function renderInstances(start, count, primcount) {
-      if (primcount === 0)
-        return;
-      gl.drawElementsInstanced(mode, count, type, start * bytesPerElement, primcount);
-      info.update(count, mode, primcount);
-    }
-    this.setMode = setMode;
-    this.setIndex = setIndex;
-    this.render = render;
-    this.renderInstances = renderInstances;
+    this._gl = gl;
+    this._info = info;
+    this._mode = null;
+    this._type = null;
+    this._bytesPerElement = null;
+  }
+  setMode(value) {
+    this._mode = value;
+  }
+  setIndex(value) {
+    this._type = value.type;
+    this._bytesPerElement = value.bytesPerElement;
+  }
+  render(start, count) {
+    this._gl.drawElements(this._mode, count, this._type, start * this._bytesPerElement);
+    this._info.update(count, this._mode, 1);
+  }
+  renderInstances(start, count, primcount) {
+    if (primcount === 0)
+      return;
+    this._gl.drawElementsInstanced(
+      this._mode,
+      count,
+      this._type,
+      start * this._bytesPerElement,
+      primcount
+    );
+    this._info.update(count, this._mode, primcount);
   }
 }
 
