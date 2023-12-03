@@ -1451,9 +1451,9 @@ function WebGLMaterials(renderer, properties) {
 class WebGLMorphtargets {
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, capabilities, textures) {
-    this.gl = gl;
-    this.capabilities = capabilities;
-    this.textures = textures;
+    this._gl = gl;
+    this._capabilities = capabilities;
+    this._textures = textures;
     this._morphTextures = /* @__PURE__ */ new WeakMap();
     this._morph = new Vector4();
     this._workInfluences = [];
@@ -1462,7 +1462,7 @@ class WebGLMorphtargets {
     }
   }
   update(object, geometry, program) {
-    const { gl, capabilities, textures } = this;
+    const { _gl, _capabilities, _textures } = this;
     const objectInfluences = object.morphTargetInfluences;
     const morphAttribute = geometry.morphAttributes.position || geometry.morphAttributes.normal || geometry.morphAttributes.color;
     const morphTargetsCount = morphAttribute !== void 0 ? morphAttribute.length : 0;
@@ -1485,9 +1485,9 @@ class WebGLMorphtargets {
         vertexDataCount = 3;
       let width = geometry.attributes.position.count * vertexDataCount;
       let height = 1;
-      if (width > capabilities.maxTextureSize) {
-        height = Math.ceil(width / capabilities.maxTextureSize);
-        width = capabilities.maxTextureSize;
+      if (width > _capabilities.maxTextureSize) {
+        height = Math.ceil(width / _capabilities.maxTextureSize);
+        width = _capabilities.maxTextureSize;
       }
       const buffer = new Float32Array(width * height * 4 * morphTargetsCount);
       const texture = new DataArrayTexture(buffer, width, height, morphTargetsCount);
@@ -1542,60 +1542,60 @@ class WebGLMorphtargets {
       morphInfluencesSum += objectInfluences[i];
     }
     const morphBaseInfluence = geometry.morphTargetsRelative ? 1 : 1 - morphInfluencesSum;
-    program.getUniforms().setValue(gl, "morphTargetBaseInfluence", morphBaseInfluence);
-    program.getUniforms().setValue(gl, "morphTargetInfluences", objectInfluences);
-    program.getUniforms().setValue(gl, "morphTargetsTexture", entry.texture, textures);
-    program.getUniforms().setValue(gl, "morphTargetsTextureSize", entry.size);
+    program.getUniforms().setValue(_gl, "morphTargetBaseInfluence", morphBaseInfluence);
+    program.getUniforms().setValue(_gl, "morphTargetInfluences", objectInfluences);
+    program.getUniforms().setValue(_gl, "morphTargetsTexture", entry.texture, _textures);
+    program.getUniforms().setValue(_gl, "morphTargetsTextureSize", entry.size);
   }
 }
 
 class WebGLObjects {
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, geometries, attributes, info) {
-    this.gl = gl;
-    this.geometries = geometries;
-    this.attributes = attributes;
-    this.info = info;
-    this.updateMap = /* @__PURE__ */ new WeakMap();
+    this._gl = gl;
+    this._geometries = geometries;
+    this._attributes = attributes;
+    this._info = info;
+    this._updateMap = /* @__PURE__ */ new WeakMap();
   }
   update(object) {
-    const frame = this.info.render.frame;
+    const frame = this._info.render.frame;
     const geometry = object.geometry;
-    const buffergeometry = this.geometries.get(object, geometry);
-    if (this.updateMap.get(buffergeometry) !== frame) {
-      this.geometries.update(buffergeometry);
-      this.updateMap.set(buffergeometry, frame);
+    const buffergeometry = this._geometries.get(object, geometry);
+    if (this._updateMap.get(buffergeometry) !== frame) {
+      this._geometries.update(buffergeometry);
+      this._updateMap.set(buffergeometry, frame);
     }
     if (object.isInstancedMesh) {
       if (object.hasEventListener("dispose", this._onInstancedMeshDispose) === false) {
         object.addEventListener("dispose", this._onInstancedMeshDispose);
       }
-      if (this.updateMap.get(object) !== frame) {
-        this.attributes.update(object.instanceMatrix, this.gl.ARRAY_BUFFER);
+      if (this._updateMap.get(object) !== frame) {
+        this._attributes.update(object.instanceMatrix, this._gl.ARRAY_BUFFER);
         if (object.instanceColor !== null) {
-          this.attributes.update(object.instanceColor, this.gl.ARRAY_BUFFER);
+          this._attributes.update(object.instanceColor, this._gl.ARRAY_BUFFER);
         }
-        this.updateMap.set(object, frame);
+        this._updateMap.set(object, frame);
       }
     }
     if (object.isSkinnedMesh) {
       const skeleton = object.skeleton;
-      if (this.updateMap.get(skeleton) !== frame) {
+      if (this._updateMap.get(skeleton) !== frame) {
         skeleton.update();
-        this.updateMap.set(skeleton, frame);
+        this._updateMap.set(skeleton, frame);
       }
     }
     return buffergeometry;
   }
   dispose() {
-    this.updateMap = /* @__PURE__ */ new WeakMap();
+    this._updateMap = /* @__PURE__ */ new WeakMap();
   }
   _onInstancedMeshDispose(event) {
     const instancedMesh = event.target;
     instancedMesh.removeEventListener("dispose", this._onInstancedMeshDispose);
-    this.attributes.remove(instancedMesh.instanceMatrix);
+    this._attributes.remove(instancedMesh.instanceMatrix);
     if (instancedMesh.instanceColor !== null)
-      this.attributes.remove(instancedMesh.instanceColor);
+      this._attributes.remove(instancedMesh.instanceColor);
   }
 }
 
