@@ -1,8 +1,9 @@
 import { WebGLLights } from './WebGLLights.js';
 
 class WebGLRenderState {
+  // EP: params not used
   constructor(extensions, capabilities) {
-    const lights = WebGLLights(extensions, capabilities);
+    const lights = new WebGLLights(extensions, capabilities);
     const lightsArray = [];
     const shadowsArray = [];
 

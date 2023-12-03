@@ -4,7 +4,7 @@ import { WebGLLights } from '../src/WebGLLights.js';
 
 describe('WebGL', () => {
   describe('WebGLLights', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLLights).toBeDefined();
     });
 
