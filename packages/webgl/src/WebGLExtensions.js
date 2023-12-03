@@ -1,15 +1,15 @@
 class WebGLExtensions {
   /** !param { WebGL2RenderingContext} gl */
   constructor(gl) {
-    this.gl = gl;
-    this.extensions = [];
+    this._gl = gl;
+    this._extensions = [];
 
     // debug: gl.getSupportedExtensions();
   }
 
   _getExtension(name) {
-    if (this.extensions[name] !== undefined) {
-      return this.extensions[name];
+    if (this._extensions[name] !== undefined) {
+      return this._extensions[name];
     }
 
     let extension;
@@ -17,15 +17,15 @@ class WebGLExtensions {
     switch (name) {
       case 'WEBGL_compressed_texture_pvrtc':
         extension =
-          this.gl.getExtension('WEBGL_compressed_texture_pvrtc') ||
-          this.gl.getExtension('WEBKIT_WEBGL_compressed_texture_pvrtc');
+          this._gl.getExtension('WEBGL_compressed_texture_pvrtc') ||
+          this._gl.getExtension('WEBKIT_WEBGL_compressed_texture_pvrtc');
         break;
 
       default:
-        extension = this.gl.getExtension(name);
+        extension = this._gl.getExtension(name);
     }
 
-    this.extensions[name] = extension;
+    this._extensions[name] = extension;
 
     return extension;
   }
