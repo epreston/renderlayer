@@ -309,6 +309,14 @@ class WebGLRenderer {
     let bindingStates;
     let uniformsGroups;
 
+    this.capabilities = null;
+    this.extensions = null;
+    this.properties = null;
+    this.renderLists = null;
+    this.shadowMap = null;
+    this.state = null;
+    this.info = null;
+
     function initGLContext() {
       extensions = new WebGLExtensions(_gl);
 
