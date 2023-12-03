@@ -1,35 +1,35 @@
 class WebGLAnimation {
   constructor() {
-    this.context = null;
-    this.isAnimating = false;
-    this.animationLoop = null;
-    this.requestId = null;
+    this._context = null;
+    this._isAnimating = false;
+    this._animationLoop = null;
+    this._requestId = null;
   }
 
-  onAnimationFrame(time, frame) {
-    this.animationLoop(time, frame);
-    this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame.bind(this));
+  _onAnimationFrame(time, frame) {
+    this._animationLoop(time, frame);
+    this._requestId = this._context.requestAnimationFrame(this._onAnimationFrame.bind(this));
   }
 
   start() {
-    if (this.isAnimating === true) return;
-    if (this.animationLoop === null) return;
+    if (this._isAnimating === true) return;
+    if (this._animationLoop === null) return;
 
-    this.requestId = this.context.requestAnimationFrame(this.onAnimationFrame.bind(this));
-    this.isAnimating = true;
+    this._requestId = this._context.requestAnimationFrame(this._onAnimationFrame.bind(this));
+    this._isAnimating = true;
   }
 
   stop() {
-    this.context.cancelAnimationFrame(this.requestId);
-    this.isAnimating = false;
+    this._context.cancelAnimationFrame(this._requestId);
+    this._isAnimating = false;
   }
 
   setAnimationLoop(callback) {
-    this.animationLoop = callback;
+    this._animationLoop = callback;
   }
 
   setContext(value) {
-    this.context = value;
+    this._context = value;
   }
 }
 
