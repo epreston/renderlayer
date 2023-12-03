@@ -2,40 +2,42 @@ class WebGLIndexedBufferRenderer {
   // EP: check signature
   /** @param { WebGL2RenderingContext} gl */
   constructor(gl, extensions, info, capabilities) {
-    let mode;
+    this._gl = gl;
+    this._info = info;
 
-    function setMode(value) {
-      mode = value;
-    }
+    this._mode = null;
 
-    let type;
-    let bytesPerElement;
+    this._type = null;
+    this._bytesPerElement = null;
+  }
 
-    function setIndex(value) {
-      type = value.type;
-      bytesPerElement = value.bytesPerElement;
-    }
+  setMode(value) {
+    this._mode = value;
+  }
 
-    function render(start, count) {
-      gl.drawElements(mode, count, type, start * bytesPerElement);
+  setIndex(value) {
+    this._type = value.type;
+    this._bytesPerElement = value.bytesPerElement;
+  }
 
-      info.update(count, mode, 1);
-    }
+  render(start, count) {
+    this._gl.drawElements(this._mode, count, this._type, start * this._bytesPerElement);
 
-    function renderInstances(start, count, primcount) {
-      if (primcount === 0) return;
+    this._info.update(count, this._mode, 1);
+  }
 
-      gl.drawElementsInstanced(mode, count, type, start * bytesPerElement, primcount);
+  renderInstances(start, count, primcount) {
+    if (primcount === 0) return;
 
-      info.update(count, mode, primcount);
-    }
+    this._gl.drawElementsInstanced(
+      this._mode,
+      count,
+      this._type,
+      start * this._bytesPerElement,
+      primcount
+    );
 
-    //
-
-    this.setMode = setMode;
-    this.setIndex = setIndex;
-    this.render = render;
-    this.renderInstances = renderInstances;
+    this._info.update(count, this._mode, primcount);
   }
 }
 
