@@ -4,7 +4,7 @@ import { WebGLUniforms } from '../src/WebGLUniforms.js';
 
 describe('WebGL', () => {
   describe('WebGLUniforms', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLUniforms).toBeDefined();
     });
 
