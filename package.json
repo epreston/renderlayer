@@ -53,7 +53,7 @@
     "jsdom": "^23.0.1",
     "madge": "^6.1.0",
     "minimist": "^1.2.8",
-    "msw": "^2.0.9",
+    "msw": "^2.0.10",
     "picocolors": "^1.0.0",
     "prettier": "^3.1.0",
     "pretty-bytes": "^6.1.1",
@@ -62,7 +62,7 @@
     "rollup-plugin-esbuild": "^6.1.0",
     "rollup-shader-chunks": "^1.2.1",
     "typescript": "^5.2.2",
-    "vite": "^5.0.5",
+    "vite": "^5.0.6",
     "vitest": "^0.34.6"
   },
   "engines": {
