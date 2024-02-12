@@ -53,7 +53,7 @@
     "jsdom": "^24.0.0",
     "madge": "^6.1.0",
     "minimist": "^1.2.8",
-    "msw": "^2.1.7",
+    "msw": "^2.2.0",
     "picocolors": "^1.0.0",
     "prettier": "^3.2.5",
     "pretty-bytes": "^6.1.1",
