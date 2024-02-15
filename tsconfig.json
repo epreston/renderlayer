@@ -19,6 +19,6 @@
     "packages/global.d.ts",
     "packages/*/src",
     "packages/*/tests",
-    "scripts/vitest-setup.js"
+    "scripts/setup-vitest.js"
   ]
 }
