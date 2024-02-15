@@ -20,7 +20,10 @@
   ],
   "eslintConfig": {
     "root": true,
-    "extends": "@epreston/eslint-config"
+    "extends": "@epreston/eslint-config",
+    "rules": {
+      "prettier/prettier": "off"
+    }
   },
   "prettier": "@epreston/prettier-config",
   "scripts": {
