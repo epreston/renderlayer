@@ -124,7 +124,7 @@ function createConfig(format, output, plugins = []) {
       __ESM_BUNDLER__: String(isBundlerESMBuild),
       __ESM_BROWSER__: String(isBrowserESMBuild),
       // is targeting Node (tests or tooling)?
-      __NODE_JS__: String(isNodeBuild)
+      __CJS__: String(isNodeBuild)
 
       // feature flags
     };

@@ -13,7 +13,7 @@ export default defineConfig({
     __GLOBAL__: false,
     __ESM_BUNDLER__: true,
     __ESM_BROWSER__: false,
-    __NODE_JS__: true
+    __CJS__: true
   },
   resolve: {
     alias: entries

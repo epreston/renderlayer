@@ -23,7 +23,7 @@ declare var __BROWSER__: boolean;
 declare var __GLOBAL__: boolean;
 declare var __ESM_BUNDLER__: boolean;
 declare var __ESM_BROWSER__: boolean;
-declare var __NODE_JS__: boolean;
+declare var __CJS__: boolean;
 declare var __COMMIT__: string;
 
 import type { Assertion, AsymmetricMatchersContaining } from 'vitest';
