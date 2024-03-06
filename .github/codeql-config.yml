@@ -1,5 +1,5 @@
 paths-ignore:
-  - 'scripts/**',
-  - 'packages/shaders/src/ShaderChunk/**',
+  - 'scripts/**'
+  - 'packages/shaders/src/ShaderChunk/**'
   - 'packages/shaders/src/ShaderLib/**'
   - 'packages/*/dist/**/*.*'
