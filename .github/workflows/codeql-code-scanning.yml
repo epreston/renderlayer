@@ -1,0 +1,67 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them,
+# build the source code, and run CodeQL on the result.
+
+name: 'CodeQL'
+
+on:
+  workflow_dispatch:
+
+  #push:
+  #  branches: [ "main" ]
+  #  paths-ignore: ['README.md', 'LICENSE', '.vscode/**']
+
+  #pull_request:
+  #  # The branches below must be a subset of the branches above
+  #  branches: [ "main" ]
+  #  paths-ignore: ['README.md', 'LICENSE', '.vscode/**']
+
+  #schedule:
+  #  - cron: '22 22 * * 0'
+
+# concurrency:
+#   group: ci-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript']
+
+    permissions:
+      # required for all workflows
+      security-events: write
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql-config.yml
+          # By default, queries listed here will override any specified in a config file.
+          # queries: security-extended,security-and-quality
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: '/language:${{matrix.language}}'
