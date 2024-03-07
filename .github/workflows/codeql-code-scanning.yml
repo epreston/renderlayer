@@ -22,6 +22,14 @@ on:
 #   group: ci-${{ github.event.pull_request.number || github.ref }}
 #   cancel-in-progress: true
 
+permissions:
+  # required for all workflows
+  security-events: write
+
+  # only required for workflows in private repositories
+  actions: read
+  contents: read
+
 jobs:
   analyze:
     name: Analyze
@@ -34,14 +42,6 @@ jobs:
       fail-fast: false
       matrix:
         language: ['javascript']
-
-    permissions:
-      # required for all workflows
-      security-events: write
-
-      # only required for workflows in private repositories
-      actions: read
-      contents: read
 
     steps:
       - name: Checkout
