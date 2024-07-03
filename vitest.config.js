@@ -1,5 +1,3 @@
-// vitest.config.js
-
 import { configDefaults, defineConfig } from 'vitest/config';
 import { entries } from './scripts/aliases.js';
 
