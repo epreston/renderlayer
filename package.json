@@ -42,9 +42,9 @@
     "release": "node scripts/release.js"
   },
   "devDependencies": {
-    "@epreston/eslint-config": "^1.1.1",
+    "@epreston/eslint-config": "^1.1.2",
     "@epreston/prettier-config": "^2.0.0",
-    "@epreston/tsconfig": "^1.1.1",
+    "@epreston/tsconfig": "^1.2.0",
     "@rollup/plugin-alias": "^5.1.0",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-replace": "^5.0.5",
