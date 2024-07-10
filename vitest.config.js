@@ -17,8 +17,8 @@ export default defineConfig({
     alias: entries
   },
   test: {
-    pool: 'forks',
     // globals: true,
+    pool: 'forks',
     setupFiles: ['./scripts/setup-vitest.js'],
     sequence: {
       hooks: 'list'
