@@ -816,7 +816,6 @@ function parseUniform(activeInfo, addr, container) {
   // reset RegExp object, because of the early exit of a previous run
   RePathPart.lastIndex = 0;
 
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     const match = RePathPart.exec(path);
     const matchEnd = RePathPart.lastIndex;

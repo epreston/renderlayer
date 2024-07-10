@@ -134,7 +134,6 @@ class RGBELoader extends DataTextureLoader {
         header.programtype = match[1];
         header.string += `${line}\n`;
 
-        // eslint-disable-next-line no-constant-condition
         while (true) {
           line = fgets(buffer);
           if (line === false) break;

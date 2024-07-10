@@ -1902,12 +1902,7 @@ class WebGLRenderer {
           if (
             textureType !== UnsignedByteType &&
             utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // Edge and Chrome Mac < 52 (#9513)
-            !(
-              textureType === FloatType &&
-              (true ||
-                extensions.has('OES_texture_float') ||
-                extensions.has('WEBGL_color_buffer_float'))
-            ) && // Chrome Mac >= 52 and Firefox
+            !(textureType === FloatType) && // Chrome Mac >= 52 and Firefox
             !halfFloatSupportedByExt
           ) {
             console.error(

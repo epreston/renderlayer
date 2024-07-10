@@ -18,13 +18,6 @@
     "iOS >= 17.1",
     "not dead"
   ],
-  "eslintConfig": {
-    "root": true,
-    "extends": "@epreston/eslint-config",
-    "rules": {
-      "prettier/prettier": "off"
-    }
-  },
   "prettier": "@epreston/prettier-config",
   "scripts": {
     "build": "node scripts/build.js",
@@ -33,7 +26,7 @@
     "clean": "rimraf -g packages/*/dist temp .eslintcache",
     "meta": "node scripts/meta.js",
     "size": "cd apps/size-check && vite build && node brotli",
-    "lint": "eslint --ext .js --report-unused-disable-directives .",
+    "lint": "eslint --report-unused-disable-directives .",
     "test": "vitest run",
     "test-watch": "vitest",
     "test-coverage": "vitest run --coverage.enabled",
@@ -42,7 +35,7 @@
     "release": "node scripts/release.js"
   },
   "devDependencies": {
-    "@epreston/eslint-config": "^1.1.2",
+    "@epreston/eslint-config": "^2.0.0",
     "@epreston/prettier-config": "^2.0.0",
     "@epreston/tsconfig": "^1.2.0",
     "@rollup/plugin-alias": "^5.1.0",
@@ -51,7 +44,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@vitest/coverage-v8": "~1.4.0",
     "enquirer": "^2.4.1",
-    "eslint": "^8.57.0",
+    "eslint": "^9.6.0",
     "execa": "^8.0.1",
     "jsdom": "^24.1.0",
     "madge": "^7.0.0",
