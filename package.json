@@ -4,6 +4,7 @@
   "name": "@renderlayer/monorepo",
   "version": "0.0.6",
   "packageManager": "npm@10.7.0",
+  "repository": "github:epreston/renderlayer",
   "workspaces": [
     "packages/*",
     "apps/*"
