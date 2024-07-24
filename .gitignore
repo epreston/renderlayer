@@ -1,5 +1,3 @@
-# Add any directories, files, or patterns you don't want to be tracked by version control
-
 # Windows and OSX Specific System Files
 .DS_Store
 
@@ -20,7 +18,7 @@ node_modules
 coverage
 
 # Distribution Directory
-dist/*
+dist
 
 # Optional eslint cache
 .eslintcache
