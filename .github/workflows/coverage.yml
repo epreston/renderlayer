@@ -19,7 +19,6 @@ permissions:
 jobs:
   upload-coverage:
     name: Upload Coverage
-
     runs-on: ubuntu-latest
 
     timeout-minutes: 10
