@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them,
 # build the source code, and run CodeQL on the result.
 
-name: 'CodeQL'
+name: CodeQL
 
 on:
   workflow_dispatch:
@@ -33,7 +33,6 @@ permissions:
 jobs:
   analyze:
     name: Analyze
-
     runs-on: ubuntu-latest
 
     timeout-minutes: 10
