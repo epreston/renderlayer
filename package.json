@@ -3,7 +3,6 @@
   "type": "module",
   "name": "@renderlayer/monorepo",
   "version": "0.0.6",
-  "packageManager": "npm@10.7.0",
   "repository": "github:epreston/renderlayer",
   "workspaces": [
     "packages/*",
@@ -20,6 +19,10 @@
     "not dead"
   ],
   "prettier": "@epreston/prettier-config",
+  "packageManager": "npm@10.7.0",
+  "engines": {
+    "node": "^18.20.4 || ^20.15.1 || >=22.5.0"
+  },
   "scripts": {
     "build": "node scripts/build.js",
     "check": "node scripts/circular.js",
@@ -61,8 +64,5 @@
     "typescript": "^5.5.4",
     "vite": "^5.3.4",
     "vitest": "~1.4.0"
-  },
-  "engines": {
-    "node": "^18.20.3 || ^20.15.0 || >=22.4.0"
   }
 }
