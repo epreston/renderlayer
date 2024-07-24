@@ -7,6 +7,9 @@
 
 CHANGELOG.md export-ignore
 LICENSE eol=crlf
+.github/SECURITY.md eol=crlf
+.github/CODE_OF_CONDUCT.md eol=crlf
+.github/CONTRIBUTING.md eol=crlf
 
 # Binary file types.
 *.webp binary

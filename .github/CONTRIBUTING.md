@@ -1,6 +1,6 @@
 # Contributing
 
-This is an initial version of the Contribution Guide.
+This is an initial version of the Contribution Guide. 
 
 ## Code of Conduct
 
