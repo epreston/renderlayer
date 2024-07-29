@@ -46,7 +46,7 @@
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-terser": "^0.4.4",
-    "@vitest/coverage-v8": "~1.4.0",
+    "@vitest/coverage-v8": "~2.0.4",
     "enquirer": "^2.4.1",
     "eslint": "^9.8.0",
     "execa": "^8.0.1",
