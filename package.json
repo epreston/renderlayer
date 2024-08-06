@@ -9,13 +9,13 @@
     "apps/*"
   ],
   "browserslist": [
-    "Chrome >= 120",
-    "ChromeAndroid >= 120",
-    "Edge >= 120",
-    "Firefox >= 121",
-    "FirefoxAndroid >= 122",
-    "Safari >= 17.1",
-    "iOS >= 17.1",
+    "Chrome >= 124",
+    "ChromeAndroid >= 124",
+    "Edge >= 124",
+    "Firefox >= 124",
+    "FirefoxAndroid >= 124",
+    "Safari >= 17.4",
+    "iOS >= 17.4",
     "not dead"
   ],
   "prettier": "@epreston/prettier-config",
