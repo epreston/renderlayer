@@ -430,9 +430,9 @@ describe('Maths', () => {
       expect(c3.b).to.equal(0.3);
 
       c3.lerpColors(c1, c2, 0.5);
-      expect(c3.r).to.be.closeTo(0.3, 0.0001);
-      expect(c3.g).to.be.closeTo(0.4, 0.0001);
-      expect(c3.b).to.be.closeTo(0.5, 0.0001);
+      expect(c3.r).toBeCloseTo(0.3, 0.0001);
+      expect(c3.g).toBeCloseTo(0.4, 0.0001);
+      expect(c3.b).toBeCloseTo(0.5, 0.0001);
 
       c3.lerpColors(c1, c2, 1);
       expect(c3.r).to.equal(0.5);
