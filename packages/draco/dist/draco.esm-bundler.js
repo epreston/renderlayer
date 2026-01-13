@@ -27,8 +27,7 @@ function DRACOWorker() {
           try {
             const geometry = decodeGeometry(draco, decoder, new Int8Array(buffer), taskConfig);
             const buffers = geometry.attributes.map((attr) => attr.array.buffer);
-            if (geometry.index)
-              buffers.push(geometry.index.array.buffer);
+            if (geometry.index) buffers.push(geometry.index.array.buffer);
             self.postMessage({ type: "decode", id: message.id, geometry }, buffers);
           } catch (error) {
             console.error(error);
@@ -69,8 +68,7 @@ function DRACOWorker() {
         attribute = decoder.GetAttributeByUniqueId(dracoGeometry, attributeID);
       } else {
         attributeID = decoder.GetAttributeId(dracoGeometry, draco[attributeIDs[attributeName]]);
-        if (attributeID === -1)
-          continue;
+        if (attributeID === -1) continue;
         attribute = decoder.GetAttribute(dracoGeometry, attributeID);
       }
       const attributeResult = decodeAttribute(
@@ -254,8 +252,7 @@ class DRACOLoader extends Loader {
     return geometry;
   }
   _assignVertexColorSpace(attribute, inputColorSpace) {
-    if (inputColorSpace !== SRGBColorSpace)
-      return;
+    if (inputColorSpace !== SRGBColorSpace) return;
     const _color = new Color();
     for (let i = 0, il = attribute.count; i < il; i++) {
       _color.fromBufferAttribute(attribute, i).convertSRGBToLinear();
@@ -276,8 +273,7 @@ class DRACOLoader extends Loader {
     return this;
   }
   _initDecoder() {
-    if (this.decoderPending)
-      return this.decoderPending;
+    if (this.decoderPending) return this.decoderPending;
     const useJS = typeof WebAssembly !== "object" || this.decoderConfig.type === "js";
     const librariesPending = [];
     if (useJS) {

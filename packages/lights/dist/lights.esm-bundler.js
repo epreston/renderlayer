@@ -22,18 +22,12 @@ class Light extends Object3D {
     const data = super.toJSON(meta);
     data.object.color = this.color.getHex();
     data.object.intensity = this.intensity;
-    if (this.groundColor !== void 0)
-      data.object.groundColor = this.groundColor.getHex();
-    if (this.distance !== void 0)
-      data.object.distance = this.distance;
-    if (this.angle !== void 0)
-      data.object.angle = this.angle;
-    if (this.decay !== void 0)
-      data.object.decay = this.decay;
-    if (this.penumbra !== void 0)
-      data.object.penumbra = this.penumbra;
-    if (this.shadow !== void 0)
-      data.object.shadow = this.shadow.toJSON();
+    if (this.groundColor !== void 0) data.object.groundColor = this.groundColor.getHex();
+    if (this.distance !== void 0) data.object.distance = this.distance;
+    if (this.angle !== void 0) data.object.angle = this.angle;
+    if (this.decay !== void 0) data.object.decay = this.decay;
+    if (this.penumbra !== void 0) data.object.penumbra = this.penumbra;
+    if (this.shadow !== void 0) data.object.shadow = this.shadow.toJSON();
     return data;
   }
 }
@@ -133,14 +127,10 @@ class LightShadow {
   }
   toJSON() {
     const object = {};
-    if (this.bias !== 0)
-      object.bias = this.bias;
-    if (this.normalBias !== 0)
-      object.normalBias = this.normalBias;
-    if (this.radius !== 1)
-      object.radius = this.radius;
-    if (this.mapSize.x !== 512 || this.mapSize.y !== 512)
-      object.mapSize = this.mapSize.toArray();
+    if (this.bias !== 0) object.bias = this.bias;
+    if (this.normalBias !== 0) object.normalBias = this.normalBias;
+    if (this.radius !== 1) object.radius = this.radius;
+    if (this.mapSize.x !== 512 || this.mapSize.y !== 512) object.mapSize = this.mapSize.toArray();
     object.camera = this.camera.toJSON(false).object;
     delete object.camera.matrix;
     return object;

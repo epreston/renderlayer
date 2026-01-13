@@ -104,10 +104,8 @@ class Curve {
     const delta = 1e-4;
     let t1 = t - delta;
     let t2 = t + delta;
-    if (t1 < 0)
-      t1 = 0;
-    if (t2 > 1)
-      t2 = 1;
+    if (t1 < 0) t1 = 0;
+    if (t2 > 1) t2 = 1;
     const pt1 = this.getPoint(t1);
     const pt2 = this.getPoint(t2);
     const tangent = optionalTarget || (pt1.isVector2 ? new Vector2() : new Vector3());
@@ -280,12 +278,9 @@ class CatmullRomCurve3 extends Curve {
       let dt0 = Math.pow(p0.distanceToSquared(p1), pow);
       let dt1 = Math.pow(p1.distanceToSquared(p2), pow);
       let dt2 = Math.pow(p2.distanceToSquared(p3), pow);
-      if (dt1 < 1e-4)
-        dt1 = 1;
-      if (dt0 < 1e-4)
-        dt0 = dt1;
-      if (dt2 < 1e-4)
-        dt2 = dt1;
+      if (dt1 < 1e-4) dt1 = 1;
+      if (dt0 < 1e-4) dt0 = dt1;
+      if (dt2 < 1e-4) dt2 = dt1;
       px.initNonuniformCatmullRom(p0.x, p1.x, p2.x, p3.x, dt0, dt1, dt2);
       py.initNonuniformCatmullRom(p0.y, p1.y, p2.y, p3.y, dt0, dt1, dt2);
       pz.initNonuniformCatmullRom(p0.z, p1.z, p2.z, p3.z, dt0, dt1, dt2);
@@ -617,8 +612,7 @@ class CurvePath extends Curve {
       const pts = curve.getPoints(resolution);
       for (let j = 0; j < pts.length; j++) {
         const point = pts[j];
-        if (last && last.equals(point))
-          continue;
+        if (last && last.equals(point)) continue;
         points.push(point);
         last = point;
       }

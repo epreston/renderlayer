@@ -1,4 +1,4 @@
-import { clamp, denormalize, normalize, Vector3, Vector2, generateUUID, Matrix3, Box3, Sphere, Matrix4 } from '@renderlayer/math';
+import { clamp, denormalize, normalize, Vector2, Vector3, generateUUID, Matrix3, Matrix4, Box3, Sphere } from '@renderlayer/math';
 import { StaticDrawUsage, FloatType, arrayNeedsUint32, TrianglesDrawMode, TriangleFanDrawMode, TriangleStripDrawMode } from '@renderlayer/shared';
 import { EventDispatcher, Object3D } from '@renderlayer/core';
 
@@ -48,7 +48,7 @@ function _generateTables() {
       m <<= 1;
       e -= 8388608;
     }
-    m &= ~8388608;
+    m &= -8388609;
     e += 947912704;
     mantissaTable[i] = m | e;
   }
@@ -80,8 +80,7 @@ function _generateTables() {
   };
 }
 function toHalfFloat(val) {
-  if (Math.abs(val) > 65504)
-    console.warn("DataUtils.toHalfFloat(): Value out of range.");
+  if (Math.abs(val) > 65504) console.warn("DataUtils.toHalfFloat(): Value out of range.");
   val = clamp(val, -65504, 65504);
   _tables.floatView[0] = val;
   const f = _tables.uint32View[0];
@@ -115,8 +114,7 @@ class BufferAttribute {
   onUploadCallback() {
   }
   set needsUpdate(value) {
-    if (value === true)
-      this.version++;
+    if (value === true) this.version++;
   }
   setUsage(value) {
     this.usage = value;
@@ -190,61 +188,51 @@ class BufferAttribute {
   }
   getComponent(index, component) {
     let value = this.array[index * this.itemSize + component];
-    if (this.normalized)
-      value = denormalize(value, this.array);
+    if (this.normalized) value = denormalize(value, this.array);
     return value;
   }
   setComponent(index, component, value) {
-    if (this.normalized)
-      value = normalize(value, this.array);
+    if (this.normalized) value = normalize(value, this.array);
     this.array[index * this.itemSize + component] = value;
     return this;
   }
   getX(index) {
     let x = this.array[index * this.itemSize];
-    if (this.normalized)
-      x = denormalize(x, this.array);
+    if (this.normalized) x = denormalize(x, this.array);
     return x;
   }
   setX(index, x) {
-    if (this.normalized)
-      x = normalize(x, this.array);
+    if (this.normalized) x = normalize(x, this.array);
     this.array[index * this.itemSize] = x;
     return this;
   }
   getY(index) {
     let y = this.array[index * this.itemSize + 1];
-    if (this.normalized)
-      y = denormalize(y, this.array);
+    if (this.normalized) y = denormalize(y, this.array);
     return y;
   }
   setY(index, y) {
-    if (this.normalized)
-      y = normalize(y, this.array);
+    if (this.normalized) y = normalize(y, this.array);
     this.array[index * this.itemSize + 1] = y;
     return this;
   }
   getZ(index) {
     let z = this.array[index * this.itemSize + 2];
-    if (this.normalized)
-      z = denormalize(z, this.array);
+    if (this.normalized) z = denormalize(z, this.array);
     return z;
   }
   setZ(index, z) {
-    if (this.normalized)
-      z = normalize(z, this.array);
+    if (this.normalized) z = normalize(z, this.array);
     this.array[index * this.itemSize + 2] = z;
     return this;
   }
   getW(index) {
     let w = this.array[index * this.itemSize + 3];
-    if (this.normalized)
-      w = denormalize(w, this.array);
+    if (this.normalized) w = denormalize(w, this.array);
     return w;
   }
   setW(index, w) {
-    if (this.normalized)
-      w = normalize(w, this.array);
+    if (this.normalized) w = normalize(w, this.array);
     this.array[index * this.itemSize + 3] = w;
     return this;
   }
@@ -299,10 +287,8 @@ class BufferAttribute {
       array: Array.from(this.array),
       normalized: this.normalized
     };
-    if (this.name !== "")
-      data.name = this.name;
-    if (this.usage !== StaticDrawUsage)
-      data.usage = this.usage;
+    if (this.name !== "") data.name = this.name;
+    if (this.usage !== StaticDrawUsage) data.usage = this.usage;
     if (this.updateRange.offset !== 0 || this.updateRange.count !== -1)
       data.updateRange = this.updateRange;
     return data;
@@ -350,49 +336,41 @@ class Float16BufferAttribute extends BufferAttribute {
   }
   getX(index) {
     let x = fromHalfFloat(this.array[index * this.itemSize]);
-    if (this.normalized)
-      x = denormalize(x, this.array);
+    if (this.normalized) x = denormalize(x, this.array);
     return x;
   }
   setX(index, x) {
-    if (this.normalized)
-      x = normalize(x, this.array);
+    if (this.normalized) x = normalize(x, this.array);
     this.array[index * this.itemSize] = toHalfFloat(x);
     return this;
   }
   getY(index) {
     let y = fromHalfFloat(this.array[index * this.itemSize + 1]);
-    if (this.normalized)
-      y = denormalize(y, this.array);
+    if (this.normalized) y = denormalize(y, this.array);
     return y;
   }
   setY(index, y) {
-    if (this.normalized)
-      y = normalize(y, this.array);
+    if (this.normalized) y = normalize(y, this.array);
     this.array[index * this.itemSize + 1] = toHalfFloat(y);
     return this;
   }
   getZ(index) {
     let z = fromHalfFloat(this.array[index * this.itemSize + 2]);
-    if (this.normalized)
-      z = denormalize(z, this.array);
+    if (this.normalized) z = denormalize(z, this.array);
     return z;
   }
   setZ(index, z) {
-    if (this.normalized)
-      z = normalize(z, this.array);
+    if (this.normalized) z = normalize(z, this.array);
     this.array[index * this.itemSize + 2] = toHalfFloat(z);
     return this;
   }
   getW(index) {
     let w = fromHalfFloat(this.array[index * this.itemSize + 3]);
-    if (this.normalized)
-      w = denormalize(w, this.array);
+    if (this.normalized) w = denormalize(w, this.array);
     return w;
   }
   setW(index, w) {
-    if (this.normalized)
-      w = normalize(w, this.array);
+    if (this.normalized) w = normalize(w, this.array);
     this.array[index * this.itemSize + 3] = toHalfFloat(w);
     return this;
   }
@@ -738,8 +716,7 @@ class BufferGeometry extends EventDispatcher {
       uvB.sub(uvA);
       uvC.sub(uvA);
       const r = 1 / (uvB.x * uvC.y - uvC.x * uvB.y);
-      if (!isFinite(r))
-        return;
+      if (!isFinite(r)) return;
       sdir.copy(vB).multiplyScalar(uvC.y).addScaledVector(vC, -uvB.y).multiplyScalar(r);
       tdir.copy(vC).multiplyScalar(uvB.x).addScaledVector(vB, -uvC.x).multiplyScalar(r);
       tan1[a].add(sdir);
@@ -925,15 +902,12 @@ class BufferGeometry extends EventDispatcher {
     };
     data.uuid = this.uuid;
     data.type = this.type;
-    if (this.name !== "")
-      data.name = this.name;
-    if (Object.keys(this.userData).length > 0)
-      data.userData = this.userData;
+    if (this.name !== "") data.name = this.name;
+    if (Object.keys(this.userData).length > 0) data.userData = this.userData;
     if (this.parameters !== void 0) {
       const parameters = this.parameters;
       for (const key in parameters) {
-        if (parameters[key] !== void 0)
-          data[key] = parameters[key];
+        if (parameters[key] !== void 0) data[key] = parameters[key];
       }
       return data;
     }
@@ -1069,8 +1043,7 @@ class InterleavedBuffer {
   onUploadCallback() {
   }
   set needsUpdate(value) {
-    if (value === true)
-      this.version++;
+    if (value === true) this.version++;
   }
   setUsage(value) {
     this.usage = value;
@@ -1180,51 +1153,43 @@ class InterleavedBufferAttribute {
     return this;
   }
   setX(index, x) {
-    if (this.normalized)
-      x = normalize(x, this.array);
+    if (this.normalized) x = normalize(x, this.array);
     this.data.array[index * this.data.stride + this.offset] = x;
     return this;
   }
   setY(index, y) {
-    if (this.normalized)
-      y = normalize(y, this.array);
+    if (this.normalized) y = normalize(y, this.array);
     this.data.array[index * this.data.stride + this.offset + 1] = y;
     return this;
   }
   setZ(index, z) {
-    if (this.normalized)
-      z = normalize(z, this.array);
+    if (this.normalized) z = normalize(z, this.array);
     this.data.array[index * this.data.stride + this.offset + 2] = z;
     return this;
   }
   setW(index, w) {
-    if (this.normalized)
-      w = normalize(w, this.array);
+    if (this.normalized) w = normalize(w, this.array);
     this.data.array[index * this.data.stride + this.offset + 3] = w;
     return this;
   }
   getX(index) {
     let x = this.data.array[index * this.data.stride + this.offset];
-    if (this.normalized)
-      x = denormalize(x, this.array);
+    if (this.normalized) x = denormalize(x, this.array);
     return x;
   }
   getY(index) {
     let y = this.data.array[index * this.data.stride + this.offset + 1];
-    if (this.normalized)
-      y = denormalize(y, this.array);
+    if (this.normalized) y = denormalize(y, this.array);
     return y;
   }
   getZ(index) {
     let z = this.data.array[index * this.data.stride + this.offset + 2];
-    if (this.normalized)
-      z = denormalize(z, this.array);
+    if (this.normalized) z = denormalize(z, this.array);
     return z;
   }
   getW(index) {
     let w = this.data.array[index * this.data.stride + this.offset + 3];
-    if (this.normalized)
-      w = denormalize(w, this.array);
+    if (this.normalized) w = denormalize(w, this.array);
     return w;
   }
   setXY(index, x, y) {
@@ -1352,8 +1317,7 @@ function mergeGeometries(geometries, useGroups = false) {
         );
         return null;
       }
-      if (attributes[name] === void 0)
-        attributes[name] = [];
+      if (attributes[name] === void 0) attributes[name] = [];
       attributes[name].push(geometry.attributes[name]);
       attributesCount++;
     }
@@ -1376,8 +1340,7 @@ function mergeGeometries(geometries, useGroups = false) {
         );
         return null;
       }
-      if (morphAttributes[name] === void 0)
-        morphAttributes[name] = [];
+      if (morphAttributes[name] === void 0) morphAttributes[name] = [];
       morphAttributes[name].push(geometry.morphAttributes[name]);
     }
     if (useGroups) {
@@ -1420,8 +1383,7 @@ function mergeGeometries(geometries, useGroups = false) {
   }
   for (const name in morphAttributes) {
     const numMorphTargets = morphAttributes[name][0].length;
-    if (numMorphTargets === 0)
-      break;
+    if (numMorphTargets === 0) break;
     mergedGeometry.morphAttributes = mergedGeometry.morphAttributes || {};
     mergedGeometry.morphAttributes[name] = [];
     for (let i = 0; i < numMorphTargets; ++i) {
@@ -1454,32 +1416,28 @@ function mergeAttributes(attributes) {
       );
       return null;
     }
-    if (TypedArray === void 0)
-      TypedArray = attribute.array.constructor;
+    if (TypedArray === void 0) TypedArray = attribute.array.constructor;
     if (TypedArray !== attribute.array.constructor) {
       console.error(
         "BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.array must be of consistent array types across matching attributes."
       );
       return null;
     }
-    if (itemSize === void 0)
-      itemSize = attribute.itemSize;
+    if (itemSize === void 0) itemSize = attribute.itemSize;
     if (itemSize !== attribute.itemSize) {
       console.error(
         "BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.itemSize must be consistent across matching attributes."
       );
       return null;
     }
-    if (normalized === void 0)
-      normalized = attribute.normalized;
+    if (normalized === void 0) normalized = attribute.normalized;
     if (normalized !== attribute.normalized) {
       console.error(
         "BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.normalized must be consistent across matching attributes."
       );
       return null;
     }
-    if (gpuType === -1)
-      gpuType = attribute.gpuType;
+    if (gpuType === -1) gpuType = attribute.gpuType;
     if (gpuType !== attribute.gpuType) {
       console.error(
         "BufferGeometryUtils: .mergeAttributes() failed. BufferAttribute.gpuType must be consistent across matching attributes."
@@ -1515,8 +1473,7 @@ function interleaveAttributes(attributes) {
   let stride = 0;
   for (let i = 0, l = attributes.length; i < l; ++i) {
     const attribute = attributes[i];
-    if (TypedArray === void 0)
-      TypedArray = attribute.array.constructor;
+    if (TypedArray === void 0) TypedArray = attribute.array.constructor;
     if (TypedArray !== attribute.array.constructor) {
       console.error("AttributeBuffers of different types cannot be interleaved");
       return null;
@@ -1693,8 +1650,7 @@ function mergeVertices(geometry, tolerance = 1e-4) {
         tmpAttribute.normalized
       )
     );
-    if (!(name in tmpMorphAttributes))
-      continue;
+    if (!(name in tmpMorphAttributes)) continue;
     for (let j = 0; j < tmpMorphAttributes[name].length; j++) {
       const tmpMorphAttribute = tmpMorphAttributes[name][j];
       result.morphAttributes[name][j] = new BufferAttribute(
@@ -1789,8 +1745,7 @@ function computeMorphedAttributes(object) {
       for (let i2 = 0, il2 = morphAttribute.length; i2 < il2; i2++) {
         const influence = morphInfluences[i2];
         const morph = morphAttribute[i2];
-        if (influence === 0)
-          continue;
+        if (influence === 0) continue;
         _tempA.fromBufferAttribute(morph, a2);
         _tempB.fromBufferAttribute(morph, b2);
         _tempC.fromBufferAttribute(morph, c2);
@@ -1984,8 +1939,7 @@ function mergeGroups(geometry) {
   }
   let groups = geometry.groups;
   groups = groups.sort((a, b) => {
-    if (a.materialIndex !== b.materialIndex)
-      return a.materialIndex - b.materialIndex;
+    if (a.materialIndex !== b.materialIndex) return a.materialIndex - b.materialIndex;
     return a.start - b.start;
   });
   if (geometry.getIndex() === null) {

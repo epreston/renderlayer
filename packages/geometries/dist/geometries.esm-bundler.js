@@ -169,10 +169,8 @@ class CylinderGeometry extends BufferGeometry {
     let groupStart = 0;
     generateTorso();
     if (openEnded === false) {
-      if (radiusTop > 0)
-        generateCap(true);
-      if (radiusBottom > 0)
-        generateCap(false);
+      if (radiusTop > 0) generateCap(true);
+      if (radiusBottom > 0) generateCap(false);
     }
     this.setIndex(indices);
     this.setAttribute("position", new Float32BufferAttribute(vertices, 3));
@@ -388,10 +386,8 @@ class SphereGeometry extends BufferGeometry {
         const b = grid[iy][ix];
         const c = grid[iy + 1][ix];
         const d = grid[iy + 1][ix + 1];
-        if (iy !== 0 || thetaStart > 0)
-          indices.push(a, b, d);
-        if (iy !== heightSegments - 1 || thetaEnd < Math.PI)
-          indices.push(b, c, d);
+        if (iy !== 0 || thetaStart > 0) indices.push(a, b, d);
+        if (iy !== heightSegments - 1 || thetaEnd < Math.PI) indices.push(b, c, d);
       }
     }
     this.setIndex(indices);

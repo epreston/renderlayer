@@ -39,18 +39,14 @@ function pingpong(x, length = 1) {
   return length - Math.abs(euclideanModulo(x, length * 2) - length);
 }
 function smoothstep(x, min, max) {
-  if (x <= min)
-    return 0;
-  if (x >= max)
-    return 1;
+  if (x <= min) return 0;
+  if (x >= max) return 1;
   x = (x - min) / (max - min);
   return x * x * (3 - 2 * x);
 }
 function smootherstep(x, min, max) {
-  if (x <= min)
-    return 0;
-  if (x >= max)
-    return 1;
+  if (x <= min) return 0;
+  if (x >= max) return 1;
   x = (x - min) / (max - min);
   return x * x * x * (x * (x * 6 - 15) + 10);
 }
@@ -64,8 +60,7 @@ function randFloatSpread(range) {
   return range * (0.5 - Math.random());
 }
 function seededRandom(s) {
-  if (s !== void 0)
-    _seed = s;
+  if (s !== void 0) _seed = s;
   let t = _seed += 1831565813;
   t = Math.imul(t ^ t >>> 15, t | 1);
   t ^= t + Math.imul(t ^ t >>> 7, t | 61);
@@ -368,8 +363,7 @@ class Vector2 {
   }
   angleTo(v) {
     const denominator = Math.sqrt(this.lengthSq() * v.lengthSq());
-    if (denominator === 0)
-      return Math.PI / 2;
+    if (denominator === 0) return Math.PI / 2;
     const theta = this.dot(v) / denominator;
     return Math.acos(clamp(theta, -1, 1));
   }
@@ -522,8 +516,7 @@ class Box2 {
   intersect(box) {
     this.min.max(box.min);
     this.max.min(box.max);
-    if (this.isEmpty())
-      this.makeEmpty();
+    if (this.isEmpty()) this.makeEmpty();
     return this;
   }
   union(box) {
@@ -542,6 +535,8 @@ class Box2 {
 }
 
 class Quaternion {
+  #onChangeCallback = () => {
+  };
   constructor(x = 0, y = 0, z = 0, w = 1) {
     this.isQuaternion = true;
     this._x = x;
@@ -621,35 +616,35 @@ class Quaternion {
   }
   set x(value) {
     this._x = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
   get y() {
     return this._y;
   }
   set y(value) {
     this._y = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
   get z() {
     return this._z;
   }
   set z(value) {
     this._z = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
   get w() {
     return this._w;
   }
   set w(value) {
     this._w = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
   set(x, y, z, w) {
     this._x = x;
     this._y = y;
     this._z = z;
     this._w = w;
-    this._onChangeCallback();
+    this.#onChangeCallback();
     return this;
   }
   /** @returns {this} */
@@ -661,8 +656,7 @@ class Quaternion {
     this._y = quaternion.y;
     this._z = quaternion.z;
     this._w = quaternion.w;
-    if (update === true)
-      this._onChangeCallback();
+    if (update === true) this.#onChangeCallback();
     return this;
   }
   setFromEuler(euler, update) {
@@ -718,8 +712,7 @@ class Quaternion {
       default:
         console.warn(`Quaternion: .setFromEuler() encountered an unknown order: ${order}`);
     }
-    if (update !== false)
-      this._onChangeCallback();
+    if (update !== false) this.#onChangeCallback();
     return this;
   }
   setFromAxisAngle(axis, angle) {
@@ -729,7 +722,7 @@ class Quaternion {
     this._y = axis.y * s;
     this._z = axis.z * s;
     this._w = Math.cos(halfAngle);
-    this._onChangeCallback();
+    this.#onChangeCallback();
     return this;
   }
   setFromRotationMatrix(m) {
@@ -769,7 +762,7 @@ class Quaternion {
       this._y = (m23 + m32) / s;
       this._z = 0.25 * s;
     }
-    this._onChangeCallback();
+    this.#onChangeCallback();
     return this;
   }
   setFromUnitVectors(vFrom, vTo) {
@@ -800,8 +793,7 @@ class Quaternion {
   }
   rotateTowards(q, step) {
     const angle = this.angleTo(q);
-    if (angle === 0)
-      return this;
+    if (angle === 0) return this;
     const t = Math.min(1, step / angle);
     this.slerp(q, t);
     return this;
@@ -816,7 +808,7 @@ class Quaternion {
     this._x *= -1;
     this._y *= -1;
     this._z *= -1;
-    this._onChangeCallback();
+    this.#onChangeCallback();
     return this;
   }
   dot(v) {
@@ -842,7 +834,7 @@ class Quaternion {
       this._z = this._z * l;
       this._w = this._w * l;
     }
-    this._onChangeCallback();
+    this.#onChangeCallback();
     return this;
   }
   multiply(q) {
@@ -864,14 +856,12 @@ class Quaternion {
     this._y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
     this._z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
     this._w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
-    this._onChangeCallback();
+    this.#onChangeCallback();
     return this;
   }
   slerp(qb, t) {
-    if (t === 0)
-      return this;
-    if (t === 1)
-      return this.copy(qb);
+    if (t === 0) return this;
+    if (t === 1) return this.copy(qb);
     const x = this._x;
     const y = this._y;
     const z = this._z;
@@ -901,7 +891,7 @@ class Quaternion {
       this._y = s * y + t * this._y;
       this._z = s * z + t * this._z;
       this.normalize();
-      this._onChangeCallback();
+      this.#onChangeCallback();
       return this;
     }
     const sinHalfTheta = Math.sqrt(sqrSinHalfTheta);
@@ -912,7 +902,7 @@ class Quaternion {
     this._x = x * ratioA + this._x * ratioB;
     this._y = y * ratioA + this._y * ratioB;
     this._z = z * ratioA + this._z * ratioB;
-    this._onChangeCallback();
+    this.#onChangeCallback();
     return this;
   }
   slerpQuaternions(qa, qb, t) {
@@ -939,7 +929,7 @@ class Quaternion {
     this._y = array[offset + 1];
     this._z = array[offset + 2];
     this._w = array[offset + 3];
-    this._onChangeCallback();
+    this.#onChangeCallback();
     return this;
   }
   toArray(array = [], offset = 0) {
@@ -960,10 +950,8 @@ class Quaternion {
     return this.toArray();
   }
   _onChange(callback) {
-    this._onChangeCallback = callback;
+    this.#onChangeCallback = callback;
     return this;
-  }
-  _onChangeCallback() {
   }
   *[Symbol.iterator]() {
     yield this._x;
@@ -981,8 +969,7 @@ class Vector3 {
     this.z = z;
   }
   set(x, y, z) {
-    if (z === void 0)
-      z = this.z;
+    if (z === void 0) z = this.z;
     this.x = x;
     this.y = y;
     this.z = z;
@@ -1281,8 +1268,7 @@ class Vector3 {
   }
   projectOnVector(v) {
     const denominator = v.lengthSq();
-    if (denominator === 0)
-      return this.set(0, 0, 0);
+    if (denominator === 0) return this.set(0, 0, 0);
     const scalar = v.dot(this) / denominator;
     return this.copy(v).multiplyScalar(scalar);
   }
@@ -1295,8 +1281,7 @@ class Vector3 {
   }
   angleTo(v) {
     const denominator = Math.sqrt(this.lengthSq() * v.lengthSq());
-    if (denominator === 0)
-      return Math.PI / 2;
+    if (denominator === 0) return Math.PI / 2;
     const theta = this.dot(v) / denominator;
     return Math.acos(clamp(theta, -1, 1));
   }
@@ -1643,8 +1628,7 @@ class Box3 {
   intersect(box) {
     this.min.max(box.min);
     this.max.min(box.max);
-    if (this.isEmpty())
-      this.makeEmpty();
+    if (this.isEmpty()) this.makeEmpty();
     return this;
   }
   union(box) {
@@ -1653,8 +1637,7 @@ class Box3 {
     return this;
   }
   applyMatrix4(matrix) {
-    if (this.isEmpty())
-      return this;
+    if (this.isEmpty()) return this;
     _points[0].set(this.min.x, this.min.y, this.min.z).applyMatrix4(matrix);
     _points[1].set(this.min.x, this.min.y, this.max.z).applyMatrix4(matrix);
     _points[2].set(this.min.x, this.max.y, this.min.z).applyMatrix4(matrix);
@@ -1871,8 +1854,7 @@ class Matrix3 {
     const t12 = n32 * n13 - n33 * n12;
     const t13 = n23 * n12 - n22 * n13;
     const det = n11 * t11 + n21 * t12 + n31 * t13;
-    if (det === 0)
-      return this.set(0, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (det === 0) return this.set(0, 0, 0, 0, 0, 0, 0, 0, 0);
     const detInv = 1 / det;
     te[0] = t11 * detInv;
     te[1] = (n31 * n23 - n33 * n21) * detInv;
@@ -2007,8 +1989,7 @@ class Matrix3 {
     const te = this.elements;
     const me = matrix.elements;
     for (let i = 0; i < 9; i++) {
-      if (te[i] !== me[i])
-        return false;
+      if (te[i] !== me[i]) return false;
     }
     return true;
   }
@@ -2141,8 +2122,7 @@ const ColorManagement = {
     return COLOR_SPACES[colorSpace].primaries;
   },
   getTransfer(colorSpace) {
-    if (colorSpace === NoColorSpace)
-      return LinearTransfer;
+    if (colorSpace === NoColorSpace) return LinearTransfer;
     return COLOR_SPACES[colorSpace].transfer;
   }
 };
@@ -2151,16 +2131,11 @@ const SRGBColorSpace = "srgb";
 const _hslA = { h: 0, s: 0, l: 0 };
 const _hslB = { h: 0, s: 0, l: 0 };
 function hue2rgb(p, q, t) {
-  if (t < 0)
-    t += 1;
-  if (t > 1)
-    t -= 1;
-  if (t < 1 / 6)
-    return p + (q - p) * 6 * t;
-  if (t < 1 / 2)
-    return q;
-  if (t < 2 / 3)
-    return p + (q - p) * 6 * (2 / 3 - t);
+  if (t < 0) t += 1;
+  if (t > 1) t -= 1;
+  if (t < 1 / 6) return p + (q - p) * 6 * t;
+  if (t < 1 / 2) return q;
+  if (t < 2 / 3) return p + (q - p) * 6 * (2 / 3 - t);
   return p;
 }
 class Color {
@@ -2225,8 +2200,7 @@ class Color {
   }
   setStyle(style, colorSpace = SRGBColorSpace) {
     function handleAlpha(string) {
-      if (string === void 0)
-        return;
+      if (string === void 0) return;
       if (parseFloat(string) < 1) {
         console.warn(`Color: Alpha component of ${style} will be ignored.`);
       }
@@ -2893,8 +2867,7 @@ class Matrix4 {
     const t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 - n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44;
     const t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
     const det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
-    if (det === 0)
-      return this.set(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    if (det === 0) return this.set(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     const detInv = 1 / det;
     te[0] = t11 * detInv, te[1] = (n24 * n33 * n41 - n23 * n34 * n41 - n24 * n31 * n43 + n21 * n34 * n43 + n23 * n31 * n44 - n21 * n33 * n44) * detInv, te[2] = (n22 * n34 * n41 - n24 * n32 * n41 + n24 * n31 * n42 - n21 * n34 * n42 - n22 * n31 * n44 + n21 * n32 * n44) * detInv, te[3] = (n23 * n32 * n41 - n22 * n33 * n41 - n23 * n31 * n42 + n21 * n33 * n42 + n22 * n31 * n43 - n21 * n32 * n43) * detInv;
     te[4] = t12 * detInv, te[5] = (n13 * n34 * n41 - n14 * n33 * n41 + n14 * n31 * n43 - n11 * n34 * n43 - n13 * n31 * n44 + n11 * n33 * n44) * detInv, te[6] = (n14 * n32 * n41 - n12 * n34 * n41 - n14 * n31 * n42 + n11 * n34 * n42 + n12 * n31 * n44 - n11 * n32 * n44) * detInv, te[7] = (n12 * n33 * n41 - n13 * n32 * n41 + n13 * n31 * n42 - n11 * n33 * n42 - n12 * n31 * n43 + n11 * n32 * n43) * detInv;
@@ -3144,8 +3117,7 @@ class Matrix4 {
     const sy = _v1$2.set(te[4], te[5], te[6]).length();
     const sz = _v1$2.set(te[8], te[9], te[10]).length();
     const det = this.determinant();
-    if (det < 0)
-      sx = -sx;
+    if (det < 0) sx = -sx;
     position.x = te[12];
     position.y = te[13];
     position.z = te[14];
@@ -3209,8 +3181,7 @@ class Matrix4 {
     const te = this.elements;
     const me = matrix.elements;
     for (let i = 0; i < 16; i++) {
-      if (te[i] !== me[i])
-        return false;
+      if (te[i] !== me[i]) return false;
     }
     return true;
   }
@@ -3253,6 +3224,8 @@ const _z = /* @__PURE__ */ new Vector3();
 const _matrix = /* @__PURE__ */ new Matrix4();
 const _quaternion = /* @__PURE__ */ new Quaternion();
 class Euler {
+  #onChangeCallback = () => {
+  };
   constructor(x = 0, y = 0, z = 0, order = Euler.DEFAULT_ORDER) {
     this.isEuler = true;
     this._x = x;
@@ -3265,35 +3238,35 @@ class Euler {
   }
   set x(value) {
     this._x = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
   get y() {
     return this._y;
   }
   set y(value) {
     this._y = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
   get z() {
     return this._z;
   }
   set z(value) {
     this._z = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
   get order() {
     return this._order;
   }
   set order(value) {
     this._order = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
   set(x, y, z, order = this._order) {
     this._x = x;
     this._y = y;
     this._z = z;
     this._order = order;
-    this._onChangeCallback();
+    this.#onChangeCallback();
     return this;
   }
   /** @returns {this} */
@@ -3305,8 +3278,7 @@ class Euler {
     this._y = euler._y;
     this._z = euler._z;
     this._order = euler._order;
-    if (update === true)
-      this._onChangeCallback();
+    if (update === true) this.#onChangeCallback();
     return this;
   }
   setFromRotationMatrix(m, order = this._order, update = true) {
@@ -3385,8 +3357,7 @@ class Euler {
         console.warn(`Euler: .setFromRotationMatrix() encountered an unknown order: ${order}`);
     }
     this._order = order;
-    if (update === true)
-      this._onChangeCallback();
+    if (update === true) this.#onChangeCallback();
     return this;
   }
   setFromQuaternion(q, order, update) {
@@ -3407,9 +3378,8 @@ class Euler {
     this._x = array[0];
     this._y = array[1];
     this._z = array[2];
-    if (array[3] !== void 0)
-      this._order = array[3];
-    this._onChangeCallback();
+    if (array[3] !== void 0) this._order = array[3];
+    this.#onChangeCallback();
     return this;
   }
   toArray(array = [], offset = 0) {
@@ -3420,10 +3390,8 @@ class Euler {
     return array;
   }
   _onChange(callback) {
-    this._onChangeCallback = callback;
+    this.#onChangeCallback = callback;
     return this;
-  }
-  _onChangeCallback() {
   }
   *[Symbol.iterator]() {
     yield this._x;
@@ -3718,13 +3686,11 @@ class Frustum {
   }
   intersectsObject(object) {
     if (object.boundingSphere !== void 0) {
-      if (object.boundingSphere === null)
-        object.computeBoundingSphere();
+      if (object.boundingSphere === null) object.computeBoundingSphere();
       _sphere.copy(object.boundingSphere).applyMatrix4(object.matrixWorld);
     } else {
       const geometry = object.geometry;
-      if (geometry.boundingSphere === null)
-        geometry.computeBoundingSphere();
+      if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
       _sphere.copy(geometry.boundingSphere).applyMatrix4(object.matrixWorld);
     }
     return this.intersectsSphere(_sphere);
@@ -3956,15 +3922,12 @@ class Ray {
     const tca = _vector.dot(this.direction);
     const d2 = _vector.dot(_vector) - tca * tca;
     const radius2 = sphere.radius * sphere.radius;
-    if (d2 > radius2)
-      return null;
+    if (d2 > radius2) return null;
     const thc = Math.sqrt(radius2 - d2);
     const t0 = tca - thc;
     const t1 = tca + thc;
-    if (t1 < 0)
-      return null;
-    if (t0 < 0)
-      return this.at(t1, target);
+    if (t1 < 0) return null;
+    if (t0 < 0) return this.at(t1, target);
     return this.at(t0, target);
   }
   intersectsSphere(sphere) {
@@ -4024,12 +3987,9 @@ class Ray {
       tymin = (box.max.y - origin.y) * invdiry;
       tymax = (box.min.y - origin.y) * invdiry;
     }
-    if (tmin > tymax || tymin > tmax)
-      return null;
-    if (tymin > tmin || isNaN(tmin))
-      tmin = tymin;
-    if (tymax < tmax || isNaN(tmax))
-      tmax = tymax;
+    if (tmin > tymax || tymin > tmax) return null;
+    if (tymin > tmin || isNaN(tmin)) tmin = tymin;
+    if (tymax < tmax || isNaN(tmax)) tmax = tymax;
     if (invdirz >= 0) {
       tzmin = (box.min.z - origin.z) * invdirz;
       tzmax = (box.max.z - origin.z) * invdirz;
@@ -4037,14 +3997,10 @@ class Ray {
       tzmin = (box.max.z - origin.z) * invdirz;
       tzmax = (box.min.z - origin.z) * invdirz;
     }
-    if (tmin > tzmax || tzmin > tmax)
-      return null;
-    if (tzmin > tmin || tmin !== tmin)
-      tmin = tzmin;
-    if (tzmax < tmax || tmax !== tmax)
-      tmax = tzmax;
-    if (tmax < 0)
-      return null;
+    if (tmin > tzmax || tzmin > tmax) return null;
+    if (tzmin > tmin || tmin !== tmin) tmin = tzmin;
+    if (tzmax < tmax || tmax !== tmax) tmax = tzmax;
+    if (tmax < 0) return null;
     return this.at(tmin >= 0 ? tmin : tmax, target);
   }
   intersectsBox(box) {
@@ -4057,8 +4013,7 @@ class Ray {
     let DdN = this.direction.dot(_normal);
     let sign;
     if (DdN > 0) {
-      if (backfaceCulling)
-        return null;
+      if (backfaceCulling) return null;
       sign = 1;
     } else if (DdN < 0) {
       sign = -1;
@@ -4520,8 +4475,7 @@ class Vector4 {
       return this;
     }
     let s = Math.sqrt((m32 - m23) * (m32 - m23) + (m13 - m31) * (m13 - m31) + (m21 - m12) * (m21 - m12));
-    if (Math.abs(s) < 1e-3)
-      s = 1;
+    if (Math.abs(s) < 1e-3) s = 1;
     this.x = (m32 - m23) / s;
     this.y = (m13 - m31) / s;
     this.z = (m21 - m12) / s;

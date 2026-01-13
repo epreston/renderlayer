@@ -1,9 +1,9 @@
-import { CubeReflectionMapping, CubeRefractionMapping, NoToneMapping, BackSide, CubeUVReflectionMapping, NoBlending, LinearFilter, HalfFloatType, RGBAFormat, LinearSRGBColorSpace } from '@renderlayer/shared';
+import { CubeReflectionMapping, CubeRefractionMapping, NoToneMapping, BackSide, CubeUVReflectionMapping, NoBlending, LinearSRGBColorSpace, RGBAFormat, HalfFloatType, LinearFilter } from '@renderlayer/shared';
 import { BufferGeometry, BufferAttribute } from '@renderlayer/buffers';
-import { PerspectiveCamera, OrthographicCamera } from '@renderlayer/cameras';
+import { OrthographicCamera, PerspectiveCamera } from '@renderlayer/cameras';
 import { BoxGeometry } from '@renderlayer/geometries';
 import { MeshBasicMaterial, ShaderMaterial } from '@renderlayer/materials';
-import { Vector3, Color } from '@renderlayer/math';
+import { Color, Vector3 } from '@renderlayer/math';
 import { Mesh } from '@renderlayer/objects';
 import { WebGLRenderTarget } from '@renderlayer/targets';
 
@@ -108,10 +108,8 @@ class PMREMGenerator {
    */
   dispose() {
     this._dispose();
-    if (this._cubemapMaterial !== null)
-      this._cubemapMaterial.dispose();
-    if (this._equirectMaterial !== null)
-      this._equirectMaterial.dispose();
+    if (this._cubemapMaterial !== null) this._cubemapMaterial.dispose();
+    if (this._equirectMaterial !== null) this._equirectMaterial.dispose();
   }
   // private interface
   _setSize(cubeSize) {
@@ -119,10 +117,8 @@ class PMREMGenerator {
     this._cubeSize = Math.pow(2, this._lodMax);
   }
   _dispose() {
-    if (this._blurMaterial !== null)
-      this._blurMaterial.dispose();
-    if (this._pingPongRenderTarget !== null)
-      this._pingPongRenderTarget.dispose();
+    if (this._blurMaterial !== null) this._blurMaterial.dispose();
+    if (this._pingPongRenderTarget !== null) this._pingPongRenderTarget.dispose();
     for (let i = 0; i < this._lodPlanes.length; i++) {
       this._lodPlanes[i].dispose();
     }

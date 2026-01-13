@@ -3,7 +3,7 @@ import { DiscreteInterpolant, LinearInterpolant, CubicInterpolant, QuaternionLin
 
 function convertArray(array, type, forceClone) {
   if (!array || // let 'undefined' and 'null' pass
-  !forceClone && array.constructor === type)
+  array.constructor === type)
     return array;
   if (typeof type.BYTES_PER_ELEMENT === "number") {
     return new type(array);
@@ -16,8 +16,7 @@ function isTypedArray(object) {
 
 class KeyframeTrack {
   constructor(name, times, values, interpolation) {
-    if (name === void 0)
-      throw new Error("KeyframeTrack: track name is undefined");
+    if (name === void 0) throw new Error("KeyframeTrack: track name is undefined");
     if (times === void 0 || times.length === 0)
       throw new Error(`KeyframeTrack: no keyframes in track named ${name}`);
     this.name = name;

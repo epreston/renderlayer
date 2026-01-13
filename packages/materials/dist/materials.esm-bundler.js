@@ -75,8 +75,7 @@ class Material extends EventDispatcher {
     return this.onBeforeCompile.toString();
   }
   setValues(values) {
-    if (values === void 0)
-      return;
+    if (values === void 0) return;
     for (const key in values) {
       const newValue = values[key];
       if (newValue === void 0) {
@@ -114,36 +113,23 @@ class Material extends EventDispatcher {
     };
     data.uuid = this.uuid;
     data.type = this.type;
-    if (this.name !== "")
-      data.name = this.name;
-    if (this.color && this.color.isColor)
-      data.color = this.color.getHex();
-    if (this.roughness !== void 0)
-      data.roughness = this.roughness;
-    if (this.metalness !== void 0)
-      data.metalness = this.metalness;
-    if (this.sheen !== void 0)
-      data.sheen = this.sheen;
-    if (this.sheenColor && this.sheenColor.isColor)
-      data.sheenColor = this.sheenColor.getHex();
-    if (this.sheenRoughness !== void 0)
-      data.sheenRoughness = this.sheenRoughness;
-    if (this.emissive && this.emissive.isColor)
-      data.emissive = this.emissive.getHex();
+    if (this.name !== "") data.name = this.name;
+    if (this.color && this.color.isColor) data.color = this.color.getHex();
+    if (this.roughness !== void 0) data.roughness = this.roughness;
+    if (this.metalness !== void 0) data.metalness = this.metalness;
+    if (this.sheen !== void 0) data.sheen = this.sheen;
+    if (this.sheenColor && this.sheenColor.isColor) data.sheenColor = this.sheenColor.getHex();
+    if (this.sheenRoughness !== void 0) data.sheenRoughness = this.sheenRoughness;
+    if (this.emissive && this.emissive.isColor) data.emissive = this.emissive.getHex();
     if (this.emissiveIntensity && this.emissiveIntensity !== 1)
       data.emissiveIntensity = this.emissiveIntensity;
-    if (this.specular && this.specular.isColor)
-      data.specular = this.specular.getHex();
-    if (this.specularIntensity !== void 0)
-      data.specularIntensity = this.specularIntensity;
+    if (this.specular && this.specular.isColor) data.specular = this.specular.getHex();
+    if (this.specularIntensity !== void 0) data.specularIntensity = this.specularIntensity;
     if (this.specularColor && this.specularColor.isColor)
       data.specularColor = this.specularColor.getHex();
-    if (this.shininess !== void 0)
-      data.shininess = this.shininess;
-    if (this.clearcoat !== void 0)
-      data.clearcoat = this.clearcoat;
-    if (this.clearcoatRoughness !== void 0)
-      data.clearcoatRoughness = this.clearcoatRoughness;
+    if (this.shininess !== void 0) data.shininess = this.shininess;
+    if (this.clearcoat !== void 0) data.clearcoat = this.clearcoat;
+    if (this.clearcoatRoughness !== void 0) data.clearcoatRoughness = this.clearcoatRoughness;
     if (this.clearcoatMap && this.clearcoatMap.isTexture) {
       data.clearcoatMap = this.clearcoatMap.toJSON(meta).uuid;
     }
@@ -154,10 +140,8 @@ class Material extends EventDispatcher {
       data.clearcoatNormalMap = this.clearcoatNormalMap.toJSON(meta).uuid;
       data.clearcoatNormalScale = this.clearcoatNormalScale.toArray();
     }
-    if (this.iridescence !== void 0)
-      data.iridescence = this.iridescence;
-    if (this.iridescenceIOR !== void 0)
-      data.iridescenceIOR = this.iridescenceIOR;
+    if (this.iridescence !== void 0) data.iridescence = this.iridescence;
+    if (this.iridescenceIOR !== void 0) data.iridescenceIOR = this.iridescenceIOR;
     if (this.iridescenceThicknessRange !== void 0)
       data.iridescenceThicknessRange = this.iridescenceThicknessRange;
     if (this.iridescenceMap && this.iridescenceMap.isTexture) {
@@ -166,19 +150,14 @@ class Material extends EventDispatcher {
     if (this.iridescenceThicknessMap && this.iridescenceThicknessMap.isTexture) {
       data.iridescenceThicknessMap = this.iridescenceThicknessMap.toJSON(meta).uuid;
     }
-    if (this.anisotropy !== void 0)
-      data.anisotropy = this.anisotropy;
-    if (this.anisotropyRotation !== void 0)
-      data.anisotropyRotation = this.anisotropyRotation;
+    if (this.anisotropy !== void 0) data.anisotropy = this.anisotropy;
+    if (this.anisotropyRotation !== void 0) data.anisotropyRotation = this.anisotropyRotation;
     if (this.anisotropyMap && this.anisotropyMap.isTexture) {
       data.anisotropyMap = this.anisotropyMap.toJSON(meta).uuid;
     }
-    if (this.map && this.map.isTexture)
-      data.map = this.map.toJSON(meta).uuid;
-    if (this.matcap && this.matcap.isTexture)
-      data.matcap = this.matcap.toJSON(meta).uuid;
-    if (this.alphaMap && this.alphaMap.isTexture)
-      data.alphaMap = this.alphaMap.toJSON(meta).uuid;
+    if (this.map && this.map.isTexture) data.map = this.map.toJSON(meta).uuid;
+    if (this.matcap && this.matcap.isTexture) data.matcap = this.matcap.toJSON(meta).uuid;
+    if (this.alphaMap && this.alphaMap.isTexture) data.alphaMap = this.alphaMap.toJSON(meta).uuid;
     if (this.lightMap && this.lightMap.isTexture) {
       data.lightMap = this.lightMap.toJSON(meta).uuid;
       data.lightMapIntensity = this.lightMapIntensity;
@@ -215,128 +194,72 @@ class Material extends EventDispatcher {
       data.specularColorMap = this.specularColorMap.toJSON(meta).uuid;
     if (this.envMap && this.envMap.isTexture) {
       data.envMap = this.envMap.toJSON(meta).uuid;
-      if (this.combine !== void 0)
-        data.combine = this.combine;
+      if (this.combine !== void 0) data.combine = this.combine;
     }
-    if (this.envMapIntensity !== void 0)
-      data.envMapIntensity = this.envMapIntensity;
-    if (this.reflectivity !== void 0)
-      data.reflectivity = this.reflectivity;
-    if (this.refractionRatio !== void 0)
-      data.refractionRatio = this.refractionRatio;
+    if (this.envMapIntensity !== void 0) data.envMapIntensity = this.envMapIntensity;
+    if (this.reflectivity !== void 0) data.reflectivity = this.reflectivity;
+    if (this.refractionRatio !== void 0) data.refractionRatio = this.refractionRatio;
     if (this.gradientMap && this.gradientMap.isTexture) {
       data.gradientMap = this.gradientMap.toJSON(meta).uuid;
     }
-    if (this.transmission !== void 0)
-      data.transmission = this.transmission;
+    if (this.transmission !== void 0) data.transmission = this.transmission;
     if (this.transmissionMap && this.transmissionMap.isTexture)
       data.transmissionMap = this.transmissionMap.toJSON(meta).uuid;
-    if (this.thickness !== void 0)
-      data.thickness = this.thickness;
+    if (this.thickness !== void 0) data.thickness = this.thickness;
     if (this.thicknessMap && this.thicknessMap.isTexture)
       data.thicknessMap = this.thicknessMap.toJSON(meta).uuid;
     if (this.attenuationDistance !== void 0 && this.attenuationDistance !== Infinity)
       data.attenuationDistance = this.attenuationDistance;
-    if (this.attenuationColor !== void 0)
-      data.attenuationColor = this.attenuationColor.getHex();
-    if (this.size !== void 0)
-      data.size = this.size;
-    if (this.shadowSide !== null)
-      data.shadowSide = this.shadowSide;
-    if (this.sizeAttenuation !== void 0)
-      data.sizeAttenuation = this.sizeAttenuation;
-    if (this.blending !== NormalBlending)
-      data.blending = this.blending;
-    if (this.side !== FrontSide)
-      data.side = this.side;
-    if (this.vertexColors === true)
-      data.vertexColors = true;
-    if (this.opacity < 1)
-      data.opacity = this.opacity;
-    if (this.transparent === true)
-      data.transparent = true;
-    if (this.blendSrc !== SrcAlphaFactor)
-      data.blendSrc = this.blendSrc;
-    if (this.blendDst !== OneMinusSrcAlphaFactor)
-      data.blendDst = this.blendDst;
-    if (this.blendEquation !== AddEquation)
-      data.blendEquation = this.blendEquation;
-    if (this.blendSrcAlpha !== null)
-      data.blendSrcAlpha = this.blendSrcAlpha;
-    if (this.blendDstAlpha !== null)
-      data.blendDstAlpha = this.blendDstAlpha;
-    if (this.blendEquationAlpha !== null)
-      data.blendEquationAlpha = this.blendEquationAlpha;
-    if (this.blendColor && this.blendColor.isColor)
-      data.blendColor = this.blendColor.getHex();
-    if (this.blendAlpha !== 0)
-      data.blendAlpha = this.blendAlpha;
-    if (this.depthFunc !== LessEqualDepth)
-      data.depthFunc = this.depthFunc;
-    if (this.depthTest === false)
-      data.depthTest = this.depthTest;
-    if (this.depthWrite === false)
-      data.depthWrite = this.depthWrite;
-    if (this.colorWrite === false)
-      data.colorWrite = this.colorWrite;
-    if (this.stencilWriteMask !== 255)
-      data.stencilWriteMask = this.stencilWriteMask;
-    if (this.stencilFunc !== AlwaysStencilFunc)
-      data.stencilFunc = this.stencilFunc;
-    if (this.stencilRef !== 0)
-      data.stencilRef = this.stencilRef;
-    if (this.stencilFuncMask !== 255)
-      data.stencilFuncMask = this.stencilFuncMask;
-    if (this.stencilFail !== KeepStencilOp)
-      data.stencilFail = this.stencilFail;
-    if (this.stencilZFail !== KeepStencilOp)
-      data.stencilZFail = this.stencilZFail;
-    if (this.stencilZPass !== KeepStencilOp)
-      data.stencilZPass = this.stencilZPass;
-    if (this.stencilWrite === true)
-      data.stencilWrite = this.stencilWrite;
-    if (this.rotation !== void 0 && this.rotation !== 0)
-      data.rotation = this.rotation;
-    if (this.polygonOffset === true)
-      data.polygonOffset = true;
-    if (this.polygonOffsetFactor !== 0)
-      data.polygonOffsetFactor = this.polygonOffsetFactor;
-    if (this.polygonOffsetUnits !== 0)
-      data.polygonOffsetUnits = this.polygonOffsetUnits;
-    if (this.linewidth !== void 0 && this.linewidth !== 1)
-      data.linewidth = this.linewidth;
-    if (this.dashSize !== void 0)
-      data.dashSize = this.dashSize;
-    if (this.gapSize !== void 0)
-      data.gapSize = this.gapSize;
-    if (this.scale !== void 0)
-      data.scale = this.scale;
-    if (this.dithering === true)
-      data.dithering = true;
-    if (this.alphaTest > 0)
-      data.alphaTest = this.alphaTest;
-    if (this.alphaHash === true)
-      data.alphaHash = true;
-    if (this.alphaToCoverage === true)
-      data.alphaToCoverage = true;
-    if (this.premultipliedAlpha === true)
-      data.premultipliedAlpha = true;
-    if (this.forceSinglePass === true)
-      data.forceSinglePass = true;
-    if (this.wireframe === true)
-      data.wireframe = true;
-    if (this.wireframeLinewidth > 1)
-      data.wireframeLinewidth = this.wireframeLinewidth;
-    if (this.flatShading === true)
-      data.flatShading = true;
-    if (this.visible === false)
-      data.visible = false;
-    if (this.toneMapped === false)
-      data.toneMapped = false;
-    if (this.fog === false)
-      data.fog = false;
-    if (Object.keys(this.userData).length > 0)
-      data.userData = this.userData;
+    if (this.attenuationColor !== void 0) data.attenuationColor = this.attenuationColor.getHex();
+    if (this.size !== void 0) data.size = this.size;
+    if (this.shadowSide !== null) data.shadowSide = this.shadowSide;
+    if (this.sizeAttenuation !== void 0) data.sizeAttenuation = this.sizeAttenuation;
+    if (this.blending !== NormalBlending) data.blending = this.blending;
+    if (this.side !== FrontSide) data.side = this.side;
+    if (this.vertexColors === true) data.vertexColors = true;
+    if (this.opacity < 1) data.opacity = this.opacity;
+    if (this.transparent === true) data.transparent = true;
+    if (this.blendSrc !== SrcAlphaFactor) data.blendSrc = this.blendSrc;
+    if (this.blendDst !== OneMinusSrcAlphaFactor) data.blendDst = this.blendDst;
+    if (this.blendEquation !== AddEquation) data.blendEquation = this.blendEquation;
+    if (this.blendSrcAlpha !== null) data.blendSrcAlpha = this.blendSrcAlpha;
+    if (this.blendDstAlpha !== null) data.blendDstAlpha = this.blendDstAlpha;
+    if (this.blendEquationAlpha !== null) data.blendEquationAlpha = this.blendEquationAlpha;
+    if (this.blendColor && this.blendColor.isColor) data.blendColor = this.blendColor.getHex();
+    if (this.blendAlpha !== 0) data.blendAlpha = this.blendAlpha;
+    if (this.depthFunc !== LessEqualDepth) data.depthFunc = this.depthFunc;
+    if (this.depthTest === false) data.depthTest = this.depthTest;
+    if (this.depthWrite === false) data.depthWrite = this.depthWrite;
+    if (this.colorWrite === false) data.colorWrite = this.colorWrite;
+    if (this.stencilWriteMask !== 255) data.stencilWriteMask = this.stencilWriteMask;
+    if (this.stencilFunc !== AlwaysStencilFunc) data.stencilFunc = this.stencilFunc;
+    if (this.stencilRef !== 0) data.stencilRef = this.stencilRef;
+    if (this.stencilFuncMask !== 255) data.stencilFuncMask = this.stencilFuncMask;
+    if (this.stencilFail !== KeepStencilOp) data.stencilFail = this.stencilFail;
+    if (this.stencilZFail !== KeepStencilOp) data.stencilZFail = this.stencilZFail;
+    if (this.stencilZPass !== KeepStencilOp) data.stencilZPass = this.stencilZPass;
+    if (this.stencilWrite === true) data.stencilWrite = this.stencilWrite;
+    if (this.rotation !== void 0 && this.rotation !== 0) data.rotation = this.rotation;
+    if (this.polygonOffset === true) data.polygonOffset = true;
+    if (this.polygonOffsetFactor !== 0) data.polygonOffsetFactor = this.polygonOffsetFactor;
+    if (this.polygonOffsetUnits !== 0) data.polygonOffsetUnits = this.polygonOffsetUnits;
+    if (this.linewidth !== void 0 && this.linewidth !== 1) data.linewidth = this.linewidth;
+    if (this.dashSize !== void 0) data.dashSize = this.dashSize;
+    if (this.gapSize !== void 0) data.gapSize = this.gapSize;
+    if (this.scale !== void 0) data.scale = this.scale;
+    if (this.dithering === true) data.dithering = true;
+    if (this.alphaTest > 0) data.alphaTest = this.alphaTest;
+    if (this.alphaHash === true) data.alphaHash = true;
+    if (this.alphaToCoverage === true) data.alphaToCoverage = true;
+    if (this.premultipliedAlpha === true) data.premultipliedAlpha = true;
+    if (this.forceSinglePass === true) data.forceSinglePass = true;
+    if (this.wireframe === true) data.wireframe = true;
+    if (this.wireframeLinewidth > 1) data.wireframeLinewidth = this.wireframeLinewidth;
+    if (this.flatShading === true) data.flatShading = true;
+    if (this.visible === false) data.visible = false;
+    if (this.toneMapped === false) data.toneMapped = false;
+    if (this.fog === false) data.fog = false;
+    if (Object.keys(this.userData).length > 0) data.userData = this.userData;
     function extractFromCache(cache) {
       const values = [];
       for (const key in cache) {
@@ -349,10 +272,8 @@ class Material extends EventDispatcher {
     if (isRootObject) {
       const textures = extractFromCache(meta.textures);
       const images = extractFromCache(meta.images);
-      if (textures.length > 0)
-        data.textures = textures;
-      if (images.length > 0)
-        data.images = images;
+      if (textures.length > 0) data.textures = textures;
+      if (images.length > 0) data.images = images;
     }
     return data;
   }
@@ -423,8 +344,7 @@ class Material extends EventDispatcher {
     this.dispatchEvent({ type: "dispose" });
   }
   set needsUpdate(value) {
-    if (value === true)
-      this.version++;
+    if (value === true) this.version++;
   }
 }
 
@@ -959,19 +879,16 @@ class ShaderMaterial extends Material {
         };
       }
     }
-    if (Object.keys(this.defines).length > 0)
-      data.defines = this.defines;
+    if (Object.keys(this.defines).length > 0) data.defines = this.defines;
     data.vertexShader = this.vertexShader;
     data.fragmentShader = this.fragmentShader;
     data.lights = this.lights;
     data.clipping = this.clipping;
     const extensions = {};
     for (const key in this.extensions) {
-      if (this.extensions[key] === true)
-        extensions[key] = true;
+      if (this.extensions[key] === true) extensions[key] = true;
     }
-    if (Object.keys(extensions).length > 0)
-      data.extensions = extensions;
+    if (Object.keys(extensions).length > 0) data.extensions = extensions;
     return data;
   }
 }

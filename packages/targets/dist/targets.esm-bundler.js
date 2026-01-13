@@ -1,6 +1,6 @@
 import { EventDispatcher } from '@renderlayer/core';
 import { Vector4 } from '@renderlayer/math';
-import { LinearFilter, BackSide, NoBlending, LinearMipmapLinearFilter } from '@renderlayer/shared';
+import { LinearFilter, NoBlending, BackSide, LinearMipmapLinearFilter } from '@renderlayer/shared';
 import { Texture, Source, CubeTexture } from '@renderlayer/textures';
 import { BoxGeometry } from '@renderlayer/geometries';
 import { ShaderMaterial } from '@renderlayer/materials';
@@ -84,8 +84,7 @@ class RenderTarget extends EventDispatcher {
     this.texture.source = new Source(image);
     this.depthBuffer = source.depthBuffer;
     this.stencilBuffer = source.stencilBuffer;
-    if (source.depthTexture !== null)
-      this.depthTexture = source.depthTexture.clone();
+    if (source.depthTexture !== null) this.depthTexture = source.depthTexture.clone();
     this.samples = source.samples;
     return this;
   }
@@ -167,8 +166,7 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
     material.uniforms.tEquirect.value = texture;
     const mesh = new Mesh(geometry, material);
     const currentMinFilter = texture.minFilter;
-    if (texture.minFilter === LinearMipmapLinearFilter)
-      texture.minFilter = LinearFilter;
+    if (texture.minFilter === LinearMipmapLinearFilter) texture.minFilter = LinearFilter;
     const camera = new CubeCamera(1, 10, this);
     camera.update(renderer, mesh);
     texture.minFilter = currentMinFilter;

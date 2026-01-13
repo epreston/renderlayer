@@ -12,8 +12,7 @@ class Source {
     this.version = 0;
   }
   set needsUpdate(value) {
-    if (value === true)
-      this.version++;
+    if (value === true) this.version++;
   }
   toJSON(meta) {
     const isRootObject = meta === void 0 || typeof meta === "string";
@@ -186,8 +185,7 @@ class Texture extends EventDispatcher {
       premultiplyAlpha: this.premultiplyAlpha,
       unpackAlignment: this.unpackAlignment
     };
-    if (Object.keys(this.userData).length > 0)
-      output.userData = this.userData;
+    if (Object.keys(this.userData).length > 0) output.userData = this.userData;
     if (!isRootObject) {
       meta.textures[this.uuid] = output;
     }
@@ -198,8 +196,7 @@ class Texture extends EventDispatcher {
   }
   /** @param {Vector2} uv */
   transformUv(uv) {
-    if (this.mapping !== UVMapping)
-      return uv;
+    if (this.mapping !== UVMapping) return uv;
     uv.applyMatrix3(this.matrix);
     if (uv.x < 0 || uv.x > 1) {
       switch (this.wrapS) {

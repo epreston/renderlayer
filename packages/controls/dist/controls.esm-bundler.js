@@ -1,5 +1,5 @@
 import { Raycaster, EventDispatcher } from '@renderlayer/core';
-import { Plane, Vector2, Vector3, Matrix4, clamp, Ray, Quaternion, DEG2RAD } from '@renderlayer/math';
+import { Plane, Vector2, Vector3, Matrix4, clamp, Quaternion, Ray, DEG2RAD } from '@renderlayer/math';
 
 const _plane$1 = new Plane();
 const _raycaster = new Raycaster();
@@ -39,8 +39,7 @@ class DragControls extends EventDispatcher {
       return _raycaster;
     }
     function onPointerMove(event) {
-      if (scope.enabled === false)
-        return;
+      if (scope.enabled === false) return;
       updatePointer(event);
       _raycaster.setFromCamera(_pointer, _camera);
       if (_selected) {
@@ -80,8 +79,7 @@ class DragControls extends EventDispatcher {
       }
     }
     function onPointerDown(event) {
-      if (scope.enabled === false)
-        return;
+      if (scope.enabled === false) return;
       updatePointer(event);
       _intersections.length = 0;
       _raycaster.setFromCamera(_pointer, _camera);
@@ -101,8 +99,7 @@ class DragControls extends EventDispatcher {
       }
     }
     function onPointerCancel() {
-      if (scope.enabled === false)
-        return;
+      if (scope.enabled === false) return;
       if (_selected) {
         scope.dispatchEvent({ type: "dragend", object: _selected });
         _selected = null;
@@ -270,14 +267,10 @@ class OrbitControls extends EventDispatcher {
         let min = scope.minAzimuthAngle;
         let max = scope.maxAzimuthAngle;
         if (isFinite(min) && isFinite(max)) {
-          if (min < -Math.PI)
-            min += twoPI;
-          else if (min > Math.PI)
-            min -= twoPI;
-          if (max < -Math.PI)
-            max += twoPI;
-          else if (max > Math.PI)
-            max -= twoPI;
+          if (min < -Math.PI) min += twoPI;
+          else if (min > Math.PI) min -= twoPI;
+          if (max < -Math.PI) max += twoPI;
+          else if (max > Math.PI) max -= twoPI;
           if (min <= max) {
             spherical.theta = Math.max(min, Math.min(max, spherical.theta));
           } else {
@@ -628,16 +621,12 @@ class OrbitControls extends EventDispatcher {
       dollyStart.set(0, distance);
     }
     function handleTouchStartDollyPan() {
-      if (scope.enableZoom)
-        handleTouchStartDolly();
-      if (scope.enablePan)
-        handleTouchStartPan();
+      if (scope.enableZoom) handleTouchStartDolly();
+      if (scope.enablePan) handleTouchStartPan();
     }
     function handleTouchStartDollyRotate() {
-      if (scope.enableZoom)
-        handleTouchStartDolly();
-      if (scope.enableRotate)
-        handleTouchStartRotate();
+      if (scope.enableZoom) handleTouchStartDolly();
+      if (scope.enableRotate) handleTouchStartRotate();
     }
     function handleTouchMoveRotate(event) {
       if (pointers.length === 1) {
@@ -678,20 +667,15 @@ class OrbitControls extends EventDispatcher {
       dollyStart.copy(dollyEnd);
     }
     function handleTouchMoveDollyPan(event) {
-      if (scope.enableZoom)
-        handleTouchMoveDolly(event);
-      if (scope.enablePan)
-        handleTouchMovePan(event);
+      if (scope.enableZoom) handleTouchMoveDolly(event);
+      if (scope.enablePan) handleTouchMovePan(event);
     }
     function handleTouchMoveDollyRotate(event) {
-      if (scope.enableZoom)
-        handleTouchMoveDolly(event);
-      if (scope.enableRotate)
-        handleTouchMoveRotate(event);
+      if (scope.enableZoom) handleTouchMoveDolly(event);
+      if (scope.enableRotate) handleTouchMoveRotate(event);
     }
     function onPointerDown(event) {
-      if (scope.enabled === false)
-        return;
+      if (scope.enabled === false) return;
       if (pointers.length === 0) {
         scope.domElement.setPointerCapture(event.pointerId);
         scope.domElement.addEventListener("pointermove", onPointerMove);
@@ -705,8 +689,7 @@ class OrbitControls extends EventDispatcher {
       }
     }
     function onPointerMove(event) {
-      if (scope.enabled === false)
-        return;
+      if (scope.enabled === false) return;
       if (event.pointerType === "touch") {
         onTouchMove(event);
       } else {
@@ -740,33 +723,28 @@ class OrbitControls extends EventDispatcher {
       }
       switch (mouseAction) {
         case MOUSE.DOLLY:
-          if (scope.enableZoom === false)
-            return;
+          if (scope.enableZoom === false) return;
           handleMouseDownDolly(event);
           state = STATE.DOLLY;
           break;
         case MOUSE.ROTATE:
           if (event.ctrlKey || event.metaKey || event.shiftKey) {
-            if (scope.enablePan === false)
-              return;
+            if (scope.enablePan === false) return;
             handleMouseDownPan(event);
             state = STATE.PAN;
           } else {
-            if (scope.enableRotate === false)
-              return;
+            if (scope.enableRotate === false) return;
             handleMouseDownRotate(event);
             state = STATE.ROTATE;
           }
           break;
         case MOUSE.PAN:
           if (event.ctrlKey || event.metaKey || event.shiftKey) {
-            if (scope.enableRotate === false)
-              return;
+            if (scope.enableRotate === false) return;
             handleMouseDownRotate(event);
             state = STATE.ROTATE;
           } else {
-            if (scope.enablePan === false)
-              return;
+            if (scope.enablePan === false) return;
             handleMouseDownPan(event);
             state = STATE.PAN;
           }
@@ -781,33 +759,28 @@ class OrbitControls extends EventDispatcher {
     function onMouseMove(event) {
       switch (state) {
         case STATE.ROTATE:
-          if (scope.enableRotate === false)
-            return;
+          if (scope.enableRotate === false) return;
           handleMouseMoveRotate(event);
           break;
         case STATE.DOLLY:
-          if (scope.enableZoom === false)
-            return;
+          if (scope.enableZoom === false) return;
           handleMouseMoveDolly(event);
           break;
         case STATE.PAN:
-          if (scope.enablePan === false)
-            return;
+          if (scope.enablePan === false) return;
           handleMouseMovePan(event);
           break;
       }
     }
     function onMouseWheel(event) {
-      if (scope.enabled === false || scope.enableZoom === false || state !== STATE.NONE)
-        return;
+      if (scope.enabled === false || scope.enableZoom === false || state !== STATE.NONE) return;
       event.preventDefault();
       scope.dispatchEvent(_startEvent);
       handleMouseWheel(event);
       scope.dispatchEvent(_endEvent);
     }
     function onKeyDown(event) {
-      if (scope.enabled === false || scope.enablePan === false)
-        return;
+      if (scope.enabled === false || scope.enablePan === false) return;
       handleKeyDown(event);
     }
     function onTouchStart(event) {
@@ -816,14 +789,12 @@ class OrbitControls extends EventDispatcher {
         case 1:
           switch (scope.touches.ONE) {
             case TOUCH.ROTATE:
-              if (scope.enableRotate === false)
-                return;
+              if (scope.enableRotate === false) return;
               handleTouchStartRotate();
               state = STATE.TOUCH_ROTATE;
               break;
             case TOUCH.PAN:
-              if (scope.enablePan === false)
-                return;
+              if (scope.enablePan === false) return;
               handleTouchStartPan();
               state = STATE.TOUCH_PAN;
               break;
@@ -834,14 +805,12 @@ class OrbitControls extends EventDispatcher {
         case 2:
           switch (scope.touches.TWO) {
             case TOUCH.DOLLY_PAN:
-              if (scope.enableZoom === false && scope.enablePan === false)
-                return;
+              if (scope.enableZoom === false && scope.enablePan === false) return;
               handleTouchStartDollyPan();
               state = STATE.TOUCH_DOLLY_PAN;
               break;
             case TOUCH.DOLLY_ROTATE:
-              if (scope.enableZoom === false && scope.enableRotate === false)
-                return;
+              if (scope.enableZoom === false && scope.enableRotate === false) return;
               handleTouchStartDollyRotate();
               state = STATE.TOUCH_DOLLY_ROTATE;
               break;
@@ -860,26 +829,22 @@ class OrbitControls extends EventDispatcher {
       trackPointer(event);
       switch (state) {
         case STATE.TOUCH_ROTATE:
-          if (scope.enableRotate === false)
-            return;
+          if (scope.enableRotate === false) return;
           handleTouchMoveRotate(event);
           scope.update();
           break;
         case STATE.TOUCH_PAN:
-          if (scope.enablePan === false)
-            return;
+          if (scope.enablePan === false) return;
           handleTouchMovePan(event);
           scope.update();
           break;
         case STATE.TOUCH_DOLLY_PAN:
-          if (scope.enableZoom === false && scope.enablePan === false)
-            return;
+          if (scope.enableZoom === false && scope.enablePan === false) return;
           handleTouchMoveDollyPan(event);
           scope.update();
           break;
         case STATE.TOUCH_DOLLY_ROTATE:
-          if (scope.enableZoom === false && scope.enableRotate === false)
-            return;
+          if (scope.enableZoom === false && scope.enableRotate === false) return;
           handleTouchMoveDollyRotate(event);
           scope.update();
           break;
@@ -888,8 +853,7 @@ class OrbitControls extends EventDispatcher {
       }
     }
     function onContextMenu(event) {
-      if (scope.enabled === false)
-        return;
+      if (scope.enabled === false) return;
       event.preventDefault();
     }
     function addPointer(event) {

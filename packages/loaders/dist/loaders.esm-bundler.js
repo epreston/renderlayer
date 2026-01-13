@@ -1,8 +1,8 @@
 import { InstancedBufferGeometry, BufferGeometry, BufferAttribute, InterleavedBufferAttribute, InstancedBufferAttribute, InterleavedBuffer } from '@renderlayer/buffers';
 import { Vector3, Sphere, Color, Matrix4, Matrix3, Vector4, Vector2 } from '@renderlayer/math';
-import { getTypedArray, createElementNS, SRGBColorSpace, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeUVReflectionMapping, RepeatWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearMipmapNearestFilter } from '@renderlayer/shared';
+import { getTypedArray, createElementNS, SRGBColorSpace, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, CubeUVReflectionMapping, EquirectangularRefractionMapping, EquirectangularReflectionMapping, CubeRefractionMapping, CubeReflectionMapping, UVMapping, MirroredRepeatWrapping, RepeatWrapping, LinearMipmapNearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, NearestFilter } from '@renderlayer/shared';
 import { CubeTexture, DataTexture, Source, Texture } from '@renderlayer/textures';
-import { ShadowMaterial, SpriteMaterial, RawShaderMaterial, ShaderMaterial, PointsMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshNormalMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshBasicMaterial, LineBasicMaterial, Material } from '@renderlayer/materials';
+import { Material, LineBasicMaterial, MeshBasicMaterial, MeshDistanceMaterial, MeshDepthMaterial, MeshNormalMaterial, MeshStandardMaterial, MeshPhysicalMaterial, PointsMaterial, ShaderMaterial, RawShaderMaterial, SpriteMaterial, ShadowMaterial } from '@renderlayer/materials';
 import { AnimationClip } from '@renderlayer/animation';
 import { OrthographicCamera, PerspectiveCamera } from '@renderlayer/cameras';
 import { Object3D } from '@renderlayer/core';
@@ -16,13 +16,11 @@ const Cache = {
   files: {},
   // EP: use map
   add(key, file) {
-    if (this.enabled === false)
-      return;
+    if (this.enabled === false) return;
     this.files[key] = file;
   },
   get(key) {
-    if (this.enabled === false)
-      return;
+    if (this.enabled === false) return;
     return this.files[key];
   },
   remove(key) {
@@ -96,8 +94,7 @@ class LoadingManager {
       for (let i = 0, l = handlers.length; i < l; i += 2) {
         const regex = handlers[i];
         const loader = handlers[i + 1];
-        if (regex.global)
-          regex.lastIndex = 0;
+        if (regex.global) regex.lastIndex = 0;
         if (regex.test(file)) {
           return loader;
         }
@@ -161,17 +158,14 @@ class FileLoader extends Loader {
     super(manager);
   }
   load(url, onLoad, onProgress, onError) {
-    if (url === void 0)
-      url = "";
-    if (this.path !== void 0)
-      url = this.path + url;
+    if (url === void 0) url = "";
+    if (this.path !== void 0) url = this.path + url;
     url = this.manager.resolveURL(url);
     const cached = Cache.get(url);
     if (cached !== void 0) {
       this.manager.itemStart(url);
       setTimeout(() => {
-        if (onLoad)
-          onLoad(cached);
+        if (onLoad) onLoad(cached);
         this.manager.itemEnd(url);
       }, 0);
       return cached;
@@ -227,8 +221,7 @@ class FileLoader extends Loader {
                   });
                   for (let i = 0, il = callbacks.length; i < il; i++) {
                     const callback = callbacks[i];
-                    if (callback.onProgress)
-                      callback.onProgress(event);
+                    if (callback.onProgress) callback.onProgress(event);
                   }
                   controller.enqueue(value);
                   readData();
@@ -274,8 +267,7 @@ class FileLoader extends Loader {
       delete loading[url];
       for (let i = 0, il = callbacks.length; i < il; i++) {
         const callback = callbacks[i];
-        if (callback.onLoad)
-          callback.onLoad(data);
+        if (callback.onLoad) callback.onLoad(data);
       }
     }).catch((err) => {
       const callbacks = loading[url];
@@ -286,8 +278,7 @@ class FileLoader extends Loader {
       delete loading[url];
       for (let i = 0, il = callbacks.length; i < il; i++) {
         const callback = callbacks[i];
-        if (callback.onError)
-          callback.onError(err);
+        if (callback.onError) callback.onError(err);
       }
       this.manager.itemError(url);
     }).finally(() => {
@@ -337,8 +328,7 @@ class BufferGeometryLoader extends Loader {
     const interleavedBufferMap = {};
     const arrayBufferMap = {};
     function getInterleavedBuffer(json2, uuid) {
-      if (interleavedBufferMap[uuid] !== void 0)
-        return interleavedBufferMap[uuid];
+      if (interleavedBufferMap[uuid] !== void 0) return interleavedBufferMap[uuid];
       const interleavedBuffers = json2.interleavedBuffers;
       const interleavedBuffer = interleavedBuffers[uuid];
       const buffer = getArrayBuffer(json2, interleavedBuffer.buffer);
@@ -349,8 +339,7 @@ class BufferGeometryLoader extends Loader {
       return ib;
     }
     function getArrayBuffer(json2, uuid) {
-      if (arrayBufferMap[uuid] !== void 0)
-        return arrayBufferMap[uuid];
+      if (arrayBufferMap[uuid] !== void 0) return arrayBufferMap[uuid];
       const arrayBuffers = json2.arrayBuffers;
       const arrayBuffer = arrayBuffers[uuid];
       const ab = new Uint32Array(arrayBuffer).buffer;
@@ -384,10 +373,8 @@ class BufferGeometryLoader extends Loader {
           attribute.normalized
         );
       }
-      if (attribute.name !== void 0)
-        bufferAttribute.name = attribute.name;
-      if (attribute.usage !== void 0)
-        bufferAttribute.setUsage(attribute.usage);
+      if (attribute.name !== void 0) bufferAttribute.name = attribute.name;
+      if (attribute.usage !== void 0) bufferAttribute.setUsage(attribute.usage);
       if (attribute.updateRange !== void 0) {
         bufferAttribute.updateRange.offset = attribute.updateRange.offset;
         bufferAttribute.updateRange.count = attribute.updateRange.count;
@@ -418,8 +405,7 @@ class BufferGeometryLoader extends Loader {
               attribute.normalized
             );
           }
-          if (attribute.name !== void 0)
-            bufferAttribute.name = attribute.name;
+          if (attribute.name !== void 0) bufferAttribute.name = attribute.name;
           array.push(bufferAttribute);
         }
         geometry.morphAttributes[key] = array;
@@ -444,10 +430,8 @@ class BufferGeometryLoader extends Loader {
       }
       geometry.boundingSphere = new Sphere(center, boundingSphere.radius);
     }
-    if (json.name)
-      geometry.name = json.name;
-    if (json.userData)
-      geometry.userData = json.userData;
+    if (json.name) geometry.name = json.name;
+    if (json.userData) geometry.userData = json.userData;
     return geometry;
   }
 }
@@ -457,16 +441,14 @@ class ImageLoader extends Loader {
     super(manager);
   }
   load(url, onLoad, onProgress, onError) {
-    if (this.path !== void 0)
-      url = this.path + url;
+    if (this.path !== void 0) url = this.path + url;
     url = this.manager.resolveURL(url);
     const scope = this;
     const cached = Cache.get(url);
     if (cached !== void 0) {
       scope.manager.itemStart(url);
       setTimeout(function() {
-        if (onLoad)
-          onLoad(cached);
+        if (onLoad) onLoad(cached);
         scope.manager.itemEnd(url);
       }, 0);
       return cached;
@@ -475,14 +457,12 @@ class ImageLoader extends Loader {
     function onImageLoad() {
       removeEventListeners();
       Cache.add(url, this);
-      if (onLoad)
-        onLoad(this);
+      if (onLoad) onLoad(this);
       scope.manager.itemEnd(url);
     }
     function onImageError(event) {
       removeEventListeners();
-      if (onError)
-        onError(event);
+      if (onError) onError(event);
       scope.manager.itemError(url);
       scope.manager.itemEnd(url);
     }
@@ -493,8 +473,7 @@ class ImageLoader extends Loader {
     image.addEventListener("load", onImageLoad, false);
     image.addEventListener("error", onImageError, false);
     if (url.slice(0, 5) !== "data:") {
-      if (this.crossOrigin !== void 0)
-        image.crossOrigin = this.crossOrigin;
+      if (this.crossOrigin !== void 0) image.crossOrigin = this.crossOrigin;
     }
     scope.manager.itemStart(url);
     image.src = url;
@@ -522,8 +501,7 @@ class CubeTextureLoader extends Loader {
           loaded++;
           if (loaded === 6) {
             texture.needsUpdate = true;
-            if (onLoad)
-              onLoad(texture);
+            if (onLoad) onLoad(texture);
           }
         },
         void 0,
@@ -600,8 +578,7 @@ class DataTextureLoader extends Loader {
           texture.generateMipmaps = texData.generateMipmaps;
         }
         texture.needsUpdate = true;
-        if (onLoad)
-          onLoad(texture, texData);
+        if (onLoad) onLoad(texture, texData);
       },
       onProgress,
       onError
@@ -624,18 +601,15 @@ class ImageBitmapLoader extends Loader {
     return this;
   }
   load(url, onLoad, onProgress, onError) {
-    if (url === void 0)
-      url = "";
-    if (this.path !== void 0)
-      url = this.path + url;
+    if (url === void 0) url = "";
+    if (this.path !== void 0) url = this.path + url;
     url = this.manager.resolveURL(url);
     const scope = this;
     const cached = Cache.get(url);
     if (cached !== void 0) {
       scope.manager.itemStart(url);
       setTimeout(function() {
-        if (onLoad)
-          onLoad(cached);
+        if (onLoad) onLoad(cached);
         scope.manager.itemEnd(url);
       }, 0);
       return cached;
@@ -652,12 +626,10 @@ class ImageBitmapLoader extends Loader {
       );
     }).then(function(imageBitmap) {
       Cache.add(url, imageBitmap);
-      if (onLoad)
-        onLoad(imageBitmap);
+      if (onLoad) onLoad(imageBitmap);
       scope.manager.itemEnd(url);
     }).catch(function(e) {
-      if (onError)
-        onError(e);
+      if (onError) onError(e);
       scope.manager.itemError(url);
       scope.manager.itemEnd(url);
     });
@@ -682,24 +654,18 @@ class LoaderUtils {
   }
   static extractUrlBase(url) {
     const index = url.lastIndexOf("/");
-    if (index === -1)
-      return "./";
+    if (index === -1) return "./";
     return url.slice(0, index + 1);
   }
   static resolveURL(url, path) {
-    if (typeof url !== "string" || url === "")
-      return "";
+    if (typeof url !== "string" || url === "") return "";
     if (/^https?:\/\//i.test(path) && /^\//.test(url)) {
       path = path.replace(/(^https?:\/\/[^/]+).*/i, "$1");
     }
-    if (/^(https?:)?\/\//i.test(url))
-      return url;
-    if (/^data:.*,.*$/i.test(url))
-      return url;
-    if (/^blob:.*$/i.test(url))
-      return url;
-    if (/^file:.*$/i.test(url))
-      return url;
+    if (/^(https?:)?\/\//i.test(url)) return url;
+    if (/^data:.*,.*$/i.test(url)) return url;
+    if (/^blob:.*$/i.test(url)) return url;
+    if (/^file:.*$/i.test(url)) return url;
     if (!path) {
       path = document.baseURI || window.location.href;
     }
@@ -755,148 +721,91 @@ class MaterialLoader extends Loader {
       return textures[name];
     }
     const material = MaterialLoader.createMaterialFromType(json.type);
-    if (json.uuid !== void 0)
-      material.uuid = json.uuid;
-    if (json.name !== void 0)
-      material.name = json.name;
-    if (json.color !== void 0 && material.color !== void 0)
-      material.color.setHex(json.color);
-    if (json.roughness !== void 0)
-      material.roughness = json.roughness;
-    if (json.metalness !== void 0)
-      material.metalness = json.metalness;
-    if (json.sheen !== void 0)
-      material.sheen = json.sheen;
-    if (json.sheenColor !== void 0)
-      material.sheenColor = new Color().setHex(json.sheenColor);
-    if (json.sheenRoughness !== void 0)
-      material.sheenRoughness = json.sheenRoughness;
+    if (json.uuid !== void 0) material.uuid = json.uuid;
+    if (json.name !== void 0) material.name = json.name;
+    if (json.color !== void 0 && material.color !== void 0) material.color.setHex(json.color);
+    if (json.roughness !== void 0) material.roughness = json.roughness;
+    if (json.metalness !== void 0) material.metalness = json.metalness;
+    if (json.sheen !== void 0) material.sheen = json.sheen;
+    if (json.sheenColor !== void 0) material.sheenColor = new Color().setHex(json.sheenColor);
+    if (json.sheenRoughness !== void 0) material.sheenRoughness = json.sheenRoughness;
     if (json.emissive !== void 0 && material.emissive !== void 0)
       material.emissive.setHex(json.emissive);
     if (json.specular !== void 0 && material.specular !== void 0)
       material.specular.setHex(json.specular);
-    if (json.specularIntensity !== void 0)
-      material.specularIntensity = json.specularIntensity;
+    if (json.specularIntensity !== void 0) material.specularIntensity = json.specularIntensity;
     if (json.specularColor !== void 0 && material.specularColor !== void 0)
       material.specularColor.setHex(json.specularColor);
-    if (json.shininess !== void 0)
-      material.shininess = json.shininess;
-    if (json.clearcoat !== void 0)
-      material.clearcoat = json.clearcoat;
+    if (json.shininess !== void 0) material.shininess = json.shininess;
+    if (json.clearcoat !== void 0) material.clearcoat = json.clearcoat;
     if (json.clearcoatRoughness !== void 0)
       material.clearcoatRoughness = json.clearcoatRoughness;
-    if (json.iridescence !== void 0)
-      material.iridescence = json.iridescence;
-    if (json.iridescenceIOR !== void 0)
-      material.iridescenceIOR = json.iridescenceIOR;
+    if (json.iridescence !== void 0) material.iridescence = json.iridescence;
+    if (json.iridescenceIOR !== void 0) material.iridescenceIOR = json.iridescenceIOR;
     if (json.iridescenceThicknessRange !== void 0)
       material.iridescenceThicknessRange = json.iridescenceThicknessRange;
-    if (json.transmission !== void 0)
-      material.transmission = json.transmission;
-    if (json.thickness !== void 0)
-      material.thickness = json.thickness;
+    if (json.transmission !== void 0) material.transmission = json.transmission;
+    if (json.thickness !== void 0) material.thickness = json.thickness;
     if (json.attenuationDistance !== void 0)
       material.attenuationDistance = json.attenuationDistance;
     if (json.attenuationColor !== void 0 && material.attenuationColor !== void 0)
       material.attenuationColor.setHex(json.attenuationColor);
-    if (json.anisotropy !== void 0)
-      material.anisotropy = json.anisotropy;
+    if (json.anisotropy !== void 0) material.anisotropy = json.anisotropy;
     if (json.anisotropyRotation !== void 0)
       material.anisotropyRotation = json.anisotropyRotation;
-    if (json.fog !== void 0)
-      material.fog = json.fog;
-    if (json.flatShading !== void 0)
-      material.flatShading = json.flatShading;
-    if (json.blending !== void 0)
-      material.blending = json.blending;
-    if (json.combine !== void 0)
-      material.combine = json.combine;
-    if (json.side !== void 0)
-      material.side = json.side;
-    if (json.shadowSide !== void 0)
-      material.shadowSide = json.shadowSide;
-    if (json.opacity !== void 0)
-      material.opacity = json.opacity;
-    if (json.transparent !== void 0)
-      material.transparent = json.transparent;
-    if (json.alphaTest !== void 0)
-      material.alphaTest = json.alphaTest;
-    if (json.alphaHash !== void 0)
-      material.alphaHash = json.alphaHash;
-    if (json.depthFunc !== void 0)
-      material.depthFunc = json.depthFunc;
-    if (json.depthTest !== void 0)
-      material.depthTest = json.depthTest;
-    if (json.depthWrite !== void 0)
-      material.depthWrite = json.depthWrite;
-    if (json.colorWrite !== void 0)
-      material.colorWrite = json.colorWrite;
-    if (json.blendSrc !== void 0)
-      material.blendSrc = json.blendSrc;
-    if (json.blendDst !== void 0)
-      material.blendDst = json.blendDst;
-    if (json.blendEquation !== void 0)
-      material.blendEquation = json.blendEquation;
-    if (json.blendSrcAlpha !== void 0)
-      material.blendSrcAlpha = json.blendSrcAlpha;
-    if (json.blendDstAlpha !== void 0)
-      material.blendDstAlpha = json.blendDstAlpha;
+    if (json.fog !== void 0) material.fog = json.fog;
+    if (json.flatShading !== void 0) material.flatShading = json.flatShading;
+    if (json.blending !== void 0) material.blending = json.blending;
+    if (json.combine !== void 0) material.combine = json.combine;
+    if (json.side !== void 0) material.side = json.side;
+    if (json.shadowSide !== void 0) material.shadowSide = json.shadowSide;
+    if (json.opacity !== void 0) material.opacity = json.opacity;
+    if (json.transparent !== void 0) material.transparent = json.transparent;
+    if (json.alphaTest !== void 0) material.alphaTest = json.alphaTest;
+    if (json.alphaHash !== void 0) material.alphaHash = json.alphaHash;
+    if (json.depthFunc !== void 0) material.depthFunc = json.depthFunc;
+    if (json.depthTest !== void 0) material.depthTest = json.depthTest;
+    if (json.depthWrite !== void 0) material.depthWrite = json.depthWrite;
+    if (json.colorWrite !== void 0) material.colorWrite = json.colorWrite;
+    if (json.blendSrc !== void 0) material.blendSrc = json.blendSrc;
+    if (json.blendDst !== void 0) material.blendDst = json.blendDst;
+    if (json.blendEquation !== void 0) material.blendEquation = json.blendEquation;
+    if (json.blendSrcAlpha !== void 0) material.blendSrcAlpha = json.blendSrcAlpha;
+    if (json.blendDstAlpha !== void 0) material.blendDstAlpha = json.blendDstAlpha;
     if (json.blendEquationAlpha !== void 0)
       material.blendEquationAlpha = json.blendEquationAlpha;
     if (json.blendColor !== void 0 && material.blendColor !== void 0)
       material.blendColor.setHex(json.blendColor);
-    if (json.blendAlpha !== void 0)
-      material.blendAlpha = json.blendAlpha;
-    if (json.stencilWriteMask !== void 0)
-      material.stencilWriteMask = json.stencilWriteMask;
-    if (json.stencilFunc !== void 0)
-      material.stencilFunc = json.stencilFunc;
-    if (json.stencilRef !== void 0)
-      material.stencilRef = json.stencilRef;
-    if (json.stencilFuncMask !== void 0)
-      material.stencilFuncMask = json.stencilFuncMask;
-    if (json.stencilFail !== void 0)
-      material.stencilFail = json.stencilFail;
-    if (json.stencilZFail !== void 0)
-      material.stencilZFail = json.stencilZFail;
-    if (json.stencilZPass !== void 0)
-      material.stencilZPass = json.stencilZPass;
-    if (json.stencilWrite !== void 0)
-      material.stencilWrite = json.stencilWrite;
-    if (json.wireframe !== void 0)
-      material.wireframe = json.wireframe;
+    if (json.blendAlpha !== void 0) material.blendAlpha = json.blendAlpha;
+    if (json.stencilWriteMask !== void 0) material.stencilWriteMask = json.stencilWriteMask;
+    if (json.stencilFunc !== void 0) material.stencilFunc = json.stencilFunc;
+    if (json.stencilRef !== void 0) material.stencilRef = json.stencilRef;
+    if (json.stencilFuncMask !== void 0) material.stencilFuncMask = json.stencilFuncMask;
+    if (json.stencilFail !== void 0) material.stencilFail = json.stencilFail;
+    if (json.stencilZFail !== void 0) material.stencilZFail = json.stencilZFail;
+    if (json.stencilZPass !== void 0) material.stencilZPass = json.stencilZPass;
+    if (json.stencilWrite !== void 0) material.stencilWrite = json.stencilWrite;
+    if (json.wireframe !== void 0) material.wireframe = json.wireframe;
     if (json.wireframeLinewidth !== void 0)
       material.wireframeLinewidth = json.wireframeLinewidth;
-    if (json.rotation !== void 0)
-      material.rotation = json.rotation;
-    if (json.linewidth !== void 0)
-      material.linewidth = json.linewidth;
-    if (json.dashSize !== void 0)
-      material.dashSize = json.dashSize;
-    if (json.gapSize !== void 0)
-      material.gapSize = json.gapSize;
-    if (json.scale !== void 0)
-      material.scale = json.scale;
-    if (json.polygonOffset !== void 0)
-      material.polygonOffset = json.polygonOffset;
+    if (json.rotation !== void 0) material.rotation = json.rotation;
+    if (json.linewidth !== void 0) material.linewidth = json.linewidth;
+    if (json.dashSize !== void 0) material.dashSize = json.dashSize;
+    if (json.gapSize !== void 0) material.gapSize = json.gapSize;
+    if (json.scale !== void 0) material.scale = json.scale;
+    if (json.polygonOffset !== void 0) material.polygonOffset = json.polygonOffset;
     if (json.polygonOffsetFactor !== void 0)
       material.polygonOffsetFactor = json.polygonOffsetFactor;
     if (json.polygonOffsetUnits !== void 0)
       material.polygonOffsetUnits = json.polygonOffsetUnits;
-    if (json.dithering !== void 0)
-      material.dithering = json.dithering;
-    if (json.alphaToCoverage !== void 0)
-      material.alphaToCoverage = json.alphaToCoverage;
+    if (json.dithering !== void 0) material.dithering = json.dithering;
+    if (json.alphaToCoverage !== void 0) material.alphaToCoverage = json.alphaToCoverage;
     if (json.premultipliedAlpha !== void 0)
       material.premultipliedAlpha = json.premultipliedAlpha;
-    if (json.forceSinglePass !== void 0)
-      material.forceSinglePass = json.forceSinglePass;
-    if (json.visible !== void 0)
-      material.visible = json.visible;
-    if (json.toneMapped !== void 0)
-      material.toneMapped = json.toneMapped;
-    if (json.userData !== void 0)
-      material.userData = json.userData;
+    if (json.forceSinglePass !== void 0) material.forceSinglePass = json.forceSinglePass;
+    if (json.visible !== void 0) material.visible = json.visible;
+    if (json.toneMapped !== void 0) material.toneMapped = json.toneMapped;
+    if (json.userData !== void 0) material.userData = json.userData;
     if (json.vertexColors !== void 0) {
       if (typeof json.vertexColors === "number") {
         material.vertexColors = json.vertexColors > 0 ? true : false;
@@ -935,41 +844,26 @@ class MaterialLoader extends Loader {
         }
       }
     }
-    if (json.defines !== void 0)
-      material.defines = json.defines;
-    if (json.vertexShader !== void 0)
-      material.vertexShader = json.vertexShader;
-    if (json.fragmentShader !== void 0)
-      material.fragmentShader = json.fragmentShader;
-    if (json.glslVersion !== void 0)
-      material.glslVersion = json.glslVersion;
+    if (json.defines !== void 0) material.defines = json.defines;
+    if (json.vertexShader !== void 0) material.vertexShader = json.vertexShader;
+    if (json.fragmentShader !== void 0) material.fragmentShader = json.fragmentShader;
+    if (json.glslVersion !== void 0) material.glslVersion = json.glslVersion;
     if (json.extensions !== void 0) {
       for (const key in json.extensions) {
         material.extensions[key] = json.extensions[key];
       }
     }
-    if (json.lights !== void 0)
-      material.lights = json.lights;
-    if (json.clipping !== void 0)
-      material.clipping = json.clipping;
-    if (json.size !== void 0)
-      material.size = json.size;
-    if (json.sizeAttenuation !== void 0)
-      material.sizeAttenuation = json.sizeAttenuation;
-    if (json.map !== void 0)
-      material.map = getTexture(json.map);
-    if (json.matcap !== void 0)
-      material.matcap = getTexture(json.matcap);
-    if (json.alphaMap !== void 0)
-      material.alphaMap = getTexture(json.alphaMap);
-    if (json.bumpMap !== void 0)
-      material.bumpMap = getTexture(json.bumpMap);
-    if (json.bumpScale !== void 0)
-      material.bumpScale = json.bumpScale;
-    if (json.normalMap !== void 0)
-      material.normalMap = getTexture(json.normalMap);
-    if (json.normalMapType !== void 0)
-      material.normalMapType = json.normalMapType;
+    if (json.lights !== void 0) material.lights = json.lights;
+    if (json.clipping !== void 0) material.clipping = json.clipping;
+    if (json.size !== void 0) material.size = json.size;
+    if (json.sizeAttenuation !== void 0) material.sizeAttenuation = json.sizeAttenuation;
+    if (json.map !== void 0) material.map = getTexture(json.map);
+    if (json.matcap !== void 0) material.matcap = getTexture(json.matcap);
+    if (json.alphaMap !== void 0) material.alphaMap = getTexture(json.alphaMap);
+    if (json.bumpMap !== void 0) material.bumpMap = getTexture(json.bumpMap);
+    if (json.bumpScale !== void 0) material.bumpScale = json.bumpScale;
+    if (json.normalMap !== void 0) material.normalMap = getTexture(json.normalMap);
+    if (json.normalMapType !== void 0) material.normalMapType = json.normalMapType;
     if (json.normalScale !== void 0) {
       let normalScale = json.normalScale;
       if (Array.isArray(normalScale) === false) {
@@ -979,44 +873,27 @@ class MaterialLoader extends Loader {
     }
     if (json.displacementMap !== void 0)
       material.displacementMap = getTexture(json.displacementMap);
-    if (json.displacementScale !== void 0)
-      material.displacementScale = json.displacementScale;
-    if (json.displacementBias !== void 0)
-      material.displacementBias = json.displacementBias;
-    if (json.roughnessMap !== void 0)
-      material.roughnessMap = getTexture(json.roughnessMap);
-    if (json.metalnessMap !== void 0)
-      material.metalnessMap = getTexture(json.metalnessMap);
-    if (json.emissiveMap !== void 0)
-      material.emissiveMap = getTexture(json.emissiveMap);
-    if (json.emissiveIntensity !== void 0)
-      material.emissiveIntensity = json.emissiveIntensity;
-    if (json.specularMap !== void 0)
-      material.specularMap = getTexture(json.specularMap);
+    if (json.displacementScale !== void 0) material.displacementScale = json.displacementScale;
+    if (json.displacementBias !== void 0) material.displacementBias = json.displacementBias;
+    if (json.roughnessMap !== void 0) material.roughnessMap = getTexture(json.roughnessMap);
+    if (json.metalnessMap !== void 0) material.metalnessMap = getTexture(json.metalnessMap);
+    if (json.emissiveMap !== void 0) material.emissiveMap = getTexture(json.emissiveMap);
+    if (json.emissiveIntensity !== void 0) material.emissiveIntensity = json.emissiveIntensity;
+    if (json.specularMap !== void 0) material.specularMap = getTexture(json.specularMap);
     if (json.specularIntensityMap !== void 0)
       material.specularIntensityMap = getTexture(json.specularIntensityMap);
     if (json.specularColorMap !== void 0)
       material.specularColorMap = getTexture(json.specularColorMap);
-    if (json.envMap !== void 0)
-      material.envMap = getTexture(json.envMap);
-    if (json.envMapIntensity !== void 0)
-      material.envMapIntensity = json.envMapIntensity;
-    if (json.reflectivity !== void 0)
-      material.reflectivity = json.reflectivity;
-    if (json.refractionRatio !== void 0)
-      material.refractionRatio = json.refractionRatio;
-    if (json.lightMap !== void 0)
-      material.lightMap = getTexture(json.lightMap);
-    if (json.lightMapIntensity !== void 0)
-      material.lightMapIntensity = json.lightMapIntensity;
-    if (json.aoMap !== void 0)
-      material.aoMap = getTexture(json.aoMap);
-    if (json.aoMapIntensity !== void 0)
-      material.aoMapIntensity = json.aoMapIntensity;
-    if (json.gradientMap !== void 0)
-      material.gradientMap = getTexture(json.gradientMap);
-    if (json.clearcoatMap !== void 0)
-      material.clearcoatMap = getTexture(json.clearcoatMap);
+    if (json.envMap !== void 0) material.envMap = getTexture(json.envMap);
+    if (json.envMapIntensity !== void 0) material.envMapIntensity = json.envMapIntensity;
+    if (json.reflectivity !== void 0) material.reflectivity = json.reflectivity;
+    if (json.refractionRatio !== void 0) material.refractionRatio = json.refractionRatio;
+    if (json.lightMap !== void 0) material.lightMap = getTexture(json.lightMap);
+    if (json.lightMapIntensity !== void 0) material.lightMapIntensity = json.lightMapIntensity;
+    if (json.aoMap !== void 0) material.aoMap = getTexture(json.aoMap);
+    if (json.aoMapIntensity !== void 0) material.aoMapIntensity = json.aoMapIntensity;
+    if (json.gradientMap !== void 0) material.gradientMap = getTexture(json.gradientMap);
+    if (json.clearcoatMap !== void 0) material.clearcoatMap = getTexture(json.clearcoatMap);
     if (json.clearcoatRoughnessMap !== void 0)
       material.clearcoatRoughnessMap = getTexture(json.clearcoatRoughnessMap);
     if (json.clearcoatNormalMap !== void 0)
@@ -1029,12 +906,9 @@ class MaterialLoader extends Loader {
       material.iridescenceThicknessMap = getTexture(json.iridescenceThicknessMap);
     if (json.transmissionMap !== void 0)
       material.transmissionMap = getTexture(json.transmissionMap);
-    if (json.thicknessMap !== void 0)
-      material.thicknessMap = getTexture(json.thicknessMap);
-    if (json.anisotropyMap !== void 0)
-      material.anisotropyMap = getTexture(json.anisotropyMap);
-    if (json.sheenColorMap !== void 0)
-      material.sheenColorMap = getTexture(json.sheenColorMap);
+    if (json.thicknessMap !== void 0) material.thicknessMap = getTexture(json.thicknessMap);
+    if (json.anisotropyMap !== void 0) material.anisotropyMap = getTexture(json.anisotropyMap);
+    if (json.sheenColorMap !== void 0) material.sheenColorMap = getTexture(json.sheenColorMap);
     if (json.sheenRoughnessMap !== void 0)
       material.sheenRoughnessMap = getTexture(json.sheenRoughnessMap);
     return material;
@@ -1087,15 +961,13 @@ class ObjectLoader extends Loader {
         try {
           json = JSON.parse(text);
         } catch (error) {
-          if (onError !== void 0)
-            onError(error);
+          if (onError !== void 0) onError(error);
           console.error(`ObjectLoader: Can't parse ${url}.`, error.message);
           return;
         }
         const metadata = json.metadata;
         if (metadata === void 0 || metadata.type === void 0 || metadata.type.toLowerCase() === "geometry") {
-          if (onError !== void 0)
-            onError(new Error(`ObjectLoader: Can't load ${url}`));
+          if (onError !== void 0) onError(new Error(`ObjectLoader: Can't load ${url}`));
           console.error(`ObjectLoader: Can't load ${url}`);
           return;
         }
@@ -1126,8 +998,7 @@ class ObjectLoader extends Loader {
     const shapes = {};
     const geometries = this.parseGeometries(json.geometries, shapes);
     const images = this.parseImages(json.images, function() {
-      if (onLoad !== void 0)
-        onLoad(object);
+      if (onLoad !== void 0) onLoad(object);
     });
     const textures = this.parseTextures(json.textures, images);
     const materials = this.parseMaterials(json.materials, textures);
@@ -1142,8 +1013,7 @@ class ObjectLoader extends Loader {
           break;
         }
       }
-      if (hasImages === false)
-        onLoad(object);
+      if (hasImages === false) onLoad(object);
     }
     return object;
   }
@@ -1173,8 +1043,7 @@ class ObjectLoader extends Loader {
     const skeletons = {};
     const bones = {};
     object.traverse(function(child) {
-      if (child.isBone)
-        bones[child.uuid] = child;
+      if (child.isBone) bones[child.uuid] = child;
     });
     if (json !== void 0) {
       for (let i = 0, l = json.length; i < l; i++) {
@@ -1204,10 +1073,8 @@ class ObjectLoader extends Loader {
             }
         }
         geometry.uuid = data.uuid;
-        if (data.name !== void 0)
-          geometry.name = data.name;
-        if (data.userData !== void 0)
-          geometry.userData = data.userData;
+        if (data.name !== void 0) geometry.name = data.name;
+        if (data.userData !== void 0) geometry.userData = data.userData;
         geometries[data.uuid] = geometry;
       }
     }
@@ -1366,8 +1233,7 @@ class ObjectLoader extends Loader {
   }
   parseTextures(json, images) {
     function parseConstant(value, type) {
-      if (typeof value === "number")
-        return value;
+      if (typeof value === "number") return value;
       console.warn("ObjectLoader.parseTexture: Constant should be in numeric form.", value);
       return type[value];
     }
@@ -1386,65 +1252,45 @@ class ObjectLoader extends Loader {
         let texture;
         if (Array.isArray(image)) {
           texture = new CubeTexture();
-          if (image.length === 6)
-            texture.needsUpdate = true;
+          if (image.length === 6) texture.needsUpdate = true;
         } else {
           if (image && image.data) {
             texture = new DataTexture();
           } else {
             texture = new Texture();
           }
-          if (image)
-            texture.needsUpdate = true;
+          if (image) texture.needsUpdate = true;
         }
         texture.source = source;
         texture.uuid = data.uuid;
-        if (data.name !== void 0)
-          texture.name = data.name;
+        if (data.name !== void 0) texture.name = data.name;
         if (data.mapping !== void 0)
           texture.mapping = parseConstant(data.mapping, TEXTURE_MAPPING);
-        if (data.channel !== void 0)
-          texture.channel = data.channel;
-        if (data.offset !== void 0)
-          texture.offset.fromArray(data.offset);
-        if (data.repeat !== void 0)
-          texture.repeat.fromArray(data.repeat);
-        if (data.center !== void 0)
-          texture.center.fromArray(data.center);
-        if (data.rotation !== void 0)
-          texture.rotation = data.rotation;
+        if (data.channel !== void 0) texture.channel = data.channel;
+        if (data.offset !== void 0) texture.offset.fromArray(data.offset);
+        if (data.repeat !== void 0) texture.repeat.fromArray(data.repeat);
+        if (data.center !== void 0) texture.center.fromArray(data.center);
+        if (data.rotation !== void 0) texture.rotation = data.rotation;
         if (data.wrap !== void 0) {
           texture.wrapS = parseConstant(data.wrap[0], TEXTURE_WRAPPING);
           texture.wrapT = parseConstant(data.wrap[1], TEXTURE_WRAPPING);
         }
-        if (data.format !== void 0)
-          texture.format = data.format;
-        if (data.internalFormat !== void 0)
-          texture.internalFormat = data.internalFormat;
-        if (data.type !== void 0)
-          texture.type = data.type;
-        if (data.colorSpace !== void 0)
-          texture.colorSpace = data.colorSpace;
-        if (data.encoding !== void 0)
-          texture.encoding = data.encoding;
+        if (data.format !== void 0) texture.format = data.format;
+        if (data.internalFormat !== void 0) texture.internalFormat = data.internalFormat;
+        if (data.type !== void 0) texture.type = data.type;
+        if (data.colorSpace !== void 0) texture.colorSpace = data.colorSpace;
+        if (data.encoding !== void 0) texture.encoding = data.encoding;
         if (data.minFilter !== void 0)
           texture.minFilter = parseConstant(data.minFilter, TEXTURE_FILTER);
         if (data.magFilter !== void 0)
           texture.magFilter = parseConstant(data.magFilter, TEXTURE_FILTER);
-        if (data.anisotropy !== void 0)
-          texture.anisotropy = data.anisotropy;
-        if (data.flipY !== void 0)
-          texture.flipY = data.flipY;
-        if (data.generateMipmaps !== void 0)
-          texture.generateMipmaps = data.generateMipmaps;
-        if (data.premultiplyAlpha !== void 0)
-          texture.premultiplyAlpha = data.premultiplyAlpha;
-        if (data.unpackAlignment !== void 0)
-          texture.unpackAlignment = data.unpackAlignment;
-        if (data.compareFunction !== void 0)
-          texture.compareFunction = data.compareFunction;
-        if (data.userData !== void 0)
-          texture.userData = data.userData;
+        if (data.anisotropy !== void 0) texture.anisotropy = data.anisotropy;
+        if (data.flipY !== void 0) texture.flipY = data.flipY;
+        if (data.generateMipmaps !== void 0) texture.generateMipmaps = data.generateMipmaps;
+        if (data.premultiplyAlpha !== void 0) texture.premultiplyAlpha = data.premultiplyAlpha;
+        if (data.unpackAlignment !== void 0) texture.unpackAlignment = data.unpackAlignment;
+        if (data.compareFunction !== void 0) texture.compareFunction = data.compareFunction;
+        if (data.userData !== void 0) texture.userData = data.userData;
         textures[data.uuid] = texture;
       }
     }
@@ -1459,8 +1305,7 @@ class ObjectLoader extends Loader {
       return geometries[name];
     }
     function getMaterial(name) {
-      if (name === void 0)
-        return void 0;
+      if (name === void 0) return void 0;
       if (Array.isArray(name)) {
         const array = [];
         for (let i = 0, l = name.length; i < l; i++) {
@@ -1512,16 +1357,11 @@ class ObjectLoader extends Loader {
         break;
       case "PerspectiveCamera":
         object = new PerspectiveCamera(data.fov, data.aspect, data.near, data.far);
-        if (data.focus !== void 0)
-          object.focus = data.focus;
-        if (data.zoom !== void 0)
-          object.zoom = data.zoom;
-        if (data.filmGauge !== void 0)
-          object.filmGauge = data.filmGauge;
-        if (data.filmOffset !== void 0)
-          object.filmOffset = data.filmOffset;
-        if (data.view !== void 0)
-          object.view = Object.assign({}, data.view);
+        if (data.focus !== void 0) object.focus = data.focus;
+        if (data.zoom !== void 0) object.zoom = data.zoom;
+        if (data.filmGauge !== void 0) object.filmGauge = data.filmGauge;
+        if (data.filmOffset !== void 0) object.filmOffset = data.filmOffset;
+        if (data.view !== void 0) object.view = Object.assign({}, data.view);
         break;
       case "OrthographicCamera":
         object = new OrthographicCamera(
@@ -1532,10 +1372,8 @@ class ObjectLoader extends Loader {
           data.near,
           data.far
         );
-        if (data.zoom !== void 0)
-          object.zoom = data.zoom;
-        if (data.view !== void 0)
-          object.view = Object.assign({}, data.view);
+        if (data.zoom !== void 0) object.zoom = data.zoom;
+        if (data.view !== void 0) object.view = Object.assign({}, data.view);
         break;
       case "AmbientLight":
         object = new AmbientLight(data.color, data.intensity);
@@ -1546,6 +1384,9 @@ class ObjectLoader extends Loader {
       case "PointLight":
         object = new PointLight(data.color, data.intensity, data.distance, data.decay);
         break;
+      // case 'RectAreaLight':
+      //   object = new RectAreaLight(data.color, data.intensity, data.width, data.height);
+      //   break;
       case "SpotLight":
         object = new SpotLight(
           data.color,
@@ -1556,16 +1397,19 @@ class ObjectLoader extends Loader {
           data.decay
         );
         break;
+      // case 'HemisphereLight':
+      //   object = new HemisphereLight(data.color, data.groundColor, data.intensity);
+      //   break;
+      // case 'LightProbe':
+      //   object = new LightProbe().fromJSON(data);
+      //   break;
       case "SkinnedMesh":
         geometry = getGeometry(data.geometry);
         material = getMaterial(data.material);
         object = new SkinnedMesh(geometry, material);
-        if (data.bindMode !== void 0)
-          object.bindMode = data.bindMode;
-        if (data.bindMatrix !== void 0)
-          object.bindMatrix.fromArray(data.bindMatrix);
-        if (data.skeleton !== void 0)
-          object.skeleton = data.skeleton;
+        if (data.bindMode !== void 0) object.bindMode = data.bindMode;
+        if (data.bindMatrix !== void 0) object.bindMatrix.fromArray(data.bindMatrix);
+        if (data.skeleton !== void 0) object.skeleton = data.skeleton;
         break;
       case "Mesh":
         geometry = getGeometry(data.geometry);
@@ -1619,52 +1463,34 @@ class ObjectLoader extends Loader {
         object = new Object3D();
     }
     object.uuid = data.uuid;
-    if (data.name !== void 0)
-      object.name = data.name;
+    if (data.name !== void 0) object.name = data.name;
     if (data.matrix !== void 0) {
       object.matrix.fromArray(data.matrix);
-      if (data.matrixAutoUpdate !== void 0)
-        object.matrixAutoUpdate = data.matrixAutoUpdate;
+      if (data.matrixAutoUpdate !== void 0) object.matrixAutoUpdate = data.matrixAutoUpdate;
       if (object.matrixAutoUpdate)
         object.matrix.decompose(object.position, object.quaternion, object.scale);
     } else {
-      if (data.position !== void 0)
-        object.position.fromArray(data.position);
-      if (data.rotation !== void 0)
-        object.rotation.fromArray(data.rotation);
-      if (data.quaternion !== void 0)
-        object.quaternion.fromArray(data.quaternion);
-      if (data.scale !== void 0)
-        object.scale.fromArray(data.scale);
+      if (data.position !== void 0) object.position.fromArray(data.position);
+      if (data.rotation !== void 0) object.rotation.fromArray(data.rotation);
+      if (data.quaternion !== void 0) object.quaternion.fromArray(data.quaternion);
+      if (data.scale !== void 0) object.scale.fromArray(data.scale);
     }
-    if (data.up !== void 0)
-      object.up.fromArray(data.up);
-    if (data.castShadow !== void 0)
-      object.castShadow = data.castShadow;
-    if (data.receiveShadow !== void 0)
-      object.receiveShadow = data.receiveShadow;
+    if (data.up !== void 0) object.up.fromArray(data.up);
+    if (data.castShadow !== void 0) object.castShadow = data.castShadow;
+    if (data.receiveShadow !== void 0) object.receiveShadow = data.receiveShadow;
     if (data.shadow) {
-      if (data.shadow.bias !== void 0)
-        object.shadow.bias = data.shadow.bias;
-      if (data.shadow.normalBias !== void 0)
-        object.shadow.normalBias = data.shadow.normalBias;
-      if (data.shadow.radius !== void 0)
-        object.shadow.radius = data.shadow.radius;
-      if (data.shadow.mapSize !== void 0)
-        object.shadow.mapSize.fromArray(data.shadow.mapSize);
+      if (data.shadow.bias !== void 0) object.shadow.bias = data.shadow.bias;
+      if (data.shadow.normalBias !== void 0) object.shadow.normalBias = data.shadow.normalBias;
+      if (data.shadow.radius !== void 0) object.shadow.radius = data.shadow.radius;
+      if (data.shadow.mapSize !== void 0) object.shadow.mapSize.fromArray(data.shadow.mapSize);
       if (data.shadow.camera !== void 0)
         object.shadow.camera = this.parseObject(data.shadow.camera);
     }
-    if (data.visible !== void 0)
-      object.visible = data.visible;
-    if (data.frustumCulled !== void 0)
-      object.frustumCulled = data.frustumCulled;
-    if (data.renderOrder !== void 0)
-      object.renderOrder = data.renderOrder;
-    if (data.userData !== void 0)
-      object.userData = data.userData;
-    if (data.layers !== void 0)
-      object.layers.mask = data.layers;
+    if (data.visible !== void 0) object.visible = data.visible;
+    if (data.frustumCulled !== void 0) object.frustumCulled = data.frustumCulled;
+    if (data.renderOrder !== void 0) object.renderOrder = data.renderOrder;
+    if (data.userData !== void 0) object.userData = data.userData;
+    if (data.layers !== void 0) object.layers.mask = data.layers;
     if (data.children !== void 0) {
       const children = data.children;
       for (let i = 0; i < children.length; i++) {
@@ -1678,8 +1504,7 @@ class ObjectLoader extends Loader {
       }
     }
     if (data.type === "LOD") {
-      if (data.autoUpdate !== void 0)
-        object.autoUpdate = data.autoUpdate;
+      if (data.autoUpdate !== void 0) object.autoUpdate = data.autoUpdate;
       const levels = data.levels;
       for (const level of levels) {
         const child = object.getObjectByProperty("uuid", level.object);
@@ -1691,8 +1516,7 @@ class ObjectLoader extends Loader {
     return object;
   }
   bindSkeletons(object, skeletons) {
-    if (Object.keys(skeletons).length === 0)
-      return;
+    if (Object.keys(skeletons).length === 0) return;
     object.traverse(function(child) {
       if (child.isSkinnedMesh === true && child.skeleton !== void 0) {
         const skeleton = skeletons[child.skeleton];

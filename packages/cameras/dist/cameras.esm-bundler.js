@@ -174,8 +174,7 @@ class PerspectiveCamera extends Camera {
       height *= view.height / fullHeight;
     }
     const skew = this.filmOffset;
-    if (skew !== 0)
-      left += near * skew / this.getFilmWidth();
+    if (skew !== 0) left += near * skew / this.getFilmWidth();
     this.projectionMatrix.makePerspective(
       left,
       left + width,
@@ -195,8 +194,7 @@ class PerspectiveCamera extends Camera {
     data.object.far = this.far;
     data.object.focus = this.focus;
     data.object.aspect = this.aspect;
-    if (this.view !== null)
-      data.object.view = Object.assign({}, this.view);
+    if (this.view !== null) data.object.view = Object.assign({}, this.view);
     data.object.filmGauge = this.filmGauge;
     data.object.filmOffset = this.filmOffset;
     return data;
@@ -235,8 +233,7 @@ class CubeCamera extends Object3D {
     const coordinateSystem = this.coordinateSystem;
     const cameras = this.children.concat();
     const [cameraPX, cameraNX, cameraPY, cameraNY, cameraPZ, cameraNZ] = cameras;
-    for (const camera of cameras)
-      this.remove(camera);
+    for (const camera of cameras) this.remove(camera);
     if (coordinateSystem === WebGLCoordinateSystem) {
       cameraPX.up.set(0, 1, 0);
       cameraPX.lookAt(1, 0, 0);
@@ -274,8 +271,7 @@ class CubeCamera extends Object3D {
     }
   }
   update(renderer, scene) {
-    if (this.parent === null)
-      this.updateMatrixWorld();
+    if (this.parent === null) this.updateMatrixWorld();
     const { renderTarget, activeMipmapLevel } = this;
     if (this.coordinateSystem !== renderer.coordinateSystem) {
       this.coordinateSystem = renderer.coordinateSystem;
@@ -396,8 +392,7 @@ class OrthographicCamera extends Camera {
     data.object.bottom = this.bottom;
     data.object.near = this.near;
     data.object.far = this.far;
-    if (this.view !== null)
-      data.object.view = Object.assign({}, this.view);
+    if (this.view !== null) data.object.view = Object.assign({}, this.view);
     return data;
   }
 }

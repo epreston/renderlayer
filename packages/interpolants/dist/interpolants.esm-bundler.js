@@ -20,27 +20,24 @@ class Interpolant {
       seek: {
         let right;
         linear_scan: {
-          forward_scan:
-            if (!(t < t1)) {
-              for (let giveUpAt = i1 + 2; ; ) {
-                if (t1 === void 0) {
-                  if (t < t0)
-                    break forward_scan;
-                  i1 = pp.length;
-                  this._cachedIndex = i1;
-                  return this.copySampleValue_(i1 - 1);
-                }
-                if (i1 === giveUpAt)
-                  break;
-                t0 = t1;
-                t1 = pp[++i1];
-                if (t < t1) {
-                  break seek;
-                }
+          forward_scan: if (!(t < t1)) {
+            for (let giveUpAt = i1 + 2; ; ) {
+              if (t1 === void 0) {
+                if (t < t0) break forward_scan;
+                i1 = pp.length;
+                this._cachedIndex = i1;
+                return this.copySampleValue_(i1 - 1);
               }
-              right = pp.length;
-              break linear_scan;
+              if (i1 === giveUpAt) break;
+              t0 = t1;
+              t1 = pp[++i1];
+              if (t < t1) {
+                break seek;
+              }
             }
+            right = pp.length;
+            break linear_scan;
+          }
           if (!(t >= t0)) {
             const t1global = pp[1];
             if (t < t1global) {
@@ -52,8 +49,7 @@ class Interpolant {
                 this._cachedIndex = 0;
                 return this.copySampleValue_(0);
               }
-              if (i1 === giveUpAt)
-                break;
+              if (i1 === giveUpAt) break;
               t1 = t0;
               t0 = pp[--i1 - 1];
               if (t >= t0) {

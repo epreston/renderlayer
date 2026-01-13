@@ -1,4 +1,4 @@
-import { LoopRepeat, NormalAnimationBlendMode, AdditiveAnimationBlendMode, LoopOnce, ZeroSlopeEnding, ZeroCurvatureEnding, WrapAroundEnding, LoopPingPong } from '@renderlayer/shared';
+import { ZeroCurvatureEnding, LoopRepeat, NormalAnimationBlendMode, AdditiveAnimationBlendMode, LoopOnce, ZeroSlopeEnding, WrapAroundEnding, LoopPingPong } from '@renderlayer/shared';
 import { KeyframeTrack, NumberKeyframeTrack, VectorKeyframeTrack, QuaternionKeyframeTrack, StringKeyframeTrack, BooleanKeyframeTrack, ColorKeyframeTrack } from '@renderlayer/keyframes';
 import { Quaternion, generateUUID } from '@renderlayer/math';
 import { EventDispatcher } from '@renderlayer/core';
@@ -266,8 +266,7 @@ class AnimationAction {
     let loopCount = this._loopCount;
     const pingPong = loop === LoopPingPong;
     if (deltaTime === 0) {
-      if (loopCount === -1)
-        return time;
+      if (loopCount === -1) return time;
       return pingPong && (loopCount & 1) === 1 ? duration - time : time;
     }
     if (loop === LoopOnce) {
@@ -284,10 +283,8 @@ class AnimationAction {
           this.time = time;
           break handle_stop;
         }
-        if (this.clampWhenFinished)
-          this.paused = true;
-        else
-          this.enabled = false;
+        if (this.clampWhenFinished) this.paused = true;
+        else this.enabled = false;
         this.time = time;
         this._mixer.dispatchEvent({
           type: "finished",
@@ -310,10 +307,8 @@ class AnimationAction {
         loopCount += Math.abs(loopDelta);
         const pending = this.repetitions - loopCount;
         if (pending <= 0) {
-          if (this.clampWhenFinished)
-            this.paused = true;
-          else
-            this.enabled = false;
+          if (this.clampWhenFinished) this.paused = true;
+          else this.enabled = false;
           time = deltaTime > 0 ? duration : 0;
           this.time = time;
           this._mixer.dispatchEvent({
@@ -383,7 +378,7 @@ class AnimationAction {
 
 function convertArray(array, type, forceClone) {
   if (!array || // let 'undefined' and 'null' pass
-  !forceClone && array.constructor === type)
+  array.constructor === type)
     return array;
   if (typeof type.BYTES_PER_ELEMENT === "number") {
     return new type(array);
@@ -396,8 +391,7 @@ function getKeyframeOrder(times) {
   }
   const n = times.length;
   const result = new Array(n);
-  for (let i = 0; i !== n; ++i)
-    result[i] = i;
+  for (let i = 0; i !== n; ++i) result[i] = i;
   result.sort(compareTime);
   return result;
 }
@@ -418,11 +412,9 @@ function flattenJSON(jsonKeys, times, values, valuePropertyName) {
   while (key !== void 0 && key[valuePropertyName] === void 0) {
     key = jsonKeys[i++];
   }
-  if (key === void 0)
-    return;
+  if (key === void 0) return;
   let value = key[valuePropertyName];
-  if (value === void 0)
-    return;
+  if (value === void 0) return;
   if (Array.isArray(value)) {
     do {
       value = key[valuePropertyName];
@@ -462,15 +454,13 @@ function subclip(sourceClip, name, startFrame, endFrame, fps = 30) {
     const values = [];
     for (let j = 0; j < track.times.length; ++j) {
       const frame = track.times[j] * fps;
-      if (frame < startFrame || frame >= endFrame)
-        continue;
+      if (frame < startFrame || frame >= endFrame) continue;
       times.push(track.times[j]);
       for (let k = 0; k < valueSize; ++k) {
         values.push(track.values[j * valueSize + k]);
       }
     }
-    if (times.length === 0)
-      continue;
+    if (times.length === 0) continue;
     track.times = convertArray(times, track.times.constructor);
     track.values = convertArray(values, track.values.constructor);
     tracks.push(track);
@@ -489,20 +479,17 @@ function subclip(sourceClip, name, startFrame, endFrame, fps = 30) {
   return clip;
 }
 function makeClipAdditive(targetClip, referenceFrame = 0, referenceClip = targetClip, fps = 30) {
-  if (fps <= 0)
-    fps = 30;
+  if (fps <= 0) fps = 30;
   const numTracks = referenceClip.tracks.length;
   const referenceTime = referenceFrame / fps;
   for (let i = 0; i < numTracks; ++i) {
     const referenceTrack = referenceClip.tracks[i];
     const referenceTrackType = referenceTrack.ValueTypeName;
-    if (referenceTrackType === "bool" || referenceTrackType === "string")
-      continue;
+    if (referenceTrackType === "bool" || referenceTrackType === "string") continue;
     const targetTrack = targetClip.tracks.find((track) => {
       return track.name === referenceTrack.name && track.ValueTypeName === referenceTrackType;
     });
-    if (targetTrack === void 0)
-      continue;
+    if (targetTrack === void 0) continue;
     let referenceOffset = 0;
     const referenceValueSize = referenceTrack.getValueSize();
     if (referenceTrack.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline) {
@@ -680,8 +667,7 @@ class AnimationClip {
     const hierarchyTracks = animation.hierarchy || [];
     for (let h = 0; h < hierarchyTracks.length; h++) {
       const animationKeys = hierarchyTracks[h].keys;
-      if (!animationKeys || animationKeys.length === 0)
-        continue;
+      if (!animationKeys || animationKeys.length === 0) continue;
       if (animationKeys[0].morphTargets) {
         const morphTargetNames = {};
         let k;
@@ -831,8 +817,7 @@ class Composite {
     this.bind();
     const firstValidIndex = this._targetGroup.nCachedObjects_;
     const binding = this._bindings[firstValidIndex];
-    if (binding !== void 0)
-      binding.getValue(array, offset);
+    if (binding !== void 0) binding.getValue(array, offset);
   }
   setValue(array, offset) {
     const bindings = this._bindings;
@@ -923,8 +908,7 @@ class PropertyBinding {
             return childNode;
           }
           const result = searchNodeSubtree(childNode.children);
-          if (result)
-            return result;
+          if (result) return result;
         }
         return null;
       };
@@ -1680,11 +1664,9 @@ class AnimationMixer extends EventDispatcher {
         return existingAction;
       }
       prototypeAction = actionsForClip.knownActions[0];
-      if (clipObject === null)
-        clipObject = prototypeAction._clip;
+      if (clipObject === null) clipObject = prototypeAction._clip;
     }
-    if (clipObject === null)
-      return null;
+    if (clipObject === null) return null;
     const newAction = new AnimationAction(this, clipObject, optionalRoot, blendMode);
     this._bindAction(newAction, prototypeAction);
     this._addInactiveAction(newAction, clipUuid, rootUuid);

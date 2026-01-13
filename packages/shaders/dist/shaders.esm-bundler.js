@@ -1,4 +1,4 @@
-import { Color, Matrix3, Vector2, ColorManagement, Vector3 } from '@renderlayer/math';
+import { Matrix3, Vector2, Color, ColorManagement, Vector3 } from '@renderlayer/math';
 
 var alphahash_fragment = `
 #ifdef USE_ALPHAHASH

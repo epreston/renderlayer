@@ -1,5 +1,5 @@
 import { Vector4, Color, Frustum, Matrix4, Vector2, Vector3, ColorManagement } from '@renderlayer/math';
-import { createCanvasElement, SRGBColorSpace, NoToneMapping, HalfFloatType, UnsignedByteType, LinearMipmapLinearFilter, DoubleSide, BackSide, FrontSide, RGBAFormat, FloatType, WebGLCoordinateSystem, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, RGBAIntegerFormat, RGIntegerFormat, RedIntegerFormat, UnsignedIntType, UnsignedShortType, UnsignedInt248Type, UnsignedShort4444Type, UnsignedShort5551Type } from '@renderlayer/shared';
+import { createCanvasElement, SRGBColorSpace, NoToneMapping, LinearMipmapLinearFilter, HalfFloatType, UnsignedByteType, DoubleSide, BackSide, FrontSide, LinearSRGBColorSpace, RGBAFormat, FloatType, WebGLCoordinateSystem, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, UnsignedIntType, UnsignedShortType, UnsignedInt248Type, UnsignedShort4444Type, UnsignedShort5551Type, RGBAIntegerFormat, RGIntegerFormat, RedIntegerFormat } from '@renderlayer/shared';
 import { WebGLRenderTarget } from '@renderlayer/targets';
 import { WebGLAnimation, WebGLUniforms, WebGLExtensions, WebGLCapabilities, WebGLUtils, WebGLState, WebGLInfo, WebGLProperties, WebGLTextures, WebGLCubeMaps, WebGLCubeUVMaps, WebGLAttributes, WebGLBindingStates, WebGLGeometries, WebGLObjects, WebGLMorphtargets, WebGLClipping, WebGLPrograms, WebGLMaterials, WebGLRenderLists, WebGLRenderStates, WebGLBackground, WebGLShadowMap, WebGLUniformsGroups, WebGLBufferRenderer, WebGLIndexedBufferRenderer } from '@renderlayer/webgl';
 
@@ -95,8 +95,7 @@ class WebGLRenderer {
     function getContext(contextNames, contextAttributes) {
       for (const contextName of contextNames) {
         const context2 = canvas.getContext(contextName, contextAttributes);
-        if (context2 !== null)
-          return context2;
+        if (context2 !== null) return context2;
       }
       return null;
     }
@@ -229,18 +228,15 @@ class WebGLRenderer {
     this.getContextAttributes = () => _gl.getContextAttributes();
     this.forceContextLoss = () => {
       const extension = extensions.get("WEBGL_lose_context");
-      if (extension)
-        extension.loseContext();
+      if (extension) extension.loseContext();
     };
     this.forceContextRestore = () => {
       const extension = extensions.get("WEBGL_lose_context");
-      if (extension)
-        extension.restoreContext();
+      if (extension) extension.restoreContext();
     };
     this.getPixelRatio = () => _pixelRatio;
     this.setPixelRatio = function(value) {
-      if (value === void 0)
-        return;
+      if (value === void 0) return;
       _pixelRatio = value;
       this.setSize(_width, _height, false);
     };
@@ -335,8 +331,7 @@ class WebGLRenderer {
           bits |= _gl.COLOR_BUFFER_BIT;
         }
       }
-      if (depth2)
-        bits |= _gl.DEPTH_BUFFER_BIT;
+      if (depth2) bits |= _gl.DEPTH_BUFFER_BIT;
       if (stencil2) {
         bits |= _gl.STENCIL_BUFFER_BIT;
         this.state.buffers.stencil.setMask(4294967295);
@@ -418,8 +413,7 @@ class WebGLRenderer {
       }
     }
     this.renderBufferDirect = (camera, scene, geometry, material, object, group) => {
-      if (scene === null)
-        scene = _emptyScene;
+      if (scene === null) scene = _emptyScene;
       const frontFaceCW = object.isMesh && object.matrixWorld.determinant() < 0;
       const program = setProgram(camera, scene, geometry, material, object);
       state.setMaterial(material, frontFaceCW);
@@ -427,8 +421,7 @@ class WebGLRenderer {
       let rangeFactor = 1;
       if (material.wireframe === true) {
         index = geometries.getWireframeAttribute(geometry);
-        if (index === void 0)
-          return;
+        if (index === void 0) return;
         rangeFactor = 2;
       }
       const drawRange = geometry.drawRange;
@@ -447,8 +440,7 @@ class WebGLRenderer {
         drawEnd = Math.min(drawEnd, position.count);
       }
       const drawCount = drawEnd - drawStart;
-      if (drawCount < 0 || drawCount === Infinity)
-        return;
+      if (drawCount < 0 || drawCount === Infinity) return;
       bindingStates.setup(object, material, program, geometry, index);
       let attribute;
       let renderer = bufferRenderer;
@@ -466,8 +458,7 @@ class WebGLRenderer {
         }
       } else if (object.isLine) {
         let lineWidth = material.linewidth;
-        if (lineWidth === void 0)
-          lineWidth = 1;
+        if (lineWidth === void 0) lineWidth = 1;
         state.setLineWidth(lineWidth * getTargetPixelRatio());
         if (object.isLineSegments) {
           renderer.setMode(_gl.LINES);
@@ -505,8 +496,7 @@ class WebGLRenderer {
       }
     }
     this.compile = (scene, camera, targetScene = null) => {
-      if (targetScene === null)
-        targetScene = scene;
+      if (targetScene === null) targetScene = scene;
       currentRenderState = renderStates.get(targetScene);
       currentRenderState.init();
       renderStateStack.push(currentRenderState);
@@ -574,13 +564,11 @@ class WebGLRenderer {
     };
     let onAnimationFrameCallback = null;
     function onAnimationFrame(time) {
-      if (onAnimationFrameCallback)
-        onAnimationFrameCallback(time);
+      if (onAnimationFrameCallback) onAnimationFrameCallback(time);
     }
     const animation = new WebGLAnimation();
     animation.setAnimationLoop(onAnimationFrame);
-    if (typeof self !== "undefined")
-      animation.setContext(self);
+    if (typeof self !== "undefined") animation.setContext(self);
     this.setAnimationLoop = (callback) => {
       onAnimationFrameCallback = callback;
       callback === null ? animation.stop() : animation.start();
@@ -590,14 +578,11 @@ class WebGLRenderer {
         console.error("WebGLRenderer.render: camera is not an instance of Camera.");
         return;
       }
-      if (_isContextLost === true)
-        return;
-      if (scene.matrixWorldAutoUpdate === true)
-        scene.updateMatrixWorld();
+      if (_isContextLost === true) return;
+      if (scene.matrixWorldAutoUpdate === true) scene.updateMatrixWorld();
       if (camera.parent === null && camera.matrixWorldAutoUpdate === true)
         camera.updateMatrixWorld();
-      if (scene.isScene === true)
-        scene.onBeforeRender(_this, scene, camera, _currentRenderTarget);
+      if (scene.isScene === true) scene.onBeforeRender(_this, scene, camera, _currentRenderTarget);
       currentRenderState = renderStates.get(scene, renderStateStack.length);
       currentRenderState.init();
       renderStateStack.push(currentRenderState);
@@ -614,14 +599,11 @@ class WebGLRenderer {
         currentRenderList.sort(_opaqueSort, _transparentSort);
       }
       this.info.render.frame++;
-      if (_clippingEnabled === true)
-        clipping.beginShadows();
+      if (_clippingEnabled === true) clipping.beginShadows();
       const shadowsArray = currentRenderState.state.shadowsArray;
       shadowMap.render(shadowsArray, scene, camera);
-      if (_clippingEnabled === true)
-        clipping.endShadows();
-      if (this.info.autoReset === true)
-        this.info.reset();
+      if (_clippingEnabled === true) clipping.endShadows();
+      if (this.info.autoReset === true) this.info.reset();
       background.render(currentRenderList, scene);
       currentRenderState.setupLights(_this._useLegacyLights);
       if (camera.isArrayCamera) {
@@ -637,8 +619,7 @@ class WebGLRenderer {
         textures.updateMultisampleRenderTarget(_currentRenderTarget);
         textures.updateRenderTargetMipmap(_currentRenderTarget);
       }
-      if (scene.isScene === true)
-        scene.onAfterRender(_this, scene, camera);
+      if (scene.isScene === true) scene.onAfterRender(_this, scene, camera);
       bindingStates.resetDefaultState();
       _currentMaterialId = -1;
       _currentCamera = null;
@@ -656,15 +637,13 @@ class WebGLRenderer {
       }
     };
     function projectObject(object, camera, groupOrder, sortObjects) {
-      if (object.visible === false)
-        return;
+      if (object.visible === false) return;
       const visible = object.layers.test(camera.layers);
       if (visible) {
         if (object.isGroup) {
           groupOrder = object.renderOrder;
         } else if (object.isLOD) {
-          if (object.autoUpdate === true)
-            object.update(camera);
+          if (object.autoUpdate === true) object.update(camera);
         } else if (object.isLight) {
           currentRenderState.pushLight(object);
           if (object.castShadow) {
@@ -687,12 +666,10 @@ class WebGLRenderer {
             const material = object.material;
             if (sortObjects) {
               if (object.boundingSphere !== void 0) {
-                if (object.boundingSphere === null)
-                  object.computeBoundingSphere();
+                if (object.boundingSphere === null) object.computeBoundingSphere();
                 _vector3.copy(object.boundingSphere.center);
               } else {
-                if (geometry.boundingSphere === null)
-                  geometry.computeBoundingSphere();
+                if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
                 _vector3.copy(geometry.boundingSphere.center);
               }
               _vector3.applyMatrix4(object.matrixWorld).applyMatrix4(_projScreenMatrix);
@@ -729,18 +706,13 @@ class WebGLRenderer {
       const transmissiveObjects = currentRenderList2.transmissive;
       const transparentObjects = currentRenderList2.transparent;
       currentRenderState.setupLightsView(camera);
-      if (_clippingEnabled === true)
-        clipping.setGlobalState(_this.clippingPlanes, camera);
+      if (_clippingEnabled === true) clipping.setGlobalState(_this.clippingPlanes, camera);
       if (transmissiveObjects.length > 0)
         renderTransmissionPass(opaqueObjects, transmissiveObjects, scene, camera);
-      if (viewport)
-        state.viewport(_currentViewport.copy(viewport));
-      if (opaqueObjects.length > 0)
-        renderObjects(opaqueObjects, scene, camera);
-      if (transmissiveObjects.length > 0)
-        renderObjects(transmissiveObjects, scene, camera);
-      if (transparentObjects.length > 0)
-        renderObjects(transparentObjects, scene, camera);
+      if (viewport) state.viewport(_currentViewport.copy(viewport));
+      if (opaqueObjects.length > 0) renderObjects(opaqueObjects, scene, camera);
+      if (transmissiveObjects.length > 0) renderObjects(transmissiveObjects, scene, camera);
+      if (transparentObjects.length > 0) renderObjects(transparentObjects, scene, camera);
       state.buffers.depth.setTest(true);
       state.buffers.depth.setMask(true);
       state.buffers.color.setMask(true);
@@ -765,8 +737,7 @@ class WebGLRenderer {
       _this.setRenderTarget(_transmissionRenderTarget);
       _this.getClearColor(_currentClearColor);
       _currentClearAlpha = _this.getClearAlpha();
-      if (_currentClearAlpha < 1)
-        _this.setClearColor(16777215, 0.5);
+      if (_currentClearAlpha < 1) _this.setClearColor(16777215, 0.5);
       _this.clear();
       const currentToneMapping = _this.toneMapping;
       _this.toneMapping = NoToneMapping;
@@ -830,8 +801,7 @@ class WebGLRenderer {
       object.onAfterRender(_this, scene, camera, geometry, material, group);
     }
     function getProgram(material, scene, object) {
-      if (scene.isScene !== true)
-        scene = _emptyScene;
+      if (scene.isScene !== true) scene = _emptyScene;
       const materialProperties = properties.get(material);
       const lights = currentRenderState.state.lights;
       const shadowsArray = currentRenderState.state.shadowsArray;
@@ -928,8 +898,7 @@ class WebGLRenderer {
       materialProperties.toneMapping = parameters2.toneMapping;
     }
     function setProgram(camera, scene, geometry, material, object) {
-      if (scene.isScene !== true)
-        scene = _emptyScene;
+      if (scene.isScene !== true) scene = _emptyScene;
       textures.resetTextureUnits();
       const fog = scene.fog;
       const environment = material.isMeshStandardMaterial ? scene.environment : null;
@@ -1049,8 +1018,7 @@ class WebGLRenderer {
         const skeleton = object.skeleton;
         if (skeleton) {
           if (capabilities.floatVertexTextures) {
-            if (skeleton.boneTexture === null)
-              skeleton.computeBoneTexture();
+            if (skeleton.boneTexture === null) skeleton.computeBoneTexture();
             p_uniforms.setValue(_gl, "boneTexture", skeleton.boneTexture, textures);
           } else {
             console.warn(
@@ -1250,7 +1218,7 @@ class WebGLRenderer {
           }
           const halfFloatSupportedByExt = textureType === HalfFloatType && (extensions.has("EXT_color_buffer_half_float") || extensions.has("EXT_color_buffer_float"));
           if (textureType !== UnsignedByteType && utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // Edge and Chrome Mac < 52 (#9513)
-          !(textureType === FloatType && true) && // Chrome Mac >= 52 and Firefox
+          !(textureType === FloatType) && // Chrome Mac >= 52 and Firefox
           !halfFloatSupportedByExt) {
             console.error(
               "WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type."
@@ -1327,8 +1295,7 @@ class WebGLRenderer {
           );
         }
       }
-      if (level === 0 && dstTexture.generateMipmaps)
-        _gl.generateMipmap(_gl.TEXTURE_2D);
+      if (level === 0 && dstTexture.generateMipmaps) _gl.generateMipmap(_gl.TEXTURE_2D);
       state.unbindTexture();
     };
     this.copyTextureToTexture3D = (sourceBox, position, srcTexture, dstTexture, level = 0) => {
@@ -1416,8 +1383,7 @@ class WebGLRenderer {
       _gl.pixelStorei(_gl.UNPACK_SKIP_PIXELS, unpackSkipPixels);
       _gl.pixelStorei(_gl.UNPACK_SKIP_ROWS, unpackSkipRows);
       _gl.pixelStorei(_gl.UNPACK_SKIP_IMAGES, unpackSkipImages);
-      if (level === 0 && dstTexture.generateMipmaps)
-        _gl.generateMipmap(glTarget);
+      if (level === 0 && dstTexture.generateMipmaps) _gl.generateMipmap(glTarget);
       state.unbindTexture();
     };
     this.initTexture = (texture) => {

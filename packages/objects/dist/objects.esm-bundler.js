@@ -1,6 +1,6 @@
 import { Object3D } from '@renderlayer/core';
 import { BufferGeometry, InstancedBufferAttribute, Float32BufferAttribute, InterleavedBuffer, InterleavedBufferAttribute } from '@renderlayer/buffers';
-import { Triangle, Vector2, Vector3, Matrix4, Ray, Sphere, Box3, generateUUID, Vector4 } from '@renderlayer/math';
+import { Vector3, Sphere, Ray, Matrix4, Vector2, Triangle, Box3, generateUUID, Vector4 } from '@renderlayer/math';
 import { MeshBasicMaterial, LineBasicMaterial, PointsMaterial, SpriteMaterial } from '@renderlayer/materials';
 import { BackSide, FrontSide, RGBAFormat, FloatType, AttachedBindMode, DetachedBindMode } from '@renderlayer/shared';
 import { DataTexture } from '@renderlayer/textures';
@@ -96,8 +96,7 @@ class Mesh extends Object3D {
       for (let i = 0, il = morphPosition.length; i < il; i++) {
         const influence = morphInfluences[i];
         const morphAttribute = morphPosition[i];
-        if (influence === 0)
-          continue;
+        if (influence === 0) continue;
         _tempA.fromBufferAttribute(morphAttribute, index);
         if (morphTargetsRelative) {
           _morphA.addScaledVector(_tempA, influence);
@@ -113,24 +112,20 @@ class Mesh extends Object3D {
     const geometry = this.geometry;
     const material = this.material;
     const matrixWorld = this.matrixWorld;
-    if (material === void 0)
-      return;
-    if (geometry.boundingSphere === null)
-      geometry.computeBoundingSphere();
+    if (material === void 0) return;
+    if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
     _sphere$4.copy(geometry.boundingSphere);
     _sphere$4.applyMatrix4(matrixWorld);
     _ray$3.copy(raycaster.ray).recast(raycaster.near);
     if (_sphere$4.containsPoint(_ray$3.origin) === false) {
-      if (_ray$3.intersectSphere(_sphere$4, _sphereHitAt) === null)
-        return;
+      if (_ray$3.intersectSphere(_sphere$4, _sphereHitAt) === null) return;
       if (_ray$3.origin.distanceToSquared(_sphereHitAt) > (raycaster.far - raycaster.near) ** 2)
         return;
     }
     _inverseMatrix$3.copy(matrixWorld).invert();
     _ray$3.copy(raycaster.ray).applyMatrix4(_inverseMatrix$3);
     if (geometry.boundingBox !== null) {
-      if (_ray$3.intersectsBox(geometry.boundingBox) === false)
-        return;
+      if (_ray$3.intersectsBox(geometry.boundingBox) === false) return;
     }
     this._computeIntersections(raycaster, intersects, _ray$3);
   }
@@ -271,13 +266,11 @@ function checkIntersection(object, material, raycaster, ray, pA, pB, pC, point) 
   } else {
     intersect = ray.intersectTriangle(pA, pB, pC, material.side === FrontSide, point);
   }
-  if (intersect === null)
-    return null;
+  if (intersect === null) return null;
   _intersectionPointWorld.copy(point);
   _intersectionPointWorld.applyMatrix4(object.matrixWorld);
   const distance = raycaster.ray.origin.distanceTo(_intersectionPointWorld);
-  if (distance < raycaster.near || distance > raycaster.far)
-    return null;
+  if (distance < raycaster.near || distance > raycaster.far) return null;
   return {
     distance,
     point: _intersectionPointWorld.clone(),
@@ -416,13 +409,10 @@ class InstancedMesh extends Mesh {
   copy(source, recursive) {
     super.copy(source, recursive);
     this.instanceMatrix.copy(source.instanceMatrix);
-    if (source.instanceColor !== null)
-      this.instanceColor = source.instanceColor.clone();
+    if (source.instanceColor !== null) this.instanceColor = source.instanceColor.clone();
     this.count = source.count;
-    if (source.boundingBox !== null)
-      this.boundingBox = source.boundingBox.clone();
-    if (source.boundingSphere !== null)
-      this.boundingSphere = source.boundingSphere.clone();
+    if (source.boundingBox !== null) this.boundingBox = source.boundingBox.clone();
+    if (source.boundingSphere !== null) this.boundingSphere = source.boundingSphere.clone();
     return this;
   }
   getColorAt(index, color) {
@@ -436,14 +426,11 @@ class InstancedMesh extends Mesh {
     const raycastTimes = this.count;
     _mesh.geometry = this.geometry;
     _mesh.material = this.material;
-    if (_mesh.material === void 0)
-      return;
-    if (this.boundingSphere === null)
-      this.computeBoundingSphere();
+    if (_mesh.material === void 0) return;
+    if (this.boundingSphere === null) this.computeBoundingSphere();
     _sphere$3.copy(this.boundingSphere);
     _sphere$3.applyMatrix4(matrixWorld);
-    if (raycaster.ray.intersectsSphere(_sphere$3) === false)
-      return;
+    if (raycaster.ray.intersectsSphere(_sphere$3) === false) return;
     for (let instanceId = 0; instanceId < raycastTimes; instanceId++) {
       this.getMatrixAt(instanceId, _instanceLocalMatrix);
       _instanceWorldMatrix.multiplyMatrices(matrixWorld, _instanceLocalMatrix);
@@ -521,13 +508,11 @@ class Line extends Object3D {
     const matrixWorld = this.matrixWorld;
     const threshold = raycaster.params.Line.threshold;
     const drawRange = geometry.drawRange;
-    if (geometry.boundingSphere === null)
-      geometry.computeBoundingSphere();
+    if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
     _sphere$2.copy(geometry.boundingSphere);
     _sphere$2.applyMatrix4(matrixWorld);
     _sphere$2.radius += threshold;
-    if (raycaster.ray.intersectsSphere(_sphere$2) === false)
-      return;
+    if (raycaster.ray.intersectsSphere(_sphere$2) === false) return;
     _inverseMatrix$2.copy(matrixWorld).invert();
     _ray$2.copy(raycaster.ray).applyMatrix4(_inverseMatrix$2);
     const localThreshold = threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
@@ -549,12 +534,10 @@ class Line extends Object3D {
         vStart.fromBufferAttribute(positionAttribute, a);
         vEnd.fromBufferAttribute(positionAttribute, b);
         const distSq = _ray$2.distanceSqToSegment(vStart, vEnd, interRay, interSegment);
-        if (distSq > localThresholdSq)
-          continue;
+        if (distSq > localThresholdSq) continue;
         interRay.applyMatrix4(this.matrixWorld);
         const distance = raycaster.ray.origin.distanceTo(interRay);
-        if (distance < raycaster.near || distance > raycaster.far)
-          continue;
+        if (distance < raycaster.near || distance > raycaster.far) continue;
         intersects.push({
           distance,
           // intersection point on the ray or on the segment?
@@ -573,12 +556,10 @@ class Line extends Object3D {
         vStart.fromBufferAttribute(positionAttribute, i);
         vEnd.fromBufferAttribute(positionAttribute, i + 1);
         const distSq = _ray$2.distanceSqToSegment(vStart, vEnd, interRay, interSegment);
-        if (distSq > localThresholdSq)
-          continue;
+        if (distSq > localThresholdSq) continue;
         interRay.applyMatrix4(this.matrixWorld);
         const distance = raycaster.ray.origin.distanceTo(interRay);
-        if (distance < raycaster.near || distance > raycaster.far)
-          continue;
+        if (distance < raycaster.near || distance > raycaster.far) continue;
         intersects.push({
           distance,
           // intersection point on the ray or on the segment?
@@ -747,8 +728,7 @@ class LOD extends Object3D {
   }
   toJSON(meta) {
     const data = super.toJSON(meta);
-    if (this.autoUpdate === false)
-      data.object.autoUpdate = false;
+    if (this.autoUpdate === false) data.object.autoUpdate = false;
     data.object.levels = [];
     const levels = this.levels;
     for (let i = 0, l = levels.length; i < l; i++) {
@@ -787,13 +767,11 @@ class Points extends Object3D {
     const matrixWorld = this.matrixWorld;
     const threshold = raycaster.params.Points.threshold;
     const drawRange = geometry.drawRange;
-    if (geometry.boundingSphere === null)
-      geometry.computeBoundingSphere();
+    if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
     _sphere$1.copy(geometry.boundingSphere);
     _sphere$1.applyMatrix4(matrixWorld);
     _sphere$1.radius += threshold;
-    if (raycaster.ray.intersectsSphere(_sphere$1) === false)
-      return;
+    if (raycaster.ray.intersectsSphere(_sphere$1) === false) return;
     _inverseMatrix$1.copy(matrixWorld).invert();
     _ray$1.copy(raycaster.ray).applyMatrix4(_inverseMatrix$1);
     const localThreshold = threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
@@ -843,8 +821,7 @@ function testPoint(point, index, localThresholdSq, matrixWorld, raycaster, inter
     _ray$1.closestPointToPoint(point, intersectPoint);
     intersectPoint.applyMatrix4(matrixWorld);
     const distance = raycaster.ray.origin.distanceTo(intersectPoint);
-    if (distance < raycaster.near || distance > raycaster.far)
-      return;
+    if (distance < raycaster.near || distance > raycaster.far) return;
     intersects.push({
       distance,
       distanceToRay: Math.sqrt(rayPointDistanceSq),
@@ -1046,28 +1023,22 @@ class SkinnedMesh extends Mesh {
     this.bindMatrix.copy(source.bindMatrix);
     this.bindMatrixInverse.copy(source.bindMatrixInverse);
     this.skeleton = source.skeleton;
-    if (source.boundingBox !== null)
-      this.boundingBox = source.boundingBox.clone();
-    if (source.boundingSphere !== null)
-      this.boundingSphere = source.boundingSphere.clone();
+    if (source.boundingBox !== null) this.boundingBox = source.boundingBox.clone();
+    if (source.boundingSphere !== null) this.boundingSphere = source.boundingSphere.clone();
     return this;
   }
   raycast(raycaster, intersects) {
     const material = this.material;
     const matrixWorld = this.matrixWorld;
-    if (material === void 0)
-      return;
-    if (this.boundingSphere === null)
-      this.computeBoundingSphere();
+    if (material === void 0) return;
+    if (this.boundingSphere === null) this.computeBoundingSphere();
     _sphere.copy(this.boundingSphere);
     _sphere.applyMatrix4(matrixWorld);
-    if (raycaster.ray.intersectsSphere(_sphere) === false)
-      return;
+    if (raycaster.ray.intersectsSphere(_sphere) === false) return;
     _inverseMatrix.copy(matrixWorld).invert();
     _ray.copy(raycaster.ray).applyMatrix4(_inverseMatrix);
     if (this.boundingBox !== null) {
-      if (_ray.intersectsBox(this.boundingBox) === false)
-        return;
+      if (_ray.intersectsBox(this.boundingBox) === false) return;
     }
     this._computeIntersections(raycaster, intersects, _ray);
   }
@@ -1226,8 +1197,7 @@ class Sprite extends Object3D {
       }
     }
     const distance = raycaster.ray.origin.distanceTo(_intersectPoint);
-    if (distance < raycaster.near || distance > raycaster.far)
-      return;
+    if (distance < raycaster.near || distance > raycaster.far) return;
     intersects.push({
       distance,
       point: _intersectPoint.clone(),
@@ -1247,8 +1217,7 @@ class Sprite extends Object3D {
   }
   copy(source, recursive) {
     super.copy(source, recursive);
-    if (source.center !== void 0)
-      this.center.copy(source.center);
+    if (source.center !== void 0) this.center.copy(source.center);
     this.material = source.material;
     return this;
   }

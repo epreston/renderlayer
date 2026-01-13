@@ -194,29 +194,24 @@ const WebGLCoordinateSystem = 2e3;
 const WebGPUCoordinateSystem = 2001;
 
 function arrayMin(array) {
-  if (array.length === 0)
-    return Infinity;
+  if (array.length === 0) return Infinity;
   let min = array[0];
   for (let i = 1, l = array.length; i < l; ++i) {
-    if (array[i] < min)
-      min = array[i];
+    if (array[i] < min) min = array[i];
   }
   return min;
 }
 function arrayMax(array) {
-  if (array.length === 0)
-    return -Infinity;
+  if (array.length === 0) return -Infinity;
   let max = array[0];
   for (let i = 1, l = array.length; i < l; ++i) {
-    if (array[i] > max)
-      max = array[i];
+    if (array[i] > max) max = array[i];
   }
   return max;
 }
 function arrayNeedsUint32(array) {
   for (let i = array.length - 1; i >= 0; --i) {
-    if (array[i] >= 65535)
-      return true;
+    if (array[i] >= 65535) return true;
   }
   return false;
 }
@@ -244,8 +239,7 @@ function createCanvasElement() {
 }
 const _cache = {};
 function warnOnce(message) {
-  if (message in _cache)
-    return;
+  if (message in _cache) return;
   _cache[message] = true;
   console.warn(message);
 }
@@ -266,8 +260,7 @@ class ImageUtils {
     if (image instanceof HTMLCanvasElement) {
       canvas = image;
     } else {
-      if (_canvas === void 0)
-        _canvas = createElementNS("canvas");
+      if (_canvas === void 0) _canvas = createElementNS("canvas");
       _canvas.width = image.width;
       _canvas.height = image.height;
       const context = _canvas.getContext("2d");

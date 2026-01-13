@@ -93,8 +93,7 @@ class RGBELoader extends DataTextureLoader {
         );
       }
       if (i > -1) {
-        if (consume !== false)
-          buffer2.pos += len + i + 1;
+        buffer2.pos += len + i + 1;
         return s + chunk.slice(0, i);
       }
       return false;
@@ -131,8 +130,7 @@ class RGBELoader extends DataTextureLoader {
 `;
       while (true) {
         line = fgets(buffer2);
-        if (line === false)
-          break;
+        if (line === false) break;
         header.string += `${line}
 `;
         if (line.charAt(0) === "#") {
@@ -155,8 +153,7 @@ class RGBELoader extends DataTextureLoader {
           header.height = parseInt(match[1], 10);
           header.width = parseInt(match[2], 10);
         }
-        if (header.valid & RGBE_VALID_FORMAT && header.valid & RGBE_VALID_DIMENSIONS)
-          break;
+        if (header.valid & RGBE_VALID_FORMAT && header.valid & RGBE_VALID_DIMENSIONS) break;
       }
       if (!(header.valid & RGBE_VALID_FORMAT)) {
         rgbe_error(rgbe_format_error, "missing format specifier");
@@ -204,8 +201,7 @@ class RGBELoader extends DataTextureLoader {
         while (ptr < ptr_end && pos < buffer2.byteLength) {
           count = buffer2[pos++];
           const isEncodedRun = count > 128;
-          if (isEncodedRun)
-            count -= 128;
+          if (isEncodedRun) count -= 128;
           if (count === 0 || ptr + count > ptr_end) {
             rgbe_error(rgbe_format_error, "bad scanline data");
           }
@@ -317,8 +313,7 @@ class RGBELoader extends DataTextureLoader {
           texture.flipY = true;
           break;
       }
-      if (onLoad)
-        onLoad(texture, texData);
+      if (onLoad) onLoad(texture, texData);
     }
     return super.load(url, onLoadCallback, onProgress, onError);
   }

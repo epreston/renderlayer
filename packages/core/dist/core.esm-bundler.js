@@ -1,9 +1,8 @@
-import { generateUUID, Vector3, Euler, Quaternion, Matrix4, Matrix3, Ray } from '@renderlayer/math';
+import { generateUUID, Vector3, Euler, Quaternion, Matrix3, Matrix4, Ray } from '@renderlayer/math';
 
 class EventDispatcher {
   addEventListener(type, listener) {
-    if (this._listeners === void 0)
-      this._listeners = /* @__PURE__ */ new Map();
+    if (this._listeners === void 0) this._listeners = /* @__PURE__ */ new Map();
     const listeners = this._listeners;
     if (!listeners.has(type)) {
       listeners.set(type, []);
@@ -13,14 +12,12 @@ class EventDispatcher {
     }
   }
   hasEventListener(type, listener) {
-    if (this._listeners === void 0)
-      return false;
+    if (this._listeners === void 0) return false;
     const listeners = this._listeners;
     return listeners.has(type) && listeners.get(type).includes(listener);
   }
   removeEventListener(type, listener) {
-    if (this._listeners === void 0)
-      return;
+    if (this._listeners === void 0) return;
     const listeners = this._listeners;
     const listenerArray = listeners.get(type);
     if (listenerArray !== void 0) {
@@ -31,8 +28,7 @@ class EventDispatcher {
     }
   }
   dispatchEvent(event) {
-    if (this._listeners === void 0)
-      return;
+    if (this._listeners === void 0) return;
     const listeners = this._listeners;
     const listenerArray = listeners.get(event.type);
     if (listenerArray !== void 0) {
@@ -161,8 +157,7 @@ class Object3D extends EventDispatcher {
   onAfterRender() {
   }
   applyMatrix4(matrix) {
-    if (this.matrixAutoUpdate)
-      this.updateMatrix();
+    if (this.matrixAutoUpdate) this.updateMatrix();
     this.matrix.premultiply(matrix);
     this.matrix.decompose(this.position, this.quaternion, this.scale);
   }
@@ -311,8 +306,7 @@ class Object3D extends EventDispatcher {
     return this.getObjectByProperty("name", name);
   }
   getObjectByProperty(name, value) {
-    if (this[name] === value)
-      return this;
+    if (this[name] === value) return this;
     for (let i = 0, l = this.children.length; i < l; i++) {
       const child = this.children[i];
       const object = child.getObjectByProperty(name, value);
@@ -324,8 +318,7 @@ class Object3D extends EventDispatcher {
   }
   getObjectsByProperty(name, value) {
     let result = [];
-    if (this[name] === value)
-      result.push(this);
+    if (this[name] === value) result.push(this);
     for (let i = 0, l = this.children.length; i < l; i++) {
       const childResult = this.children[i].getObjectsByProperty(name, value);
       if (childResult.length > 0) {
@@ -363,8 +356,7 @@ class Object3D extends EventDispatcher {
     }
   }
   traverseVisible(callback) {
-    if (this.visible === false)
-      return;
+    if (this.visible === false) return;
     callback(this);
     const children = this.children;
     for (let i = 0, l = children.length; i < l; i++) {
@@ -383,8 +375,7 @@ class Object3D extends EventDispatcher {
     this.matrixWorldNeedsUpdate = true;
   }
   updateMatrixWorld(force) {
-    if (this.matrixAutoUpdate)
-      this.updateMatrix();
+    if (this.matrixAutoUpdate) this.updateMatrix();
     if (this.matrixWorldNeedsUpdate || force) {
       if (this.parent === null) {
         this.matrixWorld.copy(this.matrix);
@@ -407,8 +398,7 @@ class Object3D extends EventDispatcher {
     if (updateParents === true && parent !== null && parent.matrixWorldAutoUpdate === true) {
       parent.updateWorldMatrix(true, false);
     }
-    if (this.matrixAutoUpdate)
-      this.updateMatrix();
+    if (this.matrixAutoUpdate) this.updateMatrix();
     if (this.parent === null) {
       this.matrixWorld.copy(this.matrix);
     } else {
@@ -447,31 +437,22 @@ class Object3D extends EventDispatcher {
     const object = {};
     object.uuid = this.uuid;
     object.type = this.type;
-    if (this.name !== "")
-      object.name = this.name;
-    if (this.castShadow === true)
-      object.castShadow = true;
-    if (this.receiveShadow === true)
-      object.receiveShadow = true;
-    if (this.visible === false)
-      object.visible = false;
-    if (this.frustumCulled === false)
-      object.frustumCulled = false;
-    if (this.renderOrder !== 0)
-      object.renderOrder = this.renderOrder;
-    if (Object.keys(this.userData).length > 0)
-      object.userData = this.userData;
+    if (this.name !== "") object.name = this.name;
+    if (this.castShadow === true) object.castShadow = true;
+    if (this.receiveShadow === true) object.receiveShadow = true;
+    if (this.visible === false) object.visible = false;
+    if (this.frustumCulled === false) object.frustumCulled = false;
+    if (this.renderOrder !== 0) object.renderOrder = this.renderOrder;
+    if (Object.keys(this.userData).length > 0) object.userData = this.userData;
     object.layers = this.layers.mask;
     object.matrix = this.matrix.toArray();
     object.up = this.up.toArray();
-    if (this.matrixAutoUpdate === false)
-      object.matrixAutoUpdate = false;
+    if (this.matrixAutoUpdate === false) object.matrixAutoUpdate = false;
     if (this.isInstancedMesh) {
       object.type = "InstancedMesh";
       object.count = this.count;
       object.instanceMatrix = this.instanceMatrix.toJSON();
-      if (this.instanceColor !== null)
-        object.instanceColor = this.instanceColor.toJSON();
+      if (this.instanceColor !== null) object.instanceColor = this.instanceColor.toJSON();
     }
     function serialize(library, element) {
       if (library[element.uuid] === void 0) {
@@ -545,22 +526,14 @@ class Object3D extends EventDispatcher {
       const skeletons = extractFromCache(meta.skeletons);
       const animations = extractFromCache(meta.animations);
       const nodes = extractFromCache(meta.nodes);
-      if (geometries.length > 0)
-        output.geometries = geometries;
-      if (materials.length > 0)
-        output.materials = materials;
-      if (textures.length > 0)
-        output.textures = textures;
-      if (images.length > 0)
-        output.images = images;
-      if (shapes.length > 0)
-        output.shapes = shapes;
-      if (skeletons.length > 0)
-        output.skeletons = skeletons;
-      if (animations.length > 0)
-        output.animations = animations;
-      if (nodes.length > 0)
-        output.nodes = nodes;
+      if (geometries.length > 0) output.geometries = geometries;
+      if (materials.length > 0) output.materials = materials;
+      if (textures.length > 0) output.textures = textures;
+      if (images.length > 0) output.images = images;
+      if (shapes.length > 0) output.shapes = shapes;
+      if (skeletons.length > 0) output.skeletons = skeletons;
+      if (animations.length > 0) output.animations = animations;
+      if (nodes.length > 0) output.nodes = nodes;
     }
     output.object = object;
     return output;
