@@ -9,14 +9,7 @@
     "apps/*"
   ],
   "browserslist": [
-    "Chrome >= 124",
-    "ChromeAndroid >= 124",
-    "Edge >= 124",
-    "Firefox >= 124",
-    "FirefoxAndroid >= 124",
-    "Safari >= 17.4",
-    "iOS >= 17.4",
-    "not dead"
+    "baseline 2025"
   ],
   "prettier": "@epreston/prettier-config",
   "packageManager": "npm@11.7.0",
