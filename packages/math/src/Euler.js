@@ -6,6 +6,8 @@ const _matrix = /*@__PURE__*/ new Matrix4();
 const _quaternion = /*@__PURE__*/ new Quaternion();
 
 class Euler {
+  #onChangeCallback = () => {};
+
   constructor(x = 0, y = 0, z = 0, order = Euler.DEFAULT_ORDER) {
     this.isEuler = true;
 
@@ -21,7 +23,7 @@ class Euler {
 
   set x(value) {
     this._x = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
 
   get y() {
@@ -30,7 +32,7 @@ class Euler {
 
   set y(value) {
     this._y = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
 
   get z() {
@@ -39,7 +41,7 @@ class Euler {
 
   set z(value) {
     this._z = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
 
   get order() {
@@ -48,7 +50,7 @@ class Euler {
 
   set order(value) {
     this._order = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
 
   set(x, y, z, order = this._order) {
@@ -57,7 +59,7 @@ class Euler {
     this._z = z;
     this._order = order;
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -74,7 +76,7 @@ class Euler {
     this._order = euler._order;
 
     // update check required to optimize Object3D.copy()
-    if (update === true) this._onChangeCallback();
+    if (update === true) this.#onChangeCallback();
 
     return this;
   }
@@ -185,7 +187,7 @@ class Euler {
 
     this._order = order;
 
-    if (update === true) this._onChangeCallback();
+    if (update === true) this.#onChangeCallback();
 
     return this;
   }
@@ -222,7 +224,7 @@ class Euler {
     this._z = array[2];
     if (array[3] !== undefined) this._order = array[3];
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -237,12 +239,10 @@ class Euler {
   }
 
   _onChange(callback) {
-    this._onChangeCallback = callback;
+    this.#onChangeCallback = callback;
 
     return this;
   }
-
-  _onChangeCallback() {}
 
   *[Symbol.iterator]() {
     yield this._x;

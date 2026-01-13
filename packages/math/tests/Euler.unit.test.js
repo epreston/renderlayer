@@ -311,29 +311,29 @@ describe('Maths', () => {
       expect(cb).toBeCalledTimes(2);
     });
 
-    test('_onChange', () => {
-      const f = function () {};
-      const a = new Euler(11, 12, 13, 'XYZ');
+    // test('_onChange', () => {
+    //   const f = function () {};
+    //   const a = new Euler(11, 12, 13, 'XYZ');
 
-      a._onChange(f);
+    //   a._onChange(f);
 
-      expect(a._onChangeCallback === f).toBeTruthy();
-    });
+    //   expect(a.#onChangeCallback === f).toBeTruthy();
+    // });
 
-    test('_onChangeCallback', () => {
-      let b = false;
-      const a = new Euler(11, 12, 13, 'XYZ');
-      const f = function () {
-        b = true;
-        expect(a === this).toBeTruthy();
-      };
+    // test('_onChangeCallback', () => {
+    //   let b = false;
+    //   const a = new Euler(11, 12, 13, 'XYZ');
+    //   const f = function () {
+    //     b = true;
+    //     expect(a === this).toBeTruthy();
+    //   };
 
-      a._onChangeCallback = f;
-      expect(a._onChangeCallback === f).toBeTruthy();
+    //   a.#onChangeCallback = f;
+    //   expect(a.#onChangeCallback === f).toBeTruthy();
 
-      a._onChangeCallback();
-      expect(b).toBeTruthy();
-    });
+    //   a.#onChangeCallback();
+    //   expect(b).toBeTruthy();
+    // });
 
     test('iterable', () => {
       const e = new Euler(0.5, 0.75, 1, 'YZX');

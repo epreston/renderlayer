@@ -1,6 +1,8 @@
 import { clamp as clampToRange } from './MathUtils.js';
 
 class Quaternion {
+  #onChangeCallback = () => {};
+
   constructor(x = 0, y = 0, z = 0, w = 1) {
     this.isQuaternion = true;
 
@@ -104,7 +106,7 @@ class Quaternion {
 
   set x(value) {
     this._x = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
 
   get y() {
@@ -113,7 +115,7 @@ class Quaternion {
 
   set y(value) {
     this._y = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
 
   get z() {
@@ -122,7 +124,7 @@ class Quaternion {
 
   set z(value) {
     this._z = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
 
   get w() {
@@ -131,7 +133,7 @@ class Quaternion {
 
   set w(value) {
     this._w = value;
-    this._onChangeCallback();
+    this.#onChangeCallback();
   }
 
   set(x, y, z, w) {
@@ -140,7 +142,7 @@ class Quaternion {
     this._z = z;
     this._w = w;
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -157,7 +159,7 @@ class Quaternion {
     this._w = quaternion.w;
 
     // update check required to optimize Object3D.copy()
-    if (update === true) this._onChangeCallback();
+    if (update === true) this.#onChangeCallback();
 
     return this;
   }
@@ -230,7 +232,7 @@ class Quaternion {
         console.warn(`Quaternion: .setFromEuler() encountered an unknown order: ${order}`);
     }
 
-    if (update !== false) this._onChangeCallback();
+    if (update !== false) this.#onChangeCallback();
 
     return this;
   }
@@ -248,7 +250,7 @@ class Quaternion {
     this._z = axis.z * s;
     this._w = Math.cos(halfAngle);
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -302,7 +304,7 @@ class Quaternion {
       this._z = 0.25 * s;
     }
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -370,7 +372,7 @@ class Quaternion {
     this._y *= -1;
     this._z *= -1;
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -404,7 +406,7 @@ class Quaternion {
       this._w = this._w * l;
     }
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -435,7 +437,7 @@ class Quaternion {
     this._z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
     this._w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -483,7 +485,7 @@ class Quaternion {
       this._z = s * z + t * this._z;
 
       this.normalize();
-      this._onChangeCallback();
+      this.#onChangeCallback();
 
       return this;
     }
@@ -498,7 +500,7 @@ class Quaternion {
     this._y = y * ratioA + this._y * ratioB;
     this._z = z * ratioA + this._z * ratioB;
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -545,7 +547,7 @@ class Quaternion {
     this._z = array[offset + 2];
     this._w = array[offset + 3];
 
-    this._onChangeCallback();
+    this.#onChangeCallback();
 
     return this;
   }
@@ -573,12 +575,10 @@ class Quaternion {
   }
 
   _onChange(callback) {
-    this._onChangeCallback = callback;
+    this.#onChangeCallback = callback;
 
     return this;
   }
-
-  _onChangeCallback() {}
 
   *[Symbol.iterator]() {
     yield this._x;

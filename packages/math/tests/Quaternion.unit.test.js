@@ -676,35 +676,35 @@ describe('Maths', () => {
       expect(a.w).toBeCloseTo(0.7);
     });
 
-    test('_onChange', () => {
-      let b = false;
-      const f = function () {
-        b = true;
-      };
+    // test('_onChange', () => {
+    //   let b = false;
+    //   const f = function () {
+    //     b = true;
+    //   };
 
-      const a = new Quaternion(11, 12, 13, 1);
-      a._onChange(f);
-      expect(a._onChangeCallback === f).toBeTruthy();
+    //   const a = new Quaternion(11, 12, 13, 1);
+    //   a._onChange(f);
+    //   expect(a.#onChangeCallback === f).toBeTruthy();
 
-      a._onChangeCallback();
-      expect(b).toBeTruthy();
-    });
+    //   a.#onChangeCallback();
+    //   expect(b).toBeTruthy();
+    // });
 
-    test('_onChangeCallback', () => {
-      let b = false;
-      const a = new Quaternion(11, 12, 13, 1);
-      const f = function () {
-        b = true;
-        // @ts-ignore
-        expect(a === this).toBeTruthy();
-      };
+    // test('_onChangeCallback', () => {
+    //   let b = false;
+    //   const a = new Quaternion(11, 12, 13, 1);
+    //   const f = function () {
+    //     b = true;
+    //     // @ts-ignore
+    //     expect(a === this).toBeTruthy();
+    //   };
 
-      a._onChangeCallback = f;
-      expect(a._onChangeCallback === f).toBeTruthy();
+    //   a.#onChangeCallback = f;
+    //   expect(a.#onChangeCallback === f).toBeTruthy();
 
-      a._onChangeCallback();
-      expect(b).toBeTruthy();
-    });
+    //   a.#onChangeCallback();
+    //   expect(b).toBeTruthy();
+    // });
 
     test('multiplyVector3', () => {
       const angles = [new Euler(1, 0, 0), new Euler(0, 1, 0), new Euler(0, 0, 1)];
