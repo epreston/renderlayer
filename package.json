@@ -20,7 +20,7 @@
     "build": "node scripts/build.js",
     "check": "node scripts/circular.js",
     "check-types": "tsc --project tsconfig.json --incremental --allowJs --checkJs --noEmit",
-    "clean": "rimraf -g packages/*/dist temp .eslintcache",
+    "clean": "rimraf -g -v packages/*/dist temp .eslintcache",
     "meta": "node scripts/meta.js",
     "size": "cd apps/size-check && vite build && node brotli",
     "lint": "eslint .",
