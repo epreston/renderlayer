@@ -5,7 +5,7 @@ export default {
   },
   build: {
     assetsInlineLimit: 0,
-    target: ['es2022'],
+    target: ['es2024'],
     rollupOptions: {
       input: ['src/main.js'],
       output: {

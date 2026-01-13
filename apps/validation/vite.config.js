@@ -12,6 +12,6 @@ export default {
   build: {
     assetsInlineLimit: 0,
     chunkSizeWarningLimit: 600,
-    target: ['es2022']
+    target: ['es2024']
   }
 };

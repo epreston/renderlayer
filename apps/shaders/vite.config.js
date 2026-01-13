@@ -11,6 +11,6 @@ export default {
   assetsInclude: ['**/*.gltf', '**/*.glb', '**/*.hdr'],
   build: {
     assetsInlineLimit: 0,
-    target: ['es2022']
+    target: ['es2024']
   }
 };
