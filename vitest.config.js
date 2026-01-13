@@ -17,6 +17,10 @@ export default defineConfig({
     alias: entries
   },
   test: {
+    // Debugging Tests
+    // testTimeout: 0,
+    // fileParallelism: false,
+
     // globals: true,
     pool: 'forks',
     setupFiles: ['./scripts/setup-vitest.js'],
