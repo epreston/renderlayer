@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/webgl",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Webgl2 abstractions used by @renderlayer packages.",
   "module": "./dist/webgl.esm-bundler.js",
   "exports": "./dist/webgl.esm-bundler.js",
@@ -29,16 +29,16 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/webgl#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.6",
-    "@renderlayer/core": "~0.0.7",
-    "@renderlayer/geometries": "~0.0.6",
-    "@renderlayer/materials": "~0.0.13",
-    "@renderlayer/math": "~0.0.12",
-    "@renderlayer/objects": "~0.0.8",
-    "@renderlayer/pmrem": "~0.0.2",
-    "@renderlayer/shaders": "~0.0.9",
-    "@renderlayer/shared": "~0.0.7",
-    "@renderlayer/targets": "~0.0.6",
-    "@renderlayer/textures": "~0.0.11"
+    "@renderlayer/buffers": "~0.0.7",
+    "@renderlayer/core": "~0.0.8",
+    "@renderlayer/geometries": "~0.0.7",
+    "@renderlayer/materials": "~0.0.14",
+    "@renderlayer/math": "~0.0.14",
+    "@renderlayer/objects": "~0.0.9",
+    "@renderlayer/pmrem": "~0.0.3",
+    "@renderlayer/shaders": "~0.0.10",
+    "@renderlayer/shared": "~0.0.8",
+    "@renderlayer/targets": "~0.0.7",
+    "@renderlayer/textures": "~0.0.12"
   }
 }

@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/shared",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Constants and utility functions shared across @renderlayer packages",
   "module": "./dist/shared.esm-bundler.js",
   "exports": "./dist/shared.esm-bundler.js",

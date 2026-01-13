@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/scenes",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "@renderlayer/scenes",
   "module": "./dist/scenes.esm-bundler.js",
   "exports": "./dist/scenes.esm-bundler.js",
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/scenes#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.7",
-    "@renderlayer/math": "~0.0.12"
+    "@renderlayer/core": "~0.0.8",
+    "@renderlayer/math": "~0.0.14"
   }
 }

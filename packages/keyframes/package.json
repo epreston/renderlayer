@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/keyframes",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "@renderlayer/keyframes",
   "module": "./dist/keyframes.esm-bundler.js",
   "exports": "./dist/keyframes.esm-bundler.js",
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/keyframes#readme",
   "dependencies": {
-    "@renderlayer/interpolants": "~0.0.3",
-    "@renderlayer/shared": "~0.0.7"
+    "@renderlayer/interpolants": "~0.0.4",
+    "@renderlayer/shared": "~0.0.8"
   }
 }

@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/animation",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Animation library used by @renderlayer packages.",
   "module": "./dist/animation.esm-bundler.js",
   "exports": "./dist/animation.esm-bundler.js",
@@ -30,10 +30,10 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/animation#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.7",
-    "@renderlayer/interpolants": "~0.0.3",
-    "@renderlayer/keyframes": "~0.0.5",
-    "@renderlayer/math": "~0.0.12",
-    "@renderlayer/shared": "~0.0.7"
+    "@renderlayer/core": "~0.0.8",
+    "@renderlayer/interpolants": "~0.0.4",
+    "@renderlayer/keyframes": "~0.0.6",
+    "@renderlayer/math": "~0.0.14",
+    "@renderlayer/shared": "~0.0.8"
   }
 }

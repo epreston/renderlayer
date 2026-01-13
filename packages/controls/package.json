@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/controls",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "@renderlayer/controls",
   "module": "./dist/controls.esm-bundler.js",
   "exports": "./dist/controls.esm-bundler.js",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/controls#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.7",
-    "@renderlayer/math": "~0.0.12"
+    "@renderlayer/core": "~0.0.8",
+    "@renderlayer/math": "~0.0.14"
   }
 }

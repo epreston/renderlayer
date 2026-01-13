@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "name": "@renderlayer/utils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "@renderlayer/utils",
 
   "files": [
@@ -29,6 +29,6 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/utils#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.12"
+    "@renderlayer/math": "~0.0.14"
   }
 }

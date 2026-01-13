@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/draco",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "@renderlayer/draco",
   "module": "./dist/draco.esm-bundler.js",
   "exports": "./dist/draco.esm-bundler.js",
@@ -33,9 +33,9 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/draco#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.6",
-    "@renderlayer/loaders": "~0.0.16",
-    "@renderlayer/math": "~0.0.12",
-    "@renderlayer/shared": "~0.0.7"
+    "@renderlayer/buffers": "~0.0.7",
+    "@renderlayer/loaders": "~0.0.17",
+    "@renderlayer/math": "~0.0.14",
+    "@renderlayer/shared": "~0.0.8"
   }
 }

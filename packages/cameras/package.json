@@ -2,7 +2,7 @@
   "type": "module",
   "sideEffects": false,
   "name": "@renderlayer/cameras",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Camera library used by @renderlayer packages",
   "module": "./dist/cameras.esm-bundler.js",
   "exports": "./dist/cameras.esm-bundler.js",
@@ -29,8 +29,8 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/cameras#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.7",
-    "@renderlayer/math": "~0.0.12",
-    "@renderlayer/shared": "~0.0.7"
+    "@renderlayer/core": "~0.0.8",
+    "@renderlayer/math": "~0.0.14",
+    "@renderlayer/shared": "~0.0.8"
   }
 }

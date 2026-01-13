@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/core",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "@renderlayer/core",
   "module": "./dist/core.esm-bundler.js",
   "exports": "./dist/core.esm-bundler.js",
@@ -33,6 +33,6 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/core#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.12"
+    "@renderlayer/math": "~0.0.14"
   }
 }
