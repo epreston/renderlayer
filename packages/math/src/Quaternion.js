@@ -149,6 +149,7 @@ class Quaternion {
 
   /** @returns {this} */
   clone() {
+    // @ts-ignore
     return new this.constructor(this._x, this._y, this._z, this._w);
   }
 

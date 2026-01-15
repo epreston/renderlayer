@@ -208,6 +208,7 @@ class Color {
 
   /** @returns {this} */
   clone() {
+    // @ts-ignore
     return new this.constructor(this.r, this.g, this.b);
   }
 

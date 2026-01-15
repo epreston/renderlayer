@@ -78,6 +78,7 @@ class Vector2 {
 
   /** @returns {this} */
   clone() {
+    // @ts-ignore
     return new this.constructor(this.x, this.y);
   }
 

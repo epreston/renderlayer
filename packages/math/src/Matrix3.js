@@ -354,6 +354,7 @@ class Matrix3 {
 
   /** @returns {this} */
   clone() {
+    // @ts-ignore
     return new this.constructor().fromArray(this.elements);
   }
 }

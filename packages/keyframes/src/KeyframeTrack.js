@@ -332,6 +332,7 @@ class KeyframeTrack {
     const times = this.times.slice();
     const values = this.values.slice();
 
+    // @ts-ignore
     const track = new this.constructor(this.name, times, values);
 
     // Interpolant argument to constructor is not saved, so copy the factory method directly.
