@@ -692,6 +692,7 @@ class Object3D extends EventDispatcher {
   }
 
   clone(recursive) {
+    // @ts-ignore
     return new this.constructor().copy(this, recursive);
   }
 
