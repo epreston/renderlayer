@@ -49,7 +49,7 @@
     "minimist": "^1.2.8",
     "msw": "^2.12.7",
     "picocolors": "^1.1.1",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.0",
     "pretty-bytes": "^7.1.0",
     "rimraf": "^6.1.2",
     "rollup": "^4.55.1",
