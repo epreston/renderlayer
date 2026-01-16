@@ -22,91 +22,85 @@ const _addedEvent = { type: 'added' };
 const _removedEvent = { type: 'removed' };
 
 class Object3D extends EventDispatcher {
+  isObject3D = true;
+
+  #id = _object3DId++;
+
+  uuid = generateUUID();
+  name = '';
+  type = 'Object3D';
+
+  parent = null;
+  children = [];
+
+  up = Object3D.DEFAULT_UP.clone();
+
+  #position = new Vector3();
+  #rotation = new Euler();
+  #quaternion = new Quaternion();
+  #scale = new Vector3(1, 1, 1);
+
+  #modelViewMatrix = new Matrix4();
+  #normalMatrix = new Matrix3();
+
+  matrix = new Matrix4();
+  matrixWorld = new Matrix4();
+
+  matrixAutoUpdate = Object3D.DEFAULT_MATRIX_AUTO_UPDATE;
+  matrixWorldNeedsUpdate = false;
+
+  matrixWorldAutoUpdate = Object3D.DEFAULT_MATRIX_WORLD_AUTO_UPDATE; // checked by the renderer
+
+  layers = new Layers();
+  visible = true;
+
+  castShadow = false;
+  receiveShadow = false;
+
+  frustumCulled = true;
+  renderOrder = 0;
+
+  animations = [];
+
+  userData = {};
+
   constructor() {
     super();
 
-    this.isObject3D = true;
-
-    Object.defineProperty(this, 'id', { value: _object3DId++ });
-
-    this.uuid = generateUUID();
-
-    this.name = '';
-    this.type = 'Object3D';
-
-    this.parent = null;
-    this.children = [];
-
-    this.up = Object3D.DEFAULT_UP.clone();
-
-    const position = new Vector3();
-    const rotation = new Euler();
-    const quaternion = new Quaternion();
-    const scale = new Vector3(1, 1, 1);
-
-    this.position = position;
-    this.rotation = rotation;
-    this.quaternion = quaternion;
-    this.scale = scale;
-
-    Object.defineProperties(this, {
-      position: {
-        writable: false
-      },
-      rotation: {
-        writable: false
-      },
-      quaternion: {
-        writable: false
-      },
-      scale: {
-        writable: false
-      },
-      modelViewMatrix: {
-        // enumerable: false,
-        // configurable: false,
-        // writable: false,
-        value: new Matrix4()
-      },
-      normalMatrix: {
-        // enumerable: false,
-        // configurable: false,
-        // writable: false,
-        value: new Matrix3()
-      }
+    this.rotation._onChange(() => {
+      this.quaternion.setFromEuler(this.rotation, false);
     });
+    this.quaternion._onChange(() => {
+      this.rotation.setFromQuaternion(this.quaternion, undefined, false);
+    });
+  }
 
-    function onRotationChange() {
-      quaternion.setFromEuler(rotation, false);
-    }
+  get id() {
+    return this.#id;
+  }
 
-    function onQuaternionChange() {
-      rotation.setFromQuaternion(quaternion, undefined, false);
-    }
+  get position() {
+    return this.#position;
+  }
 
-    rotation._onChange(onRotationChange);
-    quaternion._onChange(onQuaternionChange);
+  get rotation() {
+    return this.#rotation;
+  }
 
-    this.matrix = new Matrix4();
-    this.matrixWorld = new Matrix4();
+  get quaternion() {
+    return this.#quaternion;
+  }
 
-    this.matrixAutoUpdate = Object3D.DEFAULT_MATRIX_AUTO_UPDATE;
-    this.matrixWorldNeedsUpdate = false;
+  get scale() {
+    return this.#scale;
+  }
 
-    this.matrixWorldAutoUpdate = Object3D.DEFAULT_MATRIX_WORLD_AUTO_UPDATE; // checked by the renderer
+  get modelViewMatrix() {
+    return this.#modelViewMatrix;
+  }
 
-    this.layers = new Layers();
-    this.visible = true;
-
-    this.castShadow = false;
-    this.receiveShadow = false;
-
-    this.frustumCulled = true;
-    this.renderOrder = 0;
-
-    this.animations = [];
-
-    this.userData = {};
+  get normalMatrix() {
+    return this.#normalMatrix;
   }
 
   onBeforeRender(/* renderer, scene, camera, geometry, material, group */) {}
