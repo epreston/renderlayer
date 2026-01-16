@@ -1,6 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
-import { Euler, Matrix4, Quaternion, Vector3 } from '@renderlayer/math';
+import { Euler, Matrix4, Matrix3, Quaternion, Vector3 } from '@renderlayer/math';
 import { EventDispatcher } from '../src/EventDispatcher.js';
 import { eulerEquals, matrixEquals4 } from './math-compare.js';
 import { eps, w, x, y, z } from './math-constants.js';
@@ -82,84 +82,116 @@ describe('Core', () => {
       expect(root.children[0]).to.be.an.instanceof(Object3D);
     });
 
-    test.todo('up', () => {
-      // implement
+    test('up', () => {
+      const object = new Object3D();
+      expect(object.up).toBeDefined();
     });
 
-    test.todo('position', () => {
-      // implement
+    test('position', () => {
+      const object = new Object3D();
+      expect(object.position).toBeDefined();
     });
 
-    test.todo('rotation', () => {
-      // implement
+    test('rotation', () => {
+      const object = new Object3D();
+      expect(object.rotation).toBeDefined();
     });
 
-    test.todo('quaternion', () => {
-      // implement
+    test('quaternion', () => {
+      const object = new Object3D();
+      expect(object.quaternion).toBeDefined();
     });
 
-    test.todo('scale', () => {
-      // implement
+    test('scale', () => {
+      const object = new Object3D();
+      expect(object.scale).toBeDefined();
     });
 
-    test.todo('modelViewMatrix', () => {
-      // implement
+    test('modelViewMatrix', () => {
+      const object = new Object3D();
+      expect(object.modelViewMatrix).toBeDefined();
+
+      const matrixMV = object.modelViewMatrix;
+      expect(matrixMV).toBeDefined();
+
+      expect(object.modelViewMatrix).to.be.an.instanceof(Matrix4);
     });
 
-    test.todo('normalMatrix', () => {
-      // implement
+    test('normalMatrix', () => {
+      const object = new Object3D();
+      expect(object.normalMatrix).toBeDefined();
+
+      expect(object.normalMatrix).to.be.an.instanceof(Matrix3);
     });
 
-    test.todo('matrix', () => {
-      // implement
+    test('matrix', () => {
+      const object = new Object3D();
+      expect(object.matrix).toBeDefined();
+
+      expect(object.matrix).to.be.an.instanceof(Matrix4);
     });
 
-    test.todo('matrixWorld', () => {
-      // implement
+    test('matrixWorld', () => {
+      const object = new Object3D();
+      expect(object.matrixWorld).toBeDefined();
+
+      expect(object.matrixWorld).to.be.an.instanceof(Matrix4);
     });
 
     test.todo('matrixAutoUpdate', () => {
       // implement
     });
 
-    test.todo('matrixWorldNeedsUpdate', () => {
-      // implement
+    test('matrixWorldNeedsUpdate', () => {
+      const object = new Object3D();
+      expect(object.matrixWorldNeedsUpdate).toBeFalsy();
     });
 
     test.todo('matrixWorldAutoUpdate', () => {
       // implement
     });
 
-    test.todo('layers', () => {
-      // implement
+    test('layers', () => {
+      const object = new Object3D();
+      expect(object.layers).toBeDefined();
     });
 
-    test.todo('visible', () => {
-      // implement
+    test('visible', () => {
+      const object = new Object3D();
+      expect(object.visible).toBeTruthy();
     });
 
-    test.todo('castShadow', () => {
-      // implement
+    test('castShadow', () => {
+      const object = new Object3D();
+      expect(object.castShadow).toBeFalsy();
     });
 
-    test.todo('receiveShadow', () => {
-      // implement
+    test('receiveShadow', () => {
+      const object = new Object3D();
+      expect(object.receiveShadow).toBeFalsy();
     });
 
-    test.todo('frustumCulled', () => {
-      // implement
+    test('frustumCulled', () => {
+      const object = new Object3D();
+      expect(object.frustumCulled).toBeTruthy();
     });
 
-    test.todo('renderOrder', () => {
-      // implement
+    test('renderOrder', () => {
+      const object = new Object3D();
+      expect(object.renderOrder).toBe(0);
     });
 
-    test.todo('animations', () => {
-      // implement
+    test('animations', () => {
+      const object = new Object3D();
+      expect(object.animations).toBeDefined();
+
+      expect(object.animations).to.be.an('array');
+      expect(object.animations).to.be.empty;
     });
 
-    test.todo('userData', () => {
-      // implement
+    test('userData', () => {
+      const object = new Object3D();
+      expect(object.userData).toBeDefined();
     });
 
     test('DEFAULT_UP', () => {
