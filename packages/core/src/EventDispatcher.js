@@ -3,10 +3,10 @@
  */
 
 class EventDispatcher {
-  addEventListener(type, listener) {
-    if (this._listeners === undefined) this._listeners = new Map();
+  #listeners = new Map();
 
-    const listeners = this._listeners;
+  addEventListener(type, listener) {
+    const listeners = this.#listeners;
 
     if (!listeners.has(type)) {
       listeners.set(type, []);
@@ -18,17 +18,13 @@ class EventDispatcher {
   }
 
   hasEventListener(type, listener) {
-    if (this._listeners === undefined) return false;
-
-    const listeners = this._listeners;
+    const listeners = this.#listeners;
 
     return listeners.has(type) && listeners.get(type).includes(listener);
   }
 
   removeEventListener(type, listener) {
-    if (this._listeners === undefined) return;
-
-    const listeners = this._listeners;
+    const listeners = this.#listeners;
     const listenerArray = listeners.get(type);
 
     if (listenerArray !== undefined) {
@@ -41,9 +37,7 @@ class EventDispatcher {
   }
 
   dispatchEvent(event) {
-    if (this._listeners === undefined) return;
-
-    const listeners = this._listeners;
+    const listeners = this.#listeners;
     const listenerArray = listeners.get(event.type);
 
     if (listenerArray !== undefined) {
