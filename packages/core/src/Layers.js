@@ -1,7 +1,5 @@
 class Layers {
-  constructor() {
-    this.mask = 1 | 0;
-  }
+  mask = 1 | 0;
 
   set(channel) {
     this.mask = ((1 << channel) | 0) >>> 0;

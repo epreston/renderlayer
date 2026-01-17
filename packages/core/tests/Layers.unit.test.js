@@ -9,8 +9,9 @@ describe('Core', () => {
       expect(object).toBeDefined();
     });
 
-    test.todo('mask', () => {
-      // implement
+    test('mask', () => {
+      const object = new Layers();
+      expect(object.mask).toBeDefined();
     });
 
     test('set', () => {
@@ -42,8 +43,11 @@ describe('Core', () => {
       expect(a.mask).toBe(2);
     });
 
-    test.todo('enableAll', () => {
-      // implement
+    test('enableAll', () => {
+      const a = new Layers();
+
+      a.enableAll();
+      expect(a.mask).toBe(-1);
     });
 
     test('toggle', () => {
@@ -86,8 +90,11 @@ describe('Core', () => {
       expect(a.mask).toBe(0);
     });
 
-    test.todo('disableAll', () => {
-      // implement
+    test('disableAll', () => {
+      const a = new Layers();
+
+      a.disableAll();
+      expect(a.mask).toBe(0);
     });
 
     test('test', () => {
