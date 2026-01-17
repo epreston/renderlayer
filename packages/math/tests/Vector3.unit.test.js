@@ -49,20 +49,40 @@ describe('Maths', () => {
       expect(a.z).toBe(z);
     });
 
-    test.todo('setScalar', () => {
-      // implement
+    test('setScalar', () => {
+      const a = new Vector3();
+      expect(a.x).toBe(0);
+      expect(a.y).toBe(0);
+      expect(a.z).toBe(0);
+
+      a.setScalar(7);
+      expect(a.x).toBe(7);
+      expect(a.y).toBe(7);
+      expect(a.z).toBe(7);
     });
 
-    test.todo('setX', () => {
-      // implement
+    test('setX', () => {
+      const a = new Vector3();
+      expect(a.x).toBe(0);
+
+      a.setX(7);
+      expect(a.x).toBe(7);
     });
 
-    test.todo('setY', () => {
-      // implement
+    test('setY', () => {
+      const a = new Vector3();
+      expect(a.y).toBe(0);
+
+      a.setY(7);
+      expect(a.y).toBe(7);
     });
 
-    test.todo('setZ', () => {
-      // implement
+    test('setZ', () => {
+      const a = new Vector3();
+      expect(a.z).toBe(0);
+
+      a.setZ(7);
+      expect(a.z).toBe(7);
     });
 
     test.todo('setComponent', () => {
