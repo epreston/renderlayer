@@ -61,30 +61,42 @@ describe('Core', () => {
     test('constructor', () => {
       const object = new Raycaster();
       expect(object).toBeDefined();
+
+      const objectB = new Raycaster(new Vector3(), new Vector3(0, 0, -1));
+      expect(objectB).toBeDefined();
     });
 
-    test.todo('ray', () => {
-      // implement
+    test('ray', () => {
+      const object = new Raycaster();
+      expect(object.ray).toBeDefined();
     });
 
-    test.todo('near', () => {
-      // implement
+    test('near', () => {
+      const object = new Raycaster();
+      expect(object.near).toBeDefined();
+      expect(object.near).toBe(0);
     });
 
-    test.todo('far', () => {
-      // implement
+    test('far', () => {
+      const object = new Raycaster();
+      expect(object.far).toBeDefined();
+      expect(object.far).toBe(Infinity);
     });
 
-    test.todo('camera', () => {
-      // implement
+    test('camera', () => {
+      const object = new Raycaster();
+      expect(object.camera).toBeDefined();
+      expect(object.camera).toBeNull();
     });
 
-    test.todo('layers', () => {
-      // implement
+    test('layers', () => {
+      const object = new Raycaster();
+      expect(object.layers).toBeDefined();
     });
 
-    test.todo('params', () => {
-      // implement
+    test('params', () => {
+      const object = new Raycaster();
+      expect(object.params).toBeDefined();
     });
 
     test('set', () => {

@@ -4,27 +4,31 @@ import { Layers } from './Layers.js';
 // TODO: remove from core
 
 class Raycaster {
+  ray;
+
+  near = 0;
+  far = Infinity;
+  camera = null;
+  layers = new Layers();
+
+  params = {
+    Mesh: {},
+    Line: { threshold: 1 },
+    LOD: {},
+    Points: { threshold: 1 },
+    Sprite: {}
+  };
+
   constructor(origin, direction, near = 0, far = Infinity) {
-    this.ray = new Ray(origin, direction);
     // direction is assumed to be normalized (for accurate distance calculations)
+    this.ray = new Ray(origin, direction);
 
     this.near = near;
     this.far = far;
-    this.camera = null;
-    this.layers = new Layers();
-
-    this.params = {
-      Mesh: {},
-      Line: { threshold: 1 },
-      LOD: {},
-      Points: { threshold: 1 },
-      Sprite: {}
-    };
   }
 
   set(origin, direction) {
     // direction is assumed to be normalized (for accurate distance calculations)
-
     this.ray.set(origin, direction);
   }
 
