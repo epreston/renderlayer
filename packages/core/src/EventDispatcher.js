@@ -3,7 +3,7 @@
  */
 
 class EventDispatcher {
-  #listeners = new Map();
+  #listeners = /* @__PURE__ */ new Map();
 
   addEventListener(type, listener) {
     const listeners = this.#listeners;

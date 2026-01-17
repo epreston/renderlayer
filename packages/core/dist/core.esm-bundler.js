@@ -1,9 +1,9 @@
-import { generateUUID, Vector3, Euler, Quaternion, Matrix3, Matrix4, Ray } from '@renderlayer/math';
+import { generateUUID, Vector3, Euler, Quaternion, Matrix4, Matrix3, Ray } from '@renderlayer/math';
 
 class EventDispatcher {
+  #listeners = /* @__PURE__ */ new Map();
   addEventListener(type, listener) {
-    if (this._listeners === void 0) this._listeners = /* @__PURE__ */ new Map();
-    const listeners = this._listeners;
+    const listeners = this.#listeners;
     if (!listeners.has(type)) {
       listeners.set(type, []);
     }
@@ -12,13 +12,11 @@ class EventDispatcher {
     }
   }
   hasEventListener(type, listener) {
-    if (this._listeners === void 0) return false;
-    const listeners = this._listeners;
+    const listeners = this.#listeners;
     return listeners.has(type) && listeners.get(type).includes(listener);
   }
   removeEventListener(type, listener) {
-    if (this._listeners === void 0) return;
-    const listeners = this._listeners;
+    const listeners = this.#listeners;
     const listenerArray = listeners.get(type);
     if (listenerArray !== void 0) {
       const index = listenerArray.indexOf(listener);
@@ -28,8 +26,7 @@ class EventDispatcher {
     }
   }
   dispatchEvent(event) {
-    if (this._listeners === void 0) return;
-    const listeners = this._listeners;
+    const listeners = this.#listeners;
     const listenerArray = listeners.get(event.type);
     if (listenerArray !== void 0) {
       event.target = this;
@@ -43,9 +40,7 @@ class EventDispatcher {
 }
 
 class Layers {
-  constructor() {
-    this.mask = 1 | 0;
-  }
+  mask = 1 | 0;
   set(channel) {
     this.mask = (1 << channel | 0) >>> 0;
   }
@@ -86,71 +81,63 @@ const _zAxis = /* @__PURE__ */ new Vector3(0, 0, 1);
 const _addedEvent = { type: "added" };
 const _removedEvent = { type: "removed" };
 class Object3D extends EventDispatcher {
+  isObject3D = true;
+  #id = _object3DId++;
+  uuid = generateUUID();
+  name = "";
+  type = "Object3D";
+  parent = null;
+  children = [];
+  up = Object3D.DEFAULT_UP.clone();
+  #position = new Vector3();
+  #rotation = new Euler();
+  #quaternion = new Quaternion();
+  #scale = new Vector3(1, 1, 1);
+  #modelViewMatrix = new Matrix4();
+  #normalMatrix = new Matrix3();
+  matrix = new Matrix4();
+  matrixWorld = new Matrix4();
+  matrixAutoUpdate = Object3D.DEFAULT_MATRIX_AUTO_UPDATE;
+  matrixWorldNeedsUpdate = false;
+  matrixWorldAutoUpdate = Object3D.DEFAULT_MATRIX_WORLD_AUTO_UPDATE;
+  // checked by the renderer
+  layers = new Layers();
+  visible = true;
+  castShadow = false;
+  receiveShadow = false;
+  frustumCulled = true;
+  renderOrder = 0;
+  animations = [];
+  userData = {};
   constructor() {
     super();
-    this.isObject3D = true;
-    Object.defineProperty(this, "id", { value: _object3DId++ });
-    this.uuid = generateUUID();
-    this.name = "";
-    this.type = "Object3D";
-    this.parent = null;
-    this.children = [];
-    this.up = Object3D.DEFAULT_UP.clone();
-    const position = new Vector3();
-    const rotation = new Euler();
-    const quaternion = new Quaternion();
-    const scale = new Vector3(1, 1, 1);
-    this.position = position;
-    this.rotation = rotation;
-    this.quaternion = quaternion;
-    this.scale = scale;
-    Object.defineProperties(this, {
-      position: {
-        writable: false
-      },
-      rotation: {
-        writable: false
-      },
-      quaternion: {
-        writable: false
-      },
-      scale: {
-        writable: false
-      },
-      modelViewMatrix: {
-        // enumerable: false,
-        // configurable: false,
-        // writable: false,
-        value: new Matrix4()
-      },
-      normalMatrix: {
-        // enumerable: false,
-        // configurable: false,
-        // writable: false,
-        value: new Matrix3()
-      }
+    this.rotation._onChange(() => {
+      this.quaternion.setFromEuler(this.rotation, false);
     });
-    function onRotationChange() {
-      quaternion.setFromEuler(rotation, false);
-    }
-    function onQuaternionChange() {
-      rotation.setFromQuaternion(quaternion, void 0, false);
-    }
-    rotation._onChange(onRotationChange);
-    quaternion._onChange(onQuaternionChange);
-    this.matrix = new Matrix4();
-    this.matrixWorld = new Matrix4();
-    this.matrixAutoUpdate = Object3D.DEFAULT_MATRIX_AUTO_UPDATE;
-    this.matrixWorldNeedsUpdate = false;
-    this.matrixWorldAutoUpdate = Object3D.DEFAULT_MATRIX_WORLD_AUTO_UPDATE;
-    this.layers = new Layers();
-    this.visible = true;
-    this.castShadow = false;
-    this.receiveShadow = false;
-    this.frustumCulled = true;
-    this.renderOrder = 0;
-    this.animations = [];
-    this.userData = {};
+    this.quaternion._onChange(() => {
+      this.rotation.setFromQuaternion(this.quaternion, void 0, false);
+    });
+  }
+  get id() {
+    return this.#id;
+  }
+  get position() {
+    return this.#position;
+  }
+  get rotation() {
+    return this.#rotation;
+  }
+  get quaternion() {
+    return this.#quaternion;
+  }
+  get scale() {
+    return this.#scale;
+  }
+  get modelViewMatrix() {
+    return this.#modelViewMatrix;
+  }
+  get normalMatrix() {
+    return this.#normalMatrix;
   }
   onBeforeRender() {
   }
@@ -584,19 +571,22 @@ Object3D.DEFAULT_MATRIX_AUTO_UPDATE = true;
 Object3D.DEFAULT_MATRIX_WORLD_AUTO_UPDATE = true;
 
 class Raycaster {
+  ray;
+  near = 0;
+  far = Infinity;
+  camera = null;
+  layers = new Layers();
+  params = {
+    Mesh: {},
+    Line: { threshold: 1 },
+    LOD: {},
+    Points: { threshold: 1 },
+    Sprite: {}
+  };
   constructor(origin, direction, near = 0, far = Infinity) {
     this.ray = new Ray(origin, direction);
     this.near = near;
     this.far = far;
-    this.camera = null;
-    this.layers = new Layers();
-    this.params = {
-      Mesh: {},
-      Line: { threshold: 1 },
-      LOD: {},
-      Points: { threshold: 1 },
-      Sprite: {}
-    };
   }
   set(origin, direction) {
     this.ray.set(origin, direction);
