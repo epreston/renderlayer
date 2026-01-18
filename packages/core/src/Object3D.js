@@ -74,6 +74,7 @@ class Object3D extends EventDispatcher {
     this.rotation._onChange(() => {
       this.quaternion.setFromEuler(this.rotation, false);
     });
+
     this.quaternion._onChange(() => {
       this.rotation.setFromQuaternion(this.quaternion, undefined, false);
     });
@@ -127,7 +128,6 @@ class Object3D extends EventDispatcher {
 
   setRotationFromAxisAngle(axis, angle) {
     // assumes axis is normalized
-
     this.quaternion.setFromAxisAngle(axis, angle);
   }
 
@@ -137,14 +137,12 @@ class Object3D extends EventDispatcher {
 
   setRotationFromMatrix(m) {
     // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
-
     this.quaternion.setFromRotationMatrix(m);
   }
 
-  setRotationFromQuaternion(q) {
-    // assumes q is normalized
-
-    this.quaternion.copy(q);
+  setRotationFromQuaternion(quaternion) {
+    // assumes quaternion is normalized
+    this.quaternion.copy(quaternion);
   }
 
   rotateOnAxis(axis, angle) {
@@ -152,7 +150,6 @@ class Object3D extends EventDispatcher {
     // axis is assumed to be normalized
 
     _q1.setFromAxisAngle(axis, angle);
-
     this.quaternion.multiply(_q1);
 
     return this;
@@ -163,7 +160,6 @@ class Object3D extends EventDispatcher {
     // normalized, method assumes no rotated parent
 
     _q1.setFromAxisAngle(axis, angle);
-
     this.quaternion.premultiply(_q1);
 
     return this;
