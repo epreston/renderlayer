@@ -1,18 +1,19 @@
 import { Matrix3 } from './Matrix3.js';
 import { Vector3 } from './Vector3.js';
 
-const _vector1 = /*@__PURE__*/ new Vector3();
-const _vector2 = /*@__PURE__*/ new Vector3();
-const _normalMatrix = /*@__PURE__*/ new Matrix3();
-
 class Plane {
-  constructor(normal = new Vector3(1, 0, 0), constant = 0) {
-    this.isPlane = true;
+  normal;
+  constant = 0;
 
+  constructor(normal = new Vector3(1, 0, 0), constant = 0) {
     // normal is assumed to be normalized
 
     this.normal = normal;
     this.constant = constant;
+  }
+
+  get isPlane() {
+    return true;
   }
 
   set(normal, constant) {
@@ -155,5 +156,9 @@ class Plane {
     return new this.constructor().copy(this);
   }
 }
+
+const _vector1 = /*@__PURE__*/ new Vector3();
+const _vector2 = /*@__PURE__*/ new Vector3();
+const _normalMatrix = /*@__PURE__*/ new Matrix3();
 
 export { Plane };
