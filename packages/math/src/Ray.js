@@ -1,15 +1,9 @@
 import { Vector3 } from './Vector3.js';
 
-const _vector = /*@__PURE__*/ new Vector3();
-const _segCenter = /*@__PURE__*/ new Vector3();
-const _segDir = /*@__PURE__*/ new Vector3();
-const _diff = /*@__PURE__*/ new Vector3();
-
-const _edge1 = /*@__PURE__*/ new Vector3();
-const _edge2 = /*@__PURE__*/ new Vector3();
-const _normal = /*@__PURE__*/ new Vector3();
-
 class Ray {
+  origin;
+  direction;
+
   constructor(origin = new Vector3(), direction = new Vector3(0, 0, -1)) {
     this.origin = origin;
     this.direction = direction;
@@ -382,5 +376,14 @@ class Ray {
     return new this.constructor().copy(this);
   }
 }
+
+const _vector = /*@__PURE__*/ new Vector3();
+const _segCenter = /*@__PURE__*/ new Vector3();
+const _segDir = /*@__PURE__*/ new Vector3();
+const _diff = /*@__PURE__*/ new Vector3();
+
+const _edge1 = /*@__PURE__*/ new Vector3();
+const _edge2 = /*@__PURE__*/ new Vector3();
+const _normal = /*@__PURE__*/ new Vector3();
 
 export { Ray };
