@@ -3,24 +3,6 @@ import { Euler, Matrix3, Matrix4, Quaternion, Vector3, generateUUID } from '@ren
 import { EventDispatcher } from './EventDispatcher.js';
 import { Layers } from './Layers.js';
 
-let _object3DId = 0;
-
-const _v1 = /*@__PURE__*/ new Vector3();
-const _q1 = /*@__PURE__*/ new Quaternion();
-const _m1 = /*@__PURE__*/ new Matrix4();
-const _target = /*@__PURE__*/ new Vector3();
-
-const _position = /*@__PURE__*/ new Vector3();
-const _scale = /*@__PURE__*/ new Vector3();
-const _quaternion = /*@__PURE__*/ new Quaternion();
-
-const _xAxis = /*@__PURE__*/ new Vector3(1, 0, 0);
-const _yAxis = /*@__PURE__*/ new Vector3(0, 1, 0);
-const _zAxis = /*@__PURE__*/ new Vector3(0, 0, 1);
-
-const _addedEvent = { type: 'added' };
-const _removedEvent = { type: 'removed' };
-
 class Object3D extends EventDispatcher {
   static DEFAULT_UP = /*@__PURE__*/ new Vector3(0, 1, 0);
   static DEFAULT_MATRIX_AUTO_UPDATE = true;
@@ -737,5 +719,23 @@ class Object3D extends EventDispatcher {
     return this;
   }
 }
+
+let _object3DId = 0;
+
+const _v1 = /*@__PURE__*/ new Vector3();
+const _q1 = /*@__PURE__*/ new Quaternion();
+const _m1 = /*@__PURE__*/ new Matrix4();
+const _target = /*@__PURE__*/ new Vector3();
+
+const _position = /*@__PURE__*/ new Vector3();
+const _scale = /*@__PURE__*/ new Vector3();
+const _quaternion = /*@__PURE__*/ new Quaternion();
+
+const _xAxis = /*@__PURE__*/ new Vector3(1, 0, 0);
+const _yAxis = /*@__PURE__*/ new Vector3(0, 1, 0);
+const _zAxis = /*@__PURE__*/ new Vector3(0, 0, 1);
+
+const _addedEvent = { type: 'added' };
+const _removedEvent = { type: 'removed' };
 
 export { Object3D };
