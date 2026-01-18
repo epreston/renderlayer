@@ -283,8 +283,8 @@ class Matrix4 {
     return this;
   }
 
-  makeRotationFromQuaternion(q) {
-    return this.compose(_zero, q, _one);
+  makeRotationFromQuaternion(quaternion) {
+    return this.compose(_zero, quaternion, _one);
   }
 
   lookAt(eye, target, up) {
