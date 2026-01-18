@@ -1,10 +1,10 @@
 import { Vector3 } from './Vector3.js';
 import { clamp as clampToRange } from './MathUtils.js';
 
-const _startP = /*@__PURE__*/ new Vector3();
-const _startEnd = /*@__PURE__*/ new Vector3();
-
 class Line3 {
+  start;
+  end;
+
   constructor(start = new Vector3(), end = new Vector3()) {
     this.start = start;
     this.end = end;
@@ -83,5 +83,8 @@ class Line3 {
     return new this.constructor().copy(this);
   }
 }
+
+const _startP = /*@__PURE__*/ new Vector3();
+const _startEnd = /*@__PURE__*/ new Vector3();
 
 export { Line3 };
