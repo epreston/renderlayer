@@ -419,12 +419,12 @@ class Quaternion {
     return this;
   }
 
-  multiply(q) {
-    return this.multiplyQuaternions(this, q);
+  multiply(quaternion) {
+    return this.multiplyQuaternions(this, quaternion);
   }
 
-  premultiply(q) {
-    return this.multiplyQuaternions(q, this);
+  premultiply(quaternion) {
+    return this.multiplyQuaternions(quaternion, this);
   }
 
   multiplyQuaternions(a, b) {
