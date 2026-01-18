@@ -1,6 +1,7 @@
-import { generateUUID, Vector3, Euler, Quaternion, Matrix4, Matrix3, Ray } from '@renderlayer/math';
+import { Vector3, generateUUID, Euler, Quaternion, Matrix4, Matrix3, Ray } from '@renderlayer/math';
 
 class EventDispatcher {
+  // https://github.com/mrdoob/eventdispatcher.js/
   #listeners = /* @__PURE__ */ new Map();
   addEventListener(type, listener) {
     const listeners = this.#listeners;
@@ -81,6 +82,9 @@ const _zAxis = /* @__PURE__ */ new Vector3(0, 0, 1);
 const _addedEvent = { type: "added" };
 const _removedEvent = { type: "removed" };
 class Object3D extends EventDispatcher {
+  static DEFAULT_UP = /* @__PURE__ */ new Vector3(0, 1, 0);
+  static DEFAULT_MATRIX_AUTO_UPDATE = true;
+  static DEFAULT_MATRIX_WORLD_AUTO_UPDATE = true;
   isObject3D = true;
   #id = _object3DId++;
   uuid = generateUUID();
@@ -148,8 +152,8 @@ class Object3D extends EventDispatcher {
     this.matrix.premultiply(matrix);
     this.matrix.decompose(this.position, this.quaternion, this.scale);
   }
-  applyQuaternion(q) {
-    this.quaternion.premultiply(q);
+  applyQuaternion(quaternion) {
+    this.quaternion.premultiply(quaternion);
     return this;
   }
   setRotationFromAxisAngle(axis, angle) {
@@ -158,11 +162,11 @@ class Object3D extends EventDispatcher {
   setRotationFromEuler(euler) {
     this.quaternion.setFromEuler(euler, true);
   }
-  setRotationFromMatrix(m) {
-    this.quaternion.setFromRotationMatrix(m);
+  setRotationFromMatrix(matrix) {
+    this.quaternion.setFromRotationMatrix(matrix);
   }
-  setRotationFromQuaternion(q) {
-    this.quaternion.copy(q);
+  setRotationFromQuaternion(quaternion) {
+    this.quaternion.copy(quaternion);
   }
   rotateOnAxis(axis, angle) {
     _q1.setFromAxisAngle(axis, angle);
@@ -566,9 +570,6 @@ class Object3D extends EventDispatcher {
     return this;
   }
 }
-Object3D.DEFAULT_UP = /* @__PURE__ */ new Vector3(0, 1, 0);
-Object3D.DEFAULT_MATRIX_AUTO_UPDATE = true;
-Object3D.DEFAULT_MATRIX_WORLD_AUTO_UPDATE = true;
 
 class Raycaster {
   ray;

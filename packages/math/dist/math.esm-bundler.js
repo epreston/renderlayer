@@ -162,10 +162,14 @@ function normalize(value, array) {
 }
 
 class Vector2 {
+  x = 0;
+  y = 0;
   constructor(x = 0, y = 0) {
-    Vector2.prototype.isVector2 = true;
     this.x = x;
     this.y = y;
+  }
+  get isVector2() {
+    return true;
   }
   get width() {
     return this.x;
@@ -429,12 +433,15 @@ class Vector2 {
   }
 }
 
-const _vector$4 = /* @__PURE__ */ new Vector2();
 class Box2 {
+  min;
+  max;
   constructor(min = new Vector2(Infinity, Infinity), max = new Vector2(-Infinity, -Infinity)) {
-    this.isBox2 = true;
     this.min = min;
     this.max = max;
+  }
+  get isBox2() {
+    return true;
   }
   set(min, max) {
     this.min.copy(min);
@@ -533,16 +540,23 @@ class Box2 {
     return box.min.equals(this.min) && box.max.equals(this.max);
   }
 }
+const _vector$4 = /* @__PURE__ */ new Vector2();
 
 class Quaternion {
   #onChangeCallback = () => {
   };
+  _x = 0;
+  _y = 0;
+  _z = 0;
+  _w = 1;
   constructor(x = 0, y = 0, z = 0, w = 1) {
-    this.isQuaternion = true;
     this._x = x;
     this._y = y;
     this._z = z;
     this._w = w;
+  }
+  get isQuaternion() {
+    return true;
   }
   static slerpFlat(dst, dstOffset, src0, srcOffset0, src1, srcOffset1, t) {
     let x0 = src0[srcOffset0 + 0];
@@ -660,10 +674,10 @@ class Quaternion {
     return this;
   }
   setFromEuler(euler, update) {
-    const x = euler._x;
-    const y = euler._y;
-    const z = euler._z;
-    const order = euler._order;
+    const x = euler.x;
+    const y = euler.y;
+    const z = euler.z;
+    const order = euler.order;
     const cos = Math.cos;
     const sin = Math.sin;
     const c1 = cos(x / 2);
@@ -788,14 +802,14 @@ class Quaternion {
     }
     return this.normalize();
   }
-  angleTo(q) {
-    return 2 * Math.acos(Math.abs(clamp(this.dot(q), -1, 1)));
+  angleTo(quaternion) {
+    return 2 * Math.acos(Math.abs(clamp(this.dot(quaternion), -1, 1)));
   }
-  rotateTowards(q, step) {
-    const angle = this.angleTo(q);
+  rotateTowards(quaternion, step) {
+    const angle = this.angleTo(quaternion);
     if (angle === 0) return this;
     const t = Math.min(1, step / angle);
-    this.slerp(q, t);
+    this.slerp(quaternion, t);
     return this;
   }
   identity() {
@@ -812,7 +826,7 @@ class Quaternion {
     return this;
   }
   dot(v) {
-    return this._x * v._x + this._y * v._y + this._z * v._z + this._w * v._w;
+    return this._x * v.x + this._y * v.y + this._z * v.z + this._w * v.w;
   }
   lengthSq() {
     return this._x * this._x + this._y * this._y + this._z * this._z + this._w * this._w;
@@ -837,21 +851,21 @@ class Quaternion {
     this.#onChangeCallback();
     return this;
   }
-  multiply(q) {
-    return this.multiplyQuaternions(this, q);
+  multiply(quaternion) {
+    return this.multiplyQuaternions(this, quaternion);
   }
-  premultiply(q) {
-    return this.multiplyQuaternions(q, this);
+  premultiply(quaternion) {
+    return this.multiplyQuaternions(quaternion, this);
   }
   multiplyQuaternions(a, b) {
-    const qax = a._x;
-    const qay = a._y;
-    const qaz = a._z;
-    const qaw = a._w;
-    const qbx = b._x;
-    const qby = b._y;
-    const qbz = b._z;
-    const qbw = b._w;
+    const qax = a.x;
+    const qay = a.y;
+    const qaz = a.z;
+    const qaw = a.w;
+    const qbx = b.x;
+    const qby = b.y;
+    const qbz = b.z;
+    const qbw = b.w;
     this._x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
     this._y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
     this._z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
@@ -866,12 +880,12 @@ class Quaternion {
     const y = this._y;
     const z = this._z;
     const w = this._w;
-    let cosHalfTheta = w * qb._w + x * qb._x + y * qb._y + z * qb._z;
+    let cosHalfTheta = w * qb.w + x * qb.x + y * qb.y + z * qb.z;
     if (cosHalfTheta < 0) {
-      this._w = -qb._w;
-      this._x = -qb._x;
-      this._y = -qb._y;
-      this._z = -qb._z;
+      this._w = -qb.w;
+      this._x = -qb.x;
+      this._y = -qb.y;
+      this._z = -qb.z;
       cosHalfTheta = -cosHalfTheta;
     } else {
       this.copy(qb);
@@ -922,7 +936,7 @@ class Quaternion {
     );
   }
   equals(quaternion) {
-    return quaternion._x === this._x && quaternion._y === this._y && quaternion._z === this._z && quaternion._w === this._w;
+    return quaternion.x === this._x && quaternion.y === this._y && quaternion.z === this._z && quaternion.w === this._w;
   }
   fromArray(array, offset = 0) {
     this._x = array[offset];
@@ -962,11 +976,16 @@ class Quaternion {
 }
 
 class Vector3 {
+  x = 0;
+  y = 0;
+  z = 0;
   constructor(x = 0, y = 0, z = 0) {
-    Vector3.prototype.isVector3 = true;
     this.x = x;
     this.y = y;
     this.z = z;
+  }
+  get isVector3() {
+    return true;
   }
   set(x, y, z) {
     if (z === void 0) z = this.z;
@@ -1338,10 +1357,10 @@ class Vector3 {
   setFromMatrix3Column(mat3, index) {
     return this.fromArray(mat3.elements, index * 3);
   }
-  setFromEuler(e) {
-    this.x = e._x;
-    this.y = e._y;
-    this.z = e._z;
+  setFromEuler(euler) {
+    this.x = euler.x;
+    this.y = euler.y;
+    this.z = euler.z;
     return this;
   }
   setFromColor(c) {
@@ -1396,10 +1415,14 @@ const _vector$3 = /* @__PURE__ */ new Vector3();
 const _quaternion$1 = /* @__PURE__ */ new Quaternion();
 
 class Box3 {
+  min;
+  max;
   constructor(min = new Vector3(Infinity, Infinity, Infinity), max = new Vector3(-Infinity, -Infinity, -Infinity)) {
-    this.isBox3 = true;
     this.min = min;
     this.max = max;
+  }
+  get isBox3() {
+    return true;
   }
   set(min, max) {
     this.min.copy(min);
@@ -1599,16 +1622,16 @@ class Box3 {
       _f2.x,
       0
     ];
-    if (!satForAxes(axes, _v0$1, _v1$3, _v2$2, _extents)) {
+    if (!_satForAxes(axes, _v0$1, _v1$3, _v2$2, _extents)) {
       return false;
     }
     axes = [1, 0, 0, 0, 1, 0, 0, 0, 1];
-    if (!satForAxes(axes, _v0$1, _v1$3, _v2$2, _extents)) {
+    if (!_satForAxes(axes, _v0$1, _v1$3, _v2$2, _extents)) {
       return false;
     }
     _triangleNormal.crossVectors(_f0, _f1);
     axes = [_triangleNormal.x, _triangleNormal.y, _triangleNormal.z];
-    return satForAxes(axes, _v0$1, _v1$3, _v2$2, _extents);
+    return _satForAxes(axes, _v0$1, _v1$3, _v2$2, _extents);
   }
   clampPoint(point, target) {
     return target.copy(point).clamp(this.min, this.max);
@@ -1680,7 +1703,7 @@ const _center = /* @__PURE__ */ new Vector3();
 const _extents = /* @__PURE__ */ new Vector3();
 const _triangleNormal = /* @__PURE__ */ new Vector3();
 const _testAxis = /* @__PURE__ */ new Vector3();
-function satForAxes(axes, v0, v1, v2, extents) {
+function _satForAxes(axes, v0, v1, v2, extents) {
   for (let i = 0, j = axes.length - 3; i <= j; i += 3) {
     _testAxis.fromArray(axes, i);
     const r = extents.x * Math.abs(_testAxis.x) + extents.y * Math.abs(_testAxis.y) + extents.z * Math.abs(_testAxis.z);
@@ -1695,22 +1718,25 @@ function satForAxes(axes, v0, v1, v2, extents) {
 }
 
 class Matrix3 {
+  // prettier-ignore
+  elements = [
+    1,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    1
+  ];
   constructor(n11, n12, n13, n21, n22, n23, n31, n32, n33) {
-    Matrix3.prototype.isMatrix3 = true;
-    this.elements = [
-      1,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      1
-    ];
     if (n11 !== void 0) {
       this.set(n11, n12, n13, n21, n22, n23, n31, n32, n33);
     }
+  }
+  get isMatrix3() {
+    return true;
   }
   set(n11, n12, n13, n21, n22, n23, n31, n32, n33) {
     const te = this.elements;
@@ -1999,7 +2025,6 @@ class Matrix3 {
     }
     return this;
   }
-  /** @param {RelativeIndexable<number>} array */
   toArray(array = [], offset = 0) {
     const te = this.elements;
     array[offset] = te[0];
@@ -2021,7 +2046,7 @@ class Matrix3 {
 const _m3 = /* @__PURE__ */ new Matrix3();
 
 const NoColorSpace = "";
-const SRGBColorSpace$1 = "srgb";
+const SRGBColorSpace = "srgb";
 const LinearSRGBColorSpace = "srgb-linear";
 const DisplayP3ColorSpace = "display-p3";
 const LinearDisplayP3ColorSpace = "display-p3-linear";
@@ -2064,7 +2089,7 @@ const COLOR_SPACES = {
     toReference: (color) => color,
     fromReference: (color) => color
   },
-  [SRGBColorSpace$1]: {
+  [SRGBColorSpace]: {
     transfer: SRGBTransfer,
     primaries: Rec709Primaries,
     toReference: (color) => color.convertSRGBToLinear(),
@@ -2096,7 +2121,7 @@ const ColorManagement = {
     }
     this._workingColorSpace = colorSpace;
   },
-  /** @param {import('./Color.js').Color} color */
+  /** @param {import('@renderlayer/math').Color} color */
   convert(color, sourceColorSpace, targetColorSpace) {
     if (this.enabled === false || sourceColorSpace === targetColorSpace || !sourceColorSpace || !targetColorSpace) {
       return color;
@@ -2110,11 +2135,11 @@ const ColorManagement = {
     const targetFromReference = COLOR_SPACES[targetColorSpace].fromReference;
     return targetFromReference(sourceToReference(color));
   },
-  /** @param {import('./Color.js').Color} color */
+  /** @param {import('@renderlayer/math').Color} color */
   fromWorkingColorSpace(color, targetColorSpace) {
     return this.convert(color, this._workingColorSpace, targetColorSpace);
   },
-  /** @param {import('./Color.js').Color} color */
+  /** @param {import('@renderlayer/math').Color} color */
   toWorkingColorSpace(color, sourceColorSpace) {
     return this.convert(color, sourceColorSpace, this._workingColorSpace);
   },
@@ -2127,24 +2152,15 @@ const ColorManagement = {
   }
 };
 
-const SRGBColorSpace = "srgb";
-const _hslA = { h: 0, s: 0, l: 0 };
-const _hslB = { h: 0, s: 0, l: 0 };
-function hue2rgb(p, q, t) {
-  if (t < 0) t += 1;
-  if (t > 1) t -= 1;
-  if (t < 1 / 6) return p + (q - p) * 6 * t;
-  if (t < 1 / 2) return q;
-  if (t < 2 / 3) return p + (q - p) * 6 * (2 / 3 - t);
-  return p;
-}
 class Color {
+  r = 1;
+  g = 1;
+  b = 1;
   constructor(r, g, b) {
-    this.isColor = true;
-    this.r = 1;
-    this.g = 1;
-    this.b = 1;
     return this.set(r, g, b);
+  }
+  get isColor() {
+    return true;
   }
   set(r, g, b) {
     if (g === void 0 && b === void 0) {
@@ -2167,7 +2183,7 @@ class Color {
     this.b = scalar;
     return this;
   }
-  setHex(hex, colorSpace = SRGBColorSpace) {
+  setHex(hex, colorSpace = _SRGBColorSpace) {
     hex = Math.floor(hex);
     this.r = (hex >> 16 & 255) / 255;
     this.g = (hex >> 8 & 255) / 255;
@@ -2191,14 +2207,14 @@ class Color {
     } else {
       const p = l <= 0.5 ? l * (1 + s) : l + s - l * s;
       const q = 2 * l - p;
-      this.r = hue2rgb(q, p, h + 1 / 3);
-      this.g = hue2rgb(q, p, h);
-      this.b = hue2rgb(q, p, h - 1 / 3);
+      this.r = _hue2rgb(q, p, h + 1 / 3);
+      this.g = _hue2rgb(q, p, h);
+      this.b = _hue2rgb(q, p, h - 1 / 3);
     }
     ColorManagement.toWorkingColorSpace(this, colorSpace);
     return this;
   }
-  setStyle(style, colorSpace = SRGBColorSpace) {
+  setStyle(style, colorSpace = _SRGBColorSpace) {
     function handleAlpha(string) {
       if (string === void 0) return;
       if (parseFloat(string) < 1) {
@@ -2301,11 +2317,11 @@ class Color {
     this.copyLinearToSRGB(this);
     return this;
   }
-  getHex(colorSpace = SRGBColorSpace) {
+  getHex(colorSpace = _SRGBColorSpace) {
     ColorManagement.fromWorkingColorSpace(_color.copy(this), colorSpace);
     return Math.round(clamp(_color.r * 255, 0, 255)) * 65536 + Math.round(clamp(_color.g * 255, 0, 255)) * 256 + Math.round(clamp(_color.b * 255, 0, 255));
   }
-  getHexString(colorSpace = SRGBColorSpace) {
+  getHexString(colorSpace = _SRGBColorSpace) {
     return `000000${this.getHex(colorSpace).toString(16)}`.slice(-6);
   }
   getHSL(target, colorSpace = ColorManagement.workingColorSpace) {
@@ -2349,12 +2365,12 @@ class Color {
     target.b = _color.b;
     return target;
   }
-  getStyle(colorSpace = SRGBColorSpace) {
+  getStyle(colorSpace = _SRGBColorSpace) {
     ColorManagement.fromWorkingColorSpace(_color.copy(this), colorSpace);
     const r = _color.r;
     const g = _color.g;
     const b = _color.b;
-    if (colorSpace !== SRGBColorSpace) {
+    if (colorSpace !== _SRGBColorSpace) {
       return `color(${colorSpace} ${r.toFixed(3)} ${g.toFixed(3)} ${b.toFixed(3)})`;
     }
     return `rgb(${Math.round(r * 255)},${Math.round(g * 255)},${Math.round(b * 255)})`;
@@ -2466,32 +2482,46 @@ class Color {
     yield this.b;
   }
 }
+const _SRGBColorSpace = "srgb";
+const _hslA = { h: 0, s: 0, l: 0 };
+const _hslB = { h: 0, s: 0, l: 0 };
+function _hue2rgb(p, q, t) {
+  if (t < 0) t += 1;
+  if (t > 1) t -= 1;
+  if (t < 1 / 6) return p + (q - p) * 6 * t;
+  if (t < 1 / 2) return q;
+  if (t < 2 / 3) return p + (q - p) * 6 * (2 / 3 - t);
+  return p;
+}
 const _color = /* @__PURE__ */ new Color();
 
 class Matrix4 {
+  // prettier-ignore
+  elements = [
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1
+  ];
   constructor(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
-    Matrix4.prototype.isMatrix4 = true;
-    this.elements = [
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1
-    ];
     if (n11 !== void 0) {
       this.set(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44);
     }
+  }
+  get isMatrix4() {
+    return true;
   }
   set(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
     const te = this.elements;
@@ -2714,8 +2744,8 @@ class Matrix4 {
     te[15] = 1;
     return this;
   }
-  makeRotationFromQuaternion(q) {
-    return this.compose(_zero, q, _one);
+  makeRotationFromQuaternion(quaternion) {
+    return this.compose(_zero, quaternion, _one);
   }
   lookAt(eye, target, up) {
     const te = this.elements;
@@ -2739,11 +2769,11 @@ class Matrix4 {
     te[0] = _x.x, te[4] = _y.x, te[8] = _z.x, te[1] = _x.y, te[5] = _y.y, te[9] = _z.y, te[2] = _x.z, te[6] = _y.z, te[10] = _z.z;
     return this;
   }
-  multiply(m) {
-    return this.multiplyMatrices(this, m);
+  multiply(matrix) {
+    return this.multiplyMatrices(this, matrix);
   }
-  premultiply(m) {
-    return this.multiplyMatrices(m, this);
+  premultiply(matrix) {
+    return this.multiplyMatrices(matrix, this);
   }
   multiplyMatrices(a, b) {
     const ae = a.elements;
@@ -3074,10 +3104,10 @@ class Matrix4 {
   }
   compose(position, quaternion, scale) {
     const te = this.elements;
-    const x = quaternion._x;
-    const y = quaternion._y;
-    const z = quaternion._z;
-    const w = quaternion._w;
+    const x = quaternion.x;
+    const y = quaternion.y;
+    const z = quaternion.z;
+    const w = quaternion.w;
     const x2 = x + x;
     const y2 = y + y;
     const z2 = z + z;
@@ -3191,7 +3221,6 @@ class Matrix4 {
     }
     return this;
   }
-  /** @param {RelativeIndexable<number>} array */
   toArray(array = [], offset = 0) {
     const te = this.elements;
     array[offset] = te[0];
@@ -3221,17 +3250,22 @@ const _x = /* @__PURE__ */ new Vector3();
 const _y = /* @__PURE__ */ new Vector3();
 const _z = /* @__PURE__ */ new Vector3();
 
-const _matrix = /* @__PURE__ */ new Matrix4();
-const _quaternion = /* @__PURE__ */ new Quaternion();
 class Euler {
+  static DEFAULT_ORDER = "XYZ";
   #onChangeCallback = () => {
   };
+  _x = 0;
+  _y = 0;
+  _z = 0;
+  _order = Euler.DEFAULT_ORDER;
   constructor(x = 0, y = 0, z = 0, order = Euler.DEFAULT_ORDER) {
-    this.isEuler = true;
     this._x = x;
     this._y = y;
     this._z = z;
     this._order = order;
+  }
+  get isEuler() {
+    return true;
   }
   get x() {
     return this._x;
@@ -3261,7 +3295,7 @@ class Euler {
     this._order = value;
     this.#onChangeCallback();
   }
-  set(x, y, z, order = this._order) {
+  set(x, y, z, order = this.order) {
     this._x = x;
     this._y = y;
     this._z = z;
@@ -3274,14 +3308,14 @@ class Euler {
     return new this.constructor(this._x, this._y, this._z, this._order);
   }
   copy(euler, update = true) {
-    this._x = euler._x;
-    this._y = euler._y;
-    this._z = euler._z;
-    this._order = euler._order;
+    this._x = euler.x;
+    this._y = euler.y;
+    this._z = euler.z;
+    this._order = euler.order;
     if (update === true) this.#onChangeCallback();
     return this;
   }
-  setFromRotationMatrix(m, order = this._order, update = true) {
+  setFromRotationMatrix(m, order = this.order, update = true) {
     const te = m.elements;
     const m11 = te[0];
     const m12 = te[4];
@@ -3364,7 +3398,7 @@ class Euler {
     _matrix.makeRotationFromQuaternion(q);
     return this.setFromRotationMatrix(_matrix, order, update);
   }
-  setFromVector3(v, order = this._order) {
+  setFromVector3(v, order = this.order) {
     return this.set(v.x, v.y, v.z, order);
   }
   reorder(newOrder) {
@@ -3372,7 +3406,7 @@ class Euler {
     return this.setFromQuaternion(_quaternion, newOrder);
   }
   equals(euler) {
-    return euler._x === this._x && euler._y === this._y && euler._z === this._z && euler._order === this._order;
+    return euler.x === this._x && euler.y === this._y && euler.z === this._z && euler.order === this._order;
   }
   fromArray(array) {
     this._x = array[0];
@@ -3400,12 +3434,12 @@ class Euler {
     yield this._order;
   }
 }
-Euler.DEFAULT_ORDER = "XYZ";
+const _matrix = /* @__PURE__ */ new Matrix4();
+const _quaternion = /* @__PURE__ */ new Quaternion();
 
-const _box = /* @__PURE__ */ new Box3();
-const _v1$1 = /* @__PURE__ */ new Vector3();
-const _v2$1 = /* @__PURE__ */ new Vector3();
 class Sphere {
+  center;
+  radius = -1;
   constructor(center = new Vector3(), radius = -1) {
     this.center = center;
     this.radius = radius;
@@ -3526,15 +3560,19 @@ class Sphere {
     return new this.constructor().copy(this);
   }
 }
+const _box = /* @__PURE__ */ new Box3();
+const _v1$1 = /* @__PURE__ */ new Vector3();
+const _v2$1 = /* @__PURE__ */ new Vector3();
 
-const _vector1 = /* @__PURE__ */ new Vector3();
-const _vector2 = /* @__PURE__ */ new Vector3();
-const _normalMatrix = /* @__PURE__ */ new Matrix3();
 class Plane {
+  normal;
+  constant = 0;
   constructor(normal = new Vector3(1, 0, 0), constant = 0) {
-    this.isPlane = true;
     this.normal = normal;
     this.constant = constant;
+  }
+  get isPlane() {
+    return true;
   }
   set(normal, constant) {
     this.normal.copy(normal);
@@ -3629,10 +3667,12 @@ class Plane {
     return new this.constructor().copy(this);
   }
 }
+const _vector1 = /* @__PURE__ */ new Vector3();
+const _vector2 = /* @__PURE__ */ new Vector3();
+const _normalMatrix = /* @__PURE__ */ new Matrix3();
 
-const _sphere = /* @__PURE__ */ new Sphere();
-const _vector$1 = /* @__PURE__ */ new Vector3();
 class Frustum {
+  planes;
   constructor(p0 = new Plane(), p1 = new Plane(), p2 = new Plane(), p3 = new Plane(), p4 = new Plane(), p5 = new Plane()) {
     this.planes = [p0, p1, p2, p3, p4, p5];
   }
@@ -3740,10 +3780,12 @@ class Frustum {
     return new this.constructor().copy(this);
   }
 }
+const _sphere = /* @__PURE__ */ new Sphere();
+const _vector$1 = /* @__PURE__ */ new Vector3();
 
-const _startP = /* @__PURE__ */ new Vector3();
-const _startEnd = /* @__PURE__ */ new Vector3();
 class Line3 {
+  start;
+  end;
   constructor(start = new Vector3(), end = new Vector3()) {
     this.start = start;
     this.end = end;
@@ -3801,15 +3843,12 @@ class Line3 {
     return new this.constructor().copy(this);
   }
 }
+const _startP = /* @__PURE__ */ new Vector3();
+const _startEnd = /* @__PURE__ */ new Vector3();
 
-const _vector = /* @__PURE__ */ new Vector3();
-const _segCenter = /* @__PURE__ */ new Vector3();
-const _segDir = /* @__PURE__ */ new Vector3();
-const _diff = /* @__PURE__ */ new Vector3();
-const _edge1 = /* @__PURE__ */ new Vector3();
-const _edge2 = /* @__PURE__ */ new Vector3();
-const _normal = /* @__PURE__ */ new Vector3();
 class Ray {
+  origin;
+  direction;
   constructor(origin = new Vector3(), direction = new Vector3(0, 0, -1)) {
     this.origin = origin;
     this.direction = direction;
@@ -4052,18 +4091,18 @@ class Ray {
     return new this.constructor().copy(this);
   }
 }
+const _vector = /* @__PURE__ */ new Vector3();
+const _segCenter = /* @__PURE__ */ new Vector3();
+const _segDir = /* @__PURE__ */ new Vector3();
+const _diff = /* @__PURE__ */ new Vector3();
+const _edge1 = /* @__PURE__ */ new Vector3();
+const _edge2 = /* @__PURE__ */ new Vector3();
+const _normal = /* @__PURE__ */ new Vector3();
 
-const _v0 = /* @__PURE__ */ new Vector3();
-const _v1 = /* @__PURE__ */ new Vector3();
-const _v2 = /* @__PURE__ */ new Vector3();
-const _v3 = /* @__PURE__ */ new Vector3();
-const _vab = /* @__PURE__ */ new Vector3();
-const _vac = /* @__PURE__ */ new Vector3();
-const _vbc = /* @__PURE__ */ new Vector3();
-const _vap = /* @__PURE__ */ new Vector3();
-const _vbp = /* @__PURE__ */ new Vector3();
-const _vcp = /* @__PURE__ */ new Vector3();
 class Triangle {
+  a;
+  b;
+  c;
   constructor(a = new Vector3(), b = new Vector3(), c = new Vector3()) {
     this.a = a;
     this.b = b;
@@ -4224,14 +4263,30 @@ class Triangle {
     return triangle.a.equals(this.a) && triangle.b.equals(this.b) && triangle.c.equals(this.c);
   }
 }
+const _v0 = /* @__PURE__ */ new Vector3();
+const _v1 = /* @__PURE__ */ new Vector3();
+const _v2 = /* @__PURE__ */ new Vector3();
+const _v3 = /* @__PURE__ */ new Vector3();
+const _vab = /* @__PURE__ */ new Vector3();
+const _vac = /* @__PURE__ */ new Vector3();
+const _vbc = /* @__PURE__ */ new Vector3();
+const _vap = /* @__PURE__ */ new Vector3();
+const _vbp = /* @__PURE__ */ new Vector3();
+const _vcp = /* @__PURE__ */ new Vector3();
 
 class Vector4 {
+  x = 0;
+  y = 0;
+  z = 0;
+  w = 1;
   constructor(x = 0, y = 0, z = 0, w = 1) {
-    Vector4.prototype.isVector4 = true;
     this.x = x;
     this.y = y;
     this.z = z;
     this.w = w;
+  }
+  get isVector4() {
+    return true;
   }
   get width() {
     return this.z;
@@ -4397,17 +4452,17 @@ class Vector4 {
   divideScalar(scalar) {
     return this.multiplyScalar(1 / scalar);
   }
-  setAxisAngleFromQuaternion(q) {
-    this.w = 2 * Math.acos(q.w);
-    const s = Math.sqrt(1 - q.w * q.w);
+  setAxisAngleFromQuaternion(quaternion) {
+    this.w = 2 * Math.acos(quaternion.w);
+    const s = Math.sqrt(1 - quaternion.w * quaternion.w);
     if (s < 1e-4) {
       this.x = 1;
       this.y = 0;
       this.z = 0;
     } else {
-      this.x = q.x / s;
-      this.y = q.y / s;
-      this.z = q.z / s;
+      this.x = quaternion.x / s;
+      this.y = quaternion.y / s;
+      this.z = quaternion.z / s;
     }
     return this;
   }
