@@ -7,7 +7,6 @@ class Plane {
 
   constructor(normal = new Vector3(1, 0, 0), constant = 0) {
     // normal is assumed to be normalized
-
     this.normal = normal;
     this.constant = constant;
   }
