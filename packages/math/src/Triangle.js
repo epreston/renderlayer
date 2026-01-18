@@ -1,18 +1,10 @@
 import { Vector3 } from './Vector3.js';
 
-const _v0 = /*@__PURE__*/ new Vector3();
-const _v1 = /*@__PURE__*/ new Vector3();
-const _v2 = /*@__PURE__*/ new Vector3();
-const _v3 = /*@__PURE__*/ new Vector3();
-
-const _vab = /*@__PURE__*/ new Vector3();
-const _vac = /*@__PURE__*/ new Vector3();
-const _vbc = /*@__PURE__*/ new Vector3();
-const _vap = /*@__PURE__*/ new Vector3();
-const _vbp = /*@__PURE__*/ new Vector3();
-const _vcp = /*@__PURE__*/ new Vector3();
-
 class Triangle {
+  a;
+  b;
+  c;
+
   constructor(a = new Vector3(), b = new Vector3(), c = new Vector3()) {
     this.a = a;
     this.b = b;
@@ -242,5 +234,17 @@ class Triangle {
     return triangle.a.equals(this.a) && triangle.b.equals(this.b) && triangle.c.equals(this.c);
   }
 }
+
+const _v0 = /*@__PURE__*/ new Vector3();
+const _v1 = /*@__PURE__*/ new Vector3();
+const _v2 = /*@__PURE__*/ new Vector3();
+const _v3 = /*@__PURE__*/ new Vector3();
+
+const _vab = /*@__PURE__*/ new Vector3();
+const _vac = /*@__PURE__*/ new Vector3();
+const _vbc = /*@__PURE__*/ new Vector3();
+const _vap = /*@__PURE__*/ new Vector3();
+const _vbp = /*@__PURE__*/ new Vector3();
+const _vcp = /*@__PURE__*/ new Vector3();
 
 export { Triangle };
