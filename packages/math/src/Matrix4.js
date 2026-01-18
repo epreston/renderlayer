@@ -323,12 +323,12 @@ class Matrix4 {
     return this;
   }
 
-  multiply(m) {
-    return this.multiplyMatrices(this, m);
+  multiply(matrix) {
+    return this.multiplyMatrices(this, matrix);
   }
 
-  premultiply(m) {
-    return this.multiplyMatrices(m, this);
+  premultiply(matrix) {
+    return this.multiplyMatrices(matrix, this);
   }
 
   multiplyMatrices(a, b) {
