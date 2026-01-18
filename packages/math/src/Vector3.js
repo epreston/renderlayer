@@ -2,12 +2,18 @@ import { clamp as clampToRange } from './MathUtils.js';
 import { Quaternion } from './Quaternion.js';
 
 class Vector3 {
-  constructor(x = 0, y = 0, z = 0) {
-    Vector3.prototype.isVector3 = true;
+  x = 0;
+  y = 0;
+  z = 0;
 
+  constructor(x = 0, y = 0, z = 0) {
     this.x = x;
     this.y = y;
     this.z = z;
+  }
+
+  get isVector3() {
+    return true;
   }
 
   set(x, y, z) {
