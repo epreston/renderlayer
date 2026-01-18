@@ -386,7 +386,7 @@ class Quaternion {
   }
 
   dot(v) {
-    return this._x * v._x + this._y * v._y + this._z * v._z + this._w * v._w;
+    return this._x * v.x + this._y * v.y + this._z * v.z + this._w * v.w;
   }
 
   lengthSq() {
