@@ -224,23 +224,23 @@ class Vector4 {
     return this.multiplyScalar(1 / scalar);
   }
 
-  setAxisAngleFromQuaternion(q) {
+  setAxisAngleFromQuaternion(quaternion) {
     // http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle/index.htm
 
     // q is assumed to be normalized
 
-    this.w = 2 * Math.acos(q.w);
+    this.w = 2 * Math.acos(quaternion.w);
 
-    const s = Math.sqrt(1 - q.w * q.w);
+    const s = Math.sqrt(1 - quaternion.w * quaternion.w);
 
     if (s < 0.0001) {
       this.x = 1;
       this.y = 0;
       this.z = 0;
     } else {
-      this.x = q.x / s;
-      this.y = q.y / s;
-      this.z = q.z / s;
+      this.x = quaternion.x / s;
+      this.y = quaternion.y / s;
+      this.z = quaternion.z / s;
     }
 
     return this;
