@@ -68,7 +68,6 @@ describe('Objects', () => {
       expect(object.boundingBox).toBeDefined();
       expect(object.boundingBox).toMatchInlineSnapshot(`
         Box3 {
-          "isBox3": true,
           "max": Vector3 {
             "x": 0.5,
             "y": 0.5,

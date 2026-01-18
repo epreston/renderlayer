@@ -1,14 +1,19 @@
 import { Vector3 } from './Vector3.js';
 
 class Box3 {
+  min;
+  max;
+
   constructor(
     min = new Vector3(+Infinity, +Infinity, +Infinity),
     max = new Vector3(-Infinity, -Infinity, -Infinity)
   ) {
-    this.isBox3 = true;
-
     this.min = min;
     this.max = max;
+  }
+
+  get isBox3() {
+    return true;
   }
 
   set(min, max) {

@@ -505,7 +505,6 @@ describe('Buffers', () => {
 
       expect(bb).toMatchInlineSnapshot(`
         Box3 {
-          "isBox3": true,
           "max": Vector3 {
             "x": 2,
             "y": 1.4142135381698608,
