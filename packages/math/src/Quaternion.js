@@ -349,18 +349,18 @@ class Quaternion {
     return this.normalize();
   }
 
-  angleTo(q) {
-    return 2 * Math.acos(Math.abs(clampToRange(this.dot(q), -1, 1)));
+  angleTo(quaternion) {
+    return 2 * Math.acos(Math.abs(clampToRange(this.dot(quaternion), -1, 1)));
   }
 
-  rotateTowards(q, step) {
-    const angle = this.angleTo(q);
+  rotateTowards(quaternion, step) {
+    const angle = this.angleTo(quaternion);
 
     if (angle === 0) return this;
 
     const t = Math.min(1, step / angle);
 
-    this.slerp(q, t);
+    this.slerp(quaternion, t);
 
     return this;
   }
