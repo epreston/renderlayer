@@ -173,10 +173,10 @@ class Quaternion {
   }
 
   setFromEuler(euler, update) {
-    const x = euler._x;
-    const y = euler._y;
-    const z = euler._z;
-    const order = euler._order;
+    const x = euler.x;
+    const y = euler.y;
+    const z = euler.z;
+    const order = euler.order;
 
     // http://www.mathworks.com/matlabcentral/fileexchange/
     // 	20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/
