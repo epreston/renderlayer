@@ -1,11 +1,18 @@
 class Vector4 {
-  constructor(x = 0, y = 0, z = 0, w = 1) {
-    Vector4.prototype.isVector4 = true;
+  x = 0;
+  y = 0;
+  z = 0;
+  w = 1;
 
+  constructor(x = 0, y = 0, z = 0, w = 1) {
     this.x = x;
     this.y = y;
     this.z = z;
     this.w = w; // important: w = 1 by default
+  }
+
+  get isVector4() {
+    return true;
   }
 
   get width() {
