@@ -3,13 +3,20 @@ import { clamp as clampToRange } from './MathUtils.js';
 class Quaternion {
   #onChangeCallback = () => {};
 
-  constructor(x = 0, y = 0, z = 0, w = 1) {
-    this.isQuaternion = true;
+  _x = 0;
+  _y = 0;
+  _z = 0;
+  _w = 1;
 
+  constructor(x = 0, y = 0, z = 0, w = 1) {
     this._x = x;
     this._y = y;
     this._z = z;
     this._w = w;
+  }
+
+  get isQuaternion() {
+    return true;
   }
 
   static slerpFlat(dst, dstOffset, src0, srcOffset0, src1, srcOffset1, t) {
