@@ -1,11 +1,10 @@
 import { Box3 } from './Box3.js';
 import { Vector3 } from './Vector3.js';
 
-const _box = /*@__PURE__*/ new Box3();
-const _v1 = /*@__PURE__*/ new Vector3();
-const _v2 = /*@__PURE__*/ new Vector3();
-
 class Sphere {
+  center;
+  radius = -1;
+
   constructor(center = new Vector3(), radius = -1) {
     this.center = center;
     this.radius = radius;
@@ -179,5 +178,9 @@ class Sphere {
     return new this.constructor().copy(this);
   }
 }
+
+const _box = /*@__PURE__*/ new Box3();
+const _v1 = /*@__PURE__*/ new Vector3();
+const _v2 = /*@__PURE__*/ new Vector3();
 
 export { Sphere };
