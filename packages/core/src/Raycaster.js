@@ -53,29 +53,29 @@ class Raycaster {
   }
 
   intersectObject(object, recursive = true, intersects = []) {
-    intersectObject(object, this, intersects, recursive);
+    _intersectObject(object, this, intersects, recursive);
 
-    intersects.sort(ascSort);
+    intersects.sort(_ascSort);
 
     return intersects;
   }
 
   intersectObjects(objects, recursive = true, intersects = []) {
     for (let i = 0, l = objects.length; i < l; i++) {
-      intersectObject(objects[i], this, intersects, recursive);
+      _intersectObject(objects[i], this, intersects, recursive);
     }
 
-    intersects.sort(ascSort);
+    intersects.sort(_ascSort);
 
     return intersects;
   }
 }
 
-function ascSort(a, b) {
+function _ascSort(a, b) {
   return a.distance - b.distance;
 }
 
-function intersectObject(object, raycaster, intersects, recursive) {
+function _intersectObject(object, raycaster, intersects, recursive) {
   if (object.layers.test(raycaster.layers)) {
     object.raycast(raycaster, intersects);
   }
@@ -84,7 +84,7 @@ function intersectObject(object, raycaster, intersects, recursive) {
     const children = object.children;
 
     for (let i = 0, l = children.length; i < l; i++) {
-      intersectObject(children[i], raycaster, intersects, true);
+      _intersectObject(children[i], raycaster, intersects, true);
     }
   }
 }
