@@ -2,19 +2,25 @@ import { Quaternion } from './Quaternion.js';
 import { Matrix4 } from './Matrix4.js';
 import { clamp } from './MathUtils.js';
 
-const _matrix = /*@__PURE__*/ new Matrix4();
-const _quaternion = /*@__PURE__*/ new Quaternion();
-
 class Euler {
+  static DEFAULT_ORDER = 'XYZ';
+
   #onChangeCallback = () => {};
 
-  constructor(x = 0, y = 0, z = 0, order = Euler.DEFAULT_ORDER) {
-    this.isEuler = true;
+  _x = 0;
+  _y = 0;
+  _z = 0;
+  _order = Euler.DEFAULT_ORDER;
 
+  constructor(x = 0, y = 0, z = 0, order = Euler.DEFAULT_ORDER) {
     this._x = x;
     this._y = y;
     this._z = z;
     this._order = order;
+  }
+
+  get isEuler() {
+    return true;
   }
 
   get x() {
@@ -253,6 +259,7 @@ class Euler {
   }
 }
 
-Euler.DEFAULT_ORDER = 'XYZ';
+const _matrix = /*@__PURE__*/ new Matrix4();
+const _quaternion = /*@__PURE__*/ new Quaternion();
 
 export { Euler };
