@@ -2,10 +2,9 @@ import { Vector3 } from './Vector3.js';
 import { Sphere } from './Sphere.js';
 import { Plane } from './Plane.js';
 
-const _sphere = /*@__PURE__*/ new Sphere();
-const _vector = /*@__PURE__*/ new Vector3();
-
 class Frustum {
+  planes;
+
   constructor(
     p0 = new Plane(),
     p1 = new Plane(),
@@ -153,5 +152,8 @@ class Frustum {
     return new this.constructor().copy(this);
   }
 }
+
+const _sphere = /*@__PURE__*/ new Sphere();
+const _vector = /*@__PURE__*/ new Vector3();
 
 export { Frustum };
