@@ -219,10 +219,10 @@ class Euler {
 
   equals(euler) {
     // prettier-ignore
-    return euler._x === this._x &&
-      euler._y === this._y &&
-      euler._z === this._z &&
-      euler._order === this._order;
+    return euler.x === this._x &&
+      euler.y === this._y &&
+      euler.z === this._z &&
+      euler.order === this._order;
   }
 
   fromArray(array) {
