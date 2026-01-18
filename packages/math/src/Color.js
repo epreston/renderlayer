@@ -1,30 +1,17 @@
 import { clamp, euclideanModulo, lerp } from './MathUtils.js';
 import { ColorManagement, SRGBToLinear, LinearToSRGB } from './ColorManagement.js';
 
-const SRGBColorSpace = 'srgb';
-
-const _hslA = { h: 0, s: 0, l: 0 };
-const _hslB = { h: 0, s: 0, l: 0 };
-
-function hue2rgb(p, q, t) {
-  if (t < 0) t += 1;
-  if (t > 1) t -= 1;
-  if (t < 1 / 6) return p + (q - p) * 6 * t;
-  if (t < 1 / 2) return q;
-  if (t < 2 / 3) return p + (q - p) * 6 * (2 / 3 - t);
-
-  return p;
-}
-
 class Color {
+  r = 1;
+  g = 1;
+  b = 1;
+
   constructor(r, g, b) {
-    this.isColor = true;
-
-    this.r = 1;
-    this.g = 1;
-    this.b = 1;
-
     return this.set(r, g, b);
+  }
+
+  get isColor() {
+    return true;
   }
 
   set(r, g, b) {
@@ -55,7 +42,7 @@ class Color {
     return this;
   }
 
-  setHex(hex, colorSpace = SRGBColorSpace) {
+  setHex(hex, colorSpace = _SRGBColorSpace) {
     hex = Math.floor(hex);
 
     this.r = ((hex >> 16) & 255) / 255;
@@ -89,9 +76,9 @@ class Color {
       const p = l <= 0.5 ? l * (1 + s) : l + s - l * s;
       const q = 2 * l - p;
 
-      this.r = hue2rgb(q, p, h + 1 / 3);
-      this.g = hue2rgb(q, p, h);
-      this.b = hue2rgb(q, p, h - 1 / 3);
+      this.r = _hue2rgb(q, p, h + 1 / 3);
+      this.g = _hue2rgb(q, p, h);
+      this.b = _hue2rgb(q, p, h - 1 / 3);
     }
 
     ColorManagement.toWorkingColorSpace(this, colorSpace);
@@ -99,7 +86,7 @@ class Color {
     return this;
   }
 
-  setStyle(style, colorSpace = SRGBColorSpace) {
+  setStyle(style, colorSpace = _SRGBColorSpace) {
     function handleAlpha(string) {
       if (string === undefined) return;
 
@@ -248,7 +235,7 @@ class Color {
     return this;
   }
 
-  getHex(colorSpace = SRGBColorSpace) {
+  getHex(colorSpace = _SRGBColorSpace) {
     ColorManagement.fromWorkingColorSpace(_color.copy(this), colorSpace);
 
     return (
@@ -258,7 +245,7 @@ class Color {
     );
   }
 
-  getHexString(colorSpace = SRGBColorSpace) {
+  getHexString(colorSpace = _SRGBColorSpace) {
     return `000000${this.getHex(colorSpace).toString(16)}`.slice(-6);
   }
 
@@ -318,14 +305,14 @@ class Color {
     return target;
   }
 
-  getStyle(colorSpace = SRGBColorSpace) {
+  getStyle(colorSpace = _SRGBColorSpace) {
     ColorManagement.fromWorkingColorSpace(_color.copy(this), colorSpace);
 
     const r = _color.r;
     const g = _color.g;
     const b = _color.b;
 
-    if (colorSpace !== SRGBColorSpace) {
+    if (colorSpace !== _SRGBColorSpace) {
       // Requires CSS Color Module Level 4 (https://www.w3.org/TR/css-color-4/).
       return `color(${colorSpace} ${r.toFixed(3)} ${g.toFixed(3)} ${b.toFixed(3)})`;
     }
@@ -474,6 +461,21 @@ class Color {
     yield this.g;
     yield this.b;
   }
+}
+
+const _SRGBColorSpace = 'srgb';
+
+const _hslA = { h: 0, s: 0, l: 0 };
+const _hslB = { h: 0, s: 0, l: 0 };
+
+function _hue2rgb(p, q, t) {
+  if (t < 0) t += 1;
+  if (t > 1) t -= 1;
+  if (t < 1 / 6) return p + (q - p) * 6 * t;
+  if (t < 1 / 2) return q;
+  if (t < 2 / 3) return p + (q - p) * 6 * (2 / 3 - t);
+
+  return p;
 }
 
 const _color = /*@__PURE__*/ new Color();
