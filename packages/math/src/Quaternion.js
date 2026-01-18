@@ -542,10 +542,10 @@ class Quaternion {
   equals(quaternion) {
     // prettier-ignore
     return (
-      quaternion._x === this._x &&
-      quaternion._y === this._y &&
-      quaternion._z === this._z &&
-      quaternion._w === this._w
+      quaternion.x === this._x &&
+      quaternion.y === this._y &&
+      quaternion.z === this._z &&
+      quaternion.w === this._w
     );
   }
 
