@@ -460,13 +460,13 @@ class Quaternion {
 
     // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
 
-    let cosHalfTheta = w * qb._w + x * qb._x + y * qb._y + z * qb._z;
+    let cosHalfTheta = w * qb.w + x * qb.x + y * qb.y + z * qb.z;
 
     if (cosHalfTheta < 0) {
-      this._w = -qb._w;
-      this._x = -qb._x;
-      this._y = -qb._y;
-      this._z = -qb._z;
+      this._w = -qb.w;
+      this._x = -qb.x;
+      this._y = -qb.y;
+      this._z = -qb.z;
 
       cosHalfTheta = -cosHalfTheta;
     } else {
