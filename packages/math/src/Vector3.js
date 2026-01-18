@@ -526,10 +526,10 @@ class Vector3 {
     return this.fromArray(mat3.elements, index * 3);
   }
 
-  setFromEuler(e) {
-    this.x = e._x;
-    this.y = e._y;
-    this.z = e._z;
+  setFromEuler(euler) {
+    this.x = euler.x;
+    this.y = euler.y;
+    this.z = euler.z;
 
     return this;
   }
