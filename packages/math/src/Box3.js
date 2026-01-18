@@ -296,13 +296,13 @@ class Box3 {
 			- _f0.y, _f0.x, 0, - _f1.y, _f1.x, 0, - _f2.y, _f2.x, 0
 		];
 
-    if (!satForAxes(axes, _v0, _v1, _v2, _extents)) {
+    if (!_satForAxes(axes, _v0, _v1, _v2, _extents)) {
       return false;
     }
 
     // test 3 face normals from the aabb
     axes = [1, 0, 0, 0, 1, 0, 0, 0, 1];
-    if (!satForAxes(axes, _v0, _v1, _v2, _extents)) {
+    if (!_satForAxes(axes, _v0, _v1, _v2, _extents)) {
       return false;
     }
 
@@ -311,7 +311,7 @@ class Box3 {
     _triangleNormal.crossVectors(_f0, _f1);
     axes = [_triangleNormal.x, _triangleNormal.y, _triangleNormal.z];
 
-    return satForAxes(axes, _v0, _v1, _v2, _extents);
+    return _satForAxes(axes, _v0, _v1, _v2, _extents);
   }
 
   clampPoint(point, target) {
@@ -417,7 +417,7 @@ const _extents = /*@__PURE__*/ new Vector3();
 const _triangleNormal = /*@__PURE__*/ new Vector3();
 const _testAxis = /*@__PURE__*/ new Vector3();
 
-function satForAxes(axes, v0, v1, v2, extents) {
+function _satForAxes(axes, v0, v1, v2, extents) {
   for (let i = 0, j = axes.length - 3; i <= j; i += 3) {
     _testAxis.fromArray(axes, i);
     // project the aabb onto the separating axis
