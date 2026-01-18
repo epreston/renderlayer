@@ -104,7 +104,7 @@ export const ColorManagement = {
     this._workingColorSpace = colorSpace;
   },
 
-  /** @param {import('./Color.js').Color} color */
+  /** @param {import('@renderlayer/math').Color} color */
   convert(color, sourceColorSpace, targetColorSpace) {
     if (
       this.enabled === false ||
@@ -130,12 +130,12 @@ export const ColorManagement = {
     return targetFromReference(sourceToReference(color));
   },
 
-  /** @param {import('./Color.js').Color} color */
+  /** @param {import('@renderlayer/math').Color} color */
   fromWorkingColorSpace(color, targetColorSpace) {
     return this.convert(color, this._workingColorSpace, targetColorSpace);
   },
 
-  /** @param {import('./Color.js').Color} color */
+  /** @param {import('@renderlayer/math').Color} color */
   toWorkingColorSpace(color, sourceColorSpace) {
     return this.convert(color, sourceColorSpace, this._workingColorSpace);
   },
