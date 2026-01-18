@@ -77,10 +77,10 @@ class Euler {
   }
 
   copy(euler, update = true) {
-    this._x = euler._x;
-    this._y = euler._y;
-    this._z = euler._z;
-    this._order = euler._order;
+    this._x = euler.x;
+    this._y = euler.y;
+    this._z = euler.z;
+    this._order = euler.order;
 
     // update check required to optimize Object3D.copy()
     if (update === true) this.#onChangeCallback();
