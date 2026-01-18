@@ -729,10 +729,10 @@ class Matrix4 {
   compose(position, quaternion, scale) {
     const te = this.elements;
 
-    const x = quaternion._x;
-    const y = quaternion._y;
-    const z = quaternion._z;
-    const w = quaternion._w;
+    const x = quaternion.x;
+    const y = quaternion.y;
+    const z = quaternion.z;
+    const w = quaternion.w;
 
     // prettier-ignore
     const x2 = x + x;
