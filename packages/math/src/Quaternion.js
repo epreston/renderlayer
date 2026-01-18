@@ -430,15 +430,14 @@ class Quaternion {
   multiplyQuaternions(a, b) {
     // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
 
-    const qax = a._x;
-
-    const qay = a._y;
-    const qaz = a._z;
-    const qaw = a._w;
-    const qbx = b._x;
-    const qby = b._y;
-    const qbz = b._z;
-    const qbw = b._w;
+    const qax = a.x;
+    const qay = a.y;
+    const qaz = a.z;
+    const qaw = a.w;
+    const qbx = b.x;
+    const qby = b.y;
+    const qbz = b.z;
+    const qbw = b.w;
 
     this._x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
     this._y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
