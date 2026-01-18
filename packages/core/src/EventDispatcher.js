@@ -1,8 +1,5 @@
-/**
- * https://github.com/mrdoob/eventdispatcher.js/
- */
-
 class EventDispatcher {
+  // https://github.com/mrdoob/eventdispatcher.js/
   #listeners = /* @__PURE__ */ new Map();
 
   addEventListener(type, listener) {
