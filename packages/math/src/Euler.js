@@ -59,7 +59,7 @@ class Euler {
     this.#onChangeCallback();
   }
 
-  set(x, y, z, order = this._order) {
+  set(x, y, z, order = this.order) {
     this._x = x;
     this._y = y;
     this._z = z;
@@ -88,7 +88,7 @@ class Euler {
     return this;
   }
 
-  setFromRotationMatrix(m, order = this._order, update = true) {
+  setFromRotationMatrix(m, order = this.order, update = true) {
     // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
     // num + 0 is the most performant way to remove -0 when a potentially zero
@@ -205,7 +205,7 @@ class Euler {
     return this.setFromRotationMatrix(_matrix, order, update);
   }
 
-  setFromVector3(v, order = this._order) {
+  setFromVector3(v, order = this.order) {
     return this.set(v.x, v.y, v.z, order);
   }
 
