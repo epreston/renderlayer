@@ -120,8 +120,8 @@ class Object3D extends EventDispatcher {
     this.matrix.decompose(this.position, this.quaternion, this.scale);
   }
 
-  applyQuaternion(q) {
-    this.quaternion.premultiply(q);
+  applyQuaternion(quaternion) {
+    this.quaternion.premultiply(quaternion);
 
     return this;
   }
@@ -135,9 +135,9 @@ class Object3D extends EventDispatcher {
     this.quaternion.setFromEuler(euler, true);
   }
 
-  setRotationFromMatrix(m) {
+  setRotationFromMatrix(matrix) {
     // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
-    this.quaternion.setFromRotationMatrix(m);
+    this.quaternion.setFromRotationMatrix(matrix);
   }
 
   setRotationFromQuaternion(quaternion) {
