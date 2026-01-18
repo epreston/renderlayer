@@ -1,13 +1,16 @@
 import { Vector2 } from './Vector2.js';
 
-const _vector = /*@__PURE__*/ new Vector2();
-
 class Box2 {
-  constructor(min = new Vector2(+Infinity, +Infinity), max = new Vector2(-Infinity, -Infinity)) {
-    this.isBox2 = true;
+  min;
+  max;
 
+  constructor(min = new Vector2(+Infinity, +Infinity), max = new Vector2(-Infinity, -Infinity)) {
     this.min = min;
     this.max = max;
+  }
+
+  get isBox2() {
+    return true;
   }
 
   set(min, max) {
@@ -164,5 +167,7 @@ class Box2 {
     return box.min.equals(this.min) && box.max.equals(this.max);
   }
 }
+
+const _vector = /*@__PURE__*/ new Vector2();
 
 export { Box2 };
