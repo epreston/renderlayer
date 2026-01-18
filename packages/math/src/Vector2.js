@@ -1,11 +1,16 @@
 import { clamp as clampToRange } from './MathUtils.js';
 
 class Vector2 {
-  constructor(x = 0, y = 0) {
-    Vector2.prototype.isVector2 = true;
+  x = 0;
+  y = 0;
 
+  constructor(x = 0, y = 0) {
     this.x = x;
     this.y = y;
+  }
+
+  get isVector2() {
+    return true;
   }
 
   get width() {
