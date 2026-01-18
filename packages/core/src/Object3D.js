@@ -22,6 +22,10 @@ const _addedEvent = { type: 'added' };
 const _removedEvent = { type: 'removed' };
 
 class Object3D extends EventDispatcher {
+  static DEFAULT_UP = /*@__PURE__*/ new Vector3(0, 1, 0);
+  static DEFAULT_MATRIX_AUTO_UPDATE = true;
+  static DEFAULT_MATRIX_WORLD_AUTO_UPDATE = true;
+
   isObject3D = true;
 
   #id = _object3DId++;
@@ -737,9 +741,5 @@ class Object3D extends EventDispatcher {
     return this;
   }
 }
-
-Object3D.DEFAULT_UP = /*@__PURE__*/ new Vector3(0, 1, 0);
-Object3D.DEFAULT_MATRIX_AUTO_UPDATE = true;
-Object3D.DEFAULT_MATRIX_WORLD_AUTO_UPDATE = true;
 
 export { Object3D };
