@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/keyframes",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "@renderlayer/keyframes",
   "module": "./dist/keyframes.esm-bundler.js",
   "exports": "./dist/keyframes.esm-bundler.js",
@@ -20,7 +20,9 @@
     "directory": "packages/keyframes"
   },
   "keywords": [
-    "renderlayer", "keyframes", "track"
+    "renderlayer",
+    "keyframes",
+    "track"
   ],
   "author": "Ed Preston",
   "license": "MIT",
