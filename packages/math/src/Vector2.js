@@ -87,23 +87,23 @@ class Vector2 {
     return new this.constructor(this.x, this.y);
   }
 
-  copy(v) {
-    this.x = v.x;
-    this.y = v.y;
+  copy(vector) {
+    this.x = vector.x;
+    this.y = vector.y;
 
     return this;
   }
 
-  add(v) {
-    this.x += v.x;
-    this.y += v.y;
+  add(vector) {
+    this.x += vector.x;
+    this.y += vector.y;
 
     return this;
   }
 
-  addScalar(s) {
-    this.x += s;
-    this.y += s;
+  addScalar(scalar) {
+    this.x += scalar;
+    this.y += scalar;
 
     return this;
   }
@@ -115,23 +115,23 @@ class Vector2 {
     return this;
   }
 
-  addScaledVector(v, s) {
-    this.x += v.x * s;
-    this.y += v.y * s;
+  addScaledVector(vector, scalar) {
+    this.x += vector.x * scalar;
+    this.y += vector.y * scalar;
 
     return this;
   }
 
-  sub(v) {
-    this.x -= v.x;
-    this.y -= v.y;
+  sub(vector) {
+    this.x -= vector.x;
+    this.y -= vector.y;
 
     return this;
   }
 
-  subScalar(s) {
-    this.x -= s;
-    this.y -= s;
+  subScalar(scalar) {
+    this.x -= scalar;
+    this.y -= scalar;
 
     return this;
   }
@@ -143,9 +143,9 @@ class Vector2 {
     return this;
   }
 
-  multiply(v) {
-    this.x *= v.x;
-    this.y *= v.y;
+  multiply(vector) {
+    this.x *= vector.x;
+    this.y *= vector.y;
 
     return this;
   }
@@ -157,9 +157,9 @@ class Vector2 {
     return this;
   }
 
-  divide(v) {
-    this.x /= v.x;
-    this.y /= v.y;
+  divide(vector) {
+    this.x /= vector.x;
+    this.y /= vector.y;
 
     return this;
   }
@@ -168,10 +168,10 @@ class Vector2 {
     return this.multiplyScalar(1 / scalar);
   }
 
-  applyMatrix3(m) {
+  applyMatrix3(matrix) {
     const x = this.x;
     const y = this.y;
-    const e = m.elements;
+    const e = matrix.elements;
 
     this.x = e[0] * x + e[3] * y + e[6];
     this.y = e[1] * x + e[4] * y + e[7];
@@ -179,16 +179,16 @@ class Vector2 {
     return this;
   }
 
-  min(v) {
-    this.x = Math.min(this.x, v.x);
-    this.y = Math.min(this.y, v.y);
+  min(vector) {
+    this.x = Math.min(this.x, vector.x);
+    this.y = Math.min(this.y, vector.y);
 
     return this;
   }
 
-  max(v) {
-    this.x = Math.max(this.x, v.x);
-    this.y = Math.max(this.y, v.y);
+  max(vector) {
+    this.x = Math.max(this.x, vector.x);
+    this.y = Math.max(this.y, vector.y);
 
     return this;
   }
@@ -250,12 +250,12 @@ class Vector2 {
     return this;
   }
 
-  dot(v) {
-    return this.x * v.x + this.y * v.y;
+  dot(vector) {
+    return this.x * vector.x + this.y * vector.y;
   }
 
-  cross(v) {
-    return this.x * v.y - this.y * v.x;
+  cross(vector) {
+    return this.x * vector.y - this.y * vector.x;
   }
 
   lengthSq() {
@@ -282,38 +282,38 @@ class Vector2 {
     return angle;
   }
 
-  angleTo(v) {
-    const denominator = Math.sqrt(this.lengthSq() * v.lengthSq());
+  angleTo(vector) {
+    const denominator = Math.sqrt(this.lengthSq() * vector.lengthSq());
 
     if (denominator === 0) return Math.PI / 2;
 
-    const theta = this.dot(v) / denominator;
+    const theta = this.dot(vector) / denominator;
 
     // clamp, to handle numerical problems
     return Math.acos(clampToRange(theta, -1, 1));
   }
 
-  distanceTo(v) {
-    return Math.sqrt(this.distanceToSquared(v));
+  distanceTo(vector) {
+    return Math.sqrt(this.distanceToSquared(vector));
   }
 
-  distanceToSquared(v) {
-    const dx = this.x - v.x;
-    const dy = this.y - v.y;
+  distanceToSquared(vector) {
+    const dx = this.x - vector.x;
+    const dy = this.y - vector.y;
     return dx * dx + dy * dy;
   }
 
-  manhattanDistanceTo(v) {
-    return Math.abs(this.x - v.x) + Math.abs(this.y - v.y);
+  manhattanDistanceTo(vector) {
+    return Math.abs(this.x - vector.x) + Math.abs(this.y - vector.y);
   }
 
   setLength(length) {
     return this.normalize().multiplyScalar(length);
   }
 
-  lerp(v, alpha) {
-    this.x += (v.x - this.x) * alpha;
-    this.y += (v.y - this.y) * alpha;
+  lerp(vector, alpha) {
+    this.x += (vector.x - this.x) * alpha;
+    this.y += (vector.y - this.y) * alpha;
 
     return this;
   }
@@ -325,8 +325,8 @@ class Vector2 {
     return this;
   }
 
-  equals(v) {
-    return v.x === this.x && v.y === this.y;
+  equals(vector) {
+    return vector.x === this.x && vector.y === this.y;
   }
 
   fromArray(array, offset = 0) {
