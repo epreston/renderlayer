@@ -88,7 +88,7 @@ class Euler {
     return this;
   }
 
-  setFromRotationMatrix(m, order = this.order, update = true) {
+  setFromRotationMatrix(matrix, order = this.order, update = true) {
     // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
     // num + 0 is the most performant way to remove -0 when a potentially zero
@@ -98,7 +98,7 @@ class Euler {
     // -0+0 is positive zero. 0+0 is positive zero. negative numbers stay negative,
     // positive numbers stay positive.
 
-    const te = m.elements;
+    const te = matrix.elements;
     const m11 = te[0];
     const m12 = te[4];
     const m13 = te[8];
@@ -199,14 +199,14 @@ class Euler {
     return this;
   }
 
-  setFromQuaternion(q, order, update) {
-    _matrix.makeRotationFromQuaternion(q);
+  setFromQuaternion(quaternion, order, update) {
+    _matrix.makeRotationFromQuaternion(quaternion);
 
     return this.setFromRotationMatrix(_matrix, order, update);
   }
 
-  setFromVector3(v, order = this.order) {
-    return this.set(v.x, v.y, v.z, order);
+  setFromVector3(vector, order = this.order) {
+    return this.set(vector.x, vector.y, vector.z, order);
   }
 
   reorder(newOrder) {
