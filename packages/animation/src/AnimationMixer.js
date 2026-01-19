@@ -45,7 +45,7 @@ class AnimationMixer extends EventDispatcher {
 
   #bindAction(action, prototypeAction) {
     const root = action._localRoot || this.#root;
-    const tracks = action._clip.tracks;
+    const tracks = action.getClip().tracks;
     const nTracks = tracks.length;
     const bindings = action._propertyBindings;
     const interpolants = action._interpolants;
@@ -108,7 +108,7 @@ class AnimationMixer extends EventDispatcher {
 
         const rootUuid = (action._localRoot || this.#root).uuid;
 
-        const clipUuid = action._clip.uuid;
+        const clipUuid = action.getClip().uuid;
         const actionsForClip = this.#actionsByClip.get(clipUuid);
 
         this.#bindAction(action, actionsForClip && actionsForClip.knownActions[0]);
@@ -247,7 +247,7 @@ class AnimationMixer extends EventDispatcher {
 
     action._cacheIndex = null;
 
-    const clipUuid = action._clip.uuid;
+    const clipUuid = action.getClip().uuid;
     const actionsByClip = this.#actionsByClip;
     const actionsForClip = actionsByClip.get(clipUuid);
     const knownActionsForClip = actionsForClip.knownActions;
@@ -461,7 +461,7 @@ class AnimationMixer extends EventDispatcher {
       prototypeAction = actionsForClip.knownActions[0];
 
       // also, take the clip from the prototype action
-      if (clipObject === null) clipObject = prototypeAction._clip;
+      if (clipObject === null) clipObject = prototypeAction.getClip();
     }
 
     // clip must be known when specified via string
