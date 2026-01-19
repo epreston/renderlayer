@@ -263,13 +263,13 @@ class Quaternion {
     return this;
   }
 
-  setFromRotationMatrix(m) {
+  setFromRotationMatrix(matrix) {
     // http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
 
     // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
     // prettier-ignore
-    const te = m.elements;
+    const te = matrix.elements;
 
     const m11 = te[0];
     const m12 = te[4];
@@ -385,8 +385,13 @@ class Quaternion {
     return this;
   }
 
-  dot(v) {
-    return this._x * v.x + this._y * v.y + this._z * v.z + this._w * v.w;
+  dot(quaternion) {
+    return (
+      this._x * quaternion.x +
+      this._y * quaternion.y +
+      this._z * quaternion.z +
+      this._w * quaternion.w
+    );
   }
 
   lengthSq() {
