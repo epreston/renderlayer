@@ -5,13 +5,13 @@ class PropertyMixer {
   valueSize;
 
   buffer;
-  _workIndex;
+  #workIndex;
 
-  _mixBufferRegion;
-  _mixBufferRegionAdditive;
-  _setIdentity;
-  _origIndex = 3;
-  _addIndex = 4;
+  #mixBufferRegion;
+  #mixBufferRegionAdditive;
+  #setIdentity;
+  #origIndex = 3;
+  #addIndex = 4;
 
   cumulativeWeight = 0;
   cumulativeWeightAdditive = 0;
@@ -45,38 +45,38 @@ class PropertyMixer {
 
     switch (typeName) {
       case 'quaternion':
-        mixFunction = this._slerp;
-        mixFunctionAdditive = this._slerpAdditive;
-        setIdentity = this._setAdditiveIdentityQuaternion;
+        mixFunction = this.#slerp;
+        mixFunctionAdditive = this.#slerpAdditive;
+        setIdentity = this.#setAdditiveIdentityQuaternion;
 
         this.buffer = new Float64Array(valueSize * 6);
-        this._workIndex = 5;
+        this.#workIndex = 5;
         break;
 
       case 'string':
       case 'bool':
-        mixFunction = this._select;
+        mixFunction = this.#select;
 
         // Use the regular mix function and for additive on these types,
         // additive is not relevant for non-numeric types
-        mixFunctionAdditive = this._select;
+        mixFunctionAdditive = this.#select;
 
-        setIdentity = this._setAdditiveIdentityOther;
+        setIdentity = this.#setAdditiveIdentityOther;
 
         this.buffer = new Array(valueSize * 5);
         break;
 
       default:
-        mixFunction = this._lerp;
-        mixFunctionAdditive = this._lerpAdditive;
-        setIdentity = this._setAdditiveIdentityNumeric;
+        mixFunction = this.#lerp;
+        mixFunctionAdditive = this.#lerpAdditive;
+        setIdentity = this.#setAdditiveIdentityNumeric;
 
         this.buffer = new Float64Array(valueSize * 5);
     }
 
-    this._mixBufferRegion = mixFunction;
-    this._mixBufferRegionAdditive = mixFunctionAdditive;
-    this._setIdentity = setIdentity;
+    this.#mixBufferRegion = mixFunction;
+    this.#mixBufferRegionAdditive = mixFunctionAdditive;
+    this.#setIdentity = setIdentity;
   }
 
   // accumulate data in the 'incoming' region into 'accu<i>'
@@ -102,7 +102,7 @@ class PropertyMixer {
       // accuN := accuN + incoming * weight
       currentWeight += weight;
       const mix = weight / currentWeight;
-      this._mixBufferRegion(buffer, offset, 0, mix, stride);
+      this.#mixBufferRegion(buffer, offset, 0, mix, stride);
     }
 
     this.cumulativeWeight = currentWeight;
@@ -112,15 +112,15 @@ class PropertyMixer {
   accumulateAdditive(weight) {
     const buffer = this.buffer;
     const stride = this.valueSize;
-    const offset = stride * this._addIndex;
+    const offset = stride * this.#addIndex;
 
     if (this.cumulativeWeightAdditive === 0) {
       // add = identity
-      this._setIdentity();
+      this.#setIdentity();
     }
 
     // add := add + incoming * weight
-    this._mixBufferRegionAdditive(buffer, offset, 0, weight, stride);
+    this.#mixBufferRegionAdditive(buffer, offset, 0, weight, stride);
     this.cumulativeWeightAdditive += weight;
   }
 
@@ -138,14 +138,14 @@ class PropertyMixer {
 
     if (weight < 1) {
       // accuN := accuN + original * ( 1 - cumulativeWeight )
-      const originalValueOffset = stride * this._origIndex;
+      const originalValueOffset = stride * this.#origIndex;
 
-      this._mixBufferRegion(buffer, offset, originalValueOffset, 1 - weight, stride);
+      this.#mixBufferRegion(buffer, offset, originalValueOffset, 1 - weight, stride);
     }
 
     if (weightAdditive > 0) {
       // accuN := accuN + additive accuN
-      this._mixBufferRegionAdditive(buffer, offset, this._addIndex * stride, 1, stride);
+      this.#mixBufferRegionAdditive(buffer, offset, this.#addIndex * stride, 1, stride);
     }
 
     for (let i = stride, e = stride + stride; i !== e; ++i) {
@@ -164,7 +164,7 @@ class PropertyMixer {
 
     const buffer = this.buffer;
     const stride = this.valueSize;
-    const originalValueOffset = stride * this._origIndex;
+    const originalValueOffset = stride * this.#origIndex;
 
     binding.getValue(buffer, originalValueOffset);
 
@@ -174,7 +174,7 @@ class PropertyMixer {
     }
 
     // Add to identity for additive
-    this._setIdentity();
+    this.#setIdentity();
 
     this.cumulativeWeight = 0;
     this.cumulativeWeightAdditive = 0;
@@ -186,8 +186,8 @@ class PropertyMixer {
     this.binding.setValue(this.buffer, originalValueOffset);
   }
 
-  _setAdditiveIdentityNumeric() {
-    const startIndex = this._addIndex * this.valueSize;
+  #setAdditiveIdentityNumeric() {
+    const startIndex = this.#addIndex * this.valueSize;
     const endIndex = startIndex + this.valueSize;
 
     for (let i = startIndex; i < endIndex; i++) {
@@ -195,14 +195,14 @@ class PropertyMixer {
     }
   }
 
-  _setAdditiveIdentityQuaternion() {
-    this._setAdditiveIdentityNumeric();
-    this.buffer[this._addIndex * this.valueSize + 3] = 1;
+  #setAdditiveIdentityQuaternion() {
+    this.#setAdditiveIdentityNumeric();
+    this.buffer[this.#addIndex * this.valueSize + 3] = 1;
   }
 
-  _setAdditiveIdentityOther() {
-    const startIndex = this._origIndex * this.valueSize;
-    const targetIndex = this._addIndex * this.valueSize;
+  #setAdditiveIdentityOther() {
+    const startIndex = this.#origIndex * this.valueSize;
+    const targetIndex = this.#addIndex * this.valueSize;
 
     for (let i = 0; i < this.valueSize; i++) {
       this.buffer[targetIndex + i] = this.buffer[startIndex + i];
@@ -211,7 +211,7 @@ class PropertyMixer {
 
   // mix functions
 
-  _select(buffer, dstOffset, srcOffset, t, stride) {
+  #select(buffer, dstOffset, srcOffset, t, stride) {
     if (t >= 0.5) {
       for (let i = 0; i !== stride; ++i) {
         buffer[dstOffset + i] = buffer[srcOffset + i];
@@ -219,12 +219,12 @@ class PropertyMixer {
     }
   }
 
-  _slerp(buffer, dstOffset, srcOffset, t) {
+  #slerp(buffer, dstOffset, srcOffset, t) {
     Quaternion.slerpFlat(buffer, dstOffset, buffer, dstOffset, buffer, srcOffset, t);
   }
 
-  _slerpAdditive(buffer, dstOffset, srcOffset, t, stride) {
-    const workOffset = this._workIndex * stride;
+  #slerpAdditive(buffer, dstOffset, srcOffset, t, stride) {
+    const workOffset = this.#workIndex * stride;
 
     // Store result in intermediate buffer offset
     Quaternion.multiplyQuaternionsFlat(buffer, workOffset, buffer, dstOffset, buffer, srcOffset);
@@ -233,7 +233,7 @@ class PropertyMixer {
     Quaternion.slerpFlat(buffer, dstOffset, buffer, dstOffset, buffer, workOffset, t);
   }
 
-  _lerp(buffer, dstOffset, srcOffset, t, stride) {
+  #lerp(buffer, dstOffset, srcOffset, t, stride) {
     const s = 1 - t;
 
     for (let i = 0; i !== stride; ++i) {
@@ -243,7 +243,7 @@ class PropertyMixer {
     }
   }
 
-  _lerpAdditive(buffer, dstOffset, srcOffset, t, stride) {
+  #lerpAdditive(buffer, dstOffset, srcOffset, t, stride) {
     for (let i = 0; i !== stride; ++i) {
       const j = dstOffset + i;
 
