@@ -1,6 +1,24 @@
 import { Quaternion } from '@renderlayer/math';
 
 class PropertyMixer {
+  binding;
+  valueSize;
+
+  buffer;
+  _workIndex;
+
+  _mixBufferRegion;
+  _mixBufferRegionAdditive;
+  _setIdentity;
+  _origIndex = 3;
+  _addIndex = 4;
+
+  cumulativeWeight = 0;
+  cumulativeWeightAdditive = 0;
+
+  useCount = 0;
+  referenceCount = 0;
+
   constructor(binding, typeName, valueSize) {
     this.binding = binding;
     this.valueSize = valueSize;
@@ -59,14 +77,6 @@ class PropertyMixer {
     this._mixBufferRegion = mixFunction;
     this._mixBufferRegionAdditive = mixFunctionAdditive;
     this._setIdentity = setIdentity;
-    this._origIndex = 3;
-    this._addIndex = 4;
-
-    this.cumulativeWeight = 0;
-    this.cumulativeWeightAdditive = 0;
-
-    this.useCount = 0;
-    this.referenceCount = 0;
   }
 
   // accumulate data in the 'incoming' region into 'accu<i>'
