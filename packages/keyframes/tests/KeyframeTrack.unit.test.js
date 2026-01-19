@@ -1,5 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { InterpolateLinear } from '@renderlayer/shared';
 import { NumberKeyframeTrack } from '../src/NumberKeyframeTrack.js';
 import { KeyframeTrack } from '../src/KeyframeTrack.js';
 
@@ -9,7 +10,7 @@ describe('Keyframes', () => {
       name: '.material.opacity',
       times: [0, 1],
       values: [0, 0.5],
-      interpolation: NumberKeyframeTrack.DefaultInterpolation
+      interpolation: InterpolateLinear
     };
 
     test('constructor', () => {
@@ -89,6 +90,7 @@ describe('Keyframes', () => {
 
       expect(object).toMatchInlineSnapshot(`
         NumberKeyframeTrack {
+          "ValueTypeName": "number",
           "createInterpolant": [Function],
           "name": ".material.opacity",
           "times": Float32Array [
