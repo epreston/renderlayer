@@ -89,26 +89,26 @@ class Vector3 {
     return new this.constructor(this.x, this.y, this.z);
   }
 
-  copy(v) {
-    this.x = v.x;
-    this.y = v.y;
-    this.z = v.z;
+  copy(vector) {
+    this.x = vector.x;
+    this.y = vector.y;
+    this.z = vector.z;
 
     return this;
   }
 
-  add(v) {
-    this.x += v.x;
-    this.y += v.y;
-    this.z += v.z;
+  add(vector) {
+    this.x += vector.x;
+    this.y += vector.y;
+    this.z += vector.z;
 
     return this;
   }
 
-  addScalar(s) {
-    this.x += s;
-    this.y += s;
-    this.z += s;
+  addScalar(scalar) {
+    this.x += scalar;
+    this.y += scalar;
+    this.z += scalar;
 
     return this;
   }
@@ -121,26 +121,26 @@ class Vector3 {
     return this;
   }
 
-  addScaledVector(v, s) {
-    this.x += v.x * s;
-    this.y += v.y * s;
-    this.z += v.z * s;
+  addScaledVector(vector, scalar) {
+    this.x += vector.x * scalar;
+    this.y += vector.y * scalar;
+    this.z += vector.z * scalar;
 
     return this;
   }
 
-  sub(v) {
-    this.x -= v.x;
-    this.y -= v.y;
-    this.z -= v.z;
+  sub(vector) {
+    this.x -= vector.x;
+    this.y -= vector.y;
+    this.z -= vector.z;
 
     return this;
   }
 
-  subScalar(s) {
-    this.x -= s;
-    this.y -= s;
-    this.z -= s;
+  subScalar(scalar) {
+    this.x -= scalar;
+    this.y -= scalar;
+    this.z -= scalar;
 
     return this;
   }
@@ -153,10 +153,10 @@ class Vector3 {
     return this;
   }
 
-  multiply(v) {
-    this.x *= v.x;
-    this.y *= v.y;
-    this.z *= v.z;
+  multiply(vector) {
+    this.x *= vector.x;
+    this.y *= vector.y;
+    this.z *= vector.z;
 
     return this;
   }
@@ -185,11 +185,11 @@ class Vector3 {
     return this.applyQuaternion(_quaternion.setFromAxisAngle(axis, angle));
   }
 
-  applyMatrix3(m) {
+  applyMatrix3(matrix) {
     const x = this.x;
     const y = this.y;
     const z = this.z;
-    const e = m.elements;
+    const e = matrix.elements;
 
     this.x = e[0] * x + e[3] * y + e[6] * z;
     this.y = e[1] * x + e[4] * y + e[7] * z;
@@ -198,15 +198,15 @@ class Vector3 {
     return this;
   }
 
-  applyNormalMatrix(m) {
-    return this.applyMatrix3(m).normalize();
+  applyNormalMatrix(matrix) {
+    return this.applyMatrix3(matrix).normalize();
   }
 
-  applyMatrix4(m) {
+  applyMatrix4(matrix) {
     const x = this.x;
     const y = this.y;
     const z = this.z;
-    const e = m.elements;
+    const e = matrix.elements;
 
     const w = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]);
 
@@ -217,17 +217,16 @@ class Vector3 {
     return this;
   }
 
-  applyQuaternion(q) {
-    // quaternion q is assumed to have unit length
-
+  applyQuaternion(quaternion) {
+    // quaternion is assumed to have unit length
     const vx = this.x;
-
     const vy = this.y;
     const vz = this.z;
-    const qx = q.x;
-    const qy = q.y;
-    const qz = q.z;
-    const qw = q.w;
+
+    const qx = quaternion.x;
+    const qy = quaternion.y;
+    const qz = quaternion.z;
+    const qw = quaternion.w;
 
     // t = 2 * cross( q.xyz, v );
     const tx = 2 * (qy * vz - qz * vy);
@@ -250,7 +249,7 @@ class Vector3 {
     return this.applyMatrix4(camera.projectionMatrixInverse).applyMatrix4(camera.matrixWorld);
   }
 
-  transformDirection(m) {
+  transformDirection(matrix) {
     // input: Matrix4 affine matrix
     // vector interpreted as a direction
 
@@ -258,7 +257,7 @@ class Vector3 {
 
     const y = this.y;
     const z = this.z;
-    const e = m.elements;
+    const e = matrix.elements;
 
     this.x = e[0] * x + e[4] * y + e[8] * z;
     this.y = e[1] * x + e[5] * y + e[9] * z;
@@ -267,10 +266,10 @@ class Vector3 {
     return this.normalize();
   }
 
-  divide(v) {
-    this.x /= v.x;
-    this.y /= v.y;
-    this.z /= v.z;
+  divide(vector) {
+    this.x /= vector.x;
+    this.y /= vector.y;
+    this.z /= vector.z;
 
     return this;
   }
@@ -279,18 +278,18 @@ class Vector3 {
     return this.multiplyScalar(1 / scalar);
   }
 
-  min(v) {
-    this.x = Math.min(this.x, v.x);
-    this.y = Math.min(this.y, v.y);
-    this.z = Math.min(this.z, v.z);
+  min(vector) {
+    this.x = Math.min(this.x, vector.x);
+    this.y = Math.min(this.y, vector.y);
+    this.z = Math.min(this.z, vector.z);
 
     return this;
   }
 
-  max(v) {
-    this.x = Math.max(this.x, v.x);
-    this.y = Math.max(this.y, v.y);
-    this.z = Math.max(this.z, v.z);
+  max(vector) {
+    this.x = Math.max(this.x, vector.x);
+    this.y = Math.max(this.y, vector.y);
+    this.z = Math.max(this.z, vector.z);
 
     return this;
   }
@@ -359,8 +358,8 @@ class Vector3 {
     return this;
   }
 
-  dot(v) {
-    return this.x * v.x + this.y * v.y + this.z * v.z;
+  dot(vector) {
+    return this.x * vector.x + this.y * vector.y + this.z * vector.z;
   }
 
   // TODO lengthSquared?
@@ -385,10 +384,10 @@ class Vector3 {
     return this.normalize().multiplyScalar(length);
   }
 
-  lerp(v, alpha) {
-    this.x += (v.x - this.x) * alpha;
-    this.y += (v.y - this.y) * alpha;
-    this.z += (v.z - this.z) * alpha;
+  lerp(vector, alpha) {
+    this.x += (vector.x - this.x) * alpha;
+    this.y += (vector.y - this.y) * alpha;
+    this.z += (vector.z - this.z) * alpha;
 
     return this;
   }
@@ -401,8 +400,8 @@ class Vector3 {
     return this;
   }
 
-  cross(v) {
-    return this.crossVectors(this, v);
+  cross(vector) {
+    return this.crossVectors(this, vector);
   }
 
   crossVectors(a, b) {
@@ -420,14 +419,14 @@ class Vector3 {
     return this;
   }
 
-  projectOnVector(v) {
-    const denominator = v.lengthSq();
+  projectOnVector(vector) {
+    const denominator = vector.lengthSq();
 
     if (denominator === 0) return this.set(0, 0, 0);
 
-    const scalar = v.dot(this) / denominator;
+    const scalar = vector.dot(this) / denominator;
 
-    return this.copy(v).multiplyScalar(scalar);
+    return this.copy(vector).multiplyScalar(scalar);
   }
 
   projectOnPlane(planeNormal) {
@@ -443,35 +442,35 @@ class Vector3 {
     return this.sub(_vector.copy(normal).multiplyScalar(2 * this.dot(normal)));
   }
 
-  angleTo(v) {
-    const denominator = Math.sqrt(this.lengthSq() * v.lengthSq());
+  angleTo(vector) {
+    const denominator = Math.sqrt(this.lengthSq() * vector.lengthSq());
 
     if (denominator === 0) return Math.PI / 2;
 
-    const theta = this.dot(v) / denominator;
+    const theta = this.dot(vector) / denominator;
 
     // clamp, to handle numerical problems
     return Math.acos(clampToRange(theta, -1, 1));
   }
 
-  distanceTo(v) {
-    return Math.sqrt(this.distanceToSquared(v));
+  distanceTo(vector) {
+    return Math.sqrt(this.distanceToSquared(vector));
   }
 
-  distanceToSquared(v) {
-    const dx = this.x - v.x;
-    const dy = this.y - v.y;
-    const dz = this.z - v.z;
+  distanceToSquared(vector) {
+    const dx = this.x - vector.x;
+    const dy = this.y - vector.y;
+    const dz = this.z - vector.z;
 
     return dx * dx + dy * dy + dz * dz;
   }
 
-  manhattanDistanceTo(v) {
-    return Math.abs(this.x - v.x) + Math.abs(this.y - v.y) + Math.abs(this.z - v.z);
+  manhattanDistanceTo(vector) {
+    return Math.abs(this.x - vector.x) + Math.abs(this.y - vector.y) + Math.abs(this.z - vector.z);
   }
 
-  setFromSpherical(s) {
-    return this.setFromSphericalCoords(s.radius, s.phi, s.theta);
+  setFromSpherical(spherical) {
+    return this.setFromSphericalCoords(spherical.radius, spherical.phi, spherical.theta);
   }
 
   setFromSphericalCoords(radius, phi, theta) {
@@ -484,8 +483,8 @@ class Vector3 {
     return this;
   }
 
-  setFromCylindrical(c) {
-    return this.setFromCylindricalCoords(c.radius, c.theta, c.y);
+  setFromCylindrical(cylindrical) {
+    return this.setFromCylindricalCoords(cylindrical.radius, cylindrical.theta, cylindrical.y);
   }
 
   setFromCylindricalCoords(radius, theta, y) {
@@ -534,16 +533,16 @@ class Vector3 {
     return this;
   }
 
-  setFromColor(c) {
-    this.x = c.r;
-    this.y = c.g;
-    this.z = c.b;
+  setFromColor(color) {
+    this.x = color.r;
+    this.y = color.g;
+    this.z = color.b;
 
     return this;
   }
 
-  equals(v) {
-    return v.x === this.x && v.y === this.y && v.z === this.z;
+  equals(vector) {
+    return vector.x === this.x && vector.y === this.y && vector.z === this.z;
   }
 
   fromArray(array, offset = 0) {
