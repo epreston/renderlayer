@@ -5,28 +5,51 @@ import { MeshBasicMaterial } from '@renderlayer/materials';
 import { Mesh } from '@renderlayer/objects';
 import { PropertyBinding } from '../src/PropertyBinding.js';
 
+const _test_geometry = new BoxGeometry();
+const _test_material = new MeshBasicMaterial();
+const _test_mesh = new Mesh(_test_geometry, _test_material);
+const _test_path = '.material.opacity';
+const _test_parsedPath = {
+  nodeName: '',
+  objectName: 'material',
+  objectIndex: undefined,
+  propertyName: 'opacity',
+  propertyIndex: undefined
+};
+
 describe('Animation', () => {
   describe('PropertyBinding', () => {
     test('constructor', () => {
-      const geometry = new BoxGeometry();
-      const material = new MeshBasicMaterial();
-      const mesh = new Mesh(geometry, material);
-      const path = '.material.opacity';
-      const parsedPath = {
-        nodeName: '',
-        objectName: 'material',
-        objectIndex: undefined,
-        propertyName: 'opacity',
-        propertyIndex: undefined
-      };
-
       // mesh, path
-      const object = new PropertyBinding(mesh, path);
+      const object = new PropertyBinding(_test_mesh, _test_path);
       expect(object).toBeDefined();
 
       // mesh, path, parsedPath
-      const object_all = new PropertyBinding(mesh, path, parsedPath);
+      const object_all = new PropertyBinding(_test_mesh, _test_path, _test_parsedPath);
       expect(object_all).toBeDefined();
+    });
+
+    test('path', () => {
+      const object = new PropertyBinding(_test_mesh, _test_path, _test_parsedPath);
+      expect(object.path).toBeDefined();
+      expect(object.path).toBe(_test_path);
+    });
+
+    test('parsedPath', () => {
+      const object = new PropertyBinding(_test_mesh, _test_path, _test_parsedPath);
+      expect(object.parsedPath).toBeDefined();
+      expect(object.parsedPath).toBe(_test_parsedPath);
+    });
+
+    test('node', () => {
+      const object = new PropertyBinding(_test_mesh, _test_path, _test_parsedPath);
+      expect(object.node).toBeDefined();
+    });
+
+    test('rootNode', () => {
+      const object = new PropertyBinding(_test_mesh, _test_path, _test_parsedPath);
+      expect(object.rootNode).toBeDefined();
+      expect(object.rootNode).toBe(_test_mesh);
     });
 
     test('Composite', () => {
