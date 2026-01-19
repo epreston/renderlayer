@@ -39,9 +39,9 @@ class Frustum {
     return this;
   }
 
-  setFromProjectionMatrix(m, webgpu = false) {
+  setFromProjectionMatrix(matrix, webgpu = false) {
     const planes = this.planes;
-    const me = m.elements;
+    const me = matrix.elements;
     const me0 = me[0];
     const me1 = me[1];
     const me2 = me[2];
