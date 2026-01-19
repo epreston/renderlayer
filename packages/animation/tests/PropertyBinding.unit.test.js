@@ -73,6 +73,7 @@ describe('Animation', () => {
       const object = PropertyBinding.create(mesh, path, parsedPath);
 
       expect(object).toBeDefined();
+      // @ts-ignore
       expect(object.path).toBe(path);
     });
 
