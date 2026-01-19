@@ -342,10 +342,10 @@ class Color {
     return this;
   }
 
-  addScalar(s) {
-    this.r += s;
-    this.g += s;
-    this.b += s;
+  addScalar(scalar) {
+    this.r += scalar;
+    this.g += scalar;
+    this.b += scalar;
 
     return this;
   }
@@ -366,10 +366,10 @@ class Color {
     return this;
   }
 
-  multiplyScalar(s) {
-    this.r *= s;
-    this.g *= s;
-    this.b *= s;
+  multiplyScalar(scalar) {
+    this.r *= scalar;
+    this.g *= scalar;
+    this.b *= scalar;
 
     return this;
   }
@@ -403,19 +403,19 @@ class Color {
     return this;
   }
 
-  setFromVector3(v) {
-    this.r = v.x;
-    this.g = v.y;
-    this.b = v.z;
+  setFromVector3(vector) {
+    this.r = vector.x;
+    this.g = vector.y;
+    this.b = vector.z;
 
     return this;
   }
 
-  applyMatrix3(m) {
+  applyMatrix3(matrix) {
     const r = this.r;
     const g = this.g;
     const b = this.b;
-    const e = m.elements;
+    const e = matrix.elements;
 
     this.r = e[0] * r + e[3] * g + e[6] * b;
     this.g = e[1] * r + e[4] * g + e[7] * b;
@@ -424,8 +424,8 @@ class Color {
     return this;
   }
 
-  equals(c) {
-    return c.r === this.r && c.g === this.g && c.b === this.b;
+  equals(color) {
+    return color.r === this.r && color.g === this.g && color.b === this.b;
   }
 
   fromArray(array, offset = 0) {
