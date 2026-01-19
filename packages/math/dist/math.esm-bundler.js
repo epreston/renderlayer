@@ -228,19 +228,19 @@ class Vector2 {
   clone() {
     return new this.constructor(this.x, this.y);
   }
-  copy(v) {
-    this.x = v.x;
-    this.y = v.y;
+  copy(vector) {
+    this.x = vector.x;
+    this.y = vector.y;
     return this;
   }
-  add(v) {
-    this.x += v.x;
-    this.y += v.y;
+  add(vector) {
+    this.x += vector.x;
+    this.y += vector.y;
     return this;
   }
-  addScalar(s) {
-    this.x += s;
-    this.y += s;
+  addScalar(scalar) {
+    this.x += scalar;
+    this.y += scalar;
     return this;
   }
   addVectors(a, b) {
@@ -248,19 +248,19 @@ class Vector2 {
     this.y = a.y + b.y;
     return this;
   }
-  addScaledVector(v, s) {
-    this.x += v.x * s;
-    this.y += v.y * s;
+  addScaledVector(vector, scalar) {
+    this.x += vector.x * scalar;
+    this.y += vector.y * scalar;
     return this;
   }
-  sub(v) {
-    this.x -= v.x;
-    this.y -= v.y;
+  sub(vector) {
+    this.x -= vector.x;
+    this.y -= vector.y;
     return this;
   }
-  subScalar(s) {
-    this.x -= s;
-    this.y -= s;
+  subScalar(scalar) {
+    this.x -= scalar;
+    this.y -= scalar;
     return this;
   }
   subVectors(a, b) {
@@ -268,9 +268,9 @@ class Vector2 {
     this.y = a.y - b.y;
     return this;
   }
-  multiply(v) {
-    this.x *= v.x;
-    this.y *= v.y;
+  multiply(vector) {
+    this.x *= vector.x;
+    this.y *= vector.y;
     return this;
   }
   multiplyScalar(scalar) {
@@ -278,30 +278,30 @@ class Vector2 {
     this.y *= scalar;
     return this;
   }
-  divide(v) {
-    this.x /= v.x;
-    this.y /= v.y;
+  divide(vector) {
+    this.x /= vector.x;
+    this.y /= vector.y;
     return this;
   }
   divideScalar(scalar) {
     return this.multiplyScalar(1 / scalar);
   }
-  applyMatrix3(m) {
+  applyMatrix3(matrix) {
     const x = this.x;
     const y = this.y;
-    const e = m.elements;
+    const e = matrix.elements;
     this.x = e[0] * x + e[3] * y + e[6];
     this.y = e[1] * x + e[4] * y + e[7];
     return this;
   }
-  min(v) {
-    this.x = Math.min(this.x, v.x);
-    this.y = Math.min(this.y, v.y);
+  min(vector) {
+    this.x = Math.min(this.x, vector.x);
+    this.y = Math.min(this.y, vector.y);
     return this;
   }
-  max(v) {
-    this.x = Math.max(this.x, v.x);
-    this.y = Math.max(this.y, v.y);
+  max(vector) {
+    this.x = Math.max(this.x, vector.x);
+    this.y = Math.max(this.y, vector.y);
     return this;
   }
   clamp(min, max) {
@@ -343,11 +343,11 @@ class Vector2 {
     this.y = -this.y;
     return this;
   }
-  dot(v) {
-    return this.x * v.x + this.y * v.y;
+  dot(vector) {
+    return this.x * vector.x + this.y * vector.y;
   }
-  cross(v) {
-    return this.x * v.y - this.y * v.x;
+  cross(vector) {
+    return this.x * vector.y - this.y * vector.x;
   }
   lengthSq() {
     return this.x * this.x + this.y * this.y;
@@ -365,29 +365,29 @@ class Vector2 {
     const angle = Math.atan2(-this.y, -this.x) + Math.PI;
     return angle;
   }
-  angleTo(v) {
-    const denominator = Math.sqrt(this.lengthSq() * v.lengthSq());
+  angleTo(vector) {
+    const denominator = Math.sqrt(this.lengthSq() * vector.lengthSq());
     if (denominator === 0) return Math.PI / 2;
-    const theta = this.dot(v) / denominator;
+    const theta = this.dot(vector) / denominator;
     return Math.acos(clamp(theta, -1, 1));
   }
-  distanceTo(v) {
-    return Math.sqrt(this.distanceToSquared(v));
+  distanceTo(vector) {
+    return Math.sqrt(this.distanceToSquared(vector));
   }
-  distanceToSquared(v) {
-    const dx = this.x - v.x;
-    const dy = this.y - v.y;
+  distanceToSquared(vector) {
+    const dx = this.x - vector.x;
+    const dy = this.y - vector.y;
     return dx * dx + dy * dy;
   }
-  manhattanDistanceTo(v) {
-    return Math.abs(this.x - v.x) + Math.abs(this.y - v.y);
+  manhattanDistanceTo(vector) {
+    return Math.abs(this.x - vector.x) + Math.abs(this.y - vector.y);
   }
   setLength(length) {
     return this.normalize().multiplyScalar(length);
   }
-  lerp(v, alpha) {
-    this.x += (v.x - this.x) * alpha;
-    this.y += (v.y - this.y) * alpha;
+  lerp(vector, alpha) {
+    this.x += (vector.x - this.x) * alpha;
+    this.y += (vector.y - this.y) * alpha;
     return this;
   }
   lerpVectors(v1, v2, alpha) {
@@ -395,8 +395,8 @@ class Vector2 {
     this.y = v1.y + (v2.y - v1.y) * alpha;
     return this;
   }
-  equals(v) {
-    return v.x === this.x && v.y === this.y;
+  equals(vector) {
+    return vector.x === this.x && vector.y === this.y;
   }
   fromArray(array, offset = 0) {
     this.x = array[offset];
@@ -545,15 +545,15 @@ const _vector$4 = /* @__PURE__ */ new Vector2();
 class Quaternion {
   #onChangeCallback = () => {
   };
-  _x = 0;
-  _y = 0;
-  _z = 0;
-  _w = 1;
+  #x = 0;
+  #y = 0;
+  #z = 0;
+  #w = 1;
   constructor(x = 0, y = 0, z = 0, w = 1) {
-    this._x = x;
-    this._y = y;
-    this._z = z;
-    this._w = w;
+    this.#x = x;
+    this.#y = y;
+    this.#z = z;
+    this.#w = w;
   }
   get isQuaternion() {
     return true;
@@ -626,50 +626,50 @@ class Quaternion {
     return dst;
   }
   get x() {
-    return this._x;
+    return this.#x;
   }
   set x(value) {
-    this._x = value;
+    this.#x = value;
     this.#onChangeCallback();
   }
   get y() {
-    return this._y;
+    return this.#y;
   }
   set y(value) {
-    this._y = value;
+    this.#y = value;
     this.#onChangeCallback();
   }
   get z() {
-    return this._z;
+    return this.#z;
   }
   set z(value) {
-    this._z = value;
+    this.#z = value;
     this.#onChangeCallback();
   }
   get w() {
-    return this._w;
+    return this.#w;
   }
   set w(value) {
-    this._w = value;
+    this.#w = value;
     this.#onChangeCallback();
   }
   set(x, y, z, w) {
-    this._x = x;
-    this._y = y;
-    this._z = z;
-    this._w = w;
+    this.#x = x;
+    this.#y = y;
+    this.#z = z;
+    this.#w = w;
     this.#onChangeCallback();
     return this;
   }
   /** @returns {this} */
   clone() {
-    return new this.constructor(this._x, this._y, this._z, this._w);
+    return new this.constructor(this.#x, this.#y, this.#z, this.#w);
   }
   copy(quaternion, update = true) {
-    this._x = quaternion.x;
-    this._y = quaternion.y;
-    this._z = quaternion.z;
-    this._w = quaternion.w;
+    this.#x = quaternion.x;
+    this.#y = quaternion.y;
+    this.#z = quaternion.z;
+    this.#w = quaternion.w;
     if (update === true) this.#onChangeCallback();
     return this;
   }
@@ -688,40 +688,40 @@ class Quaternion {
     const s3 = sin(z / 2);
     switch (order) {
       case "XYZ":
-        this._x = s1 * c2 * c3 + c1 * s2 * s3;
-        this._y = c1 * s2 * c3 - s1 * c2 * s3;
-        this._z = c1 * c2 * s3 + s1 * s2 * c3;
-        this._w = c1 * c2 * c3 - s1 * s2 * s3;
+        this.#x = s1 * c2 * c3 + c1 * s2 * s3;
+        this.#y = c1 * s2 * c3 - s1 * c2 * s3;
+        this.#z = c1 * c2 * s3 + s1 * s2 * c3;
+        this.#w = c1 * c2 * c3 - s1 * s2 * s3;
         break;
       case "YXZ":
-        this._x = s1 * c2 * c3 + c1 * s2 * s3;
-        this._y = c1 * s2 * c3 - s1 * c2 * s3;
-        this._z = c1 * c2 * s3 - s1 * s2 * c3;
-        this._w = c1 * c2 * c3 + s1 * s2 * s3;
+        this.#x = s1 * c2 * c3 + c1 * s2 * s3;
+        this.#y = c1 * s2 * c3 - s1 * c2 * s3;
+        this.#z = c1 * c2 * s3 - s1 * s2 * c3;
+        this.#w = c1 * c2 * c3 + s1 * s2 * s3;
         break;
       case "ZXY":
-        this._x = s1 * c2 * c3 - c1 * s2 * s3;
-        this._y = c1 * s2 * c3 + s1 * c2 * s3;
-        this._z = c1 * c2 * s3 + s1 * s2 * c3;
-        this._w = c1 * c2 * c3 - s1 * s2 * s3;
+        this.#x = s1 * c2 * c3 - c1 * s2 * s3;
+        this.#y = c1 * s2 * c3 + s1 * c2 * s3;
+        this.#z = c1 * c2 * s3 + s1 * s2 * c3;
+        this.#w = c1 * c2 * c3 - s1 * s2 * s3;
         break;
       case "ZYX":
-        this._x = s1 * c2 * c3 - c1 * s2 * s3;
-        this._y = c1 * s2 * c3 + s1 * c2 * s3;
-        this._z = c1 * c2 * s3 - s1 * s2 * c3;
-        this._w = c1 * c2 * c3 + s1 * s2 * s3;
+        this.#x = s1 * c2 * c3 - c1 * s2 * s3;
+        this.#y = c1 * s2 * c3 + s1 * c2 * s3;
+        this.#z = c1 * c2 * s3 - s1 * s2 * c3;
+        this.#w = c1 * c2 * c3 + s1 * s2 * s3;
         break;
       case "YZX":
-        this._x = s1 * c2 * c3 + c1 * s2 * s3;
-        this._y = c1 * s2 * c3 + s1 * c2 * s3;
-        this._z = c1 * c2 * s3 - s1 * s2 * c3;
-        this._w = c1 * c2 * c3 - s1 * s2 * s3;
+        this.#x = s1 * c2 * c3 + c1 * s2 * s3;
+        this.#y = c1 * s2 * c3 + s1 * c2 * s3;
+        this.#z = c1 * c2 * s3 - s1 * s2 * c3;
+        this.#w = c1 * c2 * c3 - s1 * s2 * s3;
         break;
       case "XZY":
-        this._x = s1 * c2 * c3 - c1 * s2 * s3;
-        this._y = c1 * s2 * c3 - s1 * c2 * s3;
-        this._z = c1 * c2 * s3 + s1 * s2 * c3;
-        this._w = c1 * c2 * c3 + s1 * s2 * s3;
+        this.#x = s1 * c2 * c3 - c1 * s2 * s3;
+        this.#y = c1 * s2 * c3 - s1 * c2 * s3;
+        this.#z = c1 * c2 * s3 + s1 * s2 * c3;
+        this.#w = c1 * c2 * c3 + s1 * s2 * s3;
         break;
       default:
         console.warn(`Quaternion: .setFromEuler() encountered an unknown order: ${order}`);
@@ -732,15 +732,15 @@ class Quaternion {
   setFromAxisAngle(axis, angle) {
     const halfAngle = angle / 2;
     const s = Math.sin(halfAngle);
-    this._x = axis.x * s;
-    this._y = axis.y * s;
-    this._z = axis.z * s;
-    this._w = Math.cos(halfAngle);
+    this.#x = axis.x * s;
+    this.#y = axis.y * s;
+    this.#z = axis.z * s;
+    this.#w = Math.cos(halfAngle);
     this.#onChangeCallback();
     return this;
   }
-  setFromRotationMatrix(m) {
-    const te = m.elements;
+  setFromRotationMatrix(matrix) {
+    const te = matrix.elements;
     const m11 = te[0];
     const m12 = te[4];
     const m13 = te[8];
@@ -753,28 +753,28 @@ class Quaternion {
     const trace = m11 + m22 + m33;
     if (trace > 0) {
       const s = 0.5 / Math.sqrt(trace + 1);
-      this._w = 0.25 / s;
-      this._x = (m32 - m23) * s;
-      this._y = (m13 - m31) * s;
-      this._z = (m21 - m12) * s;
+      this.#w = 0.25 / s;
+      this.#x = (m32 - m23) * s;
+      this.#y = (m13 - m31) * s;
+      this.#z = (m21 - m12) * s;
     } else if (m11 > m22 && m11 > m33) {
       const s = 2 * Math.sqrt(1 + m11 - m22 - m33);
-      this._w = (m32 - m23) / s;
-      this._x = 0.25 * s;
-      this._y = (m12 + m21) / s;
-      this._z = (m13 + m31) / s;
+      this.#w = (m32 - m23) / s;
+      this.#x = 0.25 * s;
+      this.#y = (m12 + m21) / s;
+      this.#z = (m13 + m31) / s;
     } else if (m22 > m33) {
       const s = 2 * Math.sqrt(1 + m22 - m11 - m33);
-      this._w = (m13 - m31) / s;
-      this._x = (m12 + m21) / s;
-      this._y = 0.25 * s;
-      this._z = (m23 + m32) / s;
+      this.#w = (m13 - m31) / s;
+      this.#x = (m12 + m21) / s;
+      this.#y = 0.25 * s;
+      this.#z = (m23 + m32) / s;
     } else {
       const s = 2 * Math.sqrt(1 + m33 - m11 - m22);
-      this._w = (m21 - m12) / s;
-      this._x = (m13 + m31) / s;
-      this._y = (m23 + m32) / s;
-      this._z = 0.25 * s;
+      this.#w = (m21 - m12) / s;
+      this.#x = (m13 + m31) / s;
+      this.#y = (m23 + m32) / s;
+      this.#z = 0.25 * s;
     }
     this.#onChangeCallback();
     return this;
@@ -784,21 +784,21 @@ class Quaternion {
     if (r < Number.EPSILON) {
       r = 0;
       if (Math.abs(vFrom.x) > Math.abs(vFrom.z)) {
-        this._x = -vFrom.y;
-        this._y = vFrom.x;
-        this._z = 0;
-        this._w = r;
+        this.#x = -vFrom.y;
+        this.#y = vFrom.x;
+        this.#z = 0;
+        this.#w = r;
       } else {
-        this._x = 0;
-        this._y = -vFrom.z;
-        this._z = vFrom.y;
-        this._w = r;
+        this.#x = 0;
+        this.#y = -vFrom.z;
+        this.#z = vFrom.y;
+        this.#w = r;
       }
     } else {
-      this._x = vFrom.y * vTo.z - vFrom.z * vTo.y;
-      this._y = vFrom.z * vTo.x - vFrom.x * vTo.z;
-      this._z = vFrom.x * vTo.y - vFrom.y * vTo.x;
-      this._w = r;
+      this.#x = vFrom.y * vTo.z - vFrom.z * vTo.y;
+      this.#y = vFrom.z * vTo.x - vFrom.x * vTo.z;
+      this.#z = vFrom.x * vTo.y - vFrom.y * vTo.x;
+      this.#w = r;
     }
     return this.normalize();
   }
@@ -819,34 +819,34 @@ class Quaternion {
     return this.conjugate();
   }
   conjugate() {
-    this._x *= -1;
-    this._y *= -1;
-    this._z *= -1;
+    this.#x *= -1;
+    this.#y *= -1;
+    this.#z *= -1;
     this.#onChangeCallback();
     return this;
   }
-  dot(v) {
-    return this._x * v.x + this._y * v.y + this._z * v.z + this._w * v.w;
+  dot(quaternion) {
+    return this.#x * quaternion.x + this.#y * quaternion.y + this.#z * quaternion.z + this.#w * quaternion.w;
   }
   lengthSq() {
-    return this._x * this._x + this._y * this._y + this._z * this._z + this._w * this._w;
+    return this.#x * this.#x + this.#y * this.#y + this.#z * this.#z + this.#w * this.#w;
   }
   length() {
-    return Math.sqrt(this._x * this._x + this._y * this._y + this._z * this._z + this._w * this._w);
+    return Math.sqrt(this.#x * this.#x + this.#y * this.#y + this.#z * this.#z + this.#w * this.#w);
   }
   normalize() {
     let l = this.length();
     if (l === 0) {
-      this._x = 0;
-      this._y = 0;
-      this._z = 0;
-      this._w = 1;
+      this.#x = 0;
+      this.#y = 0;
+      this.#z = 0;
+      this.#w = 1;
     } else {
       l = 1 / l;
-      this._x = this._x * l;
-      this._y = this._y * l;
-      this._z = this._z * l;
-      this._w = this._w * l;
+      this.#x = this.#x * l;
+      this.#y = this.#y * l;
+      this.#z = this.#z * l;
+      this.#w = this.#w * l;
     }
     this.#onChangeCallback();
     return this;
@@ -866,44 +866,44 @@ class Quaternion {
     const qby = b.y;
     const qbz = b.z;
     const qbw = b.w;
-    this._x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
-    this._y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
-    this._z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
-    this._w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
+    this.#x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
+    this.#y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
+    this.#z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
+    this.#w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
     this.#onChangeCallback();
     return this;
   }
   slerp(qb, t) {
     if (t === 0) return this;
     if (t === 1) return this.copy(qb);
-    const x = this._x;
-    const y = this._y;
-    const z = this._z;
-    const w = this._w;
+    const x = this.#x;
+    const y = this.#y;
+    const z = this.#z;
+    const w = this.#w;
     let cosHalfTheta = w * qb.w + x * qb.x + y * qb.y + z * qb.z;
     if (cosHalfTheta < 0) {
-      this._w = -qb.w;
-      this._x = -qb.x;
-      this._y = -qb.y;
-      this._z = -qb.z;
+      this.#w = -qb.w;
+      this.#x = -qb.x;
+      this.#y = -qb.y;
+      this.#z = -qb.z;
       cosHalfTheta = -cosHalfTheta;
     } else {
       this.copy(qb);
     }
     if (cosHalfTheta >= 1) {
-      this._w = w;
-      this._x = x;
-      this._y = y;
-      this._z = z;
+      this.#w = w;
+      this.#x = x;
+      this.#y = y;
+      this.#z = z;
       return this;
     }
     const sqrSinHalfTheta = 1 - cosHalfTheta * cosHalfTheta;
     if (sqrSinHalfTheta <= Number.EPSILON) {
       const s = 1 - t;
-      this._w = s * w + t * this._w;
-      this._x = s * x + t * this._x;
-      this._y = s * y + t * this._y;
-      this._z = s * z + t * this._z;
+      this.#w = s * w + t * this.#w;
+      this.#x = s * x + t * this.#x;
+      this.#y = s * y + t * this.#y;
+      this.#z = s * z + t * this.#z;
       this.normalize();
       this.#onChangeCallback();
       return this;
@@ -912,10 +912,10 @@ class Quaternion {
     const halfTheta = Math.atan2(sinHalfTheta, cosHalfTheta);
     const ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta;
     const ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
-    this._w = w * ratioA + this._w * ratioB;
-    this._x = x * ratioA + this._x * ratioB;
-    this._y = y * ratioA + this._y * ratioB;
-    this._z = z * ratioA + this._z * ratioB;
+    this.#w = w * ratioA + this.#w * ratioB;
+    this.#x = x * ratioA + this.#x * ratioB;
+    this.#y = y * ratioA + this.#y * ratioB;
+    this.#z = z * ratioA + this.#z * ratioB;
     this.#onChangeCallback();
     return this;
   }
@@ -936,28 +936,28 @@ class Quaternion {
     );
   }
   equals(quaternion) {
-    return quaternion.x === this._x && quaternion.y === this._y && quaternion.z === this._z && quaternion.w === this._w;
+    return quaternion.x === this.#x && quaternion.y === this.#y && quaternion.z === this.#z && quaternion.w === this.#w;
   }
   fromArray(array, offset = 0) {
-    this._x = array[offset];
-    this._y = array[offset + 1];
-    this._z = array[offset + 2];
-    this._w = array[offset + 3];
+    this.#x = array[offset];
+    this.#y = array[offset + 1];
+    this.#z = array[offset + 2];
+    this.#w = array[offset + 3];
     this.#onChangeCallback();
     return this;
   }
   toArray(array = [], offset = 0) {
-    array[offset] = this._x;
-    array[offset + 1] = this._y;
-    array[offset + 2] = this._z;
-    array[offset + 3] = this._w;
+    array[offset] = this.#x;
+    array[offset + 1] = this.#y;
+    array[offset + 2] = this.#z;
+    array[offset + 3] = this.#w;
     return array;
   }
   fromBufferAttribute(attribute, index) {
-    this._x = attribute.getX(index);
-    this._y = attribute.getY(index);
-    this._z = attribute.getZ(index);
-    this._w = attribute.getW(index);
+    this.#x = attribute.getX(index);
+    this.#y = attribute.getY(index);
+    this.#z = attribute.getZ(index);
+    this.#w = attribute.getW(index);
     return this;
   }
   toJSON() {
@@ -968,10 +968,10 @@ class Quaternion {
     return this;
   }
   *[Symbol.iterator]() {
-    yield this._x;
-    yield this._y;
-    yield this._z;
-    yield this._w;
+    yield this.#x;
+    yield this.#y;
+    yield this.#z;
+    yield this.#w;
   }
 }
 
@@ -1044,22 +1044,22 @@ class Vector3 {
   clone() {
     return new this.constructor(this.x, this.y, this.z);
   }
-  copy(v) {
-    this.x = v.x;
-    this.y = v.y;
-    this.z = v.z;
+  copy(vector) {
+    this.x = vector.x;
+    this.y = vector.y;
+    this.z = vector.z;
     return this;
   }
-  add(v) {
-    this.x += v.x;
-    this.y += v.y;
-    this.z += v.z;
+  add(vector) {
+    this.x += vector.x;
+    this.y += vector.y;
+    this.z += vector.z;
     return this;
   }
-  addScalar(s) {
-    this.x += s;
-    this.y += s;
-    this.z += s;
+  addScalar(scalar) {
+    this.x += scalar;
+    this.y += scalar;
+    this.z += scalar;
     return this;
   }
   addVectors(a, b) {
@@ -1068,22 +1068,22 @@ class Vector3 {
     this.z = a.z + b.z;
     return this;
   }
-  addScaledVector(v, s) {
-    this.x += v.x * s;
-    this.y += v.y * s;
-    this.z += v.z * s;
+  addScaledVector(vector, scalar) {
+    this.x += vector.x * scalar;
+    this.y += vector.y * scalar;
+    this.z += vector.z * scalar;
     return this;
   }
-  sub(v) {
-    this.x -= v.x;
-    this.y -= v.y;
-    this.z -= v.z;
+  sub(vector) {
+    this.x -= vector.x;
+    this.y -= vector.y;
+    this.z -= vector.z;
     return this;
   }
-  subScalar(s) {
-    this.x -= s;
-    this.y -= s;
-    this.z -= s;
+  subScalar(scalar) {
+    this.x -= scalar;
+    this.y -= scalar;
+    this.z -= scalar;
     return this;
   }
   subVectors(a, b) {
@@ -1092,10 +1092,10 @@ class Vector3 {
     this.z = a.z - b.z;
     return this;
   }
-  multiply(v) {
-    this.x *= v.x;
-    this.y *= v.y;
-    this.z *= v.z;
+  multiply(vector) {
+    this.x *= vector.x;
+    this.y *= vector.y;
+    this.z *= vector.z;
     return this;
   }
   multiplyScalar(scalar) {
@@ -1116,38 +1116,38 @@ class Vector3 {
   applyAxisAngle(axis, angle) {
     return this.applyQuaternion(_quaternion$1.setFromAxisAngle(axis, angle));
   }
-  applyMatrix3(m) {
+  applyMatrix3(matrix) {
     const x = this.x;
     const y = this.y;
     const z = this.z;
-    const e = m.elements;
+    const e = matrix.elements;
     this.x = e[0] * x + e[3] * y + e[6] * z;
     this.y = e[1] * x + e[4] * y + e[7] * z;
     this.z = e[2] * x + e[5] * y + e[8] * z;
     return this;
   }
-  applyNormalMatrix(m) {
-    return this.applyMatrix3(m).normalize();
+  applyNormalMatrix(matrix) {
+    return this.applyMatrix3(matrix).normalize();
   }
-  applyMatrix4(m) {
+  applyMatrix4(matrix) {
     const x = this.x;
     const y = this.y;
     const z = this.z;
-    const e = m.elements;
+    const e = matrix.elements;
     const w = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]);
     this.x = (e[0] * x + e[4] * y + e[8] * z + e[12]) * w;
     this.y = (e[1] * x + e[5] * y + e[9] * z + e[13]) * w;
     this.z = (e[2] * x + e[6] * y + e[10] * z + e[14]) * w;
     return this;
   }
-  applyQuaternion(q) {
+  applyQuaternion(quaternion) {
     const vx = this.x;
     const vy = this.y;
     const vz = this.z;
-    const qx = q.x;
-    const qy = q.y;
-    const qz = q.z;
-    const qw = q.w;
+    const qx = quaternion.x;
+    const qy = quaternion.y;
+    const qz = quaternion.z;
+    const qw = quaternion.w;
     const tx = 2 * (qy * vz - qz * vy);
     const ty = 2 * (qz * vx - qx * vz);
     const tz = 2 * (qx * vy - qy * vx);
@@ -1162,35 +1162,35 @@ class Vector3 {
   unproject(camera) {
     return this.applyMatrix4(camera.projectionMatrixInverse).applyMatrix4(camera.matrixWorld);
   }
-  transformDirection(m) {
+  transformDirection(matrix) {
     const x = this.x;
     const y = this.y;
     const z = this.z;
-    const e = m.elements;
+    const e = matrix.elements;
     this.x = e[0] * x + e[4] * y + e[8] * z;
     this.y = e[1] * x + e[5] * y + e[9] * z;
     this.z = e[2] * x + e[6] * y + e[10] * z;
     return this.normalize();
   }
-  divide(v) {
-    this.x /= v.x;
-    this.y /= v.y;
-    this.z /= v.z;
+  divide(vector) {
+    this.x /= vector.x;
+    this.y /= vector.y;
+    this.z /= vector.z;
     return this;
   }
   divideScalar(scalar) {
     return this.multiplyScalar(1 / scalar);
   }
-  min(v) {
-    this.x = Math.min(this.x, v.x);
-    this.y = Math.min(this.y, v.y);
-    this.z = Math.min(this.z, v.z);
+  min(vector) {
+    this.x = Math.min(this.x, vector.x);
+    this.y = Math.min(this.y, vector.y);
+    this.z = Math.min(this.z, vector.z);
     return this;
   }
-  max(v) {
-    this.x = Math.max(this.x, v.x);
-    this.y = Math.max(this.y, v.y);
-    this.z = Math.max(this.z, v.z);
+  max(vector) {
+    this.x = Math.max(this.x, vector.x);
+    this.y = Math.max(this.y, vector.y);
+    this.z = Math.max(this.z, vector.z);
     return this;
   }
   clamp(min, max) {
@@ -1239,8 +1239,8 @@ class Vector3 {
     this.z = -this.z;
     return this;
   }
-  dot(v) {
-    return this.x * v.x + this.y * v.y + this.z * v.z;
+  dot(vector) {
+    return this.x * vector.x + this.y * vector.y + this.z * vector.z;
   }
   // TODO lengthSquared?
   lengthSq() {
@@ -1258,10 +1258,10 @@ class Vector3 {
   setLength(length) {
     return this.normalize().multiplyScalar(length);
   }
-  lerp(v, alpha) {
-    this.x += (v.x - this.x) * alpha;
-    this.y += (v.y - this.y) * alpha;
-    this.z += (v.z - this.z) * alpha;
+  lerp(vector, alpha) {
+    this.x += (vector.x - this.x) * alpha;
+    this.y += (vector.y - this.y) * alpha;
+    this.z += (vector.z - this.z) * alpha;
     return this;
   }
   lerpVectors(v1, v2, alpha) {
@@ -1270,8 +1270,8 @@ class Vector3 {
     this.z = v1.z + (v2.z - v1.z) * alpha;
     return this;
   }
-  cross(v) {
-    return this.crossVectors(this, v);
+  cross(vector) {
+    return this.crossVectors(this, vector);
   }
   crossVectors(a, b) {
     const ax = a.x;
@@ -1285,11 +1285,11 @@ class Vector3 {
     this.z = ax * by - ay * bx;
     return this;
   }
-  projectOnVector(v) {
-    const denominator = v.lengthSq();
+  projectOnVector(vector) {
+    const denominator = vector.lengthSq();
     if (denominator === 0) return this.set(0, 0, 0);
-    const scalar = v.dot(this) / denominator;
-    return this.copy(v).multiplyScalar(scalar);
+    const scalar = vector.dot(this) / denominator;
+    return this.copy(vector).multiplyScalar(scalar);
   }
   projectOnPlane(planeNormal) {
     _vector$3.copy(this).projectOnVector(planeNormal);
@@ -1298,26 +1298,26 @@ class Vector3 {
   reflect(normal) {
     return this.sub(_vector$3.copy(normal).multiplyScalar(2 * this.dot(normal)));
   }
-  angleTo(v) {
-    const denominator = Math.sqrt(this.lengthSq() * v.lengthSq());
+  angleTo(vector) {
+    const denominator = Math.sqrt(this.lengthSq() * vector.lengthSq());
     if (denominator === 0) return Math.PI / 2;
-    const theta = this.dot(v) / denominator;
+    const theta = this.dot(vector) / denominator;
     return Math.acos(clamp(theta, -1, 1));
   }
-  distanceTo(v) {
-    return Math.sqrt(this.distanceToSquared(v));
+  distanceTo(vector) {
+    return Math.sqrt(this.distanceToSquared(vector));
   }
-  distanceToSquared(v) {
-    const dx = this.x - v.x;
-    const dy = this.y - v.y;
-    const dz = this.z - v.z;
+  distanceToSquared(vector) {
+    const dx = this.x - vector.x;
+    const dy = this.y - vector.y;
+    const dz = this.z - vector.z;
     return dx * dx + dy * dy + dz * dz;
   }
-  manhattanDistanceTo(v) {
-    return Math.abs(this.x - v.x) + Math.abs(this.y - v.y) + Math.abs(this.z - v.z);
+  manhattanDistanceTo(vector) {
+    return Math.abs(this.x - vector.x) + Math.abs(this.y - vector.y) + Math.abs(this.z - vector.z);
   }
-  setFromSpherical(s) {
-    return this.setFromSphericalCoords(s.radius, s.phi, s.theta);
+  setFromSpherical(spherical) {
+    return this.setFromSphericalCoords(spherical.radius, spherical.phi, spherical.theta);
   }
   setFromSphericalCoords(radius, phi, theta) {
     const sinPhiRadius = Math.sin(phi) * radius;
@@ -1326,8 +1326,8 @@ class Vector3 {
     this.z = sinPhiRadius * Math.cos(theta);
     return this;
   }
-  setFromCylindrical(c) {
-    return this.setFromCylindricalCoords(c.radius, c.theta, c.y);
+  setFromCylindrical(cylindrical) {
+    return this.setFromCylindricalCoords(cylindrical.radius, cylindrical.theta, cylindrical.y);
   }
   setFromCylindricalCoords(radius, theta, y) {
     this.x = radius * Math.sin(theta);
@@ -1363,14 +1363,14 @@ class Vector3 {
     this.z = euler.z;
     return this;
   }
-  setFromColor(c) {
-    this.x = c.r;
-    this.y = c.g;
-    this.z = c.b;
+  setFromColor(color) {
+    this.x = color.r;
+    this.y = color.g;
+    this.z = color.b;
     return this;
   }
-  equals(v) {
-    return v.x === this.x && v.y === this.y && v.z === this.z;
+  equals(vector) {
+    return vector.x === this.x && vector.y === this.y && vector.z === this.z;
   }
   fromArray(array, offset = 0) {
     this.x = array[offset];
@@ -1765,9 +1765,9 @@ class Matrix3 {
     );
     return this;
   }
-  copy(m) {
+  copy(matrix) {
     const te = this.elements;
-    const me = m.elements;
+    const me = matrix.elements;
     te[0] = me[0];
     te[1] = me[1];
     te[2] = me[2];
@@ -1785,8 +1785,8 @@ class Matrix3 {
     zAxis.setFromMatrix3Column(this, 2);
     return this;
   }
-  setFromMatrix4(m) {
-    const me = m.elements;
+  setFromMatrix4(matrix) {
+    const me = matrix.elements;
     this.set(
       me[0],
       me[4],
@@ -1800,11 +1800,11 @@ class Matrix3 {
     );
     return this;
   }
-  multiply(m) {
-    return this.multiplyMatrices(this, m);
+  multiply(matrix) {
+    return this.multiplyMatrices(this, matrix);
   }
-  premultiply(m) {
-    return this.multiplyMatrices(m, this);
+  premultiply(matrix) {
+    return this.multiplyMatrices(matrix, this);
   }
   multiplyMatrices(a, b) {
     const ae = a.elements;
@@ -2391,10 +2391,10 @@ class Color {
     this.b = color1.b + color2.b;
     return this;
   }
-  addScalar(s) {
-    this.r += s;
-    this.g += s;
-    this.b += s;
+  addScalar(scalar) {
+    this.r += scalar;
+    this.g += scalar;
+    this.b += scalar;
     return this;
   }
   sub(color) {
@@ -2409,10 +2409,10 @@ class Color {
     this.b *= color.b;
     return this;
   }
-  multiplyScalar(s) {
-    this.r *= s;
-    this.g *= s;
-    this.b *= s;
+  multiplyScalar(scalar) {
+    this.r *= scalar;
+    this.g *= scalar;
+    this.b *= scalar;
     return this;
   }
   lerp(color, alpha) {
@@ -2436,24 +2436,24 @@ class Color {
     this.setHSL(h, s, l);
     return this;
   }
-  setFromVector3(v) {
-    this.r = v.x;
-    this.g = v.y;
-    this.b = v.z;
+  setFromVector3(vector) {
+    this.r = vector.x;
+    this.g = vector.y;
+    this.b = vector.z;
     return this;
   }
-  applyMatrix3(m) {
+  applyMatrix3(matrix) {
     const r = this.r;
     const g = this.g;
     const b = this.b;
-    const e = m.elements;
+    const e = matrix.elements;
     this.r = e[0] * r + e[3] * g + e[6] * b;
     this.g = e[1] * r + e[4] * g + e[7] * b;
     this.b = e[2] * r + e[5] * g + e[8] * b;
     return this;
   }
-  equals(c) {
-    return c.r === this.r && c.g === this.g && c.b === this.b;
+  equals(color) {
+    return color.r === this.r && color.g === this.g && color.b === this.b;
   }
   fromArray(array, offset = 0) {
     this.r = array[offset];
@@ -2552,22 +2552,22 @@ class Matrix4 {
   clone() {
     return new Matrix4().fromArray(this.elements);
   }
-  copy(m) {
+  copy(matrix) {
     const te = this.elements;
-    const me = m.elements;
+    const me = matrix.elements;
     te[0] = me[0], te[1] = me[1], te[2] = me[2], te[3] = me[3], te[4] = me[4], te[5] = me[5], te[6] = me[6], te[7] = me[7], te[8] = me[8], te[9] = me[9], te[10] = me[10], te[11] = me[11], te[12] = me[12], te[13] = me[13], te[14] = me[14], te[15] = me[15];
     return this;
   }
-  copyPosition(m) {
+  copyPosition(matrix) {
     const te = this.elements;
-    const me = m.elements;
+    const me = matrix.elements;
     te[12] = me[12];
     te[13] = me[13];
     te[14] = me[14];
     return this;
   }
-  setFromMatrix3(m) {
-    const me = m.elements;
+  setFromMatrix3(matrix) {
+    const me = matrix.elements;
     this.set(
       me[0],
       me[3],
@@ -2615,12 +2615,12 @@ class Matrix4 {
     );
     return this;
   }
-  extractRotation(m) {
+  extractRotation(matrix) {
     const te = this.elements;
-    const me = m.elements;
-    const scaleX = 1 / _v1$2.setFromMatrixColumn(m, 0).length();
-    const scaleY = 1 / _v1$2.setFromMatrixColumn(m, 1).length();
-    const scaleZ = 1 / _v1$2.setFromMatrixColumn(m, 2).length();
+    const me = matrix.elements;
+    const scaleX = 1 / _v1$2.setFromMatrixColumn(matrix, 0).length();
+    const scaleY = 1 / _v1$2.setFromMatrixColumn(matrix, 1).length();
+    const scaleZ = 1 / _v1$2.setFromMatrixColumn(matrix, 2).length();
     te[0] = me[0] * scaleX;
     te[1] = me[1] * scaleX;
     te[2] = me[2] * scaleX;
@@ -2829,9 +2829,9 @@ class Matrix4 {
     te[15] = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
     return this;
   }
-  multiplyScalar(s) {
+  multiplyScalar(scalar) {
     const te = this.elements;
-    te[0] *= s, te[4] *= s, te[8] *= s, te[12] *= s, te[1] *= s, te[5] *= s, te[9] *= s, te[13] *= s, te[2] *= s, te[6] *= s, te[10] *= s, te[14] *= s, te[3] *= s, te[7] *= s, te[11] *= s, te[15] *= s;
+    te[0] *= scalar, te[4] *= scalar, te[8] *= scalar, te[12] *= scalar, te[1] *= scalar, te[5] *= scalar, te[9] *= scalar, te[13] *= scalar, te[2] *= scalar, te[6] *= scalar, te[10] *= scalar, te[14] *= scalar, te[3] *= scalar, te[7] *= scalar, te[11] *= scalar, te[15] *= scalar;
     return this;
   }
   determinant() {
@@ -2905,11 +2905,11 @@ class Matrix4 {
     te[12] = t14 * detInv, te[13] = (n13 * n24 * n31 - n14 * n23 * n31 + n14 * n21 * n33 - n11 * n24 * n33 - n13 * n21 * n34 + n11 * n23 * n34) * detInv, te[14] = (n14 * n22 * n31 - n12 * n24 * n31 - n14 * n21 * n32 + n11 * n24 * n32 + n12 * n21 * n34 - n11 * n22 * n34) * detInv, te[15] = (n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32 - n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33) * detInv;
     return this;
   }
-  scale(v) {
+  scale(vector) {
     const te = this.elements;
-    const x = v.x;
-    const y = v.y;
-    const z = v.z;
+    const x = vector.x;
+    const y = vector.y;
+    const z = vector.z;
     te[0] *= x, te[4] *= y, te[8] *= z, te[1] *= x, te[5] *= y, te[9] *= z, te[2] *= x, te[6] *= y, te[10] *= z, te[3] *= x, te[7] *= y, te[11] *= z;
     return this;
   }
@@ -3254,69 +3254,69 @@ class Euler {
   static DEFAULT_ORDER = "XYZ";
   #onChangeCallback = () => {
   };
-  _x = 0;
-  _y = 0;
-  _z = 0;
-  _order = Euler.DEFAULT_ORDER;
+  #x = 0;
+  #y = 0;
+  #z = 0;
+  #order = Euler.DEFAULT_ORDER;
   constructor(x = 0, y = 0, z = 0, order = Euler.DEFAULT_ORDER) {
-    this._x = x;
-    this._y = y;
-    this._z = z;
-    this._order = order;
+    this.#x = x;
+    this.#y = y;
+    this.#z = z;
+    this.#order = order;
   }
   get isEuler() {
     return true;
   }
   get x() {
-    return this._x;
+    return this.#x;
   }
   set x(value) {
-    this._x = value;
+    this.#x = value;
     this.#onChangeCallback();
   }
   get y() {
-    return this._y;
+    return this.#y;
   }
   set y(value) {
-    this._y = value;
+    this.#y = value;
     this.#onChangeCallback();
   }
   get z() {
-    return this._z;
+    return this.#z;
   }
   set z(value) {
-    this._z = value;
+    this.#z = value;
     this.#onChangeCallback();
   }
   get order() {
-    return this._order;
+    return this.#order;
   }
   set order(value) {
-    this._order = value;
+    this.#order = value;
     this.#onChangeCallback();
   }
   set(x, y, z, order = this.order) {
-    this._x = x;
-    this._y = y;
-    this._z = z;
-    this._order = order;
+    this.#x = x;
+    this.#y = y;
+    this.#z = z;
+    this.#order = order;
     this.#onChangeCallback();
     return this;
   }
   /** @returns {this} */
   clone() {
-    return new this.constructor(this._x, this._y, this._z, this._order);
+    return new this.constructor(this.#x, this.#y, this.#z, this.#order);
   }
   copy(euler, update = true) {
-    this._x = euler.x;
-    this._y = euler.y;
-    this._z = euler.z;
-    this._order = euler.order;
+    this.#x = euler.x;
+    this.#y = euler.y;
+    this.#z = euler.z;
+    this.#order = euler.order;
     if (update === true) this.#onChangeCallback();
     return this;
   }
-  setFromRotationMatrix(m, order = this.order, update = true) {
-    const te = m.elements;
+  setFromRotationMatrix(matrix, order = this.order, update = true) {
+    const te = matrix.elements;
     const m11 = te[0];
     const m12 = te[4];
     const m13 = te[8];
@@ -3328,99 +3328,99 @@ class Euler {
     const m33 = te[10];
     switch (order) {
       case "XYZ":
-        this._y = Math.asin(clamp(m13, -1, 1));
+        this.#y = Math.asin(clamp(m13, -1, 1));
         if (Math.abs(m13) < 0.9999999) {
-          this._x = Math.atan2(-m23, m33) + 0;
-          this._z = Math.atan2(-m12, m11) + 0;
+          this.#x = Math.atan2(-m23, m33) + 0;
+          this.#z = Math.atan2(-m12, m11) + 0;
         } else {
-          this._x = Math.atan2(m32, m22);
-          this._z = 0;
+          this.#x = Math.atan2(m32, m22);
+          this.#z = 0;
         }
         break;
       case "YXZ":
-        this._x = Math.asin(-clamp(m23, -1, 1));
+        this.#x = Math.asin(-clamp(m23, -1, 1));
         if (Math.abs(m23) < 0.9999999) {
-          this._y = Math.atan2(m13, m33);
-          this._z = Math.atan2(m21, m22);
+          this.#y = Math.atan2(m13, m33);
+          this.#z = Math.atan2(m21, m22);
         } else {
-          this._y = Math.atan2(-m31, m11) + 0;
-          this._z = 0;
+          this.#y = Math.atan2(-m31, m11) + 0;
+          this.#z = 0;
         }
         break;
       case "ZXY":
-        this._x = Math.asin(clamp(m32, -1, 1));
+        this.#x = Math.asin(clamp(m32, -1, 1));
         if (Math.abs(m32) < 0.9999999) {
-          this._y = Math.atan2(-m31, m33) + 0;
-          this._z = Math.atan2(-m12, m22) + 0;
+          this.#y = Math.atan2(-m31, m33) + 0;
+          this.#z = Math.atan2(-m12, m22) + 0;
         } else {
-          this._y = 0;
-          this._z = Math.atan2(m21, m11);
+          this.#y = 0;
+          this.#z = Math.atan2(m21, m11);
         }
         break;
       case "ZYX":
-        this._y = Math.asin(-clamp(m31, -1, 1));
+        this.#y = Math.asin(-clamp(m31, -1, 1));
         if (Math.abs(m31) < 0.9999999) {
-          this._x = Math.atan2(m32, m33);
-          this._z = Math.atan2(m21, m11);
+          this.#x = Math.atan2(m32, m33);
+          this.#z = Math.atan2(m21, m11);
         } else {
-          this._x = 0;
-          this._z = Math.atan2(-m12, m22) + 0;
+          this.#x = 0;
+          this.#z = Math.atan2(-m12, m22) + 0;
         }
         break;
       case "YZX":
-        this._z = Math.asin(clamp(m21, -1, 1));
+        this.#z = Math.asin(clamp(m21, -1, 1));
         if (Math.abs(m21) < 0.9999999) {
-          this._x = Math.atan2(-m23, m22) + 0;
-          this._y = Math.atan2(-m31, m11) + 0;
+          this.#x = Math.atan2(-m23, m22) + 0;
+          this.#y = Math.atan2(-m31, m11) + 0;
         } else {
-          this._x = 0;
-          this._y = Math.atan2(m13, m33);
+          this.#x = 0;
+          this.#y = Math.atan2(m13, m33);
         }
         break;
       case "XZY":
-        this._z = Math.asin(-clamp(m12, -1, 1));
+        this.#z = Math.asin(-clamp(m12, -1, 1));
         if (Math.abs(m12) < 0.9999999) {
-          this._x = Math.atan2(m32, m22);
-          this._y = Math.atan2(m13, m11);
+          this.#x = Math.atan2(m32, m22);
+          this.#y = Math.atan2(m13, m11);
         } else {
-          this._x = Math.atan2(-m23, m33) + 0;
-          this._y = 0;
+          this.#x = Math.atan2(-m23, m33) + 0;
+          this.#y = 0;
         }
         break;
       default:
         console.warn(`Euler: .setFromRotationMatrix() encountered an unknown order: ${order}`);
     }
-    this._order = order;
+    this.#order = order;
     if (update === true) this.#onChangeCallback();
     return this;
   }
-  setFromQuaternion(q, order, update) {
-    _matrix.makeRotationFromQuaternion(q);
+  setFromQuaternion(quaternion, order, update) {
+    _matrix.makeRotationFromQuaternion(quaternion);
     return this.setFromRotationMatrix(_matrix, order, update);
   }
-  setFromVector3(v, order = this.order) {
-    return this.set(v.x, v.y, v.z, order);
+  setFromVector3(vector, order = this.order) {
+    return this.set(vector.x, vector.y, vector.z, order);
   }
   reorder(newOrder) {
     _quaternion.setFromEuler(this);
     return this.setFromQuaternion(_quaternion, newOrder);
   }
   equals(euler) {
-    return euler.x === this._x && euler.y === this._y && euler.z === this._z && euler.order === this._order;
+    return euler.x === this.#x && euler.y === this.#y && euler.z === this.#z && euler.order === this.#order;
   }
   fromArray(array) {
-    this._x = array[0];
-    this._y = array[1];
-    this._z = array[2];
-    if (array[3] !== void 0) this._order = array[3];
+    this.#x = array[0];
+    this.#y = array[1];
+    this.#z = array[2];
+    if (array[3] !== void 0) this.#order = array[3];
     this.#onChangeCallback();
     return this;
   }
   toArray(array = [], offset = 0) {
-    array[offset] = this._x;
-    array[offset + 1] = this._y;
-    array[offset + 2] = this._z;
-    array[offset + 3] = this._order;
+    array[offset] = this.#x;
+    array[offset + 1] = this.#y;
+    array[offset + 2] = this.#z;
+    array[offset + 3] = this.#order;
     return array;
   }
   _onChange(callback) {
@@ -3428,10 +3428,10 @@ class Euler {
     return this;
   }
   *[Symbol.iterator]() {
-    yield this._x;
-    yield this._y;
-    yield this._z;
-    yield this._order;
+    yield this.#x;
+    yield this.#y;
+    yield this.#z;
+    yield this.#order;
   }
 }
 const _matrix = /* @__PURE__ */ new Matrix4();
@@ -3693,9 +3693,9 @@ class Frustum {
     }
     return this;
   }
-  setFromProjectionMatrix(m, webgpu = false) {
+  setFromProjectionMatrix(matrix, webgpu = false) {
     const planes = this.planes;
-    const me = m.elements;
+    const me = matrix.elements;
     const me0 = me[0];
     const me1 = me[1];
     const me2 = me[2];
@@ -3866,8 +3866,8 @@ class Ray {
   at(t, target) {
     return target.copy(this.origin).addScaledVector(this.direction, t);
   }
-  lookAt(v) {
-    this.direction.copy(v).sub(this.origin).normalize();
+  lookAt(vector) {
+    this.direction.copy(vector).sub(this.origin).normalize();
     return this;
   }
   recast(t) {
@@ -4367,25 +4367,25 @@ class Vector4 {
   clone() {
     return new this.constructor(this.x, this.y, this.z, this.w);
   }
-  copy(v) {
-    this.x = v.x;
-    this.y = v.y;
-    this.z = v.z;
-    this.w = v.w !== void 0 ? v.w : 1;
+  copy(vector) {
+    this.x = vector.x;
+    this.y = vector.y;
+    this.z = vector.z;
+    this.w = vector.w !== void 0 ? vector.w : 1;
     return this;
   }
-  add(v) {
-    this.x += v.x;
-    this.y += v.y;
-    this.z += v.z;
-    this.w += v.w;
+  add(vector) {
+    this.x += vector.x;
+    this.y += vector.y;
+    this.z += vector.z;
+    this.w += vector.w;
     return this;
   }
-  addScalar(s) {
-    this.x += s;
-    this.y += s;
-    this.z += s;
-    this.w += s;
+  addScalar(scalar) {
+    this.x += scalar;
+    this.y += scalar;
+    this.z += scalar;
+    this.w += scalar;
     return this;
   }
   addVectors(a, b) {
@@ -4395,25 +4395,25 @@ class Vector4 {
     this.w = a.w + b.w;
     return this;
   }
-  addScaledVector(v, s) {
-    this.x += v.x * s;
-    this.y += v.y * s;
-    this.z += v.z * s;
-    this.w += v.w * s;
+  addScaledVector(vector, scalar) {
+    this.x += vector.x * scalar;
+    this.y += vector.y * scalar;
+    this.z += vector.z * scalar;
+    this.w += vector.w * scalar;
     return this;
   }
-  sub(v) {
-    this.x -= v.x;
-    this.y -= v.y;
-    this.z -= v.z;
-    this.w -= v.w;
+  sub(vector) {
+    this.x -= vector.x;
+    this.y -= vector.y;
+    this.z -= vector.z;
+    this.w -= vector.w;
     return this;
   }
-  subScalar(s) {
-    this.x -= s;
-    this.y -= s;
-    this.z -= s;
-    this.w -= s;
+  subScalar(scalar) {
+    this.x -= scalar;
+    this.y -= scalar;
+    this.z -= scalar;
+    this.w -= scalar;
     return this;
   }
   subVectors(a, b) {
@@ -4423,11 +4423,11 @@ class Vector4 {
     this.w = a.w - b.w;
     return this;
   }
-  multiply(v) {
-    this.x *= v.x;
-    this.y *= v.y;
-    this.z *= v.z;
-    this.w *= v.w;
+  multiply(vector) {
+    this.x *= vector.x;
+    this.y *= vector.y;
+    this.z *= vector.z;
+    this.w *= vector.w;
     return this;
   }
   multiplyScalar(scalar) {
@@ -4437,12 +4437,12 @@ class Vector4 {
     this.w *= scalar;
     return this;
   }
-  applyMatrix4(m) {
+  applyMatrix4(matrix) {
     const x = this.x;
     const y = this.y;
     const z = this.z;
     const w = this.w;
-    const e = m.elements;
+    const e = matrix.elements;
     this.x = e[0] * x + e[4] * y + e[8] * z + e[12] * w;
     this.y = e[1] * x + e[5] * y + e[9] * z + e[13] * w;
     this.z = e[2] * x + e[6] * y + e[10] * z + e[14] * w;
@@ -4466,14 +4466,14 @@ class Vector4 {
     }
     return this;
   }
-  setAxisAngleFromRotationMatrix(m) {
+  setAxisAngleFromRotationMatrix(matrix) {
     let angle;
     let x;
     let y;
     let z;
     const epsilon = 0.01;
     const epsilon2 = 0.1;
-    const te = m.elements;
+    const te = matrix.elements;
     const m11 = te[0];
     const m12 = te[4];
     const m13 = te[8];
@@ -4537,18 +4537,18 @@ class Vector4 {
     this.w = Math.acos((m11 + m22 + m33 - 1) / 2);
     return this;
   }
-  min(v) {
-    this.x = Math.min(this.x, v.x);
-    this.y = Math.min(this.y, v.y);
-    this.z = Math.min(this.z, v.z);
-    this.w = Math.min(this.w, v.w);
+  min(vector) {
+    this.x = Math.min(this.x, vector.x);
+    this.y = Math.min(this.y, vector.y);
+    this.z = Math.min(this.z, vector.z);
+    this.w = Math.min(this.w, vector.w);
     return this;
   }
-  max(v) {
-    this.x = Math.max(this.x, v.x);
-    this.y = Math.max(this.y, v.y);
-    this.z = Math.max(this.z, v.z);
-    this.w = Math.max(this.w, v.w);
+  max(vector) {
+    this.x = Math.max(this.x, vector.x);
+    this.y = Math.max(this.y, vector.y);
+    this.z = Math.max(this.z, vector.z);
+    this.w = Math.max(this.w, vector.w);
     return this;
   }
   clamp(min, max) {
@@ -4604,8 +4604,8 @@ class Vector4 {
     this.w = -this.w;
     return this;
   }
-  dot(v) {
-    return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
+  dot(vector) {
+    return this.x * vector.x + this.y * vector.y + this.z * vector.z + this.w * vector.w;
   }
   lengthSq() {
     return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
@@ -4622,11 +4622,11 @@ class Vector4 {
   setLength(length) {
     return this.normalize().multiplyScalar(length);
   }
-  lerp(v, alpha) {
-    this.x += (v.x - this.x) * alpha;
-    this.y += (v.y - this.y) * alpha;
-    this.z += (v.z - this.z) * alpha;
-    this.w += (v.w - this.w) * alpha;
+  lerp(vector, alpha) {
+    this.x += (vector.x - this.x) * alpha;
+    this.y += (vector.y - this.y) * alpha;
+    this.z += (vector.z - this.z) * alpha;
+    this.w += (vector.w - this.w) * alpha;
     return this;
   }
   lerpVectors(v1, v2, alpha) {
@@ -4636,8 +4636,8 @@ class Vector4 {
     this.w = v1.w + (v2.w - v1.w) * alpha;
     return this;
   }
-  equals(v) {
-    return v.x === this.x && v.y === this.y && v.z === this.z && v.w === this.w;
+  equals(vector) {
+    return vector.x === this.x && vector.y === this.y && vector.z === this.z && vector.w === this.w;
   }
   fromArray(array, offset = 0) {
     this.x = array[offset];

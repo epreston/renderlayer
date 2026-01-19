@@ -68,19 +68,6 @@ class Layers {
   }
 }
 
-let _object3DId = 0;
-const _v1 = /* @__PURE__ */ new Vector3();
-const _q1 = /* @__PURE__ */ new Quaternion();
-const _m1 = /* @__PURE__ */ new Matrix4();
-const _target = /* @__PURE__ */ new Vector3();
-const _position = /* @__PURE__ */ new Vector3();
-const _scale = /* @__PURE__ */ new Vector3();
-const _quaternion = /* @__PURE__ */ new Quaternion();
-const _xAxis = /* @__PURE__ */ new Vector3(1, 0, 0);
-const _yAxis = /* @__PURE__ */ new Vector3(0, 1, 0);
-const _zAxis = /* @__PURE__ */ new Vector3(0, 0, 1);
-const _addedEvent = { type: "added" };
-const _removedEvent = { type: "removed" };
 class Object3D extends EventDispatcher {
   static DEFAULT_UP = /* @__PURE__ */ new Vector3(0, 1, 0);
   static DEFAULT_MATRIX_AUTO_UPDATE = true;
@@ -570,6 +557,19 @@ class Object3D extends EventDispatcher {
     return this;
   }
 }
+let _object3DId = 0;
+const _v1 = /* @__PURE__ */ new Vector3();
+const _q1 = /* @__PURE__ */ new Quaternion();
+const _m1 = /* @__PURE__ */ new Matrix4();
+const _target = /* @__PURE__ */ new Vector3();
+const _position = /* @__PURE__ */ new Vector3();
+const _scale = /* @__PURE__ */ new Vector3();
+const _quaternion = /* @__PURE__ */ new Quaternion();
+const _xAxis = /* @__PURE__ */ new Vector3(1, 0, 0);
+const _yAxis = /* @__PURE__ */ new Vector3(0, 1, 0);
+const _zAxis = /* @__PURE__ */ new Vector3(0, 0, 1);
+const _addedEvent = { type: "added" };
+const _removedEvent = { type: "removed" };
 
 class Raycaster {
   ray;
@@ -606,29 +606,29 @@ class Raycaster {
     }
   }
   intersectObject(object, recursive = true, intersects = []) {
-    intersectObject(object, this, intersects, recursive);
-    intersects.sort(ascSort);
+    _intersectObject(object, this, intersects, recursive);
+    intersects.sort(_ascSort);
     return intersects;
   }
   intersectObjects(objects, recursive = true, intersects = []) {
     for (let i = 0, l = objects.length; i < l; i++) {
-      intersectObject(objects[i], this, intersects, recursive);
+      _intersectObject(objects[i], this, intersects, recursive);
     }
-    intersects.sort(ascSort);
+    intersects.sort(_ascSort);
     return intersects;
   }
 }
-function ascSort(a, b) {
+function _ascSort(a, b) {
   return a.distance - b.distance;
 }
-function intersectObject(object, raycaster, intersects, recursive) {
+function _intersectObject(object, raycaster, intersects, recursive) {
   if (object.layers.test(raycaster.layers)) {
     object.raycast(raycaster, intersects);
   }
   if (recursive === true) {
     const children = object.children;
     for (let i = 0, l = children.length; i < l; i++) {
-      intersectObject(children[i], raycaster, intersects, true);
+      _intersectObject(children[i], raycaster, intersects, true);
     }
   }
 }
