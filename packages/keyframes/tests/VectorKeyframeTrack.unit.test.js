@@ -1,5 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { InterpolateLinear } from '@renderlayer/shared';
 import { KeyframeTrack } from '../src/KeyframeTrack.js';
 import { VectorKeyframeTrack } from '../src/VectorKeyframeTrack.js';
 
@@ -9,7 +10,7 @@ describe('Keyframes', () => {
       name: '.force',
       times: [0],
       values: [0.5, 0.5, 0.5],
-      interpolation: VectorKeyframeTrack.DefaultInterpolation
+      interpolation: InterpolateLinear
     };
 
     test('constructor', () => {
@@ -30,6 +31,12 @@ describe('Keyframes', () => {
     test('extends', () => {
       const object = new VectorKeyframeTrack(parameters.name, parameters.times, parameters.values);
       expect(object).toBeInstanceOf(KeyframeTrack);
+      expect(object.name).toBe(parameters.name);
+    });
+
+    test('ValueTypeName', () => {
+      const object = new VectorKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      expect(object.ValueTypeName).toBe('vector');
     });
   });
 });
