@@ -5,20 +5,20 @@ import { MeshBasicMaterial } from '@renderlayer/materials';
 import { Mesh } from '@renderlayer/objects';
 import { PropertyBinding } from '../src/PropertyBinding.js';
 
-const _test_geometry = new BoxGeometry();
-const _test_material = new MeshBasicMaterial();
-const _test_mesh = new Mesh(_test_geometry, _test_material);
-const _test_path = '.material.opacity';
-const _test_parsedPath = {
-  nodeName: '',
-  objectName: 'material',
-  objectIndex: undefined,
-  propertyName: 'opacity',
-  propertyIndex: undefined
-};
-
 describe('Animation', () => {
   describe('PropertyBinding', () => {
+    const _test_geometry = new BoxGeometry();
+    const _test_material = new MeshBasicMaterial();
+    const _test_mesh = new Mesh(_test_geometry, _test_material);
+    const _test_path = '.material.opacity';
+    const _test_parsedPath = {
+      nodeName: '',
+      objectName: 'material',
+      objectIndex: undefined,
+      propertyName: 'opacity',
+      propertyIndex: undefined
+    };
+
     test('constructor', () => {
       // mesh, path
       const object = new PropertyBinding(_test_mesh, _test_path);
