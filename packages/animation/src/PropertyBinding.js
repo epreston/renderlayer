@@ -78,36 +78,36 @@ class PropertyBinding {
   };
 
   #GetterByBindingType = [
-    this._getValue_direct,
-    this._getValue_array,
-    this._getValue_arrayElement,
-    this._getValue_toArray
+    this.#getValue_direct,
+    this.#getValue_array,
+    this.#getValue_arrayElement,
+    this.#getValue_toArray
   ];
 
   #SetterByBindingTypeAndVersioning = [
     [
       // Direct
-      this._setValue_direct,
-      this._setValue_direct_setNeedsUpdate,
-      this._setValue_direct_setMatrixWorldNeedsUpdate
+      this.#setValue_direct,
+      this.#setValue_direct_setNeedsUpdate,
+      this.#setValue_direct_setMatrixWorldNeedsUpdate
     ],
     [
       // EntireArray
-      this._setValue_array,
-      this._setValue_array_setNeedsUpdate,
-      this._setValue_array_setMatrixWorldNeedsUpdate
+      this.#setValue_array,
+      this.#setValue_array_setNeedsUpdate,
+      this.#setValue_array_setMatrixWorldNeedsUpdate
     ],
     [
       // ArrayElement
-      this._setValue_arrayElement,
-      this._setValue_arrayElement_setNeedsUpdate,
-      this._setValue_arrayElement_setMatrixWorldNeedsUpdate
+      this.#setValue_arrayElement,
+      this.#setValue_arrayElement_setNeedsUpdate,
+      this.#setValue_arrayElement_setMatrixWorldNeedsUpdate
     ],
     [
       // HasToFromArray
-      this._setValue_fromArray,
-      this._setValue_fromArray_setNeedsUpdate,
-      this._setValue_fromArray_setMatrixWorldNeedsUpdate
+      this.#setValue_fromArray,
+      this.#setValue_fromArray_setNeedsUpdate,
+      this.#setValue_fromArray_setMatrixWorldNeedsUpdate
     ]
   ];
 
@@ -119,8 +119,8 @@ class PropertyBinding {
     this.rootNode = rootNode;
 
     // initial state of these methods that calls 'bind'
-    this.getValue = this._getValue_unbound;
-    this.setValue = this._setValue_unbound;
+    this.getValue = this.#getValue_unbound;
+    this.setValue = this.#setValue_unbound;
   }
 
   /** @returns {PropertyBinding | Composite} */
@@ -230,16 +230,16 @@ class PropertyBinding {
   }
 
   // these are used to "bind" a non-existent property
-  _getValue_unavailable() {}
-  _setValue_unavailable() {}
+  #getValue_unavailable() {}
+  #setValue_unavailable() {}
 
   // Getters
 
-  _getValue_direct(buffer, offset) {
+  #getValue_direct(buffer, offset) {
     buffer[offset] = this.targetObject[this.propertyName];
   }
 
-  _getValue_array(buffer, offset) {
+  #getValue_array(buffer, offset) {
     const source = this.resolvedProperty;
 
     for (let i = 0, n = source.length; i !== n; ++i) {
@@ -247,33 +247,33 @@ class PropertyBinding {
     }
   }
 
-  _getValue_arrayElement(buffer, offset) {
+  #getValue_arrayElement(buffer, offset) {
     buffer[offset] = this.resolvedProperty[this.propertyIndex];
   }
 
-  _getValue_toArray(buffer, offset) {
+  #getValue_toArray(buffer, offset) {
     this.resolvedProperty.toArray(buffer, offset);
   }
 
   // Direct
 
-  _setValue_direct(buffer, offset) {
+  #setValue_direct(buffer, offset) {
     this.targetObject[this.propertyName] = buffer[offset];
   }
 
-  _setValue_direct_setNeedsUpdate(buffer, offset) {
+  #setValue_direct_setNeedsUpdate(buffer, offset) {
     this.targetObject[this.propertyName] = buffer[offset];
     this.targetObject.needsUpdate = true;
   }
 
-  _setValue_direct_setMatrixWorldNeedsUpdate(buffer, offset) {
+  #setValue_direct_setMatrixWorldNeedsUpdate(buffer, offset) {
     this.targetObject[this.propertyName] = buffer[offset];
     this.targetObject.matrixWorldNeedsUpdate = true;
   }
 
   // EntireArray
 
-  _setValue_array(buffer, offset) {
+  #setValue_array(buffer, offset) {
     const dest = this.resolvedProperty;
 
     for (let i = 0, n = dest.length; i !== n; ++i) {
@@ -281,7 +281,7 @@ class PropertyBinding {
     }
   }
 
-  _setValue_array_setNeedsUpdate(buffer, offset) {
+  #setValue_array_setNeedsUpdate(buffer, offset) {
     const dest = this.resolvedProperty;
 
     for (let i = 0, n = dest.length; i !== n; ++i) {
@@ -291,7 +291,7 @@ class PropertyBinding {
     this.targetObject.needsUpdate = true;
   }
 
-  _setValue_array_setMatrixWorldNeedsUpdate(buffer, offset) {
+  #setValue_array_setMatrixWorldNeedsUpdate(buffer, offset) {
     const dest = this.resolvedProperty;
 
     for (let i = 0, n = dest.length; i !== n; ++i) {
@@ -303,42 +303,42 @@ class PropertyBinding {
 
   // ArrayElement
 
-  _setValue_arrayElement(buffer, offset) {
+  #setValue_arrayElement(buffer, offset) {
     this.resolvedProperty[this.propertyIndex] = buffer[offset];
   }
 
-  _setValue_arrayElement_setNeedsUpdate(buffer, offset) {
+  #setValue_arrayElement_setNeedsUpdate(buffer, offset) {
     this.resolvedProperty[this.propertyIndex] = buffer[offset];
     this.targetObject.needsUpdate = true;
   }
 
-  _setValue_arrayElement_setMatrixWorldNeedsUpdate(buffer, offset) {
+  #setValue_arrayElement_setMatrixWorldNeedsUpdate(buffer, offset) {
     this.resolvedProperty[this.propertyIndex] = buffer[offset];
     this.targetObject.matrixWorldNeedsUpdate = true;
   }
 
   // HasToFromArray
 
-  _setValue_fromArray(buffer, offset) {
+  #setValue_fromArray(buffer, offset) {
     this.resolvedProperty.fromArray(buffer, offset);
   }
 
-  _setValue_fromArray_setNeedsUpdate(buffer, offset) {
+  #setValue_fromArray_setNeedsUpdate(buffer, offset) {
     this.resolvedProperty.fromArray(buffer, offset);
     this.targetObject.needsUpdate = true;
   }
 
-  _setValue_fromArray_setMatrixWorldNeedsUpdate(buffer, offset) {
+  #setValue_fromArray_setMatrixWorldNeedsUpdate(buffer, offset) {
     this.resolvedProperty.fromArray(buffer, offset);
     this.targetObject.matrixWorldNeedsUpdate = true;
   }
 
-  _getValue_unbound(targetArray, offset) {
+  #getValue_unbound(targetArray, offset) {
     this.bind();
     this.getValue(targetArray, offset);
   }
 
-  _setValue_unbound(sourceArray, offset) {
+  #setValue_unbound(sourceArray, offset) {
     this.bind();
     this.setValue(sourceArray, offset);
   }
@@ -359,8 +359,8 @@ class PropertyBinding {
     }
 
     // set fail state so we can just 'return' on error
-    this.getValue = this._getValue_unavailable;
-    this.setValue = this._setValue_unavailable;
+    this.getValue = this.#getValue_unavailable;
+    this.setValue = this.#setValue_unavailable;
 
     // ensure there is a value node
     if (!targetObject) {
@@ -550,8 +550,8 @@ class PropertyBinding {
 
     // back to the prototype version of getValue / setValue
     // note: avoiding to mutate the shape of 'this' via 'delete'
-    this.getValue = this._getValue_unbound;
-    this.setValue = this._setValue_unbound;
+    this.getValue = this.#getValue_unbound;
+    this.setValue = this.#setValue_unbound;
   }
 }
 
