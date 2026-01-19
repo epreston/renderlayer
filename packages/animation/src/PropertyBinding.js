@@ -1,35 +1,7 @@
-// Characters [].:/ are reserved for track binding syntax.
-const _RESERVED_CHARS_RE = '\\[\\]\\.:\\/';
-const _reservedRe = new RegExp(`[${_RESERVED_CHARS_RE}]`, 'g');
-
-// Attempts to allow node names from any language. ES5's `\w` regexp matches
-// only latin characters, and the unicode \p{L} is not yet supported. So
-// instead, we exclude reserved characters and match everything else.
-const _wordChar = `[^${_RESERVED_CHARS_RE}]`;
-const _wordCharOrDot = `[^${_RESERVED_CHARS_RE.replace('\\.', '')}]`;
-
-// Parent directories, delimited by '/' or ':'. Currently unused, but must
-// be matched to parse the rest of the track name.
-const _directoryRe = /*@__PURE__*/ /((?:WC+[/:])*)/.source.replace('WC', _wordChar);
-
-// Target node. May contain word characters (a-zA-Z0-9_) and '.' or '-'.
-const _nodeRe = /*@__PURE__*/ /(WCOD+)?/.source.replace('WCOD', _wordCharOrDot);
-
-// Object on target node, and accessor. May not contain reserved
-// characters. Accessor may contain any character except closing bracket.
-const _objectRe = /*@__PURE__*/ /(?:\.(WC+)(?:\[(.+)\])?)?/.source.replace('WC', _wordChar);
-
-// Property and accessor. May not contain reserved characters. Accessor may
-// contain any non-bracket characters.
-const _propertyRe = /*@__PURE__*/ /\.(WC+)(?:\[(.+)\])?/.source.replace('WC', _wordChar);
-
-// prettier-ignore
-const _trackRe = new RegExp( `^${_directoryRe}${_nodeRe}${_objectRe}${_propertyRe}$`
-);
-
-const _supportedObjectNames = ['material', 'materials', 'bones', 'map'];
-
 class Composite {
+  _targetGroup;
+  _bindings;
+
   constructor(targetGroup, path, optionalParsedPath) {
     const parsedPath = optionalParsedPath || PropertyBinding.parseTrackName(path);
 
@@ -78,12 +50,20 @@ class Composite {
 // the bound state. When the property is not found, the methods
 // become no-ops.
 class PropertyBinding {
+  path;
+  parsedPath;
+
+  node;
+  rootNode;
+
+  getValue;
+  setValue;
+
   constructor(rootNode, path, parsedPath) {
     this.path = path;
     this.parsedPath = parsedPath || PropertyBinding.parseTrackName(path);
 
     this.node = PropertyBinding.findNode(rootNode, this.parsedPath.nodeName);
-
     this.rootNode = rootNode;
 
     // initial state of these methods that calls 'bind'
@@ -520,6 +500,37 @@ class PropertyBinding {
     this.setValue = this._setValue_unbound;
   }
 }
+
+// Characters [].:/ are reserved for track binding syntax.
+const _RESERVED_CHARS_RE = '\\[\\]\\.:\\/';
+const _reservedRe = new RegExp(`[${_RESERVED_CHARS_RE}]`, 'g');
+
+// Attempts to allow node names from any language. ES5's `\w` regexp matches
+// only latin characters, and the unicode \p{L} is not yet supported. So
+// instead, we exclude reserved characters and match everything else.
+const _wordChar = `[^${_RESERVED_CHARS_RE}]`;
+const _wordCharOrDot = `[^${_RESERVED_CHARS_RE.replace('\\.', '')}]`;
+
+// Parent directories, delimited by '/' or ':'. Currently unused, but must
+// be matched to parse the rest of the track name.
+const _directoryRe = /*@__PURE__*/ /((?:WC+[/:])*)/.source.replace('WC', _wordChar);
+
+// Target node. May contain word characters (a-zA-Z0-9_) and '.' or '-'.
+const _nodeRe = /*@__PURE__*/ /(WCOD+)?/.source.replace('WCOD', _wordCharOrDot);
+
+// Object on target node, and accessor. May not contain reserved
+// characters. Accessor may contain any character except closing bracket.
+const _objectRe = /*@__PURE__*/ /(?:\.(WC+)(?:\[(.+)\])?)?/.source.replace('WC', _wordChar);
+
+// Property and accessor. May not contain reserved characters. Accessor may
+// contain any non-bracket characters.
+const _propertyRe = /*@__PURE__*/ /\.(WC+)(?:\[(.+)\])?/.source.replace('WC', _wordChar);
+
+// prettier-ignore
+const _trackRe = new RegExp( `^${_directoryRe}${_nodeRe}${_objectRe}${_propertyRe}$`
+);
+
+const _supportedObjectNames = ['material', 'materials', 'bones', 'map'];
 
 PropertyBinding.Composite = Composite;
 
