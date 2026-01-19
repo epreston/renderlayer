@@ -11,7 +11,7 @@ import {
 
 class AnimationAction {
   #mixer;
-  _clip;
+  #clip;
   _localRoot = null;
   blendMode;
 
@@ -55,7 +55,7 @@ class AnimationAction {
 
   constructor(mixer, clip, localRoot = null, blendMode = clip.blendMode) {
     this.#mixer = mixer;
-    this._clip = clip;
+    this.#clip = clip;
     this._localRoot = localRoot;
     this.blendMode = blendMode;
 
@@ -166,8 +166,8 @@ class AnimationAction {
     this.fadeIn(duration);
 
     if (warp) {
-      const fadeInDuration = this._clip.duration;
-      const fadeOutDuration = fadeOutAction._clip.duration;
+      const fadeInDuration = this.#clip.duration;
+      const fadeOutDuration = fadeOutAction.getClip().duration;
       const startEndRatio = fadeOutDuration / fadeInDuration;
       const endStartRatio = fadeInDuration / fadeOutDuration;
 
@@ -213,7 +213,7 @@ class AnimationAction {
   }
 
   setDuration(duration) {
-    this.timeScale = this._clip.duration / duration;
+    this.timeScale = this.#clip.duration / duration;
 
     return this.stopWarping();
   }
@@ -271,7 +271,7 @@ class AnimationAction {
   }
 
   getClip() {
-    return this._clip;
+    return this.#clip;
   }
 
   getRoot() {
@@ -395,7 +395,7 @@ class AnimationAction {
   }
 
   #updateTime(deltaTime) {
-    const duration = this._clip.duration;
+    const duration = this.#clip.duration;
     const loop = this.loop;
 
     let time = this.time + deltaTime;
