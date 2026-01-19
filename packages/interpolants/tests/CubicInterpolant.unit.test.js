@@ -3,17 +3,17 @@ import { describe, expect, it, test, vi } from 'vitest';
 import { Interpolant } from '../src/Interpolant.js';
 import { CubicInterpolant } from '../src/CubicInterpolant.js';
 
-function createCubicInterpolant() {
-  const positions = new Float32Array([1, 11, 2, 22, 3, 33]);
-  const values = new Float32Array([1, 11, 2, 22, 3, 33]);
-  const size = 1;
-  const result = new Float32Array(1);
-
-  return new CubicInterpolant(positions, values, size, result);
-}
-
 describe('Interpolants', () => {
   describe('CubicInterpolant', () => {
+    function _createCubicInterpolant() {
+      const positions = new Float32Array([1, 11, 2, 22, 3, 33]);
+      const values = new Float32Array([1, 11, 2, 22, 3, 33]);
+      const size = 1;
+      const result = new Float32Array(1);
+
+      return new CubicInterpolant(positions, values, size, result);
+    }
+
     test('constructor', () => {
       // parameterPositions, sampleValues, sampleSize, resultBuffer
       const object = new CubicInterpolant(null, [1, 11, 2, 22, 3, 33], 2, []);
@@ -26,14 +26,14 @@ describe('Interpolants', () => {
     });
 
     test('evaluate', () => {
-      const object = createCubicInterpolant();
+      const object = _createCubicInterpolant();
       const evalResult = object.evaluate(0.5);
       expect(evalResult.length).toBe(1);
       expect(evalResult[0]).toBe(1);
     });
 
     test('intervalChanged_', () => {
-      const object = createCubicInterpolant();
+      const object = _createCubicInterpolant();
       const evalResult = object.evaluate(0.5);
       expect(evalResult.length).toBe(1);
       expect(evalResult[0]).toBe(1);
@@ -47,7 +47,7 @@ describe('Interpolants', () => {
     });
 
     test('interpolate_', () => {
-      const object = createCubicInterpolant();
+      const object = _createCubicInterpolant();
       const evalResult = object.evaluate(0.5);
       expect(evalResult.length).toBe(1);
       expect(evalResult[0]).toBe(1);
