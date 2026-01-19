@@ -60,6 +60,57 @@ class PropertyBinding {
   getValue;
   setValue;
 
+  static Composite = Composite;
+
+  // prettier-ignore
+  #BindingType = {
+    Direct: 0,
+    EntireArray: 1,
+    ArrayElement: 2,
+    HasFromToArray: 3
+  };
+
+  // prettier-ignore
+  #Versioning = {
+    None: 0,
+    NeedsUpdate: 1,
+    MatrixWorldNeedsUpdate: 2
+  };
+
+  #GetterByBindingType = [
+    this._getValue_direct,
+    this._getValue_array,
+    this._getValue_arrayElement,
+    this._getValue_toArray
+  ];
+
+  #SetterByBindingTypeAndVersioning = [
+    [
+      // Direct
+      this._setValue_direct,
+      this._setValue_direct_setNeedsUpdate,
+      this._setValue_direct_setMatrixWorldNeedsUpdate
+    ],
+    [
+      // EntireArray
+      this._setValue_array,
+      this._setValue_array_setNeedsUpdate,
+      this._setValue_array_setMatrixWorldNeedsUpdate
+    ],
+    [
+      // ArrayElement
+      this._setValue_arrayElement,
+      this._setValue_arrayElement_setNeedsUpdate,
+      this._setValue_arrayElement_setMatrixWorldNeedsUpdate
+    ],
+    [
+      // HasToFromArray
+      this._setValue_fromArray,
+      this._setValue_fromArray_setNeedsUpdate,
+      this._setValue_fromArray_setMatrixWorldNeedsUpdate
+    ]
+  ];
+
   constructor(rootNode, path, parsedPath) {
     this.path = path;
     this.parsedPath = parsedPath || PropertyBinding.parseTrackName(path);
@@ -72,7 +123,7 @@ class PropertyBinding {
     this.setValue = this._setValue_unbound;
   }
 
-  /** @returns {PropertyBinding} */
+  /** @returns {PropertyBinding | Composite} */
   static create(root, path, parsedPath) {
     // EP: AnimationObjectGroup not used
     if (!(root && root.isAnimationObjectGroup)) {
@@ -429,20 +480,20 @@ class PropertyBinding {
     }
 
     // determine versioning scheme
-    let versioning = this.Versioning.None;
+    let versioning = this.#Versioning.None;
 
     this.targetObject = targetObject;
 
     if (targetObject.needsUpdate !== undefined) {
       // material
-      versioning = this.Versioning.NeedsUpdate;
+      versioning = this.#Versioning.NeedsUpdate;
     } else if (targetObject.matrixWorldNeedsUpdate !== undefined) {
       // node transform
-      versioning = this.Versioning.MatrixWorldNeedsUpdate;
+      versioning = this.#Versioning.MatrixWorldNeedsUpdate;
     }
 
     // determine how the property gets bound
-    let bindingType = this.BindingType.Direct;
+    let bindingType = this.#BindingType.Direct;
 
     if (propertyIndex !== undefined) {
       // access a sub element of the property array (only primitives are supported right now)
@@ -472,17 +523,17 @@ class PropertyBinding {
         }
       }
 
-      bindingType = this.BindingType.ArrayElement;
+      bindingType = this.#BindingType.ArrayElement;
 
       this.resolvedProperty = nodeProperty;
       this.propertyIndex = propertyIndex;
     } else if (nodeProperty.fromArray !== undefined && nodeProperty.toArray !== undefined) {
       // must use copy for Object3D.Euler/Quaternion
-      bindingType = this.BindingType.HasFromToArray;
+      bindingType = this.#BindingType.HasFromToArray;
 
       this.resolvedProperty = nodeProperty;
     } else if (Array.isArray(nodeProperty)) {
-      bindingType = this.BindingType.EntireArray;
+      bindingType = this.#BindingType.EntireArray;
 
       this.resolvedProperty = nodeProperty;
     } else {
@@ -490,8 +541,8 @@ class PropertyBinding {
     }
 
     // select getter / setter
-    this.getValue = this.GetterByBindingType[bindingType];
-    this.setValue = this.SetterByBindingTypeAndVersioning[bindingType][versioning];
+    this.getValue = this.#GetterByBindingType[bindingType];
+    this.setValue = this.#SetterByBindingTypeAndVersioning[bindingType][versioning];
   }
 
   unbind() {
@@ -534,56 +585,5 @@ const _trackRe = new RegExp( `^${_directoryRe}${_nodeRe}${_objectRe}${_propertyR
 );
 
 const _supportedObjectNames = ['material', 'materials', 'bones', 'map'];
-
-PropertyBinding.Composite = Composite;
-
-// prettier-ignore
-PropertyBinding.prototype.BindingType = {
-	Direct: 0,
-	EntireArray: 1,
-	ArrayElement: 2,
-	HasFromToArray: 3
-};
-
-// prettier-ignore
-PropertyBinding.prototype.Versioning = {
-	None: 0,
-	NeedsUpdate: 1,
-	MatrixWorldNeedsUpdate: 2
-};
-
-PropertyBinding.prototype.GetterByBindingType = [
-  PropertyBinding.prototype._getValue_direct,
-  PropertyBinding.prototype._getValue_array,
-  PropertyBinding.prototype._getValue_arrayElement,
-  PropertyBinding.prototype._getValue_toArray
-];
-
-PropertyBinding.prototype.SetterByBindingTypeAndVersioning = [
-  [
-    // Direct
-    PropertyBinding.prototype._setValue_direct,
-    PropertyBinding.prototype._setValue_direct_setNeedsUpdate,
-    PropertyBinding.prototype._setValue_direct_setMatrixWorldNeedsUpdate
-  ],
-  [
-    // EntireArray
-    PropertyBinding.prototype._setValue_array,
-    PropertyBinding.prototype._setValue_array_setNeedsUpdate,
-    PropertyBinding.prototype._setValue_array_setMatrixWorldNeedsUpdate
-  ],
-  [
-    // ArrayElement
-    PropertyBinding.prototype._setValue_arrayElement,
-    PropertyBinding.prototype._setValue_arrayElement_setNeedsUpdate,
-    PropertyBinding.prototype._setValue_arrayElement_setMatrixWorldNeedsUpdate
-  ],
-  [
-    // HasToFromArray
-    PropertyBinding.prototype._setValue_fromArray,
-    PropertyBinding.prototype._setValue_fromArray_setNeedsUpdate,
-    PropertyBinding.prototype._setValue_fromArray_setMatrixWorldNeedsUpdate
-  ]
-];
 
 export { PropertyBinding };
