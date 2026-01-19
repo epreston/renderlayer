@@ -3,11 +3,9 @@ import { KeyframeTrack } from './KeyframeTrack.js';
 /**
  * A Track of keyframe values that represent color.
  */
-class ColorKeyframeTrack extends KeyframeTrack {}
-
-ColorKeyframeTrack.prototype.ValueTypeName = 'color';
-// ValueBufferType is inherited
-// DefaultInterpolation is inherited
+class ColorKeyframeTrack extends KeyframeTrack {
+  ValueTypeName = 'color';
+}
 
 // Note: Very basic implementation and nothing special yet.
 // However, this is the place for color space parameterization.
