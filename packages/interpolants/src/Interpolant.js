@@ -20,22 +20,28 @@
  */
 
 class Interpolant {
+  parameterPositions;
+  #cachedIndex = 0;
+
+  resultBuffer;
+  sampleValues;
+  valueSize;
+
+  settings = null;
+  DefaultSettings_ = {};
+
   constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
     this.parameterPositions = parameterPositions;
-    this._cachedIndex = 0;
 
     this.resultBuffer =
       resultBuffer !== undefined ? resultBuffer : new sampleValues.constructor(sampleSize);
     this.sampleValues = sampleValues;
     this.valueSize = sampleSize;
-
-    this.settings = null;
-    this.DefaultSettings_ = {};
   }
 
   evaluate(t) {
     const pp = this.parameterPositions;
-    let i1 = this._cachedIndex;
+    let i1 = this.#cachedIndex;
     let t1 = pp[i1];
     let t0 = pp[i1 - 1];
 
@@ -56,7 +62,7 @@ class Interpolant {
                 // after end
 
                 i1 = pp.length;
-                this._cachedIndex = i1;
+                this.#cachedIndex = i1;
                 return this.copySampleValue_(i1 - 1);
               }
 
@@ -94,7 +100,7 @@ class Interpolant {
               if (t0 === undefined) {
                 // before start
 
-                this._cachedIndex = 0;
+                this.#cachedIndex = 0;
                 return this.copySampleValue_(0);
               }
 
@@ -138,18 +144,18 @@ class Interpolant {
         // check boundary cases, again
 
         if (t0 === undefined) {
-          this._cachedIndex = 0;
+          this.#cachedIndex = 0;
           return this.copySampleValue_(0);
         }
 
         if (t1 === undefined) {
           i1 = pp.length;
-          this._cachedIndex = i1;
+          this.#cachedIndex = i1;
           return this.copySampleValue_(i1 - 1);
         }
       } // seek
 
-      this._cachedIndex = i1;
+      this.#cachedIndex = i1;
 
       this.intervalChanged_(i1, t0, t1);
     } // validate_interval
