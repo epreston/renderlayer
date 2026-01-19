@@ -13,8 +13,8 @@ import * as AnimationUtils from './AnimationUtils.js';
 
 class AnimationClip {
   name;
-  duration = -1;
   tracks;
+  duration = -1;
   blendMode = NormalAnimationBlendMode;
 
   uuid = generateUUID();
