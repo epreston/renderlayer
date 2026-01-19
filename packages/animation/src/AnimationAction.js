@@ -275,7 +275,7 @@ class AnimationAction {
   }
 
   getRoot() {
-    return this._localRoot || this.#mixer._root;
+    return this._localRoot || this.#mixer.getRoot();
   }
 
   // Internal
