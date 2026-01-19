@@ -39,7 +39,6 @@ describe('Interpolants', () => {
 
     test('constructor', () => {
       const interpolant = new Mock(null, [1, 11, 2, 22, 3, 33], 2, []);
-
       expect(interpolant).toBeInstanceOf(Interpolant);
     });
 
@@ -58,16 +57,21 @@ describe('Interpolants', () => {
       expect(interpolant.resultBuffer).toEqual(results);
     });
 
-    test.todo('sampleValues', () => {
-      // implement
+    test('sampleValues', () => {
+      const values = [1, 11, 2, 22, 3, 33];
+      const interpolant = new Mock(null, values, 2, []);
+      expect(interpolant.sampleValues).toEqual(values);
     });
 
-    test.todo('valueSize', () => {
-      // implement
+    test('valueSize', () => {
+      const size = 2;
+      const interpolant = new Mock(null, [1, 11, 2, 22, 3, 33], size, []);
+      expect(interpolant.valueSize).toBe(size);
     });
 
-    test.todo('settings', () => {
-      // implement
+    test('settings', () => {
+      const interpolant = new Mock(null, [1, 11, 2, 22, 3, 33], 2, []);
+      expect(interpolant.settings).toBeDefined();
     });
 
     test.todo('evaluate', () => {
