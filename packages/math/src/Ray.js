@@ -27,8 +27,8 @@ class Ray {
     return target.copy(this.origin).addScaledVector(this.direction, t);
   }
 
-  lookAt(v) {
-    this.direction.copy(v).sub(this.origin).normalize();
+  lookAt(vector) {
+    this.direction.copy(vector).sub(this.origin).normalize();
 
     return this;
   }
