@@ -43,9 +43,9 @@ class Matrix3 {
     return this;
   }
 
-  copy(m) {
+  copy(matrix) {
     const te = this.elements;
-    const me = m.elements;
+    const me = matrix.elements;
 
     te[0] = me[0];
     te[1] = me[1];
@@ -68,8 +68,8 @@ class Matrix3 {
     return this;
   }
 
-  setFromMatrix4(m) {
-    const me = m.elements;
+  setFromMatrix4(matrix) {
+    const me = matrix.elements;
 
     // prettier-ignore
     this.set(
@@ -81,12 +81,12 @@ class Matrix3 {
     return this;
   }
 
-  multiply(m) {
-    return this.multiplyMatrices(this, m);
+  multiply(matrix) {
+    return this.multiplyMatrices(this, matrix);
   }
 
-  premultiply(m) {
-    return this.multiplyMatrices(m, this);
+  premultiply(matrix) {
+    return this.multiplyMatrices(matrix, this);
   }
 
   multiplyMatrices(a, b) {
