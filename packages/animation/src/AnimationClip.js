@@ -32,7 +32,7 @@ class AnimationClip {
     const frameTime = 1.0 / (json.fps || 1.0);
 
     for (let i = 0, n = jsonTracks.length; i !== n; ++i) {
-      tracks.push(parseKeyframeTrack(jsonTracks[i]).scale(frameTime));
+      tracks.push(_parseKeyframeTrack(jsonTracks[i]).scale(frameTime));
     }
 
     const clip = new this(json.name, json.duration, tracks, json.blendMode);
@@ -303,11 +303,12 @@ class AnimationClip {
   }
 
   toJSON() {
-    return this.constructor.toJSON(this);
+    // @ts-ignore
+    return this.constructor.toJSON(this); // call static method
   }
 }
 
-function getTrackTypeForValueTypeName(typeName) {
+function _getTrackTypeForValueTypeName(typeName) {
   switch (typeName.toLowerCase()) {
     case 'scalar':
     case 'double':
@@ -339,12 +340,12 @@ function getTrackTypeForValueTypeName(typeName) {
   throw new Error(`KeyframeTrack: unsupported typeName: ${typeName}`);
 }
 
-function parseKeyframeTrack(json) {
+function _parseKeyframeTrack(json) {
   if (json.type === undefined) {
     throw new Error('KeyframeTrack: can not parse track type: undefined');
   }
 
-  const trackType = getTrackTypeForValueTypeName(json.type);
+  const trackType = _getTrackTypeForValueTypeName(json.type);
 
   if (json.times === undefined) {
     const times = [];
