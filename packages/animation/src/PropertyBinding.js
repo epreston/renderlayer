@@ -1,4 +1,5 @@
 class Composite {
+  // support for AnimationObjectGroup
   #targetGroup;
   #bindings;
 
@@ -71,7 +72,9 @@ class PropertyBinding {
     this.setValue = this._setValue_unbound;
   }
 
+  /** @returns {PropertyBinding} */
   static create(root, path, parsedPath) {
+    // EP: AnimationObjectGroup not used
     if (!(root && root.isAnimationObjectGroup)) {
       return new PropertyBinding(root, path, parsedPath);
     } else {
