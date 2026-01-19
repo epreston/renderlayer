@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/interpolants",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "@renderlayer/interpolants",
   "module": "./dist/interpolants.esm-bundler.js",
   "exports": "./dist/interpolants.esm-bundler.js",
