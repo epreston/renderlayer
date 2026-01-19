@@ -5,50 +5,57 @@ import { Interpolant } from '../src/Interpolant.js';
 describe('Interpolants', () => {
   describe('Interpolant', () => {
     class Mock extends Interpolant {
+      // Call capturing facility
+      static calls = null;
+
       constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
         super(parameterPositions, sampleValues, sampleSize, resultBuffer);
       }
-    }
 
-    Mock.prototype.intervalChanged_ = function intervalChanged(i1, t0, t1) {
-      if (Mock.calls !== null) {
-        // prettier-ignore
-        Mock.calls.push( {
+      intervalChanged_(i1, t0, t1) {
+        if (Mock.calls !== null) {
+          // prettier-ignore
+          Mock.calls.push( {
 					func: 'intervalChanged',
 					args: [ i1, t0, t1 ]
 				} );
+        }
       }
-    };
 
-    Mock.prototype.interpolate_ = function interpolate(i1, t0, t, t1) {
-      if (Mock.calls !== null) {
-        // prettier-ignore
-        Mock.calls.push( {
+      interpolate_(i1, t0, t, t1) {
+        if (Mock.calls !== null) {
+          // prettier-ignore
+          Mock.calls.push( {
 					func: 'interpolate',
 					args: [ i1, t0, t, t1 ]
 				} );
+        }
+
+        return this.copySampleValue_(i1 - 1);
       }
-
-      return this.copySampleValue_(i1 - 1);
-    };
-
-    // Call capturing facility
-
-    Mock.calls = null;
+    }
 
     // Tests
 
     test('constructor', () => {
       const interpolant = new Mock(null, [1, 11, 2, 22, 3, 33], 2, []);
+
       expect(interpolant).toBeInstanceOf(Interpolant);
     });
 
-    test.todo('parameterPositions', () => {
-      // implement
+    test('parameterPositions', () => {
+      const positions = [11, 22, 33, 44, 55, 66, 77, 88, 99];
+      const interpolant = new Mock(positions, null, 0, null);
+
+      expect(interpolant.parameterPositions).toEqual(positions);
     });
 
-    test.todo('resultBuffer', () => {
-      // implement
+    test('resultBuffer', () => {
+      const values = [1, 11, 2, 22, 3, 33];
+      const results = [];
+      const interpolant = new Mock(null, values, 2, results);
+
+      expect(interpolant.resultBuffer).toEqual(results);
     });
 
     test.todo('sampleValues', () => {
