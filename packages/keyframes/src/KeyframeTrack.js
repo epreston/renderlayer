@@ -7,6 +7,21 @@ import { InterpolateDiscrete, InterpolateLinear, InterpolateSmooth } from '@rend
 import * as KeyframeUtils from './KeyframeUtils.js';
 
 class KeyframeTrack {
+  name;
+
+  times;
+  values;
+
+  TimeBufferType = Float32Array;
+
+  /** @type {Float32ArrayConstructor | ArrayConstructor} */
+  ValueBufferType = Float32Array;
+
+  DefaultInterpolation = InterpolateLinear;
+
+  // overwritten by subclasses
+  ValueTypeName = 'undefined';
+
   constructor(name, times, values, interpolation) {
     if (name === undefined) throw new Error('KeyframeTrack: track name is undefined');
     if (times === undefined || times.length === 0)
@@ -42,6 +57,7 @@ class KeyframeTrack {
       const interpolation = track.getInterpolation();
 
       if (interpolation !== track.DefaultInterpolation) {
+        // @ts-ignore
         json.interpolation = interpolation;
       }
     }
@@ -341,9 +357,5 @@ class KeyframeTrack {
     return track;
   }
 }
-
-KeyframeTrack.prototype.TimeBufferType = Float32Array;
-KeyframeTrack.prototype.ValueBufferType = Float32Array;
-KeyframeTrack.prototype.DefaultInterpolation = InterpolateLinear;
 
 export { KeyframeTrack };

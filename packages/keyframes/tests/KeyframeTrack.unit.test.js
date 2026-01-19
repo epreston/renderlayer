@@ -68,16 +68,37 @@ describe('Keyframes', () => {
       expect(object.values[1]).toBe(0.5);
     });
 
-    test.todo('TimeBufferType', () => {
-      // implement
+    test('TimeBufferType', () => {
+      const object = new NumberKeyframeTrack(
+        parameters.name,
+        parameters.times,
+        parameters.values,
+        parameters.interpolation
+      );
+
+      expect(object.TimeBufferType).toBe(Float32Array);
     });
 
-    test.todo('ValueBufferType', () => {
-      // implement
+    test('ValueBufferType', () => {
+      const object = new NumberKeyframeTrack(
+        parameters.name,
+        parameters.times,
+        parameters.values,
+        parameters.interpolation
+      );
+
+      expect(object.ValueBufferType).toBe(Float32Array);
     });
 
-    test.todo('DefaultInterpolation', () => {
-      // implement
+    test('DefaultInterpolation', () => {
+      const object = new NumberKeyframeTrack(
+        parameters.name,
+        parameters.times,
+        parameters.values,
+        parameters.interpolation
+      );
+
+      expect(object.DefaultInterpolation).toBe(InterpolateLinear);
     });
 
     test('toJSON', () => {
@@ -88,16 +109,17 @@ describe('Keyframes', () => {
         parameters.interpolation
       );
 
-      expect(object).toMatchInlineSnapshot(`
-        NumberKeyframeTrack {
-          "ValueTypeName": "number",
-          "createInterpolant": [Function],
+      const json = NumberKeyframeTrack.toJSON(object);
+
+      expect(json).toMatchInlineSnapshot(`
+        {
           "name": ".material.opacity",
-          "times": Float32Array [
+          "times": [
             0,
             1,
           ],
-          "values": Float32Array [
+          "type": "number",
+          "values": [
             0,
             0.5,
           ],
