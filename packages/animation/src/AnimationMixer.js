@@ -10,14 +10,37 @@ import { PropertyMixer } from './PropertyMixer.js';
 const _controlInterpolantsResultBuffer = new Float32Array(1);
 
 class AnimationMixer extends EventDispatcher {
+  _root;
+
+  _actions = []; // 'nActiveActions' followed by inactive ones
+  _nActiveActions = 0;
+
+  _actionsByClip = new Map();
+  // inside:
+  // {
+  // 	knownActions: Array< AnimationAction > - used as prototypes
+  // 	actionByRoot: AnimationAction - lookup
+  // }
+
+  _bindings = []; // 'nActiveBindings' followed by inactive ones
+  _nActiveBindings = 0;
+
+  _bindingsByRootAndName = new Map(); // inside: Map< name, PropertyMixer >
+
+  _controlInterpolants = []; // same game as above
+  _nActiveControlInterpolants = 0;
+
+  stats;
+
+  _accuIndex = 0;
+  time = 0;
+  timeScale = 1.0;
+
   constructor(root) {
     super();
 
     this._root = root;
     this._initMemoryManager();
-    this._accuIndex = 0;
-    this.time = 0;
-    this.timeScale = 1.0;
   }
 
   _bindAction(action, prototypeAction) {
