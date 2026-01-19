@@ -47,9 +47,9 @@ class Matrix4 {
     return new Matrix4().fromArray(this.elements);
   }
 
-  copy(m) {
+  copy(matrix) {
     const te = this.elements;
-    const me = m.elements;
+    const me = matrix.elements;
 
     // prettier-ignore
     te[ 0 ] = me[ 0 ], te[ 1 ] = me[ 1 ], te[ 2 ] = me[ 2 ], te[ 3 ] = me[ 3 ],
@@ -60,9 +60,9 @@ class Matrix4 {
     return this;
   }
 
-  copyPosition(m) {
+  copyPosition(matrix) {
     const te = this.elements;
-    const me = m.elements;
+    const me = matrix.elements;
 
     te[12] = me[12];
     te[13] = me[13];
@@ -71,8 +71,8 @@ class Matrix4 {
     return this;
   }
 
-  setFromMatrix3(m) {
-    const me = m.elements;
+  setFromMatrix3(matrix) {
+    const me = matrix.elements;
 
     // prettier-ignore
     this.set(
@@ -105,15 +105,15 @@ class Matrix4 {
     return this;
   }
 
-  extractRotation(m) {
+  extractRotation(matrix) {
     // this method does not support reflection matrices
 
     const te = this.elements;
-    const me = m.elements;
+    const me = matrix.elements;
 
-    const scaleX = 1 / _v1.setFromMatrixColumn(m, 0).length();
-    const scaleY = 1 / _v1.setFromMatrixColumn(m, 1).length();
-    const scaleZ = 1 / _v1.setFromMatrixColumn(m, 2).length();
+    const scaleX = 1 / _v1.setFromMatrixColumn(matrix, 0).length();
+    const scaleY = 1 / _v1.setFromMatrixColumn(matrix, 1).length();
+    const scaleZ = 1 / _v1.setFromMatrixColumn(matrix, 2).length();
 
     te[0] = me[0] * scaleX;
     te[1] = me[1] * scaleX;
@@ -397,14 +397,14 @@ class Matrix4 {
     return this;
   }
 
-  multiplyScalar(s) {
+  multiplyScalar(scalar) {
     const te = this.elements;
 
     // prettier-ignore
-    te[ 0 ] *= s, te[ 4 ] *= s, te[ 8 ] *= s, te[ 12 ] *= s,
-		te[ 1 ] *= s, te[ 5 ] *= s, te[ 9 ] *= s, te[ 13 ] *= s,
-		te[ 2 ] *= s, te[ 6 ] *= s, te[ 10 ] *= s, te[ 14 ] *= s,
-		te[ 3 ] *= s, te[ 7 ] *= s, te[ 11 ] *= s, te[ 15 ] *= s;
+    te[ 0 ] *= scalar, te[ 4 ] *= scalar, te[ 8 ] *= scalar, te[ 12 ] *= scalar,
+		te[ 1 ] *= scalar, te[ 5 ] *= scalar, te[ 9 ] *= scalar, te[ 13 ] *= scalar,
+		te[ 2 ] *= scalar, te[ 6 ] *= scalar, te[ 10 ] *= scalar, te[ 14 ] *= scalar,
+		te[ 3 ] *= scalar, te[ 7 ] *= scalar, te[ 11 ] *= scalar, te[ 15 ] *= scalar;
 
     return this;
   }
@@ -587,11 +587,11 @@ class Matrix4 {
     return this;
   }
 
-  scale(v) {
+  scale(vector) {
     const te = this.elements;
-    const x = v.x;
-    const y = v.y;
-    const z = v.z;
+    const x = vector.x;
+    const y = vector.y;
+    const z = vector.z;
 
     // prettier-ignore
     te[ 0 ] *= x, te[ 4 ] *= y, te[ 8 ] *= z,
