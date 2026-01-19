@@ -7,16 +7,16 @@ class Euler {
 
   #onChangeCallback = () => {};
 
-  _x = 0;
-  _y = 0;
-  _z = 0;
-  _order = Euler.DEFAULT_ORDER;
+  #x = 0;
+  #y = 0;
+  #z = 0;
+  #order = Euler.DEFAULT_ORDER;
 
   constructor(x = 0, y = 0, z = 0, order = Euler.DEFAULT_ORDER) {
-    this._x = x;
-    this._y = y;
-    this._z = z;
-    this._order = order;
+    this.#x = x;
+    this.#y = y;
+    this.#z = z;
+    this.#order = order;
   }
 
   get isEuler() {
@@ -24,46 +24,46 @@ class Euler {
   }
 
   get x() {
-    return this._x;
+    return this.#x;
   }
 
   set x(value) {
-    this._x = value;
+    this.#x = value;
     this.#onChangeCallback();
   }
 
   get y() {
-    return this._y;
+    return this.#y;
   }
 
   set y(value) {
-    this._y = value;
+    this.#y = value;
     this.#onChangeCallback();
   }
 
   get z() {
-    return this._z;
+    return this.#z;
   }
 
   set z(value) {
-    this._z = value;
+    this.#z = value;
     this.#onChangeCallback();
   }
 
   get order() {
-    return this._order;
+    return this.#order;
   }
 
   set order(value) {
-    this._order = value;
+    this.#order = value;
     this.#onChangeCallback();
   }
 
   set(x, y, z, order = this.order) {
-    this._x = x;
-    this._y = y;
-    this._z = z;
-    this._order = order;
+    this.#x = x;
+    this.#y = y;
+    this.#z = z;
+    this.#order = order;
 
     this.#onChangeCallback();
 
@@ -73,14 +73,14 @@ class Euler {
   /** @returns {this} */
   clone() {
     // @ts-ignore
-    return new this.constructor(this._x, this._y, this._z, this._order);
+    return new this.constructor(this.#x, this.#y, this.#z, this.#order);
   }
 
   copy(euler, update = true) {
-    this._x = euler.x;
-    this._y = euler.y;
-    this._z = euler.z;
-    this._order = euler.order;
+    this.#x = euler.x;
+    this.#y = euler.y;
+    this.#z = euler.z;
+    this.#order = euler.order;
 
     // update check required to optimize Object3D.copy()
     if (update === true) this.#onChangeCallback();
@@ -111,79 +111,79 @@ class Euler {
 
     switch (order) {
       case 'XYZ':
-        this._y = Math.asin(clamp(m13, -1, 1));
+        this.#y = Math.asin(clamp(m13, -1, 1));
 
         if (Math.abs(m13) < 0.9999999) {
-          this._x = Math.atan2(-m23, m33) + 0;
-          this._z = Math.atan2(-m12, m11) + 0;
+          this.#x = Math.atan2(-m23, m33) + 0;
+          this.#z = Math.atan2(-m12, m11) + 0;
         } else {
-          this._x = Math.atan2(m32, m22);
-          this._z = 0;
+          this.#x = Math.atan2(m32, m22);
+          this.#z = 0;
         }
 
         break;
 
       case 'YXZ':
-        this._x = Math.asin(-clamp(m23, -1, 1));
+        this.#x = Math.asin(-clamp(m23, -1, 1));
 
         if (Math.abs(m23) < 0.9999999) {
-          this._y = Math.atan2(m13, m33);
-          this._z = Math.atan2(m21, m22);
+          this.#y = Math.atan2(m13, m33);
+          this.#z = Math.atan2(m21, m22);
         } else {
-          this._y = Math.atan2(-m31, m11) + 0;
-          this._z = 0;
+          this.#y = Math.atan2(-m31, m11) + 0;
+          this.#z = 0;
         }
 
         break;
 
       case 'ZXY':
-        this._x = Math.asin(clamp(m32, -1, 1));
+        this.#x = Math.asin(clamp(m32, -1, 1));
 
         if (Math.abs(m32) < 0.9999999) {
-          this._y = Math.atan2(-m31, m33) + 0;
-          this._z = Math.atan2(-m12, m22) + 0;
+          this.#y = Math.atan2(-m31, m33) + 0;
+          this.#z = Math.atan2(-m12, m22) + 0;
         } else {
-          this._y = 0;
-          this._z = Math.atan2(m21, m11);
+          this.#y = 0;
+          this.#z = Math.atan2(m21, m11);
         }
 
         break;
 
       case 'ZYX':
-        this._y = Math.asin(-clamp(m31, -1, 1));
+        this.#y = Math.asin(-clamp(m31, -1, 1));
 
         if (Math.abs(m31) < 0.9999999) {
-          this._x = Math.atan2(m32, m33);
-          this._z = Math.atan2(m21, m11);
+          this.#x = Math.atan2(m32, m33);
+          this.#z = Math.atan2(m21, m11);
         } else {
-          this._x = 0;
-          this._z = Math.atan2(-m12, m22) + 0;
+          this.#x = 0;
+          this.#z = Math.atan2(-m12, m22) + 0;
         }
 
         break;
 
       case 'YZX':
-        this._z = Math.asin(clamp(m21, -1, 1));
+        this.#z = Math.asin(clamp(m21, -1, 1));
 
         if (Math.abs(m21) < 0.9999999) {
-          this._x = Math.atan2(-m23, m22) + 0;
-          this._y = Math.atan2(-m31, m11) + 0;
+          this.#x = Math.atan2(-m23, m22) + 0;
+          this.#y = Math.atan2(-m31, m11) + 0;
         } else {
-          this._x = 0;
-          this._y = Math.atan2(m13, m33);
+          this.#x = 0;
+          this.#y = Math.atan2(m13, m33);
         }
 
         break;
 
       case 'XZY':
-        this._z = Math.asin(-clamp(m12, -1, 1));
+        this.#z = Math.asin(-clamp(m12, -1, 1));
 
         if (Math.abs(m12) < 0.9999999) {
-          this._x = Math.atan2(m32, m22);
-          this._y = Math.atan2(m13, m11);
+          this.#x = Math.atan2(m32, m22);
+          this.#y = Math.atan2(m13, m11);
         } else {
-          this._x = Math.atan2(-m23, m33) + 0;
-          this._y = 0;
+          this.#x = Math.atan2(-m23, m33) + 0;
+          this.#y = 0;
         }
 
         break;
@@ -192,7 +192,7 @@ class Euler {
         console.warn(`Euler: .setFromRotationMatrix() encountered an unknown order: ${order}`);
     }
 
-    this._order = order;
+    this.#order = order;
 
     if (update === true) this.#onChangeCallback();
 
@@ -219,17 +219,17 @@ class Euler {
 
   equals(euler) {
     // prettier-ignore
-    return euler.x === this._x &&
-      euler.y === this._y &&
-      euler.z === this._z &&
-      euler.order === this._order;
+    return euler.x === this.#x &&
+      euler.y === this.#y &&
+      euler.z === this.#z &&
+      euler.order === this.#order;
   }
 
   fromArray(array) {
-    this._x = array[0];
-    this._y = array[1];
-    this._z = array[2];
-    if (array[3] !== undefined) this._order = array[3];
+    this.#x = array[0];
+    this.#y = array[1];
+    this.#z = array[2];
+    if (array[3] !== undefined) this.#order = array[3];
 
     this.#onChangeCallback();
 
@@ -237,10 +237,10 @@ class Euler {
   }
 
   toArray(array = [], offset = 0) {
-    array[offset] = this._x;
-    array[offset + 1] = this._y;
-    array[offset + 2] = this._z;
-    array[offset + 3] = this._order;
+    array[offset] = this.#x;
+    array[offset + 1] = this.#y;
+    array[offset + 2] = this.#z;
+    array[offset + 3] = this.#order;
 
     return array;
   }
@@ -252,10 +252,10 @@ class Euler {
   }
 
   *[Symbol.iterator]() {
-    yield this._x;
-    yield this._y;
-    yield this._z;
-    yield this._order;
+    yield this.#x;
+    yield this.#y;
+    yield this.#z;
+    yield this.#order;
   }
 }
 
