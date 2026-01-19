@@ -10,12 +10,12 @@ import {
 } from '@renderlayer/shared';
 
 class AnimationAction {
-  _mixer;
+  #mixer;
   _clip;
   _localRoot = null;
   blendMode;
 
-  _interpolantSettings;
+  #interpolantSettings;
   _interpolants; // bound by the mixer
 
   _propertyBindings; // inside: PropertyMixer (managed by the mixer)
@@ -23,25 +23,25 @@ class AnimationAction {
   _cacheIndex = null; // for the memory manager
   _byClipCacheIndex = null; // for the memory manager
 
-  _timeScaleInterpolant = null;
-  _weightInterpolant = null;
+  #timeScaleInterpolant = null;
+  #weightInterpolant = null;
 
   loop = LoopRepeat;
-  _loopCount = -1;
+  #loopCount = -1;
 
   // global mixer time when the action is to be started
   // it's set back to 'null' upon start of the action
-  _startTime = null;
+  #startTime = null;
 
   // scaled local time of the action
   // gets clamped or wrapped to 0..clip.duration according to loop
   time = 0;
 
   timeScale = 1;
-  _effectiveTimeScale = 1;
+  #effectiveTimeScale = 1;
 
   weight = 1;
-  _effectiveWeight = 1;
+  #effectiveWeight = 1;
 
   repetitions = Infinity; // no. of repetitions when looping
 
@@ -54,7 +54,7 @@ class AnimationAction {
   zeroSlopeAtEnd = true; // clips for start, loop and end
 
   constructor(mixer, clip, localRoot = null, blendMode = clip.blendMode) {
-    this._mixer = mixer;
+    this.#mixer = mixer;
     this._clip = clip;
     this._localRoot = localRoot;
     this.blendMode = blendMode;
@@ -74,7 +74,7 @@ class AnimationAction {
       interpolant.settings = interpolantSettings;
     }
 
-    this._interpolantSettings = interpolantSettings;
+    this.#interpolantSettings = interpolantSettings;
     this._interpolants = interpolants; // bound by the mixer
 
     // inside: PropertyMixer (managed by the mixer)
@@ -84,13 +84,13 @@ class AnimationAction {
   // State & Scheduling
 
   play() {
-    this._mixer._activateAction(this);
+    this.#mixer._activateAction(this);
 
     return this;
   }
 
   stop() {
-    this._mixer._deactivateAction(this);
+    this.#mixer._deactivateAction(this);
 
     return this.reset();
   }
@@ -100,8 +100,8 @@ class AnimationAction {
     this.enabled = true;
 
     this.time = 0; // restart clip
-    this._loopCount = -1; // forget previous loops
-    this._startTime = null; // forget scheduling
+    this.#loopCount = -1; // forget previous loops
+    this.#startTime = null; // forget scheduling
 
     return this.stopFading().stopWarping();
   }
@@ -111,18 +111,18 @@ class AnimationAction {
       this.enabled &&
       !this.paused &&
       this.timeScale !== 0 &&
-      this._startTime === null &&
-      this._mixer._isActiveAction(this)
+      this.#startTime === null &&
+      this.#mixer._isActiveAction(this)
     );
   }
 
   // return true when play has been called
   isScheduled() {
-    return this._mixer._isActiveAction(this);
+    return this.#mixer._isActiveAction(this);
   }
 
   startAt(time) {
-    this._startTime = time;
+    this.#startTime = time;
 
     return this;
   }
@@ -143,22 +143,22 @@ class AnimationAction {
     this.weight = weight;
 
     // note: same logic as when updated at runtime
-    this._effectiveWeight = this.enabled ? weight : 0;
+    this.#effectiveWeight = this.enabled ? weight : 0;
 
     return this.stopFading();
   }
 
   // return the weight considering fading and .enabled
   getEffectiveWeight() {
-    return this._effectiveWeight;
+    return this.#effectiveWeight;
   }
 
   fadeIn(duration) {
-    return this._scheduleFading(duration, 0, 1);
+    return this.#scheduleFading(duration, 0, 1);
   }
 
   fadeOut(duration) {
-    return this._scheduleFading(duration, 1, 0);
+    return this.#scheduleFading(duration, 1, 0);
   }
 
   crossFadeFrom(fadeOutAction, duration, warp) {
@@ -183,11 +183,11 @@ class AnimationAction {
   }
 
   stopFading() {
-    const weightInterpolant = this._weightInterpolant;
+    const weightInterpolant = this.#weightInterpolant;
 
     if (weightInterpolant !== null) {
-      this._weightInterpolant = null;
-      this._mixer._takeBackControlInterpolant(weightInterpolant);
+      this.#weightInterpolant = null;
+      this.#mixer._takeBackControlInterpolant(weightInterpolant);
     }
 
     return this;
@@ -200,7 +200,7 @@ class AnimationAction {
   // method does *not* change .paused, because it would be confusing
   setEffectiveTimeScale(timeScale) {
     this.timeScale = timeScale;
-    this._effectiveTimeScale = this.paused ? 0 : timeScale;
+    this.#effectiveTimeScale = this.paused ? 0 : timeScale;
 
     return this.stopWarping();
   }
@@ -208,8 +208,8 @@ class AnimationAction {
   // return the time scale considering warping and .paused
   getEffectiveTimeScale() {
     // EP: patch bug
-    this._effectiveTimeScale = this.paused ? 0 : this._effectiveTimeScale;
-    return this._effectiveTimeScale;
+    this.#effectiveTimeScale = this.paused ? 0 : this.#effectiveTimeScale;
+    return this.#effectiveTimeScale;
   }
 
   setDuration(duration) {
@@ -226,19 +226,19 @@ class AnimationAction {
   }
 
   halt(duration) {
-    return this.warp(this._effectiveTimeScale, 0, duration);
+    return this.warp(this.#effectiveTimeScale, 0, duration);
   }
 
   warp(startTimeScale, endTimeScale, duration) {
-    const mixer = this._mixer;
+    const mixer = this.#mixer;
     const now = mixer.time;
     const timeScale = this.timeScale;
 
-    let interpolant = this._timeScaleInterpolant;
+    let interpolant = this.#timeScaleInterpolant;
 
     if (interpolant === null) {
       interpolant = mixer._lendControlInterpolant();
-      this._timeScaleInterpolant = interpolant;
+      this.#timeScaleInterpolant = interpolant;
     }
 
     const times = interpolant.parameterPositions;
@@ -254,11 +254,11 @@ class AnimationAction {
   }
 
   stopWarping() {
-    const timeScaleInterpolant = this._timeScaleInterpolant;
+    const timeScaleInterpolant = this.#timeScaleInterpolant;
 
     if (timeScaleInterpolant !== null) {
-      this._timeScaleInterpolant = null;
-      this._mixer._takeBackControlInterpolant(timeScaleInterpolant);
+      this.#timeScaleInterpolant = null;
+      this.#mixer._takeBackControlInterpolant(timeScaleInterpolant);
     }
 
     return this;
@@ -267,7 +267,7 @@ class AnimationAction {
   // Object Accessors
 
   getMixer() {
-    return this._mixer;
+    return this.#mixer;
   }
 
   getClip() {
@@ -275,7 +275,7 @@ class AnimationAction {
   }
 
   getRoot() {
-    return this._localRoot || this._mixer._root;
+    return this._localRoot || this.#mixer._root;
   }
 
   // Internal
@@ -284,13 +284,13 @@ class AnimationAction {
     // called by the mixer
 
     if (!this.enabled) {
-      // call ._updateWeight() to update ._effectiveWeight
+      // call .#updateWeight() to update .#effectiveWeight
 
-      this._updateWeight(time);
+      this.#updateWeight(time);
       return;
     }
 
-    const startTime = this._startTime;
+    const startTime = this.#startTime;
 
     if (startTime !== null) {
       // check for scheduled start of action
@@ -299,20 +299,19 @@ class AnimationAction {
       if (timeRunning < 0 || timeDirection === 0) {
         deltaTime = 0;
       } else {
-        this._startTime = null; // unschedule
+        this.#startTime = null; // unschedule
         deltaTime = timeDirection * timeRunning;
       }
     }
 
     // apply time scale and advance time
-
-    deltaTime *= this._updateTimeScale(time);
-    const clipTime = this._updateTime(deltaTime);
+    deltaTime *= this.#updateTimeScale(time);
+    const clipTime = this.#updateTime(deltaTime);
 
     // note: _updateTime may disable the action resulting in
     // an effective weight of 0
 
-    const weight = this._updateWeight(time);
+    const weight = this.#updateWeight(time);
 
     if (weight > 0) {
       const interpolants = this._interpolants;
@@ -337,12 +336,12 @@ class AnimationAction {
     }
   }
 
-  _updateWeight(time) {
+  #updateWeight(time) {
     let weight = 0;
 
     if (this.enabled) {
       weight = this.weight;
-      const interpolant = this._weightInterpolant;
+      const interpolant = this.#weightInterpolant;
 
       if (interpolant !== null) {
         const interpolantValue = interpolant.evaluate(time)[0];
@@ -360,17 +359,17 @@ class AnimationAction {
       }
     }
 
-    this._effectiveWeight = weight;
+    this.#effectiveWeight = weight;
     return weight;
   }
 
-  _updateTimeScale(time) {
+  #updateTimeScale(time) {
     let timeScale = 0;
 
     if (!this.paused) {
       timeScale = this.timeScale;
 
-      const interpolant = this._timeScaleInterpolant;
+      const interpolant = this.#timeScaleInterpolant;
 
       if (interpolant !== null) {
         const interpolantValue = interpolant.evaluate(time)[0];
@@ -391,16 +390,16 @@ class AnimationAction {
       }
     }
 
-    this._effectiveTimeScale = timeScale;
+    this.#effectiveTimeScale = timeScale;
     return timeScale;
   }
 
-  _updateTime(deltaTime) {
+  #updateTime(deltaTime) {
     const duration = this._clip.duration;
     const loop = this.loop;
 
     let time = this.time + deltaTime;
-    let loopCount = this._loopCount;
+    let loopCount = this.#loopCount;
 
     const pingPong = loop === LoopPingPong;
 
@@ -414,8 +413,8 @@ class AnimationAction {
       if (loopCount === -1) {
         // just started
 
-        this._loopCount = 0;
-        this._setEndings(true, true, false);
+        this.#loopCount = 0;
+        this.#setEndings(true, true, false);
       }
 
       handle_stop: {
@@ -434,7 +433,7 @@ class AnimationAction {
 
         this.time = time;
 
-        this._mixer.dispatchEvent({
+        this.#mixer.dispatchEvent({
           type: 'finished',
           action: this,
           direction: deltaTime < 0 ? -1 : 1
@@ -449,13 +448,13 @@ class AnimationAction {
         if (deltaTime >= 0) {
           loopCount = 0;
 
-          this._setEndings(true, this.repetitions === 0, pingPong);
+          this.#setEndings(true, this.repetitions === 0, pingPong);
         } else {
           // when looping in reverse direction, the initial
           // transition through zero counts as a repetition,
           // so leave loopCount at -1
 
-          this._setEndings(this.repetitions === 0, true, pingPong);
+          this.#setEndings(this.repetitions === 0, true, pingPong);
         }
       }
 
@@ -479,7 +478,7 @@ class AnimationAction {
 
           this.time = time;
 
-          this._mixer.dispatchEvent({
+          this.#mixer.dispatchEvent({
             type: 'finished',
             action: this,
             direction: deltaTime > 0 ? 1 : -1
@@ -491,16 +490,16 @@ class AnimationAction {
             // entering the last round
 
             const atStart = deltaTime < 0;
-            this._setEndings(atStart, !atStart, pingPong);
+            this.#setEndings(atStart, !atStart, pingPong);
           } else {
-            this._setEndings(false, false, pingPong);
+            this.#setEndings(false, false, pingPong);
           }
 
-          this._loopCount = loopCount;
+          this.#loopCount = loopCount;
 
           this.time = time;
 
-          this._mixer.dispatchEvent({
+          this.#mixer.dispatchEvent({
             type: 'loop',
             action: this,
             loopDelta: loopDelta
@@ -520,8 +519,8 @@ class AnimationAction {
     return time;
   }
 
-  _setEndings(atStart, atEnd, pingPong) {
-    const settings = this._interpolantSettings;
+  #setEndings(atStart, atEnd, pingPong) {
+    const settings = this.#interpolantSettings;
 
     if (pingPong) {
       settings.endingStart = ZeroSlopeEnding;
@@ -543,14 +542,14 @@ class AnimationAction {
     }
   }
 
-  _scheduleFading(duration, weightNow, weightThen) {
-    const mixer = this._mixer;
+  #scheduleFading(duration, weightNow, weightThen) {
+    const mixer = this.#mixer;
     const now = mixer.time;
-    let interpolant = this._weightInterpolant;
+    let interpolant = this.#weightInterpolant;
 
     if (interpolant === null) {
       interpolant = mixer._lendControlInterpolant();
-      this._weightInterpolant = interpolant;
+      this.#weightInterpolant = interpolant;
     }
 
     const times = interpolant.parameterPositions;

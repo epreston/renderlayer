@@ -159,8 +159,6 @@ describe('Animation', () => {
       expect(animationAction2.paused).toBe(false);
       expect(animationAction2.enabled).toBe(true);
       expect(animationAction2.time).toBe(0);
-      expect(animationAction2._loopCount).toBe(-1);
-      expect(animationAction2._startTime).toBe(null);
     });
 
     test('isRunning', () => {
