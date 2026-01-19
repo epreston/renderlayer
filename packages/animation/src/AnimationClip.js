@@ -12,13 +12,18 @@ import { NormalAnimationBlendMode } from '@renderlayer/shared';
 import * as AnimationUtils from './AnimationUtils.js';
 
 class AnimationClip {
+  name;
+  duration = -1;
+  tracks;
+  blendMode = NormalAnimationBlendMode;
+
+  uuid = generateUUID();
+
   constructor(name, duration = -1, tracks, blendMode = NormalAnimationBlendMode) {
     this.name = name;
     this.tracks = tracks;
     this.duration = duration;
     this.blendMode = blendMode;
-
-    this.uuid = generateUUID();
 
     // this means it should figure out its duration by scanning the tracks
     if (this.duration < 0) {
