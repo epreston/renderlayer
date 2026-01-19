@@ -115,29 +115,29 @@ class Vector4 {
     return new this.constructor(this.x, this.y, this.z, this.w);
   }
 
-  copy(v) {
-    this.x = v.x;
-    this.y = v.y;
-    this.z = v.z;
-    this.w = v.w !== undefined ? v.w : 1;
+  copy(vector) {
+    this.x = vector.x;
+    this.y = vector.y;
+    this.z = vector.z;
+    this.w = vector.w !== undefined ? vector.w : 1;
 
     return this;
   }
 
-  add(v) {
-    this.x += v.x;
-    this.y += v.y;
-    this.z += v.z;
-    this.w += v.w;
+  add(vector) {
+    this.x += vector.x;
+    this.y += vector.y;
+    this.z += vector.z;
+    this.w += vector.w;
 
     return this;
   }
 
-  addScalar(s) {
-    this.x += s;
-    this.y += s;
-    this.z += s;
-    this.w += s;
+  addScalar(scalar) {
+    this.x += scalar;
+    this.y += scalar;
+    this.z += scalar;
+    this.w += scalar;
 
     return this;
   }
@@ -151,29 +151,29 @@ class Vector4 {
     return this;
   }
 
-  addScaledVector(v, s) {
-    this.x += v.x * s;
-    this.y += v.y * s;
-    this.z += v.z * s;
-    this.w += v.w * s;
+  addScaledVector(vector, scalar) {
+    this.x += vector.x * scalar;
+    this.y += vector.y * scalar;
+    this.z += vector.z * scalar;
+    this.w += vector.w * scalar;
 
     return this;
   }
 
-  sub(v) {
-    this.x -= v.x;
-    this.y -= v.y;
-    this.z -= v.z;
-    this.w -= v.w;
+  sub(vector) {
+    this.x -= vector.x;
+    this.y -= vector.y;
+    this.z -= vector.z;
+    this.w -= vector.w;
 
     return this;
   }
 
-  subScalar(s) {
-    this.x -= s;
-    this.y -= s;
-    this.z -= s;
-    this.w -= s;
+  subScalar(scalar) {
+    this.x -= scalar;
+    this.y -= scalar;
+    this.z -= scalar;
+    this.w -= scalar;
 
     return this;
   }
@@ -187,11 +187,11 @@ class Vector4 {
     return this;
   }
 
-  multiply(v) {
-    this.x *= v.x;
-    this.y *= v.y;
-    this.z *= v.z;
-    this.w *= v.w;
+  multiply(vector) {
+    this.x *= vector.x;
+    this.y *= vector.y;
+    this.z *= vector.z;
+    this.w *= vector.w;
 
     return this;
   }
@@ -205,12 +205,12 @@ class Vector4 {
     return this;
   }
 
-  applyMatrix4(m) {
+  applyMatrix4(matrix) {
     const x = this.x;
     const y = this.y;
     const z = this.z;
     const w = this.w;
-    const e = m.elements;
+    const e = matrix.elements;
 
     this.x = e[0] * x + e[4] * y + e[8] * z + e[12] * w;
     this.y = e[1] * x + e[5] * y + e[9] * z + e[13] * w;
@@ -246,7 +246,7 @@ class Vector4 {
     return this;
   }
 
-  setAxisAngleFromRotationMatrix(m) {
+  setAxisAngleFromRotationMatrix(matrix) {
     // http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToAngle/index.htm
 
     // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
@@ -260,7 +260,7 @@ class Vector4 {
     const epsilon2 = 0.1; // margin to distinguish between 0 and 180 degrees
 
     // prettier-ignore
-    const te = m.elements;
+    const te = matrix.elements;
 
     const m11 = te[0];
     const m12 = te[4];
@@ -373,20 +373,20 @@ class Vector4 {
     return this;
   }
 
-  min(v) {
-    this.x = Math.min(this.x, v.x);
-    this.y = Math.min(this.y, v.y);
-    this.z = Math.min(this.z, v.z);
-    this.w = Math.min(this.w, v.w);
+  min(vector) {
+    this.x = Math.min(this.x, vector.x);
+    this.y = Math.min(this.y, vector.y);
+    this.z = Math.min(this.z, vector.z);
+    this.w = Math.min(this.w, vector.w);
 
     return this;
   }
 
-  max(v) {
-    this.x = Math.max(this.x, v.x);
-    this.y = Math.max(this.y, v.y);
-    this.z = Math.max(this.z, v.z);
-    this.w = Math.max(this.w, v.w);
+  max(vector) {
+    this.x = Math.max(this.x, vector.x);
+    this.y = Math.max(this.y, vector.y);
+    this.z = Math.max(this.z, vector.z);
+    this.w = Math.max(this.w, vector.w);
 
     return this;
   }
@@ -462,8 +462,8 @@ class Vector4 {
     return this;
   }
 
-  dot(v) {
-    return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
+  dot(vector) {
+    return this.x * vector.x + this.y * vector.y + this.z * vector.z + this.w * vector.w;
   }
 
   lengthSq() {
@@ -486,11 +486,11 @@ class Vector4 {
     return this.normalize().multiplyScalar(length);
   }
 
-  lerp(v, alpha) {
-    this.x += (v.x - this.x) * alpha;
-    this.y += (v.y - this.y) * alpha;
-    this.z += (v.z - this.z) * alpha;
-    this.w += (v.w - this.w) * alpha;
+  lerp(vector, alpha) {
+    this.x += (vector.x - this.x) * alpha;
+    this.y += (vector.y - this.y) * alpha;
+    this.z += (vector.z - this.z) * alpha;
+    this.w += (vector.w - this.w) * alpha;
 
     return this;
   }
@@ -504,8 +504,8 @@ class Vector4 {
     return this;
   }
 
-  equals(v) {
-    return v.x === this.x && v.y === this.y && v.z === this.z && v.w === this.w;
+  equals(vector) {
+    return vector.x === this.x && vector.y === this.y && vector.z === this.z && vector.w === this.w;
   }
 
   fromArray(array, offset = 0) {
