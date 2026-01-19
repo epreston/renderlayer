@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/animation",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Animation library used by @renderlayer packages.",
   "module": "./dist/animation.esm-bundler.js",
   "exports": "./dist/animation.esm-bundler.js",
