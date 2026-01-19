@@ -29,12 +29,28 @@ describe('Animation', () => {
       expect(object_all).toBeDefined();
     });
 
-    test.todo('Composite', () => {
-      // implement
+    test('Composite', () => {
+      // static property
+      expect(PropertyBinding.Composite).toBeDefined();
     });
 
-    test.todo('create', () => {
-      // implement
+    test('create', () => {
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      const mesh = new Mesh(geometry, material);
+      const path = '.material.opacity';
+      const parsedPath = {
+        nodeName: '',
+        objectName: 'material',
+        objectIndex: undefined,
+        propertyName: 'opacity',
+        propertyIndex: undefined
+      };
+
+      const object = PropertyBinding.create(mesh, path, parsedPath);
+
+      expect(object).toBeDefined();
+      expect(object.path).toBe(path);
     });
 
     test('sanitizeNodeName', () => {
