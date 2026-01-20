@@ -9,70 +9,70 @@ import { LightShadow } from '../src/LightShadow.js';
 
 describe('Lights', () => {
   describe('LightShadow', () => {
-    let camera = undefined;
-    let object = undefined;
+    let _camera = undefined;
+    let _object = undefined;
 
     beforeAll(() => {
-      camera = new OrthographicCamera(-5, 5, 5, -5, 0.5, 500);
+      _camera = new OrthographicCamera(-5, 5, 5, -5, 0.5, 500);
     });
 
     beforeEach(() => {
-      object = new LightShadow(camera);
+      _object = new LightShadow(_camera);
     });
 
     test('constructor', () => {
-      expect(object).toBeDefined();
+      expect(_object).toBeDefined();
     });
 
     test('camera', () => {
-      expect(object.camera).toBeDefined();
-      expect(object.camera).toBeInstanceOf(OrthographicCamera);
-      expect(object.camera).toBe(camera);
+      expect(_object.camera).toBeDefined();
+      expect(_object.camera).toBeInstanceOf(OrthographicCamera);
+      expect(_object.camera).toBe(_camera);
     });
 
     test('bias', () => {
-      expect(object.bias).toBeDefined();
-      expect(object.bias).toBe(0);
+      expect(_object.bias).toBeDefined();
+      expect(_object.bias).toBe(0);
     });
 
     test('normalBias', () => {
-      expect(object.normalBias).toBeDefined();
-      expect(object.normalBias).toBe(0);
+      expect(_object.normalBias).toBeDefined();
+      expect(_object.normalBias).toBe(0);
     });
 
     test('radius', () => {
-      expect(object.radius).toBeDefined();
-      expect(object.radius).toBe(1);
+      expect(_object.radius).toBeDefined();
+      expect(_object.radius).toBe(1);
     });
 
     test('blurSamples', () => {
-      expect(object.blurSamples).toBeDefined();
-      expect(object.blurSamples).toBe(8);
+      expect(_object.blurSamples).toBeDefined();
+      expect(_object.blurSamples).toBe(8);
     });
 
     test('mapSize', () => {
-      expect(object.mapSize).toBeDefined();
-      expect(object.mapSize.equals(new Vector2(512, 512))).toBeTruthy();
+      expect(_object.mapSize).toBeDefined();
+      expect(_object.mapSize.equals(new Vector2(512, 512))).toBeTruthy();
     });
 
     test('map', () => {
-      expect(object.map).toBeDefined();
-      expect(object.map).toBeNull();
+      expect(_object.map).toBeDefined();
+      expect(_object.map).toBeNull();
     });
 
     test('mapPass', () => {
-      expect(object.mapPass).toBeDefined();
-      expect(object.mapPass).toBeNull();
+      expect(_object.mapPass).toBeDefined();
+      expect(_object.mapPass).toBeNull();
     });
 
     test('matrix', () => {
-      expect(object.matrix).toBeDefined();
-      expect(object.matrix).toBeInstanceOf(Matrix4);
+      expect(_object.matrix).toBeDefined();
+      expect(_object.matrix).toBeInstanceOf(Matrix4);
     });
 
     test('autoUpdate', () => {
-      expect(object.autoUpdate).toBeDefined();
-      expect(object.autoUpdate).toBe(true);
+      expect(_object.autoUpdate).toBeDefined();
+      expect(_object.autoUpdate).toBe(true);
     });
 
     test('needsUpdate', () => {
@@ -81,11 +81,11 @@ describe('Lights', () => {
     });
 
     test('getViewportCount', () => {
-      expect(object.getViewportCount()).toBe(1);
+      expect(_object.getViewportCount()).toBe(1);
     });
 
     test('getFrustum', () => {
-      const frustum = object.getFrustum();
+      const frustum = _object.getFrustum();
       expect(frustum).toBeInstanceOf(Frustum);
     });
 
@@ -95,16 +95,16 @@ describe('Lights', () => {
       // only apples to light types with a target
       light.target = new Object3D();
 
-      object.updateMatrices(light);
+      _object.updateMatrices(light);
     });
 
     test('getViewport', () => {
-      const viewPort = object.getViewport(0);
+      const viewPort = _object.getViewport(0);
       expect(viewPort).toBeInstanceOf(Vector4);
     });
 
     test('getFrameExtents', () => {
-      const extents = object.getFrameExtents();
+      const extents = _object.getFrameExtents();
       expect(extents).toBeInstanceOf(Vector2);
     });
 
@@ -118,28 +118,28 @@ describe('Lights', () => {
     test('copy', () => {
       const copiedObject = new LightShadow();
 
-      copiedObject.copy(object);
+      copiedObject.copy(_object);
 
       // will be different
-      copiedObject.camera.uuid = object.camera.uuid;
+      copiedObject.camera.uuid = _object.camera.uuid;
 
-      expect(copiedObject).not.toBe(object);
-      expect(copiedObject).toStrictEqual(object);
+      expect(copiedObject).not.toBe(_object);
+      expect(copiedObject).toStrictEqual(_object);
     });
 
     test('clone', () => {
-      const clonedObject = object.clone();
+      const clonedObject = _object.clone();
 
       // will be different
-      clonedObject.camera.uuid = object.camera.uuid;
+      clonedObject.camera.uuid = _object.camera.uuid;
 
-      expect(clonedObject).not.toBe(object);
-      expect(clonedObject).toStrictEqual(object);
+      expect(clonedObject).not.toBe(_object);
+      expect(clonedObject).toStrictEqual(_object);
     });
 
     test('toJSON', () => {
-      object.camera.uuid = 'a3fb35eb-dcae-4ccd-a619-5bf5d09575d0';
-      expect(object).toMatchInlineSnapshot(`
+      _object.camera.uuid = 'a3fb35eb-dcae-4ccd-a619-5bf5d09575d0';
+      expect(_object).toMatchInlineSnapshot(`
         {
           "camera": {
             "bottom": -5,
