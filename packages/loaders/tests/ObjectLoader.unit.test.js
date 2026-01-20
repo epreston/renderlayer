@@ -10,12 +10,12 @@ import { Mesh } from '@renderlayer/objects';
 import { Loader } from '../src/Loader.js';
 import { ObjectLoader } from '../src/ObjectLoader.js';
 
-// will be intercepted by msw, not a real url
-const MeshTestFile = 'http://renderlayer.org/test/json/Mesh.json';
-const MissingTestFile = 'http://renderlayer.org/test/json/missing.json';
-
 describe('Loaders', () => {
   describe('ObjectLoader', () => {
+    // will be intercepted by msw, not a real url
+    const _MeshTestFile = 'http://renderlayer.org/test/json/Mesh.json';
+    const _MissingTestFile = 'http://renderlayer.org/test/json/missing.json';
+
     test('constructor', () => {
       const object = new ObjectLoader();
       expect(object).toBeDefined();
@@ -35,7 +35,7 @@ describe('Loaders', () => {
 
       // --------------------
       // good file
-      object.load(MeshTestFile, onLoad, onProgress, onError);
+      object.load(_MeshTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
@@ -47,7 +47,7 @@ describe('Loaders', () => {
 
       // --------------------
       // bad file
-      object.load(MissingTestFile, onLoad, onProgress, onError);
+      object.load(_MissingTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
@@ -63,7 +63,7 @@ describe('Loaders', () => {
 
       // --------------------
       // good file
-      const loadedMesh = await object.loadAsync(MeshTestFile, onProgress);
+      const loadedMesh = await object.loadAsync(_MeshTestFile, onProgress);
 
       expect(loadedMesh).toBeDefined();
       expect(loadedMesh).toBeInstanceOf(Mesh);
@@ -74,7 +74,7 @@ describe('Loaders', () => {
 
       // --------------------
       // bad file
-      const missingMesh = await object.loadAsync(MissingTestFile, onProgress).catch((err) => {
+      const missingMesh = await object.loadAsync(_MissingTestFile, onProgress).catch((err) => {
         // it will error
       });
 
