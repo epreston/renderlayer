@@ -2,7 +2,7 @@
   "type": "module",
   "sideEffects": false,
   "name": "@renderlayer/cameras",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Camera library used by @renderlayer packages",
   "module": "./dist/cameras.esm-bundler.js",
   "exports": "./dist/cameras.esm-bundler.js",
@@ -20,7 +20,11 @@
     "directory": "packages/cameras"
   },
   "keywords": [
-    "renderlayer", "cameras", "cube", "orthographic", "perspective"
+    "renderlayer",
+    "cameras",
+    "cube",
+    "orthographic",
+    "perspective"
   ],
   "author": "Ed Preston",
   "license": "MIT",
