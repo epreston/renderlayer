@@ -5,7 +5,8 @@ import { Clock } from '../src/Clock.js';
 describe('Extras', () => {
   describe('Clock', () => {
     // replace with vitest mock timers
-    function mockPerformance() {
+    function _mockPerformance() {
+      // @ts-ignore - allow code to run in browser or node
       const reference = typeof global !== 'undefined' ? global : self;
 
       reference.performance = {
@@ -72,7 +73,7 @@ describe('Extras', () => {
         return;
       }
 
-      mockPerformance();
+      _mockPerformance();
 
       const clock = new Clock(false);
 
