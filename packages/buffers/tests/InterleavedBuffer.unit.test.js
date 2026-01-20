@@ -6,7 +6,7 @@ import { InterleavedBuffer } from '../src/InterleavedBuffer.js';
 
 describe('Buffers', () => {
   describe('InterleavedBuffer', () => {
-    function checkInstanceAgainstCopy(instance, copiedInstance) {
+    function _checkInstanceAgainstCopy(instance, copiedInstance) {
       expect(copiedInstance).toBeInstanceOf(InterleavedBuffer);
 
       for (let i = 0; i < instance.array.length; i++) {
@@ -87,7 +87,7 @@ describe('Buffers', () => {
       const instance = new InterleavedBuffer(array, 3);
       instance.setUsage(DynamicDrawUsage);
 
-      checkInstanceAgainstCopy(instance, instance.copy(instance));
+      _checkInstanceAgainstCopy(instance, instance.copy(instance));
     });
 
     test('copyAt', () => {
