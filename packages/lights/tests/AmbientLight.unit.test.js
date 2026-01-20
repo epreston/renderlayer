@@ -15,12 +15,11 @@ describe('Lights', () => {
     };
 
     beforeAll(function () {
-      // prettier-ignore
       _lights = [
-				new AmbientLight(),
-				new AmbientLight(_parameters.color ),
-				new AmbientLight(_parameters.color, _parameters.intensity)
-			];
+        new AmbientLight(),
+        new AmbientLight(_parameters.color),
+        new AmbientLight(_parameters.color, _parameters.intensity)
+      ];
     });
 
     test('constructor', () => {
