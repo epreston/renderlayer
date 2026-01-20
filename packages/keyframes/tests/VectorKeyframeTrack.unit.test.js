@@ -6,7 +6,7 @@ import { VectorKeyframeTrack } from '../src/VectorKeyframeTrack.js';
 
 describe('Keyframes', () => {
   describe('VectorKeyframeTrack', () => {
-    const parameters = {
+    const _parameters = {
       name: '.force',
       times: [0],
       values: [0.5, 0.5, 0.5],
@@ -15,27 +15,39 @@ describe('Keyframes', () => {
 
     test('constructor', () => {
       // name, times, values
-      const object = new VectorKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new VectorKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object).toBeDefined();
 
       // name, times, values, interpolation
       const object_all = new VectorKeyframeTrack(
-        parameters.name,
-        parameters.times,
-        parameters.values,
-        parameters.interpolation
+        _parameters.name,
+        _parameters.times,
+        _parameters.values,
+        _parameters.interpolation
       );
       expect(object_all).toBeDefined();
     });
 
     test('extends', () => {
-      const object = new VectorKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new VectorKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object).toBeInstanceOf(KeyframeTrack);
-      expect(object.name).toBe(parameters.name);
+      expect(object.name).toBe(_parameters.name);
     });
 
     test('ValueTypeName', () => {
-      const object = new VectorKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new VectorKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object.ValueTypeName).toBe('vector');
     });
   });
