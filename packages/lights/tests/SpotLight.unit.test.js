@@ -9,9 +9,9 @@ import { SpotLightShadow } from '../src/SpotLightShadow.js';
 
 describe('Lights', () => {
   describe('SpotLight', () => {
-    let lights = undefined;
+    let _lights = undefined;
 
-    const parameters = {
+    const _parameters = {
       color: 0xaaaaaa,
       intensity: 0.5,
       distance: 100,
@@ -21,30 +21,30 @@ describe('Lights', () => {
     };
 
     beforeAll(function () {
-      lights = [
-        new SpotLight(parameters.color),
-        new SpotLight(parameters.color, parameters.intensity),
-        new SpotLight(parameters.color, parameters.intensity, parameters.distance),
+      _lights = [
+        new SpotLight(_parameters.color),
+        new SpotLight(_parameters.color, _parameters.intensity),
+        new SpotLight(_parameters.color, _parameters.intensity, _parameters.distance),
         new SpotLight(
-          parameters.color,
-          parameters.intensity,
-          parameters.distance,
-          parameters.angle
+          _parameters.color,
+          _parameters.intensity,
+          _parameters.distance,
+          _parameters.angle
         ),
         new SpotLight(
-          parameters.color,
-          parameters.intensity,
-          parameters.distance,
-          parameters.angle,
-          parameters.penumbra
+          _parameters.color,
+          _parameters.intensity,
+          _parameters.distance,
+          _parameters.angle,
+          _parameters.penumbra
         ),
         new SpotLight(
-          parameters.color,
-          parameters.intensity,
-          parameters.distance,
-          parameters.angle,
-          parameters.penumbra,
-          parameters.decay
+          _parameters.color,
+          _parameters.intensity,
+          _parameters.distance,
+          _parameters.angle,
+          _parameters.penumbra,
+          _parameters.decay
         )
       ];
     });
@@ -75,27 +75,27 @@ describe('Lights', () => {
     });
 
     test('distance', () => {
-      expect(lights[1].distance).toBe(0);
+      expect(_lights[1].distance).toBe(0);
 
-      expect(lights[2].distance).toBe(parameters.distance);
+      expect(_lights[2].distance).toBe(_parameters.distance);
     });
 
     test('angle', () => {
-      expect(lights[2].angle).toBe(Math.PI / 3);
+      expect(_lights[2].angle).toBe(Math.PI / 3);
 
-      expect(lights[3].angle).toBe(parameters.angle);
+      expect(_lights[3].angle).toBe(_parameters.angle);
     });
 
     test('penumbra', () => {
-      expect(lights[3].penumbra).toBe(0);
+      expect(_lights[3].penumbra).toBe(0);
 
-      expect(lights[4].penumbra).toBe(parameters.penumbra);
+      expect(_lights[4].penumbra).toBe(_parameters.penumbra);
     });
 
     test('decay', () => {
-      expect(lights[4].decay).toBe(2);
+      expect(_lights[4].decay).toBe(2);
 
-      expect(lights[5].decay).toBe(parameters.decay);
+      expect(_lights[5].decay).toBe(_parameters.decay);
     });
 
     test('map', () => {
