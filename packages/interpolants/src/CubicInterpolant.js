@@ -10,18 +10,18 @@ import { Interpolant } from './Interpolant.js';
  */
 
 class CubicInterpolant extends Interpolant {
+  _weightPrev = -0; // see unit test
+  _offsetPrev = -0;
+  _weightNext = -0;
+  _offsetNext = -0;
+
+  DefaultSettings_ = {
+    endingStart: ZeroCurvatureEnding,
+    endingEnd: ZeroCurvatureEnding
+  };
+
   constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
     super(parameterPositions, sampleValues, sampleSize, resultBuffer);
-
-    this._weightPrev = -0;
-    this._offsetPrev = -0;
-    this._weightNext = -0;
-    this._offsetNext = -0;
-
-    this.DefaultSettings_ = {
-      endingStart: ZeroCurvatureEnding,
-      endingEnd: ZeroCurvatureEnding
-    };
   }
 
   intervalChanged_(i1, t0, t1) {

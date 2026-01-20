@@ -40,6 +40,7 @@ describe('Interpolants', () => {
 
       object.intervalChanged_(1, 11, 22);
 
+      // EP: fix
       expect(object._weightPrev).toBe(-0.5);
       expect(object._weightNext).toBe(-0.275);
       expect(object._offsetPrev).toBe(1);
