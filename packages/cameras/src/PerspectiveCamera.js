@@ -4,24 +4,30 @@ import { RAD2DEG, DEG2RAD } from '@renderlayer/math';
 import { Camera } from './Camera.js';
 
 class PerspectiveCamera extends Camera {
+  isPerspectiveCamera = true;
+  type = 'PerspectiveCamera';
+
+  fov = 50;
+  zoom = 1;
+
+  near = 0.1;
+  far = 2000;
+  focus = 10;
+
+  aspect = 1;
+  view = null;
+
+  filmGauge = 35; // width of the film (default in millimetres)
+  filmOffset = 0; // horizontal film offset (same unit as gauge)
+
   constructor(fov = 50, aspect = 1, near = 0.1, far = 2000) {
     super();
 
-    this.isPerspectiveCamera = true;
-    this.type = 'PerspectiveCamera';
-
     this.fov = fov;
-    this.zoom = 1;
+    this.aspect = aspect;
 
     this.near = near;
     this.far = far;
-    this.focus = 10;
-
-    this.aspect = aspect;
-    this.view = null;
-
-    this.filmGauge = 35; // width of the film (default in millimetres)
-    this.filmOffset = 0; // horizontal film offset (same unit as gauge)
 
     this.updateProjectionMatrix();
   }
