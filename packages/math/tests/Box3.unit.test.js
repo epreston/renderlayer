@@ -14,13 +14,13 @@ import { negInf3, one3, posInf3, two3, zero3 } from './math-constants.js';
 
 import { Box3 } from '../src/Box3.js';
 
-function compareBox(a, b, threshold) {
-  threshold = threshold || 0.0001;
-  return a.min.distanceTo(b.min) < threshold && a.max.distanceTo(b.max) < threshold;
-}
-
 describe('Maths', () => {
   describe('Box3', () => {
+    function _compareBox(a, b, threshold) {
+      threshold = threshold || 0.0001;
+      return a.min.distanceTo(b.min) < threshold && a.max.distanceTo(b.max) < threshold;
+    }
+
     test('constructor', () => {
       let a = new Box3();
       expect(a.min.equals(posInf3)).toBeTruthy();
@@ -158,11 +158,11 @@ describe('Maths', () => {
         new Vector3(-2 * Math.SQRT2, -2 * Math.SQRT2, -2),
         new Vector3(2 * Math.SQRT2, 2 * Math.SQRT2, 2)
       );
-      expect(compareBox(a, rotatedBox)).toBeTruthy();
+      expect(_compareBox(a, rotatedBox)).toBeTruthy();
 
       a.setFromObject(object, true);
       const rotatedMinBox = new Box3(new Vector3(-2, -2, -2), new Vector3(2, 2, 2));
-      expect(compareBox(a, rotatedMinBox)).toBeTruthy();
+      expect(_compareBox(a, rotatedMinBox)).toBeTruthy();
     });
 
     test('clone', () => {
@@ -561,10 +561,10 @@ describe('Maths', () => {
       const m = new Matrix4().makeTranslation(1, -2, 1);
       const t1 = new Vector3(1, -2, 1);
 
-      expect(compareBox(a.clone().applyMatrix4(m), a.clone().translate(t1))).toBeTruthy();
-      expect(compareBox(b.clone().applyMatrix4(m), b.clone().translate(t1))).toBeTruthy();
-      expect(compareBox(c.clone().applyMatrix4(m), c.clone().translate(t1))).toBeTruthy();
-      expect(compareBox(d.clone().applyMatrix4(m), d.clone().translate(t1))).toBeTruthy();
+      expect(_compareBox(a.clone().applyMatrix4(m), a.clone().translate(t1))).toBeTruthy();
+      expect(_compareBox(b.clone().applyMatrix4(m), b.clone().translate(t1))).toBeTruthy();
+      expect(_compareBox(c.clone().applyMatrix4(m), c.clone().translate(t1))).toBeTruthy();
+      expect(_compareBox(d.clone().applyMatrix4(m), d.clone().translate(t1))).toBeTruthy();
     });
 
     test('translate', () => {
