@@ -2,19 +2,23 @@ import { generateUUID } from '@renderlayer/math';
 import { StaticDrawUsage } from '@renderlayer/shared';
 
 class InterleavedBuffer {
-  constructor(array, stride) {
-    this.isInterleavedBuffer = true;
+  isInterleavedBuffer = true;
 
+  uuid = generateUUID();
+
+  array;
+  stride;
+  count;
+
+  usage = StaticDrawUsage;
+  updateRange = { offset: 0, count: -1 };
+
+  version = 0;
+
+  constructor(array, stride) {
     this.array = array;
     this.stride = stride;
     this.count = array !== undefined ? array.length / stride : 0;
-
-    this.usage = StaticDrawUsage;
-    this.updateRange = { offset: 0, count: -1 };
-
-    this.version = 0;
-
-    this.uuid = generateUUID();
   }
 
   onUploadCallback() {}
