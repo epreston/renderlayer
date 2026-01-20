@@ -1,14 +1,18 @@
 import { Vector3, denormalize, normalize } from '@renderlayer/math';
 import { BufferAttribute } from './BufferAttribute.js';
 
-const _vector = /*@__PURE__*/ new Vector3();
-
 class InterleavedBufferAttribute {
+  isInterleavedBufferAttribute = true;
+
+  name = '';
+
+  data;
+  itemSize;
+  offset;
+
+  normalized = false;
+
   constructor(interleavedBuffer, itemSize, offset, normalized = false) {
-    this.isInterleavedBufferAttribute = true;
-
-    this.name = '';
-
     this.data = interleavedBuffer;
     this.itemSize = itemSize;
     this.offset = offset;
@@ -28,12 +32,12 @@ class InterleavedBufferAttribute {
     this.data.needsUpdate = value;
   }
 
-  /** @param {import('@renderlayer/math').Matrix4} m */
-  applyMatrix4(m) {
+  /** @param {import('@renderlayer/math').Matrix4} matrix */
+  applyMatrix4(matrix) {
     for (let i = 0, l = this.data.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
 
-      _vector.applyMatrix4(m);
+      _vector.applyMatrix4(matrix);
 
       this.setXYZ(i, _vector.x, _vector.y, _vector.z);
     }
@@ -41,12 +45,12 @@ class InterleavedBufferAttribute {
     return this;
   }
 
-  /** @param {import('@renderlayer/math').Matrix3} m */
-  applyNormalMatrix(m) {
+  /** @param {import('@renderlayer/math').Matrix3} matrix */
+  applyNormalMatrix(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
 
-      _vector.applyNormalMatrix(m);
+      _vector.applyNormalMatrix(matrix);
 
       this.setXYZ(i, _vector.x, _vector.y, _vector.z);
     }
@@ -54,12 +58,12 @@ class InterleavedBufferAttribute {
     return this;
   }
 
-  /** @param {import('@renderlayer/math').Matrix4} m */
-  transformDirection(m) {
+  /** @param {import('@renderlayer/math').Matrix4} matrix */
+  transformDirection(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
 
-      _vector.transformDirection(m);
+      _vector.transformDirection(matrix);
 
       this.setXYZ(i, _vector.x, _vector.y, _vector.z);
     }
@@ -259,5 +263,7 @@ class InterleavedBufferAttribute {
     }
   }
 }
+
+const _vector = /*@__PURE__*/ new Vector3();
 
 export { InterleavedBufferAttribute };
