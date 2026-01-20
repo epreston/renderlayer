@@ -8,7 +8,7 @@ import { SphereGeometry } from '../src/SphereGeometry.js';
 describe('Geometries', () => {
   describe('SphereGeometry', () => {
     /** @type {SphereGeometry[]} */
-    let geometries = undefined;
+    let _geometries = undefined;
 
     beforeEach(function () {
       const parameters = {
@@ -21,7 +21,7 @@ describe('Geometries', () => {
         thetaLength: 2.0
       };
 
-      geometries = [
+      _geometries = [
         new SphereGeometry(),
         new SphereGeometry(parameters.radius),
         new SphereGeometry(parameters.radius, parameters.widthSegments),
@@ -79,7 +79,7 @@ describe('Geometries', () => {
     });
 
     test('clone', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const clone = geometry.clone();
 
         expect(clone).toBeInstanceOf(SphereGeometry);
@@ -98,7 +98,7 @@ describe('Geometries', () => {
     });
 
     test('copy', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const copy = new SphereGeometry().copy(geometry);
 
         expect(copy).toBeInstanceOf(SphereGeometry);
@@ -117,7 +117,7 @@ describe('Geometries', () => {
     });
 
     test('toJSON', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const json = geometry.toJSON();
 
         expect(json).not.toBeInstanceOf(SphereGeometry);
@@ -159,10 +159,10 @@ describe('Geometries', () => {
       });
 
       // will be different
-      geoFromJson.uuid = geometries[7].uuid;
+      geoFromJson.uuid = _geometries[7].uuid;
 
-      expect(geoFromJson).not.toBe(geometries[7]);
-      expect(geoFromJson).toStrictEqual(geometries[7]);
+      expect(geoFromJson).not.toBe(_geometries[7]);
+      expect(geoFromJson).toStrictEqual(_geometries[7]);
     });
   });
 });
