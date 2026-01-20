@@ -6,15 +6,15 @@ import { resolveAfter, flushPromises } from './test-helpers.js';
 import { Loader } from '../src/Loader.js';
 import { ImageBitmapLoader } from '../src/ImageBitmapLoader.js';
 
-// will be intercepted by msw, not a real url
-const DataTestFile = 'http://renderlayer.org/test/png/rl-logo-128.png';
-const MissingTestFile = 'http://renderlayer.org/test/png/missing.png';
-
-// createImageBitmap is mocked in vitest.setup.js, otherwise
-// expect('createImageBitmap() not supported.').toHaveBeenWarned();
-
 describe('Loaders', () => {
   describe('ImageBitmapLoader', () => {
+    // will be intercepted by msw, not a real url
+    const _DataTestFile = 'http://renderlayer.org/test/png/rl-logo-128.png';
+    const _MissingTestFile = 'http://renderlayer.org/test/png/missing.png';
+
+    // createImageBitmap is mocked in vitest.setup.js, otherwise
+    // expect('createImageBitmap() not supported.').toHaveBeenWarned();
+
     test('constructor', () => {
       const object = new ImageBitmapLoader();
       expect(object).toBeDefined();
@@ -63,7 +63,7 @@ describe('Loaders', () => {
 
       // --------------------
       // good file
-      object.load(DataTestFile, onLoad, onProgress, onError);
+      object.load(_DataTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
@@ -75,7 +75,7 @@ describe('Loaders', () => {
 
       // --------------------
       // bad file
-      object.load(MissingTestFile, onLoad, onProgress, onError);
+      object.load(_MissingTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
