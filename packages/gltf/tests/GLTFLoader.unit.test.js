@@ -6,12 +6,12 @@ import { resolveAfter } from './test-helpers.js';
 import { Loader } from '@renderlayer/loaders';
 import { GLTFLoader } from '../src/GLTFLoader.js';
 
-// will be intercepted by msw, not a real url
-const BoxTestFile = 'http://renderlayer.org/test/gltf/Box.gltf';
-const MissingTestFile = 'http://renderlayer.org/test/gltf/Missing.gltf';
-
 describe('GLTF', () => {
   describe('GLTFLoader', () => {
+    // will be intercepted by msw, not a real url
+    const _BoxTestFile = 'http://renderlayer.org/test/gltf/Box.gltf';
+    const _MissingTestFile = 'http://renderlayer.org/test/gltf/Missing.gltf';
+
     test('constructor', () => {
       const object = new GLTFLoader();
       expect(object).toBeDefined();
@@ -30,7 +30,7 @@ describe('GLTF', () => {
       const object = new GLTFLoader();
 
       // good file
-      object.load(BoxTestFile, onLoad, onProgress, onError);
+      object.load(_BoxTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       await resolveAfter(100);
@@ -47,7 +47,7 @@ describe('GLTF', () => {
       const object = new GLTFLoader();
 
       // bad file
-      object.load(MissingTestFile, onLoad, onProgress, onError);
+      object.load(_MissingTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       await resolveAfter(100);
