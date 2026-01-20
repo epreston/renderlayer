@@ -9,10 +9,10 @@ import { Color } from '../src/Color.js';
 
 describe('Maths', () => {
   describe('Color', () => {
-    const colorManagementEnabled = ColorManagement.enabled;
+    const _colorManagementEnabled = ColorManagement.enabled;
 
     afterEach(() => {
-      ColorManagement.enabled = colorManagementEnabled;
+      ColorManagement.enabled = _colorManagementEnabled;
     });
 
     test('constructor', () => {
