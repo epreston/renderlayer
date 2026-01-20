@@ -5,46 +5,46 @@ import { DataTexture } from '@renderlayer/textures';
 import { Bone } from '../src/Bone.js';
 import { Skeleton } from '../src/Skeleton.js';
 
-function createSkeleton() {
-  const bones = [];
-
-  const shoulder = new Bone();
-  const elbow = new Bone();
-  const hand = new Bone();
-
-  shoulder.name = 'shoulder';
-  elbow.name = 'elbow';
-  hand.name = 'hand';
-
-  // lock uuid
-  shoulder.uuid = '67f50833-ee0f-4d7a-b326-751057ac4d41';
-  elbow.uuid = '53c519fb-0ede-4ebd-9861-ebca457e4654';
-  hand.uuid = '62bbd12f-0a27-42fe-a2a7-f040d91b2152';
-
-  shoulder.add(elbow);
-  elbow.add(hand);
-
-  bones.push(shoulder);
-  bones.push(elbow);
-  bones.push(hand);
-
-  shoulder.position.y = -5;
-  elbow.position.y = 0;
-  hand.position.y = 5;
-
-  const skeleton = new Skeleton(bones);
-  skeleton.uuid = '14e0bc18-e2f2-4d3b-ab56-90561fcf1afd';
-
-  return {
-    shoulder: shoulder,
-    elbow: elbow,
-    hand: hand,
-    skeleton: skeleton
-  };
-}
-
 describe('Objects', () => {
   describe('Skeleton', () => {
+    function _createSkeleton() {
+      const bones = [];
+
+      const shoulder = new Bone();
+      const elbow = new Bone();
+      const hand = new Bone();
+
+      shoulder.name = 'shoulder';
+      elbow.name = 'elbow';
+      hand.name = 'hand';
+
+      // lock uuid
+      shoulder.uuid = '67f50833-ee0f-4d7a-b326-751057ac4d41';
+      elbow.uuid = '53c519fb-0ede-4ebd-9861-ebca457e4654';
+      hand.uuid = '62bbd12f-0a27-42fe-a2a7-f040d91b2152';
+
+      shoulder.add(elbow);
+      elbow.add(hand);
+
+      bones.push(shoulder);
+      bones.push(elbow);
+      bones.push(hand);
+
+      shoulder.position.y = -5;
+      elbow.position.y = 0;
+      hand.position.y = 5;
+
+      const skeleton = new Skeleton(bones);
+      skeleton.uuid = '14e0bc18-e2f2-4d3b-ab56-90561fcf1afd';
+
+      return {
+        shoulder: shoulder,
+        elbow: elbow,
+        hand: hand,
+        skeleton: skeleton
+      };
+    }
+
     test('constructor', () => {
       const object = new Skeleton();
       expect(object).toBeDefined();
@@ -57,22 +57,22 @@ describe('Objects', () => {
     });
 
     test('bones', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
       expect(skeleton.bones).toBeInstanceOf(Array);
     });
 
     test('boneInverses', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
       expect(skeleton.boneInverses).toBeInstanceOf(Array);
     });
 
     test('boneMatrices', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
       expect(skeleton.boneMatrices).toBeInstanceOf(Float32Array);
     });
 
     test('boneTexture', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
       expect(skeleton.boneTexture).toBeNull();
 
       skeleton.computeBoneTexture();
@@ -82,12 +82,12 @@ describe('Objects', () => {
     });
 
     test('init', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
       skeleton.init();
     });
 
     test('calculateInverses', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
 
       skeleton.calculateInverses();
 
@@ -95,19 +95,19 @@ describe('Objects', () => {
     });
 
     test('pose', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
       skeleton.pose();
     });
 
     test('update', () => {
-      const { skeleton, hand } = createSkeleton();
+      const { skeleton, hand } = _createSkeleton();
       hand.position.y = 10;
 
       skeleton.update();
     });
 
     test('clone', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
       const cloneSkeleton = skeleton.clone();
 
       // will be different
@@ -118,7 +118,7 @@ describe('Objects', () => {
     });
 
     test('computeBoneTexture', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
 
       skeleton.computeBoneTexture();
 
@@ -126,7 +126,7 @@ describe('Objects', () => {
     });
 
     test('getBoneByName', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
       const hand = skeleton.getBoneByName('hand');
 
       expect(hand).toBeInstanceOf(Bone);
@@ -141,7 +141,7 @@ describe('Objects', () => {
     });
 
     test('fromJSON', () => {
-      const { shoulder, elbow, hand, skeleton } = createSkeleton();
+      const { shoulder, elbow, hand, skeleton } = _createSkeleton();
 
       const bones = {};
       bones[shoulder.uuid] = shoulder;
@@ -175,7 +175,7 @@ describe('Objects', () => {
     });
 
     test('toJSON', () => {
-      const { skeleton } = createSkeleton();
+      const { skeleton } = _createSkeleton();
       skeleton.uuid = '14e0bc18-e2f2-4d3b-ab56-90561fcf1afd';
       expect(skeleton).toMatchSnapshot();
     });
