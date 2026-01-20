@@ -3,41 +3,41 @@ import { describe, expect, it, test, vi } from 'vitest';
 import { Matrix4 } from '../src/Matrix4.js';
 import { Matrix3 } from '../src/Matrix3.js';
 
-function matrixEquals3(a, b, tolerance = 0.0001) {
-  if (a.elements.length !== b.elements.length) {
-    return false;
-  }
-
-  for (let i = 0, il = a.elements.length; i < il; i++) {
-    const delta = a.elements[i] - b.elements[i];
-    if (delta > tolerance) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function toMatrix4(m3) {
-  const result = new Matrix4();
-  const re = result.elements;
-  const me = m3.elements;
-
-  re[0] = me[0];
-  re[1] = me[1];
-  re[2] = me[2];
-  re[4] = me[3];
-  re[5] = me[4];
-  re[6] = me[5];
-  re[8] = me[6];
-  re[9] = me[7];
-  re[10] = me[8];
-
-  return result;
-}
-
 describe('Maths', () => {
   describe('Matrix3', () => {
+    function _matrixEquals(a, b, tolerance = 0.0001) {
+      if (a.elements.length !== b.elements.length) {
+        return false;
+      }
+
+      for (let i = 0, il = a.elements.length; i < il; i++) {
+        const delta = a.elements[i] - b.elements[i];
+        if (delta > tolerance) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function _toMatrix4(m3) {
+      const result = new Matrix4();
+      const re = result.elements;
+      const me = m3.elements;
+
+      re[0] = me[0];
+      re[1] = me[1];
+      re[2] = me[2];
+      re[4] = me[3];
+      re[5] = me[4];
+      re[6] = me[5];
+      re[8] = me[6];
+      re[9] = me[7];
+      re[10] = me[8];
+
+      return result;
+    }
+
     test('constructor', () => {
       const a = new Matrix3();
       expect(a.determinant()).toBe(1);
@@ -53,7 +53,7 @@ describe('Maths', () => {
       expect(b.elements[7]).toBe(5);
       expect(b.elements[8]).toBe(8);
 
-      expect(!matrixEquals3(a, b)).toBeTruthy();
+      expect(!_matrixEquals(a, b)).toBeTruthy();
     });
 
     test('isMatrix3', () => {
@@ -95,33 +95,33 @@ describe('Maths', () => {
       expect(b.elements[8]).toBe(8);
 
       const a = new Matrix3();
-      expect(!matrixEquals3(a, b)).toBeTruthy();
+      expect(!_matrixEquals(a, b)).toBeTruthy();
 
       b.identity();
 
-      expect(matrixEquals3(a, b)).toBeTruthy();
+      expect(_matrixEquals(a, b)).toBeTruthy();
     });
 
     test('clone', () => {
       const a = new Matrix3().set(0, 1, 2, 3, 4, 5, 6, 7, 8);
       const b = a.clone();
 
-      expect(matrixEquals3(a, b)).toBeTruthy();
+      expect(_matrixEquals(a, b)).toBeTruthy();
 
       // ensure that it is a true copy
       a.elements[0] = 2;
-      expect(!matrixEquals3(a, b)).toBeTruthy();
+      expect(!_matrixEquals(a, b)).toBeTruthy();
     });
 
     test('copy', () => {
       const a = new Matrix3().set(0, 1, 2, 3, 4, 5, 6, 7, 8);
       const b = new Matrix3().copy(a);
 
-      expect(matrixEquals3(a, b)).toBeTruthy();
+      expect(_matrixEquals(a, b)).toBeTruthy();
 
       // ensure that it is a true copy
       a.elements[0] = 2;
-      expect(!matrixEquals3(a, b)).toBeTruthy();
+      expect(!_matrixEquals(a, b)).toBeTruthy();
     });
 
     test.todo('extractBasis', () => {
@@ -220,7 +220,7 @@ describe('Maths', () => {
       const b = new Matrix3();
 
       b.copy(a).invert();
-      expect(matrixEquals3(b, zero)).toBeTruthy();
+      expect(_matrixEquals(b, zero)).toBeTruthy();
 
       const testMatrices = [
         new Matrix4().makeRotationX(0.3),
@@ -239,7 +239,7 @@ describe('Maths', () => {
         a.setFromMatrix4(m);
         const mInverse3 = b.copy(a).invert();
 
-        const mInverse = toMatrix4(mInverse3);
+        const mInverse = _toMatrix4(mInverse3);
 
         // the determinant of the inverse should be the reciprocal
         expect(Math.abs(a.determinant() * mInverse3.determinant() - 1) < 0.0001).toBeTruthy();
@@ -247,22 +247,22 @@ describe('Maths', () => {
 
         const mProduct = new Matrix4().multiplyMatrices(m, mInverse);
         expect(Math.abs(mProduct.determinant() - 1) < 0.0001).toBeTruthy();
-        expect(matrixEquals3(mProduct, identity4)).toBeTruthy();
+        expect(_matrixEquals(mProduct, identity4)).toBeTruthy();
       }
     });
 
     test('transpose', () => {
       const a = new Matrix3();
       let b = a.clone().transpose();
-      expect(matrixEquals3(a, b)).toBeTruthy();
+      expect(_matrixEquals(a, b)).toBeTruthy();
 
       b = new Matrix3().set(0, 1, 2, 3, 4, 5, 6, 7, 8);
       const c = b.clone().transpose();
-      expect(!matrixEquals3(b, c)).toBeTruthy();
+      expect(!_matrixEquals(b, c)).toBeTruthy();
 
       c.transpose();
 
-      expect(matrixEquals3(b, c)).toBeTruthy();
+      expect(_matrixEquals(b, c)).toBeTruthy();
     });
 
     test('getNormalMatrix', () => {
@@ -285,7 +285,7 @@ describe('Maths', () => {
 
       a.getNormalMatrix(b);
 
-      expect(matrixEquals3(a, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
     });
 
     test('transposeIntoArray', () => {
@@ -349,8 +349,8 @@ describe('Maths', () => {
         .translate(params.centerX, params.centerY)
         .translate(params.offsetX, params.offsetY);
 
-      expect(matrixEquals3(a, expected)).toBeTruthy();
-      expect(matrixEquals3(b, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
+      expect(_matrixEquals(b, expected)).toBeTruthy();
     });
 
     test('scale', () => {
@@ -365,7 +365,7 @@ describe('Maths', () => {
 
       a.scale(0.25, 0.25);
 
-      expect(matrixEquals3(a, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
     });
 
     test('rotate', () => {
@@ -380,7 +380,7 @@ describe('Maths', () => {
 
       a.rotate(Math.PI / 4);
 
-      expect(matrixEquals3(a, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
     });
 
     test('translate', () => {
@@ -389,7 +389,7 @@ describe('Maths', () => {
 
       a.translate(3, 7);
 
-      expect(matrixEquals3(a, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
     });
 
     test.todo('makeTranslation', () => {
