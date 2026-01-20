@@ -7,7 +7,7 @@ import { BoxGeometry } from '../src/BoxGeometry.js';
 
 describe('Geometries', () => {
   describe('BoxGeometry', () => {
-    let geometries = undefined;
+    let _geometries = undefined;
 
     beforeEach(function () {
       const parameters = {
@@ -19,7 +19,7 @@ describe('Geometries', () => {
         depthSegments: 4
       };
 
-      geometries = [
+      _geometries = [
         new BoxGeometry(),
         new BoxGeometry(parameters.width, parameters.height, parameters.depth),
         new BoxGeometry(
@@ -53,7 +53,7 @@ describe('Geometries', () => {
     });
 
     test('clone', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const clone = geometry.clone();
 
         expect(clone).toBeInstanceOf(BoxGeometry);
@@ -72,7 +72,7 @@ describe('Geometries', () => {
     });
 
     test('copy', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const copy = new BoxGeometry().copy(geometry);
 
         expect(copy).toBeInstanceOf(BoxGeometry);
@@ -91,7 +91,7 @@ describe('Geometries', () => {
     });
 
     test('toJSON', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const json = geometry.toJSON();
 
         expect(json).not.toBeInstanceOf(BoxGeometry);
@@ -132,10 +132,10 @@ describe('Geometries', () => {
       });
 
       // will be different
-      geoFromJson.uuid = geometries[2].uuid;
+      geoFromJson.uuid = _geometries[2].uuid;
 
-      expect(geoFromJson).not.toBe(geometries[2]);
-      expect(geoFromJson).toStrictEqual(geometries[2]);
+      expect(geoFromJson).not.toBe(_geometries[2]);
+      expect(geoFromJson).toStrictEqual(_geometries[2]);
     });
   });
 });
