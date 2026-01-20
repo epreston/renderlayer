@@ -8,56 +8,56 @@ import { Line, Mesh, Points } from '@renderlayer/objects';
 
 import { Raycaster } from '../src/Raycaster.js';
 
-function checkRayDirectionAgainstReferenceVector(rayDirection, refVector) {
-  // camera is pointing in correct direction
-
-  // prettier-ignore
-  expect(refVector.x - rayDirection.x <= Number.EPSILON &&
-     refVector.y - rayDirection.y <= Number.EPSILON &&
-     refVector.z - rayDirection.z <= Number.EPSILON
-  ).toBeTruthy();
-}
-
-function getRaycaster() {
-  return new Raycaster(new Vector3(0, 0, 0), new Vector3(0, 0, -1), 1, 100);
-}
-
-function getObjectsToCheck() {
-  const objects = [];
-
-  const sphere1 = getSphere();
-  sphere1.position.set(0, 0, -10);
-  sphere1.name = '1';
-  objects.push(sphere1);
-
-  const sphere11 = getSphere();
-  sphere11.position.set(0, 0, 1);
-  sphere11.name = '11';
-  sphere1.add(sphere11);
-
-  const sphere12 = getSphere();
-  sphere12.position.set(0, 0, -1);
-  sphere12.name = '12';
-  sphere1.add(sphere12);
-
-  const sphere2 = getSphere();
-  sphere2.position.set(-5, 0, -5);
-  sphere2.name = '2';
-  objects.push(sphere2);
-
-  for (let i = 0; i < objects.length; i++) {
-    objects[i].updateMatrixWorld();
-  }
-
-  return objects;
-}
-
-function getSphere() {
-  return new Mesh(new SphereGeometry(1, 100, 100));
-}
-
 describe('Core', () => {
   describe('Raycaster', () => {
+    function _checkRayDirectionAgainstReferenceVector(rayDirection, refVector) {
+      // camera is pointing in correct direction
+
+      // prettier-ignore
+      expect(refVector.x - rayDirection.x <= Number.EPSILON &&
+        refVector.y - rayDirection.y <= Number.EPSILON &&
+        refVector.z - rayDirection.z <= Number.EPSILON
+      ).toBeTruthy();
+    }
+
+    function _getRaycaster() {
+      return new Raycaster(new Vector3(0, 0, 0), new Vector3(0, 0, -1), 1, 100);
+    }
+
+    function _getSphere() {
+      return new Mesh(new SphereGeometry(1, 100, 100));
+    }
+
+    function _getObjectsToCheck() {
+      const objects = [];
+
+      const sphere1 = _getSphere();
+      sphere1.position.set(0, 0, -10);
+      sphere1.name = '1';
+      objects.push(sphere1);
+
+      const sphere11 = _getSphere();
+      sphere11.position.set(0, 0, 1);
+      sphere11.name = '11';
+      sphere1.add(sphere11);
+
+      const sphere12 = _getSphere();
+      sphere12.position.set(0, 0, -1);
+      sphere12.name = '12';
+      sphere1.add(sphere12);
+
+      const sphere2 = _getSphere();
+      sphere2.position.set(-5, 0, -5);
+      sphere2.name = '2';
+      objects.push(sphere2);
+
+      for (let i = 0; i < objects.length; i++) {
+        objects[i].updateMatrixWorld();
+      }
+
+      return objects;
+    }
+
     test('constructor', () => {
       const object = new Raycaster();
       expect(object).toBeDefined();
@@ -144,7 +144,7 @@ describe('Core', () => {
 
           const refVector = new Vector3(x, y, -1).normalize();
 
-          checkRayDirectionAgainstReferenceVector(rayDirection, refVector);
+          _checkRayDirectionAgainstReferenceVector(rayDirection, refVector);
         }
       }
     });
@@ -170,8 +170,8 @@ describe('Core', () => {
     });
 
     test('intersectObject', () => {
-      const raycaster = getRaycaster();
-      const objectsToCheck = getObjectsToCheck();
+      const raycaster = _getRaycaster();
+      const objectsToCheck = _getObjectsToCheck();
 
       // no recursive search should lead to one hit
       expect(raycaster.intersectObject(objectsToCheck[0], false).length === 1).toBeTruthy();
@@ -187,8 +187,8 @@ describe('Core', () => {
     });
 
     test('intersectObjects', () => {
-      const raycaster = getRaycaster();
-      const objectsToCheck = getObjectsToCheck();
+      const raycaster = _getRaycaster();
+      const objectsToCheck = _getObjectsToCheck();
 
       expect(
         raycaster.intersectObjects(objectsToCheck, false).length === 1,
@@ -205,7 +205,7 @@ describe('Core', () => {
     });
 
     test('line intersection threshold', () => {
-      const raycaster = getRaycaster();
+      const raycaster = _getRaycaster();
       const points = [new Vector3(-2, -10, -5), new Vector3(-2, 10, -5)];
       const geometry = new BufferGeometry().setFromPoints(points);
       const line = new Line(geometry, null);
@@ -222,7 +222,7 @@ describe('Core', () => {
     });
 
     test('points intersection threshold', () => {
-      const raycaster = getRaycaster();
+      const raycaster = _getRaycaster();
       const coordinates = [new Vector3(-2, 0, -5)];
       const geometry = new BufferGeometry().setFromPoints(coordinates);
       const points = new Points(geometry, null);
