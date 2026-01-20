@@ -9,42 +9,36 @@ import {
   Uint32BufferAttribute
 } from './BufferAttribute.js';
 
-let _id = 0;
-
-const _m1 = /*@__PURE__*/ new Matrix4();
-const _obj = /*@__PURE__*/ new Object3D();
-const _offset = /*@__PURE__*/ new Vector3();
-const _box = /*@__PURE__*/ new Box3();
-const _boxMorphTargets = /*@__PURE__*/ new Box3();
-const _vector = /*@__PURE__*/ new Vector3();
-
 class BufferGeometry extends EventDispatcher {
+  isBufferGeometry = true;
+
+  #id = _bufferGeometryId++;
+
+  uuid = generateUUID();
+  name = '';
+  type = 'BufferGeometry';
+
+  index = null;
+  attributes = {};
+
+  morphAttributes = {};
+  morphTargetsRelative = false;
+
+  groups = [];
+
+  boundingBox = null;
+  boundingSphere = null;
+
+  drawRange = { start: 0, count: Infinity };
+
+  userData = {};
+
   constructor() {
     super();
+  }
 
-    this.isBufferGeometry = true;
-    this.type = 'BufferGeometry';
-
-    Object.defineProperty(this, 'id', { value: _id++ });
-
-    this.uuid = generateUUID();
-
-    this.name = '';
-
-    this.index = null;
-    this.attributes = {};
-
-    this.morphAttributes = {};
-    this.morphTargetsRelative = false;
-
-    this.groups = [];
-
-    this.boundingBox = null;
-    this.boundingSphere = null;
-
-    this.drawRange = { start: 0, count: Infinity };
-
-    this.userData = {};
+  get id() {
+    return this.#id;
   }
 
   /** @returns {Uint32BufferAttribute | Uint16BufferAttribute} */
@@ -141,8 +135,8 @@ class BufferGeometry extends EventDispatcher {
     return this;
   }
 
-  applyQuaternion(q) {
-    _m1.makeRotationFromQuaternion(q);
+  applyQuaternion(quaternion) {
+    _m1.makeRotationFromQuaternion(quaternion);
 
     this.applyMatrix4(_m1);
 
@@ -721,7 +715,9 @@ class BufferGeometry extends EventDispatcher {
     if (this.name !== '') data.name = this.name;
     if (Object.keys(this.userData).length > 0) data.userData = this.userData;
 
+    // @ts-ignore - safely tests for existance
     if (this.parameters !== undefined) {
+      // @ts-ignore
       const parameters = this.parameters;
 
       for (const key in parameters) {
@@ -897,5 +893,14 @@ class BufferGeometry extends EventDispatcher {
     this.dispatchEvent({ type: 'dispose' });
   }
 }
+
+let _bufferGeometryId = 0;
+
+const _m1 = /*@__PURE__*/ new Matrix4();
+const _obj = /*@__PURE__*/ new Object3D();
+const _offset = /*@__PURE__*/ new Vector3();
+const _box = /*@__PURE__*/ new Box3();
+const _boxMorphTargets = /*@__PURE__*/ new Box3();
+const _vector = /*@__PURE__*/ new Vector3();
 
 export { BufferGeometry };
