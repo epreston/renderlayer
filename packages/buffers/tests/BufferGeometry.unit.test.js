@@ -15,54 +15,54 @@ import {
 import { toHalfFloat } from '../src/BufferAttributeUtils.js';
 import { BufferGeometry } from '../src/BufferGeometry.js';
 
-const DegToRad = Math.PI / 180;
-
-function bufferAttributeEquals(a, b, tolerance = 0.0001) {
-  if (a.count !== b.count || a.itemSize !== b.itemSize) {
-    return false;
-  }
-
-  for (let i = 0, il = a.count * a.itemSize; i < il; i++) {
-    const delta = a[i] - b[i];
-    if (delta > tolerance) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function getBBForVertices(vertices) {
-  const geometry = new BufferGeometry();
-
-  geometry.setAttribute('position', new BufferAttribute(new Float32Array(vertices), 3));
-  geometry.computeBoundingBox();
-
-  return geometry.boundingBox;
-}
-
-function getBSForVertices(vertices) {
-  const geometry = new BufferGeometry();
-
-  geometry.setAttribute('position', new BufferAttribute(new Float32Array(vertices), 3));
-  geometry.computeBoundingSphere();
-
-  return geometry.boundingSphere;
-}
-
-function getNormalsForVertices(vertices) {
-  const geometry = new BufferGeometry();
-
-  geometry.setAttribute('position', new BufferAttribute(new Float32Array(vertices), 3));
-  geometry.computeVertexNormals();
-
-  expect(geometry.attributes.normal).toBeDefined();
-
-  return geometry.attributes.normal.array;
-}
-
 describe('Buffers', () => {
   describe('BufferGeometry', () => {
+    const _DegToRad = Math.PI / 180;
+
+    function _bufferAttributeEquals(a, b, tolerance = 0.0001) {
+      if (a.count !== b.count || a.itemSize !== b.itemSize) {
+        return false;
+      }
+
+      for (let i = 0, il = a.count * a.itemSize; i < il; i++) {
+        const delta = a[i] - b[i];
+        if (delta > tolerance) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function _getBBForVertices(vertices) {
+      const geometry = new BufferGeometry();
+
+      geometry.setAttribute('position', new BufferAttribute(new Float32Array(vertices), 3));
+      geometry.computeBoundingBox();
+
+      return geometry.boundingBox;
+    }
+
+    function _getBSForVertices(vertices) {
+      const geometry = new BufferGeometry();
+
+      geometry.setAttribute('position', new BufferAttribute(new Float32Array(vertices), 3));
+      geometry.computeBoundingSphere();
+
+      return geometry.boundingSphere;
+    }
+
+    function _getNormalsForVertices(vertices) {
+      const geometry = new BufferGeometry();
+
+      geometry.setAttribute('position', new BufferAttribute(new Float32Array(vertices), 3));
+      geometry.computeVertexNormals();
+
+      expect(geometry.attributes.normal).toBeDefined();
+
+      return geometry.attributes.normal.array;
+    }
+
     test('constructor', () => {
       const object = new BufferGeometry();
       expect(object).toBeDefined();
@@ -270,7 +270,7 @@ describe('Buffers', () => {
 
       const pos = geometry.attributes.position.array;
 
-      geometry.rotateX(180 * DegToRad);
+      geometry.rotateX(180 * _DegToRad);
 
       // object was rotated around x so all items should be flipped but the x ones
       expect(
@@ -282,7 +282,7 @@ describe('Buffers', () => {
           pos[5] === -6
       ).toBeTruthy();
 
-      geometry.rotateY(180 * DegToRad);
+      geometry.rotateY(180 * _DegToRad);
 
       // vertices were rotated around y so all items should be flipped again but the y ones
       expect(
@@ -294,7 +294,7 @@ describe('Buffers', () => {
           pos[5] === 6
       ).toBeTruthy();
 
-      geometry.rotateZ(180 * DegToRad);
+      geometry.rotateZ(180 * _DegToRad);
 
       // vertices were rotated around z so all items should be flipped again but the z ones
       expect(
@@ -376,7 +376,7 @@ describe('Buffers', () => {
       a.lookAt(new Vector3(0, 1, -1));
 
       // rotation
-      expect(bufferAttributeEquals(a.attributes.position.array, expected)).toBeTruthy();
+      expect(_bufferAttributeEquals(a.attributes.position.array, expected)).toBeTruthy();
     });
 
     test('center', () => {
@@ -414,12 +414,12 @@ describe('Buffers', () => {
     });
 
     test('computeBoundingBox', () => {
-      let bb = getBBForVertices([-1, -2, -3, 13, -2, -3.5, -1, -20, 0, -4, 5, 6]);
+      let bb = _getBBForVertices([-1, -2, -3, 13, -2, -3.5, -1, -20, 0, -4, 5, 6]);
 
       expect(bb.min.x === -4 && bb.min.y === -20 && bb.min.z === -3.5).toBeTruthy();
       expect(bb.max.x === 13 && bb.max.y === 5 && bb.max.z === 6).toBeTruthy();
 
-      bb = getBBForVertices([-1, -1, -1]);
+      bb = _getBBForVertices([-1, -1, -1]);
 
       // since there is only one vertex, max and min are equal
       expect(bb.min.x === bb.max.x && bb.min.y === bb.max.y && bb.min.z === bb.max.z).toBeTruthy();
@@ -429,12 +429,12 @@ describe('Buffers', () => {
     });
 
     test('computeBoundingSphere', () => {
-      let bs = getBSForVertices([-10, 0, 0, 10, 0, 0]);
+      let bs = _getBSForVertices([-10, 0, 0, 10, 0, 0]);
 
       expect(bs.radius === 10).toBeTruthy();
       expect(bs.center.x === 0 && bs.center.y === 0 && bs.center.y === 0).toBeTruthy();
 
-      bs = getBSForVertices([-5, 11, -3, 5, -11, 3]);
+      bs = _getBSForVertices([-5, 11, -3, 5, -11, 3]);
       const radius = new Vector3(5, 11, 3).length();
 
       expect(bs.radius === radius).toBeTruthy();
@@ -461,7 +461,7 @@ describe('Buffers', () => {
       expect(bb.min.x === -4 && bb.min.y === -20 && bb.min.z === -3.5).toBeTruthy();
       expect(bb.max.x === 13 && bb.max.y === 5 && bb.max.z === 6).toBeTruthy();
 
-      bb = getBBForVertices([-1, -1, -1]);
+      bb = _getBBForVertices([-1, -1, -1]);
 
       expect(bb.min.x === bb.max.x && bb.min.y === bb.max.y && bb.min.z === bb.max.z).toBeTruthy();
 
@@ -480,7 +480,7 @@ describe('Buffers', () => {
       expect(bs.radius === 10).toBeTruthy();
       expect(bs.center.x === 0 && bs.center.y === 0 && bs.center.y === 0).toBeTruthy();
 
-      bs = getBSForVertices([-5, 11, -3, 5, -11, 3]);
+      bs = _getBSForVertices([-5, 11, -3, 5, -11, 3]);
       const radius = new Vector3(5, 11, 3).length();
 
       expect(bs.radius === radius).toBeTruthy();
@@ -532,7 +532,7 @@ describe('Buffers', () => {
 
     test('computeVertexNormals', () => {
       // get normals for a counter clockwise created triangle
-      let normals = getNormalsForVertices([-1, 0, 0, 1, 0, 0, 0, 1, 0]);
+      let normals = _getNormalsForVertices([-1, 0, 0, 1, 0, 0, 0, 1, 0]);
 
       // first normal is pointing to screen since the the triangle was created counter clockwise
       expect(normals[0] === 0 && normals[1] === 0 && normals[2] === 1).toBeTruthy();
@@ -544,7 +544,7 @@ describe('Buffers', () => {
       expect(normals[6] === 0 && normals[7] === 0 && normals[8] === 1).toBeTruthy();
 
       // get normals for a clockwise created triangle
-      normals = getNormalsForVertices([1, 0, 0, -1, 0, 0, 0, 1, 0]);
+      normals = _getNormalsForVertices([1, 0, 0, -1, 0, 0, 0, 1, 0]);
 
       // first normal is pointing to screen since the the triangle was created clockwise
       expect(normals[0] === 0 && normals[1] === 0 && normals[2] === -1).toBeTruthy();
@@ -555,7 +555,7 @@ describe('Buffers', () => {
       // third normal is pointing to screen since the the triangle was created clockwise
       expect(normals[6] === 0 && normals[7] === 0 && normals[8] === -1).toBeTruthy();
 
-      normals = getNormalsForVertices([0, 0, 1, 0, 0, -1, 1, 1, 0]);
+      normals = _getNormalsForVertices([0, 0, 1, 0, 0, -1, 1, 1, 0]);
 
       // the triangle is rotated by 45 degrees to the right so the normals of the three vertices
       // should point to (1, -1, 0).normalized(). The simplest solution is to check against a normalized
@@ -570,7 +570,7 @@ describe('Buffers', () => {
       expect(difference < Number.EPSILON).toBeTruthy();
 
       // get normals for a line should be NAN because you need min a triangle to calculate normals
-      normals = getNormalsForVertices([1, 0, 0, -1, 0, 0]);
+      normals = _getNormalsForVertices([1, 0, 0, -1, 0, 0]);
       for (let i = 0; i < normals.length; i++) {
         // normals can't be calculated
         expect(!normals[i]).toBeTruthy();
@@ -602,11 +602,11 @@ describe('Buffers', () => {
       let a = new BufferGeometry();
       a.setAttribute('position', position);
       a.computeVertexNormals();
-      expect(bufferAttributeEquals(normal, a.getAttribute('normal'))).toBeTruthy();
+      expect(_bufferAttributeEquals(normal, a.getAttribute('normal'))).toBeTruthy();
 
       // a second time to see if the existing normals get properly deleted
       a.computeVertexNormals();
-      expect(bufferAttributeEquals(normal, a.getAttribute('normal'))).toBeTruthy();
+      expect(_bufferAttributeEquals(normal, a.getAttribute('normal'))).toBeTruthy();
 
       // indexed geometry
       a = new BufferGeometry();
@@ -614,7 +614,7 @@ describe('Buffers', () => {
       a.setIndex(index);
       a.computeVertexNormals();
 
-      expect(bufferAttributeEquals(normal, a.getAttribute('normal'))).toBeTruthy();
+      expect(_bufferAttributeEquals(normal, a.getAttribute('normal'))).toBeTruthy();
     });
 
     test.todo('normalizeNormals', () => {
@@ -734,11 +734,11 @@ describe('Buffers', () => {
       expect(Object.keys(a.attributes).count).toBe(Object.keys(b.attributes).count);
 
       expect(
-        bufferAttributeEquals(a.getAttribute('attribute1'), b.getAttribute('attribute1'))
+        _bufferAttributeEquals(a.getAttribute('attribute1'), b.getAttribute('attribute1'))
       ).toBeTruthy();
 
       expect(
-        bufferAttributeEquals(a.getAttribute('attribute2'), b.getAttribute('attribute2'))
+        _bufferAttributeEquals(a.getAttribute('attribute2'), b.getAttribute('attribute2'))
       ).toBeTruthy();
 
       expect(a.groups).toEqual(b.groups);
