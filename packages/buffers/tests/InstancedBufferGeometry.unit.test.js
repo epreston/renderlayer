@@ -6,7 +6,7 @@ import { InstancedBufferGeometry } from '../src/InstancedBufferGeometry.js';
 
 describe('Buffers', () => {
   describe('InstancedBufferGeometry', () => {
-    function createCloneableMock() {
+    function _createCloneableMock() {
       return {
         callCount: 0,
         clone: function () {
@@ -44,7 +44,7 @@ describe('Buffers', () => {
     test('copy', () => {
       const instanceMock1 = {};
       const instanceMock2 = {};
-      const indexMock = createCloneableMock();
+      const indexMock = _createCloneableMock();
       const defaultAttribute1 = new BufferAttribute(new Float32Array([1]));
       const defaultAttribute2 = new BufferAttribute(new Float32Array([2]));
 
