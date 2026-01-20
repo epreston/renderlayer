@@ -8,47 +8,47 @@ import { AnimationAction } from '../src/AnimationAction.js';
 import { AnimationClip } from '../src/AnimationClip.js';
 import { AnimationMixer } from '../src/AnimationMixer.js';
 
-function createAnimation() {
-  const root = new Object3D();
-  const mixer = new AnimationMixer(root);
-  const track = new NumberKeyframeTrack('.rotation[x]', [0, 1000], [0, 360]);
-  const clip = new AnimationClip('clip1', 1000, [track]);
-
-  const animationAction = mixer.clipAction(clip);
-  return {
-    root: root,
-    mixer: mixer,
-    track: track,
-    clip: clip,
-    animationAction: animationAction
-  };
-}
-
-function createTwoAnimations() {
-  const root = new Object3D();
-  const mixer = new AnimationMixer(root);
-  const track = new NumberKeyframeTrack('.rotation[x]', [0, 1000], [0, 360]);
-  const clip = new AnimationClip('clip1', 1000, [track]);
-  const animationAction = mixer.clipAction(clip);
-
-  const track2 = new NumberKeyframeTrack('.rotation[y]', [0, 1000], [0, 360]);
-  const clip2 = new AnimationClip('clip2', 1000, [track]);
-  const animationAction2 = mixer.clipAction(clip2);
-
-  return {
-    root: root,
-    mixer: mixer,
-    track: track,
-    clip: clip,
-    animationAction: animationAction,
-    track2: track2,
-    clip2: clip2,
-    animationAction2: animationAction2
-  };
-}
-
 describe('Animation', () => {
   describe('AnimationAction', () => {
+    function _createAnimation() {
+      const root = new Object3D();
+      const mixer = new AnimationMixer(root);
+      const track = new NumberKeyframeTrack('.rotation[x]', [0, 1000], [0, 360]);
+      const clip = new AnimationClip('clip1', 1000, [track]);
+
+      const animationAction = mixer.clipAction(clip);
+      return {
+        root: root,
+        mixer: mixer,
+        track: track,
+        clip: clip,
+        animationAction: animationAction
+      };
+    }
+
+    function _createTwoAnimations() {
+      const root = new Object3D();
+      const mixer = new AnimationMixer(root);
+      const track = new NumberKeyframeTrack('.rotation[x]', [0, 1000], [0, 360]);
+      const clip = new AnimationClip('clip1', 1000, [track]);
+      const animationAction = mixer.clipAction(clip);
+
+      const track2 = new NumberKeyframeTrack('.rotation[y]', [0, 1000], [0, 360]);
+      const clip2 = new AnimationClip('clip2', 1000, [track]);
+      const animationAction2 = mixer.clipAction(clip2);
+
+      return {
+        root: root,
+        mixer: mixer,
+        track: track,
+        clip: clip,
+        animationAction: animationAction,
+        track2: track2,
+        clip2: clip2,
+        animationAction2: animationAction2
+      };
+    }
+
     test('constructor', () => {
       const mixer = new AnimationMixer();
       const clip = new AnimationClip('nonname', -1, []);
@@ -58,62 +58,62 @@ describe('Animation', () => {
     });
 
     test('blendMode', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.blendMode).toBe(NormalAnimationBlendMode);
     });
 
     test('loop', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.loop).toBe(LoopRepeat);
     });
 
     test('time', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.time).toBe(0);
     });
 
     test('timeScale', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.timeScale).toBe(1);
     });
 
     test('weight', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.weight).toBe(1);
     });
 
     test('repetitions', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.repetitions).toBe(Infinity);
     });
 
     test('paused', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.paused).toBe(false);
     });
 
     test('enabled', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.enabled).toBe(true);
     });
 
     test('clampWhenFinished', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.clampWhenFinished).toBe(false);
     });
 
     test('zeroSlopeAtStart', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.zeroSlopeAtStart).toBe(true);
     });
 
     test('zeroSlopeAtEnd', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.zeroSlopeAtEnd).toBe(true);
     });
 
     test('play', () => {
-      const { mixer, animationAction } = createAnimation();
+      const { mixer, animationAction } = _createAnimation();
       const animationAction2 = animationAction.play();
       expect(animationAction).toBe(animationAction2);
 
@@ -133,7 +133,7 @@ describe('Animation', () => {
     });
 
     test('stop', () => {
-      const { mixer, animationAction } = createAnimation();
+      const { mixer, animationAction } = _createAnimation();
       const animationAction2 = animationAction.stop();
       expect(animationAction).toBe(animationAction2);
 
@@ -153,7 +153,7 @@ describe('Animation', () => {
     });
 
     test('reset', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       const animationAction2 = animationAction.stop();
       expect(animationAction).toBe(animationAction2);
       expect(animationAction2.paused).toBe(false);
@@ -162,7 +162,7 @@ describe('Animation', () => {
     });
 
     test('isRunning', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.isRunning()).toBeFalsy();
       animationAction.play();
       expect(animationAction.isRunning()).toBeTruthy();
@@ -183,7 +183,7 @@ describe('Animation', () => {
     });
 
     test('isScheduled', () => {
-      const { mixer, animationAction } = createAnimation();
+      const { mixer, animationAction } = _createAnimation();
       expect(animationAction.isScheduled()).toBeFalsy();
 
       animationAction.play();
@@ -197,7 +197,7 @@ describe('Animation', () => {
     });
 
     test('startAt', () => {
-      const { mixer, animationAction } = createAnimation();
+      const { mixer, animationAction } = _createAnimation();
       animationAction.startAt(2);
       animationAction.play();
       expect(animationAction.isRunning()).toBeFalsy();
@@ -217,7 +217,7 @@ describe('Animation', () => {
     });
 
     test('setLoop LoopOnce', () => {
-      const { mixer, animationAction } = createAnimation();
+      const { mixer, animationAction } = _createAnimation();
       animationAction.setLoop(LoopOnce);
       animationAction.play();
       expect(animationAction.isRunning()).toBeTruthy();
@@ -233,7 +233,7 @@ describe('Animation', () => {
     });
 
     test('setLoop LoopRepeat', () => {
-      const { root, mixer, animationAction } = createAnimation();
+      const { root, mixer, animationAction } = _createAnimation();
       animationAction.setLoop(LoopRepeat, 3);
       animationAction.play();
       expect(animationAction.isRunning()).toBeTruthy();
@@ -256,7 +256,7 @@ describe('Animation', () => {
     });
 
     test('setLoop LoopPingPong', () => {
-      const { root, mixer, animationAction } = createAnimation();
+      const { root, mixer, animationAction } = _createAnimation();
       animationAction.setLoop(LoopPingPong, 3);
       animationAction.play();
       expect(animationAction.isRunning()).toBeTruthy();
@@ -279,7 +279,7 @@ describe('Animation', () => {
     });
 
     test('setEffectiveWeight', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.getEffectiveWeight()).toBeCloseTo(1);
 
       animationAction.setEffectiveWeight(0.3);
@@ -287,7 +287,7 @@ describe('Animation', () => {
     });
 
     test('setEffectiveWeight - disabled', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.getEffectiveWeight()).toBeCloseTo(1);
 
       animationAction.enabled = false;
@@ -296,7 +296,7 @@ describe('Animation', () => {
     });
 
     test('setEffectiveWeight - over duration', () => {
-      const { root, mixer, animationAction } = createAnimation();
+      const { root, mixer, animationAction } = _createAnimation();
       animationAction.setEffectiveWeight(0.5);
       animationAction.play();
       mixer.update(500);
@@ -307,13 +307,13 @@ describe('Animation', () => {
     });
 
     test('getEffectiveWeight', () => {
-      let { animationAction } = createAnimation();
+      let { animationAction } = _createAnimation();
       expect(animationAction.getEffectiveWeight()).toBeCloseTo(1);
 
       animationAction.setEffectiveWeight(0.3);
       expect(animationAction.getEffectiveWeight()).toBeCloseTo(0.3);
 
-      ({ animationAction } = createAnimation());
+      ({ animationAction } = _createAnimation());
       expect(animationAction.getEffectiveWeight()).toBeCloseTo(1);
 
       animationAction.enabled = false;
@@ -322,7 +322,7 @@ describe('Animation', () => {
     });
 
     test('fadeIn', () => {
-      const { mixer, animationAction } = createAnimation();
+      const { mixer, animationAction } = _createAnimation();
       animationAction.fadeIn(1000);
       animationAction.play();
       expect(animationAction.getEffectiveWeight()).toBeCloseTo(1);
@@ -341,7 +341,7 @@ describe('Animation', () => {
     });
 
     test('fadeOut', () => {
-      const { mixer, animationAction } = createAnimation();
+      const { mixer, animationAction } = _createAnimation();
       animationAction.fadeOut(1000);
       animationAction.play();
       expect(animationAction.getEffectiveWeight()).toBeCloseTo(1);
@@ -360,7 +360,7 @@ describe('Animation', () => {
     });
 
     test('crossFadeFrom', () => {
-      const { mixer, animationAction, animationAction2 } = createTwoAnimations();
+      const { mixer, animationAction, animationAction2 } = _createTwoAnimations();
       animationAction.crossFadeFrom(animationAction2, 1000, false);
       animationAction.play();
       animationAction2.play();
@@ -385,7 +385,7 @@ describe('Animation', () => {
     });
 
     test('crossFadeTo', () => {
-      const { mixer, animationAction, animationAction2 } = createTwoAnimations();
+      const { mixer, animationAction, animationAction2 } = _createTwoAnimations();
       animationAction2.crossFadeTo(animationAction, 1000, false);
       animationAction.play();
       animationAction2.play();
@@ -410,7 +410,7 @@ describe('Animation', () => {
     });
 
     test('stopFading', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       const animationAction2 = animationAction.stopFading();
       expect(animationAction).toBe(animationAction2);
 
@@ -418,7 +418,7 @@ describe('Animation', () => {
     });
 
     test('setEffectiveTimeScale', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.timeScale).toBe(1);
 
       animationAction.setEffectiveTimeScale(2);
@@ -431,7 +431,7 @@ describe('Animation', () => {
     });
 
     test('getEffectiveTimeScale', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.timeScale).toBe(1);
       expect(animationAction.getEffectiveTimeScale()).toBe(1);
 
@@ -440,7 +440,7 @@ describe('Animation', () => {
     });
 
     test('setDuration', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       expect(animationAction.timeScale).toBe(1);
 
       animationAction.setDuration(100);
@@ -452,7 +452,7 @@ describe('Animation', () => {
     });
 
     test('syncWith', () => {
-      const { animationAction, animationAction2 } = createTwoAnimations();
+      const { animationAction, animationAction2 } = _createTwoAnimations();
       expect(animationAction.time).toBe(0);
       expect(animationAction.timeScale).toBe(1);
 
@@ -467,7 +467,7 @@ describe('Animation', () => {
     });
 
     test('halt', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       const animationAction2 = animationAction.halt(7);
       expect(animationAction).toBe(animationAction2);
 
@@ -475,7 +475,7 @@ describe('Animation', () => {
     });
 
     test('warp', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       const animationAction2 = animationAction.warp(1, 2, 3);
       expect(animationAction).toBe(animationAction2);
 
@@ -483,7 +483,7 @@ describe('Animation', () => {
     });
 
     test('stopWarping', () => {
-      const { animationAction } = createAnimation();
+      const { animationAction } = _createAnimation();
       const animationAction2 = animationAction.stopWarping();
       expect(animationAction).toBe(animationAction2);
 
@@ -491,19 +491,19 @@ describe('Animation', () => {
     });
 
     test('getMixer', () => {
-      const { mixer, animationAction } = createAnimation();
+      const { mixer, animationAction } = _createAnimation();
       const mixer2 = animationAction.getMixer();
       expect(mixer).toBe(mixer2);
     });
 
     test('getClip', () => {
-      const { clip, animationAction } = createAnimation();
+      const { clip, animationAction } = _createAnimation();
       const clip2 = animationAction.getClip();
       expect(clip).toBe(clip2);
     });
 
     test('getRoot', () => {
-      const { root, animationAction } = createAnimation();
+      const { root, animationAction } = _createAnimation();
       const root2 = animationAction.getRoot();
       expect(root).toBe(root2);
     });
