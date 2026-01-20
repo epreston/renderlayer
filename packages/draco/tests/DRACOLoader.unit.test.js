@@ -13,10 +13,10 @@ import { DRACOLoader } from '../src/DRACOLoader.js';
 
 describe('DRACO', () => {
   describe('DRACOLoader', () => {
-    let instance;
+    let _instance;
 
     beforeAll(() => {
-      instance = new DRACOLoader();
+      _instance = new DRACOLoader();
     });
 
     // beforeEach(() => {
@@ -24,7 +24,7 @@ describe('DRACO', () => {
     // });
 
     test('constructor', () => {
-      expect(instance).toBeInstanceOf(DRACOLoader);
+      expect(_instance).toBeInstanceOf(DRACOLoader);
     });
 
     test.todo('setDecoderPath()', () => {
