@@ -7,7 +7,7 @@ import { CylinderGeometry } from '../src/CylinderGeometry.js';
 
 describe('Geometries', () => {
   describe('CylinderGeometry', () => {
-    let geometries = undefined;
+    let _geometries = undefined;
 
     beforeEach(() => {
       const parameters = {
@@ -21,7 +21,7 @@ describe('Geometries', () => {
         thetaLength: 2.0
       };
 
-      geometries = [
+      _geometries = [
         new CylinderGeometry(),
         new CylinderGeometry(parameters.radiusTop),
         new CylinderGeometry(parameters.radiusTop, parameters.radiusBottom),
@@ -89,7 +89,7 @@ describe('Geometries', () => {
     });
 
     test('clone', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const clone = geometry.clone();
 
         expect(clone).toBeInstanceOf(CylinderGeometry);
@@ -108,7 +108,7 @@ describe('Geometries', () => {
     });
 
     test('copy', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const copy = new CylinderGeometry().copy(geometry);
 
         expect(copy).toBeInstanceOf(CylinderGeometry);
@@ -127,7 +127,7 @@ describe('Geometries', () => {
     });
 
     test('toJSON', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const json = geometry.toJSON();
 
         expect(json).not.toBeInstanceOf(CylinderGeometry);
@@ -170,10 +170,10 @@ describe('Geometries', () => {
       });
 
       // will be different
-      geoFromJson.uuid = geometries[8].uuid;
+      geoFromJson.uuid = _geometries[8].uuid;
 
-      expect(geoFromJson).not.toBe(geometries[8]);
-      expect(geoFromJson).toStrictEqual(geometries[8]);
+      expect(geoFromJson).not.toBe(_geometries[8]);
+      expect(geoFromJson).toStrictEqual(_geometries[8]);
     });
   });
 });
