@@ -6,12 +6,12 @@ import { resolveAfter, flushPromises } from './test-helpers.js';
 import { Loader } from '../src/Loader.js';
 import { FileLoader } from '../src/FileLoader.js';
 
-// will be intercepted by msw, not a real url
-const DataTestFile = 'http://renderlayer.org/test/json/data.json';
-const MissingTestFile = 'http://renderlayer.org/test/json/missing.json';
-
 describe('Loaders', () => {
   describe('FileLoader', () => {
+    // will be intercepted by msw, not a real url
+    const _DataTestFile = 'http://renderlayer.org/test/json/data.json';
+    const _MissingTestFile = 'http://renderlayer.org/test/json/missing.json';
+
     test('extends', () => {
       const object = new FileLoader();
       expect(object).toBeInstanceOf(Loader);
@@ -31,7 +31,7 @@ describe('Loaders', () => {
 
       // --------------------
       // good file
-      object.load(DataTestFile, onLoad, onProgress, onError);
+      object.load(_DataTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
@@ -43,7 +43,7 @@ describe('Loaders', () => {
 
       // --------------------
       // bad file
-      object.load(MissingTestFile, onLoad, onProgress, onError);
+      object.load(_MissingTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
