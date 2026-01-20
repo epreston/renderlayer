@@ -9,7 +9,7 @@ import { Object3D } from '../src/Object3D.js';
 
 describe('Core', () => {
   describe('Object3D', () => {
-    const RadToDeg = 180 / Math.PI;
+    const _RadToDeg = 180 / Math.PI;
 
     test('constructor', () => {
       const object = new Object3D();
@@ -301,7 +301,7 @@ describe('Core', () => {
 
     test('setRotationFromEuler', () => {
       const a = new Object3D();
-      const rotation = new Euler(45 / RadToDeg, 0, Math.PI);
+      const rotation = new Euler(45 / _RadToDeg, 0, Math.PI);
       const expected = rotation.clone();
       const euler = new Euler();
 
@@ -321,7 +321,7 @@ describe('Core', () => {
       m.lookAt(eye, target, up);
       a.setRotationFromMatrix(m);
       euler.setFromQuaternion(a.getWorldQuaternion(new Quaternion()));
-      expect(euler.x * RadToDeg).toBeCloseTo(45);
+      expect(euler.x * _RadToDeg).toBeCloseTo(45);
     });
 
     test('setRotationFromQuaternion', () => {
@@ -461,7 +461,7 @@ describe('Core', () => {
       const obj = new Object3D();
       obj.lookAt(new Vector3(0, -1, 1));
 
-      expect(obj.rotation.x * RadToDeg).toBeCloseTo(45);
+      expect(obj.rotation.x * _RadToDeg).toBeCloseTo(45);
     });
 
     test('add/remove/removeFromParent/clear', () => {
