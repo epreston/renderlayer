@@ -10,14 +10,14 @@ import { x, y, z, w, zero3, one3 } from './math-constants.js';
 
 import { Plane } from '../src/Plane.js';
 
-function comparePlane(a, b, threshold = 0.0001) {
-  // prettier-ignore
-  return a.normal.distanceTo(b.normal) < threshold &&
-   Math.abs(a.constant - b.constant) < threshold;
-}
-
 describe('Maths', () => {
   describe('Plane', () => {
+    function _comparePlane(a, b, threshold = 0.0001) {
+      // prettier-ignore
+      return a.normal.distanceTo(b.normal) < threshold &&
+        Math.abs(a.constant - b.constant) < threshold;
+    }
+
     test('constructor', () => {
       let a = new Plane();
       expect(a.normal.x).toBe(1);
@@ -262,17 +262,17 @@ describe('Maths', () => {
       m.makeRotationZ(Math.PI * 0.5);
 
       expect(
-        comparePlane(a.clone().applyMatrix4(m), new Plane(new Vector3(0, 1, 0), 0))
+        _comparePlane(a.clone().applyMatrix4(m), new Plane(new Vector3(0, 1, 0), 0))
       ).toBeTruthy();
 
       a = new Plane(new Vector3(0, 1, 0), -1);
       expect(
-        comparePlane(a.clone().applyMatrix4(m), new Plane(new Vector3(-1, 0, 0), -1))
+        _comparePlane(a.clone().applyMatrix4(m), new Plane(new Vector3(-1, 0, 0), -1))
       ).toBeTruthy();
 
       m.makeTranslation(1, 1, 1);
       expect(
-        comparePlane(a.clone().applyMatrix4(m), a.clone().translate(new Vector3(1, 1, 1)))
+        _comparePlane(a.clone().applyMatrix4(m), a.clone().translate(new Vector3(1, 1, 1)))
       ).toBeTruthy();
     });
 
