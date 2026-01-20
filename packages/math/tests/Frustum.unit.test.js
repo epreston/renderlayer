@@ -13,10 +13,10 @@ import { eps, one3, zero3 } from './math-constants.js';
 
 import { Frustum } from '../src/Frustum.js';
 
-const unit3 = new Vector3(1, 0, 0);
-
 describe('Maths', () => {
   describe('Frustum', () => {
+    const _unitVec3 = new Vector3(1, 0, 0);
+
     test('constructor', () => {
       let a = new Frustum();
 
@@ -28,12 +28,12 @@ describe('Maths', () => {
         expect(a.planes[i].equals(pDefault)).toBeTruthy();
       }
 
-      const p0 = new Plane(unit3, -1);
-      const p1 = new Plane(unit3, 1);
-      const p2 = new Plane(unit3, 2);
-      const p3 = new Plane(unit3, 3);
-      const p4 = new Plane(unit3, 4);
-      const p5 = new Plane(unit3, 5);
+      const p0 = new Plane(_unitVec3, -1);
+      const p1 = new Plane(_unitVec3, 1);
+      const p2 = new Plane(_unitVec3, 2);
+      const p3 = new Plane(_unitVec3, 3);
+      const p4 = new Plane(_unitVec3, 4);
+      const p5 = new Plane(_unitVec3, 5);
 
       a = new Frustum(p0, p1, p2, p3, p4, p5);
       expect(a.planes[0].equals(p0)).toBeTruthy();
@@ -46,12 +46,12 @@ describe('Maths', () => {
 
     test('set', () => {
       const a = new Frustum();
-      const p0 = new Plane(unit3, -1);
-      const p1 = new Plane(unit3, 1);
-      const p2 = new Plane(unit3, 2);
-      const p3 = new Plane(unit3, 3);
-      const p4 = new Plane(unit3, 4);
-      const p5 = new Plane(unit3, 5);
+      const p0 = new Plane(_unitVec3, -1);
+      const p1 = new Plane(_unitVec3, 1);
+      const p2 = new Plane(_unitVec3, 2);
+      const p3 = new Plane(_unitVec3, 3);
+      const p4 = new Plane(_unitVec3, 4);
+      const p5 = new Plane(_unitVec3, 5);
 
       a.set(p0, p1, p2, p3, p4, p5);
 
@@ -64,12 +64,12 @@ describe('Maths', () => {
     });
 
     test('clone', () => {
-      const p0 = new Plane(unit3, -1);
-      const p1 = new Plane(unit3, 1);
-      const p2 = new Plane(unit3, 2);
-      const p3 = new Plane(unit3, 3);
-      const p4 = new Plane(unit3, 4);
-      const p5 = new Plane(unit3, 5);
+      const p0 = new Plane(_unitVec3, -1);
+      const p1 = new Plane(_unitVec3, 1);
+      const p2 = new Plane(_unitVec3, 2);
+      const p3 = new Plane(_unitVec3, 3);
+      const p4 = new Plane(_unitVec3, 4);
+      const p5 = new Plane(_unitVec3, 5);
 
       const b = new Frustum(p0, p1, p2, p3, p4, p5);
       const a = b.clone();
@@ -87,12 +87,12 @@ describe('Maths', () => {
     });
 
     test('copy', () => {
-      const p0 = new Plane(unit3, -1);
-      const p1 = new Plane(unit3, 1);
-      const p2 = new Plane(unit3, 2);
-      const p3 = new Plane(unit3, 3);
-      const p4 = new Plane(unit3, 4);
-      const p5 = new Plane(unit3, 5);
+      const p0 = new Plane(_unitVec3, -1);
+      const p1 = new Plane(_unitVec3, 1);
+      const p2 = new Plane(_unitVec3, 2);
+      const p3 = new Plane(_unitVec3, 3);
+      const p4 = new Plane(_unitVec3, 4);
+      const p5 = new Plane(_unitVec3, 5);
 
       const b = new Frustum(p0, p1, p2, p3, p4, p5);
       const a = new Frustum().copy(b);
