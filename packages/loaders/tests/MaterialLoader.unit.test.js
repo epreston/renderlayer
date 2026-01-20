@@ -6,13 +6,13 @@ import { resolveAfter, flushPromises } from './test-helpers.js';
 import { Loader } from '../src/Loader.js';
 import { MaterialLoader } from '../src/MaterialLoader.js';
 
-// will be intercepted by msw, not a real url
-const MatTestFile = 'http://renderlayer.org/test/json/material.json';
-const ShaderMatTestFile = 'http://renderlayer.org/test/json/shadermaterial.json';
-const MissingTestFile = 'http://renderlayer.org/test/json/missing.json';
-
 describe('Loaders', () => {
   describe('MaterialLoader', () => {
+    // will be intercepted by msw, not a real url
+    const _MatTestFile = 'http://renderlayer.org/test/json/material.json';
+    const _ShaderMatTestFile = 'http://renderlayer.org/test/json/shadermaterial.json';
+    const _MissingTestFile = 'http://renderlayer.org/test/json/missing.json';
+
     test('constructor', () => {
       const object = new MaterialLoader();
       expect(object).toBeDefined();
@@ -38,7 +38,7 @@ describe('Loaders', () => {
 
       // --------------------
       // MeshBasicMaterial file
-      object.load(MatTestFile, onLoad, onProgress, onError);
+      object.load(_MatTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
@@ -50,7 +50,7 @@ describe('Loaders', () => {
 
       // --------------------
       // ShaderMaterial file
-      object.load(ShaderMatTestFile, onLoad, onProgress, onError);
+      object.load(_ShaderMatTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
@@ -62,7 +62,7 @@ describe('Loaders', () => {
 
       // --------------------
       // bad file
-      object.load(MissingTestFile, onLoad, onProgress, onError);
+      object.load(_MissingTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
