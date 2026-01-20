@@ -3,18 +3,21 @@ import { Matrix4 } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
 
 class Camera extends Object3D {
+  type = 'Camera';
+
+  matrixWorldInverse = new Matrix4();
+
+  projectionMatrix = new Matrix4();
+  projectionMatrixInverse = new Matrix4();
+
+  coordinateSystem = WebGLCoordinateSystem;
+
   constructor() {
     super();
+  }
 
-    this.isCamera = true;
-    this.type = 'Camera';
-
-    this.matrixWorldInverse = new Matrix4();
-
-    this.projectionMatrix = new Matrix4();
-    this.projectionMatrixInverse = new Matrix4();
-
-    this.coordinateSystem = WebGLCoordinateSystem;
+  get isCamera() {
+    return true;
   }
 
   copy(source, recursive) {
