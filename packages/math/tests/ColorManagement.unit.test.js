@@ -12,18 +12,18 @@ import { ColorManagement, LinearToSRGB, SRGBToLinear } from '../src/ColorManagem
 
 describe('Math', () => {
   describe('ColorManagement', () => {
-    let enabledState;
-    let testColor;
+    let _enabledState;
+    let _testColor;
 
     beforeAll(() => {
       // capture default state
-      enabledState = ColorManagement.enabled;
+      _enabledState = ColorManagement.enabled;
     });
 
     beforeEach(() => {
       // reset state
-      ColorManagement.enabled = enabledState;
-      testColor = new Color(0.5, 0.5, 0.5);
+      ColorManagement.enabled = _enabledState;
+      _testColor = new Color(0.5, 0.5, 0.5);
     });
 
     test('enabled', () => {
@@ -35,30 +35,30 @@ describe('Math', () => {
     });
 
     test('convert - color without source or target, returns the color', () => {
-      expect(ColorManagement.convert(testColor)).toBe(testColor);
+      expect(ColorManagement.convert(_testColor)).toBe(_testColor);
     });
 
     test('convert - color with same source or target, returns the color', () => {
-      expect(ColorManagement.convert(testColor, LinearSRGBColorSpace, LinearSRGBColorSpace)).toBe(
-        testColor
+      expect(ColorManagement.convert(_testColor, LinearSRGBColorSpace, LinearSRGBColorSpace)).toBe(
+        _testColor
       );
     });
 
     test('convert - enabled is false, returns the color', () => {
       ColorManagement.enabled = false;
-      expect(ColorManagement.convert(testColor, LinearSRGBColorSpace, SRGBColorSpace)).toBe(
-        testColor
+      expect(ColorManagement.convert(_testColor, LinearSRGBColorSpace, SRGBColorSpace)).toBe(
+        _testColor
       );
     });
 
     test('convert - unsupported throws error', () => {
-      expect(() => ColorManagement.convert(testColor, LinearSRGBColorSpace, 'ICtCp')).toThrowError(
+      expect(() => ColorManagement.convert(_testColor, LinearSRGBColorSpace, 'ICtCp')).toThrowError(
         'Unsupported'
       );
     });
 
     test('fromWorkingColorSpace - SRGBColorSpace', () => {
-      const color = ColorManagement.fromWorkingColorSpace(testColor, SRGBColorSpace);
+      const color = ColorManagement.fromWorkingColorSpace(_testColor, SRGBColorSpace);
 
       expect(color.r).toBeCloseTo(0.73536064, 8);
       expect(color.g).toBeCloseTo(0.73536064, 8);
@@ -66,7 +66,7 @@ describe('Math', () => {
     });
 
     test('fromWorkingColorSpace - LinearSRGBColorSpace', () => {
-      const color = ColorManagement.fromWorkingColorSpace(testColor, LinearSRGBColorSpace);
+      const color = ColorManagement.fromWorkingColorSpace(_testColor, LinearSRGBColorSpace);
 
       expect(color.r).toBeCloseTo(0.5);
       expect(color.g).toBeCloseTo(0.5);
@@ -74,7 +74,7 @@ describe('Math', () => {
     });
 
     test('fromWorkingColorSpace - DisplayP3ColorSpace', () => {
-      const color = ColorManagement.fromWorkingColorSpace(testColor, DisplayP3ColorSpace);
+      const color = ColorManagement.fromWorkingColorSpace(_testColor, DisplayP3ColorSpace);
 
       expect(color.r).toBeCloseTo(0.735361, 6);
       expect(color.g).toBeCloseTo(0.735361, 6);
@@ -82,7 +82,7 @@ describe('Math', () => {
     });
 
     test('toWorkingColorSpace - SRGBColorSpace', () => {
-      const color = ColorManagement.toWorkingColorSpace(testColor, SRGBColorSpace);
+      const color = ColorManagement.toWorkingColorSpace(_testColor, SRGBColorSpace);
 
       expect(color.r).toBeCloseTo(0.21404114, 8);
       expect(color.g).toBeCloseTo(0.21404114, 8);
@@ -90,7 +90,7 @@ describe('Math', () => {
     });
 
     test('toWorkingColorSpace - LinearSRGBColorSpace', () => {
-      const color = ColorManagement.toWorkingColorSpace(testColor, LinearSRGBColorSpace);
+      const color = ColorManagement.toWorkingColorSpace(_testColor, LinearSRGBColorSpace);
 
       expect(color.r).toBeCloseTo(0.5);
       expect(color.g).toBeCloseTo(0.5);
@@ -98,7 +98,7 @@ describe('Math', () => {
     });
 
     test('toWorkingColorSpace - DisplayP3ColorSpace', () => {
-      const color = ColorManagement.toWorkingColorSpace(testColor, DisplayP3ColorSpace);
+      const color = ColorManagement.toWorkingColorSpace(_testColor, DisplayP3ColorSpace);
 
       expect(color.r).toBeCloseTo(0.2140411, 6);
       expect(color.g).toBeCloseTo(0.2140411, 6);
