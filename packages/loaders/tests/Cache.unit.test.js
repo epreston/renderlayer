@@ -4,8 +4,8 @@ import { Cache } from '../src/Cache.js';
 
 describe('Loaders', () => {
   describe('Cache', () => {
-    const testKey = '/test/file.json';
-    const testFile = { name: 'test' };
+    const _testKey = '/test/file.json';
+    const _testFile = { name: 'test' };
 
     test('enabled', () => {
       const actual = Cache.enabled;
@@ -21,12 +21,12 @@ describe('Loaders', () => {
 
     test('add', () => {
       Cache.enabled = false;
-      Cache.add(testKey, testFile);
+      Cache.add(_testKey, _testFile);
 
       expect(Cache.files).toMatchInlineSnapshot('{}');
 
       Cache.enabled = true;
-      Cache.add(testKey, testFile);
+      Cache.add(_testKey, _testFile);
 
       expect(Cache.files).toMatchInlineSnapshot(`
         {
@@ -39,7 +39,7 @@ describe('Loaders', () => {
 
     test('get', () => {
       Cache.enabled = true;
-      Cache.add(testKey, testFile);
+      Cache.add(_testKey, _testFile);
 
       expect(Cache.files).toMatchInlineSnapshot(`
         {
@@ -49,8 +49,8 @@ describe('Loaders', () => {
         }
       `);
 
-      const file = Cache.get(testKey);
-      expect(file).toStrictEqual(testFile);
+      const file = Cache.get(_testKey);
+      expect(file).toStrictEqual(_testFile);
 
       Cache.enabled = false;
 
@@ -62,13 +62,13 @@ describe('Loaders', () => {
         }
       `);
 
-      const disabledNotFound = Cache.get(testKey);
+      const disabledNotFound = Cache.get(_testKey);
       expect(disabledNotFound).toBeUndefined();
     });
 
     test('remove', () => {
       Cache.enabled = true;
-      Cache.add(testKey, testFile);
+      Cache.add(_testKey, _testFile);
 
       expect(Cache.files).toMatchInlineSnapshot(`
         {
@@ -79,7 +79,7 @@ describe('Loaders', () => {
       `);
 
       Cache.enabled = false;
-      Cache.remove(testKey);
+      Cache.remove(_testKey);
 
       // clear works even when disabled
       expect(Cache.files).toMatchInlineSnapshot('{}');
@@ -92,7 +92,7 @@ describe('Loaders', () => {
       expect(Cache.files).toMatchInlineSnapshot('{}');
 
       Cache.enabled = true;
-      Cache.add(testKey, testFile);
+      Cache.add(_testKey, _testFile);
       Cache.enabled = false;
       Cache.clear();
 
