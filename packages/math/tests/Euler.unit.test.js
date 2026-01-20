@@ -7,42 +7,42 @@ import { x, y, z } from './math-constants.js';
 
 import { Euler } from '../src/Euler.js';
 
-const eulerZero = new Euler(0, 0, 0, 'XYZ');
-const eulerAxyz = new Euler(1, 0, 0, 'XYZ');
-const eulerAzyx = new Euler(0, 1, 0, 'ZYX');
-
-function matrixEquals4(a, b, tolerance) {
-  tolerance = tolerance || 0.0001;
-  if (a.elements.length !== b.elements.length) {
-    return false;
-  }
-
-  for (let i = 0, il = a.elements.length; i < il; i++) {
-    const delta = a.elements[i] - b.elements[i];
-    if (delta > tolerance) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function quatEquals(a, b, tolerance) {
-  tolerance = tolerance || 0.0001;
-  const diff =
-    Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z) + Math.abs(a.w - b.w);
-
-  return diff < tolerance;
-}
-
 describe('Maths', () => {
   describe('Euler', () => {
+    const _eulerZero = new Euler(0, 0, 0, 'XYZ');
+    const _eulerAxyz = new Euler(1, 0, 0, 'XYZ');
+    const _eulerAzyx = new Euler(0, 1, 0, 'ZYX');
+
+    function _matrixEquals(a, b, tolerance) {
+      tolerance = tolerance || 0.0001;
+      if (a.elements.length !== b.elements.length) {
+        return false;
+      }
+
+      for (let i = 0, il = a.elements.length; i < il; i++) {
+        const delta = a.elements[i] - b.elements[i];
+        if (delta > tolerance) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function _quatEquals(a, b, tolerance) {
+      tolerance = tolerance || 0.0001;
+      const diff =
+        Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z) + Math.abs(a.w - b.w);
+
+      return diff < tolerance;
+    }
+
     test('constructor', () => {
       const a = new Euler();
 
-      expect(a.equals(eulerZero)).toBeTruthy();
-      expect(!a.equals(eulerAxyz)).toBeTruthy();
-      expect(!a.equals(eulerAzyx)).toBeTruthy();
+      expect(a.equals(_eulerZero)).toBeTruthy();
+      expect(!a.equals(_eulerAxyz)).toBeTruthy();
+      expect(!a.equals(_eulerAzyx)).toBeTruthy();
     });
 
     test('DEFAULT_ORDER', () => {
@@ -152,19 +152,19 @@ describe('Maths', () => {
     });
 
     test('clone/copy/equals', () => {
-      const a = eulerAxyz.clone();
-      expect(a.equals(eulerAxyz)).toBeTruthy();
-      expect(!a.equals(eulerZero)).toBeTruthy();
-      expect(!a.equals(eulerAzyx)).toBeTruthy();
+      const a = _eulerAxyz.clone();
+      expect(a.equals(_eulerAxyz)).toBeTruthy();
+      expect(!a.equals(_eulerZero)).toBeTruthy();
+      expect(!a.equals(_eulerAzyx)).toBeTruthy();
 
-      a.copy(eulerAzyx);
-      expect(a.equals(eulerAzyx)).toBeTruthy();
-      expect(!a.equals(eulerAxyz)).toBeTruthy();
-      expect(!a.equals(eulerZero)).toBeTruthy();
+      a.copy(_eulerAzyx);
+      expect(a.equals(_eulerAzyx)).toBeTruthy();
+      expect(!a.equals(_eulerAxyz)).toBeTruthy();
+      expect(!a.equals(_eulerZero)).toBeTruthy();
     });
 
     test('Quaternion.setFromEuler/Euler.setFromQuaternion', () => {
-      const testValues = [eulerZero, eulerAxyz, eulerAzyx];
+      const testValues = [_eulerZero, _eulerAxyz, _eulerAzyx];
 
       for (let i = 0; i < testValues.length; i++) {
         const v = testValues[i];
@@ -173,12 +173,12 @@ describe('Maths', () => {
         const v2 = new Euler().setFromQuaternion(q, v.order);
         const q2 = new Quaternion().setFromEuler(v2);
 
-        expect(quatEquals(q, q2)).toBeTruthy();
+        expect(_quatEquals(q, q2)).toBeTruthy();
       }
     });
 
     test('Matrix4.makeRotationFromEuler/Euler.setFromRotationMatrix', () => {
-      const testValues = [eulerZero, eulerAxyz, eulerAzyx];
+      const testValues = [_eulerZero, _eulerAxyz, _eulerAzyx];
 
       for (let i = 0; i < testValues.length; i++) {
         const v = testValues[i];
@@ -187,7 +187,7 @@ describe('Maths', () => {
         const v2 = new Euler().setFromRotationMatrix(m, v.order);
         const m2 = new Matrix4().makeRotationFromEuler(v2);
 
-        expect(matrixEquals4(m, m2, 0.0001)).toBeTruthy();
+        expect(_matrixEquals(m, m2, 0.0001)).toBeTruthy();
       }
     });
 
@@ -197,7 +197,7 @@ describe('Maths', () => {
     });
 
     test('reorder', () => {
-      const testValues = [eulerZero, eulerAxyz, eulerAzyx];
+      const testValues = [_eulerZero, _eulerAxyz, _eulerAzyx];
 
       for (let i = 0; i < testValues.length; i++) {
         const v = testValues[i];
@@ -205,11 +205,11 @@ describe('Maths', () => {
 
         v.reorder('YZX');
         const q2 = new Quaternion().setFromEuler(v);
-        expect(quatEquals(q, q2)).toBeTruthy();
+        expect(_quatEquals(q, q2)).toBeTruthy();
 
         v.reorder('ZXY');
         const q3 = new Quaternion().setFromEuler(v);
-        expect(quatEquals(q, q3)).toBeTruthy();
+        expect(_quatEquals(q, q3)).toBeTruthy();
       }
     });
 
