@@ -7,7 +7,7 @@ import { CatmullRomCurve3 } from '../src/CatmullRomCurve3.js';
 describe('Curves', () => {
   describe('CatmullRomCurve3', () => {
     // prettier-ignore
-    const positions = [
+    const _positions = [
       new Vector3(-60, -100,  60),
       new Vector3(-60,   20,  60),
       new Vector3(-60,  120,  60),
@@ -57,7 +57,7 @@ describe('Curves', () => {
 
     test('copy', () => {
       const curve = new CatmullRomCurve3();
-      const _curve = new CatmullRomCurve3(positions);
+      const _curve = new CatmullRomCurve3(_positions);
 
       curve.copy(_curve);
 
@@ -66,7 +66,7 @@ describe('Curves', () => {
     });
 
     test('toJSON', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       // @prettier-ignore
       expect(curve).toMatchInlineSnapshot(`
         {
@@ -132,12 +132,12 @@ describe('Curves', () => {
         type: 'CatmullRomCurve3'
       });
 
-      const curve2 = new CatmullRomCurve3(positions);
+      const curve2 = new CatmullRomCurve3(_positions);
       expect(curve2).toStrictEqual(curve);
     });
 
     test('catmullrom check', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       curve.curveType = 'catmullrom';
 
       const expectedPoints = [
@@ -166,7 +166,7 @@ describe('Curves', () => {
     });
 
     test('chordal basic check', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
 
       curve.curveType = 'chordal';
 
@@ -196,7 +196,7 @@ describe('Curves', () => {
     });
 
     test('centripetal basic check', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       curve.curveType = 'centripetal';
 
       const expectedPoints = [
@@ -225,7 +225,7 @@ describe('Curves', () => {
     });
 
     test('closed catmullrom basic check', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       curve.curveType = 'catmullrom';
       curve.closed = true;
 
@@ -258,7 +258,7 @@ describe('Curves', () => {
     // curve.type = 'catmullrom'; only from here on
     //
     test('getLength/getLengths', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       curve.curveType = 'catmullrom';
 
       const length = curve.getLength();
@@ -285,7 +285,7 @@ describe('Curves', () => {
     });
 
     test('getPointAt', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       curve.curveType = 'catmullrom';
 
       const expectedPoints = [
@@ -306,7 +306,7 @@ describe('Curves', () => {
     });
 
     test('getTangent/getTangentAt', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       curve.curveType = 'catmullrom';
 
       let expectedTangents = [
@@ -359,7 +359,7 @@ describe('Curves', () => {
     });
 
     test('computeFrenetFrames', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       curve.curveType = 'catmullrom';
 
       const expected = {
@@ -392,7 +392,7 @@ describe('Curves', () => {
     });
 
     test('getUtoTmapping', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       curve.curveType = 'catmullrom';
 
       const start = curve.getUtoTmapping(0, 0);
@@ -407,7 +407,7 @@ describe('Curves', () => {
     });
 
     test('getSpacedPoints', () => {
-      const curve = new CatmullRomCurve3(positions);
+      const curve = new CatmullRomCurve3(_positions);
       curve.curveType = 'catmullrom';
 
       const expectedPoints = [
