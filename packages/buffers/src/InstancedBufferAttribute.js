@@ -20,6 +20,7 @@ class InstancedBufferAttribute extends BufferAttribute {
 
   toJSON() {
     const data = super.toJSON();
+
     data.meshPerAttribute = this.meshPerAttribute;
     data.isInstancedBufferAttribute = true;
 
