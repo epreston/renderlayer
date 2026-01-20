@@ -8,9 +8,9 @@ import { PointLightShadow } from '../src/PointLightShadow.js';
 
 describe('Lights', () => {
   describe('PointLight', () => {
-    let lights = undefined;
+    let _lights = undefined;
 
-    const parameters = {
+    const _parameters = {
       color: 0xaaaaaa,
       intensity: 0.5,
       distance: 100,
@@ -18,16 +18,16 @@ describe('Lights', () => {
     };
 
     beforeAll(function () {
-      lights = [
+      _lights = [
         new PointLight(),
-        new PointLight(parameters.color),
-        new PointLight(parameters.color, parameters.intensity),
-        new PointLight(parameters.color, parameters.intensity, parameters.distance),
+        new PointLight(_parameters.color),
+        new PointLight(_parameters.color, _parameters.intensity),
+        new PointLight(_parameters.color, _parameters.intensity, _parameters.distance),
         new PointLight(
-          parameters.color,
-          parameters.intensity,
-          parameters.distance,
-          parameters.decay
+          _parameters.color,
+          _parameters.intensity,
+          _parameters.distance,
+          _parameters.decay
         )
       ];
     });
@@ -53,15 +53,15 @@ describe('Lights', () => {
     });
 
     test('distance', () => {
-      expect(lights[2].distance).toBe(0);
+      expect(_lights[2].distance).toBe(0);
 
-      expect(lights[3].distance).toBe(parameters.distance);
+      expect(_lights[3].distance).toBe(_parameters.distance);
     });
 
     test('decay', () => {
-      expect(lights[3].decay).toBe(2);
+      expect(_lights[3].decay).toBe(2);
 
-      expect(lights[4].decay).toBe(parameters.decay);
+      expect(_lights[4].decay).toBe(_parameters.decay);
     });
 
     test('shadow', () => {
