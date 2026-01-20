@@ -1,10 +1,11 @@
 import { InterleavedBuffer } from './InterleavedBuffer.js';
 
 class InstancedInterleavedBuffer extends InterleavedBuffer {
+  isInstancedInterleavedBuffer = true;
+  meshPerAttribute = 1;
+
   constructor(array, stride, meshPerAttribute = 1) {
     super(array, stride);
-
-    this.isInstancedInterleavedBuffer = true;
 
     this.meshPerAttribute = meshPerAttribute;
   }
