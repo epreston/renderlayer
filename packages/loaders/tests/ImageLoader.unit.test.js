@@ -6,12 +6,12 @@ import { resolveAfter, flushPromises } from './test-helpers.js';
 import { Loader } from '../src/Loader.js';
 import { ImageLoader } from '../src/ImageLoader.js';
 
-// will be intercepted by msw, not a real url
-const LogoTestFile = 'http://renderlayer.org/test/png/rl-logo-128.png';
-const MissingTestFile = 'http://renderlayer.org/test/png/missing.png';
-
 describe('Loaders', () => {
   describe('ImageLoader', () => {
+    // will be intercepted by msw, not a real url
+    const _LogoTestFile = 'http://renderlayer.org/test/png/rl-logo-128.png';
+    const _MissingTestFile = 'http://renderlayer.org/test/png/missing.png';
+
     test('constructor', () => {
       const object = new ImageLoader();
       expect(object).toBeDefined();
@@ -30,7 +30,7 @@ describe('Loaders', () => {
       const object = new ImageLoader();
 
       // will not make a network request in mocked environment
-      const imgEl = object.load(LogoTestFile, onLoad, onProgress, onError);
+      const imgEl = object.load(_LogoTestFile, onLoad, onProgress, onError);
       expect(imgEl).toBeInstanceOf(HTMLElement); // element provided immediately
     });
 
@@ -60,7 +60,7 @@ describe('Loaders', () => {
 
       // --------------------
       // good file
-      const imgEl = object.load(LogoTestFile, onLoad, onProgress, onError);
+      const imgEl = object.load(_LogoTestFile, onLoad, onProgress, onError);
       expect(imgEl).toBeInstanceOf(HTMLElement); // element provided immediately
 
       // allow time for fetch and async code to compete before asserts
@@ -72,7 +72,7 @@ describe('Loaders', () => {
 
       // --------------------
       // bad file
-      const missingEl = object.load(MissingTestFile, onLoad, onProgress, onError);
+      const missingEl = object.load(_MissingTestFile, onLoad, onProgress, onError);
       expect(missingEl).toBeInstanceOf(HTMLElement); // element provided immediately
 
       // allow time for fetch and async code to compete before asserts
