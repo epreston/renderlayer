@@ -9,12 +9,12 @@ import { DynamicDrawUsage } from '@renderlayer/shared';
 import { Loader } from '../src/Loader.js';
 import { BufferGeometryLoader } from '../src/BufferGeometryLoader.js';
 
-// will be intercepted by msw, not a real url
-const DataTestFile = 'http://renderlayer.org/test/json/BufferGeometry.json';
-const MissingTestFile = 'http://renderlayer.org/test/json/missing.json';
-
 describe('Loaders', () => {
   describe('BufferGeometryLoader', () => {
+    // will be intercepted by msw, not a real url
+    const _DataTestFile = 'http://renderlayer.org/test/json/BufferGeometry.json';
+    const _MissingTestFile = 'http://renderlayer.org/test/json/missing.json';
+
     test('constructor', () => {
       const object = new BufferGeometryLoader();
       expect(object).toBeDefined();
@@ -34,7 +34,7 @@ describe('Loaders', () => {
 
       // --------------------
       // good file
-      object.load(DataTestFile, onLoad, onProgress, onError);
+      object.load(_DataTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
@@ -46,7 +46,7 @@ describe('Loaders', () => {
 
       // --------------------
       // bad file
-      object.load(MissingTestFile, onLoad, onProgress, onError);
+      object.load(_MissingTestFile, onLoad, onProgress, onError);
 
       // allow time for fetch and async code to compete before asserts
       // await resolveAfter(100);
