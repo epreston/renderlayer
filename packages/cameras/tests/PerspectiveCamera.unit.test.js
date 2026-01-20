@@ -6,25 +6,25 @@ import { Matrix4 } from '@renderlayer/math';
 import { Camera } from '../src/Camera.js';
 import { PerspectiveCamera } from '../src/PerspectiveCamera.js';
 
-// see e.g. math/Matrix4.js
-const matrixEquals4 = function (a, b, tolerance) {
-  tolerance = tolerance || 0.0001;
-  if (a.elements.length !== b.elements.length) {
-    return false;
-  }
-
-  for (let i = 0, il = a.elements.length; i < il; i++) {
-    const delta = a.elements[i] - b.elements[i];
-    if (delta > tolerance) {
-      return false;
-    }
-  }
-
-  return true;
-};
-
 describe('Cameras', () => {
   describe('PerspectiveCamera', () => {
+    // see e.g. math/Matrix4.js
+    const _matrixEquals = function (a, b, tolerance) {
+      tolerance = tolerance || 0.0001;
+      if (a.elements.length !== b.elements.length) {
+        return false;
+      }
+
+      for (let i = 0, il = a.elements.length; i < il; i++) {
+        const delta = a.elements[i] - b.elements[i];
+        if (delta > tolerance) {
+          return false;
+        }
+      }
+
+      return true;
+    };
+
     test('constructor', () => {
       const object = new PerspectiveCamera();
       expect(object).toBeDefined();
@@ -244,7 +244,7 @@ describe('Cameras', () => {
 			);
 
       // expect( reference.equals(m) );
-      expect(matrixEquals4(reference, m, 0.000001)).toBeTruthy();
+      expect(_matrixEquals(reference, m, 0.000001)).toBeTruthy();
     });
 
     test('toJSON', () => {
