@@ -7,7 +7,7 @@ import { PlaneGeometry } from '../src/PlaneGeometry.js';
 
 describe('Geometries', () => {
   describe('PlaneGeometry', () => {
-    let geometries = undefined;
+    let _geometries = undefined;
 
     beforeEach(() => {
       const parameters = {
@@ -17,7 +17,7 @@ describe('Geometries', () => {
         heightSegments: 5
       };
 
-      geometries = [
+      _geometries = [
         new PlaneGeometry(),
         new PlaneGeometry(parameters.width),
         new PlaneGeometry(parameters.width, parameters.height),
@@ -51,7 +51,7 @@ describe('Geometries', () => {
     });
 
     test('clone', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const clone = geometry.clone();
 
         expect(clone).toBeInstanceOf(PlaneGeometry);
@@ -70,7 +70,7 @@ describe('Geometries', () => {
     });
 
     test('copy', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const copy = new PlaneGeometry().copy(geometry);
 
         expect(copy).toBeInstanceOf(PlaneGeometry);
@@ -89,7 +89,7 @@ describe('Geometries', () => {
     });
 
     test('toJSON', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const json = geometry.toJSON();
 
         expect(json).not.toBeInstanceOf(PlaneGeometry);
@@ -128,10 +128,10 @@ describe('Geometries', () => {
       });
 
       // will be different
-      geoFromJson.uuid = geometries[4].uuid;
+      geoFromJson.uuid = _geometries[4].uuid;
 
-      expect(geoFromJson).not.toBe(geometries[4]);
-      expect(geoFromJson).toStrictEqual(geometries[4]);
+      expect(geoFromJson).not.toBe(_geometries[4]);
+      expect(geoFromJson).toStrictEqual(_geometries[4]);
     });
   });
 });
