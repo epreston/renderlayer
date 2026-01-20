@@ -10,29 +10,29 @@ import { eps } from './math-constants.js';
 
 import { Matrix4 } from '../src/Matrix4.js';
 
-function matrixEquals4(a, b, tolerance = 0.0001) {
-  if (a.elements.length !== b.elements.length) {
-    return false;
-  }
-
-  for (let i = 0, il = a.elements.length; i < il; i++) {
-    const delta = a.elements[i] - b.elements[i];
-    if (delta > tolerance) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function eulerEquals(a, b, tolerance = 0.0001) {
-  // from Euler.js
-  const diff = Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
-  return diff < tolerance;
-}
-
 describe('Maths', () => {
   describe('Matrix4', () => {
+    function _matrixEquals(a, b, tolerance = 0.0001) {
+      if (a.elements.length !== b.elements.length) {
+        return false;
+      }
+
+      for (let i = 0, il = a.elements.length; i < il; i++) {
+        const delta = a.elements[i] - b.elements[i];
+        if (delta > tolerance) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function _eulerEquals(a, b, tolerance = 0.0001) {
+      // from Euler.js
+      const diff = Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
+      return diff < tolerance;
+    }
+
     test('constructor', () => {
       const a = new Matrix4();
       expect(a.determinant()).toBe(1);
@@ -55,7 +55,7 @@ describe('Maths', () => {
       expect(b.elements[14]).toBe(11);
       expect(b.elements[15]).toBe(15);
 
-      expect(!matrixEquals4(a, b)).toBeTruthy();
+      expect(!_matrixEquals(a, b)).toBeTruthy();
     });
 
     test('isMatrix4', () => {
@@ -111,32 +111,32 @@ describe('Maths', () => {
       expect(b.elements[15]).toBe(15);
 
       const a = new Matrix4();
-      expect(!matrixEquals4(a, b)).toBeTruthy();
+      expect(!_matrixEquals(a, b)).toBeTruthy();
 
       b.identity();
-      expect(matrixEquals4(a, b)).toBeTruthy();
+      expect(_matrixEquals(a, b)).toBeTruthy();
     });
 
     test('clone', () => {
       const a = new Matrix4().set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
       const b = a.clone();
 
-      expect(matrixEquals4(a, b)).toBeTruthy();
+      expect(_matrixEquals(a, b)).toBeTruthy();
 
       // ensure that it is a true copy
       a.elements[0] = 2;
-      expect(!matrixEquals4(a, b)).toBeTruthy();
+      expect(!_matrixEquals(a, b)).toBeTruthy();
     });
 
     test('copy', () => {
       const a = new Matrix4().set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
       const b = new Matrix4().copy(a);
 
-      expect(matrixEquals4(a, b)).toBeTruthy();
+      expect(_matrixEquals(a, b)).toBeTruthy();
 
       // ensure that it is a true copy
       a.elements[0] = 2;
-      expect(!matrixEquals4(a, b)).toBeTruthy();
+      expect(!_matrixEquals(a, b)).toBeTruthy();
     });
 
     test('setFromMatrix3', () => {
@@ -166,18 +166,18 @@ describe('Maths', () => {
       const a = new Matrix4().set(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
       const b = new Matrix4().set(1, 2, 3, 0, 5, 6, 7, 0, 9, 10, 11, 0, 13, 14, 15, 16);
 
-      expect(matrixEquals4(a, b)).toBeFalsy();
+      expect(_matrixEquals(a, b)).toBeFalsy();
 
       b.copyPosition(a);
 
-      expect(matrixEquals4(a, b)).toBeTruthy();
+      expect(_matrixEquals(a, b)).toBeTruthy();
     });
 
     test('makeBasis/extractBasis', () => {
       const identityBasis = [new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1)];
       const a = new Matrix4().makeBasis(identityBasis[0], identityBasis[1], identityBasis[2]);
       const identity = new Matrix4();
-      expect(matrixEquals4(a, identity)).toBeTruthy();
+      expect(_matrixEquals(a, identity)).toBeTruthy();
 
       const testBases = [[new Vector3(0, 1, 0), new Vector3(-1, 0, 0), new Vector3(0, 0, 1)]];
 
@@ -219,14 +219,14 @@ describe('Maths', () => {
         const v2 = new Euler().setFromRotationMatrix(m, v.order);
         const m2 = new Matrix4().makeRotationFromEuler(v2);
 
-        expect(matrixEquals4(m, m2, eps)).toBeTruthy();
-        expect(eulerEquals(v, v2, eps)).toBeTruthy();
+        expect(_matrixEquals(m, m2, eps)).toBeTruthy();
+        expect(_eulerEquals(v, v2, eps)).toBeTruthy();
 
         const m3 = new Matrix4().extractRotation(m2);
         const v3 = new Euler().setFromRotationMatrix(m3, v.order);
 
-        expect(matrixEquals4(m, m3, eps)).toBeTruthy();
-        expect(eulerEquals(v, v3, eps)).toBeTruthy();
+        expect(_matrixEquals(m, m3, eps)).toBeTruthy();
+        expect(_eulerEquals(v, v3, eps)).toBeTruthy();
       }
     });
 
@@ -249,14 +249,14 @@ describe('Maths', () => {
       // eye and target are in the same position
       eye.copy(target);
       a.lookAt(eye, target, up);
-      expect(matrixEquals4(a, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
 
       // up and z are parallel
       eye.set(0, 1, 0);
       target.set(0, 0, 0);
       a.lookAt(eye, target, up);
       expected.set(1, 0, 0, 0, 0, 0.0001, 1, 0, 0, -1, 0.0001, 0, 0, 0, 0, 1);
-      expect(matrixEquals4(a, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
     });
 
     test('multiply', () => {
@@ -428,15 +428,15 @@ describe('Maths', () => {
     test('transpose', () => {
       const a = new Matrix4();
       let b = a.clone().transpose();
-      expect(matrixEquals4(a, b)).toBeTruthy();
+      expect(_matrixEquals(a, b)).toBeTruthy();
 
       b = new Matrix4().set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
 
       const c = b.clone().transpose();
-      expect(!matrixEquals4(b, c)).toBeTruthy();
+      expect(!_matrixEquals(b, c)).toBeTruthy();
 
       c.transpose();
-      expect(matrixEquals4(b, c)).toBeTruthy();
+      expect(_matrixEquals(b, c)).toBeTruthy();
     });
 
     test('setPosition', () => {
@@ -445,13 +445,13 @@ describe('Maths', () => {
       const c = new Matrix4().set(0, 1, 2, -1, 4, 5, 6, -2, 8, 9, 10, -3, 12, 13, 14, 15);
 
       a.setPosition(b);
-      expect(matrixEquals4(a, c)).toBeTruthy();
+      expect(_matrixEquals(a, c)).toBeTruthy();
 
       const d = new Matrix4().set(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
       const e = new Matrix4().set(0, 1, 2, -1, 4, 5, 6, -2, 8, 9, 10, -3, 12, 13, 14, 15);
 
       d.setPosition(-1, -2, -3);
-      expect(matrixEquals4(d, e)).toBeTruthy();
+      expect(_matrixEquals(d, e)).toBeTruthy();
     });
 
     test('invert', () => {
@@ -462,7 +462,7 @@ describe('Maths', () => {
       const b = new Matrix4().set(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
       a.copy(b).invert();
-      expect(matrixEquals4(a, zero)).toBeTruthy();
+      expect(_matrixEquals(a, zero)).toBeTruthy();
 
       const testMatrices = [
         new Matrix4().makeRotationX(0.3),
@@ -486,7 +486,7 @@ describe('Maths', () => {
         mSelfInverse.copy(mSelfInverse).invert();
 
         // self-inverse should the same as inverse
-        expect(matrixEquals4(mSelfInverse, mInverse)).toBeTruthy();
+        expect(_matrixEquals(mSelfInverse, mInverse)).toBeTruthy();
 
         // the determinant of the inverse should be the reciprocal
         expect(Math.abs(m.determinant() * mInverse.determinant() - 1) < 0.0001).toBeTruthy();
@@ -495,7 +495,7 @@ describe('Maths', () => {
 
         // the determinant of the identity matrix is 1
         expect(Math.abs(mProduct.determinant() - 1) < 0.0001).toBeTruthy();
-        expect(matrixEquals4(mProduct, identity)).toBeTruthy();
+        expect(_matrixEquals(mProduct, identity)).toBeTruthy();
       }
     });
 
@@ -506,7 +506,7 @@ describe('Maths', () => {
 
       a.scale(b);
 
-      expect(matrixEquals4(a, c)).toBeTruthy();
+      expect(_matrixEquals(a, c)).toBeTruthy();
     });
 
     test('getMaxScaleOnAxis', () => {
@@ -523,7 +523,7 @@ describe('Maths', () => {
 
       a.makeTranslation(b.x, b.y, b.z);
 
-      expect(matrixEquals4(a, c)).toBeTruthy();
+      expect(_matrixEquals(a, c)).toBeTruthy();
     });
 
     test('makeRotationX', () => {
@@ -533,7 +533,7 @@ describe('Maths', () => {
 
       a.makeRotationX(Math.PI / 6);
 
-      expect(matrixEquals4(a, c)).toBeTruthy();
+      expect(_matrixEquals(a, c)).toBeTruthy();
     });
 
     test('makeRotationY', () => {
@@ -543,7 +543,7 @@ describe('Maths', () => {
 
       a.makeRotationY(Math.PI / 6);
 
-      expect(matrixEquals4(a, c)).toBeTruthy();
+      expect(_matrixEquals(a, c)).toBeTruthy();
     });
 
     test('makeRotationZ', () => {
@@ -553,7 +553,7 @@ describe('Maths', () => {
 
       a.makeRotationZ(Math.PI / 6);
 
-      expect(matrixEquals4(a, c)).toBeTruthy();
+      expect(_matrixEquals(a, c)).toBeTruthy();
     });
 
     test('makeRotationAxis', () => {
@@ -569,7 +569,7 @@ describe('Maths', () => {
 				0, 0, 0, 1
 			);
 
-      expect(matrixEquals4(a, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
     });
 
     test('makeScale', () => {
@@ -578,7 +578,7 @@ describe('Maths', () => {
 
       a.makeScale(2, 3, 4);
 
-      expect(matrixEquals4(a, c)).toBeTruthy();
+      expect(_matrixEquals(a, c)).toBeTruthy();
     });
 
     test('makeShear', () => {
@@ -587,7 +587,7 @@ describe('Maths', () => {
 
       a.makeShear(1, 2, 3, 4, 5, 6);
 
-      expect(matrixEquals4(a, c)).toBeTruthy();
+      expect(_matrixEquals(a, c)).toBeTruthy();
     });
 
     test('compose/decompose', () => {
@@ -638,7 +638,7 @@ describe('Maths', () => {
 
             const m2 = new Matrix4().compose(t2, r2, s2);
 
-            expect(matrixEquals4(m, m2)).toBeTruthy();
+            expect(_matrixEquals(m, m2)).toBeTruthy();
           }
         }
       }
@@ -655,7 +655,7 @@ describe('Maths', () => {
 				0, 0, - 1, 0
 			);
 
-      expect(matrixEquals4(a, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
     });
 
     test('makeOrthographic', () => {
@@ -669,7 +669,7 @@ describe('Maths', () => {
 				0, 0, 0, 1
 			);
 
-      expect(matrixEquals4(a, expected)).toBeTruthy();
+      expect(_matrixEquals(a, expected)).toBeTruthy();
     });
 
     test('equals', () => {
