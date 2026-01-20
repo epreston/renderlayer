@@ -6,28 +6,28 @@ import { VectorKeyframeTrack } from '@renderlayer/keyframes';
 import { AnimationClip } from '../src/AnimationClip.js';
 import { AnimationMixer } from '../src/AnimationMixer.js';
 
-function getClips(pos1, pos2, scale1, scale2, dur) {
-  const clips = [];
-
-  let track = new VectorKeyframeTrack(
-    '.scale',
-    [0, dur],
-    [scale1.x, scale1.y, scale1.z, scale2.x, scale2.y, scale2.z]
-  );
-  clips.push(new AnimationClip('scale', dur, [track]));
-
-  track = new VectorKeyframeTrack(
-    '.position',
-    [0, dur],
-    [pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z]
-  );
-  clips.push(new AnimationClip('position', dur, [track]));
-
-  return clips;
-}
-
 describe('Animation', () => {
   describe('AnimationMixer', () => {
+    function _getClips(pos1, pos2, scale1, scale2, dur) {
+      const clips = [];
+
+      let track = new VectorKeyframeTrack(
+        '.scale',
+        [0, dur],
+        [scale1.x, scale1.y, scale1.z, scale2.x, scale2.y, scale2.z]
+      );
+      clips.push(new AnimationClip('scale', dur, [track]));
+
+      track = new VectorKeyframeTrack(
+        '.position',
+        [0, dur],
+        [pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z]
+      );
+      clips.push(new AnimationClip('position', dur, [track]));
+
+      return clips;
+    }
+
     test('constructor', () => {
       const object = new AnimationMixer();
       expect(object).toBeDefined;
@@ -55,7 +55,7 @@ describe('Animation', () => {
     test('clipAction', () => {
       const obj = new Object3D();
       const animMixer = new AnimationMixer(obj);
-      const clips = getClips(zero3, one3, two3, one3, 1);
+      const clips = _getClips(zero3, one3, two3, one3, 1);
       const actionA = animMixer.clipAction(clips[0]);
 
       expect(actionA).toBeDefined();
@@ -70,7 +70,7 @@ describe('Animation', () => {
     test('stopAllAction', () => {
       const obj = new Object3D();
       const animMixer = new AnimationMixer(obj);
-      const clips = getClips(zero3, one3, two3, one3, 1);
+      const clips = _getClips(zero3, one3, two3, one3, 1);
       const actionA = animMixer.clipAction(clips[0]);
       const actionB = animMixer.clipAction(clips[1]);
 
