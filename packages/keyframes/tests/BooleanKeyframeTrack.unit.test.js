@@ -6,7 +6,7 @@ import { BooleanKeyframeTrack } from '../src/BooleanKeyframeTrack.js';
 
 describe('Keyframes', () => {
   describe('BooleanKeyframeTrack', () => {
-    const parameters = {
+    const _parameters = {
       name: '.visible',
       times: [0, 1],
       values: [true, false],
@@ -15,47 +15,75 @@ describe('Keyframes', () => {
 
     test('constructor', () => {
       // name, times, values
-      const object = new BooleanKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new BooleanKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object).toBeDefined();
 
       // name, times, values, interpolation
       const object_all = new BooleanKeyframeTrack(
-        parameters.name,
-        parameters.times,
-        parameters.values,
-        parameters.interpolation
+        _parameters.name,
+        _parameters.times,
+        _parameters.values,
+        _parameters.interpolation
       );
       expect(object_all).toBeDefined();
     });
 
     test('extends', () => {
-      const object = new BooleanKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new BooleanKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object).toBeInstanceOf(KeyframeTrack);
-      expect(object.name).toBe(parameters.name);
+      expect(object.name).toBe(_parameters.name);
     });
 
     test('ValueTypeName', () => {
-      const object = new BooleanKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new BooleanKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object.ValueTypeName).toBe('bool');
     });
 
     test('ValueBufferType', () => {
-      const object = new BooleanKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new BooleanKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object.ValueBufferType).toBe(Array);
     });
 
     test('DefaultInterpolation', () => {
-      const object = new BooleanKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new BooleanKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object.DefaultInterpolation).toBe(InterpolateDiscrete);
     });
 
     test('InterpolantFactoryMethodLinear', () => {
-      const object = new BooleanKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new BooleanKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object.InterpolantFactoryMethodLinear).toBeUndefined();
     });
 
     test('InterpolantFactoryMethodSmooth', () => {
-      const object = new BooleanKeyframeTrack(parameters.name, parameters.times, parameters.values);
+      const object = new BooleanKeyframeTrack(
+        _parameters.name,
+        _parameters.times,
+        _parameters.values
+      );
       expect(object.InterpolantFactoryMethodSmooth).toBeUndefined();
     });
   });
