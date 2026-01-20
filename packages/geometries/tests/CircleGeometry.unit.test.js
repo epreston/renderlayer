@@ -7,7 +7,7 @@ import { CircleGeometry } from '../src/CircleGeometry.js';
 
 describe('Geometries', () => {
   describe('CircleGeometry', () => {
-    let geometries = undefined;
+    let _geometries = undefined;
 
     beforeEach(() => {
       const parameters = {
@@ -17,7 +17,7 @@ describe('Geometries', () => {
         thetaLength: 0.2
       };
 
-      geometries = [
+      _geometries = [
         new CircleGeometry(),
         new CircleGeometry(parameters.radius),
         new CircleGeometry(parameters.radius, parameters.segments),
@@ -51,7 +51,7 @@ describe('Geometries', () => {
     });
 
     test('clone', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const clone = geometry.clone();
 
         expect(clone).toBeInstanceOf(CircleGeometry);
@@ -70,7 +70,7 @@ describe('Geometries', () => {
     });
 
     test('copy', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const copy = new CircleGeometry().copy(geometry);
 
         expect(copy).toBeInstanceOf(CircleGeometry);
@@ -89,7 +89,7 @@ describe('Geometries', () => {
     });
 
     test('toJSON', () => {
-      geometries.forEach((geometry) => {
+      _geometries.forEach((geometry) => {
         const json = geometry.toJSON();
 
         expect(json).not.toBeInstanceOf(CircleGeometry);
@@ -128,10 +128,10 @@ describe('Geometries', () => {
       });
 
       // will be different
-      geoFromJson.uuid = geometries[4].uuid;
+      geoFromJson.uuid = _geometries[4].uuid;
 
-      expect(geoFromJson).not.toBe(geometries[4]);
-      expect(geoFromJson).toStrictEqual(geometries[4]);
+      expect(geoFromJson).not.toBe(_geometries[4]);
+      expect(geoFromJson).toStrictEqual(_geometries[4]);
     });
   });
 });
