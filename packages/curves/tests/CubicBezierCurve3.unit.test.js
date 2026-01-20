@@ -17,14 +17,14 @@ describe('Curves', () => {
       );
     });
 
-    test('extends', () => {
-      const object = new CubicBezierCurve3();
-      expect(object).toBeInstanceOf(Curve);
-    });
-
     test('constructor', () => {
       const object = new CubicBezierCurve3();
       expect(object).toBeDefined();
+    });
+
+    test('extends', () => {
+      const object = new CubicBezierCurve3();
+      expect(object).toBeInstanceOf(Curve);
     });
 
     test('isCubicBezierCurve3', () => {
