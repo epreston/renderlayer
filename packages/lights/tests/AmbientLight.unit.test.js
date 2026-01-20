@@ -7,19 +7,19 @@ import { AmbientLight } from '../src/AmbientLight.js';
 
 describe('Lights', () => {
   describe('AmbientLight', () => {
-    let lights = undefined;
+    let _lights = undefined;
 
-    const parameters = {
+    const _parameters = {
       color: 0xaaaaaa,
       intensity: 0.5
     };
 
     beforeAll(function () {
       // prettier-ignore
-      lights = [
+      _lights = [
 				new AmbientLight(),
-				new AmbientLight( parameters.color ),
-				new AmbientLight( parameters.color, parameters.intensity )
+				new AmbientLight(_parameters.color ),
+				new AmbientLight(_parameters.color, _parameters.intensity)
 			];
     });
 
