@@ -3,28 +3,30 @@ import { StaticDrawUsage, FloatType } from '@renderlayer/shared';
 
 import { fromHalfFloat, toHalfFloat } from './BufferAttributeUtils.js';
 
-const _vector = /*@__PURE__*/ new Vector3();
-const _vector2 = /*@__PURE__*/ new Vector2();
-
 class BufferAttribute {
+  isBufferAttribute = true;
+  name = '';
+
+  array;
+  itemSize;
+  count;
+  normalized;
+
+  usage = StaticDrawUsage;
+  updateRange = { offset: 0, count: -1 };
+  gpuType = FloatType;
+
+  version = 0;
+
   constructor(array, itemSize, normalized = false) {
     if (Array.isArray(array)) {
       throw new TypeError('BufferAttribute: array should be a Typed Array.');
     }
 
-    this.isBufferAttribute = true;
-    this.name = '';
-
     this.array = array;
     this.itemSize = itemSize;
     this.count = array !== undefined ? array.length / itemSize : 0;
     this.normalized = normalized;
-
-    this.usage = StaticDrawUsage;
-    this.updateRange = { offset: 0, count: -1 };
-    this.gpuType = FloatType;
-
-    this.version = 0;
   }
 
   onUploadCallback() {}
@@ -69,18 +71,18 @@ class BufferAttribute {
     return this;
   }
 
-  applyMatrix3(m) {
+  applyMatrix3(matrix) {
     if (this.itemSize === 2) {
       for (let i = 0, l = this.count; i < l; i++) {
         _vector2.fromBufferAttribute(this, i);
-        _vector2.applyMatrix3(m);
+        _vector2.applyMatrix3(matrix);
 
         this.setXY(i, _vector2.x, _vector2.y);
       }
     } else if (this.itemSize === 3) {
       for (let i = 0, l = this.count; i < l; i++) {
         _vector.fromBufferAttribute(this, i);
-        _vector.applyMatrix3(m);
+        _vector.applyMatrix3(matrix);
 
         this.setXYZ(i, _vector.x, _vector.y, _vector.z);
       }
@@ -89,11 +91,11 @@ class BufferAttribute {
     return this;
   }
 
-  applyMatrix4(m) {
+  applyMatrix4(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
 
-      _vector.applyMatrix4(m);
+      _vector.applyMatrix4(matrix);
 
       this.setXYZ(i, _vector.x, _vector.y, _vector.z);
     }
@@ -101,11 +103,11 @@ class BufferAttribute {
     return this;
   }
 
-  applyNormalMatrix(m) {
+  applyNormalMatrix(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
 
-      _vector.applyNormalMatrix(m);
+      _vector.applyNormalMatrix(matrix);
 
       this.setXYZ(i, _vector.x, _vector.y, _vector.z);
     }
@@ -113,11 +115,11 @@ class BufferAttribute {
     return this;
   }
 
-  transformDirection(m) {
+  transformDirection(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
 
-      _vector.transformDirection(m);
+      _vector.transformDirection(matrix);
 
       this.setXYZ(i, _vector.x, _vector.y, _vector.z);
     }
@@ -465,7 +467,8 @@ class Float64BufferAttribute extends BufferAttribute {
   }
 }
 
-//
+const _vector = /*@__PURE__*/ new Vector3();
+const _vector2 = /*@__PURE__*/ new Vector2();
 
 export {
   Float64BufferAttribute,
