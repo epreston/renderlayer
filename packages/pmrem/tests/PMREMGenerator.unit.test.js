@@ -33,14 +33,14 @@ import { PMREMGenerator } from '../src/PMREMGenerator';
 
 describe('PMREM', () => {
   describe.todo('PMREMGenerator', () => {
-    let instance;
+    let _instance;
 
     beforeEach(() => {
-      instance = new PMREMGenerator();
+      _instance = new PMREMGenerator();
     });
 
     it('instance should be an instanceof PMREMGenerator', () => {
-      expect(instance).toBeInstanceOf(PMREMGenerator);
+      expect(_instance).toBeInstanceOf(PMREMGenerator);
     });
 
     // it('should have a method fromScene()', () => {
