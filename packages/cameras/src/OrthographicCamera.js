@@ -2,14 +2,22 @@ import { WebGPUCoordinateSystem } from '@renderlayer/shared';
 import { Camera } from './Camera.js';
 
 class OrthographicCamera extends Camera {
+  isOrthographicCamera = true;
+  type = 'OrthographicCamera';
+
+  zoom = 1;
+  view = null;
+
+  left = -1;
+  right = 1;
+  top = 1;
+  bottom = -1;
+
+  near = 0.1;
+  far = 2000;
+
   constructor(left = -1, right = 1, top = 1, bottom = -1, near = 0.1, far = 2000) {
     super();
-
-    this.isOrthographicCamera = true;
-    this.type = 'OrthographicCamera';
-
-    this.zoom = 1;
-    this.view = null;
 
     this.left = left;
     this.right = right;
