@@ -11,124 +11,124 @@ import { eps, w, x, y, z } from './math-constants.js';
 
 import { Quaternion } from '../src/Quaternion.js';
 
-const orders = ['XYZ', 'YXZ', 'ZXY', 'ZYX', 'YZX', 'XZY'];
-const eulerAngles = new Euler(0.1, -0.3, 0.25);
-
-function qSub(a, b) {
-  const result = new Quaternion();
-  result.copy(a);
-
-  result.x -= b.x;
-  result.y -= b.y;
-  result.z -= b.z;
-  result.w -= b.w;
-
-  return result;
-}
-
-function doSlerpObject(aArr, bArr, t) {
-  const a = new Quaternion().fromArray(aArr),
-    b = new Quaternion().fromArray(bArr),
-    c = new Quaternion().fromArray(aArr);
-
-  c.slerp(b, t);
-
-  return {
-    equals: function (x, y, z, w, maxError) {
-      if (maxError === undefined) maxError = Number.EPSILON;
-
-      return (
-        Math.abs(x - c.x) <= maxError &&
-        Math.abs(y - c.y) <= maxError &&
-        Math.abs(z - c.z) <= maxError &&
-        Math.abs(w - c.w) <= maxError
-      );
-    },
-
-    length: c.length(),
-
-    dotA: c.dot(a),
-    dotB: c.dot(b)
-  };
-}
-
-function doSlerpArray(a, b, t) {
-  const result = [0, 0, 0, 0];
-
-  Quaternion.slerpFlat(result, 0, a, 0, b, 0, t);
-
-  function arrDot(a, b) {
-    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
-  }
-
-  return {
-    equals: function (x, y, z, w, maxError) {
-      if (maxError === undefined) maxError = Number.EPSILON;
-
-      return (
-        Math.abs(x - result[0]) <= maxError &&
-        Math.abs(y - result[1]) <= maxError &&
-        Math.abs(z - result[2]) <= maxError &&
-        Math.abs(w - result[3]) <= maxError
-      );
-    },
-
-    length: Math.sqrt(arrDot(result, result)),
-
-    dotA: arrDot(result, a),
-    dotB: arrDot(result, b)
-  };
-}
-
-function slerpTestSkeleton(doSlerp, maxError) {
-  const a = [0.6753410084407496, 0.4087830051091744, 0.32856700410659473, 0.5185120064806223];
-  const b = [0.6602792107657797, 0.43647413932562285, 0.35119011210236006, 0.5001871596632682];
-
-  let maxNormError = 0;
-
-  function isNormal(result) {
-    const normError = Math.abs(1 - result.length);
-    maxNormError = Math.max(maxNormError, normError);
-    return normError <= maxError;
-  }
-
-  let result;
-
-  result = doSlerp(a, b, 0);
-  expect(result.equals(a[0], a[1], a[2], a[3], 0)).toBeTruthy();
-
-  result = doSlerp(a, b, 1);
-  expect(result.equals(b[0], b[1], b[2], b[3], 0)).toBeTruthy();
-
-  result = doSlerp(a, b, 0.5);
-  expect(Math.abs(result.dotA - result.dotB) <= Number.EPSILON).toBeTruthy();
-  expect(isNormal(result)).toBeTruthy();
-
-  result = doSlerp(a, b, 0.25);
-  expect(result.dotA > result.dotB).toBeTruthy();
-  expect(isNormal(result)).toBeTruthy();
-
-  result = doSlerp(a, b, 0.75);
-  expect(result.dotA < result.dotB).toBeTruthy();
-  expect(isNormal(result)).toBeTruthy();
-
-  const D = Math.SQRT1_2;
-
-  result = doSlerp([1, 0, 0, 0], [0, 0, 1, 0], 0.5);
-  expect(result.equals(D, 0, D, 0)).toBeTruthy();
-  expect(isNormal(result)).toBeTruthy();
-
-  result = doSlerp([0, D, 0, D], [0, -D, 0, D], 0.5);
-  expect(result.equals(0, 0, 0, 1)).toBeTruthy();
-  expect(isNormal(result)).toBeTruthy();
-}
-
-function changeEulerOrder(euler, order) {
-  return new Euler(euler.x, euler.y, euler.z, order);
-}
-
 describe('Maths', () => {
   describe('Quaternion', () => {
+    const _orders = ['XYZ', 'YXZ', 'ZXY', 'ZYX', 'YZX', 'XZY'];
+    const _eulerAngles = new Euler(0.1, -0.3, 0.25);
+
+    function _qSub(a, b) {
+      const result = new Quaternion();
+      result.copy(a);
+
+      result.x -= b.x;
+      result.y -= b.y;
+      result.z -= b.z;
+      result.w -= b.w;
+
+      return result;
+    }
+
+    function _doSlerpObject(aArr, bArr, t) {
+      const a = new Quaternion().fromArray(aArr),
+        b = new Quaternion().fromArray(bArr),
+        c = new Quaternion().fromArray(aArr);
+
+      c.slerp(b, t);
+
+      return {
+        equals: function (x, y, z, w, maxError) {
+          if (maxError === undefined) maxError = Number.EPSILON;
+
+          return (
+            Math.abs(x - c.x) <= maxError &&
+            Math.abs(y - c.y) <= maxError &&
+            Math.abs(z - c.z) <= maxError &&
+            Math.abs(w - c.w) <= maxError
+          );
+        },
+
+        length: c.length(),
+
+        dotA: c.dot(a),
+        dotB: c.dot(b)
+      };
+    }
+
+    function _doSlerpArray(a, b, t) {
+      const result = [0, 0, 0, 0];
+
+      Quaternion.slerpFlat(result, 0, a, 0, b, 0, t);
+
+      function arrDot(a, b) {
+        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
+      }
+
+      return {
+        equals: function (x, y, z, w, maxError) {
+          if (maxError === undefined) maxError = Number.EPSILON;
+
+          return (
+            Math.abs(x - result[0]) <= maxError &&
+            Math.abs(y - result[1]) <= maxError &&
+            Math.abs(z - result[2]) <= maxError &&
+            Math.abs(w - result[3]) <= maxError
+          );
+        },
+
+        length: Math.sqrt(arrDot(result, result)),
+
+        dotA: arrDot(result, a),
+        dotB: arrDot(result, b)
+      };
+    }
+
+    function _slerpTestSkeleton(doSlerp, maxError) {
+      const a = [0.6753410084407496, 0.4087830051091744, 0.32856700410659473, 0.5185120064806223];
+      const b = [0.6602792107657797, 0.43647413932562285, 0.35119011210236006, 0.5001871596632682];
+
+      let maxNormError = 0;
+
+      function _isNormal(result) {
+        const normError = Math.abs(1 - result.length);
+        maxNormError = Math.max(maxNormError, normError);
+        return normError <= maxError;
+      }
+
+      let result;
+
+      result = doSlerp(a, b, 0);
+      expect(result.equals(a[0], a[1], a[2], a[3], 0)).toBeTruthy();
+
+      result = doSlerp(a, b, 1);
+      expect(result.equals(b[0], b[1], b[2], b[3], 0)).toBeTruthy();
+
+      result = doSlerp(a, b, 0.5);
+      expect(Math.abs(result.dotA - result.dotB) <= Number.EPSILON).toBeTruthy();
+      expect(_isNormal(result)).toBeTruthy();
+
+      result = doSlerp(a, b, 0.25);
+      expect(result.dotA > result.dotB).toBeTruthy();
+      expect(_isNormal(result)).toBeTruthy();
+
+      result = doSlerp(a, b, 0.75);
+      expect(result.dotA < result.dotB).toBeTruthy();
+      expect(_isNormal(result)).toBeTruthy();
+
+      const D = Math.SQRT1_2;
+
+      result = doSlerp([1, 0, 0, 0], [0, 0, 1, 0], 0.5);
+      expect(result.equals(D, 0, D, 0)).toBeTruthy();
+      expect(_isNormal(result)).toBeTruthy();
+
+      result = doSlerp([0, D, 0, D], [0, -D, 0, D], 0.5);
+      expect(result.equals(0, 0, 0, 1)).toBeTruthy();
+      expect(_isNormal(result)).toBeTruthy();
+    }
+
+    function _changeEulerOrder(euler, order) {
+      return new Euler(euler.x, euler.y, euler.z, order);
+    }
+
     test('constructor', () => {
       let a = new Quaternion();
       expect(a.x).toBe(0);
@@ -144,11 +144,11 @@ describe('Maths', () => {
     });
 
     test('slerp', () => {
-      slerpTestSkeleton(doSlerpObject, Number.EPSILON);
+      _slerpTestSkeleton(_doSlerpObject, Number.EPSILON);
     });
 
     test('slerpFlat', () => {
-      slerpTestSkeleton(doSlerpArray, Number.EPSILON);
+      _slerpTestSkeleton(_doSlerpArray, Number.EPSILON);
     });
 
     test('properties', () => {
@@ -318,13 +318,13 @@ describe('Maths', () => {
       const angles = [new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1)];
 
       // ensure euler conversion to/from Quaternion matches.
-      for (let i = 0; i < orders.length; i++) {
+      for (let i = 0; i < _orders.length; i++) {
         for (let j = 0; j < angles.length; j++) {
           const eulers2 = new Euler().setFromQuaternion(
             new Quaternion().setFromEuler(
-              new Euler(angles[j].x, angles[j].y, angles[j].z, orders[i])
+              new Euler(angles[j].x, angles[j].y, angles[j].z, _orders[i])
             ),
-            orders[i]
+            _orders[i]
           );
           const newAngle = new Vector3(eulers2.x, eulers2.y, eulers2.z);
           expect(newAngle.distanceTo(angles[j]) < 0.001).toBeTruthy();
@@ -359,12 +359,12 @@ describe('Maths', () => {
 
     test('setFromEuler/setFromRotationMatrix', () => {
       // ensure euler conversion for Quaternion matches that of Matrix4
-      for (let i = 0; i < orders.length; i++) {
-        const q = new Quaternion().setFromEuler(changeEulerOrder(eulerAngles, orders[i]));
-        const m = new Matrix4().makeRotationFromEuler(changeEulerOrder(eulerAngles, orders[i]));
+      for (let i = 0; i < _orders.length; i++) {
+        const q = new Quaternion().setFromEuler(_changeEulerOrder(_eulerAngles, _orders[i]));
+        const m = new Matrix4().makeRotationFromEuler(_changeEulerOrder(_eulerAngles, _orders[i]));
         const q2 = new Quaternion().setFromRotationMatrix(m);
 
-        expect(qSub(q, q2).length() < 0.001).toBeTruthy();
+        expect(_qSub(q, q2).length() < 0.001).toBeTruthy();
       }
     });
 
@@ -501,21 +501,21 @@ describe('Maths', () => {
     test('multiplyQuaternions/multiply', () => {
       const angles = [new Euler(1, 0, 0), new Euler(0, 1, 0), new Euler(0, 0, 1)];
 
-      const q1 = new Quaternion().setFromEuler(changeEulerOrder(angles[0], 'XYZ'));
-      const q2 = new Quaternion().setFromEuler(changeEulerOrder(angles[1], 'XYZ'));
-      const q3 = new Quaternion().setFromEuler(changeEulerOrder(angles[2], 'XYZ'));
+      const q1 = new Quaternion().setFromEuler(_changeEulerOrder(angles[0], 'XYZ'));
+      const q2 = new Quaternion().setFromEuler(_changeEulerOrder(angles[1], 'XYZ'));
+      const q3 = new Quaternion().setFromEuler(_changeEulerOrder(angles[2], 'XYZ'));
 
       const q = new Quaternion().multiplyQuaternions(q1, q2).multiply(q3);
 
-      const m1 = new Matrix4().makeRotationFromEuler(changeEulerOrder(angles[0], 'XYZ'));
-      const m2 = new Matrix4().makeRotationFromEuler(changeEulerOrder(angles[1], 'XYZ'));
-      const m3 = new Matrix4().makeRotationFromEuler(changeEulerOrder(angles[2], 'XYZ'));
+      const m1 = new Matrix4().makeRotationFromEuler(_changeEulerOrder(angles[0], 'XYZ'));
+      const m2 = new Matrix4().makeRotationFromEuler(_changeEulerOrder(angles[1], 'XYZ'));
+      const m3 = new Matrix4().makeRotationFromEuler(_changeEulerOrder(angles[2], 'XYZ'));
 
       const m = new Matrix4().multiplyMatrices(m1, m2).multiply(m3);
 
       const qFromM = new Quaternion().setFromRotationMatrix(m);
 
-      expect(qSub(q, qFromM).length() < 0.001).toBeTruthy();
+      expect(_qSub(q, qFromM).length() < 0.001).toBeTruthy();
     });
 
     test('premultiply', () => {
@@ -710,10 +710,10 @@ describe('Maths', () => {
       const angles = [new Euler(1, 0, 0), new Euler(0, 1, 0), new Euler(0, 0, 1)];
 
       // ensure euler conversion for Quaternion matches that of Matrix4
-      for (let i = 0; i < orders.length; i++) {
+      for (let i = 0; i < _orders.length; i++) {
         for (let j = 0; j < angles.length; j++) {
-          const q = new Quaternion().setFromEuler(changeEulerOrder(angles[j], orders[i]));
-          const m = new Matrix4().makeRotationFromEuler(changeEulerOrder(angles[j], orders[i]));
+          const q = new Quaternion().setFromEuler(_changeEulerOrder(angles[j], _orders[i]));
+          const m = new Matrix4().makeRotationFromEuler(_changeEulerOrder(angles[j], _orders[i]));
 
           const v0 = new Vector3(1, 0, 0);
           const qv = v0.clone().applyQuaternion(q);
