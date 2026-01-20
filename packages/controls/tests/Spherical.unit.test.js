@@ -3,10 +3,10 @@ import { describe, expect, it, test, vi } from 'vitest';
 import { Vector3 } from '@renderlayer/math';
 import { Spherical } from '../src/Spherical.js';
 
-export const eps = 0.0001;
-
 describe('Controls', () => {
   describe('Spherical', () => {
+    const _eps = 0.0001;
+
     test('constructor', () => {
       const spherical = new Spherical();
       const radius = 10.0;
@@ -93,9 +93,9 @@ describe('Controls', () => {
       expect(a.theta).toBe(0);
 
       a.setFromVector3(c);
-      expect(Math.abs(a.radius - expected.radius) <= eps).toBeTruthy();
-      expect(Math.abs(a.phi - expected.phi) <= eps).toBeTruthy();
-      expect(Math.abs(a.theta - expected.theta) <= eps).toBeTruthy();
+      expect(Math.abs(a.radius - expected.radius) <= _eps).toBeTruthy();
+      expect(Math.abs(a.phi - expected.phi) <= _eps).toBeTruthy();
+      expect(Math.abs(a.theta - expected.theta) <= _eps).toBeTruthy();
     });
 
     test('setFromCartesianCoords', () => {
@@ -108,9 +108,9 @@ describe('Controls', () => {
       expect(a.theta).toBe(0);
 
       a.setFromCartesianCoords(Math.PI, 1, -Math.PI);
-      expect(Math.abs(a.radius - expected.radius) <= eps).toBeTruthy();
-      expect(Math.abs(a.phi - expected.phi) <= eps).toBeTruthy();
-      expect(Math.abs(a.theta - expected.theta) <= eps).toBeTruthy();
+      expect(Math.abs(a.radius - expected.radius) <= _eps).toBeTruthy();
+      expect(Math.abs(a.phi - expected.phi) <= _eps).toBeTruthy();
+      expect(Math.abs(a.theta - expected.theta) <= _eps).toBeTruthy();
     });
   });
 });
