@@ -21,14 +21,14 @@ describe('Curves', () => {
       _curve = new LineCurve(_points[0], _points[1]);
     });
 
-    test('extends', () => {
-      const object = new LineCurve();
-      expect(object).toBeInstanceOf(Curve);
-    });
-
     test('constructor', () => {
       const object = new LineCurve();
       expect(object).toBeDefined();
+    });
+
+    test('extends', () => {
+      const object = new LineCurve();
+      expect(object).toBeInstanceOf(Curve);
     });
 
     test('isLineCurve', () => {
