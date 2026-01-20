@@ -8,12 +8,12 @@ import { CubeTexture } from '@renderlayer/textures';
 import { Loader } from '../src/Loader.js';
 import { CubeTextureLoader } from '../src/CubeTextureLoader.js';
 
-// will be intercepted by msw, not a real url
-const UVTestFile = 'http://renderlayer.org/test/jpeg/uvcheck.jpg';
-const MissingTestFile = 'http://renderlayer.org/test/jpeg/missing.jpg';
-
 describe('Loaders', () => {
   describe('CubeTextureLoader', () => {
+    // will be intercepted by msw, not a real url
+    const _UVTestFile = 'http://renderlayer.org/test/jpeg/uvcheck.jpg';
+    const _MissingTestFile = 'http://renderlayer.org/test/jpeg/missing.jpg';
+
     test('constructor', () => {
       const object = new CubeTextureLoader();
       expect(object).toBeDefined();
@@ -31,7 +31,14 @@ describe('Loaders', () => {
 
       const object = new CubeTextureLoader();
 
-      const cubeImages = [UVTestFile, UVTestFile, UVTestFile, UVTestFile, UVTestFile, UVTestFile];
+      const cubeImages = [
+        _UVTestFile,
+        _UVTestFile,
+        _UVTestFile,
+        _UVTestFile,
+        _UVTestFile,
+        _UVTestFile
+      ];
 
       // will not make a network request in mock environment
       const texture = object.load(cubeImages, onLoad, onProgress, onError);
@@ -62,7 +69,14 @@ describe('Loaders', () => {
 
       const object = new CubeTextureLoader();
 
-      const cubeImages = [UVTestFile, UVTestFile, UVTestFile, UVTestFile, UVTestFile, UVTestFile];
+      const cubeImages = [
+        _UVTestFile,
+        _UVTestFile,
+        _UVTestFile,
+        _UVTestFile,
+        _UVTestFile,
+        _UVTestFile
+      ];
 
       const texture = object.load(cubeImages, onLoad, onProgress, onError);
       expect(texture).toBeInstanceOf(CubeTexture); // empty provided immediately
@@ -81,12 +95,12 @@ describe('Loaders', () => {
       const object = new CubeTextureLoader();
 
       const cubeImages = [
-        MissingTestFile,
-        MissingTestFile,
-        MissingTestFile,
-        MissingTestFile,
-        MissingTestFile,
-        MissingTestFile
+        _MissingTestFile,
+        _MissingTestFile,
+        _MissingTestFile,
+        _MissingTestFile,
+        _MissingTestFile,
+        _MissingTestFile
       ];
 
       const missingTexture = object.load(cubeImages, onLoad, onProgress, onError);
