@@ -8,12 +8,12 @@ import { Texture } from '@renderlayer/textures';
 import { Loader } from '../src/Loader.js';
 import { TextureLoader } from '../src/TextureLoader.js';
 
-// will be intercepted by msw, not a real url
-const UVTestFile = 'http://renderlayer.org/test/jpeg/uvcheck.jpg';
-const MissingTestFile = 'http://renderlayer.org/test/jpeg/missing.jpg';
-
 describe('Loaders', () => {
   describe('TextureLoader', () => {
+    // will be intercepted by msw, not a real url
+    const _UVTestFile = 'http://renderlayer.org/test/jpeg/uvcheck.jpg';
+    const _MissingTestFile = 'http://renderlayer.org/test/jpeg/missing.jpg';
+
     test('constructor', () => {
       const object = new TextureLoader();
       expect(object).toBeDefined();
@@ -32,7 +32,7 @@ describe('Loaders', () => {
       const object = new TextureLoader();
 
       // will not make a network request
-      const texture = object.load(UVTestFile, onLoad, onProgress, onError);
+      const texture = object.load(_UVTestFile, onLoad, onProgress, onError);
       expect(texture).toBeInstanceOf(Texture); // empty provided immediately
     });
 
@@ -62,7 +62,7 @@ describe('Loaders', () => {
 
       // --------------------
       // good file
-      const texture = object.load(UVTestFile, onLoad, onProgress, onError);
+      const texture = object.load(_UVTestFile, onLoad, onProgress, onError);
       expect(texture).toBeInstanceOf(Texture); // empty provided immediately
 
       // allow time for fetch and async code to compete before asserts
@@ -74,7 +74,7 @@ describe('Loaders', () => {
 
       // --------------------
       // bad file
-      const missingTexture = object.load(MissingTestFile, onLoad, onProgress, onError);
+      const missingTexture = object.load(_MissingTestFile, onLoad, onProgress, onError);
       expect(missingTexture).toBeInstanceOf(Texture); // empty provided immediately
 
       // allow time for fetch and async code to compete before asserts
