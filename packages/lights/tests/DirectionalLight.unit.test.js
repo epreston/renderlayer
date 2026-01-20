@@ -9,18 +9,18 @@ import { DirectionalLightShadow } from '../src/DirectionalLightShadow.js';
 
 describe('Lights', () => {
   describe('DirectionalLight', () => {
-    let lights = undefined;
+    let _lights = undefined;
 
-    const parameters = {
+    const _parameters = {
       color: 0xaaaaaa,
       intensity: 0.8
     };
 
     beforeAll(function () {
-      lights = [
+      _lights = [
         new DirectionalLight(),
-        new DirectionalLight(parameters.color),
-        new DirectionalLight(parameters.color, parameters.intensity)
+        new DirectionalLight(_parameters.color),
+        new DirectionalLight(_parameters.color, _parameters.intensity)
       ];
     });
 
