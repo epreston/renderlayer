@@ -3,9 +3,8 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { PerspectiveCamera } from '@renderlayer/cameras';
-import { EventDispatcher } from '@renderlayer/core';
-import { OrbitControls } from '../src/OrbitControls.js';
 
+import { OrbitControls } from '../src/OrbitControls.js';
 import { MapControls } from '../src/MapControls.js';
 
 describe('Controls', () => {
@@ -17,8 +16,8 @@ describe('Controls', () => {
     };
 
     // prettier-ignore
-    const _near = 1, far = 3, aspect = 16 / 9, fov = 50;
-    const _camera = new PerspectiveCamera(fov, aspect, _near, far);
+    const _near = 1, _far = 3, _aspect = 16 / 9, _fov = 50;
+    const _camera = new PerspectiveCamera(_fov, _aspect, _near, _far);
 
     test('constructor', () => {
       const object = new MapControls(_camera, _mockDomElement);
@@ -28,7 +27,21 @@ describe('Controls', () => {
     test('extends', () => {
       const object = new MapControls(_camera, _mockDomElement);
       expect(object).toBeInstanceOf(OrbitControls);
-      expect(object).toBeInstanceOf(EventDispatcher);
+    });
+
+    test('screenSpacePanning', () => {
+      const object = new MapControls(_camera, _mockDomElement);
+      expect(object.screenSpacePanning).toBeFalsy(1);
+    });
+
+    test('mouseButtons', () => {
+      const object = new MapControls(_camera, _mockDomElement);
+      expect(object.mouseButtons).toBeInstanceOf(Object);
+    });
+
+    test('touches', () => {
+      const object = new MapControls(_camera, _mockDomElement);
+      expect(object.touches).toBeInstanceOf(Object);
     });
   });
 });
