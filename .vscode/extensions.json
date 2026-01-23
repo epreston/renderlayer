@@ -5,6 +5,6 @@
     "dbaeumer.vscode-eslint",
     "editorconfig.editorconfig",
     "raczzalan.webgl-glsl-editor",
-    "prettier.prettier-vscode"
+    "esbenp.prettier-vscode"
   ]
 }
