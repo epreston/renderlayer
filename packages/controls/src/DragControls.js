@@ -1,16 +1,11 @@
 import { EventDispatcher, Raycaster } from '@renderlayer/core';
 import { Matrix4, Plane, Vector2, Vector3 } from '@renderlayer/math';
 
-const _plane = new Plane();
-const _raycaster = new Raycaster();
-
-const _pointer = new Vector2();
-const _offset = new Vector3();
-const _intersection = new Vector3();
-const _worldPosition = new Vector3();
-const _inverseMatrix = new Matrix4();
-
 class DragControls extends EventDispatcher {
+  enabled = true;
+  recursive = true;
+  transformGroup = false;
+
   constructor(_objects, _camera, _domElement) {
     super();
 
@@ -164,10 +159,6 @@ class DragControls extends EventDispatcher {
 
     // API
 
-    this.enabled = true;
-    this.recursive = true;
-    this.transformGroup = false;
-
     this.activate = activate;
     this.deactivate = deactivate;
     this.dispose = dispose;
@@ -175,5 +166,14 @@ class DragControls extends EventDispatcher {
     this.getRaycaster = getRaycaster;
   }
 }
+
+const _plane = new Plane();
+const _raycaster = new Raycaster();
+
+const _pointer = new Vector2();
+const _offset = new Vector3();
+const _intersection = new Vector3();
+const _worldPosition = new Vector3();
+const _inverseMatrix = new Matrix4();
 
 export { DragControls };
