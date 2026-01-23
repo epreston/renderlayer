@@ -12,14 +12,77 @@ export const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
 //    Zoom - middle mouse, or mousewheel / touch: two-finger spread or squish
 //    Pan - right mouse, or left mouse + ctrl/meta/shiftKey, or arrow keys / touch: two-finger move
 
-const _changeEvent = { type: 'change' };
-const _startEvent = { type: 'start' };
-const _endEvent = { type: 'end' };
-const _ray = new Ray();
-const _plane = new Plane();
-const TILT_LIMIT = Math.cos(70 * DEG2RAD);
-
 class OrbitControls extends EventDispatcher {
+  object;
+  domElement;
+
+  // Set to false to disable this control
+  enabled = true;
+
+  // "target" sets the location of focus, where the object orbits around
+  target = new Vector3();
+
+  // How far you can dolly in and out ( PerspectiveCamera only )
+  minDistance = 0;
+  maxDistance = Infinity;
+
+  // How far you can zoom in and out ( OrthographicCamera only )
+  minZoom = 0;
+  maxZoom = Infinity;
+
+  // How far you can orbit vertically, upper and lower limits.
+  // Range is 0 to Math.PI radians.
+  minPolarAngle = 0; // radians
+  maxPolarAngle = Math.PI; // radians
+
+  // How far you can orbit horizontally, upper and lower limits.
+  // If set, the interval [ min, max ] must be a sub-interval of [ - 2 PI, 2 PI ], with ( max - min < 2 PI )
+  minAzimuthAngle = -Infinity; // radians
+  maxAzimuthAngle = Infinity; // radians
+
+  // Set to true to enable damping (inertia)
+  // If damping is enabled, you must call controls.update() in your animation loop
+  enableDamping = false;
+  dampingFactor = 0.05;
+
+  // This option actually enables dollying in and out; left as "zoom" for backwards compatibility.
+  // Set to false to disable zooming
+  enableZoom = true;
+  zoomSpeed = 1.0;
+
+  // Set to false to disable rotating
+  enableRotate = true;
+  rotateSpeed = 1.0;
+
+  // Set to false to disable panning
+  enablePan = true;
+  panSpeed = 1.0;
+  screenSpacePanning = true; // if false, pan orthogonal to world-space direction camera.up
+  keyPanSpeed = 7.0; // pixels moved per arrow key push
+  zoomToCursor = false;
+
+  // Set to true to automatically rotate around the target
+  // If auto-rotate is enabled, you must call controls.update() in your animation loop
+  autoRotate = false;
+  autoRotateSpeed = 2.0; // 30 seconds per orbit when fps is 60
+
+  // The four arrow keys
+  keys = { LEFT: 'ArrowLeft', UP: 'ArrowUp', RIGHT: 'ArrowRight', BOTTOM: 'ArrowDown' };
+
+  // Mouse buttons
+  mouseButtons = { LEFT: MOUSE.ROTATE, MIDDLE: MOUSE.DOLLY, RIGHT: MOUSE.PAN };
+
+  // Touch fingers
+  touches = { ONE: TOUCH.ROTATE, TWO: TOUCH.DOLLY_PAN };
+
+  // for reset
+  target0;
+  position0;
+  zoom0;
+
+  // the target DOM element for key events
+  _domElementKeyEvents = null;
+
   constructor(object, domElement) {
     super();
 
@@ -27,72 +90,10 @@ class OrbitControls extends EventDispatcher {
     this.domElement = domElement;
     this.domElement.style.touchAction = 'none'; // disable touch scroll
 
-    // Set to false to disable this control
-    this.enabled = true;
-
-    // "target" sets the location of focus, where the object orbits around
-    this.target = new Vector3();
-
-    // How far you can dolly in and out ( PerspectiveCamera only )
-    this.minDistance = 0;
-    this.maxDistance = Infinity;
-
-    // How far you can zoom in and out ( OrthographicCamera only )
-    this.minZoom = 0;
-    this.maxZoom = Infinity;
-
-    // How far you can orbit vertically, upper and lower limits.
-    // Range is 0 to Math.PI radians.
-    this.minPolarAngle = 0; // radians
-    this.maxPolarAngle = Math.PI; // radians
-
-    // How far you can orbit horizontally, upper and lower limits.
-    // If set, the interval [ min, max ] must be a sub-interval of [ - 2 PI, 2 PI ], with ( max - min < 2 PI )
-    this.minAzimuthAngle = -Infinity; // radians
-    this.maxAzimuthAngle = Infinity; // radians
-
-    // Set to true to enable damping (inertia)
-    // If damping is enabled, you must call controls.update() in your animation loop
-    this.enableDamping = false;
-    this.dampingFactor = 0.05;
-
-    // This option actually enables dollying in and out; left as "zoom" for backwards compatibility.
-    // Set to false to disable zooming
-    this.enableZoom = true;
-    this.zoomSpeed = 1.0;
-
-    // Set to false to disable rotating
-    this.enableRotate = true;
-    this.rotateSpeed = 1.0;
-
-    // Set to false to disable panning
-    this.enablePan = true;
-    this.panSpeed = 1.0;
-    this.screenSpacePanning = true; // if false, pan orthogonal to world-space direction camera.up
-    this.keyPanSpeed = 7.0; // pixels moved per arrow key push
-    this.zoomToCursor = false;
-
-    // Set to true to automatically rotate around the target
-    // If auto-rotate is enabled, you must call controls.update() in your animation loop
-    this.autoRotate = false;
-    this.autoRotateSpeed = 2.0; // 30 seconds per orbit when fps is 60
-
-    // The four arrow keys
-    this.keys = { LEFT: 'ArrowLeft', UP: 'ArrowUp', RIGHT: 'ArrowRight', BOTTOM: 'ArrowDown' };
-
-    // Mouse buttons
-    this.mouseButtons = { LEFT: MOUSE.ROTATE, MIDDLE: MOUSE.DOLLY, RIGHT: MOUSE.PAN };
-
-    // Touch fingers
-    this.touches = { ONE: TOUCH.ROTATE, TWO: TOUCH.DOLLY_PAN };
-
     // for reset
     this.target0 = this.target.clone();
     this.position0 = this.object.position.clone();
     this.zoom0 = this.object.zoom;
-
-    // the target DOM element for key events
-    this._domElementKeyEvents = null;
 
     //
     // public methods
@@ -292,7 +293,7 @@ class OrbitControls extends EventDispatcher {
 
               // if the camera is 20 degrees above the horizon then don't adjust the focus target to avoid
               // extremely large values
-              if (Math.abs(scope.object.up.dot(_ray.direction)) < TILT_LIMIT) {
+              if (Math.abs(scope.object.up.dot(_ray.direction)) < _TILT_LIMIT) {
                 object.lookAt(scope.target);
               } else {
                 _plane.setFromNormalAndCoplanarPoint(scope.object.up, scope.target);
@@ -1107,5 +1108,12 @@ class OrbitControls extends EventDispatcher {
     this.update();
   }
 }
+
+const _changeEvent = { type: 'change' };
+const _startEvent = { type: 'start' };
+const _endEvent = { type: 'end' };
+const _ray = new Ray();
+const _plane = new Plane();
+const _TILT_LIMIT = Math.cos(70 * DEG2RAD);
 
 export { OrbitControls };
