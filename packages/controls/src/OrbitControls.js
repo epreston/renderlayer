@@ -229,7 +229,6 @@ class OrbitControls extends EventDispatcher {
     this.state = _STATE.NONE;
   }
 
-  // this method is exposed, but perhaps it would be better if we can make it private...
   update(deltaTime = null) {
     const position = this.object.position;
 
@@ -780,6 +779,39 @@ class OrbitControls extends EventDispatcher {
     if (this.enableRotate) this._handleTouchMoveRotate(event);
   }
 
+  _addPointer(event) {
+    this._pointers.push(event);
+  }
+
+  _removePointer(event) {
+    delete this._pointerPositions[event.pointerId];
+
+    for (let i = 0; i < this._pointers.length; i++) {
+      if (this._pointers[i].pointerId === event.pointerId) {
+        this._pointers.splice(i, 1);
+        return;
+      }
+    }
+  }
+
+  _trackPointer(event) {
+    let position = this._pointerPositions[event.pointerId];
+
+    if (position === undefined) {
+      position = new Vector2();
+      this._pointerPositions[event.pointerId] = position;
+    }
+
+    position.set(event.pageX, event.pageY);
+  }
+
+  _getSecondPointerPosition(event) {
+    const pointer =
+      event.pointerId === this._pointers[0].pointerId ? this._pointers[1] : this._pointers[0];
+
+    return this._pointerPositions[pointer.pointerId];
+  }
+
   //
   // event handlers - FSM: listen for events and reset state
   //
@@ -1060,39 +1092,6 @@ class OrbitControls extends EventDispatcher {
     if (this.enabled === false) return;
 
     event.preventDefault();
-  }
-
-  _addPointer(event) {
-    this._pointers.push(event);
-  }
-
-  _removePointer(event) {
-    delete this._pointerPositions[event.pointerId];
-
-    for (let i = 0; i < this._pointers.length; i++) {
-      if (this._pointers[i].pointerId === event.pointerId) {
-        this._pointers.splice(i, 1);
-        return;
-      }
-    }
-  }
-
-  _trackPointer(event) {
-    let position = this._pointerPositions[event.pointerId];
-
-    if (position === undefined) {
-      position = new Vector2();
-      this._pointerPositions[event.pointerId] = position;
-    }
-
-    position.set(event.pageX, event.pageY);
-  }
-
-  _getSecondPointerPosition(event) {
-    const pointer =
-      event.pointerId === this._pointers[0].pointerId ? this._pointers[1] : this._pointers[0];
-
-    return this._pointerPositions[pointer.pointerId];
   }
 }
 
