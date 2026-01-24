@@ -83,10 +83,10 @@ class OrbitControls extends EventDispatcher {
   // the target DOM element for key events
   _domElementKeyEvents = null;
 
-  constructor(object, domElement) {
+  constructor(camera, domElement) {
     super();
 
-    this.object = object;
+    this.object = camera;
     this.domElement = domElement;
     this.domElement.style.touchAction = 'none'; // disable touch scroll
 
@@ -143,7 +143,7 @@ class OrbitControls extends EventDispatcher {
       const offset = new Vector3();
 
       // so camera.up is the orbit axis
-      const quat = new Quaternion().setFromUnitVectors(object.up, new Vector3(0, 1, 0));
+      const quat = new Quaternion().setFromUnitVectors(camera.up, new Vector3(0, 1, 0));
       const quatInverse = quat.clone().invert();
 
       const lastPosition = new Vector3();
@@ -294,7 +294,7 @@ class OrbitControls extends EventDispatcher {
               // if the camera is 20 degrees above the horizon then don't adjust the focus target to avoid
               // extremely large values
               if (Math.abs(scope.object.up.dot(_ray.direction)) < _TILT_LIMIT) {
-                object.lookAt(scope.target);
+                camera.lookAt(scope.target);
               } else {
                 _plane.setFromNormalAndCoplanarPoint(scope.object.up, scope.target);
                 _ray.intersectPlane(_plane, scope.target);
