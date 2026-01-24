@@ -241,7 +241,7 @@ class OrbitControls extends EventDispatcher {
     this._spherical.setFromVector3(_v);
 
     if (this.autoRotate && this.state === _STATE.NONE) {
-      this._rotateLeft(this._getAutoRotationAngle(deltaTime));
+      this.#rotateLeft(this.#getAutoRotationAngle(deltaTime));
     }
 
     if (this.enableDamping) {
@@ -293,9 +293,9 @@ class OrbitControls extends EventDispatcher {
     // adjust the camera position based on zoom only if we're not zooming to the cursor or if it's an ortho camera
     // we adjust zoom later in these cases
     if ((this.zoomToCursor && this._performCursorZoom) || this.object.isOrthographicCamera) {
-      this._spherical.radius = this._clampDistance(this._spherical.radius);
+      this._spherical.radius = this.#clampDistance(this._spherical.radius);
     } else {
-      this._spherical.radius = this._clampDistance(this._spherical.radius * this._scale);
+      this._spherical.radius = this.#clampDistance(this._spherical.radius * this._scale);
     }
 
     _v.setFromSpherical(this._spherical);
@@ -326,7 +326,7 @@ class OrbitControls extends EventDispatcher {
         // move the camera down the pointer ray
         // this method avoids floating point error
         const prevRadius = _v.length();
-        newRadius = this._clampDistance(prevRadius * this._scale);
+        newRadius = this.#clampDistance(prevRadius * this._scale);
 
         const radiusDelta = prevRadius - newRadius;
         this.object.position.addScaledVector(this._dollyDirection, radiusDelta);
@@ -413,7 +413,11 @@ class OrbitControls extends EventDispatcher {
     return false;
   }
 
-  _getAutoRotationAngle(deltaTime) {
+  //
+  // private methods
+  //
+
+  #getAutoRotationAngle(deltaTime) {
     if (deltaTime !== null) {
       return ((2 * Math.PI) / 60) * this.autoRotateSpeed * deltaTime;
     } else {
@@ -421,26 +425,26 @@ class OrbitControls extends EventDispatcher {
     }
   }
 
-  _getZoomScale() {
+  #getZoomScale() {
     return Math.pow(0.95, this.zoomSpeed);
   }
 
-  _rotateLeft(angle) {
+  #rotateLeft(angle) {
     this._sphericalDelta.theta -= angle;
   }
 
-  _rotateUp(angle) {
+  #rotateUp(angle) {
     this._sphericalDelta.phi -= angle;
   }
 
-  _panLeft(distance, objectMatrix) {
+  #panLeft(distance, objectMatrix) {
     _v.setFromMatrixColumn(objectMatrix, 0); // get X column of objectMatrix
     _v.multiplyScalar(-distance);
 
     this._panOffset.add(_v);
   }
 
-  _panUp(distance, objectMatrix) {
+  #panUp(distance, objectMatrix) {
     if (this.screenSpacePanning === true) {
       _v.setFromMatrixColumn(objectMatrix, 1);
     } else {
@@ -454,7 +458,7 @@ class OrbitControls extends EventDispatcher {
   }
 
   // deltaX and deltaY are in pixels; right and down are positive
-  _pan(deltaX, deltaY) {
+  #pan(deltaX, deltaY) {
     const element = this.domElement;
 
     if (this.object.isPerspectiveCamera) {
@@ -467,15 +471,15 @@ class OrbitControls extends EventDispatcher {
       targetDistance *= Math.tan(((this.object.fov / 2) * Math.PI) / 180.0);
 
       // we use only clientHeight here so aspect ratio does not distort speed
-      this._panLeft((2 * deltaX * targetDistance) / element.clientHeight, this.object.matrix);
-      this._panUp((2 * deltaY * targetDistance) / element.clientHeight, this.object.matrix);
+      this.#panLeft((2 * deltaX * targetDistance) / element.clientHeight, this.object.matrix);
+      this.#panUp((2 * deltaY * targetDistance) / element.clientHeight, this.object.matrix);
     } else if (this.object.isOrthographicCamera) {
       // orthographic
-      this._panLeft(
+      this.#panLeft(
         (deltaX * (this.object.right - this.object.left)) / this.object.zoom / element.clientWidth,
         this.object.matrix
       );
-      this._panUp(
+      this.#panUp(
         (deltaY * (this.object.top - this.object.bottom)) / this.object.zoom / element.clientHeight,
         this.object.matrix
       );
@@ -486,7 +490,7 @@ class OrbitControls extends EventDispatcher {
     }
   }
 
-  _dollyOut(dollyScale) {
+  #dollyOut(dollyScale) {
     if (this.object.isPerspectiveCamera || this.object.isOrthographicCamera) {
       this._scale /= dollyScale;
     } else {
@@ -497,7 +501,7 @@ class OrbitControls extends EventDispatcher {
     }
   }
 
-  _dollyIn(dollyScale) {
+  #dollyIn(dollyScale) {
     if (this.object.isPerspectiveCamera || this.object.isOrthographicCamera) {
       this._scale *= dollyScale;
     } else {
@@ -508,7 +512,7 @@ class OrbitControls extends EventDispatcher {
     }
   }
 
-  _updateZoomParameters(event) {
+  #updateZoomParameters(event) {
     if (!this.zoomToCursor) {
       return;
     }
@@ -531,7 +535,7 @@ class OrbitControls extends EventDispatcher {
       .normalize();
   }
 
-  _clampDistance(dist) {
+  #clampDistance(dist) {
     return Math.max(this.minDistance, Math.min(this.maxDistance, dist));
   }
 
@@ -539,20 +543,20 @@ class OrbitControls extends EventDispatcher {
   // event callbacks - update the object state
   //
 
-  _handleMouseDownRotate(event) {
+  #handleMouseDownRotate(event) {
     this._rotateStart.set(event.clientX, event.clientY);
   }
 
-  _handleMouseDownDolly(event) {
-    this._updateZoomParameters(event);
+  #handleMouseDownDolly(event) {
+    this.#updateZoomParameters(event);
     this._dollyStart.set(event.clientX, event.clientY);
   }
 
-  _handleMouseDownPan(event) {
+  #handleMouseDownPan(event) {
     this._panStart.set(event.clientX, event.clientY);
   }
 
-  _handleMouseMoveRotate(event) {
+  #handleMouseMoveRotate(event) {
     this._rotateEnd.set(event.clientX, event.clientY);
 
     this._rotateDelta
@@ -561,24 +565,24 @@ class OrbitControls extends EventDispatcher {
 
     const element = this.domElement;
 
-    this._rotateLeft((2 * Math.PI * this._rotateDelta.x) / element.clientHeight); // yes, height
+    this.#rotateLeft((2 * Math.PI * this._rotateDelta.x) / element.clientHeight); // yes, height
 
-    this._rotateUp((2 * Math.PI * this._rotateDelta.y) / element.clientHeight);
+    this.#rotateUp((2 * Math.PI * this._rotateDelta.y) / element.clientHeight);
 
     this._rotateStart.copy(this._rotateEnd);
 
     this.update();
   }
 
-  _handleMouseMoveDolly(event) {
+  #handleMouseMoveDolly(event) {
     this._dollyEnd.set(event.clientX, event.clientY);
 
     this._dollyDelta.subVectors(this._dollyEnd, this._dollyStart);
 
     if (this._dollyDelta.y > 0) {
-      this._dollyOut(this._getZoomScale());
+      this.#dollyOut(this.#getZoomScale());
     } else if (this._dollyDelta.y < 0) {
-      this._dollyIn(this._getZoomScale());
+      this.#dollyIn(this.#getZoomScale());
     }
 
     this._dollyStart.copy(this._dollyEnd);
@@ -586,39 +590,39 @@ class OrbitControls extends EventDispatcher {
     this.update();
   }
 
-  _handleMouseMovePan(event) {
+  #handleMouseMovePan(event) {
     this._panEnd.set(event.clientX, event.clientY);
 
     this._panDelta.subVectors(this._panEnd, this._panStart).multiplyScalar(this.panSpeed);
 
-    this._pan(this._panDelta.x, this._panDelta.y);
+    this.#pan(this._panDelta.x, this._panDelta.y);
 
     this._panStart.copy(this._panEnd);
 
     this.update();
   }
 
-  _handleMouseWheel(event) {
-    this._updateZoomParameters(event);
+  #handleMouseWheel(event) {
+    this.#updateZoomParameters(event);
 
     if (event.deltaY < 0) {
-      this._dollyIn(this._getZoomScale());
+      this.#dollyIn(this.#getZoomScale());
     } else if (event.deltaY > 0) {
-      this._dollyOut(this._getZoomScale());
+      this.#dollyOut(this.#getZoomScale());
     }
 
     this.update();
   }
 
-  _handleKeyDown(event) {
+  #handleKeyDown(event) {
     let needsUpdate = false;
 
     switch (event.code) {
       case this.keys.UP:
         if (event.ctrlKey || event.metaKey || event.shiftKey) {
-          this._rotateUp((2 * Math.PI * this.rotateSpeed) / this.domElement.clientHeight);
+          this.#rotateUp((2 * Math.PI * this.rotateSpeed) / this.domElement.clientHeight);
         } else {
-          this._pan(0, this.keyPanSpeed);
+          this.#pan(0, this.keyPanSpeed);
         }
 
         needsUpdate = true;
@@ -626,9 +630,9 @@ class OrbitControls extends EventDispatcher {
 
       case this.keys.BOTTOM:
         if (event.ctrlKey || event.metaKey || event.shiftKey) {
-          this._rotateUp((-2 * Math.PI * this.rotateSpeed) / this.domElement.clientHeight);
+          this.#rotateUp((-2 * Math.PI * this.rotateSpeed) / this.domElement.clientHeight);
         } else {
-          this._pan(0, -this.keyPanSpeed);
+          this.#pan(0, -this.keyPanSpeed);
         }
 
         needsUpdate = true;
@@ -636,9 +640,9 @@ class OrbitControls extends EventDispatcher {
 
       case this.keys.LEFT:
         if (event.ctrlKey || event.metaKey || event.shiftKey) {
-          this._rotateLeft((2 * Math.PI * this.rotateSpeed) / this.domElement.clientHeight);
+          this.#rotateLeft((2 * Math.PI * this.rotateSpeed) / this.domElement.clientHeight);
         } else {
-          this._pan(this.keyPanSpeed, 0);
+          this.#pan(this.keyPanSpeed, 0);
         }
 
         needsUpdate = true;
@@ -646,9 +650,9 @@ class OrbitControls extends EventDispatcher {
 
       case this.keys.RIGHT:
         if (event.ctrlKey || event.metaKey || event.shiftKey) {
-          this._rotateLeft((-2 * Math.PI * this.rotateSpeed) / this.domElement.clientHeight);
+          this.#rotateLeft((-2 * Math.PI * this.rotateSpeed) / this.domElement.clientHeight);
         } else {
-          this._pan(-this.keyPanSpeed, 0);
+          this.#pan(-this.keyPanSpeed, 0);
         }
 
         needsUpdate = true;
@@ -663,7 +667,7 @@ class OrbitControls extends EventDispatcher {
     }
   }
 
-  _handleTouchStartRotate() {
+  #handleTouchStartRotate() {
     if (this._pointers.length === 1) {
       this._rotateStart.set(this._pointers[0].pageX, this._pointers[0].pageY);
     } else {
@@ -674,7 +678,7 @@ class OrbitControls extends EventDispatcher {
     }
   }
 
-  _handleTouchStartPan() {
+  #handleTouchStartPan() {
     if (this._pointers.length === 1) {
       this._panStart.set(this._pointers[0].pageX, this._pointers[0].pageY);
     } else {
@@ -685,7 +689,7 @@ class OrbitControls extends EventDispatcher {
     }
   }
 
-  _handleTouchStartDolly() {
+  #handleTouchStartDolly() {
     const dx = this._pointers[0].pageX - this._pointers[1].pageX;
     const dy = this._pointers[0].pageY - this._pointers[1].pageY;
 
@@ -694,23 +698,23 @@ class OrbitControls extends EventDispatcher {
     this._dollyStart.set(0, distance);
   }
 
-  _handleTouchStartDollyPan() {
-    if (this.enableZoom) this._handleTouchStartDolly();
+  #handleTouchStartDollyPan() {
+    if (this.enableZoom) this.#handleTouchStartDolly();
 
-    if (this.enablePan) this._handleTouchStartPan();
+    if (this.enablePan) this.#handleTouchStartPan();
   }
 
-  _handleTouchStartDollyRotate() {
-    if (this.enableZoom) this._handleTouchStartDolly();
+  #handleTouchStartDollyRotate() {
+    if (this.enableZoom) this.#handleTouchStartDolly();
 
-    if (this.enableRotate) this._handleTouchStartRotate();
+    if (this.enableRotate) this.#handleTouchStartRotate();
   }
 
-  _handleTouchMoveRotate(event) {
+  #handleTouchMoveRotate(event) {
     if (this._pointers.length === 1) {
       this._rotateEnd.set(event.pageX, event.pageY);
     } else {
-      const position = this._getSecondPointerPosition(event);
+      const position = this.#getSecondPointerPosition(event);
 
       const x = 0.5 * (event.pageX + position.x);
       const y = 0.5 * (event.pageY + position.y);
@@ -724,18 +728,18 @@ class OrbitControls extends EventDispatcher {
 
     const element = this.domElement;
 
-    this._rotateLeft((2 * Math.PI * this._rotateDelta.x) / element.clientHeight); // yes, height
+    this.#rotateLeft((2 * Math.PI * this._rotateDelta.x) / element.clientHeight); // yes, height
 
-    this._rotateUp((2 * Math.PI * this._rotateDelta.y) / element.clientHeight);
+    this.#rotateUp((2 * Math.PI * this._rotateDelta.y) / element.clientHeight);
 
     this._rotateStart.copy(this._rotateEnd);
   }
 
-  _handleTouchMovePan(event) {
+  #handleTouchMovePan(event) {
     if (this._pointers.length === 1) {
       this._panEnd.set(event.pageX, event.pageY);
     } else {
-      const position = this._getSecondPointerPosition(event);
+      const position = this.#getSecondPointerPosition(event);
 
       const x = 0.5 * (event.pageX + position.x);
       const y = 0.5 * (event.pageY + position.y);
@@ -745,13 +749,13 @@ class OrbitControls extends EventDispatcher {
 
     this._panDelta.subVectors(this._panEnd, this._panStart).multiplyScalar(this.panSpeed);
 
-    this._pan(this._panDelta.x, this._panDelta.y);
+    this.#pan(this._panDelta.x, this._panDelta.y);
 
     this._panStart.copy(this._panEnd);
   }
 
-  _handleTouchMoveDolly(event) {
-    const position = this._getSecondPointerPosition(event);
+  #handleTouchMoveDolly(event) {
+    const position = this.#getSecondPointerPosition(event);
 
     const dx = event.pageX - position.x;
     const dy = event.pageY - position.y;
@@ -762,28 +766,32 @@ class OrbitControls extends EventDispatcher {
 
     this._dollyDelta.set(0, Math.pow(this._dollyEnd.y / this._dollyStart.y, this.zoomSpeed));
 
-    this._dollyOut(this._dollyDelta.y);
+    this.#dollyOut(this._dollyDelta.y);
 
     this._dollyStart.copy(this._dollyEnd);
   }
 
-  _handleTouchMoveDollyPan(event) {
-    if (this.enableZoom) this._handleTouchMoveDolly(event);
+  #handleTouchMoveDollyPan(event) {
+    if (this.enableZoom) this.#handleTouchMoveDolly(event);
 
-    if (this.enablePan) this._handleTouchMovePan(event);
+    if (this.enablePan) this.#handleTouchMovePan(event);
   }
 
-  _handleTouchMoveDollyRotate(event) {
-    if (this.enableZoom) this._handleTouchMoveDolly(event);
+  #handleTouchMoveDollyRotate(event) {
+    if (this.enableZoom) this.#handleTouchMoveDolly(event);
 
-    if (this.enableRotate) this._handleTouchMoveRotate(event);
+    if (this.enableRotate) this.#handleTouchMoveRotate(event);
   }
 
-  _addPointer(event) {
+  //
+  //  pointer tracking
+  //
+
+  #addPointer(event) {
     this._pointers.push(event);
   }
 
-  _removePointer(event) {
+  #removePointer(event) {
     delete this._pointerPositions[event.pointerId];
 
     for (let i = 0; i < this._pointers.length; i++) {
@@ -794,7 +802,7 @@ class OrbitControls extends EventDispatcher {
     }
   }
 
-  _trackPointer(event) {
+  #trackPointer(event) {
     let position = this._pointerPositions[event.pointerId];
 
     if (position === undefined) {
@@ -805,7 +813,7 @@ class OrbitControls extends EventDispatcher {
     position.set(event.pageX, event.pageY);
   }
 
-  _getSecondPointerPosition(event) {
+  #getSecondPointerPosition(event) {
     const pointer =
       event.pointerId === this._pointers[0].pointerId ? this._pointers[1] : this._pointers[0];
 
@@ -828,7 +836,7 @@ class OrbitControls extends EventDispatcher {
 
     //
 
-    this._addPointer(event);
+    this.#addPointer(event);
 
     if (event.pointerType === 'touch') {
       this._onTouchStart(event);
@@ -848,7 +856,7 @@ class OrbitControls extends EventDispatcher {
   }
 
   _onPointerUp(event) {
-    this._removePointer(event);
+    this.#removePointer(event);
 
     if (this._pointers.length === 0) {
       this.domElement.releasePointerCapture(event.pointerId);
@@ -886,7 +894,7 @@ class OrbitControls extends EventDispatcher {
       case MOUSE.DOLLY:
         if (this.enableZoom === false) return;
 
-        this._handleMouseDownDolly(event);
+        this.#handleMouseDownDolly(event);
 
         this.state = _STATE.DOLLY;
 
@@ -896,13 +904,13 @@ class OrbitControls extends EventDispatcher {
         if (event.ctrlKey || event.metaKey || event.shiftKey) {
           if (this.enablePan === false) return;
 
-          this._handleMouseDownPan(event);
+          this.#handleMouseDownPan(event);
 
           this.state = _STATE.PAN;
         } else {
           if (this.enableRotate === false) return;
 
-          this._handleMouseDownRotate(event);
+          this.#handleMouseDownRotate(event);
 
           this.state = _STATE.ROTATE;
         }
@@ -913,13 +921,13 @@ class OrbitControls extends EventDispatcher {
         if (event.ctrlKey || event.metaKey || event.shiftKey) {
           if (this.enableRotate === false) return;
 
-          this._handleMouseDownRotate(event);
+          this.#handleMouseDownRotate(event);
 
           this.state = _STATE.ROTATE;
         } else {
           if (this.enablePan === false) return;
 
-          this._handleMouseDownPan(event);
+          this.#handleMouseDownPan(event);
 
           this.state = _STATE.PAN;
         }
@@ -940,21 +948,21 @@ class OrbitControls extends EventDispatcher {
       case _STATE.ROTATE:
         if (this.enableRotate === false) return;
 
-        this._handleMouseMoveRotate(event);
+        this.#handleMouseMoveRotate(event);
 
         break;
 
       case _STATE.DOLLY:
         if (this.enableZoom === false) return;
 
-        this._handleMouseMoveDolly(event);
+        this.#handleMouseMoveDolly(event);
 
         break;
 
       case _STATE.PAN:
         if (this.enablePan === false) return;
 
-        this._handleMouseMovePan(event);
+        this.#handleMouseMovePan(event);
 
         break;
     }
@@ -967,7 +975,7 @@ class OrbitControls extends EventDispatcher {
 
     this.dispatchEvent(_startEvent);
 
-    this._handleMouseWheel(event);
+    this.#handleMouseWheel(event);
 
     this.dispatchEvent(_endEvent);
   }
@@ -975,11 +983,11 @@ class OrbitControls extends EventDispatcher {
   _onKeyDown(event) {
     if (this.enabled === false || this.enablePan === false) return;
 
-    this._handleKeyDown(event);
+    this.#handleKeyDown(event);
   }
 
   _onTouchStart(event) {
-    this._trackPointer(event);
+    this.#trackPointer(event);
 
     switch (this._pointers.length) {
       case 1:
@@ -987,7 +995,7 @@ class OrbitControls extends EventDispatcher {
           case TOUCH.ROTATE:
             if (this.enableRotate === false) return;
 
-            this._handleTouchStartRotate();
+            this.#handleTouchStartRotate();
 
             this.state = _STATE.TOUCH_ROTATE;
 
@@ -996,7 +1004,7 @@ class OrbitControls extends EventDispatcher {
           case TOUCH.PAN:
             if (this.enablePan === false) return;
 
-            this._handleTouchStartPan();
+            this.#handleTouchStartPan();
 
             this.state = _STATE.TOUCH_PAN;
 
@@ -1013,7 +1021,7 @@ class OrbitControls extends EventDispatcher {
           case TOUCH.DOLLY_PAN:
             if (this.enableZoom === false && this.enablePan === false) return;
 
-            this._handleTouchStartDollyPan();
+            this.#handleTouchStartDollyPan();
 
             this.state = _STATE.TOUCH_DOLLY_PAN;
 
@@ -1022,7 +1030,7 @@ class OrbitControls extends EventDispatcher {
           case TOUCH.DOLLY_ROTATE:
             if (this.enableZoom === false && this.enableRotate === false) return;
 
-            this._handleTouchStartDollyRotate();
+            this.#handleTouchStartDollyRotate();
 
             this.state = _STATE.TOUCH_DOLLY_ROTATE;
 
@@ -1044,13 +1052,13 @@ class OrbitControls extends EventDispatcher {
   }
 
   _onTouchMove(event) {
-    this._trackPointer(event);
+    this.#trackPointer(event);
 
     switch (this.state) {
       case _STATE.TOUCH_ROTATE:
         if (this.enableRotate === false) return;
 
-        this._handleTouchMoveRotate(event);
+        this.#handleTouchMoveRotate(event);
 
         this.update();
 
@@ -1059,7 +1067,7 @@ class OrbitControls extends EventDispatcher {
       case _STATE.TOUCH_PAN:
         if (this.enablePan === false) return;
 
-        this._handleTouchMovePan(event);
+        this.#handleTouchMovePan(event);
 
         this.update();
 
@@ -1068,7 +1076,7 @@ class OrbitControls extends EventDispatcher {
       case _STATE.TOUCH_DOLLY_PAN:
         if (this.enableZoom === false && this.enablePan === false) return;
 
-        this._handleTouchMoveDollyPan(event);
+        this.#handleTouchMoveDollyPan(event);
 
         this.update();
 
@@ -1077,7 +1085,7 @@ class OrbitControls extends EventDispatcher {
       case _STATE.TOUCH_DOLLY_ROTATE:
         if (this.enableZoom === false && this.enableRotate === false) return;
 
-        this._handleTouchMoveDollyRotate(event);
+        this.#handleTouchMoveDollyRotate(event);
 
         this.update();
 
