@@ -258,11 +258,11 @@ class OrbitControls extends EventDispatcher {
     let max = this.maxAzimuthAngle;
 
     if (isFinite(min) && isFinite(max)) {
-      if (min < -Math.PI) min += _twoPI;
-      else if (min > Math.PI) min -= _twoPI;
+      if (min < -Math.PI) min += _TWOPI;
+      else if (min > Math.PI) min -= _TWOPI;
 
-      if (max < -Math.PI) max += _twoPI;
-      else if (max > Math.PI) max -= _twoPI;
+      if (max < -Math.PI) max += _TWOPI;
+      else if (max > Math.PI) max -= _TWOPI;
 
       if (min <= max) {
         this._spherical.theta = Math.max(min, Math.min(max, this._spherical.theta));
@@ -1112,7 +1112,7 @@ const _plane = new Plane();
 const _TILT_LIMIT = Math.cos(70 * DEG2RAD);
 
 const _v = new Vector3();
-const _twoPI = 2 * Math.PI;
+const _TWOPI = 2 * Math.PI;
 
 const _STATE = {
   NONE: -1,
