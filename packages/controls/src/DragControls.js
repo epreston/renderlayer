@@ -6,10 +6,10 @@ class DragControls extends EventDispatcher {
   recursive = true;
   transformGroup = false;
 
-  constructor(_objects, _camera, _domElement) {
+  constructor(objects, camera, domElement) {
     super();
 
-    _domElement.style.touchAction = 'none'; // disable touch scroll
+    domElement.style.touchAction = 'none'; // disable touch scroll
 
     let _selected = null;
     let _hovered = null;
@@ -21,19 +21,19 @@ class DragControls extends EventDispatcher {
     const scope = this;
 
     function activate() {
-      _domElement.addEventListener('pointermove', onPointerMove);
-      _domElement.addEventListener('pointerdown', onPointerDown);
-      _domElement.addEventListener('pointerup', onPointerCancel);
-      _domElement.addEventListener('pointerleave', onPointerCancel);
+      domElement.addEventListener('pointermove', onPointerMove);
+      domElement.addEventListener('pointerdown', onPointerDown);
+      domElement.addEventListener('pointerup', onPointerCancel);
+      domElement.addEventListener('pointerleave', onPointerCancel);
     }
 
     function deactivate() {
-      _domElement.removeEventListener('pointermove', onPointerMove);
-      _domElement.removeEventListener('pointerdown', onPointerDown);
-      _domElement.removeEventListener('pointerup', onPointerCancel);
-      _domElement.removeEventListener('pointerleave', onPointerCancel);
+      domElement.removeEventListener('pointermove', onPointerMove);
+      domElement.removeEventListener('pointerdown', onPointerDown);
+      domElement.removeEventListener('pointerup', onPointerCancel);
+      domElement.removeEventListener('pointerleave', onPointerCancel);
 
-      _domElement.style.cursor = '';
+      domElement.style.cursor = '';
     }
 
     function dispose() {
@@ -41,7 +41,7 @@ class DragControls extends EventDispatcher {
     }
 
     function getObjects() {
-      return _objects;
+      return objects;
     }
 
     function getRaycaster() {
@@ -53,7 +53,7 @@ class DragControls extends EventDispatcher {
 
       updatePointer(event);
 
-      _raycaster.setFromCamera(_pointer, _camera);
+      _raycaster.setFromCamera(_pointer, camera);
 
       if (_selected) {
         if (_raycaster.ray.intersectPlane(_plane, _intersection)) {
@@ -70,35 +70,35 @@ class DragControls extends EventDispatcher {
       if (event.pointerType === 'mouse' || event.pointerType === 'pen') {
         _intersections.length = 0;
 
-        _raycaster.setFromCamera(_pointer, _camera);
-        _raycaster.intersectObjects(_objects, scope.recursive, _intersections);
+        _raycaster.setFromCamera(_pointer, camera);
+        _raycaster.intersectObjects(objects, scope.recursive, _intersections);
 
         if (_intersections.length > 0) {
           const object = _intersections[0].object;
 
           _plane.setFromNormalAndCoplanarPoint(
-            _camera.getWorldDirection(_plane.normal),
+            camera.getWorldDirection(_plane.normal),
             _worldPosition.setFromMatrixPosition(object.matrixWorld)
           );
 
           if (_hovered !== object && _hovered !== null) {
             scope.dispatchEvent({ type: 'hoveroff', object: _hovered });
 
-            _domElement.style.cursor = 'auto';
+            domElement.style.cursor = 'auto';
             _hovered = null;
           }
 
           if (_hovered !== object) {
             scope.dispatchEvent({ type: 'hoveron', object: object });
 
-            _domElement.style.cursor = 'pointer';
+            domElement.style.cursor = 'pointer';
             _hovered = object;
           }
         } else {
           if (_hovered !== null) {
             scope.dispatchEvent({ type: 'hoveroff', object: _hovered });
 
-            _domElement.style.cursor = 'auto';
+            domElement.style.cursor = 'auto';
             _hovered = null;
           }
         }
@@ -112,14 +112,14 @@ class DragControls extends EventDispatcher {
 
       _intersections.length = 0;
 
-      _raycaster.setFromCamera(_pointer, _camera);
-      _raycaster.intersectObjects(_objects, scope.recursive, _intersections);
+      _raycaster.setFromCamera(_pointer, camera);
+      _raycaster.intersectObjects(objects, scope.recursive, _intersections);
 
       if (_intersections.length > 0) {
-        _selected = scope.transformGroup === true ? _objects[0] : _intersections[0].object;
+        _selected = scope.transformGroup === true ? objects[0] : _intersections[0].object;
 
         _plane.setFromNormalAndCoplanarPoint(
-          _camera.getWorldDirection(_plane.normal),
+          camera.getWorldDirection(_plane.normal),
           _worldPosition.setFromMatrixPosition(_selected.matrixWorld)
         );
 
@@ -130,7 +130,7 @@ class DragControls extends EventDispatcher {
             .sub(_worldPosition.setFromMatrixPosition(_selected.matrixWorld));
         }
 
-        _domElement.style.cursor = 'move';
+        domElement.style.cursor = 'move';
 
         scope.dispatchEvent({ type: 'dragstart', object: _selected });
       }
@@ -145,11 +145,11 @@ class DragControls extends EventDispatcher {
         _selected = null;
       }
 
-      _domElement.style.cursor = _hovered ? 'pointer' : 'auto';
+      domElement.style.cursor = _hovered ? 'pointer' : 'auto';
     }
 
     function updatePointer(event) {
-      const rect = _domElement.getBoundingClientRect();
+      const rect = domElement.getBoundingClientRect();
 
       _pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       _pointer.y = (-(event.clientY - rect.top) / rect.height) * 2 + 1;
