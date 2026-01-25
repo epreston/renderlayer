@@ -15,7 +15,7 @@ class MapControls extends OrbitControls {
 
   touches = { ONE: TOUCH.PAN, TWO: TOUCH.DOLLY_ROTATE };
 
-  constructor(camera, domElement) {
+  constructor(camera, domElement = null) {
     super(camera, domElement);
   }
 }
