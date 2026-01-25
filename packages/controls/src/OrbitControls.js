@@ -16,7 +16,7 @@ class OrbitControls extends EventDispatcher {
   state = _STATE.NONE;
 
   object;
-  domElement;
+  domElement = null;
 
   // Set to false to disable this control
   enabled = true;
@@ -121,12 +121,10 @@ class OrbitControls extends EventDispatcher {
   _pointers = [];
   _pointerPositions = {};
 
-  constructor(camera, domElement) {
+  constructor(camera, domElement = null) {
     super();
 
     this.object = camera;
-    this.domElement = domElement;
-    this.domElement.style.touchAction = 'none'; // disable touch scroll
 
     // for reset
     this._target0 = this.target.clone();
@@ -146,14 +144,16 @@ class OrbitControls extends EventDispatcher {
     this.onMouseWheel = this._onMouseWheel.bind(this);
     this.onKeyDown = this._onKeyDown.bind(this);
 
-    // this.onTouchStart =this._onTouchStart.bind( this );
-    // this.onTouchMove = this._onTouchMove.bind( this );
+    if (domElement !== null) {
+      this.connect(domElement);
+    }
 
-    // this.onMouseDown = this._onMouseDown.bind( this );
-    // this.onMouseMove = this._onMouseMove.bind( this );
+    this.update();
+  }
 
-    // this.interceptControlDown = this._interceptControlDown.bind( this );
-    // this.interceptControlUp = this._interceptControlUp.bind( this );
+  connect(element) {
+    if (this.domElement !== null) this.disconnect();
+    this.domElement = element;
 
     this.domElement.addEventListener('pointerdown', this.onPointerDown);
     this.domElement.addEventListener('pointercancel', this.onPointerUp);
@@ -161,10 +161,10 @@ class OrbitControls extends EventDispatcher {
     this.domElement.addEventListener('contextmenu', this.onContextMenu);
     this.domElement.addEventListener('wheel', this.onMouseWheel, { passive: false });
 
-    this.update();
+    this.domElement.style.touchAction = 'none'; // disable touch scroll
   }
 
-  dispose() {
+  disconnect() {
     this.domElement.removeEventListener('pointerdown', this.onPointerDown);
     this.domElement.removeEventListener('pointercancel', this.onPointerUp);
 
@@ -174,17 +174,16 @@ class OrbitControls extends EventDispatcher {
     this.domElement.ownerDocument.removeEventListener('pointermove', this.onPointerMove);
     this.domElement.ownerDocument.removeEventListener('pointerup', this.onPointerUp);
 
-    if (this._domElementKeyEvents !== null) {
-      this._domElementKeyEvents.removeEventListener('keydown', this.onKeyDown);
-      this._domElementKeyEvents = null;
-    }
+    this.stopListenToKeyEvents();
+
+    this.domElement.style.touchAction = 'auto';
+  }
+
+  dispose() {
+    this.disconnect();
 
     //this.dispatchEvent( { type: 'dispose' } ); // should this be added here?
   }
-
-  //
-  // public methods
-  //
 
   getPolarAngle() {
     return this._spherical.phi;
@@ -412,10 +411,6 @@ class OrbitControls extends EventDispatcher {
 
     return false;
   }
-
-  //
-  // private methods
-  //
 
   #getAutoRotationAngle(deltaTime) {
     if (deltaTime !== null) {
