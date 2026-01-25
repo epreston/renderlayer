@@ -8,10 +8,14 @@
 import { clamp } from '@renderlayer/math';
 
 class Spherical {
+  radius;
+  phi; // polar angle
+  theta; // azimuthal angle
+
   constructor(radius = 1, phi = 0, theta = 0) {
     this.radius = radius;
-    this.phi = phi; // polar angle
-    this.theta = theta; // azimuthal angle
+    this.phi = phi;
+    this.theta = theta;
 
     return this;
   }
