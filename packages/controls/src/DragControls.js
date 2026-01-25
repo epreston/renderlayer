@@ -1,26 +1,20 @@
-import { EventDispatcher, Raycaster } from '@renderlayer/core';
+import { Raycaster } from '@renderlayer/core';
 import { Matrix4, Plane, Vector2, Vector3 } from '@renderlayer/math';
 
-const MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
-const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
-const STATE = { NONE: -1, PAN: 0, ROTATE: 1 };
+import { MOUSE, TOUCH, Controls } from './Controls.js';
 
-class DragControls extends EventDispatcher {
-  state = STATE.NONE;
-
-  object;
-  domElement = null;
+class DragControls extends Controls {
+  state = _STATE.NONE;
 
   objects = [];
 
-  enabled = true;
   recursive = true;
   transformGroup = false;
   rotateSpeed = 1;
   raycaster = new Raycaster();
 
   mouseButtons = { LEFT: MOUSE.PAN, MIDDLE: MOUSE.PAN, RIGHT: MOUSE.ROTATE };
-  touches = { ONE: TOUCH.PAN };
+  touches = { ONE: TOUCH.PAN, TWO: TOUCH.PAN };
 
   onPointerMove;
   onPointerDown;
@@ -28,10 +22,9 @@ class DragControls extends EventDispatcher {
   onContextMenu;
 
   constructor(objects, camera, domElement = null) {
-    super();
+    super(camera, domElement);
 
     this.objects = objects;
-    this.object = camera;
 
     this.onPointerMove = this.#onPointerMove.bind(this);
     this.onPointerDown = this.#onPointerDown.bind(this);
@@ -44,8 +37,7 @@ class DragControls extends EventDispatcher {
   }
 
   connect(element) {
-    if (this.domElement !== null) this.disconnect();
-    this.domElement = element;
+    super.connect(element);
 
     this.domElement.addEventListener('pointermove', this.onPointerMove);
     this.domElement.addEventListener('pointerdown', this.onPointerDown);
@@ -109,16 +101,16 @@ class DragControls extends EventDispatcher {
     switch (action) {
       case MOUSE.PAN:
       case TOUCH.PAN:
-        this.state = STATE.PAN;
+        this.state = _STATE.PAN;
         break;
 
       case MOUSE.ROTATE:
       case TOUCH.ROTATE:
-        this.state = STATE.ROTATE;
+        this.state = _STATE.ROTATE;
         break;
 
       default:
-        this.state = STATE.NONE;
+        this.state = _STATE.NONE;
     }
   }
 
@@ -134,12 +126,12 @@ class DragControls extends EventDispatcher {
     raycaster.setFromCamera(_pointer, camera);
 
     if (_selected) {
-      if (this.state === STATE.PAN) {
+      if (this.state === _STATE.PAN) {
         if (raycaster.ray.intersectPlane(_plane, _intersection)) {
           _selected.position.copy(_intersection.sub(_offset).applyMatrix4(_inverseMatrix));
           this.dispatchEvent({ type: 'drag', object: _selected });
         }
-      } else if (this.state === STATE.ROTATE) {
+      } else if (this.state === _STATE.ROTATE) {
         _diff.subVectors(_pointer, _previousPointer).multiplyScalar(this.rotateSpeed);
         _selected.rotateOnWorldAxis(_up, _diff.x);
         _selected.rotateOnWorldAxis(_right.normalize(), -_diff.y);
@@ -221,14 +213,14 @@ class DragControls extends EventDispatcher {
       );
 
       if (raycaster.ray.intersectPlane(_plane, _intersection)) {
-        if (this.state === STATE.PAN) {
+        if (this.state === _STATE.PAN) {
           _inverseMatrix.copy(_selected.parent.matrixWorld).invert();
           _offset
             .copy(_intersection)
             .sub(_worldPosition.setFromMatrixPosition(_selected.matrixWorld));
           domElement.style.cursor = 'move';
           this.dispatchEvent({ type: 'dragstart', object: _selected });
-        } else if (this.state === STATE.ROTATE) {
+        } else if (this.state === _STATE.ROTATE) {
           // the controls only support Y+ up
           _up.set(0, 1, 0).applyQuaternion(camera.quaternion).normalize();
           _right.set(1, 0, 0).applyQuaternion(camera.quaternion).normalize();
@@ -250,7 +242,7 @@ class DragControls extends EventDispatcher {
     }
 
     this.domElement.style.cursor = _hovered ? 'pointer' : 'auto';
-    this.state = STATE.NONE;
+    this.state = _STATE.NONE;
   }
 
   #onContextMenu(event) {
@@ -284,5 +276,7 @@ const _right = new Vector3();
 let _selected = null;
 let _hovered = null;
 const _intersections = [];
+
+const _STATE = { NONE: -1, PAN: 0, ROTATE: 1 };
 
 export { DragControls };

@@ -12,7 +12,10 @@ describe('Controls', () => {
     const _mockDomElement = {
       style: vi.fn(),
       addEventListener: vi.fn(),
-      removeEventListener: vi.fn()
+      removeEventListener: vi.fn(),
+      ownerDocument: {
+        removeEventListener: vi.fn()
+      }
     };
 
     // prettier-ignore

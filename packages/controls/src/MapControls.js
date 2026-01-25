@@ -1,4 +1,5 @@
-import { MOUSE, TOUCH, OrbitControls } from './OrbitControls.js';
+import { OrbitControls } from './OrbitControls.js';
+import { MOUSE, TOUCH } from './Controls.js';
 
 // MapControls performs orbiting, dollying (zooming), and panning.
 // It maintains the "up" direction object.up (+Y by default).

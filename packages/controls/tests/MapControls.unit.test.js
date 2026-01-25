@@ -12,7 +12,10 @@ describe('Controls', () => {
     const _mockDomElement = {
       style: vi.fn(),
       addEventListener: vi.fn(),
-      removeEventListener: vi.fn()
+      removeEventListener: vi.fn(),
+      ownerDocument: {
+        removeEventListener: vi.fn()
+      }
     };
 
     // prettier-ignore
@@ -31,7 +34,7 @@ describe('Controls', () => {
 
     test('screenSpacePanning', () => {
       const object = new MapControls(_camera, _mockDomElement);
-      expect(object.screenSpacePanning).toBeFalsy(1);
+      expect(object.screenSpacePanning).toBeFalsy();
     });
 
     test('mouseButtons', () => {

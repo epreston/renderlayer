@@ -1,9 +1,7 @@
-import { EventDispatcher } from '@renderlayer/core';
 import { DEG2RAD, Plane, Quaternion, Ray, Vector2, Vector3 } from '@renderlayer/math';
-import { Spherical } from './Spherical.js';
 
-export const MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
-export const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
+import { MOUSE, TOUCH, Controls } from './Controls.js';
+import { Spherical } from './Spherical.js';
 
 // OrbitControls performs orbiting, dollying (zooming), and panning.
 // Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).
@@ -12,14 +10,8 @@ export const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
 //    Zoom - middle mouse, or mousewheel / touch: two-finger spread or squish
 //    Pan - right mouse, or left mouse + ctrl/meta/shiftKey, or arrow keys / touch: two-finger move
 
-class OrbitControls extends EventDispatcher {
+class OrbitControls extends Controls {
   state = _STATE.NONE;
-
-  object;
-  domElement = null;
-
-  // Set to false to disable this control
-  enabled = true;
 
   // "target" sets the location of focus, where the object orbits around
   target = new Vector3();
@@ -68,13 +60,8 @@ class OrbitControls extends EventDispatcher {
   autoRotate = false;
   autoRotateSpeed = 2.0; // 30 seconds per orbit when fps is 60
 
-  // The four arrow keys
   keys = { LEFT: 'ArrowLeft', UP: 'ArrowUp', RIGHT: 'ArrowRight', BOTTOM: 'ArrowDown' };
-
-  // Mouse buttons
   mouseButtons = { LEFT: MOUSE.ROTATE, MIDDLE: MOUSE.DOLLY, RIGHT: MOUSE.PAN };
-
-  // Touch fingers
   touches = { ONE: TOUCH.ROTATE, TWO: TOUCH.DOLLY_PAN };
 
   // for reset
@@ -122,9 +109,7 @@ class OrbitControls extends EventDispatcher {
   #pointerPositions = {};
 
   constructor(camera, domElement = null) {
-    super();
-
-    this.object = camera;
+    super(camera, domElement);
 
     // for reset
     this.#target0 = this.target.clone();
@@ -133,8 +118,6 @@ class OrbitControls extends EventDispatcher {
 
     this.#quat = new Quaternion().setFromUnitVectors(camera.up, new Vector3(0, 1, 0));
     this.#quatInverse = this.#quat.clone().invert();
-
-    // event listeners
 
     this.onPointerMove = this.#onPointerMove.bind(this);
     this.onPointerDown = this.#onPointerDown.bind(this);
@@ -152,8 +135,7 @@ class OrbitControls extends EventDispatcher {
   }
 
   connect(element) {
-    if (this.domElement !== null) this.disconnect();
-    this.domElement = element;
+    super.connect(element);
 
     this.domElement.addEventListener('pointerdown', this.onPointerDown);
     this.domElement.addEventListener('pointercancel', this.onPointerUp);
