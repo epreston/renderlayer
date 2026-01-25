@@ -3,7 +3,7 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
 import { PerspectiveCamera } from '@renderlayer/cameras';
-import { EventDispatcher } from '@renderlayer/core';
+import { EventDispatcher, Raycaster } from '@renderlayer/core';
 
 import { DragControls } from '../src/DragControls.js';
 
@@ -16,8 +16,8 @@ describe('Controls', () => {
     };
 
     // prettier-ignore
-    const _near = 1, far = 3, aspect = 16 / 9, fov = 60;
-    const _camera = new PerspectiveCamera(fov, aspect, _near, far);
+    const _near = 1, _far = 3, _aspect = 16 / 9, _fov = 60;
+    const _camera = new PerspectiveCamera(_fov, _aspect, _near, _far);
 
     test('constructor', () => {
       const object = new DragControls([], _camera, _mockDomElement);
@@ -27,6 +27,27 @@ describe('Controls', () => {
     test('extends', () => {
       const object = new DragControls([], _camera, _mockDomElement);
       expect(object).toBeInstanceOf(EventDispatcher);
+    });
+
+    test('state', () => {
+      const object = new DragControls([], _camera, _mockDomElement);
+      expect(object.state).toBeDefined();
+    });
+
+    test('object', () => {
+      const object = new DragControls([], _camera, _mockDomElement);
+      expect(object.object).toBeDefined();
+    });
+
+    test('domElement', () => {
+      const object = new DragControls([], _camera, _mockDomElement);
+      expect(object.domElement).toBeDefined();
+    });
+
+    test('objects', () => {
+      const object = new DragControls([], _camera, _mockDomElement);
+      expect(object.objects).toBeDefined();
+      expect(object.objects).toBeInstanceOf(Array);
     });
 
     test('enabled', () => {
@@ -44,34 +65,33 @@ describe('Controls', () => {
       expect(object.transformGroup).toBeFalsy();
     });
 
-    test('activate', () => {
+    test('rotateSpeed', () => {
       const object = new DragControls([], _camera, _mockDomElement);
-      expect(object.activate).toBeDefined();
-      expect(object.activate).toBeInstanceOf(Function);
+      expect(object.rotateSpeed).toBe(1);
     });
 
-    test('deactivate', () => {
+    test('raycaster', () => {
       const object = new DragControls([], _camera, _mockDomElement);
-      expect(object.deactivate).toBeDefined();
-      expect(object.deactivate).toBeInstanceOf(Function);
+      expect(object.raycaster).toBeDefined();
+      expect(object.raycaster).toBeInstanceOf(Raycaster);
+    });
+
+    test('connect', () => {
+      const object = new DragControls([], _camera, _mockDomElement);
+      expect(object.connect).toBeDefined();
+      expect(object.connect).toBeInstanceOf(Function);
+    });
+
+    test('disconnect', () => {
+      const object = new DragControls([], _camera, _mockDomElement);
+      expect(object.disconnect).toBeDefined();
+      expect(object.disconnect).toBeInstanceOf(Function);
     });
 
     test('dispose', () => {
       const object = new DragControls([], _camera, _mockDomElement);
       expect(object.dispose).toBeDefined();
       expect(object.dispose).toBeInstanceOf(Function);
-    });
-
-    test('getObjects', () => {
-      const object = new DragControls([], _camera, _mockDomElement);
-      expect(object.getObjects).toBeDefined();
-      expect(object.getObjects).toBeInstanceOf(Function);
-    });
-
-    test('getRaycaster', () => {
-      const object = new DragControls([], _camera, _mockDomElement);
-      expect(object.getRaycaster).toBeDefined();
-      expect(object.getRaycaster).toBeInstanceOf(Function);
     });
   });
 });
