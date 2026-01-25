@@ -12,7 +12,6 @@ class MapControls extends OrbitControls {
   screenSpacePanning = false;
 
   mouseButtons = { LEFT: MOUSE.PAN, MIDDLE: MOUSE.DOLLY, RIGHT: MOUSE.ROTATE };
-
   touches = { ONE: TOUCH.PAN, TWO: TOUCH.DOLLY_ROTATE };
 
   constructor(camera, domElement = null) {
