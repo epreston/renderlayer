@@ -3,14 +3,16 @@ import { Matrix4, RAD2DEG, DEG2RAD } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
 
 class Camera extends Object3D {
+  type = "Camera";
+  matrixWorldInverse = new Matrix4();
+  projectionMatrix = new Matrix4();
+  projectionMatrixInverse = new Matrix4();
+  coordinateSystem = WebGLCoordinateSystem;
   constructor() {
     super();
-    this.isCamera = true;
-    this.type = "Camera";
-    this.matrixWorldInverse = new Matrix4();
-    this.projectionMatrix = new Matrix4();
-    this.projectionMatrixInverse = new Matrix4();
-    this.coordinateSystem = WebGLCoordinateSystem;
+  }
+  get isCamera() {
+    return true;
   }
   copy(source, recursive) {
     super.copy(source, recursive);
@@ -38,19 +40,25 @@ class Camera extends Object3D {
 }
 
 class PerspectiveCamera extends Camera {
+  isPerspectiveCamera = true;
+  type = "PerspectiveCamera";
+  fov = 50;
+  zoom = 1;
+  near = 0.1;
+  far = 2e3;
+  focus = 10;
+  aspect = 1;
+  view = null;
+  filmGauge = 35;
+  // width of the film (default in millimetres)
+  filmOffset = 0;
+  // horizontal film offset (same unit as gauge)
   constructor(fov = 50, aspect = 1, near = 0.1, far = 2e3) {
     super();
-    this.isPerspectiveCamera = true;
-    this.type = "PerspectiveCamera";
     this.fov = fov;
-    this.zoom = 1;
+    this.aspect = aspect;
     this.near = near;
     this.far = far;
-    this.focus = 10;
-    this.aspect = aspect;
-    this.view = null;
-    this.filmGauge = 35;
-    this.filmOffset = 0;
     this.updateProjectionMatrix();
   }
   copy(source, recursive) {
@@ -201,31 +209,30 @@ class PerspectiveCamera extends Camera {
   }
 }
 
-const fov = -90;
-const aspect = 1;
 class CubeCamera extends Object3D {
+  type = "CubeCamera";
+  renderTarget;
+  coordinateSystem = null;
+  activeMipmapLevel = 0;
   constructor(near, far, renderTarget) {
     super();
-    this.type = "CubeCamera";
     this.renderTarget = renderTarget;
-    this.coordinateSystem = null;
-    this.activeMipmapLevel = 0;
-    const cameraPX = new PerspectiveCamera(fov, aspect, near, far);
+    const cameraPX = new PerspectiveCamera(_fov, _aspect, near, far);
     cameraPX.layers = this.layers;
     this.add(cameraPX);
-    const cameraNX = new PerspectiveCamera(fov, aspect, near, far);
+    const cameraNX = new PerspectiveCamera(_fov, _aspect, near, far);
     cameraNX.layers = this.layers;
     this.add(cameraNX);
-    const cameraPY = new PerspectiveCamera(fov, aspect, near, far);
+    const cameraPY = new PerspectiveCamera(_fov, _aspect, near, far);
     cameraPY.layers = this.layers;
     this.add(cameraPY);
-    const cameraNY = new PerspectiveCamera(fov, aspect, near, far);
+    const cameraNY = new PerspectiveCamera(_fov, _aspect, near, far);
     cameraNY.layers = this.layers;
     this.add(cameraNY);
-    const cameraPZ = new PerspectiveCamera(fov, aspect, near, far);
+    const cameraPZ = new PerspectiveCamera(_fov, _aspect, near, far);
     cameraPZ.layers = this.layers;
     this.add(cameraPZ);
-    const cameraNZ = new PerspectiveCamera(fov, aspect, near, far);
+    const cameraNZ = new PerspectiveCamera(_fov, _aspect, near, far);
     cameraNZ.layers = this.layers;
     this.add(cameraNZ);
   }
@@ -300,14 +307,22 @@ class CubeCamera extends Object3D {
     renderTarget.texture.needsPMREMUpdate = true;
   }
 }
+const _fov = -90;
+const _aspect = 1;
 
 class OrthographicCamera extends Camera {
+  isOrthographicCamera = true;
+  type = "OrthographicCamera";
+  zoom = 1;
+  view = null;
+  left = -1;
+  right = 1;
+  top = 1;
+  bottom = -1;
+  near = 0.1;
+  far = 2e3;
   constructor(left = -1, right = 1, top = 1, bottom = -1, near = 0.1, far = 2e3) {
     super();
-    this.isOrthographicCamera = true;
-    this.type = "OrthographicCamera";
-    this.zoom = 1;
-    this.view = null;
     this.left = left;
     this.right = right;
     this.top = top;

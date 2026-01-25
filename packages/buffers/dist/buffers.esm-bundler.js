@@ -93,23 +93,25 @@ function fromHalfFloat(val) {
   return _tables.floatView[0];
 }
 
-const _vector$2 = /* @__PURE__ */ new Vector3();
-const _vector2 = /* @__PURE__ */ new Vector2();
 class BufferAttribute {
+  isBufferAttribute = true;
+  name = "";
+  array;
+  itemSize;
+  count;
+  normalized;
+  usage = StaticDrawUsage;
+  updateRange = { offset: 0, count: -1 };
+  gpuType = FloatType;
+  version = 0;
   constructor(array, itemSize, normalized = false) {
     if (Array.isArray(array)) {
       throw new TypeError("BufferAttribute: array should be a Typed Array.");
     }
-    this.isBufferAttribute = true;
-    this.name = "";
     this.array = array;
     this.itemSize = itemSize;
     this.count = array !== void 0 ? array.length / itemSize : 0;
     this.normalized = normalized;
-    this.usage = StaticDrawUsage;
-    this.updateRange = { offset: 0, count: -1 };
-    this.gpuType = FloatType;
-    this.version = 0;
   }
   onUploadCallback() {
   }
@@ -142,42 +144,42 @@ class BufferAttribute {
     this.array.set(array);
     return this;
   }
-  applyMatrix3(m) {
+  applyMatrix3(matrix) {
     if (this.itemSize === 2) {
       for (let i = 0, l = this.count; i < l; i++) {
         _vector2.fromBufferAttribute(this, i);
-        _vector2.applyMatrix3(m);
+        _vector2.applyMatrix3(matrix);
         this.setXY(i, _vector2.x, _vector2.y);
       }
     } else if (this.itemSize === 3) {
       for (let i = 0, l = this.count; i < l; i++) {
         _vector$2.fromBufferAttribute(this, i);
-        _vector$2.applyMatrix3(m);
+        _vector$2.applyMatrix3(matrix);
         this.setXYZ(i, _vector$2.x, _vector$2.y, _vector$2.z);
       }
     }
     return this;
   }
-  applyMatrix4(m) {
+  applyMatrix4(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector$2.fromBufferAttribute(this, i);
-      _vector$2.applyMatrix4(m);
+      _vector$2.applyMatrix4(matrix);
       this.setXYZ(i, _vector$2.x, _vector$2.y, _vector$2.z);
     }
     return this;
   }
-  applyNormalMatrix(m) {
+  applyNormalMatrix(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector$2.fromBufferAttribute(this, i);
-      _vector$2.applyNormalMatrix(m);
+      _vector$2.applyNormalMatrix(matrix);
       this.setXYZ(i, _vector$2.x, _vector$2.y, _vector$2.z);
     }
     return this;
   }
-  transformDirection(m) {
+  transformDirection(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector$2.fromBufferAttribute(this, i);
-      _vector$2.transformDirection(m);
+      _vector$2.transformDirection(matrix);
       this.setXYZ(i, _vector$2.x, _vector$2.y, _vector$2.z);
     }
     return this;
@@ -421,31 +423,29 @@ class Float64BufferAttribute extends BufferAttribute {
     super(new Float64Array(array), itemSize, normalized);
   }
 }
+const _vector$2 = /* @__PURE__ */ new Vector3();
+const _vector2 = /* @__PURE__ */ new Vector2();
 
-let _id = 0;
-const _m1 = /* @__PURE__ */ new Matrix4();
-const _obj = /* @__PURE__ */ new Object3D();
-const _offset = /* @__PURE__ */ new Vector3();
-const _box = /* @__PURE__ */ new Box3();
-const _boxMorphTargets = /* @__PURE__ */ new Box3();
-const _vector$1 = /* @__PURE__ */ new Vector3();
 class BufferGeometry extends EventDispatcher {
+  isBufferGeometry = true;
+  #id = _bufferGeometryId++;
+  uuid = generateUUID();
+  name = "";
+  type = "BufferGeometry";
+  index = null;
+  attributes = {};
+  morphAttributes = {};
+  morphTargetsRelative = false;
+  groups = [];
+  boundingBox = null;
+  boundingSphere = null;
+  drawRange = { start: 0, count: Infinity };
+  userData = {};
   constructor() {
     super();
-    this.isBufferGeometry = true;
-    this.type = "BufferGeometry";
-    Object.defineProperty(this, "id", { value: _id++ });
-    this.uuid = generateUUID();
-    this.name = "";
-    this.index = null;
-    this.attributes = {};
-    this.morphAttributes = {};
-    this.morphTargetsRelative = false;
-    this.groups = [];
-    this.boundingBox = null;
-    this.boundingSphere = null;
-    this.drawRange = { start: 0, count: Infinity };
-    this.userData = {};
+  }
+  get id() {
+    return this.#id;
   }
   /** @returns {Uint32BufferAttribute | Uint16BufferAttribute} */
   getIndex() {
@@ -516,8 +516,8 @@ class BufferGeometry extends EventDispatcher {
     }
     return this;
   }
-  applyQuaternion(q) {
-    _m1.makeRotationFromQuaternion(q);
+  applyQuaternion(quaternion) {
+    _m1.makeRotationFromQuaternion(quaternion);
     this.applyMatrix4(_m1);
     return this;
   }
@@ -1009,11 +1009,19 @@ class BufferGeometry extends EventDispatcher {
     this.dispatchEvent({ type: "dispose" });
   }
 }
+let _bufferGeometryId = 0;
+const _m1 = /* @__PURE__ */ new Matrix4();
+const _obj = /* @__PURE__ */ new Object3D();
+const _offset = /* @__PURE__ */ new Vector3();
+const _box = /* @__PURE__ */ new Box3();
+const _boxMorphTargets = /* @__PURE__ */ new Box3();
+const _vector$1 = /* @__PURE__ */ new Vector3();
 
 class InstancedBufferAttribute extends BufferAttribute {
+  isInstancedBufferAttribute = true;
+  meshPerAttribute = 1;
   constructor(array, itemSize, normalized, meshPerAttribute = 1) {
     super(array, itemSize, normalized);
-    this.isInstancedBufferAttribute = true;
     this.meshPerAttribute = meshPerAttribute;
   }
   copy(source) {
@@ -1030,15 +1038,18 @@ class InstancedBufferAttribute extends BufferAttribute {
 }
 
 class InterleavedBuffer {
+  isInterleavedBuffer = true;
+  uuid = generateUUID();
+  array;
+  stride;
+  count;
+  usage = StaticDrawUsage;
+  updateRange = { offset: 0, count: -1 };
+  version = 0;
   constructor(array, stride) {
-    this.isInterleavedBuffer = true;
     this.array = array;
     this.stride = stride;
     this.count = array !== void 0 ? array.length / stride : 0;
-    this.usage = StaticDrawUsage;
-    this.updateRange = { offset: 0, count: -1 };
-    this.version = 0;
-    this.uuid = generateUUID();
   }
   onUploadCallback() {
   }
@@ -1106,11 +1117,14 @@ class InterleavedBuffer {
   }
 }
 
-const _vector = /* @__PURE__ */ new Vector3();
 class InterleavedBufferAttribute {
+  isInterleavedBufferAttribute = true;
+  name = "";
+  data;
+  itemSize;
+  offset;
+  normalized = false;
   constructor(interleavedBuffer, itemSize, offset, normalized = false) {
-    this.isInterleavedBufferAttribute = true;
-    this.name = "";
     this.data = interleavedBuffer;
     this.itemSize = itemSize;
     this.offset = offset;
@@ -1125,29 +1139,29 @@ class InterleavedBufferAttribute {
   set needsUpdate(value) {
     this.data.needsUpdate = value;
   }
-  /** @param {import('@renderlayer/math').Matrix4} m */
-  applyMatrix4(m) {
+  /** @param {import('@renderlayer/math').Matrix4} matrix */
+  applyMatrix4(matrix) {
     for (let i = 0, l = this.data.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
-      _vector.applyMatrix4(m);
+      _vector.applyMatrix4(matrix);
       this.setXYZ(i, _vector.x, _vector.y, _vector.z);
     }
     return this;
   }
-  /** @param {import('@renderlayer/math').Matrix3} m */
-  applyNormalMatrix(m) {
+  /** @param {import('@renderlayer/math').Matrix3} matrix */
+  applyNormalMatrix(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
-      _vector.applyNormalMatrix(m);
+      _vector.applyNormalMatrix(matrix);
       this.setXYZ(i, _vector.x, _vector.y, _vector.z);
     }
     return this;
   }
-  /** @param {import('@renderlayer/math').Matrix4} m */
-  transformDirection(m) {
+  /** @param {import('@renderlayer/math').Matrix4} matrix */
+  transformDirection(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
-      _vector.transformDirection(m);
+      _vector.transformDirection(matrix);
       this.setXYZ(i, _vector.x, _vector.y, _vector.z);
     }
     return this;
@@ -1291,6 +1305,7 @@ class InterleavedBufferAttribute {
     }
   }
 }
+const _vector = /* @__PURE__ */ new Vector3();
 
 function mergeGeometries(geometries, useGroups = false) {
   const isIndexed = geometries[0].index !== null;
@@ -2043,11 +2058,11 @@ function toCreasedNormals(geometry, creaseAngle = Math.PI / 3) {
 }
 
 class InstancedBufferGeometry extends BufferGeometry {
+  isInstancedBufferGeometry = true;
+  type = "InstancedBufferGeometry";
+  instanceCount = Infinity;
   constructor() {
     super();
-    this.isInstancedBufferGeometry = true;
-    this.type = "InstancedBufferGeometry";
-    this.instanceCount = Infinity;
   }
   copy(source) {
     super.copy(source);
@@ -2063,9 +2078,10 @@ class InstancedBufferGeometry extends BufferGeometry {
 }
 
 class InstancedInterleavedBuffer extends InterleavedBuffer {
+  isInstancedInterleavedBuffer = true;
+  meshPerAttribute = 1;
   constructor(array, stride, meshPerAttribute = 1) {
     super(array, stride);
-    this.isInstancedInterleavedBuffer = true;
     this.meshPerAttribute = meshPerAttribute;
   }
   copy(source) {

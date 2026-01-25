@@ -2,18 +2,22 @@ import { ZeroCurvatureEnding, WrapAroundEnding, ZeroSlopeEnding } from '@renderl
 import { Quaternion } from '@renderlayer/math';
 
 class Interpolant {
+  parameterPositions;
+  #cachedIndex = 0;
+  resultBuffer;
+  sampleValues;
+  valueSize;
+  settings = null;
+  DefaultSettings_ = {};
   constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
     this.parameterPositions = parameterPositions;
-    this._cachedIndex = 0;
     this.resultBuffer = resultBuffer !== void 0 ? resultBuffer : new sampleValues.constructor(sampleSize);
     this.sampleValues = sampleValues;
     this.valueSize = sampleSize;
-    this.settings = null;
-    this.DefaultSettings_ = {};
   }
   evaluate(t) {
     const pp = this.parameterPositions;
-    let i1 = this._cachedIndex;
+    let i1 = this.#cachedIndex;
     let t1 = pp[i1];
     let t0 = pp[i1 - 1];
     validate_interval: {
@@ -25,7 +29,7 @@ class Interpolant {
               if (t1 === void 0) {
                 if (t < t0) break forward_scan;
                 i1 = pp.length;
-                this._cachedIndex = i1;
+                this.#cachedIndex = i1;
                 return this.copySampleValue_(i1 - 1);
               }
               if (i1 === giveUpAt) break;
@@ -46,7 +50,7 @@ class Interpolant {
             }
             for (let giveUpAt = i1 - 2; ; ) {
               if (t0 === void 0) {
-                this._cachedIndex = 0;
+                this.#cachedIndex = 0;
                 return this.copySampleValue_(0);
               }
               if (i1 === giveUpAt) break;
@@ -73,16 +77,16 @@ class Interpolant {
         t1 = pp[i1];
         t0 = pp[i1 - 1];
         if (t0 === void 0) {
-          this._cachedIndex = 0;
+          this.#cachedIndex = 0;
           return this.copySampleValue_(0);
         }
         if (t1 === void 0) {
           i1 = pp.length;
-          this._cachedIndex = i1;
+          this.#cachedIndex = i1;
           return this.copySampleValue_(i1 - 1);
         }
       }
-      this._cachedIndex = i1;
+      this.#cachedIndex = i1;
       this.intervalChanged_(i1, t0, t1);
     }
     return this.interpolate_(i1, t0, t, t1);
@@ -109,16 +113,17 @@ class Interpolant {
 }
 
 class CubicInterpolant extends Interpolant {
+  _weightPrev = -0;
+  // see unit test
+  _offsetPrev = -0;
+  _weightNext = -0;
+  _offsetNext = -0;
+  DefaultSettings_ = {
+    endingStart: ZeroCurvatureEnding,
+    endingEnd: ZeroCurvatureEnding
+  };
   constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
     super(parameterPositions, sampleValues, sampleSize, resultBuffer);
-    this._weightPrev = -0;
-    this._offsetPrev = -0;
-    this._weightNext = -0;
-    this._offsetNext = -0;
-    this.DefaultSettings_ = {
-      endingStart: ZeroCurvatureEnding,
-      endingEnd: ZeroCurvatureEnding
-    };
   }
   intervalChanged_(i1, t0, t1) {
     const pp = this.parameterPositions;

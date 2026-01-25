@@ -1,4 +1,4 @@
-import { InterpolateSmooth, InterpolateLinear, InterpolateDiscrete } from '@renderlayer/shared';
+import { InterpolateLinear, InterpolateSmooth, InterpolateDiscrete } from '@renderlayer/shared';
 import { DiscreteInterpolant, LinearInterpolant, CubicInterpolant, QuaternionLinearInterpolant } from '@renderlayer/interpolants';
 
 function convertArray(array, type, forceClone) {
@@ -15,6 +15,15 @@ function isTypedArray(object) {
 }
 
 class KeyframeTrack {
+  name;
+  times;
+  values;
+  TimeBufferType = Float32Array;
+  /** @type {Float32ArrayConstructor | ArrayConstructor} */
+  ValueBufferType = Float32Array;
+  DefaultInterpolation = InterpolateLinear;
+  // overwritten by subclasses
+  ValueTypeName = "undefined";
   constructor(name, times, values, interpolation) {
     if (name === void 0) throw new Error("KeyframeTrack: track name is undefined");
     if (times === void 0 || times.length === 0)
@@ -252,45 +261,41 @@ class KeyframeTrack {
     return track;
   }
 }
-KeyframeTrack.prototype.TimeBufferType = Float32Array;
-KeyframeTrack.prototype.ValueBufferType = Float32Array;
-KeyframeTrack.prototype.DefaultInterpolation = InterpolateLinear;
 
 class BooleanKeyframeTrack extends KeyframeTrack {
+  ValueTypeName = "bool";
+  ValueBufferType = Array;
+  DefaultInterpolation = InterpolateDiscrete;
+  InterpolantFactoryMethodLinear = void 0;
+  InterpolantFactoryMethodSmooth = void 0;
 }
-BooleanKeyframeTrack.prototype.ValueTypeName = "bool";
-BooleanKeyframeTrack.prototype.ValueBufferType = Array;
-BooleanKeyframeTrack.prototype.DefaultInterpolation = InterpolateDiscrete;
-BooleanKeyframeTrack.prototype.InterpolantFactoryMethodLinear = void 0;
-BooleanKeyframeTrack.prototype.InterpolantFactoryMethodSmooth = void 0;
 
 class ColorKeyframeTrack extends KeyframeTrack {
+  ValueTypeName = "color";
 }
-ColorKeyframeTrack.prototype.ValueTypeName = "color";
 
 class NumberKeyframeTrack extends KeyframeTrack {
+  ValueTypeName = "number";
 }
-NumberKeyframeTrack.prototype.ValueTypeName = "number";
 
 class QuaternionKeyframeTrack extends KeyframeTrack {
+  ValueTypeName = "quaternion";
+  InterpolantFactoryMethodSmooth = void 0;
   InterpolantFactoryMethodLinear(result) {
     return new QuaternionLinearInterpolant(this.times, this.values, this.getValueSize(), result);
   }
 }
-QuaternionKeyframeTrack.prototype.ValueTypeName = "quaternion";
-QuaternionKeyframeTrack.prototype.DefaultInterpolation = InterpolateLinear;
-QuaternionKeyframeTrack.prototype.InterpolantFactoryMethodSmooth = void 0;
 
 class StringKeyframeTrack extends KeyframeTrack {
+  ValueTypeName = "string";
+  ValueBufferType = Array;
+  DefaultInterpolation = InterpolateDiscrete;
+  InterpolantFactoryMethodLinear = void 0;
+  InterpolantFactoryMethodSmooth = void 0;
 }
-StringKeyframeTrack.prototype.ValueTypeName = "string";
-StringKeyframeTrack.prototype.ValueBufferType = Array;
-StringKeyframeTrack.prototype.DefaultInterpolation = InterpolateDiscrete;
-StringKeyframeTrack.prototype.InterpolantFactoryMethodLinear = void 0;
-StringKeyframeTrack.prototype.InterpolantFactoryMethodSmooth = void 0;
 
 class VectorKeyframeTrack extends KeyframeTrack {
+  ValueTypeName = "vector";
 }
-VectorKeyframeTrack.prototype.ValueTypeName = "vector";
 
 export { BooleanKeyframeTrack, ColorKeyframeTrack, KeyframeTrack, NumberKeyframeTrack, QuaternionKeyframeTrack, StringKeyframeTrack, VectorKeyframeTrack };
