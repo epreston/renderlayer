@@ -78,9 +78,9 @@ class OrbitControls extends EventDispatcher {
   touches = { ONE: TOUCH.ROTATE, TWO: TOUCH.DOLLY_PAN };
 
   // for reset
-  target0;
-  position0;
-  zoom0;
+  _target0;
+  _position0;
+  _zoom0;
 
   // the target DOM element for key events
   _domElementKeyEvents = null;
@@ -129,9 +129,9 @@ class OrbitControls extends EventDispatcher {
     this.domElement.style.touchAction = 'none'; // disable touch scroll
 
     // for reset
-    this.target0 = this.target.clone();
-    this.position0 = this.object.position.clone();
-    this.zoom0 = this.object.zoom;
+    this._target0 = this.target.clone();
+    this._position0 = this.object.position.clone();
+    this._zoom0 = this.object.zoom;
 
     this._quat = new Quaternion().setFromUnitVectors(camera.up, new Vector3(0, 1, 0));
     this._quatInverse = this._quat.clone().invert();
@@ -211,15 +211,15 @@ class OrbitControls extends EventDispatcher {
   }
 
   saveState() {
-    this.target0.copy(this.target);
-    this.position0.copy(this.object.position);
-    this.zoom0 = this.object.zoom;
+    this._target0.copy(this.target);
+    this._position0.copy(this.object.position);
+    this._zoom0 = this.object.zoom;
   }
 
   reset() {
-    this.target.copy(this.target0);
-    this.object.position.copy(this.position0);
-    this.object.zoom = this.zoom0;
+    this.target.copy(this._target0);
+    this.object.position.copy(this._position0);
+    this.object.zoom = this._zoom0;
 
     this.object.updateProjectionMatrix();
     this.dispatchEvent(_changeEvent);
