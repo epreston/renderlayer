@@ -43,9 +43,9 @@ class DragControls extends EventDispatcher {
     }
   }
 
-  connect(domElement) {
+  connect(element) {
     if (this.domElement !== null) this.disconnect();
-    this.domElement = domElement;
+    this.domElement = element;
 
     this.domElement.addEventListener('pointermove', this.onPointerMove);
     this.domElement.addEventListener('pointerdown', this.onPointerDown);
