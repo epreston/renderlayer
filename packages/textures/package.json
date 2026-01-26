@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/textures",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "@renderlayer/textures",
   "module": "./dist/textures.esm-bundler.js",
   "exports": "./dist/textures.esm-bundler.js",
@@ -20,7 +20,9 @@
     "directory": "packages/textures"
   },
   "keywords": [
-    "renderlayer", "textures", "cube"
+    "renderlayer",
+    "textures",
+    "cube"
   ],
   "author": "Ed Preston",
   "license": "MIT",
