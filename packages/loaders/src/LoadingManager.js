@@ -1,4 +1,9 @@
 class LoadingManager {
+  onStart;
+  onLoad;
+  onProgress;
+  onError;
+
   constructor(onLoad, onProgress, onError) {
     const scope = this;
 
