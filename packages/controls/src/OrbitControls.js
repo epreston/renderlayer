@@ -4,7 +4,7 @@ import { MOUSE, TOUCH, Controls } from './Controls.js';
 import { Spherical } from './Spherical.js';
 
 // OrbitControls performs orbiting, dollying (zooming), and panning.
-// Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).
+// It maintains the "up" direction object.up (+Y by default).
 //
 //    Orbit - left mouse / touch: one-finger move
 //    Zoom - middle mouse, or mousewheel / touch: two-finger spread or squish
