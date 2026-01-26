@@ -2,15 +2,15 @@ import { Color } from '@renderlayer/math';
 import { Material } from './Material.js';
 
 class ShadowMaterial extends Material {
+  type = 'ShadowMaterial';
+
+  color = new Color(0x000000);
+  transparent = true;
+
+  fog = true;
+
   constructor(parameters) {
     super();
-
-    this.type = 'ShadowMaterial';
-
-    this.color = new Color(0x000000);
-    this.transparent = true;
-
-    this.fog = true;
 
     this.setValues(parameters);
   }
