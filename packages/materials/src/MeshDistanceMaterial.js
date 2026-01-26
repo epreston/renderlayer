@@ -4,7 +4,6 @@ class MeshDistanceMaterial extends Material {
   constructor(parameters) {
     super();
 
-    this.isMeshDistanceMaterial = true;
     this.type = 'MeshDistanceMaterial';
 
     this.map = null;
@@ -16,6 +15,10 @@ class MeshDistanceMaterial extends Material {
     this.displacementBias = 0;
 
     this.setValues(parameters);
+  }
+
+  get isMeshDistanceMaterial() {
+    return true;
   }
 
   /**

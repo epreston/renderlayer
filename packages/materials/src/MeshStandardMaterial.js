@@ -6,7 +6,6 @@ class MeshStandardMaterial extends Material {
   constructor(parameters) {
     super();
 
-    this.isMeshStandardMaterial = true;
     this.type = 'MeshStandardMaterial';
 
     this.defines = { STANDARD: '' };
@@ -55,6 +54,10 @@ class MeshStandardMaterial extends Material {
     this.fog = true;
 
     this.setValues(parameters);
+  }
+
+  get isMeshStandardMaterial() {
+    return true;
   }
 
   /**

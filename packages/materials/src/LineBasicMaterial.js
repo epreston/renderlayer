@@ -5,7 +5,6 @@ class LineBasicMaterial extends Material {
   constructor(parameters) {
     super();
 
-    this.isLineBasicMaterial = true;
     this.type = 'LineBasicMaterial';
 
     this.color = new Color(0xffffff);
@@ -14,6 +13,10 @@ class LineBasicMaterial extends Material {
     this.fog = true;
 
     this.setValues(parameters);
+  }
+
+  get isLineBasicMaterial() {
+    return true;
   }
 
   /**

@@ -7,7 +7,6 @@ class MeshBasicMaterial extends Material {
   constructor(parameters) {
     super();
 
-    this.isMeshBasicMaterial = true;
     this.type = 'MeshBasicMaterial';
 
     this.color = new Color(0xffffff); // emissive
@@ -35,6 +34,10 @@ class MeshBasicMaterial extends Material {
     this.fog = true;
 
     this.setValues(parameters);
+  }
+
+  get isMeshBasicMaterial() {
+    return true;
   }
 
   /**

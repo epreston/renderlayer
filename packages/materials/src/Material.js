@@ -21,7 +21,6 @@ class Material extends EventDispatcher {
     this.uuid = generateUUID();
 
     this.name = '';
-    this.isMaterial = true;
     this.type = 'Material';
 
     this.blending = NormalBlending;
@@ -84,6 +83,10 @@ class Material extends EventDispatcher {
     this.version = 0;
 
     this._alphaTest = 0;
+  }
+
+  get isMaterial() {
+    return true;
   }
 
   get alphaTest() {

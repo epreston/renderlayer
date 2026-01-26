@@ -5,7 +5,6 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
   constructor(parameters) {
     super();
 
-    this.isMeshPhysicalMaterial = true;
     this.type = 'MeshPhysicalMaterial';
 
     this.defines = {
@@ -53,6 +52,10 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     this._transmission = 0;
 
     this.setValues(parameters);
+  }
+
+  get isMeshPhysicalMaterial() {
+    return true;
   }
 
   get anisotropy() {

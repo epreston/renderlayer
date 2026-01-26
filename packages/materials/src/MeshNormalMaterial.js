@@ -6,7 +6,6 @@ class MeshNormalMaterial extends Material {
   constructor(parameters) {
     super();
 
-    this.isMeshNormalMaterial = true;
     this.type = 'MeshNormalMaterial';
 
     this.bumpMap = null;
@@ -26,6 +25,10 @@ class MeshNormalMaterial extends Material {
     this.flatShading = false;
 
     this.setValues(parameters);
+  }
+
+  get isMeshNormalMaterial() {
+    return true;
   }
 
   /**

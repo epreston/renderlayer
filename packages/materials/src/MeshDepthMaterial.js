@@ -5,7 +5,6 @@ class MeshDepthMaterial extends Material {
   constructor(parameters) {
     super();
 
-    this.isMeshDepthMaterial = true;
     this.type = 'MeshDepthMaterial';
 
     this.depthPacking = BasicDepthPacking;
@@ -22,6 +21,10 @@ class MeshDepthMaterial extends Material {
     this.wireframeLinewidth = 1; // will almost always be 1
 
     this.setValues(parameters);
+  }
+
+  get isMeshDepthMaterial() {
+    return true;
   }
 
   /**

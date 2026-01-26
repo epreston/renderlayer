@@ -9,7 +9,6 @@ class ShaderMaterial extends Material {
   constructor(parameters) {
     super();
 
-    this.isShaderMaterial = true;
     this.type = 'ShaderMaterial';
 
     this.defines = {};
@@ -53,6 +52,10 @@ class ShaderMaterial extends Material {
     if (parameters !== undefined) {
       this.setValues(parameters);
     }
+  }
+
+  get isShaderMaterial() {
+    return true;
   }
 
   /**

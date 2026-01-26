@@ -5,7 +5,6 @@ class SpriteMaterial extends Material {
   constructor(parameters) {
     super();
 
-    this.isSpriteMaterial = true;
     this.type = 'SpriteMaterial';
 
     this.transparent = true;
@@ -18,6 +17,10 @@ class SpriteMaterial extends Material {
     this.fog = true;
 
     this.setValues(parameters);
+  }
+
+  get isSpriteMaterial() {
+    return true;
   }
 
   /**

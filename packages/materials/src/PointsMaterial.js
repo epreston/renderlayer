@@ -5,7 +5,6 @@ class PointsMaterial extends Material {
   constructor(parameters) {
     super();
 
-    this.isPointsMaterial = true;
     this.type = 'PointsMaterial';
 
     this.color = new Color(0xffffff);
@@ -19,6 +18,10 @@ class PointsMaterial extends Material {
     this.fog = true;
 
     this.setValues(parameters);
+  }
+
+  get isPointsMaterial() {
+    return true;
   }
 
   /**
