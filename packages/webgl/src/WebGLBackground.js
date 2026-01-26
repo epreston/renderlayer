@@ -11,7 +11,7 @@ class WebGLBackground {
   #cubeuvmaps;
   #state;
   #objects;
-  #alpha;
+  // #alpha;
   #premultipliedAlpha;
 
   #clearColor = new Color(0x000000);
@@ -30,7 +30,7 @@ class WebGLBackground {
     this.#cubeuvmaps = cubeuvmaps;
     this.#state = state;
     this.#objects = objects;
-    this.#alpha = alpha;
+    // this.#alpha = alpha;
     this.#premultipliedAlpha = premultipliedAlpha;
 
     this.#clearAlpha = alpha === true ? 0 : 1;
