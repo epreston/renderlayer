@@ -2,23 +2,23 @@ import { Object3D } from '@renderlayer/core';
 import { Vector3 } from '@renderlayer/math';
 
 class LOD extends Object3D {
+  type = 'LOD';
+
+  autoUpdate = true;
+
+  #levels = [];
+  #currentLevel = 0;
+
   constructor() {
     super();
+  }
 
-    this._currentLevel = 0;
-    this.type = 'LOD';
+  get isLOD() {
+    return true;
+  }
 
-    Object.defineProperties(this, {
-      levels: {
-        enumerable: true,
-        value: []
-      },
-      isLOD: {
-        value: true
-      }
-    });
-
-    this.autoUpdate = true;
+  get levels() {
+    return this.#levels;
   }
 
   copy(source) {
@@ -58,7 +58,7 @@ class LOD extends Object3D {
   }
 
   getCurrentLevel() {
-    return this._currentLevel;
+    return this.#currentLevel;
   }
 
   getObjectForDistance(distance) {
@@ -127,7 +127,7 @@ class LOD extends Object3D {
         }
       }
 
-      this._currentLevel = i - 1;
+      this.#currentLevel = i - 1;
 
       for (; i < l; i++) {
         levels[i].object.visible = false;
