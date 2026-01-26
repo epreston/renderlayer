@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/loaders",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "@renderlayer/loaders",
   "module": "./dist/loaders.esm-bundler.js",
   "exports": "./dist/loaders.esm-bundler.js",
@@ -20,7 +20,9 @@
     "directory": "packages/loaders"
   },
   "keywords": [
-    "renderlayer", "loaders", "cache"
+    "renderlayer",
+    "loaders",
+    "cache"
   ],
   "author": "Ed Preston",
   "license": "MIT",
