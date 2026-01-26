@@ -3,17 +3,14 @@ import { Object3D } from '@renderlayer/core';
 import { LineBasicMaterial } from '@renderlayer/materials';
 import { Matrix4, Ray, Sphere, Vector3 } from '@renderlayer/math';
 
-const _start = /*@__PURE__*/ new Vector3();
-const _end = /*@__PURE__*/ new Vector3();
-const _inverseMatrix = /*@__PURE__*/ new Matrix4();
-const _ray = /*@__PURE__*/ new Ray();
-const _sphere = /*@__PURE__*/ new Sphere();
-
 class Line extends Object3D {
+  type = 'Line';
+
+  geometry;
+  material;
+
   constructor(geometry = new BufferGeometry(), material = new LineBasicMaterial()) {
     super();
-
-    this.type = 'Line';
 
     this.geometry = geometry;
     this.material = material;
@@ -182,5 +179,11 @@ class Line extends Object3D {
     }
   }
 }
+
+const _start = /*@__PURE__*/ new Vector3();
+const _end = /*@__PURE__*/ new Vector3();
+const _inverseMatrix = /*@__PURE__*/ new Matrix4();
+const _ray = /*@__PURE__*/ new Ray();
+const _sphere = /*@__PURE__*/ new Sphere();
 
 export { Line };
