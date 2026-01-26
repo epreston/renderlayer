@@ -2,19 +2,19 @@ import { Color } from '@renderlayer/math';
 import { Material } from './Material.js';
 
 class SpriteMaterial extends Material {
+  type = 'SpriteMaterial';
+
+  transparent = true;
+
+  color = new Color(0xffffff);
+  map = null;
+  alphaMap = null;
+  rotation = 0;
+  sizeAttenuation = true;
+  fog = true;
+
   constructor(parameters) {
     super();
-
-    this.type = 'SpriteMaterial';
-
-    this.transparent = true;
-
-    this.color = new Color(0xffffff);
-    this.map = null;
-    this.alphaMap = null;
-    this.rotation = 0;
-    this.sizeAttenuation = true;
-    this.fog = true;
 
     this.setValues(parameters);
   }
