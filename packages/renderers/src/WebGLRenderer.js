@@ -215,6 +215,7 @@ class WebGLRenderer {
 
     // initialize
 
+    /** @type {?WebGL2RenderingContext} */
     let _gl = context;
 
     function getContext(contextNames, contextAttributes) {
