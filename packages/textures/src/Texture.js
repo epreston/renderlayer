@@ -14,9 +14,64 @@ import {
 
 import { Source } from './Source.js';
 
-let _textureId = 0;
-
 class Texture extends EventDispatcher {
+  static DEFAULT_IMAGE = null;
+  static DEFAULT_MAPPING = UVMapping;
+  static DEFAULT_ANISOTROPY = 1;
+
+  #id = _textureId++;
+
+  uuid = generateUUID();
+
+  name = '';
+
+  source;
+  mipmaps = [];
+
+  mapping = Texture.DEFAULT_MAPPING;
+  channel = 0;
+
+  wrapS = ClampToEdgeWrapping;
+  wrapT = ClampToEdgeWrapping;
+
+  magFilter = LinearFilter;
+  minFilter = LinearMipmapLinearFilter;
+
+  anisotropy = Texture.DEFAULT_ANISOTROPY;
+
+  format = RGBAFormat;
+  internalFormat = null;
+  type = UnsignedByteType;
+
+  offset = new Vector2(0, 0);
+  repeat = new Vector2(1, 1);
+  center = new Vector2(0, 0);
+  rotation = 0;
+
+  matrixAutoUpdate = true;
+  matrix = new Matrix3();
+
+  generateMipmaps = true;
+  premultiplyAlpha = false;
+  flipY = true;
+
+  // valid values: 1, 2, 4, 8
+  // see http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml
+  unpackAlignment = 4;
+
+  colorSpace = NoColorSpace;
+
+  userData = {};
+
+  version = 0;
+  onUpdate = null;
+
+  isRenderTargetTexture = false;
+
+  // indicates whether this texture should be processed by
+  // PMREMGenerator or not (only relevant for render target textures)
+  needsPMREMUpdate = false;
+
   constructor(
     image = Texture.DEFAULT_IMAGE,
     mapping = Texture.DEFAULT_MAPPING,
@@ -31,16 +86,9 @@ class Texture extends EventDispatcher {
   ) {
     super();
 
-    Object.defineProperty(this, 'id', { value: _textureId++ });
-    this.uuid = generateUUID();
-
-    this.name = '';
-
     this.source = new Source(image);
-    this.mipmaps = [];
 
     this.mapping = mapping;
-    this.channel = 0;
 
     this.wrapS = wrapS;
     this.wrapT = wrapT;
@@ -51,41 +99,17 @@ class Texture extends EventDispatcher {
     this.anisotropy = anisotropy;
 
     this.format = format;
-    this.internalFormat = null;
     this.type = type;
 
-    this.offset = new Vector2(0, 0);
-    this.repeat = new Vector2(1, 1);
-    this.center = new Vector2(0, 0);
-    this.rotation = 0;
-
-    this.matrixAutoUpdate = true;
-    this.matrix = new Matrix3();
-
-    this.generateMipmaps = true;
-    this.premultiplyAlpha = false;
-    this.flipY = true;
-
-    // valid values: 1, 2, 4, 8
-    // see http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml
-    this.unpackAlignment = 4;
-
     this.colorSpace = colorSpace;
-
-    this.userData = {};
-
-    this.version = 0;
-    this.onUpdate = null;
-
-    this.isRenderTargetTexture = false;
-
-    // indicates whether this texture should be processed by
-    // PMREMGenerator or not (only relevant for render target textures)
-    this.needsPMREMUpdate = false;
   }
 
   get isTexture() {
     return true;
+  }
+
+  get id() {
+    return this.#id;
   }
 
   get image() {
@@ -277,8 +301,6 @@ class Texture extends EventDispatcher {
   }
 }
 
-Texture.DEFAULT_IMAGE = null;
-Texture.DEFAULT_MAPPING = UVMapping;
-Texture.DEFAULT_ANISOTROPY = 1;
+let _textureId = 0;
 
 export { Texture };
