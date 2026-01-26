@@ -123,7 +123,7 @@ class ShadowUniformsCache {
 
 let nextVersion = 0;
 
-function shadowCastingAndTexturingLightsFirst(lightA, lightB) {
+function _shadowCastingAndTexturingLightsFirst(lightA, lightB) {
   return (
     (lightB.castShadow ? 2 : 0) -
     (lightA.castShadow ? 2 : 0) +
@@ -212,7 +212,7 @@ class WebGLLights {
     let numLightProbes = 0;
 
     // ordering : [shadow casting + map texturing, map texturing, shadow casting, none ]
-    lights.sort(shadowCastingAndTexturingLightsFirst);
+    lights.sort(_shadowCastingAndTexturingLightsFirst);
 
     // artist-friendly light intensity scaling factor
     const scaleFactor = useLegacyLights === true ? Math.PI : 1;
