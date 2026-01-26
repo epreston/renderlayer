@@ -4,7 +4,7 @@ import { WebGLBindingStates } from '../src/WebGLBindingStates.js';
 
 describe('WebGL', () => {
   describe('WebGLBindingStates', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLBindingStates).toBeDefined();
     });
 
