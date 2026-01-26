@@ -28,9 +28,11 @@ class CubeTexture extends Texture {
       colorSpace
     );
 
-    this.isCubeTexture = true;
-
     this.flipY = false;
+  }
+
+  get isCubeTexture() {
+    return true;
   }
 
   get images() {

@@ -34,7 +34,6 @@ class Texture extends EventDispatcher {
     Object.defineProperty(this, 'id', { value: _textureId++ });
     this.uuid = generateUUID();
 
-    this.isTexture = true;
     this.name = '';
 
     this.source = new Source(image);
@@ -83,6 +82,10 @@ class Texture extends EventDispatcher {
     // indicates whether this texture should be processed by
     // PMREMGenerator or not (only relevant for render target textures)
     this.needsPMREMUpdate = false;
+  }
+
+  get isTexture() {
+    return true;
   }
 
   get image() {

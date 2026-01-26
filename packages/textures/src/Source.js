@@ -5,11 +5,14 @@ let _sourceId = 0;
 
 class Source {
   constructor(data = null) {
-    this.isSource = true;
     Object.defineProperty(this, 'id', { value: _sourceId++ });
     this.uuid = generateUUID();
     this.data = data; // obj or array
     this.version = 0;
+  }
+
+  get isSource() {
+    return true;
   }
 
   set needsUpdate(value) {
