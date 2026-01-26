@@ -13,8 +13,6 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
   constructor(size = 1, options = {}) {
     super(size, size, options);
 
-    this.isWebGLCubeRenderTarget = true;
-
     const image = { width: size, height: size, depth: 1 };
     const images = [image, image, image, image, image, image];
 
@@ -44,6 +42,10 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
     this.texture.generateMipmaps =
       options.generateMipmaps !== undefined ? options.generateMipmaps : false;
     this.texture.minFilter = options.minFilter !== undefined ? options.minFilter : LinearFilter;
+  }
+
+  get isWebGLCubeRenderTarget() {
+    return true;
   }
 
   fromEquirectangularTexture(renderer, texture) {

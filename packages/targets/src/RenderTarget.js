@@ -12,8 +12,6 @@ class RenderTarget extends EventDispatcher {
   constructor(width = 1, height = 1, options = {}) {
     super();
 
-    this.isRenderTarget = true;
-
     this.width = width;
     this.height = height;
     this.depth = 1;
@@ -65,6 +63,10 @@ class RenderTarget extends EventDispatcher {
     this.depthTexture = options.depthTexture;
 
     this.samples = options.samples;
+  }
+
+  get isRenderTarget() {
+    return true;
   }
 
   setSize(width, height, depth = 1) {
