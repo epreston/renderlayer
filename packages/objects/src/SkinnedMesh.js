@@ -2,33 +2,20 @@ import { Box3, Matrix4, Ray, Sphere, Vector3, Vector4 } from '@renderlayer/math'
 import { AttachedBindMode, DetachedBindMode } from '@renderlayer/shared';
 import { Mesh } from './Mesh.js';
 
-const _basePosition = /*@__PURE__*/ new Vector3();
-
-const _skinIndex = /*@__PURE__*/ new Vector4();
-const _skinWeight = /*@__PURE__*/ new Vector4();
-
-const _vector3 = /*@__PURE__*/ new Vector3();
-const _matrix4 = /*@__PURE__*/ new Matrix4();
-const _vertex = /*@__PURE__*/ new Vector3();
-
-const _sphere = /*@__PURE__*/ new Sphere();
-const _inverseMatrix = /*@__PURE__*/ new Matrix4();
-const _ray = /*@__PURE__*/ new Ray();
-
 class SkinnedMesh extends Mesh {
+  type = 'SkinnedMesh';
+
+  bindMode = AttachedBindMode;
+  bindMatrix = new Matrix4();
+  bindMatrixInverse = new Matrix4();
+
+  skeleton = null; // EP: added to avoid shape change
+
+  boundingBox = null;
+  boundingSphere = null;
+
   constructor(geometry, material) {
     super(geometry, material);
-
-    this.type = 'SkinnedMesh';
-
-    this.bindMode = AttachedBindMode;
-    this.bindMatrix = new Matrix4();
-    this.bindMatrixInverse = new Matrix4();
-
-    this.skeleton = null; // EP: added to avoid shape change
-
-    this.boundingBox = null;
-    this.boundingSphere = null;
   }
 
   get isSkinnedMesh() {
@@ -199,5 +186,18 @@ class SkinnedMesh extends Mesh {
     return vector.applyMatrix4(this.bindMatrixInverse);
   }
 }
+
+const _basePosition = /*@__PURE__*/ new Vector3();
+
+const _skinIndex = /*@__PURE__*/ new Vector4();
+const _skinWeight = /*@__PURE__*/ new Vector4();
+
+const _vector3 = /*@__PURE__*/ new Vector3();
+const _matrix4 = /*@__PURE__*/ new Matrix4();
+const _vertex = /*@__PURE__*/ new Vector3();
+
+const _sphere = /*@__PURE__*/ new Sphere();
+const _inverseMatrix = /*@__PURE__*/ new Matrix4();
+const _ray = /*@__PURE__*/ new Ray();
 
 export { SkinnedMesh };
