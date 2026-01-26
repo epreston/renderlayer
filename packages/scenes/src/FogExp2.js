@@ -1,9 +1,12 @@
 import { Color } from '@renderlayer/math';
 
 class FogExp2 {
-  constructor(color, density = 0.00025) {
-    this.name = '';
+  name = '';
 
+  color;
+  density = 0.00025;
+
+  constructor(color, density = 0.00025) {
     this.color = new Color(color);
     this.density = density;
   }
