@@ -8,14 +8,17 @@ const _offsetMatrix = /*@__PURE__*/ new Matrix4();
 const _identityMatrix = /*@__PURE__*/ new Matrix4();
 
 class Skeleton {
-  constructor(bones = [], boneInverses = []) {
-    this.uuid = generateUUID();
+  uuid = generateUUID();
 
+  bones;
+  boneInverses;
+  boneMatrices = null;
+
+  boneTexture = null;
+
+  constructor(bones = [], boneInverses = []) {
     this.bones = bones.slice(0);
     this.boneInverses = boneInverses;
-    this.boneMatrices = null;
-
-    this.boneTexture = null;
 
     this.init();
   }
