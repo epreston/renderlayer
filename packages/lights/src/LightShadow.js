@@ -1,9 +1,5 @@
 import { Frustum, Matrix4, Vector2, Vector3, Vector4 } from '@renderlayer/math';
 
-const _projScreenMatrix = /*@__PURE__*/ new Matrix4();
-const _lightPositionWorld = /*@__PURE__*/ new Vector3();
-const _lookTarget = /*@__PURE__*/ new Vector3();
-
 class LightShadow {
   camera;
 
@@ -116,5 +112,9 @@ class LightShadow {
     return object;
   }
 }
+
+const _projScreenMatrix = /*@__PURE__*/ new Matrix4();
+const _lightPositionWorld = /*@__PURE__*/ new Vector3();
+const _lookTarget = /*@__PURE__*/ new Vector3();
 
 export { LightShadow };
