@@ -4,7 +4,6 @@ import { RAD2DEG, DEG2RAD } from '@renderlayer/math';
 import { Camera } from './Camera.js';
 
 class PerspectiveCamera extends Camera {
-  isPerspectiveCamera = true;
   type = 'PerspectiveCamera';
 
   fov = 50;
@@ -30,6 +29,10 @@ class PerspectiveCamera extends Camera {
     this.far = far;
 
     this.updateProjectionMatrix();
+  }
+
+  get isPerspectiveCamera() {
+    return true;
   }
 
   copy(source, recursive) {
