@@ -2,10 +2,13 @@ import { Color } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
 
 class Light extends Object3D {
+  type = 'Light';
+
+  color;
+  intensity = 1;
+
   constructor(color, intensity = 1) {
     super();
-
-    this.type = 'Light';
 
     this.color = new Color(color);
     this.intensity = intensity;
