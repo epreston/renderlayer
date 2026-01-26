@@ -24,65 +24,81 @@ class BindingState {
   }
 }
 
-/** @param { WebGL2RenderingContext} gl */
-function WebGLBindingStates(gl, extensions, attributes, capabilities) {
-  const maxVertexAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
+class WebGLBindingStates {
+  #gl;
+  #attributes;
 
-  const bindingStates = {};
+  #maxVertexAttributes;
 
-  const defaultState = new BindingState(maxVertexAttributes, null);
-  let currentState = defaultState;
-  let forceUpdate = false;
+  #bindingStates = {};
 
-  function setup(object, material, program, geometry, index) {
+  #defaultState;
+  #currentState;
+  #forceUpdate = false;
+
+  /** @param { WebGL2RenderingContext} gl */
+  constructor(gl, extensions, attributes, capabilities) {
+    this.#gl = gl;
+    this.#attributes = attributes;
+
+    this.#maxVertexAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
+
+    this.#defaultState = new BindingState(this.#maxVertexAttributes, null);
+    this.#currentState = this.#defaultState;
+  }
+
+  setup(object, material, program, geometry, index) {
+    const gl = this.#gl;
+    const attributes = this.#attributes;
+
     let updateBuffers = false;
 
-    const state = _getBindingState(geometry, program, material);
+    const state = this.#getBindingState(geometry, program, material);
 
-    if (currentState !== state) {
-      currentState = state;
-      _bindVertexArrayObject(currentState.object);
+    if (this.#currentState !== state) {
+      this.#currentState = state;
+      this.#bindVertexArrayObject(this.#currentState.object);
     }
 
-    updateBuffers = _needsUpdate(object, geometry, program, index);
+    updateBuffers = this.#needsUpdate(object, geometry, program, index);
 
-    if (updateBuffers) _saveCache(object, geometry, program, index);
+    if (updateBuffers) this.#saveCache(object, geometry, program, index);
 
     if (index !== null) {
       attributes.update(index, gl.ELEMENT_ARRAY_BUFFER);
     }
 
-    if (updateBuffers || forceUpdate) {
-      forceUpdate = false;
+    if (updateBuffers || this.#forceUpdate) {
+      this.#forceUpdate = false;
 
-      _setupVertexAttributes(object, material, program, geometry);
+      this.#setupVertexAttributes(object, material, program, geometry);
 
       if (index !== null) {
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, attributes.get(index).buffer);
+        gl.bindBuffer(this.#gl.ELEMENT_ARRAY_BUFFER, attributes.get(index).buffer);
       }
     }
   }
 
-  function _createVertexArrayObject() {
-    return gl.createVertexArray();
+  #createVertexArrayObject() {
+    return this.#gl.createVertexArray();
   }
 
-  function _bindVertexArrayObject(vao) {
-    return gl.bindVertexArray(vao);
+  #bindVertexArrayObject(vao) {
+    return this.#gl.bindVertexArray(vao);
   }
 
-  function _deleteVertexArrayObject(vao) {
-    return gl.deleteVertexArray(vao);
+  #deleteVertexArrayObject(vao) {
+    return this.#gl.deleteVertexArray(vao);
   }
 
-  function _getBindingState(geometry, program, material) {
+  #getBindingState(geometry, program, material) {
     const wireframe = material.wireframe === true ? 1 : 0;
 
-    let programMap = bindingStates[geometry.id];
+    let programMap = this.#bindingStates[geometry.id];
 
     if (programMap === undefined) {
       programMap = {};
-      bindingStates[geometry.id] = programMap;
+      this.#bindingStates[geometry.id] = programMap;
     }
 
     let stateMap = programMap[program.id];
@@ -95,15 +111,15 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     let state = stateMap[wireframe];
 
     if (state === undefined) {
-      state = new BindingState(maxVertexAttributes, _createVertexArrayObject());
+      state = new BindingState(this.#maxVertexAttributes, this.#createVertexArrayObject());
       stateMap[wireframe] = state;
     }
 
     return state;
   }
 
-  function _needsUpdate(object, geometry, program, index) {
-    const cachedAttributes = currentState.attributes;
+  #needsUpdate(object, geometry, program, index) {
+    const cachedAttributes = this.#currentState.attributes;
     const geometryAttributes = geometry.attributes;
 
     let attributesNum = 0;
@@ -132,13 +148,13 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
       }
     }
 
-    if (currentState.attributesNum !== attributesNum) return true;
-    if (currentState.index !== index) return true;
+    if (this.#currentState.attributesNum !== attributesNum) return true;
+    if (this.#currentState.index !== index) return true;
 
     return false;
   }
 
-  function _saveCache(object, geometry, program, index) {
+  #saveCache(object, geometry, program, index) {
     const cache = {};
     const attributes = geometry.attributes;
     let attributesNum = 0;
@@ -169,28 +185,29 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
       }
     }
 
-    currentState.attributes = cache;
-    currentState.attributesNum = attributesNum;
+    this.#currentState.attributes = cache;
+    this.#currentState.attributesNum = attributesNum;
 
-    currentState.index = index;
+    this.#currentState.index = index;
   }
 
-  function initAttributes() {
-    const newAttributes = currentState.newAttributes;
+  initAttributes() {
+    const newAttributes = this.#currentState.newAttributes;
 
     for (let i = 0, il = newAttributes.length; i < il; i++) {
       newAttributes[i] = 0;
     }
   }
 
-  function enableAttribute(attribute) {
-    _enableAttributeAndDivisor(attribute, 0);
+  enableAttribute(attribute) {
+    this.#enableAttributeAndDivisor(attribute, 0);
   }
 
-  function _enableAttributeAndDivisor(attribute, meshPerAttribute) {
-    const newAttributes = currentState.newAttributes;
-    const enabledAttributes = currentState.enabledAttributes;
-    const attributeDivisors = currentState.attributeDivisors;
+  #enableAttributeAndDivisor(attribute, meshPerAttribute) {
+    const newAttributes = this.#currentState.newAttributes;
+    const enabledAttributes = this.#currentState.enabledAttributes;
+    const attributeDivisors = this.#currentState.attributeDivisors;
+    const gl = this.#gl;
 
     newAttributes[attribute] = 1;
 
@@ -205,9 +222,10 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     }
   }
 
-  function disableUnusedAttributes() {
-    const newAttributes = currentState.newAttributes;
-    const enabledAttributes = currentState.enabledAttributes;
+  disableUnusedAttributes() {
+    const newAttributes = this.#currentState.newAttributes;
+    const enabledAttributes = this.#currentState.enabledAttributes;
+    const gl = this.#gl;
 
     for (let i = 0, il = enabledAttributes.length; i < il; i++) {
       if (enabledAttributes[i] !== newAttributes[i]) {
@@ -217,22 +235,21 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     }
   }
 
-  function _vertexAttribPointer(index, size, type, normalized, stride, offset, integer) {
+  #vertexAttribPointer(index, size, type, normalized, stride, offset, integer) {
     if (integer === true) {
-      gl.vertexAttribIPointer(index, size, type, stride, offset);
+      this.#gl.vertexAttribIPointer(index, size, type, stride, offset);
     } else {
-      gl.vertexAttribPointer(index, size, type, normalized, stride, offset);
+      this.#gl.vertexAttribPointer(index, size, type, normalized, stride, offset);
     }
   }
 
-  function _setupVertexAttributes(object, material, program, geometry) {
-    initAttributes();
+  #setupVertexAttributes(object, material, program, geometry) {
+    this.initAttributes();
 
     const geometryAttributes = geometry.attributes;
-
     const programAttributes = program.getAttributes();
-
     const materialDefaultAttributeValues = material.defaultAttributeValues;
+    const gl = this.#gl;
 
     for (const name in programAttributes) {
       const programAttribute = programAttributes[name];
@@ -251,7 +268,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
           const normalized = geometryAttribute.normalized;
           const size = geometryAttribute.itemSize;
 
-          const attribute = attributes.get(geometryAttribute);
+          const attribute = this.#attributes.get(geometryAttribute);
 
           // TODO Attribute may not be available on context restore
 
@@ -273,7 +290,10 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
 
             if (data.isInstancedInterleavedBuffer) {
               for (let i = 0; i < programAttribute.locationSize; i++) {
-                _enableAttributeAndDivisor(programAttribute.location + i, data.meshPerAttribute);
+                this.#enableAttributeAndDivisor(
+                  programAttribute.location + i,
+                  data.meshPerAttribute
+                );
               }
 
               if (object.isInstancedMesh !== true && geometry._maxInstanceCount === undefined) {
@@ -281,14 +301,14 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
               }
             } else {
               for (let i = 0; i < programAttribute.locationSize; i++) {
-                enableAttribute(programAttribute.location + i);
+                this.enableAttribute(programAttribute.location + i);
               }
             }
 
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
             for (let i = 0; i < programAttribute.locationSize; i++) {
-              _vertexAttribPointer(
+              this.#vertexAttribPointer(
                 programAttribute.location + i,
                 size / programAttribute.locationSize,
                 type,
@@ -301,7 +321,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
           } else {
             if (geometryAttribute.isInstancedBufferAttribute) {
               for (let i = 0; i < programAttribute.locationSize; i++) {
-                _enableAttributeAndDivisor(
+                this.#enableAttributeAndDivisor(
                   programAttribute.location + i,
                   geometryAttribute.meshPerAttribute
                 );
@@ -313,14 +333,14 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
               }
             } else {
               for (let i = 0; i < programAttribute.locationSize; i++) {
-                enableAttribute(programAttribute.location + i);
+                this.enableAttribute(programAttribute.location + i);
               }
             }
 
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
             for (let i = 0; i < programAttribute.locationSize; i++) {
-              _vertexAttribPointer(
+              this.#vertexAttribPointer(
                 programAttribute.location + i,
                 size / programAttribute.locationSize,
                 type,
@@ -356,20 +376,20 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
       }
     }
 
-    disableUnusedAttributes();
+    this.disableUnusedAttributes();
   }
 
-  function dispose() {
-    reset();
+  dispose() {
+    this.reset();
 
-    for (const geometryId in bindingStates) {
-      const programMap = bindingStates[geometryId];
+    for (const geometryId in this.#bindingStates) {
+      const programMap = this.#bindingStates[geometryId];
 
       for (const programId in programMap) {
         const stateMap = programMap[programId];
 
         for (const wireframe in stateMap) {
-          _deleteVertexArrayObject(stateMap[wireframe].object);
+          this.#deleteVertexArrayObject(stateMap[wireframe].object);
 
           delete stateMap[wireframe];
         }
@@ -377,20 +397,20 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
         delete programMap[programId];
       }
 
-      delete bindingStates[geometryId];
+      delete this.#bindingStates[geometryId];
     }
   }
 
-  function releaseStatesOfGeometry(geometry) {
-    if (bindingStates[geometry.id] === undefined) return;
+  releaseStatesOfGeometry(geometry) {
+    if (this.#bindingStates[geometry.id] === undefined) return;
 
-    const programMap = bindingStates[geometry.id];
+    const programMap = this.#bindingStates[geometry.id];
 
     for (const programId in programMap) {
       const stateMap = programMap[programId];
 
       for (const wireframe in stateMap) {
-        _deleteVertexArrayObject(stateMap[wireframe].object);
+        this.#deleteVertexArrayObject(stateMap[wireframe].object);
 
         delete stateMap[wireframe];
       }
@@ -398,19 +418,19 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
       delete programMap[programId];
     }
 
-    delete bindingStates[geometry.id];
+    delete this.#bindingStates[geometry.id];
   }
 
-  function releaseStatesOfProgram(program) {
-    for (const geometryId in bindingStates) {
-      const programMap = bindingStates[geometryId];
+  releaseStatesOfProgram(program) {
+    for (const geometryId in this.#bindingStates) {
+      const programMap = this.#bindingStates[geometryId];
 
       if (programMap[program.id] === undefined) continue;
 
       const stateMap = programMap[program.id];
 
       for (const wireframe in stateMap) {
-        _deleteVertexArrayObject(stateMap[wireframe].object);
+        this.#deleteVertexArrayObject(stateMap[wireframe].object);
 
         delete stateMap[wireframe];
       }
@@ -419,35 +439,22 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     }
   }
 
-  function reset() {
-    resetDefaultState();
-    forceUpdate = true;
+  reset() {
+    this.resetDefaultState();
+    this.#forceUpdate = true;
 
-    if (currentState === defaultState) return;
+    if (this.#currentState === this.#defaultState) return;
 
-    currentState = defaultState;
-    _bindVertexArrayObject(currentState.object);
+    this.#currentState = this.#defaultState;
+    this.#bindVertexArrayObject(this.#currentState.object);
   }
 
   // for backward-compatibility
-  function resetDefaultState() {
-    defaultState.geometry = null;
-    defaultState.program = null;
-    defaultState.wireframe = false;
+  resetDefaultState() {
+    this.#defaultState.geometry = null;
+    this.#defaultState.program = null;
+    this.#defaultState.wireframe = false;
   }
-
-  return {
-    setup,
-    reset,
-    resetDefaultState,
-    dispose,
-    releaseStatesOfGeometry,
-    releaseStatesOfProgram,
-
-    initAttributes,
-    enableAttribute,
-    disableUnusedAttributes
-  };
 }
 
 export { WebGLBindingStates };
