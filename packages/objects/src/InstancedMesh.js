@@ -2,27 +2,20 @@ import { InstancedBufferAttribute } from '@renderlayer/buffers';
 import { Box3, Matrix4, Sphere } from '@renderlayer/math';
 import { Mesh } from './Mesh.js';
 
-const _instanceLocalMatrix = /*@__PURE__*/ new Matrix4();
-const _instanceWorldMatrix = /*@__PURE__*/ new Matrix4();
-
-const _instanceIntersects = [];
-
-const _box3 = /*@__PURE__*/ new Box3();
-const _identity = /*@__PURE__*/ new Matrix4();
-const _mesh = /*@__PURE__*/ new Mesh();
-const _sphere = /*@__PURE__*/ new Sphere();
-
 class InstancedMesh extends Mesh {
+  instanceMatrix;
+  instanceColor = null;
+
+  count;
+
+  boundingBox = null;
+  boundingSphere = null;
+
   constructor(geometry, material, count) {
     super(geometry, material);
 
     this.instanceMatrix = new InstancedBufferAttribute(new Float32Array(count * 16), 16);
-    this.instanceColor = null;
-
     this.count = count;
-
-    this.boundingBox = null;
-    this.boundingSphere = null;
 
     for (let i = 0; i < count; i++) {
       this.setMatrixAt(i, _identity);
@@ -169,5 +162,15 @@ class InstancedMesh extends Mesh {
     this.dispatchEvent({ type: 'dispose' });
   }
 }
+
+const _instanceLocalMatrix = /*@__PURE__*/ new Matrix4();
+const _instanceWorldMatrix = /*@__PURE__*/ new Matrix4();
+
+const _instanceIntersects = [];
+
+const _box3 = /*@__PURE__*/ new Box3();
+const _identity = /*@__PURE__*/ new Matrix4();
+const _mesh = /*@__PURE__*/ new Mesh();
+const _sphere = /*@__PURE__*/ new Sphere();
 
 export { InstancedMesh };
