@@ -1,5 +1,5 @@
 class WebGLObjects {
-  /** @param { WebGL2RenderingContext} gl */
+  /** @param {WebGL2RenderingContext} gl */
   constructor(gl, geometries, attributes, info) {
     this._gl = gl;
     this._geometries = geometries;

@@ -1,5 +1,5 @@
 class WebGLInfo {
-  /** @param { WebGL2RenderingContext} gl */
+  /** @param {WebGL2RenderingContext} gl */
   constructor(gl) {
     this._gl = gl;
 

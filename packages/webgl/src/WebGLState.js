@@ -41,7 +41,7 @@ import {
   ZeroFactor
 } from '@renderlayer/shared';
 
-/** @param { WebGL2RenderingContext} gl */
+/** @param {WebGL2RenderingContext} gl */
 function WebGLState(gl, extensions, capabilities) {
   function ColorBuffer() {
     let locked = false;
