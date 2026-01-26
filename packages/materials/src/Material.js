@@ -11,94 +11,97 @@ import {
 import { Color, generateUUID } from '@renderlayer/math';
 import { EventDispatcher } from '@renderlayer/core';
 
-let _materialId = 0;
-
 class Material extends EventDispatcher {
+  #id = _materialId++;
+
+  uuid = generateUUID();
+
+  name = '';
+  type = 'Material';
+
+  blending = NormalBlending;
+  side = FrontSide;
+  vertexColors = false;
+
+  opacity = 1;
+  transparent = false;
+  alphaHash = false;
+
+  blendSrc = SrcAlphaFactor;
+  blendDst = OneMinusSrcAlphaFactor;
+  blendEquation = AddEquation;
+  blendSrcAlpha = null;
+  blendDstAlpha = null;
+  blendEquationAlpha = null;
+  blendColor = new Color(0, 0, 0);
+  blendAlpha = 0;
+
+  depthFunc = LessEqualDepth;
+  depthTest = true;
+  depthWrite = true;
+
+  stencilWriteMask = 0xff;
+  stencilFunc = AlwaysStencilFunc;
+  stencilRef = 0;
+  stencilFuncMask = 0xff;
+  stencilFail = KeepStencilOp;
+  stencilZFail = KeepStencilOp;
+  stencilZPass = KeepStencilOp;
+  stencilWrite = false;
+
+  clippingPlanes = null;
+  clipIntersection = false;
+  clipShadows = false;
+
+  shadowSide = null;
+
+  colorWrite = true;
+
+  // override the renderer's default precision for this material
+  precision = null;
+
+  polygonOffset = false;
+  polygonOffsetFactor = 0;
+  polygonOffsetUnits = 0;
+
+  dithering = false;
+
+  alphaToCoverage = false;
+  premultipliedAlpha = false;
+  forceSinglePass = false;
+
+  visible = true;
+
+  toneMapped = true;
+
+  userData = {};
+
+  version = 0;
+
+  #alphaTest = 0;
+
   constructor() {
     super();
-
-    Object.defineProperty(this, 'id', { value: _materialId++ });
-    this.uuid = generateUUID();
-
-    this.name = '';
-    this.type = 'Material';
-
-    this.blending = NormalBlending;
-    this.side = FrontSide;
-    this.vertexColors = false;
-
-    this.opacity = 1;
-    this.transparent = false;
-    this.alphaHash = false;
-
-    this.blendSrc = SrcAlphaFactor;
-    this.blendDst = OneMinusSrcAlphaFactor;
-    this.blendEquation = AddEquation;
-    this.blendSrcAlpha = null;
-    this.blendDstAlpha = null;
-    this.blendEquationAlpha = null;
-    this.blendColor = new Color(0, 0, 0);
-    this.blendAlpha = 0;
-
-    this.depthFunc = LessEqualDepth;
-    this.depthTest = true;
-    this.depthWrite = true;
-
-    this.stencilWriteMask = 0xff;
-    this.stencilFunc = AlwaysStencilFunc;
-    this.stencilRef = 0;
-    this.stencilFuncMask = 0xff;
-    this.stencilFail = KeepStencilOp;
-    this.stencilZFail = KeepStencilOp;
-    this.stencilZPass = KeepStencilOp;
-    this.stencilWrite = false;
-
-    this.clippingPlanes = null;
-    this.clipIntersection = false;
-    this.clipShadows = false;
-
-    this.shadowSide = null;
-
-    this.colorWrite = true;
-
-    // override the renderer's default precision for this material
-    this.precision = null;
-
-    this.polygonOffset = false;
-    this.polygonOffsetFactor = 0;
-    this.polygonOffsetUnits = 0;
-
-    this.dithering = false;
-
-    this.alphaToCoverage = false;
-    this.premultipliedAlpha = false;
-    this.forceSinglePass = false;
-
-    this.visible = true;
-
-    this.toneMapped = true;
-
-    this.userData = {};
-
-    this.version = 0;
-
-    this._alphaTest = 0;
   }
 
   get isMaterial() {
     return true;
   }
 
+  get id() {
+    return this.#id;
+  }
+
   get alphaTest() {
-    return this._alphaTest;
+    return this.#alphaTest;
   }
 
   set alphaTest(value) {
-    if (this._alphaTest > 0 !== value > 0) {
+    if (this.#alphaTest > 0 !== value > 0) {
       this.version++;
     }
 
-    this._alphaTest = value;
+    this.#alphaTest = value;
   }
 
   onBuild(/* shaderobject, renderer */) {}
@@ -470,5 +473,7 @@ class Material extends EventDispatcher {
     if (value === true) this.version++;
   }
 }
+
+let _materialId = 0;
 
 export { Material };
