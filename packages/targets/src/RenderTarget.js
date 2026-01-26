@@ -9,15 +9,30 @@ import { Source, Texture } from '@renderlayer/textures';
  * depthBuffer/stencilBuffer: Booleans to indicate if we should generate these buffers
  */
 class RenderTarget extends EventDispatcher {
+  width = 1;
+  height = 1;
+  depth = 1;
+
+  scissor;
+  scissorTest = false;
+
+  viewport;
+  texture;
+
+  depthBuffer;
+  stencilBuffer;
+
+  depthTexture;
+
+  samples;
+
   constructor(width = 1, height = 1, options = {}) {
     super();
 
     this.width = width;
     this.height = height;
-    this.depth = 1;
 
     this.scissor = new Vector4(0, 0, width, height);
-    this.scissorTest = false;
 
     this.viewport = new Vector4(0, 0, width, height);
 
