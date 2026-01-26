@@ -3,10 +3,10 @@ import { RAD2DEG } from '@renderlayer/math';
 import { LightShadow } from './LightShadow.js';
 
 class SpotLightShadow extends LightShadow {
+  focus = 1;
+
   constructor() {
     super(new PerspectiveCamera(50, 1, 0.5, 500));
-
-    this.focus = 1;
   }
 
   get isSpotLightShadow() {
