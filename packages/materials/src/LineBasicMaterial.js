@@ -2,15 +2,15 @@ import { Color } from '@renderlayer/math';
 import { Material } from './Material.js';
 
 class LineBasicMaterial extends Material {
+  type = 'LineBasicMaterial';
+
+  color = new Color(0xffffff);
+  map = null;
+  linewidth = 1; // may be ignored
+  fog = true;
+
   constructor(parameters) {
     super();
-
-    this.type = 'LineBasicMaterial';
-
-    this.color = new Color(0xffffff);
-    this.map = null;
-    this.linewidth = 1; // may be ignored
-    this.fog = true;
 
     this.setValues(parameters);
   }
