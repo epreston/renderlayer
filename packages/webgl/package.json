@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/webgl",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Webgl2 abstractions used by @renderlayer packages.",
   "module": "./dist/webgl.esm-bundler.js",
   "exports": "./dist/webgl.esm-bundler.js",
@@ -20,7 +20,8 @@
     "directory": "packages/webgl"
   },
   "keywords": [
-    "renderlayer", "webgl2"
+    "renderlayer",
+    "webgl2"
   ],
   "author": "Ed Preston",
   "license": "MIT",
