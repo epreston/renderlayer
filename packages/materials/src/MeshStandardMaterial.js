@@ -3,55 +3,55 @@ import { TangentSpaceNormalMap } from '@renderlayer/shared';
 import { Material } from './Material.js';
 
 class MeshStandardMaterial extends Material {
+  type = 'MeshStandardMaterial';
+
+  defines = { STANDARD: '' };
+
+  color = new Color(0xffffff); // diffuse
+  roughness = 1.0;
+  metalness = 0.0;
+
+  map = null;
+
+  lightMap = null;
+  lightMapIntensity = 1.0;
+
+  aoMap = null;
+  aoMapIntensity = 1.0;
+
+  emissive = new Color(0x000000);
+  emissiveIntensity = 1.0;
+  emissiveMap = null;
+
+  bumpMap = null;
+  bumpScale = 1;
+
+  normalMap = null;
+  normalMapType = TangentSpaceNormalMap;
+  normalScale = new Vector2(1, 1);
+
+  displacementMap = null;
+  displacementScale = 1;
+  displacementBias = 0;
+
+  roughnessMap = null;
+
+  metalnessMap = null;
+
+  alphaMap = null;
+
+  envMap = null;
+  envMapIntensity = 1.0;
+
+  wireframe = false;
+  wireframeLinewidth = 1; // will almost always be 1
+
+  flatShading = false;
+
+  fog = true;
+
   constructor(parameters) {
     super();
-
-    this.type = 'MeshStandardMaterial';
-
-    this.defines = { STANDARD: '' };
-
-    this.color = new Color(0xffffff); // diffuse
-    this.roughness = 1.0;
-    this.metalness = 0.0;
-
-    this.map = null;
-
-    this.lightMap = null;
-    this.lightMapIntensity = 1.0;
-
-    this.aoMap = null;
-    this.aoMapIntensity = 1.0;
-
-    this.emissive = new Color(0x000000);
-    this.emissiveIntensity = 1.0;
-    this.emissiveMap = null;
-
-    this.bumpMap = null;
-    this.bumpScale = 1;
-
-    this.normalMap = null;
-    this.normalMapType = TangentSpaceNormalMap;
-    this.normalScale = new Vector2(1, 1);
-
-    this.displacementMap = null;
-    this.displacementScale = 1;
-    this.displacementBias = 0;
-
-    this.roughnessMap = null;
-
-    this.metalnessMap = null;
-
-    this.alphaMap = null;
-
-    this.envMap = null;
-    this.envMapIntensity = 1.0;
-
-    this.wireframe = false;
-    this.wireframeLinewidth = 1; // will almost always be 1
-
-    this.flatShading = false;
-
-    this.fog = true;
 
     this.setValues(parameters);
   }
