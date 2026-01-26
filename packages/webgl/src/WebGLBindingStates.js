@@ -1,24 +1,26 @@
 ﻿import { IntType } from '@renderlayer/shared';
 
 class BindingState {
-  constructor(maxVertexAttributes, vao) {
-    this.newAttributes = [];
-    this.enabledAttributes = [];
-    this.attributeDivisors = [];
+  newAttributes = [];
+  enabledAttributes = [];
+  attributeDivisors = [];
 
+  geometry = null;
+  program = null;
+  wireframe = false;
+  object;
+  attributes = {};
+  attributesNum = 0;
+  index = null;
+
+  constructor(maxVertexAttributes, vao) {
     for (let i = 0; i < maxVertexAttributes; i++) {
       this.newAttributes[i] = 0;
       this.enabledAttributes[i] = 0;
       this.attributeDivisors[i] = 0;
     }
 
-    this.geometry = null;
-    this.program = null;
-    this.wireframe = false;
     this.object = vao;
-    this.attributes = {};
-    this.attributesNum = 0;
-    this.index = null;
   }
 }
 
@@ -35,16 +37,16 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
   function setup(object, material, program, geometry, index) {
     let updateBuffers = false;
 
-    const state = getBindingState(geometry, program, material);
+    const state = _getBindingState(geometry, program, material);
 
     if (currentState !== state) {
       currentState = state;
-      bindVertexArrayObject(currentState.object);
+      _bindVertexArrayObject(currentState.object);
     }
 
-    updateBuffers = needsUpdate(object, geometry, program, index);
+    updateBuffers = _needsUpdate(object, geometry, program, index);
 
-    if (updateBuffers) saveCache(object, geometry, program, index);
+    if (updateBuffers) _saveCache(object, geometry, program, index);
 
     if (index !== null) {
       attributes.update(index, gl.ELEMENT_ARRAY_BUFFER);
@@ -53,7 +55,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     if (updateBuffers || forceUpdate) {
       forceUpdate = false;
 
-      setupVertexAttributes(object, material, program, geometry);
+      _setupVertexAttributes(object, material, program, geometry);
 
       if (index !== null) {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, attributes.get(index).buffer);
@@ -61,19 +63,19 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     }
   }
 
-  function createVertexArrayObject() {
+  function _createVertexArrayObject() {
     return gl.createVertexArray();
   }
 
-  function bindVertexArrayObject(vao) {
+  function _bindVertexArrayObject(vao) {
     return gl.bindVertexArray(vao);
   }
 
-  function deleteVertexArrayObject(vao) {
+  function _deleteVertexArrayObject(vao) {
     return gl.deleteVertexArray(vao);
   }
 
-  function getBindingState(geometry, program, material) {
+  function _getBindingState(geometry, program, material) {
     const wireframe = material.wireframe === true ? 1 : 0;
 
     let programMap = bindingStates[geometry.id];
@@ -93,14 +95,14 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     let state = stateMap[wireframe];
 
     if (state === undefined) {
-      state = new BindingState(maxVertexAttributes, createVertexArrayObject());
+      state = new BindingState(maxVertexAttributes, _createVertexArrayObject());
       stateMap[wireframe] = state;
     }
 
     return state;
   }
 
-  function needsUpdate(object, geometry, program, index) {
+  function _needsUpdate(object, geometry, program, index) {
     const cachedAttributes = currentState.attributes;
     const geometryAttributes = geometry.attributes;
 
@@ -136,7 +138,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     return false;
   }
 
-  function saveCache(object, geometry, program, index) {
+  function _saveCache(object, geometry, program, index) {
     const cache = {};
     const attributes = geometry.attributes;
     let attributesNum = 0;
@@ -182,10 +184,10 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
   }
 
   function enableAttribute(attribute) {
-    enableAttributeAndDivisor(attribute, 0);
+    _enableAttributeAndDivisor(attribute, 0);
   }
 
-  function enableAttributeAndDivisor(attribute, meshPerAttribute) {
+  function _enableAttributeAndDivisor(attribute, meshPerAttribute) {
     const newAttributes = currentState.newAttributes;
     const enabledAttributes = currentState.enabledAttributes;
     const attributeDivisors = currentState.attributeDivisors;
@@ -215,7 +217,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     }
   }
 
-  function vertexAttribPointer(index, size, type, normalized, stride, offset, integer) {
+  function _vertexAttribPointer(index, size, type, normalized, stride, offset, integer) {
     if (integer === true) {
       gl.vertexAttribIPointer(index, size, type, stride, offset);
     } else {
@@ -223,7 +225,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     }
   }
 
-  function setupVertexAttributes(object, material, program, geometry) {
+  function _setupVertexAttributes(object, material, program, geometry) {
     initAttributes();
 
     const geometryAttributes = geometry.attributes;
@@ -271,7 +273,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
 
             if (data.isInstancedInterleavedBuffer) {
               for (let i = 0; i < programAttribute.locationSize; i++) {
-                enableAttributeAndDivisor(programAttribute.location + i, data.meshPerAttribute);
+                _enableAttributeAndDivisor(programAttribute.location + i, data.meshPerAttribute);
               }
 
               if (object.isInstancedMesh !== true && geometry._maxInstanceCount === undefined) {
@@ -286,7 +288,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
             for (let i = 0; i < programAttribute.locationSize; i++) {
-              vertexAttribPointer(
+              _vertexAttribPointer(
                 programAttribute.location + i,
                 size / programAttribute.locationSize,
                 type,
@@ -299,7 +301,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
           } else {
             if (geometryAttribute.isInstancedBufferAttribute) {
               for (let i = 0; i < programAttribute.locationSize; i++) {
-                enableAttributeAndDivisor(
+                _enableAttributeAndDivisor(
                   programAttribute.location + i,
                   geometryAttribute.meshPerAttribute
                 );
@@ -318,7 +320,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
             for (let i = 0; i < programAttribute.locationSize; i++) {
-              vertexAttribPointer(
+              _vertexAttribPointer(
                 programAttribute.location + i,
                 size / programAttribute.locationSize,
                 type,
@@ -367,7 +369,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
         const stateMap = programMap[programId];
 
         for (const wireframe in stateMap) {
-          deleteVertexArrayObject(stateMap[wireframe].object);
+          _deleteVertexArrayObject(stateMap[wireframe].object);
 
           delete stateMap[wireframe];
         }
@@ -388,7 +390,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
       const stateMap = programMap[programId];
 
       for (const wireframe in stateMap) {
-        deleteVertexArrayObject(stateMap[wireframe].object);
+        _deleteVertexArrayObject(stateMap[wireframe].object);
 
         delete stateMap[wireframe];
       }
@@ -408,7 +410,7 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
       const stateMap = programMap[program.id];
 
       for (const wireframe in stateMap) {
-        deleteVertexArrayObject(stateMap[wireframe].object);
+        _deleteVertexArrayObject(stateMap[wireframe].object);
 
         delete stateMap[wireframe];
       }
@@ -424,11 +426,10 @@ function WebGLBindingStates(gl, extensions, attributes, capabilities) {
     if (currentState === defaultState) return;
 
     currentState = defaultState;
-    bindVertexArrayObject(currentState.object);
+    _bindVertexArrayObject(currentState.object);
   }
 
   // for backward-compatibility
-
   function resetDefaultState() {
     defaultState.geometry = null;
     defaultState.program = null;
