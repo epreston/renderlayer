@@ -3,16 +3,14 @@ import { Object3D } from '@renderlayer/core';
 import { PointsMaterial } from '@renderlayer/materials';
 import { Matrix4, Ray, Sphere, Vector3 } from '@renderlayer/math';
 
-const _inverseMatrix = /*@__PURE__*/ new Matrix4();
-const _ray = /*@__PURE__*/ new Ray();
-const _sphere = /*@__PURE__*/ new Sphere();
-const _position = /*@__PURE__*/ new Vector3();
-
 class Points extends Object3D {
+  type = 'Points';
+
+  geometry;
+  material;
+
   constructor(geometry = new BufferGeometry(), material = new PointsMaterial()) {
     super();
-
-    this.type = 'Points';
 
     this.geometry = geometry;
     this.material = material;
@@ -70,7 +68,7 @@ class Points extends Object3D {
 
         _position.fromBufferAttribute(positionAttribute, a);
 
-        testPoint(_position, a, localThresholdSq, matrixWorld, raycaster, intersects, this);
+        _testPoint(_position, a, localThresholdSq, matrixWorld, raycaster, intersects, this);
       }
     } else {
       const start = Math.max(0, drawRange.start);
@@ -79,7 +77,7 @@ class Points extends Object3D {
       for (let i = start, l = end; i < l; i++) {
         _position.fromBufferAttribute(positionAttribute, i);
 
-        testPoint(_position, i, localThresholdSq, matrixWorld, raycaster, intersects, this);
+        _testPoint(_position, i, localThresholdSq, matrixWorld, raycaster, intersects, this);
       }
     }
   }
@@ -108,7 +106,12 @@ class Points extends Object3D {
   }
 }
 
-function testPoint(point, index, localThresholdSq, matrixWorld, raycaster, intersects, object) {
+const _inverseMatrix = /*@__PURE__*/ new Matrix4();
+const _ray = /*@__PURE__*/ new Ray();
+const _sphere = /*@__PURE__*/ new Sphere();
+const _position = /*@__PURE__*/ new Vector3();
+
+function _testPoint(point, index, localThresholdSq, matrixWorld, raycaster, intersects, object) {
   const rayPointDistanceSq = _ray.distanceSqToPoint(point);
 
   if (rayPointDistanceSq < localThresholdSq) {
