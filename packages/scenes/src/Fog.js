@@ -1,9 +1,14 @@
 import { Color } from '@renderlayer/math';
 
 class Fog {
-  constructor(color, near = 1, far = 1000) {
-    this.name = '';
+  name = '';
 
+  color;
+
+  near = 1;
+  far = 1000;
+
+  constructor(color, near = 1, far = 1000) {
     this.color = new Color(color);
 
     this.near = near;
