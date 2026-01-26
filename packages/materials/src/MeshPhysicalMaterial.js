@@ -2,54 +2,54 @@ import { Color, Vector2, clamp } from '@renderlayer/math';
 import { MeshStandardMaterial } from './MeshStandardMaterial.js';
 
 class MeshPhysicalMaterial extends MeshStandardMaterial {
+  type = 'MeshPhysicalMaterial';
+
+  defines = {
+    STANDARD: '',
+    PHYSICAL: ''
+  };
+
+  anisotropyRotation = 0;
+  anisotropyMap = null;
+
+  clearcoatMap = null;
+  clearcoatRoughness = 0.0;
+  clearcoatRoughnessMap = null;
+  clearcoatNormalScale = new Vector2(1, 1);
+  clearcoatNormalMap = null;
+
+  ior = 1.5;
+
+  iridescenceMap = null;
+  iridescenceIOR = 1.3;
+  iridescenceThicknessRange = [100, 400];
+  iridescenceThicknessMap = null;
+
+  sheenColor = new Color(0x000000);
+  sheenColorMap = null;
+  sheenRoughness = 1.0;
+  sheenRoughnessMap = null;
+
+  transmissionMap = null;
+
+  thickness = 0;
+  thicknessMap = null;
+  attenuationDistance = Infinity;
+  attenuationColor = new Color(1, 1, 1);
+
+  specularIntensity = 1.0;
+  specularIntensityMap = null;
+  specularColor = new Color(1, 1, 1);
+  specularColorMap = null;
+
+  _anisotropy = 0;
+  _clearcoat = 0;
+  _iridescence = 0;
+  _sheen = 0.0;
+  _transmission = 0;
+
   constructor(parameters) {
     super();
-
-    this.type = 'MeshPhysicalMaterial';
-
-    this.defines = {
-      STANDARD: '',
-      PHYSICAL: ''
-    };
-
-    this.anisotropyRotation = 0;
-    this.anisotropyMap = null;
-
-    this.clearcoatMap = null;
-    this.clearcoatRoughness = 0.0;
-    this.clearcoatRoughnessMap = null;
-    this.clearcoatNormalScale = new Vector2(1, 1);
-    this.clearcoatNormalMap = null;
-
-    this.ior = 1.5;
-
-    this.iridescenceMap = null;
-    this.iridescenceIOR = 1.3;
-    this.iridescenceThicknessRange = [100, 400];
-    this.iridescenceThicknessMap = null;
-
-    this.sheenColor = new Color(0x000000);
-    this.sheenColorMap = null;
-    this.sheenRoughness = 1.0;
-    this.sheenRoughnessMap = null;
-
-    this.transmissionMap = null;
-
-    this.thickness = 0;
-    this.thicknessMap = null;
-    this.attenuationDistance = Infinity;
-    this.attenuationColor = new Color(1, 1, 1);
-
-    this.specularIntensity = 1.0;
-    this.specularIntensityMap = null;
-    this.specularColor = new Color(1, 1, 1);
-    this.specularColorMap = null;
-
-    this._anisotropy = 0;
-    this._clearcoat = 0;
-    this._iridescence = 0;
-    this._sheen = 0.0;
-    this._transmission = 0;
 
     this.setValues(parameters);
   }
