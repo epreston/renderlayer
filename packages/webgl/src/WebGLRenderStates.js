@@ -1,6 +1,12 @@
 import { WebGLLights } from './WebGLLights.js';
 
 class WebGLRenderState {
+  lights;
+  lightsArray;
+  shadowsArray;
+
+  state;
+
   // EP: params not used
   constructor(extensions, capabilities) {
     const lights = new WebGLLights(extensions, capabilities);
@@ -41,8 +47,12 @@ class WebGLRenderState {
 }
 
 class WebGLRenderStates {
+  renderStates = new WeakMap();
+
+  extensions;
+  capabilities;
+
   constructor(extensions, capabilities) {
-    this.renderStates = new WeakMap();
     this.extensions = extensions;
     this.capabilities = capabilities;
   }
