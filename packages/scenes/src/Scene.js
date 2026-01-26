@@ -4,7 +4,6 @@ class Scene extends Object3D {
   constructor() {
     super();
 
-    this.isScene = true;
     this.type = 'Scene';
 
     this.background = null;
@@ -15,6 +14,10 @@ class Scene extends Object3D {
     this.backgroundIntensity = 1;
 
     this.overrideMaterial = null;
+  }
+
+  get isScene() {
+    return true;
   }
 
   copy(source, recursive) {

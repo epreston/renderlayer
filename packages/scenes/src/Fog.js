@@ -2,13 +2,16 @@ import { Color } from '@renderlayer/math';
 
 class Fog {
   constructor(color, near = 1, far = 1000) {
-    this.isFog = true;
     this.name = '';
 
     this.color = new Color(color);
 
     this.near = near;
     this.far = far;
+  }
+
+  get isFog() {
+    return true;
   }
 
   clone() {
