@@ -1,35 +1,39 @@
 class WebGLAnimation {
+  #context = null;
+  #isAnimating = false;
+  #animationLoop = null;
+  #requestId = null;
+
+  onAnimationFrame;
+
   constructor() {
-    this._context = null;
-    this._isAnimating = false;
-    this._animationLoop = null;
-    this._requestId = null;
+    this.onAnimationFrame = this.#onAnimationFrame.bind(this);
   }
 
-  _onAnimationFrame(time, frame) {
-    this._animationLoop(time, frame);
-    this._requestId = this._context.requestAnimationFrame(this._onAnimationFrame.bind(this));
+  #onAnimationFrame(time, frame) {
+    this.#animationLoop(time, frame);
+    this.#requestId = this.#context.requestAnimationFrame(this.onAnimationFrame);
   }
 
   start() {
-    if (this._isAnimating === true) return;
-    if (this._animationLoop === null) return;
+    if (this.#isAnimating === true) return;
+    if (this.#animationLoop === null) return;
 
-    this._requestId = this._context.requestAnimationFrame(this._onAnimationFrame.bind(this));
-    this._isAnimating = true;
+    this.#requestId = this.#context.requestAnimationFrame(this.onAnimationFrame);
+    this.#isAnimating = true;
   }
 
   stop() {
-    this._context.cancelAnimationFrame(this._requestId);
-    this._isAnimating = false;
+    this.#context.cancelAnimationFrame(this.#requestId);
+    this.#isAnimating = false;
   }
 
   setAnimationLoop(callback) {
-    this._animationLoop = callback;
+    this.#animationLoop = callback;
   }
 
   setContext(value) {
-    this._context = value;
+    this.#context = value;
   }
 }
 
