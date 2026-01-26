@@ -6,7 +6,6 @@ class SpotLight extends Light {
   constructor(color, intensity, distance = 0, angle = Math.PI / 3, penumbra = 0, decay = 2) {
     super(color, intensity);
 
-    this.isSpotLight = true;
     this.type = 'SpotLight';
 
     this.position.copy(Object3D.DEFAULT_UP);
@@ -22,6 +21,10 @@ class SpotLight extends Light {
     this.map = null;
 
     this.shadow = new SpotLightShadow();
+  }
+
+  get isSpotLight() {
+    return true;
   }
 
   get power() {

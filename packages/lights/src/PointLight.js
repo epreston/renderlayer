@@ -5,13 +5,16 @@ class PointLight extends Light {
   constructor(color, intensity, distance = 0, decay = 2) {
     super(color, intensity);
 
-    this.isPointLight = true;
     this.type = 'PointLight';
 
     this.distance = distance;
     this.decay = decay;
 
     this.shadow = new PointLightShadow();
+  }
+
+  get isPointLight() {
+    return true;
   }
 
   get power() {

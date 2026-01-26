@@ -6,7 +6,6 @@ class DirectionalLight extends Light {
   constructor(color, intensity) {
     super(color, intensity);
 
-    this.isDirectionalLight = true;
     this.type = 'DirectionalLight';
 
     this.position.copy(Object3D.DEFAULT_UP);
@@ -15,6 +14,10 @@ class DirectionalLight extends Light {
     this.target = new Object3D();
 
     this.shadow = new DirectionalLightShadow();
+  }
+
+  get isDirectionalLight() {
+    return true;
   }
 
   dispose() {

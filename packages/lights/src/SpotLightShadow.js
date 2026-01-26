@@ -6,8 +6,11 @@ class SpotLightShadow extends LightShadow {
   constructor() {
     super(new PerspectiveCamera(50, 1, 0.5, 500));
 
-    this.isSpotLightShadow = true;
     this.focus = 1;
+  }
+
+  get isSpotLightShadow() {
+    return true;
   }
 
   updateMatrices(light) {

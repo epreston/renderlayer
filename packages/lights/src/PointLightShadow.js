@@ -10,8 +10,6 @@ class PointLightShadow extends LightShadow {
   constructor() {
     super(new PerspectiveCamera(90, 1, 0.5, 500));
 
-    this.isPointLightShadow = true;
-
     this._frameExtents = new Vector2(4, 2);
 
     this._viewportCount = 6;
@@ -61,6 +59,10 @@ class PointLightShadow extends LightShadow {
       new Vector3(0, 0, 1),
       new Vector3(0, 0, -1)
     ];
+  }
+
+  get isPointLightShadow() {
+    return true;
   }
 
   updateMatrices(light, viewportIndex = 0) {

@@ -5,11 +5,14 @@ class Light extends Object3D {
   constructor(color, intensity = 1) {
     super();
 
-    this.isLight = true;
     this.type = 'Light';
 
     this.color = new Color(color);
     this.intensity = intensity;
+  }
+
+  get isLight() {
+    return true;
   }
 
   dispose() {
