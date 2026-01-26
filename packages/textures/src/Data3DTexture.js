@@ -2,6 +2,8 @@ import { ClampToEdgeWrapping, NearestFilter } from '@renderlayer/shared';
 import { Texture } from './Texture.js';
 
 class Data3DTexture extends Texture {
+  wrapR = ClampToEdgeWrapping;
+
   constructor(data = null, width = 1, height = 1, depth = 1) {
     super(null);
 
@@ -9,8 +11,6 @@ class Data3DTexture extends Texture {
 
     this.magFilter = NearestFilter;
     this.minFilter = NearestFilter;
-
-    this.wrapR = ClampToEdgeWrapping;
 
     this.generateMipmaps = false;
     this.flipY = false;
