@@ -15,7 +15,11 @@ describe('Controls', () => {
       removeEventListener: vi.fn(),
       ownerDocument: {
         removeEventListener: vi.fn()
-      }
+      },
+      getRootNode: () => ({
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn()
+      })
     };
 
     // prettier-ignore
@@ -52,6 +56,11 @@ describe('Controls', () => {
       expect(object.target).toBeDefined();
     });
 
+    test('cursor', () => {
+      const object = new OrbitControls(_camera, _mockDomElement);
+      expect(object.cursor).toBeDefined();
+    });
+
     test('minDistance', () => {
       const object = new OrbitControls(_camera, _mockDomElement);
       expect(object.minDistance).toBe(0);
@@ -70,6 +79,16 @@ describe('Controls', () => {
     test('maxZoom', () => {
       const object = new OrbitControls(_camera, _mockDomElement);
       expect(object.maxZoom).toBe(Infinity);
+    });
+
+    test('minTargetRadius', () => {
+      const object = new OrbitControls(_camera, _mockDomElement);
+      expect(object.minTargetRadius).toBe(0);
+    });
+
+    test('maxTargetRadius', () => {
+      const object = new OrbitControls(_camera, _mockDomElement);
+      expect(object.maxTargetRadius).toBe(Infinity);
     });
 
     test('minPolarAngle', () => {
@@ -120,6 +139,11 @@ describe('Controls', () => {
     test('rotateSpeed', () => {
       const object = new OrbitControls(_camera, _mockDomElement);
       expect(object.rotateSpeed).toBeCloseTo(1.0);
+    });
+
+    test('keyRotateSpeed', () => {
+      const object = new OrbitControls(_camera, _mockDomElement);
+      expect(object.keyRotateSpeed).toBeCloseTo(1.0);
     });
 
     test('enablePan', () => {

@@ -15,7 +15,11 @@ describe('Controls', () => {
       removeEventListener: vi.fn(),
       ownerDocument: {
         removeEventListener: vi.fn()
-      }
+      },
+      getRootNode: () => ({
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn()
+      })
     };
 
     // prettier-ignore
