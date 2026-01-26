@@ -21,9 +21,10 @@ import { FileLoader } from './FileLoader.js';
 import { Loader } from './Loader.js';
 
 class MaterialLoader extends Loader {
+  textures = {};
+
   constructor(manager) {
     super(manager);
-    this.textures = {};
   }
 
   load(url, onLoad, onProgress, onError) {
