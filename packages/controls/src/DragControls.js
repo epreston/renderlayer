@@ -3,6 +3,8 @@ import { Matrix4, Plane, Vector2, Vector3 } from '@renderlayer/math';
 
 import { MOUSE, TOUCH, Controls } from './Controls.js';
 
+// This class can be used to provide a drag'n'drop interaction.
+
 class DragControls extends Controls {
   state = _STATE.NONE;
 
