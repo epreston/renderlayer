@@ -72,7 +72,6 @@ class DragControls extends Controls {
 
   #updateState(event) {
     // determine action
-
     let action;
 
     if (event.pointerType === 'touch') {
