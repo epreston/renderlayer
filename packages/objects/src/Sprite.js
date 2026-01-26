@@ -7,29 +7,16 @@ import { Object3D } from '@renderlayer/core';
 import { SpriteMaterial } from '@renderlayer/materials';
 import { Matrix4, Triangle, Vector2, Vector3 } from '@renderlayer/math';
 
-let _geometry;
-
-const _intersectPoint = /*@__PURE__*/ new Vector3();
-const _worldScale = /*@__PURE__*/ new Vector3();
-const _mvPosition = /*@__PURE__*/ new Vector3();
-
-const _alignedPosition = /*@__PURE__*/ new Vector2();
-const _rotatedPosition = /*@__PURE__*/ new Vector2();
-const _viewWorldMatrix = /*@__PURE__*/ new Matrix4();
-
-const _vA = /*@__PURE__*/ new Vector3();
-const _vB = /*@__PURE__*/ new Vector3();
-const _vC = /*@__PURE__*/ new Vector3();
-
-const _uvA = /*@__PURE__*/ new Vector2();
-const _uvB = /*@__PURE__*/ new Vector2();
-const _uvC = /*@__PURE__*/ new Vector2();
-
 class Sprite extends Object3D {
+  type = 'Sprite';
+
+  geometry;
+  material;
+
+  center = new Vector2(0.5, 0.5);
+
   constructor(material = new SpriteMaterial()) {
     super();
-
-    this.type = 'Sprite';
 
     if (_geometry === undefined) {
       _geometry = new BufferGeometry();
@@ -50,8 +37,6 @@ class Sprite extends Object3D {
 
     this.geometry = _geometry;
     this.material = material;
-
-    this.center = new Vector2(0.5, 0.5);
   }
 
   get isSprite() {
@@ -87,9 +72,9 @@ class Sprite extends Object3D {
 
     const center = this.center;
 
-    transformVertex(_vA.set(-0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
-    transformVertex(_vB.set(0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
-    transformVertex(_vC.set(0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+    _transformVertex(_vA.set(-0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+    _transformVertex(_vB.set(0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+    _transformVertex(_vC.set(0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
 
     _uvA.set(0, 0);
     _uvB.set(1, 0);
@@ -100,7 +85,7 @@ class Sprite extends Object3D {
 
     if (intersect === null) {
       // check second triangle
-      transformVertex(_vB.set(-0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+      _transformVertex(_vB.set(-0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
       _uvB.set(0, 1);
 
       intersect = raycaster.ray.intersectTriangle(_vA, _vC, _vB, false, _intersectPoint);
@@ -142,7 +127,25 @@ class Sprite extends Object3D {
   }
 }
 
-function transformVertex(vertexPosition, mvPosition, center, scale, sin, cos) {
+let _geometry;
+
+const _intersectPoint = /*@__PURE__*/ new Vector3();
+const _worldScale = /*@__PURE__*/ new Vector3();
+const _mvPosition = /*@__PURE__*/ new Vector3();
+
+const _alignedPosition = /*@__PURE__*/ new Vector2();
+const _rotatedPosition = /*@__PURE__*/ new Vector2();
+const _viewWorldMatrix = /*@__PURE__*/ new Matrix4();
+
+const _vA = /*@__PURE__*/ new Vector3();
+const _vB = /*@__PURE__*/ new Vector3();
+const _vC = /*@__PURE__*/ new Vector3();
+
+const _uvA = /*@__PURE__*/ new Vector2();
+const _uvB = /*@__PURE__*/ new Vector2();
+const _uvC = /*@__PURE__*/ new Vector2();
+
+function _transformVertex(vertexPosition, mvPosition, center, scale, sin, cos) {
   // compute position in camera space
   _alignedPosition.subVectors(vertexPosition, center).addScalar(0.5).multiply(scale);
 
