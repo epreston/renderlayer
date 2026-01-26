@@ -3,24 +3,29 @@ import { SpotLightShadow } from './SpotLightShadow.js';
 import { Object3D } from '@renderlayer/core';
 
 class SpotLight extends Light {
+  type = 'SpotLight';
+
+  target = new Object3D();
+
+  distance = 0;
+  angle = Math.PI / 3;
+  penumbra = 0;
+  decay = 2;
+
+  map = null;
+
+  shadow = new SpotLightShadow();
+
   constructor(color, intensity, distance = 0, angle = Math.PI / 3, penumbra = 0, decay = 2) {
     super(color, intensity);
 
-    this.type = 'SpotLight';
-
     this.position.copy(Object3D.DEFAULT_UP);
     this.updateMatrix();
-
-    this.target = new Object3D();
 
     this.distance = distance;
     this.angle = angle;
     this.penumbra = penumbra;
     this.decay = decay;
-
-    this.map = null;
-
-    this.shadow = new SpotLightShadow();
   }
 
   get isSpotLight() {
