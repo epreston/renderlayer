@@ -1,10 +1,10 @@
 import { Light } from './Light.js';
 
 class AmbientLight extends Light {
+  type = 'AmbientLight';
+
   constructor(color, intensity) {
     super(color, intensity);
-
-    this.type = 'AmbientLight';
   }
 
   get isAmbientLight() {
