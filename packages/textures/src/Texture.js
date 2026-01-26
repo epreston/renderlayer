@@ -121,6 +121,13 @@ class Texture extends EventDispatcher {
     this.source.data = value ? value : null;
   }
 
+  set needsUpdate(value) {
+    if (value === true) {
+      this.version++;
+      this.source.needsUpdate = true;
+    }
+  }
+
   updateMatrix() {
     // prettier-ignore
     this.matrix.setUvTransform(
@@ -291,13 +298,6 @@ class Texture extends EventDispatcher {
     }
 
     return uv;
-  }
-
-  set needsUpdate(value) {
-    if (value === true) {
-      this.version++;
-      this.source.needsUpdate = true;
-    }
   }
 }
 
