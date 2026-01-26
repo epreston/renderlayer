@@ -1,6 +1,6 @@
 import { createElementNS } from './utils.js';
 
-function SRGBToLinear(c) {
+function _SRGBToLinear(c) {
   // prettier-ignore
   return ( c < 0.04045 )
     ? c * 0.0773993808
@@ -67,7 +67,7 @@ class ImageUtils {
       const data = imageData.data;
 
       for (let i = 0; i < data.length; i++) {
-        data[i] = SRGBToLinear(data[i] / 255) * 255;
+        data[i] = _SRGBToLinear(data[i] / 255) * 255;
       }
 
       context.putImageData(imageData, 0, 0);
@@ -78,11 +78,11 @@ class ImageUtils {
 
       for (let i = 0; i < data.length; i++) {
         if (data instanceof Uint8Array || data instanceof Uint8ClampedArray) {
-          data[i] = Math.floor(SRGBToLinear(data[i] / 255) * 255);
+          data[i] = Math.floor(_SRGBToLinear(data[i] / 255) * 255);
         } else {
           // assuming float
 
-          data[i] = SRGBToLinear(data[i]);
+          data[i] = _SRGBToLinear(data[i]);
         }
       }
 
