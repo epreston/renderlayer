@@ -12,13 +12,16 @@ class Points extends Object3D {
   constructor(geometry = new BufferGeometry(), material = new PointsMaterial()) {
     super();
 
-    this.isPoints = true;
     this.type = 'Points';
 
     this.geometry = geometry;
     this.material = material;
 
     this.updateMorphTargets();
+  }
+
+  get isPoints() {
+    return true;
   }
 
   copy(source, recursive) {

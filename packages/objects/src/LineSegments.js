@@ -9,8 +9,11 @@ class LineSegments extends Line {
   constructor(geometry, material) {
     super(geometry, material);
 
-    this.isLineSegments = true;
     this.type = 'LineSegments';
+  }
+
+  get isLineSegments() {
+    return true;
   }
 
   computeLineDistances() {

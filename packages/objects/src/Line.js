@@ -13,13 +13,16 @@ class Line extends Object3D {
   constructor(geometry = new BufferGeometry(), material = new LineBasicMaterial()) {
     super();
 
-    this.isLine = true;
     this.type = 'Line';
 
     this.geometry = geometry;
     this.material = material;
 
     this.updateMorphTargets();
+  }
+
+  get isLine() {
+    return true;
   }
 
   copy(source, recursive) {

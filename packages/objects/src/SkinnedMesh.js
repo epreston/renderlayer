@@ -19,7 +19,6 @@ class SkinnedMesh extends Mesh {
   constructor(geometry, material) {
     super(geometry, material);
 
-    this.isSkinnedMesh = true;
     this.type = 'SkinnedMesh';
 
     this.bindMode = AttachedBindMode;
@@ -30,6 +29,10 @@ class SkinnedMesh extends Mesh {
 
     this.boundingBox = null;
     this.boundingSphere = null;
+  }
+
+  get isSkinnedMesh() {
+    return true;
   }
 
   computeBoundingBox() {

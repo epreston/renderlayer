@@ -29,7 +29,6 @@ class Sprite extends Object3D {
   constructor(material = new SpriteMaterial()) {
     super();
 
-    this.isSprite = true;
     this.type = 'Sprite';
 
     if (_geometry === undefined) {
@@ -53,6 +52,10 @@ class Sprite extends Object3D {
     this.material = material;
 
     this.center = new Vector2(0.5, 0.5);
+  }
+
+  get isSprite() {
+    return true;
   }
 
   raycast(raycaster, intersects) {

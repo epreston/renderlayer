@@ -1,9 +1,6 @@
 import { Object3D } from '@renderlayer/core';
 import { Vector3 } from '@renderlayer/math';
 
-const _v1 = /*@__PURE__*/ new Vector3();
-const _v2 = /*@__PURE__*/ new Vector3();
-
 class LOD extends Object3D {
   constructor() {
     super();
@@ -160,5 +157,8 @@ class LOD extends Object3D {
     return data;
   }
 }
+
+const _v1 = /*@__PURE__*/ new Vector3();
+const _v2 = /*@__PURE__*/ new Vector3();
 
 export { LOD };

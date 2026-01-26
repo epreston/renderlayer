@@ -35,13 +35,16 @@ class Mesh extends Object3D {
   constructor(geometry = new BufferGeometry(), material = new MeshBasicMaterial()) {
     super();
 
-    this.isMesh = true;
     this.type = 'Mesh';
 
     this.geometry = geometry;
     this.material = material;
 
     this.updateMorphTargets();
+  }
+
+  get isMesh() {
+    return true;
   }
 
   copy(source, recursive) {

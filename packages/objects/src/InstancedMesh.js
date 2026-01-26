@@ -16,8 +16,6 @@ class InstancedMesh extends Mesh {
   constructor(geometry, material, count) {
     super(geometry, material);
 
-    this.isInstancedMesh = true;
-
     this.instanceMatrix = new InstancedBufferAttribute(new Float32Array(count * 16), 16);
     this.instanceColor = null;
 
@@ -29,6 +27,10 @@ class InstancedMesh extends Mesh {
     for (let i = 0; i < count; i++) {
       this.setMatrixAt(i, _identity);
     }
+  }
+
+  get isInstancedMesh() {
+    return true;
   }
 
   computeBoundingBox() {
