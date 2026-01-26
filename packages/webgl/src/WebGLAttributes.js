@@ -1,14 +1,15 @@
 class WebGLAttributes {
-  /** @param { WebGL2RenderingContext} gl */
-  constructor(gl, capabilities) {
-    this._gl = gl;
+  #gl;
+  #buffers = new WeakMap();
 
-    this._buffers = new WeakMap();
+  /** @param {WebGL2RenderingContext} gl */
+  constructor(gl, capabilities) {
+    this.#gl = gl;
   }
 
-  _createBuffer(attribute, bufferType) {
+  #createBuffer(attribute, bufferType) {
     const { array, usage } = attribute;
-    const { _gl: gl } = this;
+    const gl = this.#gl;
 
     const buffer = gl.createBuffer();
 
@@ -51,9 +52,9 @@ class WebGLAttributes {
     };
   }
 
-  _updateBuffer(buffer, attribute, bufferType) {
+  #updateBuffer(buffer, attribute, bufferType) {
     const { array, updateRange } = attribute;
-    const { _gl: gl } = this;
+    const gl = this.#gl;
 
     gl.bindBuffer(bufferType, buffer);
 
@@ -78,26 +79,26 @@ class WebGLAttributes {
   get(attribute) {
     if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-    return this._buffers.get(attribute);
+    return this.#buffers.get(attribute);
   }
 
   remove(attribute) {
     if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-    const data = this._buffers.get(attribute);
+    const data = this.#buffers.get(attribute);
 
     if (data) {
-      this._gl.deleteBuffer(data.buffer);
-      this._buffers.delete(attribute);
+      this.#gl.deleteBuffer(data.buffer);
+      this.#buffers.delete(attribute);
     }
   }
 
   update(attribute, bufferType) {
     if (attribute.isGLBufferAttribute) {
-      const cached = this._buffers.get(attribute);
+      const cached = this.#buffers.get(attribute);
 
       if (!cached || cached.version < attribute.version) {
-        this._buffers.set(attribute, {
+        this.#buffers.set(attribute, {
           buffer: attribute.buffer,
           type: attribute.type,
           bytesPerElement: attribute.elementSize,
@@ -110,12 +111,12 @@ class WebGLAttributes {
 
     if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-    const data = this._buffers.get(attribute);
+    const data = this.#buffers.get(attribute);
 
     if (data === undefined) {
-      this._buffers.set(attribute, this._createBuffer(attribute, bufferType));
+      this.#buffers.set(attribute, this.#createBuffer(attribute, bufferType));
     } else if (data.version < attribute.version) {
-      this._updateBuffer(data.buffer, attribute, bufferType);
+      this.#updateBuffer(data.buffer, attribute, bufferType);
       data.version = attribute.version;
     }
   }
