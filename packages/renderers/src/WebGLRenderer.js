@@ -77,8 +77,6 @@ class WebGLRenderer {
       failIfMajorPerformanceCaveat = false
     } = parameters;
 
-    this.isWebGLRenderer = true;
-
     let _alpha;
 
     if (context !== null) {
@@ -2133,6 +2131,10 @@ class WebGLRenderer {
     };
 
     // debug
+  }
+
+  get isWebGLRenderer() {
+    return true;
   }
 
   get coordinateSystem() {
