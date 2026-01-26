@@ -1,18 +1,23 @@
 import { ImageUtils } from '@renderlayer/shared';
 import { generateUUID } from '@renderlayer/math';
 
-let _sourceId = 0;
-
 class Source {
+  #id = _sourceId++;
+
+  uuid = generateUUID();
+  data; // obj or array
+  version = 0;
+
   constructor(data = null) {
-    Object.defineProperty(this, 'id', { value: _sourceId++ });
-    this.uuid = generateUUID();
     this.data = data; // obj or array
-    this.version = 0;
   }
 
   get isSource() {
     return true;
+  }
+
+  get id() {
+    return this.#id;
   }
 
   set needsUpdate(value) {
@@ -26,11 +31,7 @@ class Source {
       return meta.images[this.uuid];
     }
 
-    const output = {
-      uuid: this.uuid,
-      url: ''
-    };
-
+    const output = { uuid: this.uuid, url: '' };
     const data = this.data;
 
     if (data !== null) {
@@ -38,20 +39,18 @@ class Source {
 
       if (Array.isArray(data)) {
         // cube texture
-
         url = [];
 
         for (let i = 0, l = data.length; i < l; i++) {
           if (data[i].isDataTexture) {
-            url.push(serializeImage(data[i].image));
+            url.push(_serializeImage(data[i].image));
           } else {
-            url.push(serializeImage(data[i]));
+            url.push(_serializeImage(data[i]));
           }
         }
       } else {
         // texture
-
-        url = serializeImage(data);
+        url = _serializeImage(data);
       }
 
       output.url = url;
@@ -65,7 +64,9 @@ class Source {
   }
 }
 
-function serializeImage(image) {
+let _sourceId = 0;
+
+function _serializeImage(image) {
   if (
     (typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement) ||
     (typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement) ||
