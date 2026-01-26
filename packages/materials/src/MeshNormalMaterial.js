@@ -3,26 +3,26 @@ import { TangentSpaceNormalMap } from '@renderlayer/shared';
 import { Material } from './Material.js';
 
 class MeshNormalMaterial extends Material {
+  type = 'MeshNormalMaterial';
+
+  bumpMap = null;
+  bumpScale = 1;
+
+  normalMap = null;
+  normalMapType = TangentSpaceNormalMap;
+  normalScale = new Vector2(1, 1);
+
+  displacementMap = null;
+  displacementScale = 1;
+  displacementBias = 0;
+
+  wireframe = false;
+  wireframeLinewidth = 1;
+
+  flatShading = false;
+
   constructor(parameters) {
     super();
-
-    this.type = 'MeshNormalMaterial';
-
-    this.bumpMap = null;
-    this.bumpScale = 1;
-
-    this.normalMap = null;
-    this.normalMapType = TangentSpaceNormalMap;
-    this.normalScale = new Vector2(1, 1);
-
-    this.displacementMap = null;
-    this.displacementScale = 1;
-    this.displacementBias = 0;
-
-    this.wireframe = false;
-    this.wireframeLinewidth = 1;
-
-    this.flatShading = false;
 
     this.setValues(parameters);
   }
