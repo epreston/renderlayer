@@ -1,5 +1,5 @@
 class WebGLExtensions {
-  /** !param { WebGL2RenderingContext} gl */
+  /** @param {WebGL2RenderingContext} gl */
   constructor(gl) {
     this._gl = gl;
     this._extensions = [];
