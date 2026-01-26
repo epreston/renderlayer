@@ -1,27 +1,30 @@
 class WebGLInfo {
+  #gl;
+
+  memory = {
+    geometries: 0,
+    textures: 0
+  };
+
+  render = {
+    frame: 0,
+    calls: 0,
+    triangles: 0,
+    points: 0,
+    lines: 0
+  };
+
+  programs = null;
+  autoReset = true;
+
   /** @param {WebGL2RenderingContext} gl */
   constructor(gl) {
-    this._gl = gl;
-
-    this.memory = {
-      geometries: 0,
-      textures: 0
-    };
-
-    this.render = {
-      frame: 0,
-      calls: 0,
-      triangles: 0,
-      points: 0,
-      lines: 0
-    };
-
-    this.programs = null;
-    this.autoReset = true;
+    this.#gl = gl;
   }
 
   update(count, mode, instanceCount) {
-    const { render, _gl: gl } = this;
+    const render = this.render;
+    const gl = this.#gl;
 
     render.calls++;
 
@@ -53,7 +56,7 @@ class WebGLInfo {
   }
 
   reset() {
-    const { render } = this;
+    const render = this.render;
 
     render.calls = 0;
     render.triangles = 0;
