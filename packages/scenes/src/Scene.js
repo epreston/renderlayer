@@ -1,19 +1,19 @@
 import { Object3D } from '@renderlayer/core';
 
 class Scene extends Object3D {
+  type = 'Scene';
+
+  background = null;
+  environment = null;
+  fog = null;
+
+  backgroundBlurriness = 0;
+  backgroundIntensity = 1;
+
+  overrideMaterial = null;
+
   constructor() {
     super();
-
-    this.type = 'Scene';
-
-    this.background = null;
-    this.environment = null;
-    this.fog = null;
-
-    this.backgroundBlurriness = 0;
-    this.backgroundIntensity = 1;
-
-    this.overrideMaterial = null;
   }
 
   get isScene() {
