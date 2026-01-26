@@ -6,13 +6,16 @@ class CubicBezierCurve3 extends Curve {
   constructor(v0 = new Vector3(), v1 = new Vector3(), v2 = new Vector3(), v3 = new Vector3()) {
     super();
 
-    this.isCubicBezierCurve3 = true;
     this.type = 'CubicBezierCurve3';
 
     this.v0 = v0;
     this.v1 = v1;
     this.v2 = v2;
     this.v3 = v3;
+  }
+
+  get isCubicBezierCurve3() {
+    return true;
   }
 
   getPoint(t, optionalTarget = new Vector3()) {

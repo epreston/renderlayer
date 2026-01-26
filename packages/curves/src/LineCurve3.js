@@ -5,11 +5,14 @@ class LineCurve3 extends Curve {
   constructor(v1 = new Vector3(), v2 = new Vector3()) {
     super();
 
-    this.isLineCurve3 = true;
     this.type = 'LineCurve3';
 
     this.v1 = v1;
     this.v2 = v2;
+  }
+
+  get isLineCurve3() {
+    return true;
   }
 
   getPoint(t, optionalTarget = new Vector3()) {

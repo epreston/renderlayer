@@ -78,13 +78,16 @@ class CatmullRomCurve3 extends Curve {
   constructor(points = [], closed = false, curveType = 'centripetal', tension = 0.5) {
     super();
 
-    this.isCatmullRomCurve3 = true;
     this.type = 'CatmullRomCurve3';
 
     this.points = points;
     this.closed = closed;
     this.curveType = curveType;
     this.tension = tension;
+  }
+
+  get isCatmullRomCurve3() {
+    return true;
   }
 
   getPoint(t, optionalTarget = new Vector3()) {
