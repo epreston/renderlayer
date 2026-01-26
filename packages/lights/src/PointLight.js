@@ -2,15 +2,18 @@ import { Light } from './Light.js';
 import { PointLightShadow } from './PointLightShadow.js';
 
 class PointLight extends Light {
+  type = 'PointLight';
+
+  distance = 0;
+  decay = 2;
+
+  shadow = new PointLightShadow();
+
   constructor(color, intensity, distance = 0, decay = 2) {
     super(color, intensity);
 
-    this.type = 'PointLight';
-
     this.distance = distance;
     this.decay = decay;
-
-    this.shadow = new PointLightShadow();
   }
 
   get isPointLight() {
