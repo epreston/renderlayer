@@ -1,53 +1,52 @@
 import { cloneUniforms, cloneUniformsGroups } from '@renderlayer/shaders';
+import { Material } from './Material.js';
 
 import default_vertex from './glsl/default_vertex.glsl.js';
 import default_fragment from './glsl/default_fragment.glsl.js';
 
-import { Material } from './Material.js';
-
 class ShaderMaterial extends Material {
+  type = 'ShaderMaterial';
+
+  defines = {};
+  uniforms = {};
+  uniformsGroups = [];
+
+  vertexShader = default_vertex;
+  fragmentShader = default_fragment;
+
+  linewidth = 1;
+
+  wireframe = false;
+  wireframeLinewidth = 1;
+
+  fog = false; // set to use scene fog
+  lights = false; // set to use scene lights
+  clipping = false; // set to use user-defined clipping planes
+
+  forceSinglePass = true;
+
+  extensions = {
+    derivatives: false, // set to use derivatives
+    fragDepth: false, // set to use fragment depth values
+    drawBuffers: false, // set to use draw buffers
+    shaderTextureLOD: false // set to use shader texture LOD
+  };
+
+  // When rendered geometry doesn't include these attributes but the material does,
+  // use these default values in WebGL. This avoids errors when buffer data is missing.
+  defaultAttributeValues = {
+    color: [1, 1, 1],
+    uv: [0, 0],
+    uv1: [0, 0]
+  };
+
+  index0AttributeName = undefined;
+  uniformsNeedUpdate = false;
+
+  glslVersion = null;
+
   constructor(parameters) {
     super();
-
-    this.type = 'ShaderMaterial';
-
-    this.defines = {};
-    this.uniforms = {};
-    this.uniformsGroups = [];
-
-    this.vertexShader = default_vertex;
-    this.fragmentShader = default_fragment;
-
-    this.linewidth = 1;
-
-    this.wireframe = false;
-    this.wireframeLinewidth = 1;
-
-    this.fog = false; // set to use scene fog
-    this.lights = false; // set to use scene lights
-    this.clipping = false; // set to use user-defined clipping planes
-
-    this.forceSinglePass = true;
-
-    this.extensions = {
-      derivatives: false, // set to use derivatives
-      fragDepth: false, // set to use fragment depth values
-      drawBuffers: false, // set to use draw buffers
-      shaderTextureLOD: false // set to use shader texture LOD
-    };
-
-    // When rendered geometry doesn't include these attributes but the material does,
-    // use these default values in WebGL. This avoids errors when buffer data is missing.
-    this.defaultAttributeValues = {
-      color: [1, 1, 1],
-      uv: [0, 0],
-      uv1: [0, 0]
-    };
-
-    this.index0AttributeName = undefined;
-    this.uniformsNeedUpdate = false;
-
-    this.glslVersion = null;
 
     if (parameters !== undefined) {
       this.setValues(parameters);
