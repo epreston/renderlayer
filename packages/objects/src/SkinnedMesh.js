@@ -91,7 +91,6 @@ class SkinnedMesh extends Mesh {
     if (material === undefined) return;
 
     // test with bounding sphere in world space
-
     if (this.boundingSphere === null) this.computeBoundingSphere();
 
     _sphere.copy(this.boundingSphere);
@@ -100,18 +99,15 @@ class SkinnedMesh extends Mesh {
     if (raycaster.ray.intersectsSphere(_sphere) === false) return;
 
     // convert ray to local space of skinned mesh
-
     _inverseMatrix.copy(matrixWorld).invert();
     _ray.copy(raycaster.ray).applyMatrix4(_inverseMatrix);
 
     // test with bounding box in local space
-
     if (this.boundingBox !== null) {
       if (_ray.intersectsBox(this.boundingBox) === false) return;
     }
 
     // test for intersections with geometry
-
     this._computeIntersections(raycaster, intersects, _ray);
   }
 
