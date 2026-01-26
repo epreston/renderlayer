@@ -808,13 +808,11 @@ class OrbitControls extends Controls {
 
   #handleTouchMoveDollyPan(event) {
     if (this.enableZoom) this.#handleTouchMoveDolly(event);
-
     if (this.enablePan) this.#handleTouchMovePan(event);
   }
 
   #handleTouchMoveDollyRotate(event) {
     if (this.enableZoom) this.#handleTouchMoveDolly(event);
-
     if (this.enableRotate) this.#handleTouchMoveRotate(event);
   }
 
@@ -902,11 +900,7 @@ class OrbitControls extends Controls {
       this.domElement.ownerDocument.addEventListener('pointerup', this.onPointerUp);
     }
 
-    //
-
     if (this.#isTrackingPointer(event)) return;
-
-    //
 
     this.#addPointer(event);
 
