@@ -121,21 +121,6 @@ class ShadowUniformsCache {
   }
 }
 
-let nextVersion = 0;
-
-function _shadowCastingAndTexturingLightsFirst(lightA, lightB) {
-  return (
-    (lightB.castShadow ? 2 : 0) -
-    (lightA.castShadow ? 2 : 0) +
-    (lightB.map ? 1 : 0) -
-    (lightA.map ? 1 : 0)
-  );
-}
-
-const _vector3 = /*@__PURE__*/ new Vector3();
-const _matrix4 = /*@__PURE__*/ new Matrix4();
-const _matrix42 = /*@__PURE__*/ new Matrix4();
-
 class WebGLLights {
   // EP: params not used
   constructor(extensions, capabilities) {
@@ -409,7 +394,7 @@ class WebGLLights {
 
       hash.numLightProbes = numLightProbes;
 
-      this.state.version = nextVersion++;
+      this.state.version = _nextVersion++;
     }
   }
 
@@ -483,5 +468,20 @@ class WebGLLights {
     }
   }
 }
+
+let _nextVersion = 0;
+
+function _shadowCastingAndTexturingLightsFirst(lightA, lightB) {
+  return (
+    (lightB.castShadow ? 2 : 0) -
+    (lightA.castShadow ? 2 : 0) +
+    (lightB.map ? 1 : 0) -
+    (lightA.map ? 1 : 0)
+  );
+}
+
+const _vector3 = /*@__PURE__*/ new Vector3();
+const _matrix4 = /*@__PURE__*/ new Matrix4();
+const _matrix42 = /*@__PURE__*/ new Matrix4();
 
 export { WebGLLights };
