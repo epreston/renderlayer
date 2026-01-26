@@ -1,14 +1,16 @@
 import { DefaultLoadingManager } from './LoadingManager.js';
 
 class Loader {
+  manager;
+
+  crossOrigin = 'anonymous';
+  withCredentials = false;
+  path = '';
+  resourcePath = '';
+  requestHeader = {};
+
   constructor(manager) {
     this.manager = manager !== undefined ? manager : DefaultLoadingManager;
-
-    this.crossOrigin = 'anonymous';
-    this.withCredentials = false;
-    this.path = '';
-    this.resourcePath = '';
-    this.requestHeader = {};
   }
 
   load(/* url, onLoad, onProgress, onError */) {}
@@ -17,6 +19,7 @@ class Loader {
     const scope = this;
 
     return new Promise(function (resolve, reject) {
+      // @ts-ignore
       scope.load(url, resolve, onProgress, reject);
     });
   }
