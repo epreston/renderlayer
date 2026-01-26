@@ -19,43 +19,6 @@ import { Color, Vector3 } from '@renderlayer/math';
 import { Mesh } from '@renderlayer/objects';
 import { WebGLRenderTarget } from '@renderlayer/targets';
 
-const LOD_MIN = 4;
-
-// The standard deviations (radians) associated with the extra mips. These are
-// chosen to approximate a Trowbridge-Reitz distribution function times the
-// geometric shadowing function. These sigma values squared must match the
-// variance #defines in cube_uv_reflection_fragment.glsl.js.
-const EXTRA_LOD_SIGMA = [0.125, 0.215, 0.35, 0.446, 0.526, 0.582];
-
-// The maximum length of the blur for loop. Smaller sigma will use fewer
-// samples and exit early, but not recompile the shader.
-const MAX_SAMPLES = 20;
-
-const _flatCamera = /*@__PURE__*/ new OrthographicCamera();
-const _clearColor = /*@__PURE__*/ new Color();
-let _oldTarget = null;
-let _oldActiveCubeFace = 0;
-let _oldActiveMipmapLevel = 0;
-
-// Golden Ratio
-const PHI = (1 + Math.sqrt(5)) / 2;
-const INV_PHI = 1 / PHI;
-
-// Vertices of a dodecahedron (except the opposites, which represent the
-// same axis), used as axis directions evenly spread on a sphere.
-const _axisDirections = [
-  /*@__PURE__*/ new Vector3(1, 1, 1),
-  /*@__PURE__*/ new Vector3(-1, 1, 1),
-  /*@__PURE__*/ new Vector3(1, 1, -1),
-  /*@__PURE__*/ new Vector3(-1, 1, -1),
-  /*@__PURE__*/ new Vector3(0, PHI, INV_PHI),
-  /*@__PURE__*/ new Vector3(0, PHI, -INV_PHI),
-  /*@__PURE__*/ new Vector3(INV_PHI, 0, PHI),
-  /*@__PURE__*/ new Vector3(-INV_PHI, 0, PHI),
-  /*@__PURE__*/ new Vector3(PHI, INV_PHI, 0),
-  /*@__PURE__*/ new Vector3(-PHI, INV_PHI, 0)
-];
-
 /**
  * This class generates a pre-filtered, mipmapped Radiance Environment Map
  * (PMREM) from a cubeMap environment texture. This allows different levels of
@@ -71,19 +34,21 @@ const _axisDirections = [
  */
 
 class PMREMGenerator {
+  _renderer;
+  _pingPongRenderTarget = null;
+
+  _lodMax = 0;
+  _cubeSize = 0;
+  _lodPlanes = [];
+  _sizeLods = [];
+  _sigmas = [];
+
+  _blurMaterial = null;
+  _cubemapMaterial = null;
+  _equirectMaterial = null;
+
   constructor(renderer) {
     this._renderer = renderer;
-    this._pingPongRenderTarget = null;
-
-    this._lodMax = 0;
-    this._cubeSize = 0;
-    this._lodPlanes = [];
-    this._sizeLods = [];
-    this._sigmas = [];
-
-    this._blurMaterial = null;
-    this._cubemapMaterial = null;
-    this._equirectMaterial = null;
 
     this._compileMaterial(this._blurMaterial);
   }
@@ -432,21 +397,21 @@ class PMREMGenerator {
 
     const pixels = this._sizeLods[lodIn] - 1;
     const radiansPerPixel =
-      isFinite(sigmaRadians) ? Math.PI / (2 * pixels) : (2 * Math.PI) / (2 * MAX_SAMPLES - 1);
+      isFinite(sigmaRadians) ? Math.PI / (2 * pixels) : (2 * Math.PI) / (2 * _MAX_SAMPLES - 1);
     const sigmaPixels = sigmaRadians / radiansPerPixel;
     const samples =
-      isFinite(sigmaRadians) ? 1 + Math.floor(STANDARD_DEVIATIONS * sigmaPixels) : MAX_SAMPLES;
+      isFinite(sigmaRadians) ? 1 + Math.floor(STANDARD_DEVIATIONS * sigmaPixels) : _MAX_SAMPLES;
 
-    if (samples > MAX_SAMPLES) {
+    if (samples > _MAX_SAMPLES) {
       console.warn(
-        `sigmaRadians, ${sigmaRadians}, is too large and will clip, as it requested ${samples} samples when the maximum is set to ${MAX_SAMPLES}`
+        `sigmaRadians, ${sigmaRadians}, is too large and will clip, as it requested ${samples} samples when the maximum is set to ${_MAX_SAMPLES}`
       );
     }
 
     const weights = [];
     let sum = 0;
 
-    for (let i = 0; i < MAX_SAMPLES; ++i) {
+    for (let i = 0; i < _MAX_SAMPLES; ++i) {
       const x = i / sigmaPixels;
       const weight = Math.exp((-x * x) / 2);
       weights.push(weight);
@@ -476,7 +441,7 @@ class PMREMGenerator {
     blurUniforms['mipInt'].value = _lodMax - lodIn;
 
     const outputSize = this._sizeLods[lodOut];
-    const x = 3 * outputSize * (lodOut > _lodMax - LOD_MIN ? lodOut - _lodMax + LOD_MIN : 0);
+    const x = 3 * outputSize * (lodOut > _lodMax - _LOD_MIN ? lodOut - _lodMax + _LOD_MIN : 0);
     const y = 4 * (this._cubeSize - outputSize);
 
     _setViewport(targetOut, x, y, 3 * outputSize, 2 * outputSize);
@@ -492,15 +457,15 @@ function _createPlanes(lodMax) {
 
   let lod = lodMax;
 
-  const totalLods = lodMax - LOD_MIN + 1 + EXTRA_LOD_SIGMA.length;
+  const totalLods = lodMax - _LOD_MIN + 1 + _EXTRA_LOD_SIGMA.length;
 
   for (let i = 0; i < totalLods; i++) {
     const sizeLod = Math.pow(2, lod);
     sizeLods.push(sizeLod);
     let sigma = 1.0 / sizeLod;
 
-    if (i > lodMax - LOD_MIN) {
-      sigma = EXTRA_LOD_SIGMA[i - lodMax + LOD_MIN - 1];
+    if (i > lodMax - _LOD_MIN) {
+      sigma = _EXTRA_LOD_SIGMA[i - lodMax + _LOD_MIN - 1];
     } else if (i === 0) {
       sigma = 0;
     }
@@ -547,7 +512,7 @@ function _createPlanes(lodMax) {
     planes.setAttribute('faceIndex', new BufferAttribute(faceIndex, faceIndexSize));
     lodPlanes.push(planes);
 
-    if (lod > LOD_MIN) {
+    if (lod > _LOD_MIN) {
       lod--;
     }
   }
@@ -569,13 +534,13 @@ function _setViewport(target, x, y, width, height) {
 }
 
 function _getBlurShader(lodMax, width, height) {
-  const weights = new Float32Array(MAX_SAMPLES);
+  const weights = new Float32Array(_MAX_SAMPLES);
   const poleAxis = new Vector3(0, 1, 0);
   const shaderMaterial = new ShaderMaterial({
     name: 'SphericalGaussianBlur',
 
     defines: {
-      n: MAX_SAMPLES,
+      n: _MAX_SAMPLES,
       CUBEUV_TEXEL_WIDTH: 1.0 / width,
       CUBEUV_TEXEL_HEIGHT: 1.0 / height,
       CUBEUV_MAX_MIP: `${lodMax}.0`
@@ -755,5 +720,42 @@ function _getCommonVertexShader() {
 		}
 	`;
 }
+
+const _LOD_MIN = 4;
+
+// The standard deviations (radians) associated with the extra mips. These are
+// chosen to approximate a Trowbridge-Reitz distribution function times the
+// geometric shadowing function. These sigma values squared must match the
+// variance #defines in cube_uv_reflection_fragment.glsl.js.
+const _EXTRA_LOD_SIGMA = [0.125, 0.215, 0.35, 0.446, 0.526, 0.582];
+
+// The maximum length of the blur for loop. Smaller sigma will use fewer
+// samples and exit early, but not recompile the shader.
+const _MAX_SAMPLES = 20;
+
+const _flatCamera = /*@__PURE__*/ new OrthographicCamera();
+const _clearColor = /*@__PURE__*/ new Color();
+let _oldTarget = null;
+let _oldActiveCubeFace = 0;
+let _oldActiveMipmapLevel = 0;
+
+// Golden Ratio
+const _PHI = (1 + Math.sqrt(5)) / 2;
+const _INV_PHI = 1 / _PHI;
+
+// Vertices of a dodecahedron (except the opposites, which represent the
+// same axis), used as axis directions evenly spread on a sphere.
+const _axisDirections = [
+  /*@__PURE__*/ new Vector3(1, 1, 1),
+  /*@__PURE__*/ new Vector3(-1, 1, 1),
+  /*@__PURE__*/ new Vector3(1, 1, -1),
+  /*@__PURE__*/ new Vector3(-1, 1, -1),
+  /*@__PURE__*/ new Vector3(0, _PHI, _INV_PHI),
+  /*@__PURE__*/ new Vector3(0, _PHI, -_INV_PHI),
+  /*@__PURE__*/ new Vector3(_INV_PHI, 0, _PHI),
+  /*@__PURE__*/ new Vector3(-_INV_PHI, 0, _PHI),
+  /*@__PURE__*/ new Vector3(_PHI, _INV_PHI, 0),
+  /*@__PURE__*/ new Vector3(-_PHI, _INV_PHI, 0)
+];
 
 export { PMREMGenerator };
