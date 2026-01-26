@@ -8,8 +8,6 @@ class Object3D extends EventDispatcher {
   static DEFAULT_MATRIX_AUTO_UPDATE = true;
   static DEFAULT_MATRIX_WORLD_AUTO_UPDATE = true;
 
-  isObject3D = true;
-
   #id = _object3DId++;
 
   uuid = generateUUID();
@@ -60,6 +58,10 @@ class Object3D extends EventDispatcher {
     this.quaternion._onChange(() => {
       this.rotation.setFromQuaternion(this.quaternion, undefined, false);
     });
+  }
+
+  get isObject3D() {
+    return true;
   }
 
   get id() {
