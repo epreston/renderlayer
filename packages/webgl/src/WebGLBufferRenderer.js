@@ -1,25 +1,28 @@
 class WebGLBufferRenderer {
+  #gl;
+  #info;
+
+  #mode = null;
+
   /** @param {WebGL2RenderingContext} gl */
   constructor(gl, extensions, info, capabilities) {
-    this._gl = gl;
-    this._info = info;
-
-    this._mode = null;
+    this.#gl = gl;
+    this.#info = info;
   }
 
   setMode(value) {
-    this._mode = value;
+    this.#mode = value;
   }
 
   render(start, count) {
-    this._gl.drawArrays(this._mode, start, count);
-    this._info.update(count, this._mode, 1);
+    this.#gl.drawArrays(this.#mode, start, count);
+    this.#info.update(count, this.#mode, 1);
   }
 
   renderInstances(start, count, primcount) {
     if (primcount === 0) return;
-    this._gl.drawArraysInstanced(this._mode, start, count, primcount);
-    this._info.update(count, this._mode, primcount);
+    this.#gl.drawArraysInstanced(this.#mode, start, count, primcount);
+    this.#info.update(count, this.#mode, primcount);
   }
 }
 
