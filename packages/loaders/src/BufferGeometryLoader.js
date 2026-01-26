@@ -18,8 +18,8 @@ class BufferGeometryLoader extends Loader {
 
   load(url, onLoad, onProgress, onError) {
     const scope = this;
-
     const loader = new FileLoader(scope.manager);
+
     loader.setPath(scope.path);
     loader.setRequestHeader(scope.requestHeader);
     loader.setWithCredentials(scope.withCredentials);

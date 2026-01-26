@@ -17,7 +17,6 @@ class FileLoader extends Loader {
 
   load(url, onLoad, onProgress, onError) {
     if (url === undefined) url = '';
-
     if (this.path !== undefined) url = this.path + url;
 
     url = this.manager.resolveURL(url);
@@ -37,7 +36,6 @@ class FileLoader extends Loader {
     }
 
     // Check if request is duplicate
-
     if (loading[url] !== undefined) {
       loading[url].push({
         onLoad: onLoad,
@@ -183,7 +181,6 @@ class FileLoader extends Loader {
       })
       .catch((err) => {
         // Abort errors and other errors are handled the same
-
         const callbacks = loading[url];
 
         if (callbacks === undefined) {
