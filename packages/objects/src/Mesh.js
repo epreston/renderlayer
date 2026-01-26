@@ -4,38 +4,18 @@ import { MeshBasicMaterial } from '@renderlayer/materials';
 import { Matrix4, Ray, Sphere, Triangle, Vector2, Vector3 } from '@renderlayer/math';
 import { BackSide, FrontSide } from '@renderlayer/shared';
 
-const _inverseMatrix = /*@__PURE__*/ new Matrix4();
-const _ray = /*@__PURE__*/ new Ray();
-const _sphere = /*@__PURE__*/ new Sphere();
-const _sphereHitAt = /*@__PURE__*/ new Vector3();
-
-const _vA = /*@__PURE__*/ new Vector3();
-const _vB = /*@__PURE__*/ new Vector3();
-const _vC = /*@__PURE__*/ new Vector3();
-
-const _tempA = /*@__PURE__*/ new Vector3();
-const _morphA = /*@__PURE__*/ new Vector3();
-
-const _uvA = /*@__PURE__*/ new Vector2();
-const _uvB = /*@__PURE__*/ new Vector2();
-const _uvC = /*@__PURE__*/ new Vector2();
-
-const _normalA = /*@__PURE__*/ new Vector3();
-const _normalB = /*@__PURE__*/ new Vector3();
-const _normalC = /*@__PURE__*/ new Vector3();
-
-const _intersectionPoint = /*@__PURE__*/ new Vector3();
-const _intersectionPointWorld = /*@__PURE__*/ new Vector3();
-
 class Mesh extends Object3D {
+  type = 'Mesh';
+
+  geometry;
+  material;
+
   /**
    * @param {BufferGeometry} geometry
    * @param {import('@renderlayer/materials').Material } material
    */
   constructor(geometry = new BufferGeometry(), material = new MeshBasicMaterial()) {
     super();
-
-    this.type = 'Mesh';
 
     this.geometry = geometry;
     this.material = material;
@@ -133,14 +113,12 @@ class Mesh extends Object3D {
     if (material === undefined) return;
 
     // test with bounding sphere in world space
-
     if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
 
     _sphere.copy(geometry.boundingSphere);
     _sphere.applyMatrix4(matrixWorld);
 
     // check distance from ray origin to bounding sphere
-
     _ray.copy(raycaster.ray).recast(raycaster.near);
 
     if (_sphere.containsPoint(_ray.origin) === false) {
@@ -151,18 +129,15 @@ class Mesh extends Object3D {
     }
 
     // convert ray to local space of mesh
-
     _inverseMatrix.copy(matrixWorld).invert();
     _ray.copy(raycaster.ray).applyMatrix4(_inverseMatrix);
 
     // test with bounding box in local space
-
     if (geometry.boundingBox !== null) {
       if (_ray.intersectsBox(geometry.boundingBox) === false) return;
     }
 
     // test for intersections with geometry
-
     this._computeIntersections(raycaster, intersects, _ray);
   }
 
@@ -431,5 +406,28 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
 
   return intersection;
 }
+
+const _inverseMatrix = /*@__PURE__*/ new Matrix4();
+const _ray = /*@__PURE__*/ new Ray();
+const _sphere = /*@__PURE__*/ new Sphere();
+const _sphereHitAt = /*@__PURE__*/ new Vector3();
+
+const _vA = /*@__PURE__*/ new Vector3();
+const _vB = /*@__PURE__*/ new Vector3();
+const _vC = /*@__PURE__*/ new Vector3();
+
+const _tempA = /*@__PURE__*/ new Vector3();
+const _morphA = /*@__PURE__*/ new Vector3();
+
+const _uvA = /*@__PURE__*/ new Vector2();
+const _uvB = /*@__PURE__*/ new Vector2();
+const _uvC = /*@__PURE__*/ new Vector2();
+
+const _normalA = /*@__PURE__*/ new Vector3();
+const _normalB = /*@__PURE__*/ new Vector3();
+const _normalC = /*@__PURE__*/ new Vector3();
+
+const _intersectionPoint = /*@__PURE__*/ new Vector3();
+const _intersectionPointWorld = /*@__PURE__*/ new Vector3();
 
 export { Mesh };
