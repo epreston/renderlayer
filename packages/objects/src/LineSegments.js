@@ -2,14 +2,11 @@ import { Float32BufferAttribute } from '@renderlayer/buffers';
 import { Vector3 } from '@renderlayer/math';
 import { Line } from './Line.js';
 
-const _start = /*@__PURE__*/ new Vector3();
-const _end = /*@__PURE__*/ new Vector3();
-
 class LineSegments extends Line {
+  type = 'LineSegments';
+
   constructor(geometry, material) {
     super(geometry, material);
-
-    this.type = 'LineSegments';
   }
 
   get isLineSegments() {
@@ -43,5 +40,8 @@ class LineSegments extends Line {
     return this;
   }
 }
+
+const _start = /*@__PURE__*/ new Vector3();
+const _end = /*@__PURE__*/ new Vector3();
 
 export { LineSegments };
