@@ -2,14 +2,14 @@ import { Cache } from './Cache.js';
 import { Loader } from './Loader.js';
 
 class ImageBitmapLoader extends Loader {
+  options = { premultiplyAlpha: 'none' };
+
   constructor(manager) {
     super(manager);
 
     if (typeof createImageBitmap === 'undefined') {
       console.warn('ImageBitmapLoader: createImageBitmap() not supported.');
     }
-
-    this.options = { premultiplyAlpha: 'none' };
   }
 
   get isImageBitmapLoader() {
