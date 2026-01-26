@@ -5,13 +5,15 @@ class ImageBitmapLoader extends Loader {
   constructor(manager) {
     super(manager);
 
-    this.isImageBitmapLoader = true;
-
     if (typeof createImageBitmap === 'undefined') {
       console.warn('ImageBitmapLoader: createImageBitmap() not supported.');
     }
 
     this.options = { premultiplyAlpha: 'none' };
+  }
+
+  get isImageBitmapLoader() {
+    return true;
   }
 
   setOptions(options) {
