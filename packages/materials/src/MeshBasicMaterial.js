@@ -4,34 +4,34 @@ import { MultiplyOperation } from '@renderlayer/shared';
 import { Material } from './Material.js';
 
 class MeshBasicMaterial extends Material {
+  type = 'MeshBasicMaterial';
+
+  color = new Color(0xffffff); // emissive
+
+  map = null;
+
+  lightMap = null;
+  lightMapIntensity = 1.0;
+
+  aoMap = null;
+  aoMapIntensity = 1.0;
+
+  specularMap = null;
+
+  alphaMap = null;
+
+  envMap = null;
+  combine = MultiplyOperation;
+  reflectivity = 1;
+  refractionRatio = 0.98;
+
+  wireframe = false;
+  wireframeLinewidth = 1; // will almost always be 1
+
+  fog = true;
+
   constructor(parameters) {
     super();
-
-    this.type = 'MeshBasicMaterial';
-
-    this.color = new Color(0xffffff); // emissive
-
-    this.map = null;
-
-    this.lightMap = null;
-    this.lightMapIntensity = 1.0;
-
-    this.aoMap = null;
-    this.aoMapIntensity = 1.0;
-
-    this.specularMap = null;
-
-    this.alphaMap = null;
-
-    this.envMap = null;
-    this.combine = MultiplyOperation;
-    this.reflectivity = 1;
-    this.refractionRatio = 0.98;
-
-    this.wireframe = false;
-    this.wireframeLinewidth = 1; // will almost always be 1
-
-    this.fog = true;
 
     this.setValues(parameters);
   }
