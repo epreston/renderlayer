@@ -104,6 +104,10 @@ class Material extends EventDispatcher {
     this.#alphaTest = value;
   }
 
+  set needsUpdate(value) {
+    if (value === true) this.version++;
+  }
+
   onBuild(/* shaderobject, renderer */) {}
 
   onBeforeRender(/* renderer, scene, camera, geometry, object, group */) {}
@@ -467,10 +471,6 @@ class Material extends EventDispatcher {
 
   dispose() {
     this.dispatchEvent({ type: 'dispose' });
-  }
-
-  set needsUpdate(value) {
-    if (value === true) this.version++;
   }
 }
 
