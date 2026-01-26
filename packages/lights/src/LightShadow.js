@@ -5,28 +5,30 @@ const _lightPositionWorld = /*@__PURE__*/ new Vector3();
 const _lookTarget = /*@__PURE__*/ new Vector3();
 
 class LightShadow {
+  camera;
+
+  bias = 0;
+  normalBias = 0;
+  radius = 1;
+  blurSamples = 8;
+
+  mapSize = new Vector2(512, 512);
+
+  map = null;
+  mapPass = null;
+  matrix = new Matrix4();
+
+  autoUpdate = true;
+  needsUpdate = false;
+
+  _frustum = new Frustum();
+  _frameExtents = new Vector2(1, 1);
+
+  _viewportCount = 1;
+  _viewports = [new Vector4(0, 0, 1, 1)];
+
   constructor(camera) {
     this.camera = camera;
-
-    this.bias = 0;
-    this.normalBias = 0;
-    this.radius = 1;
-    this.blurSamples = 8;
-
-    this.mapSize = new Vector2(512, 512);
-
-    this.map = null;
-    this.mapPass = null;
-    this.matrix = new Matrix4();
-
-    this.autoUpdate = true;
-    this.needsUpdate = false;
-
-    this._frustum = new Frustum();
-    this._frameExtents = new Vector2(1, 1);
-
-    this._viewportCount = 1;
-    this._viewports = [new Vector4(0, 0, 1, 1)];
   }
 
   getViewportCount() {
