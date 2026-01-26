@@ -2,23 +2,23 @@ import { BasicDepthPacking } from '@renderlayer/shared';
 import { Material } from './Material.js';
 
 class MeshDepthMaterial extends Material {
+  type = 'MeshDepthMaterial';
+
+  depthPacking = BasicDepthPacking;
+
+  map = null;
+
+  alphaMap = null;
+
+  displacementMap = null;
+  displacementScale = 1;
+  displacementBias = 0;
+
+  wireframe = false;
+  wireframeLinewidth = 1; // will almost always be 1
+
   constructor(parameters) {
     super();
-
-    this.type = 'MeshDepthMaterial';
-
-    this.depthPacking = BasicDepthPacking;
-
-    this.map = null;
-
-    this.alphaMap = null;
-
-    this.displacementMap = null;
-    this.displacementScale = 1;
-    this.displacementBias = 0;
-
-    this.wireframe = false;
-    this.wireframeLinewidth = 1; // will almost always be 1
 
     this.setValues(parameters);
   }
