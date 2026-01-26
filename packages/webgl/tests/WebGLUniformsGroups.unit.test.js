@@ -4,7 +4,7 @@ import { WebGLUniformsGroups } from '../src/WebGLUniformsGroups.js';
 
 describe('WebGL', () => {
   describe('WebGLUniformsGroups', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLUniformsGroups).toBeDefined();
     });
 
