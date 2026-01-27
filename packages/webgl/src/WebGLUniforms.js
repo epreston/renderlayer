@@ -857,11 +857,11 @@ function parseUniform(activeInfo, addr, container) {
 // Root Container
 
 class WebGLUniforms {
+  seq = [];
+  map = {};
+
   /** @param {WebGL2RenderingContext} gl */
   constructor(gl, program) {
-    this.seq = [];
-    this.map = {};
-
     const n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
 
     for (let i = 0; i < n; ++i) {
