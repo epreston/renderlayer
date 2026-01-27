@@ -40,6 +40,7 @@ import {
  * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
  * @param {import('./WebGLState.js').WebGLState} state
  * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+ * @param {import('./WebGLUtils.js').WebGLUtils} utils
  * @param {import('./WebGLInfo.js').WebGLInfo} info
  */
 function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info) {
