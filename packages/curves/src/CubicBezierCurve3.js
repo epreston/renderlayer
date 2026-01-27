@@ -3,10 +3,15 @@ import { CubicBezier } from './core/Interpolations.js';
 import { Curve } from './core/Curve.js';
 
 class CubicBezierCurve3 extends Curve {
+  type = 'CubicBezierCurve3';
+
+  v0;
+  v1;
+  v2;
+  v3;
+
   constructor(v0 = new Vector3(), v1 = new Vector3(), v2 = new Vector3(), v3 = new Vector3()) {
     super();
-
-    this.type = 'CubicBezierCurve3';
 
     this.v0 = v0;
     this.v1 = v1;
