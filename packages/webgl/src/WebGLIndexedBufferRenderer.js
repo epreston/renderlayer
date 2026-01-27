@@ -1,4 +1,11 @@
 class WebGLIndexedBufferRenderer {
+  #gl;
+  #info;
+
+  #mode = null;
+  #type = null;
+  #bytesPerElement = null;
+
   /**
    * @param {WebGL2RenderingContext} gl
    * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
@@ -6,42 +13,37 @@ class WebGLIndexedBufferRenderer {
    * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, info, capabilities) {
-    this._gl = gl;
-    this._info = info;
-
-    this._mode = null;
-
-    this._type = null;
-    this._bytesPerElement = null;
+    this.#gl = gl;
+    this.#info = info;
   }
 
   setMode(value) {
-    this._mode = value;
+    this.#mode = value;
   }
 
   setIndex(value) {
-    this._type = value.type;
-    this._bytesPerElement = value.bytesPerElement;
+    this.#type = value.type;
+    this.#bytesPerElement = value.bytesPerElement;
   }
 
   render(start, count) {
-    this._gl.drawElements(this._mode, count, this._type, start * this._bytesPerElement);
+    this.#gl.drawElements(this.#mode, count, this.#type, start * this.#bytesPerElement);
 
-    this._info.update(count, this._mode, 1);
+    this.#info.update(count, this.#mode, 1);
   }
 
   renderInstances(start, count, primcount) {
     if (primcount === 0) return;
 
-    this._gl.drawElementsInstanced(
-      this._mode,
+    this.#gl.drawElementsInstanced(
+      this.#mode,
       count,
-      this._type,
-      start * this._bytesPerElement,
+      this.#type,
+      start * this.#bytesPerElement,
       primcount
     );
 
-    this._info.update(count, this._mode, primcount);
+    this.#info.update(count, this.#mode, primcount);
   }
 }
 
