@@ -9,7 +9,10 @@ class WebGLUniformsGroups {
 
   #maxBindingPoints;
 
-  /** @param {WebGL2RenderingContext} gl */
+  /**
+   * @param {WebGL2RenderingContext} gl
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   */
   constructor(gl, info, capabilities, state) {
     this.#gl = gl;
     this.#info = info;

@@ -2,7 +2,10 @@ class WebGLAttributes {
   #gl;
   #buffers = new WeakMap();
 
-  /** @param {WebGL2RenderingContext} gl */
+  /**
+   * @param {WebGL2RenderingContext} gl
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   */
   constructor(gl, capabilities) {
     this.#gl = gl;
   }

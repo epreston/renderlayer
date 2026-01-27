@@ -1,5 +1,9 @@
 class WebGLIndexedBufferRenderer {
-  /** @param {WebGL2RenderingContext} gl */
+  /**
+   * @param {WebGL2RenderingContext} gl
+   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   */
   constructor(gl, extensions, info, capabilities) {
     this._gl = gl;
     this._info = info;

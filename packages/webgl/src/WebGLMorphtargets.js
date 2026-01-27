@@ -3,7 +3,10 @@ import { FloatType } from '@renderlayer/shared';
 import { DataArrayTexture } from '@renderlayer/textures';
 
 class WebGLMorphtargets {
-  /** @param {WebGL2RenderingContext} gl */
+  /**
+   * @param {WebGL2RenderingContext} gl
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   */
   constructor(gl, capabilities, textures) {
     this._gl = gl;
     this._capabilities = capabilities;

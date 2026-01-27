@@ -4,7 +4,11 @@ class WebGLBufferRenderer {
 
   #mode = null;
 
-  /** @param {WebGL2RenderingContext} gl */
+  /**
+   * @param {WebGL2RenderingContext} gl
+   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   */
   constructor(gl, extensions, info, capabilities) {
     this.#gl = gl;
     this.#info = info;

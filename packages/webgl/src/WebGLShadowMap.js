@@ -17,6 +17,9 @@ import { WebGLRenderTarget } from '@renderlayer/targets';
 import * as vsm from './glsl/vsm.glsl.js';
 
 class WebGLShadowMap {
+  /**
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} _capabilities
+   */
   constructor(_renderer, _objects, _capabilities) {
     let _frustum = new Frustum();
 

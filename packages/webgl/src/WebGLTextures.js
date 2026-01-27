@@ -35,7 +35,11 @@ import {
   createElementNS
 } from '@renderlayer/shared';
 
-/** @param {WebGL2RenderingContext} _gl */
+/**
+ * @param {WebGL2RenderingContext} _gl
+ * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+ * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+ */
 function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info) {
   const maxTextures = capabilities.maxTextures;
   const maxCubemapSize = capabilities.maxCubemapSize;

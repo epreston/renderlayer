@@ -59,7 +59,11 @@ import {
   _SRGBAFormat
 } from '@renderlayer/shared';
 
-/** @param {WebGL2RenderingContext} gl */
+/**
+ * @param {WebGL2RenderingContext} gl
+ * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+ * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+ */
 function WebGLUtils(gl, extensions, capabilities) {
   function convert(p, colorSpace = NoColorSpace) {
     let extension;

@@ -7,8 +7,13 @@ class WebGLRenderState {
 
   state;
 
-  // EP: params not used
+  /**
+   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   */
   constructor(extensions, capabilities) {
+    // EP: params not used
+
     const lights = new WebGLLights(extensions, capabilities);
     const lightsArray = [];
     const shadowsArray = [];
@@ -52,6 +57,10 @@ class WebGLRenderStates {
   extensions;
   capabilities;
 
+  /**
+   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   */
   constructor(extensions, capabilities) {
     this.extensions = extensions;
     this.capabilities = capabilities;
