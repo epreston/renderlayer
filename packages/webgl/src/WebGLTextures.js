@@ -39,6 +39,7 @@ import {
  * @param {WebGL2RenderingContext} _gl
  * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
  * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+ * !param {import('./WebGLState.js').WebGLState} state
  */
 function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info) {
   const maxTextures = capabilities.maxTextures;
