@@ -47,92 +47,7 @@ import {
  * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
  */
 function WebGLState(gl, extensions, capabilities) {
-  function DepthBuffer() {
-    let _locked = false;
-
-    let _currentDepthMask = null;
-    let _currentDepthFunc = null;
-    let _currentDepthClear = null;
-
-    return {
-      setTest(depthTest) {
-        if (depthTest) {
-          enable(gl.DEPTH_TEST);
-        } else {
-          disable(gl.DEPTH_TEST);
-        }
-      },
-
-      setMask(depthMask) {
-        if (_currentDepthMask !== depthMask && !_locked) {
-          gl.depthMask(depthMask);
-          _currentDepthMask = depthMask;
-        }
-      },
-
-      setFunc(depthFunc) {
-        if (_currentDepthFunc !== depthFunc) {
-          switch (depthFunc) {
-            case NeverDepth:
-              gl.depthFunc(gl.NEVER);
-              break;
-
-            case AlwaysDepth:
-              gl.depthFunc(gl.ALWAYS);
-              break;
-
-            case LessDepth:
-              gl.depthFunc(gl.LESS);
-              break;
-
-            case LessEqualDepth:
-              gl.depthFunc(gl.LEQUAL);
-              break;
-
-            case EqualDepth:
-              gl.depthFunc(gl.EQUAL);
-              break;
-
-            case GreaterEqualDepth:
-              gl.depthFunc(gl.GEQUAL);
-              break;
-
-            case GreaterDepth:
-              gl.depthFunc(gl.GREATER);
-              break;
-
-            case NotEqualDepth:
-              gl.depthFunc(gl.NOTEQUAL);
-              break;
-
-            default:
-              gl.depthFunc(gl.LEQUAL);
-          }
-
-          _currentDepthFunc = depthFunc;
-        }
-      },
-
-      setLocked(lock) {
-        _locked = lock;
-      },
-
-      setClear(depth) {
-        if (_currentDepthClear !== depth) {
-          gl.clearDepth(depth);
-          _currentDepthClear = depth;
-        }
-      },
-
-      reset() {
-        _locked = false;
-
-        _currentDepthMask = null;
-        _currentDepthFunc = null;
-        _currentDepthClear = null;
-      }
-    };
-  }
+  // EP : params not used
 
   function StencilBuffer() {
     let _locked = false;
@@ -218,16 +133,16 @@ function WebGLState(gl, extensions, capabilities) {
     };
   }
 
+  const enabledCapabilities = new CapabilityTracker(gl);
+
   //
 
   const colorBuffer = new ColorBuffer(gl);
-  const depthBuffer = DepthBuffer();
+  const depthBuffer = new DepthBuffer(gl, enabledCapabilities);
   const stencilBuffer = StencilBuffer();
 
   const uboBindings = new WeakMap();
   const uboProgramMap = new WeakMap();
-
-  let enabledCapabilities = {};
 
   let currentBoundFramebuffers = {};
   let currentDrawbuffers = new WeakMap();
@@ -331,17 +246,11 @@ function WebGLState(gl, extensions, capabilities) {
   //
 
   function enable(id) {
-    if (enabledCapabilities[id] !== true) {
-      gl.enable(id);
-      enabledCapabilities[id] = true;
-    }
+    enabledCapabilities.enable(id);
   }
 
   function disable(id) {
-    if (enabledCapabilities[id] !== false) {
-      gl.disable(id);
-      enabledCapabilities[id] = false;
-    }
+    enabledCapabilities.disable(id);
   }
 
   function bindFramebuffer(target, framebuffer) {
@@ -934,7 +843,7 @@ function WebGLState(gl, extensions, capabilities) {
 
     // reset internals
 
-    enabledCapabilities = {};
+    enabledCapabilities.reset();
 
     currentTextureSlot = null;
     currentBoundTextures = {};
@@ -1024,6 +933,34 @@ function WebGLState(gl, extensions, capabilities) {
   };
 }
 
+class CapabilityTracker {
+  #gl;
+  #capabilities = {}; // EP : Map ?
+
+  /** @param {WebGL2RenderingContext} gl */
+  constructor(gl) {
+    this.#gl = gl;
+  }
+
+  enable(id) {
+    if (this.#capabilities[id] !== true) {
+      this.#gl.enable(id);
+      this.#capabilities[id] = true;
+    }
+  }
+
+  disable(id) {
+    if (this.#capabilities[id] !== false) {
+      this.#gl.disable(id);
+      this.#capabilities[id] = false;
+    }
+  }
+
+  reset() {
+    this.#capabilities = {};
+  }
+}
+
 class ColorBuffer {
   #gl;
 
@@ -1068,6 +1005,105 @@ class ColorBuffer {
 
     this.#currentColorMask = null;
     this.#currentColorClear.set(-1, 0, 0, 0); // set to invalid state
+  }
+}
+
+class DepthBuffer {
+  #gl;
+  #capabilities;
+
+  _locked = false;
+
+  _currentDepthMask = null;
+  _currentDepthFunc = null;
+  _currentDepthClear = null;
+
+  /**
+   * @param {WebGL2RenderingContext} gl
+   * @param {CapabilityTracker} capabilities
+   */
+  constructor(gl, capabilities) {
+    this.#gl = gl;
+    this.#capabilities = capabilities;
+  }
+
+  setTest(depthTest) {
+    if (depthTest) {
+      this.#capabilities.enable(this.#gl.DEPTH_TEST);
+    } else {
+      this.#capabilities.disable(this.#gl.DEPTH_TEST);
+    }
+  }
+
+  setMask(depthMask) {
+    if (this._currentDepthMask !== depthMask && !this._locked) {
+      this.#gl.depthMask(depthMask);
+      this._currentDepthMask = depthMask;
+    }
+  }
+
+  setFunc(depthFunc) {
+    const gl = this.#gl;
+
+    if (this._currentDepthFunc !== depthFunc) {
+      switch (depthFunc) {
+        case NeverDepth:
+          gl.depthFunc(gl.NEVER);
+          break;
+
+        case AlwaysDepth:
+          gl.depthFunc(gl.ALWAYS);
+          break;
+
+        case LessDepth:
+          gl.depthFunc(gl.LESS);
+          break;
+
+        case LessEqualDepth:
+          gl.depthFunc(gl.LEQUAL);
+          break;
+
+        case EqualDepth:
+          gl.depthFunc(gl.EQUAL);
+          break;
+
+        case GreaterEqualDepth:
+          gl.depthFunc(gl.GEQUAL);
+          break;
+
+        case GreaterDepth:
+          gl.depthFunc(gl.GREATER);
+          break;
+
+        case NotEqualDepth:
+          gl.depthFunc(gl.NOTEQUAL);
+          break;
+
+        default:
+          gl.depthFunc(gl.LEQUAL);
+      }
+
+      this._currentDepthFunc = depthFunc;
+    }
+  }
+
+  setLocked(lock) {
+    this._locked = lock;
+  }
+
+  setClear(depth) {
+    if (this._currentDepthClear !== depth) {
+      this.#gl.clearDepth(depth);
+      this._currentDepthClear = depth;
+    }
+  }
+
+  reset() {
+    this._locked = false;
+
+    this._currentDepthMask = null;
+    this._currentDepthFunc = null;
+    this._currentDepthClear = null;
   }
 }
 
