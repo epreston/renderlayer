@@ -126,10 +126,14 @@ function allocTexUnits(textures, n) {
 // --- Uniform Classes ---
 
 class SingleUniform {
+  id;
+  addr;
+  cache = [];
+  setValue;
+
   constructor(id, activeInfo, addr) {
     this.id = id;
     this.addr = addr;
-    this.cache = [];
     this.setValue = this.getSingularSetter(activeInfo.type);
 
     // this.path = activeInfo.name; // DEBUG
