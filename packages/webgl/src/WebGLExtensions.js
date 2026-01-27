@@ -1,15 +1,17 @@
 class WebGLExtensions {
+  #gl;
+  #extensions = [];
+
   /** @param {WebGL2RenderingContext} gl */
   constructor(gl) {
-    this._gl = gl;
-    this._extensions = [];
+    this.#gl = gl;
 
     // debug: gl.getSupportedExtensions();
   }
 
-  _getExtension(name) {
-    if (this._extensions[name] !== undefined) {
-      return this._extensions[name];
+  #getExtension(name) {
+    if (this.#extensions[name] !== undefined) {
+      return this.#extensions[name];
     }
 
     let extension;
@@ -17,15 +19,15 @@ class WebGLExtensions {
     switch (name) {
       case 'WEBGL_compressed_texture_pvrtc':
         extension =
-          this._gl.getExtension('WEBGL_compressed_texture_pvrtc') ||
-          this._gl.getExtension('WEBKIT_WEBGL_compressed_texture_pvrtc');
+          this.#gl.getExtension('WEBGL_compressed_texture_pvrtc') ||
+          this.#gl.getExtension('WEBKIT_WEBGL_compressed_texture_pvrtc');
         break;
 
       default:
-        extension = this._gl.getExtension(name);
+        extension = this.#gl.getExtension(name);
     }
 
-    this._extensions[name] = extension;
+    this.#extensions[name] = extension;
 
     return extension;
   }
@@ -33,19 +35,20 @@ class WebGLExtensions {
   //
 
   has(name) {
-    return this._getExtension(name) !== null;
+    return this.#getExtension(name) !== null;
   }
 
+  /** @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities  */
   init(capabilities) {
     // EP: some extensions need to be initialised by a query to function
     // Browser support percentages sourced from https://web3dsurvey.com/webgl2
-    this._getExtension('EXT_color_buffer_float'); // 99.8%
-    this._getExtension('OES_texture_float_linear'); // 86.31%
-    this._getExtension('EXT_color_buffer_half_float'); // 92.2%
+    this.#getExtension('EXT_color_buffer_float'); // 99.8%
+    this.#getExtension('OES_texture_float_linear'); // 86.31%
+    this.#getExtension('EXT_color_buffer_half_float'); // 92.2%
   }
 
   get(name) {
-    const extension = this._getExtension(name);
+    const extension = this.#getExtension(name);
 
     if (extension === null) {
       console.warn(`WebGLRenderer: ${name} extension not supported.`);
