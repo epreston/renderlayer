@@ -7,12 +7,15 @@ import {
 import { WebGLCubeRenderTarget } from '@renderlayer/targets';
 
 class WebGLCubeMaps {
+  #renderer;
+  #cubemaps = new WeakMap();
+
+  /** @param {import('@renderlayer/renderers').WebGLRenderer} renderer  */
   constructor(renderer) {
-    this._renderer = renderer;
-    this._cubemaps = new WeakMap();
+    this.#renderer = renderer;
   }
 
-  _mapTextureMapping(texture, mapping) {
+  #mapTextureMapping(texture, mapping) {
     if (mapping === EquirectangularReflectionMapping) {
       texture.mapping = CubeReflectionMapping;
     } else if (mapping === EquirectangularRefractionMapping) {
@@ -30,20 +33,20 @@ class WebGLCubeMaps {
         mapping === EquirectangularReflectionMapping ||
         mapping === EquirectangularRefractionMapping
       ) {
-        if (this._cubemaps.has(texture)) {
-          const cubemap = this._cubemaps.get(texture).texture;
-          return this._mapTextureMapping(cubemap, texture.mapping);
+        if (this.#cubemaps.has(texture)) {
+          const cubemap = this.#cubemaps.get(texture).texture;
+          return this.#mapTextureMapping(cubemap, texture.mapping);
         } else {
           const image = texture.image;
 
           if (image && image.height > 0) {
             const renderTarget = new WebGLCubeRenderTarget(image.height / 2);
-            renderTarget.fromEquirectangularTexture(this._renderer, texture);
-            this._cubemaps.set(texture, renderTarget);
+            renderTarget.fromEquirectangularTexture(this.#renderer, texture);
+            this.#cubemaps.set(texture, renderTarget);
 
             texture.addEventListener('dispose', this._onTextureDispose);
 
-            return this._mapTextureMapping(renderTarget.texture, texture.mapping);
+            return this.#mapTextureMapping(renderTarget.texture, texture.mapping);
           } else {
             // image not yet ready. try the conversion next frame
             return null;
@@ -60,10 +63,10 @@ class WebGLCubeMaps {
 
     texture.removeEventListener('dispose', this._onTextureDispose);
 
-    const cubemap = this._cubemaps.get(texture);
+    const cubemap = this.#cubemaps.get(texture);
 
     if (cubemap !== undefined) {
-      this._cubemaps.delete(texture);
+      this.#cubemaps.delete(texture);
       cubemap.dispose();
     }
   }
