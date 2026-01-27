@@ -74,11 +74,13 @@ A convenience package is provided to make core packages available to your develo
 
 ## References
 
-| Website | Reference                          |
-| ------- | ---------------------------------- |
-| WebGL2  | https://www.khronos.org/webgl/     |
-| glTF    | https://www.khronos.org/gltf/      |
-| analyze | https://esbuild.github.io/analyze/ |
+| Website             | Reference                          |
+| ------------------- | ---------------------------------- |
+| WebGL2              | https://www.khronos.org/webgl/     |
+| glTF                | https://www.khronos.org/gltf/      |
+| analyze             | https://esbuild.github.io/analyze/ |
+| Web3D Survey        | https://web3dsurvey.com/webgl2     |
+| Web Platform Status | https://webstatus.dev              |
 
 ## License
 
