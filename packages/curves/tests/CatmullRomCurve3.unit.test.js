@@ -39,16 +39,19 @@ describe('Curves', () => {
       // implement
     });
 
-    test.todo('closed', () => {
-      // implement
+    test('closed', () => {
+      const object = new CatmullRomCurve3();
+      expect(object.closed).toBeFalsy();
     });
 
-    test.todo('curveType', () => {
-      // implement
+    test('curveType', () => {
+      const object = new CatmullRomCurve3();
+      expect(object.curveType).toBe('centripetal');
     });
 
-    test.todo('tension', () => {
-      // implement
+    test('tension', () => {
+      const object = new CatmullRomCurve3();
+      expect(object.tension).toBeCloseTo(0.5);
     });
 
     test.todo('getPoint', () => {
