@@ -166,12 +166,12 @@ class WebGLShadowMap {
 
           _frustum = shadow.getFrustum();
 
-          renderObject(scene, camera, shadow.camera, light, this.type);
+          _renderObject(scene, camera, shadow.camera, light, this.type);
         }
 
         // do blur pass for VSM
         if (shadow.isPointLightShadow !== true && this.type === VSMShadowMap) {
-          VSMPass(shadow, camera);
+          _VSMPass(shadow, camera);
         }
 
         shadow.needsUpdate = false;
@@ -184,7 +184,7 @@ class WebGLShadowMap {
       _renderer.setRenderTarget(currentRenderTarget, activeCubeFace, activeMipmapLevel);
     };
 
-    function VSMPass(shadow, camera) {
+    function _VSMPass(shadow, camera) {
       const geometry = _objects.update(fullScreenMesh);
 
       if (shadowMaterialVertical.defines.VSM_SAMPLES !== shadow.blurSamples) {
@@ -230,7 +230,7 @@ class WebGLShadowMap {
       );
     }
 
-    function getDepthMaterial(object, material, light, type) {
+    function _getDepthMaterial(object, material, light, type) {
       let result = null;
 
       const customMaterial =
@@ -307,7 +307,7 @@ class WebGLShadowMap {
       return result;
     }
 
-    function renderObject(object, camera, shadowCamera, light, type) {
+    function _renderObject(object, camera, shadowCamera, light, type) {
       if (object.visible === false) return;
 
       const visible = object.layers.test(camera.layers);
@@ -333,7 +333,7 @@ class WebGLShadowMap {
               const groupMaterial = material[group.materialIndex];
 
               if (groupMaterial && groupMaterial.visible) {
-                const depthMaterial = getDepthMaterial(object, groupMaterial, light, type);
+                const depthMaterial = _getDepthMaterial(object, groupMaterial, light, type);
 
                 _renderer.renderBufferDirect(
                   shadowCamera,
@@ -346,7 +346,7 @@ class WebGLShadowMap {
               }
             }
           } else if (material.visible) {
-            const depthMaterial = getDepthMaterial(object, material, light, type);
+            const depthMaterial = _getDepthMaterial(object, material, light, type);
 
             _renderer.renderBufferDirect(shadowCamera, null, geometry, depthMaterial, object, null);
           }
@@ -356,7 +356,7 @@ class WebGLShadowMap {
       const children = object.children;
 
       for (let i = 0, l = children.length; i < l; i++) {
-        renderObject(children[i], camera, shadowCamera, light, type);
+        _renderObject(children[i], camera, shadowCamera, light, type);
       }
     }
   }
