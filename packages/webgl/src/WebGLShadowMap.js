@@ -17,11 +17,21 @@ import { WebGLRenderTarget } from '@renderlayer/targets';
 import * as vsm from './glsl/vsm.glsl.js';
 
 class WebGLShadowMap {
+  enabled = false;
+  autoUpdate = true;
+  needsUpdate = false;
+  type = PCFShadowMap;
+
   /**
-   * @param {import('@renderlayer/renderers').WebGLRenderer} _renderer
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} _capabilities
+   * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
+   * @param {import('./WebGLObjects.js').WebGLObjects} objects
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
    */
-  constructor(_renderer, _objects, _capabilities) {
+  constructor(renderer, objects, capabilities) {
+    const _renderer = renderer;
+    const _objects = objects;
+    const _capabilities = capabilities;
+
     let _frustum = new Frustum();
 
     const _shadowMapSize = new Vector2();
@@ -61,12 +71,6 @@ class WebGLShadowMap {
 
     const scope = this;
 
-    this.enabled = false;
-
-    this.autoUpdate = true;
-    this.needsUpdate = false;
-
-    this.type = PCFShadowMap;
     let _previousType = this.type;
 
     this.render = function (lights, scene, camera) {
