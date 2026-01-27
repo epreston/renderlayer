@@ -13,7 +13,7 @@ class WebGLUniformsGroups {
    * @param {WebGL2RenderingContext} gl
    * @param {import('./WebGLInfo.js').WebGLInfo} info
    * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
-   *
+   * @param {import('./WebGLState.js').WebGLState} state
    */
   constructor(gl, info, capabilities, state) {
     this.#gl = gl;
