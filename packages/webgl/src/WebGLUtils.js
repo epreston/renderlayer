@@ -59,13 +59,24 @@ import {
   _SRGBAFormat
 } from '@renderlayer/shared';
 
-/**
- * @param {WebGL2RenderingContext} gl
- * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
- * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
- */
-function WebGLUtils(gl, extensions, capabilities) {
-  function convert(p, colorSpace = NoColorSpace) {
+class WebGLUtils {
+  #gl;
+  #extensions;
+
+  /**
+   * @param {WebGL2RenderingContext} gl
+   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   */
+  constructor(gl, extensions, capabilities) {
+    this.#gl = gl;
+    this.#extensions = extensions;
+  }
+
+  convert(p, colorSpace = NoColorSpace) {
+    const gl = this.#gl;
+    const extensions = this.#extensions;
+
     let extension;
 
     const transfer = ColorManagement.getTransfer(colorSpace);
@@ -323,8 +334,6 @@ function WebGLUtils(gl, extensions, capabilities) {
 
     return gl[p] !== undefined ? gl[p] : null;
   }
-
-  return { convert };
 }
 
 export { WebGLUtils };
