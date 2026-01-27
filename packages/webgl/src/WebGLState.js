@@ -49,97 +49,13 @@ import {
 function WebGLState(gl, extensions, capabilities) {
   // EP : params not used
 
-  function StencilBuffer() {
-    let _locked = false;
-
-    let _currentStencilMask = null;
-    let _currentStencilFunc = null;
-    let _currentStencilRef = null;
-    let _currentStencilFuncMask = null;
-    let _currentStencilFail = null;
-    let _currentStencilZFail = null;
-    let _currentStencilZPass = null;
-    let _currentStencilClear = null;
-
-    return {
-      setTest(stencilTest) {
-        if (!_locked) {
-          if (stencilTest) {
-            enable(gl.STENCIL_TEST);
-          } else {
-            disable(gl.STENCIL_TEST);
-          }
-        }
-      },
-
-      setMask(stencilMask) {
-        if (_currentStencilMask !== stencilMask && !_locked) {
-          gl.stencilMask(stencilMask);
-          _currentStencilMask = stencilMask;
-        }
-      },
-
-      setFunc(stencilFunc, stencilRef, stencilMask) {
-        if (
-          _currentStencilFunc !== stencilFunc ||
-          _currentStencilRef !== stencilRef ||
-          _currentStencilFuncMask !== stencilMask
-        ) {
-          gl.stencilFunc(stencilFunc, stencilRef, stencilMask);
-
-          _currentStencilFunc = stencilFunc;
-          _currentStencilRef = stencilRef;
-          _currentStencilFuncMask = stencilMask;
-        }
-      },
-
-      setOp(stencilFail, stencilZFail, stencilZPass) {
-        if (
-          _currentStencilFail !== stencilFail ||
-          _currentStencilZFail !== stencilZFail ||
-          _currentStencilZPass !== stencilZPass
-        ) {
-          gl.stencilOp(stencilFail, stencilZFail, stencilZPass);
-
-          _currentStencilFail = stencilFail;
-          _currentStencilZFail = stencilZFail;
-          _currentStencilZPass = stencilZPass;
-        }
-      },
-
-      setLocked(lock) {
-        _locked = lock;
-      },
-
-      setClear(stencil) {
-        if (_currentStencilClear !== stencil) {
-          gl.clearStencil(stencil);
-          _currentStencilClear = stencil;
-        }
-      },
-
-      reset() {
-        _locked = false;
-
-        _currentStencilMask = null;
-        _currentStencilFunc = null;
-        _currentStencilRef = null;
-        _currentStencilFuncMask = null;
-        _currentStencilFail = null;
-        _currentStencilZFail = null;
-        _currentStencilZPass = null;
-        _currentStencilClear = null;
-      }
-    };
-  }
-
   const enabledCapabilities = new CapabilityTracker(gl);
 
   //
 
   const colorBuffer = new ColorBuffer(gl);
   const depthBuffer = new DepthBuffer(gl, enabledCapabilities);
-  const stencilBuffer = StencilBuffer();
+  const stencilBuffer = new StencilBuffer(gl, enabledCapabilities);
 
   const uboBindings = new WeakMap();
   const uboProgramMap = new WeakMap();
@@ -1104,6 +1020,100 @@ class DepthBuffer {
     this._currentDepthMask = null;
     this._currentDepthFunc = null;
     this._currentDepthClear = null;
+  }
+}
+
+class StencilBuffer {
+  #gl;
+  #capabilities;
+
+  _locked = false;
+
+  _currentStencilMask = null;
+  _currentStencilFunc = null;
+  _currentStencilRef = null;
+  _currentStencilFuncMask = null;
+  _currentStencilFail = null;
+  _currentStencilZFail = null;
+  _currentStencilZPass = null;
+  _currentStencilClear = null;
+
+  /**
+   * @param {WebGL2RenderingContext} gl
+   * @param {CapabilityTracker} capabilities
+   */
+  constructor(gl, capabilities) {
+    this.#gl = gl;
+    this.#capabilities = capabilities;
+  }
+
+  setTest(stencilTest) {
+    if (!this._locked) {
+      if (stencilTest) {
+        this.#capabilities.enable(this.#gl.STENCIL_TEST);
+      } else {
+        this.#capabilities.disable(this.#gl.STENCIL_TEST);
+      }
+    }
+  }
+
+  setMask(stencilMask) {
+    if (this._currentStencilMask !== stencilMask && !this._locked) {
+      this.#gl.stencilMask(stencilMask);
+      this._currentStencilMask = stencilMask;
+    }
+  }
+
+  setFunc(stencilFunc, stencilRef, stencilMask) {
+    if (
+      this._currentStencilFunc !== stencilFunc ||
+      this._currentStencilRef !== stencilRef ||
+      this._currentStencilFuncMask !== stencilMask
+    ) {
+      this.#gl.stencilFunc(stencilFunc, stencilRef, stencilMask);
+
+      this._currentStencilFunc = stencilFunc;
+      this._currentStencilRef = stencilRef;
+      this._currentStencilFuncMask = stencilMask;
+    }
+  }
+
+  setOp(stencilFail, stencilZFail, stencilZPass) {
+    if (
+      this._currentStencilFail !== stencilFail ||
+      this._currentStencilZFail !== stencilZFail ||
+      this._currentStencilZPass !== stencilZPass
+    ) {
+      this.#gl.stencilOp(stencilFail, stencilZFail, stencilZPass);
+
+      this._currentStencilFail = stencilFail;
+      this._currentStencilZFail = stencilZFail;
+      this._currentStencilZPass = stencilZPass;
+    }
+  }
+
+  setLocked(lock) {
+    this._locked = lock;
+  }
+
+  setClear(stencil) {
+    if (this._currentStencilClear !== stencil) {
+      this.#gl.clearStencil(stencil);
+      this._currentStencilClear = stencil;
+    }
+  }
+
+  reset() {
+    this._locked = false;
+
+    this._currentStencilMask = null;
+    this._currentStencilFunc = null;
+    this._currentStencilRef = null;
+    this._currentStencilFuncMask = null;
+    this._currentStencilFail = null;
+    this._currentStencilZFail = null;
+    this._currentStencilZPass = null;
+    this._currentStencilClear = null;
   }
 }
 
