@@ -928,11 +928,11 @@ class DepthBuffer {
   #gl;
   #capabilities;
 
-  _locked = false;
+  #locked = false;
 
-  _currentDepthMask = null;
-  _currentDepthFunc = null;
-  _currentDepthClear = null;
+  #currentDepthMask = null;
+  #currentDepthFunc = null;
+  #currentDepthClear = null;
 
   /**
    * @param {WebGL2RenderingContext} gl
@@ -952,16 +952,16 @@ class DepthBuffer {
   }
 
   setMask(depthMask) {
-    if (this._currentDepthMask !== depthMask && !this._locked) {
+    if (this.#currentDepthMask !== depthMask && !this.#locked) {
       this.#gl.depthMask(depthMask);
-      this._currentDepthMask = depthMask;
+      this.#currentDepthMask = depthMask;
     }
   }
 
   setFunc(depthFunc) {
     const gl = this.#gl;
 
-    if (this._currentDepthFunc !== depthFunc) {
+    if (this.#currentDepthFunc !== depthFunc) {
       switch (depthFunc) {
         case NeverDepth:
           gl.depthFunc(gl.NEVER);
@@ -999,27 +999,27 @@ class DepthBuffer {
           gl.depthFunc(gl.LEQUAL);
       }
 
-      this._currentDepthFunc = depthFunc;
+      this.#currentDepthFunc = depthFunc;
     }
   }
 
   setLocked(lock) {
-    this._locked = lock;
+    this.#locked = lock;
   }
 
   setClear(depth) {
-    if (this._currentDepthClear !== depth) {
+    if (this.#currentDepthClear !== depth) {
       this.#gl.clearDepth(depth);
-      this._currentDepthClear = depth;
+      this.#currentDepthClear = depth;
     }
   }
 
   reset() {
-    this._locked = false;
+    this.#locked = false;
 
-    this._currentDepthMask = null;
-    this._currentDepthFunc = null;
-    this._currentDepthClear = null;
+    this.#currentDepthMask = null;
+    this.#currentDepthFunc = null;
+    this.#currentDepthClear = null;
   }
 }
 
@@ -1027,16 +1027,16 @@ class StencilBuffer {
   #gl;
   #capabilities;
 
-  _locked = false;
+  #locked = false;
 
-  _currentStencilMask = null;
-  _currentStencilFunc = null;
-  _currentStencilRef = null;
-  _currentStencilFuncMask = null;
-  _currentStencilFail = null;
-  _currentStencilZFail = null;
-  _currentStencilZPass = null;
-  _currentStencilClear = null;
+  #currentStencilMask = null;
+  #currentStencilFunc = null;
+  #currentStencilRef = null;
+  #currentStencilFuncMask = null;
+  #currentStencilFail = null;
+  #currentStencilZFail = null;
+  #currentStencilZPass = null;
+  #currentStencilClear = null;
 
   /**
    * @param {WebGL2RenderingContext} gl
@@ -1048,7 +1048,7 @@ class StencilBuffer {
   }
 
   setTest(stencilTest) {
-    if (!this._locked) {
+    if (!this.#locked) {
       if (stencilTest) {
         this.#capabilities.enable(this.#gl.STENCIL_TEST);
       } else {
@@ -1058,62 +1058,62 @@ class StencilBuffer {
   }
 
   setMask(stencilMask) {
-    if (this._currentStencilMask !== stencilMask && !this._locked) {
+    if (this.#currentStencilMask !== stencilMask && !this.#locked) {
       this.#gl.stencilMask(stencilMask);
-      this._currentStencilMask = stencilMask;
+      this.#currentStencilMask = stencilMask;
     }
   }
 
   setFunc(stencilFunc, stencilRef, stencilMask) {
     if (
-      this._currentStencilFunc !== stencilFunc ||
-      this._currentStencilRef !== stencilRef ||
-      this._currentStencilFuncMask !== stencilMask
+      this.#currentStencilFunc !== stencilFunc ||
+      this.#currentStencilRef !== stencilRef ||
+      this.#currentStencilFuncMask !== stencilMask
     ) {
       this.#gl.stencilFunc(stencilFunc, stencilRef, stencilMask);
 
-      this._currentStencilFunc = stencilFunc;
-      this._currentStencilRef = stencilRef;
-      this._currentStencilFuncMask = stencilMask;
+      this.#currentStencilFunc = stencilFunc;
+      this.#currentStencilRef = stencilRef;
+      this.#currentStencilFuncMask = stencilMask;
     }
   }
 
   setOp(stencilFail, stencilZFail, stencilZPass) {
     if (
-      this._currentStencilFail !== stencilFail ||
-      this._currentStencilZFail !== stencilZFail ||
-      this._currentStencilZPass !== stencilZPass
+      this.#currentStencilFail !== stencilFail ||
+      this.#currentStencilZFail !== stencilZFail ||
+      this.#currentStencilZPass !== stencilZPass
     ) {
       this.#gl.stencilOp(stencilFail, stencilZFail, stencilZPass);
 
-      this._currentStencilFail = stencilFail;
-      this._currentStencilZFail = stencilZFail;
-      this._currentStencilZPass = stencilZPass;
+      this.#currentStencilFail = stencilFail;
+      this.#currentStencilZFail = stencilZFail;
+      this.#currentStencilZPass = stencilZPass;
     }
   }
 
   setLocked(lock) {
-    this._locked = lock;
+    this.#locked = lock;
   }
 
   setClear(stencil) {
-    if (this._currentStencilClear !== stencil) {
+    if (this.#currentStencilClear !== stencil) {
       this.#gl.clearStencil(stencil);
-      this._currentStencilClear = stencil;
+      this.#currentStencilClear = stencil;
     }
   }
 
   reset() {
-    this._locked = false;
+    this.#locked = false;
 
-    this._currentStencilMask = null;
-    this._currentStencilFunc = null;
-    this._currentStencilRef = null;
-    this._currentStencilFuncMask = null;
-    this._currentStencilFail = null;
-    this._currentStencilZFail = null;
-    this._currentStencilZPass = null;
-    this._currentStencilClear = null;
+    this.#currentStencilMask = null;
+    this.#currentStencilFunc = null;
+    this.#currentStencilRef = null;
+    this.#currentStencilFuncMask = null;
+    this.#currentStencilFail = null;
+    this.#currentStencilZFail = null;
+    this.#currentStencilZPass = null;
+    this.#currentStencilClear = null;
   }
 }
 
