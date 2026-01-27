@@ -75,10 +75,15 @@ const py = /*@__PURE__*/ new CubicPoly();
 const pz = /*@__PURE__*/ new CubicPoly();
 
 class CatmullRomCurve3 extends Curve {
+  type = 'CatmullRomCurve3';
+
+  points = [];
+  closed = false;
+  curveType = 'centripetal';
+  tension = 0.5;
+
   constructor(points = [], closed = false, curveType = 'centripetal', tension = 0.5) {
     super();
-
-    this.type = 'CatmullRomCurve3';
 
     this.points = points;
     this.closed = closed;
