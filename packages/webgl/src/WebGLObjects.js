@@ -1,7 +1,9 @@
 class WebGLObjects {
   /**
    * @param {WebGL2RenderingContext} gl
+   * @param {import('./WebGLGeometries.js').WebGLGeometries} geometries
    * @param {import('./WebGLAttributes.js').WebGLAttributes} attributes
+   * @param {import('./WebGLInfo.js').WebGLInfo} info
    */
   constructor(gl, geometries, attributes, info) {
     this._gl = gl;

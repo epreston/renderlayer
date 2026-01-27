@@ -6,6 +6,7 @@ class WebGLMorphtargets {
   /**
    * @param {WebGL2RenderingContext} gl
    * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {import('./WebGLTextures.js').WebGLTextures} textures
    */
   constructor(gl, capabilities, textures) {
     this._gl = gl;

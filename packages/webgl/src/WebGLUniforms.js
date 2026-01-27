@@ -857,6 +857,7 @@ function parseUniform(activeInfo, addr, container) {
 // Root Container
 
 class WebGLUniforms {
+  /** @param {WebGL2RenderingContext} gl */
   constructor(gl, program) {
     this.seq = [];
     this.map = {};
