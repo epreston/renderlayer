@@ -2,7 +2,10 @@ import { Uint16BufferAttribute, Uint32BufferAttribute } from '@renderlayer/buffe
 import { arrayNeedsUint32 } from '@renderlayer/shared';
 
 class WebGLGeometries {
-  /** @param { WebGL2RenderingContext} gl */
+  /**
+   * @param { WebGL2RenderingContext} gl
+   * @param {import('./WebGLAttributes.js').WebGLAttributes} attributes
+   */
   constructor(gl, attributes, info, bindingStates) {
     this._gl = gl;
     this._attributes = attributes;

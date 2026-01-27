@@ -39,6 +39,7 @@ class WebGLBindingStates {
   /**
    * @param {WebGL2RenderingContext} gl
    * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   * @param {import('./WebGLAttributes.js').WebGLAttributes} attributes
    * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, attributes, capabilities) {
