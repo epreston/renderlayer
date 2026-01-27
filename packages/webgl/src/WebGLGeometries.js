@@ -24,10 +24,10 @@ class WebGLGeometries {
     this.#info = info;
     this.#bindingStates = bindingStates;
 
-    this.onGeometryDispose = this._onGeometryDispose.bind(this);
+    this.onGeometryDispose = this.#onGeometryDispose.bind(this);
   }
 
-  _onGeometryDispose(event) {
+  #onGeometryDispose(event) {
     const geometry = event.target;
 
     if (geometry.index !== null) {
