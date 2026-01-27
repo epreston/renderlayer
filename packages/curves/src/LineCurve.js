@@ -2,10 +2,13 @@ import { Vector2 } from '@renderlayer/math';
 import { Curve } from './core/Curve.js';
 
 class LineCurve extends Curve {
+  type = 'LineCurve';
+
+  v1;
+  v2;
+
   constructor(v1 = new Vector2(), v2 = new Vector2()) {
     super();
-
-    this.type = 'LineCurve';
 
     this.v1 = v1;
     this.v2 = v2;
@@ -33,12 +36,12 @@ class LineCurve extends Curve {
     return this.getPoint(u, optionalTarget);
   }
 
-  // fixme: param
+  // fixme: param t
   getTangent(t, optionalTarget = new Vector2()) {
     return optionalTarget.subVectors(this.v2, this.v1).normalize();
   }
 
-  // fixme: param
+  // fixme: param u
   getTangentAt(u, optionalTarget) {
     return this.getTangent(u, optionalTarget);
   }
