@@ -66,6 +66,10 @@ class WebGLRenderStates {
     this.capabilities = capabilities;
   }
 
+  dispose() {
+    this.renderStates = new WeakMap();
+  }
+
   get(scene, renderCallDepth = 0) {
     const renderStateArray = this.renderStates.get(scene);
     let renderState;
@@ -83,10 +87,6 @@ class WebGLRenderStates {
     }
 
     return renderState;
-  }
-
-  dispose() {
-    this.renderStates = new WeakMap();
   }
 }
 
