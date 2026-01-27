@@ -1,172 +1,57 @@
 import { Color, Matrix4, Vector2, Vector3 } from '@renderlayer/math';
 import { UniformsLib } from '@renderlayer/shaders';
 
-class UniformsCache {
-  constructor() {
-    this.lights = {}; // EP: use map ?
-  }
-
-  get(light) {
-    const { lights } = this;
-
-    if (lights[light.id] !== undefined) {
-      return lights[light.id];
-    }
-
-    let uniforms;
-
-    switch (light.type) {
-      case 'DirectionalLight':
-        uniforms = {
-          direction: new Vector3(),
-          color: new Color()
-        };
-        break;
-
-      case 'SpotLight':
-        uniforms = {
-          position: new Vector3(),
-          direction: new Vector3(),
-          color: new Color(),
-          distance: 0,
-          coneCos: 0,
-          penumbraCos: 0,
-          decay: 0
-        };
-        break;
-
-      case 'PointLight':
-        uniforms = {
-          position: new Vector3(),
-          color: new Color(),
-          distance: 0,
-          decay: 0
-        };
-        break;
-
-      case 'HemisphereLight':
-        uniforms = {
-          direction: new Vector3(),
-          skyColor: new Color(),
-          groundColor: new Color()
-        };
-        break;
-
-      case 'RectAreaLight':
-        uniforms = {
-          color: new Color(),
-          position: new Vector3(),
-          halfWidth: new Vector3(),
-          halfHeight: new Vector3()
-        };
-        break;
-    }
-
-    lights[light.id] = uniforms;
-
-    return uniforms;
-  }
-}
-
-class ShadowUniformsCache {
-  constructor() {
-    this.lights = {}; // EP: use map ?
-  }
-
-  get(light) {
-    const { lights } = this;
-
-    if (lights[light.id] !== undefined) {
-      return lights[light.id];
-    }
-
-    let uniforms;
-
-    switch (light.type) {
-      case 'DirectionalLight':
-        uniforms = {
-          shadowBias: 0,
-          shadowNormalBias: 0,
-          shadowRadius: 1,
-          shadowMapSize: new Vector2()
-        };
-        break;
-
-      case 'SpotLight':
-        uniforms = {
-          shadowBias: 0,
-          shadowNormalBias: 0,
-          shadowRadius: 1,
-          shadowMapSize: new Vector2()
-        };
-        break;
-
-      case 'PointLight':
-        uniforms = {
-          shadowBias: 0,
-          shadowNormalBias: 0,
-          shadowRadius: 1,
-          shadowMapSize: new Vector2(),
-          shadowCameraNear: 1,
-          shadowCameraFar: 1000
-        };
-        break;
-
-      // TODO: set RectAreaLight shadow uniforms
-    }
-
-    lights[light.id] = uniforms;
-
-    return uniforms;
-  }
-}
-
 class WebGLLights {
-  // EP: params not used
+  #cache = new UniformsCache();
+  #shadowCache = new ShadowUniformsCache();
+
+  state = {
+    version: 0,
+
+    hash: {
+      directionalLength: -1,
+      pointLength: -1,
+      spotLength: -1,
+      rectAreaLength: -1,
+      hemiLength: -1,
+
+      numDirectionalShadows: -1,
+      numPointShadows: -1,
+      numSpotShadows: -1,
+      numSpotMaps: -1,
+
+      numLightProbes: -1
+    },
+
+    ambient: [0, 0, 0],
+    probe: [],
+    directional: [],
+    directionalShadow: [],
+    directionalShadowMap: [],
+    directionalShadowMatrix: [],
+    spot: [],
+    spotLightMap: [],
+    spotShadow: [],
+    spotShadowMap: [],
+    spotLightMatrix: [],
+    rectArea: [],
+    rectAreaLTC1: null,
+    rectAreaLTC2: null,
+    point: [],
+    pointShadow: [],
+    pointShadowMap: [],
+    pointShadowMatrix: [],
+    hemi: [],
+    numSpotLightShadowsWithMaps: 0,
+    numLightProbes: 0
+  };
+
+  /**
+   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   */
   constructor(extensions, capabilities) {
-    this._cache = new UniformsCache();
-    this._shadowCache = new ShadowUniformsCache();
-
-    this.state = {
-      version: 0,
-
-      hash: {
-        directionalLength: -1,
-        pointLength: -1,
-        spotLength: -1,
-        rectAreaLength: -1,
-        hemiLength: -1,
-
-        numDirectionalShadows: -1,
-        numPointShadows: -1,
-        numSpotShadows: -1,
-        numSpotMaps: -1,
-
-        numLightProbes: -1
-      },
-
-      ambient: [0, 0, 0],
-      probe: [],
-      directional: [],
-      directionalShadow: [],
-      directionalShadowMap: [],
-      directionalShadowMatrix: [],
-      spot: [],
-      spotLightMap: [],
-      spotShadow: [],
-      spotShadowMap: [],
-      spotLightMatrix: [],
-      rectArea: [],
-      rectAreaLTC1: null,
-      rectAreaLTC2: null,
-      point: [],
-      pointShadow: [],
-      pointShadowMap: [],
-      pointShadowMatrix: [],
-      hemi: [],
-      numSpotLightShadowsWithMaps: 0,
-      numLightProbes: 0
-    };
+    // EP: params not used
 
     for (let i = 0; i < 9; i++) {
       this.state.probe.push(new Vector3());
@@ -221,13 +106,13 @@ class WebGLLights {
         }
         numLightProbes++;
       } else if (light.isDirectionalLight) {
-        const uniforms = this._cache.get(light);
+        const uniforms = this.#cache.get(light);
 
         uniforms.color.copy(light.color).multiplyScalar(light.intensity * scaleFactor);
 
         if (light.castShadow) {
           const shadow = light.shadow;
-          const shadowUniforms = this._shadowCache.get(light);
+          const shadowUniforms = this.#shadowCache.get(light);
 
           shadowUniforms.shadowBias = shadow.bias;
           shadowUniforms.shadowNormalBias = shadow.normalBias;
@@ -245,7 +130,7 @@ class WebGLLights {
 
         directionalLength++;
       } else if (light.isSpotLight) {
-        const uniforms = this._cache.get(light);
+        const uniforms = this.#cache.get(light);
 
         uniforms.position.setFromMatrixPosition(light.matrixWorld);
 
@@ -274,7 +159,7 @@ class WebGLLights {
         this.state.spotLightMatrix[spotLength] = shadow.matrix;
 
         if (light.castShadow) {
-          const shadowUniforms = this._shadowCache.get(light);
+          const shadowUniforms = this.#shadowCache.get(light);
 
           shadowUniforms.shadowBias = shadow.bias;
           shadowUniforms.shadowNormalBias = shadow.normalBias;
@@ -289,7 +174,7 @@ class WebGLLights {
 
         spotLength++;
       } else if (light.isRectAreaLight) {
-        const uniforms = this._cache.get(light);
+        const uniforms = this.#cache.get(light);
 
         uniforms.color.copy(color).multiplyScalar(intensity);
 
@@ -300,7 +185,7 @@ class WebGLLights {
 
         rectAreaLength++;
       } else if (light.isPointLight) {
-        const uniforms = this._cache.get(light);
+        const uniforms = this.#cache.get(light);
 
         uniforms.color.copy(light.color).multiplyScalar(light.intensity * scaleFactor);
         uniforms.distance = light.distance;
@@ -308,7 +193,7 @@ class WebGLLights {
 
         if (light.castShadow) {
           const shadow = light.shadow;
-          const shadowUniforms = this._shadowCache.get(light);
+          const shadowUniforms = this.#shadowCache.get(light);
 
           shadowUniforms.shadowBias = shadow.bias;
           shadowUniforms.shadowNormalBias = shadow.normalBias;
@@ -328,7 +213,7 @@ class WebGLLights {
 
         pointLength++;
       } else if (light.isHemisphereLight) {
-        const uniforms = this._cache.get(light);
+        const uniforms = this.#cache.get(light);
 
         uniforms.skyColor.copy(light.color).multiplyScalar(intensity * scaleFactor);
         uniforms.groundColor.copy(light.groundColor).multiplyScalar(intensity * scaleFactor);
@@ -466,6 +351,122 @@ class WebGLLights {
         hemiLength++;
       }
     }
+  }
+}
+
+class UniformsCache {
+  lights = {}; // EP: use map ?
+
+  get(light) {
+    const { lights } = this;
+
+    if (lights[light.id] !== undefined) {
+      return lights[light.id];
+    }
+
+    let uniforms;
+
+    switch (light.type) {
+      case 'DirectionalLight':
+        uniforms = {
+          direction: new Vector3(),
+          color: new Color()
+        };
+        break;
+
+      case 'SpotLight':
+        uniforms = {
+          position: new Vector3(),
+          direction: new Vector3(),
+          color: new Color(),
+          distance: 0,
+          coneCos: 0,
+          penumbraCos: 0,
+          decay: 0
+        };
+        break;
+
+      case 'PointLight':
+        uniforms = {
+          position: new Vector3(),
+          color: new Color(),
+          distance: 0,
+          decay: 0
+        };
+        break;
+
+      case 'HemisphereLight':
+        uniforms = {
+          direction: new Vector3(),
+          skyColor: new Color(),
+          groundColor: new Color()
+        };
+        break;
+
+      case 'RectAreaLight':
+        uniforms = {
+          color: new Color(),
+          position: new Vector3(),
+          halfWidth: new Vector3(),
+          halfHeight: new Vector3()
+        };
+        break;
+    }
+
+    lights[light.id] = uniforms;
+
+    return uniforms;
+  }
+}
+
+class ShadowUniformsCache {
+  lights = {}; // EP: use map ?
+
+  get(light) {
+    const { lights } = this;
+
+    if (lights[light.id] !== undefined) {
+      return lights[light.id];
+    }
+
+    let uniforms;
+
+    switch (light.type) {
+      case 'DirectionalLight':
+        uniforms = {
+          shadowBias: 0,
+          shadowNormalBias: 0,
+          shadowRadius: 1,
+          shadowMapSize: new Vector2()
+        };
+        break;
+
+      case 'SpotLight':
+        uniforms = {
+          shadowBias: 0,
+          shadowNormalBias: 0,
+          shadowRadius: 1,
+          shadowMapSize: new Vector2()
+        };
+        break;
+
+      case 'PointLight':
+        uniforms = {
+          shadowBias: 0,
+          shadowNormalBias: 0,
+          shadowRadius: 1,
+          shadowMapSize: new Vector2(),
+          shadowCameraNear: 1,
+          shadowCameraFar: 1000
+        };
+        break;
+
+      // TODO: set RectAreaLight shadow uniforms
+    }
+
+    lights[light.id] = uniforms;
+
+    return uniforms;
   }
 }
 
