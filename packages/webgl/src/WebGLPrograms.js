@@ -22,6 +22,7 @@ import { WebGLShaderCache } from './WebGLShaderCache.js';
  * @param {import('./WebGLCubeUVMaps.js').WebGLCubeUVMaps} cubeuvmaps
  * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
  * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+ * @param {import('./WebGLBindingStates.js').WebGLBindingStates} bindingStates
  * @param {import('./WebGLClipping.js').WebGLClipping} clipping
  */
 function WebGLPrograms(
