@@ -18,6 +18,7 @@ import * as vsm from './glsl/vsm.glsl.js';
 
 class WebGLShadowMap {
   /**
+   * @param {import('@renderlayer/renderers').WebGLRenderer} _renderer
    * @param {import('./WebGLCapabilities.js').WebGLCapabilities} _capabilities
    */
   constructor(_renderer, _objects, _capabilities) {

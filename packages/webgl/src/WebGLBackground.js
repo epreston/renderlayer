@@ -24,6 +24,7 @@ class WebGLBackground {
   #currentBackgroundVersion = 0;
   #currentTonemapping = null;
 
+  /** @param {import('@renderlayer/renderers').WebGLRenderer} renderer  */
   constructor(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
     this.#renderer = renderer;
     this.#cubemaps = cubemaps;

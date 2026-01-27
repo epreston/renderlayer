@@ -1,6 +1,7 @@
 import { BackSide } from '@renderlayer/shared';
 import { getUnlitUniformColorSpace } from '@renderlayer/shaders';
 
+/** @param {import('@renderlayer/renderers').WebGLRenderer} renderer  */
 function WebGLMaterials(renderer, properties) {
   function refreshTransformUniform(map, uniform) {
     if (map.matrixAutoUpdate === true) {
