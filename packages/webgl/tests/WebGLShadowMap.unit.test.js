@@ -4,7 +4,7 @@ import { WebGLShadowMap } from '../src/WebGLShadowMap.js';
 
 describe('WebGL', () => {
   describe('WebGLShadowMap', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLShadowMap).toBeDefined();
     });
 
@@ -13,6 +13,22 @@ describe('WebGL', () => {
     });
 
     test.todo('render', () => {
+      // implement
+    });
+
+    test.todo('enabled', () => {
+      // implement
+    });
+
+    test.todo('autoUpdate', () => {
+      // implement
+    });
+
+    test.todo('needsUpdate', () => {
+      // implement
+    });
+
+    test.todo('type', () => {
       // implement
     });
   });
