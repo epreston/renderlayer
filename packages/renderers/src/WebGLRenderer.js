@@ -319,7 +319,7 @@ class WebGLRenderer {
     function initGLContext() {
       extensions = new WebGLExtensions(_gl);
 
-      capabilities = WebGLCapabilities(_gl, extensions, parameters);
+      capabilities = new WebGLCapabilities(_gl, extensions, parameters);
 
       extensions.init(capabilities);
 

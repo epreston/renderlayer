@@ -1,22 +1,81 @@
-/** @param {WebGL2RenderingContext} gl */
-function WebGLCapabilities(gl, extensions, parameters) {
-  let maxAnisotropy;
+class WebGLCapabilities {
+  #gl;
 
-  function getMaxAnisotropy() {
-    if (maxAnisotropy !== undefined) return maxAnisotropy;
+  #isWebGL2 = true;
+  #drawBuffers = true;
+  #maxAnisotropy = 16;
+  #precision = 'highp';
+  #logarithmicDepthBuffer = false;
+
+  #maxTextures = 16;
+  #maxVertexTextures = 16;
+  #maxTextureSize = 16384;
+  #maxCubemapSize = 16384;
+
+  #maxAttributes = 16;
+  #maxVertexUniforms = 4095;
+  #maxVaryings = 30;
+  #maxFragmentUniforms = 1024;
+
+  #vertexTextures = true;
+  #floatFragmentTextures = true;
+  #floatVertexTextures = true;
+
+  #maxSamples;
+
+  /**
+   * @param {WebGL2RenderingContext} gl
+   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   */
+  constructor(gl, extensions, parameters) {
+    this.#gl = gl;
 
     if (extensions.has('EXT_texture_filter_anisotropic') === true) {
       const extension = extensions.get('EXT_texture_filter_anisotropic');
-
-      maxAnisotropy = gl.getParameter(extension.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+      this.#maxAnisotropy = gl.getParameter(extension.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
     } else {
-      maxAnisotropy = 0;
+      this.#maxAnisotropy = 0;
     }
 
-    return maxAnisotropy;
+    this._isWebGL2 =
+      typeof WebGL2RenderingContext !== 'undefined' &&
+      gl.constructor.name === 'WebGL2RenderingContext';
+
+    this.#precision = parameters.precision !== undefined ? parameters.precision : 'highp';
+    const maxPrecision = this.getMaxPrecision(this.#precision);
+
+    if (maxPrecision !== this.#precision) {
+      console.warn(
+        `WebGLRenderer: ${this.#precision} not supported, using ${maxPrecision} instead.`
+      );
+      this.#precision = maxPrecision;
+    }
+
+    this.#logarithmicDepthBuffer = parameters.logarithmicDepthBuffer === true;
+
+    this.#maxTextures = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
+    this.#maxVertexTextures = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
+    this.#maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+    this.#maxCubemapSize = gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE);
+
+    this.#maxAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
+    this.#maxVertexUniforms = gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS);
+    this.#maxVaryings = gl.getParameter(gl.MAX_VARYING_VECTORS);
+    this.#maxFragmentUniforms = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);
+
+    this.#vertexTextures = this.#maxVertexTextures > 0;
+    this.#floatVertexTextures = this.#vertexTextures && this.#floatFragmentTextures;
+
+    this.#maxSamples = gl.getParameter(gl.MAX_SAMPLES);
   }
 
-  function getMaxPrecision(precision) {
+  getMaxAnisotropy() {
+    return this.#maxAnisotropy;
+  }
+
+  getMaxPrecision(precision) {
+    const gl = this.#gl;
+
     if (precision === 'highp') {
       if (
         gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.HIGH_FLOAT).precision > 0 &&
@@ -40,65 +99,69 @@ function WebGLCapabilities(gl, extensions, parameters) {
     return 'lowp';
   }
 
-  const isWebGL2 =
-    typeof WebGL2RenderingContext !== 'undefined' &&
-    gl.constructor.name === 'WebGL2RenderingContext';
-
-  let precision = parameters.precision !== undefined ? parameters.precision : 'highp';
-  const maxPrecision = getMaxPrecision(precision);
-
-  if (maxPrecision !== precision) {
-    console.warn('WebGLRenderer:', precision, 'not supported, using', maxPrecision, 'instead.');
-    precision = maxPrecision;
+  get isWebGL2() {
+    return this.#isWebGL2;
   }
 
-  const drawBuffers = true;
+  get drawBuffers() {
+    return this.#drawBuffers;
+  }
 
-  const logarithmicDepthBuffer = parameters.logarithmicDepthBuffer === true;
+  get precision() {
+    return this.#precision;
+  }
 
-  const maxTextures = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
-  const maxVertexTextures = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
-  const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-  const maxCubemapSize = gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE);
+  get logarithmicDepthBuffer() {
+    return this.#logarithmicDepthBuffer;
+  }
 
-  const maxAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
-  const maxVertexUniforms = gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS);
-  const maxVaryings = gl.getParameter(gl.MAX_VARYING_VECTORS);
-  const maxFragmentUniforms = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);
+  get maxTextures() {
+    return this.#maxTextures;
+  }
 
-  const vertexTextures = maxVertexTextures > 0;
-  const floatFragmentTextures = true;
-  const floatVertexTextures = vertexTextures && floatFragmentTextures;
+  get maxVertexTextures() {
+    return this.#maxVertexTextures;
+  }
 
-  const maxSamples = gl.getParameter(gl.MAX_SAMPLES);
+  get maxTextureSize() {
+    return this.#maxTextureSize;
+  }
 
-  return {
-    isWebGL2,
+  get maxCubemapSize() {
+    return this.#maxCubemapSize;
+  }
 
-    drawBuffers,
+  get maxAttributes() {
+    return this.#maxAttributes;
+  }
 
-    getMaxAnisotropy,
-    getMaxPrecision,
+  get maxVertexUniforms() {
+    return this.#maxVertexUniforms;
+  }
 
-    precision,
-    logarithmicDepthBuffer,
+  get maxVaryings() {
+    return this.#maxVaryings;
+  }
 
-    maxTextures,
-    maxVertexTextures,
-    maxTextureSize,
-    maxCubemapSize,
+  get maxFragmentUniforms() {
+    return this.#maxFragmentUniforms;
+  }
 
-    maxAttributes,
-    maxVertexUniforms,
-    maxVaryings,
-    maxFragmentUniforms,
+  get vertexTextures() {
+    return this.#vertexTextures;
+  }
 
-    vertexTextures,
-    floatFragmentTextures,
-    floatVertexTextures,
+  get floatFragmentTextures() {
+    return this.#floatFragmentTextures;
+  }
 
-    maxSamples
-  };
+  get floatVertexTextures() {
+    return this.#floatVertexTextures;
+  }
+
+  get maxSamples() {
+    return this.#maxSamples;
+  }
 }
 
 export { WebGLCapabilities };
