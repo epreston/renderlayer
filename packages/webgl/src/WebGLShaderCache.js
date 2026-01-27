@@ -1,10 +1,6 @@
-let _id = 0;
-
 class WebGLShaderCache {
-  constructor() {
-    this.shaderCache = new Map();
-    this.materialCache = new Map();
-  }
+  shaderCache = new Map();
+  materialCache = new Map();
 
   update(material) {
     const vertexShader = material.vertexShader;
@@ -81,12 +77,16 @@ class WebGLShaderCache {
 }
 
 class WebGLShaderStage {
-  constructor(code) {
-    this.id = _id++;
+  id = _shaderStageId++;
 
+  code;
+  usedTimes = 0;
+
+  constructor(code) {
     this.code = code;
-    this.usedTimes = 0;
   }
 }
+
+let _shaderStageId = 0;
 
 export { WebGLShaderCache };
