@@ -43,84 +43,57 @@
 
 import { CubeTexture, Data3DTexture, DataArrayTexture, Texture } from '@renderlayer/textures';
 
-const _emptyTexture = /*@__PURE__*/ new Texture();
-const _emptyArrayTexture = /*@__PURE__*/ new DataArrayTexture();
-const _empty3dTexture = /*@__PURE__*/ new Data3DTexture();
-const _emptyCubeTexture = /*@__PURE__*/ new CubeTexture();
+// --- Top-level ---
 
-// --- Utilities ---
+// Root Container
+class WebGLUniforms {
+  seq = [];
+  map = {};
 
-// Array Caches (provide typed arrays for temporary by size)
+  /** @param {WebGL2RenderingContext} gl */
+  constructor(gl, program) {
+    const n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
 
-const _arrayCacheF32 = [];
-const _arrayCacheI32 = [];
+    for (let i = 0; i < n; ++i) {
+      const info = gl.getActiveUniform(program, i);
+      const addr = gl.getUniformLocation(program, info.name);
 
-// Float32Array caches used for uploading Matrix uniforms
-
-const _mat4array = new Float32Array(16);
-const _mat3array = new Float32Array(9);
-const _mat2array = new Float32Array(4);
-
-// Flattening for arrays of vectors and matrices
-
-function _flatten(array, nBlocks, blockSize) {
-  const firstElem = array[0];
-
-  if (firstElem <= 0 || firstElem > 0) return array;
-  // unoptimized: ! isNaN( firstElem )
-  // see http://jacksondunstan.com/articles/983
-
-  const n = nBlocks * blockSize;
-  let r = _arrayCacheF32[n];
-
-  if (r === undefined) {
-    r = new Float32Array(n);
-    _arrayCacheF32[n] = r;
-  }
-
-  if (nBlocks !== 0) {
-    firstElem.toArray(r, 0);
-
-    for (let i = 1, offset = 0; i !== nBlocks; ++i) {
-      offset += blockSize;
-      array[i].toArray(r, offset);
+      _parseUniform(info, addr, this);
     }
   }
 
-  return r;
-}
-
-function _arraysEqual(a, b) {
-  if (a.length !== b.length) return false;
-
-  for (let i = 0, l = a.length; i < l; i++) {
-    if (a[i] !== b[i]) return false;
+  setValue(gl, name, value, textures) {
+    const u = this.map[name];
+    if (u !== undefined) u.setValue(gl, value, textures);
   }
 
-  return true;
-}
-
-function _copyArray(a, b) {
-  for (let i = 0, l = b.length; i < l; i++) {
-    a[i] = b[i];
-  }
-}
-
-// Texture unit allocation
-
-function _allocTexUnits(textures, n) {
-  let r = _arrayCacheI32[n];
-
-  if (r === undefined) {
-    r = new Int32Array(n);
-    _arrayCacheI32[n] = r;
+  setOptional(gl, object, name) {
+    const v = object[name];
+    if (v !== undefined) this.setValue(gl, name, v);
   }
 
-  for (let i = 0; i !== n; ++i) {
-    r[i] = textures.allocateTextureUnit();
+  static upload(gl, seq, values, textures) {
+    for (let i = 0, n = seq.length; i !== n; ++i) {
+      const u = seq[i];
+      const v = values[u.id];
+
+      if (v.needsUpdate !== false) {
+        // note: always updating when .needsUpdate is undefined
+        u.setValue(gl, v.value, textures);
+      }
+    }
   }
 
-  return r;
+  static seqWithValue(seq, values) {
+    const r = [];
+
+    for (let i = 0, n = seq.length; i !== n; ++i) {
+      const u = seq[i];
+      if (u.id in values) r.push(u);
+    }
+
+    return r;
+  }
 }
 
 // --- Uniform Classes ---
@@ -800,7 +773,7 @@ class StructuredUniform {
   }
 }
 
-// --- Top-level ---
+// --- Utilities ---
 
 // Parser - builds up the property tree from the path strings
 
@@ -865,56 +838,82 @@ function _parseUniform(activeInfo, addr, container) {
   }
 }
 
-// Root Container
+// Flattening for arrays of vectors and matrices
 
-class WebGLUniforms {
-  seq = [];
-  map = {};
+function _flatten(array, nBlocks, blockSize) {
+  const firstElem = array[0];
 
-  /** @param {WebGL2RenderingContext} gl */
-  constructor(gl, program) {
-    const n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+  if (firstElem <= 0 || firstElem > 0) return array;
+  // unoptimized: ! isNaN( firstElem )
+  // see http://jacksondunstan.com/articles/983
 
-    for (let i = 0; i < n; ++i) {
-      const info = gl.getActiveUniform(program, i);
-      const addr = gl.getUniformLocation(program, info.name);
+  const n = nBlocks * blockSize;
+  let r = _arrayCacheF32[n];
 
-      _parseUniform(info, addr, this);
+  if (r === undefined) {
+    r = new Float32Array(n);
+    _arrayCacheF32[n] = r;
+  }
+
+  if (nBlocks !== 0) {
+    firstElem.toArray(r, 0);
+
+    for (let i = 1, offset = 0; i !== nBlocks; ++i) {
+      offset += blockSize;
+      array[i].toArray(r, offset);
     }
   }
 
-  setValue(gl, name, value, textures) {
-    const u = this.map[name];
-    if (u !== undefined) u.setValue(gl, value, textures);
+  return r;
+}
+
+function _arraysEqual(a, b) {
+  if (a.length !== b.length) return false;
+
+  for (let i = 0, l = a.length; i < l; i++) {
+    if (a[i] !== b[i]) return false;
   }
 
-  setOptional(gl, object, name) {
-    const v = object[name];
-    if (v !== undefined) this.setValue(gl, name, v);
-  }
+  return true;
+}
 
-  static upload(gl, seq, values, textures) {
-    for (let i = 0, n = seq.length; i !== n; ++i) {
-      const u = seq[i];
-      const v = values[u.id];
-
-      if (v.needsUpdate !== false) {
-        // note: always updating when .needsUpdate is undefined
-        u.setValue(gl, v.value, textures);
-      }
-    }
-  }
-
-  static seqWithValue(seq, values) {
-    const r = [];
-
-    for (let i = 0, n = seq.length; i !== n; ++i) {
-      const u = seq[i];
-      if (u.id in values) r.push(u);
-    }
-
-    return r;
+function _copyArray(a, b) {
+  for (let i = 0, l = b.length; i < l; i++) {
+    a[i] = b[i];
   }
 }
+
+// Texture unit allocation
+
+function _allocTexUnits(textures, n) {
+  let r = _arrayCacheI32[n];
+
+  if (r === undefined) {
+    r = new Int32Array(n);
+    _arrayCacheI32[n] = r;
+  }
+
+  for (let i = 0; i !== n; ++i) {
+    r[i] = textures.allocateTextureUnit();
+  }
+
+  return r;
+}
+
+const _emptyTexture = /*@__PURE__*/ new Texture();
+const _emptyArrayTexture = /*@__PURE__*/ new DataArrayTexture();
+const _empty3dTexture = /*@__PURE__*/ new Data3DTexture();
+const _emptyCubeTexture = /*@__PURE__*/ new CubeTexture();
+
+// Array Caches (provide typed arrays for temporary by size)
+
+const _arrayCacheF32 = [];
+const _arrayCacheI32 = [];
+
+// Float32Array caches used for uploading Matrix uniforms
+
+const _mat4array = new Float32Array(16);
+const _mat3array = new Float32Array(9);
+const _mat2array = new Float32Array(4);
 
 export { WebGLUniforms };
