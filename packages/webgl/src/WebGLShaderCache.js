@@ -89,4 +89,4 @@ class WebGLShaderStage {
 
 let _shaderStageId = 0;
 
-export { WebGLShaderCache };
+export { WebGLShaderCache, WebGLShaderStage };
