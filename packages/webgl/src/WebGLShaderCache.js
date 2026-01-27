@@ -2,6 +2,11 @@ class WebGLShaderCache {
   shaderCache = new Map();
   materialCache = new Map();
 
+  dispose() {
+    this.shaderCache.clear();
+    this.materialCache.clear();
+  }
+
   update(material) {
     const vertexShader = material.vertexShader;
     const fragmentShader = material.fragmentShader;
@@ -44,11 +49,6 @@ class WebGLShaderCache {
 
   getFragmentShaderID(material) {
     return this.#getShaderStage(material.fragmentShader).id;
-  }
-
-  dispose() {
-    this.shaderCache.clear();
-    this.materialCache.clear();
   }
 
   #getShaderCacheForMaterial(material) {
