@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/curves",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "@renderlayer/curves",
   "module": "./dist/curves.esm-bundler.js",
   "exports": "./dist/curves.esm-bundler.js",
