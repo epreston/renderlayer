@@ -47,49 +47,6 @@ import {
  * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
  */
 function WebGLState(gl, extensions, capabilities) {
-  function ColorBuffer() {
-    let _locked = false;
-
-    const _color = new Vector4();
-    let _currentColorMask = null;
-    const _currentColorClear = new Vector4(0, 0, 0, 0);
-
-    return {
-      setMask(colorMask) {
-        if (_currentColorMask !== colorMask && !_locked) {
-          gl.colorMask(colorMask, colorMask, colorMask, colorMask);
-          _currentColorMask = colorMask;
-        }
-      },
-
-      setLocked(lock) {
-        _locked = lock;
-      },
-
-      setClear(r, g, b, a, premultipliedAlpha) {
-        if (premultipliedAlpha === true) {
-          r *= a;
-          g *= a;
-          b *= a;
-        }
-
-        _color.set(r, g, b, a);
-
-        if (_currentColorClear.equals(_color) === false) {
-          gl.clearColor(r, g, b, a);
-          _currentColorClear.copy(_color);
-        }
-      },
-
-      reset() {
-        _locked = false;
-
-        _currentColorMask = null;
-        _currentColorClear.set(-1, 0, 0, 0); // set to invalid state
-      }
-    };
-  }
-
   function DepthBuffer() {
     let _locked = false;
 
@@ -263,7 +220,7 @@ function WebGLState(gl, extensions, capabilities) {
 
   //
 
-  const colorBuffer = ColorBuffer();
+  const colorBuffer = new ColorBuffer(gl);
   const depthBuffer = DepthBuffer();
   const stencilBuffer = StencilBuffer();
 
@@ -1065,6 +1022,53 @@ function WebGLState(gl, extensions, capabilities) {
 
     reset
   };
+}
+
+class ColorBuffer {
+  #gl;
+
+  #locked = false;
+  #color = new Vector4();
+  #currentColorMask = null;
+  #currentColorClear = new Vector4(0, 0, 0, 0);
+
+  /** @param {WebGL2RenderingContext} gl */
+  constructor(gl) {
+    this.#gl = gl;
+  }
+
+  setMask(colorMask) {
+    if (this.#currentColorMask !== colorMask && !this.#locked) {
+      this.#gl.colorMask(colorMask, colorMask, colorMask, colorMask);
+      this.#currentColorMask = colorMask;
+    }
+  }
+
+  setLocked(lock) {
+    this.#locked = lock;
+  }
+
+  setClear(r, g, b, a, premultipliedAlpha) {
+    if (premultipliedAlpha === true) {
+      r *= a;
+      g *= a;
+      b *= a;
+    }
+
+    this.#color.set(r, g, b, a);
+
+    if (this.#currentColorClear.equals(this.#color) === false) {
+      this.#gl.clearColor(r, g, b, a);
+      this.#currentColorClear.copy(this.#color);
+    }
+  }
+
+  reset() {
+    this.#locked = false;
+
+    this.#currentColorMask = null;
+    this.#currentColorClear.set(-1, 0, 0, 0); // set to invalid state
+  }
 }
 
 export { WebGLState };
