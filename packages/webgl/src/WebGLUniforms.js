@@ -550,10 +550,15 @@ class SingleUniform {
 }
 
 class PureArrayUniform {
+  id;
+  addr;
+  cache = [];
+  size;
+  setValue;
+
   constructor(id, activeInfo, addr) {
     this.id = id;
     this.addr = addr;
-    this.cache = [];
     this.size = activeInfo.size;
     this.setValue = this.getPureArraySetter(activeInfo.type);
 
@@ -772,11 +777,13 @@ class PureArrayUniform {
 }
 
 class StructuredUniform {
+  id;
+
+  seq = [];
+  map = {};
+
   constructor(id) {
     this.id = id;
-
-    this.seq = [];
-    this.map = {};
   }
 
   setValue(gl, value, textures) {
