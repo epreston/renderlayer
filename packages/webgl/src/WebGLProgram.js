@@ -361,6 +361,10 @@ function generateCubeUVSize(parameters) {
   return { texelWidth, texelHeight, maxMip };
 }
 
+/**
+ * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
+ * @param {import('./WebGLBindingStates.js').WebGLBindingStates} bindingStates
+ */
 function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
   // console.log( 'WebGLProgram', cacheKey );
 
