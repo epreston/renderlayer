@@ -115,7 +115,8 @@ function _generateTables() {
 // float32 to float16
 
 function toHalfFloat(val) {
-  if (Math.abs(val) > 65504) console.warn('DataUtils.toHalfFloat(): Value out of range.');
+  if (Math.abs(val) > 65504)
+    console.warn('BufferAttributeUtils.toHalfFloat(): Value out of range.');
 
   val = clamp(val, -65504, 65504);
 
