@@ -88,11 +88,7 @@ function WebGLPrograms(
 
       if (precision !== material.precision) {
         console.warn(
-          'WebGLProgram.getParameters:',
-          material.precision,
-          'not supported, using',
-          precision,
-          'instead.'
+          `WebGLProgram.getParameters: ${material.precision} not supported, using ${precision} instead.`
         );
       }
     }
