@@ -4,11 +4,15 @@ import { WebGLPrograms } from '../src/WebGLPrograms.js';
 
 describe('WebGL', () => {
   describe('WebGLPrograms', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLPrograms).toBeDefined();
     });
 
     test.todo('constructor', () => {
+      // implement
+    });
+
+    test.todo('programs', () => {
       // implement
     });
 
@@ -33,10 +37,6 @@ describe('WebGL', () => {
     });
 
     test.todo('releaseShaderCache', () => {
-      // implement
-    });
-
-    test.todo('programs', () => {
       // implement
     });
 
