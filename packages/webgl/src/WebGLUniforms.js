@@ -45,6 +45,8 @@ import { CubeTexture, Data3DTexture, DataArrayTexture, Texture } from '@renderla
 
 // --- Top-level ---
 
+// EP : why not save GL reference ?
+
 // Root Container
 class WebGLUniforms {
   seq = [];
