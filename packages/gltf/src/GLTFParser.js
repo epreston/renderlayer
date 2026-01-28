@@ -1301,7 +1301,7 @@ export class GLTFParser {
 
           boneInverses.push(mat);
         } else {
-          console.warn('GLTFLoader: Joint "%s" could not be found.', skinDef.joints[i]);
+          console.warn(`GLTFLoader: Joint "${skinDef.joints[i]}" could not be found.`);
         }
       }
 
