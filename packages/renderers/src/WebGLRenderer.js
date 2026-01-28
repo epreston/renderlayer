@@ -338,7 +338,7 @@ class WebGLRenderer {
       objects = new WebGLObjects(_gl, geometries, attributes, info);
       morphtargets = new WebGLMorphtargets(_gl, capabilities, textures);
       clipping = new WebGLClipping(properties);
-      programCache = WebGLPrograms(
+      programCache = new WebGLPrograms(
         _this,
         cubemaps,
         cubeuvmaps,
