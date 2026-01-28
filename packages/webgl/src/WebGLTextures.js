@@ -641,7 +641,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   }
 
   function uploadTexture(textureProperties, texture, slot) {
-    let textureType = _gl.TEXTURE_2D;
+    let textureType; // appease type checking
+    textureType = _gl.TEXTURE_2D;
 
     if (texture.isDataArrayTexture || texture.isCompressedArrayTexture)
       textureType = _gl.TEXTURE_2D_ARRAY;
@@ -1529,7 +1530,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     _gl.bindRenderbuffer(_gl.RENDERBUFFER, renderbuffer);
 
     if (renderTarget.depthBuffer && !renderTarget.stencilBuffer) {
-      let glInternalFormat = _gl.DEPTH_COMPONENT32F;
+      let glInternalFormat; // appease type checking
+      glInternalFormat = _gl.DEPTH_COMPONENT32F;
 
       if (isMultisample) {
         const depthTexture = renderTarget.depthTexture;
@@ -1922,7 +1924,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       state.unbindTexture();
     } else {
-      let glTextureType = _gl.TEXTURE_2D;
+      let glTextureType; // appease type checking
+      glTextureType = _gl.TEXTURE_2D;
 
       if (renderTarget.isWebGL3DRenderTarget || renderTarget.isWebGLArrayRenderTarget) {
         glTextureType = renderTarget.isWebGL3DRenderTarget ? _gl.TEXTURE_3D : _gl.TEXTURE_2D_ARRAY;
