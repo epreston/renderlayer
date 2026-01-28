@@ -233,9 +233,7 @@ function includeReplacer(match, include) {
     if (newInclude !== undefined) {
       string = ShaderChunk[newInclude];
       console.warn(
-        'WebGLRenderer: Shader chunk "%s" has been deprecated. Use "%s" instead.',
-        include,
-        newInclude
+        `WebGLRenderer: Shader chunk '${include}' has been deprecated. Use '${newInclude}' instead.`
       );
     } else {
       throw new Error(`Can not resolve #include <${include}>`);
