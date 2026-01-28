@@ -28,340 +28,6 @@ import {
 import { WebGLShader } from './WebGLShader.js';
 import { WebGLUniforms } from './WebGLUniforms.js';
 
-// From https://www.khronos.org/registry/webgl/extensions/KHR_parallel_shader_compile/
-const COMPLETION_STATUS_KHR = 0x91b1;
-
-let _programIdCount = 0;
-
-function handleSource(string, errorLine) {
-  const lines = string.split('\n');
-  const lines2 = [];
-
-  const from = Math.max(errorLine - 6, 0);
-  const to = Math.min(errorLine + 6, lines.length);
-
-  for (let i = from; i < to; i++) {
-    const line = i + 1;
-    lines2.push(`${line === errorLine ? '>' : ' '} ${line}: ${lines[i]}`);
-  }
-
-  return lines2.join('\n');
-}
-
-function getEncodingComponents(colorSpace) {
-  const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
-  const encodingPrimaries = ColorManagement.getPrimaries(colorSpace);
-
-  let gamutMapping;
-
-  if (workingPrimaries === encodingPrimaries) {
-    gamutMapping = '';
-  } else if (workingPrimaries === P3Primaries && encodingPrimaries === Rec709Primaries) {
-    gamutMapping = 'LinearDisplayP3ToLinearSRGB';
-  } else if (workingPrimaries === Rec709Primaries && encodingPrimaries === P3Primaries) {
-    gamutMapping = 'LinearSRGBToLinearDisplayP3';
-  }
-
-  switch (colorSpace) {
-    case LinearSRGBColorSpace:
-    case LinearDisplayP3ColorSpace:
-      return [gamutMapping, 'LinearTransferOETF'];
-
-    case SRGBColorSpace:
-    case DisplayP3ColorSpace:
-      return [gamutMapping, 'sRGBTransferOETF'];
-
-    default:
-      console.warn('WebGLProgram: Unsupported color space:', colorSpace);
-      return [gamutMapping, 'LinearTransferOETF'];
-  }
-}
-
-/** @param {WebGL2RenderingContext} gl */
-function getShaderErrors(gl, shader, type) {
-  const status = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-  const errors = gl.getShaderInfoLog(shader).trim();
-
-  if (status && errors === '') return '';
-
-  const errorMatches = /ERROR: 0:(\d+)/.exec(errors);
-  if (errorMatches) {
-    // --enable-privileged-webgl-extension
-    // console.log( '**' + type + '**', gl.getExtension( 'WEBGL_debug_shaders' ).getTranslatedShaderSource( shader ) );
-
-    const errorLine = parseInt(errorMatches[1]);
-    return `${type.toUpperCase()}\n\n${errors}\n\n${handleSource(
-      gl.getShaderSource(shader),
-      errorLine
-    )}`;
-  } else {
-    return errors;
-  }
-}
-
-function getTexelEncodingFunction(functionName, colorSpace) {
-  const components = getEncodingComponents(colorSpace);
-  // prettier-ignore
-  return `vec4 ${functionName}( vec4 value ) { return ${components[ 0 ]}( ${components[ 1 ]}( value ) ); }`;
-}
-
-function getToneMappingFunction(functionName, toneMapping) {
-  let toneMappingName;
-
-  switch (toneMapping) {
-    case LinearToneMapping:
-      toneMappingName = 'Linear';
-      break;
-
-    case ReinhardToneMapping:
-      toneMappingName = 'Reinhard';
-      break;
-
-    case CineonToneMapping:
-      toneMappingName = 'OptimizedCineon';
-      break;
-
-    case ACESFilmicToneMapping:
-      toneMappingName = 'ACESFilmic';
-      break;
-
-    case CustomToneMapping:
-      toneMappingName = 'Custom';
-      break;
-
-    default:
-      console.warn('WebGLProgram: Unsupported toneMapping:', toneMapping);
-      toneMappingName = 'Linear';
-  }
-
-  return `vec3 ${functionName}( vec3 color ) { return ${toneMappingName}ToneMapping( color ); }`;
-}
-
-function generateDefines(defines) {
-  const chunks = [];
-
-  for (const name in defines) {
-    const value = defines[name];
-
-    if (value === false) continue;
-
-    chunks.push(`#define ${name} ${value}`);
-  }
-
-  return chunks.join('\n');
-}
-
-/** @param {WebGL2RenderingContext} gl */
-function fetchAttributeLocations(gl, program) {
-  const attributes = {};
-
-  const n = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
-
-  for (let i = 0; i < n; i++) {
-    const info = gl.getActiveAttrib(program, i);
-    const name = info.name;
-
-    let locationSize = 1;
-    if (info.type === gl.FLOAT_MAT2) locationSize = 2;
-    if (info.type === gl.FLOAT_MAT3) locationSize = 3;
-    if (info.type === gl.FLOAT_MAT4) locationSize = 4;
-
-    // console.log( 'WebGLProgram: ACTIVE VERTEX ATTRIBUTE:', name, i );
-
-    attributes[name] = {
-      type: info.type,
-      location: gl.getAttribLocation(program, name),
-      locationSize: locationSize
-    };
-  }
-
-  return attributes;
-}
-
-function filterEmptyLine(string) {
-  return string !== '';
-}
-
-function replaceLightNums(string, parameters) {
-  const numSpotLightCoords =
-    parameters.numSpotLightShadows +
-    parameters.numSpotLightMaps -
-    parameters.numSpotLightShadowsWithMaps;
-
-  return string
-    .replace(/NUM_DIR_LIGHTS/g, parameters.numDirLights)
-    .replace(/NUM_SPOT_LIGHTS/g, parameters.numSpotLights)
-    .replace(/NUM_SPOT_LIGHT_MAPS/g, parameters.numSpotLightMaps)
-    .replace(/NUM_SPOT_LIGHT_COORDS/g, numSpotLightCoords)
-    .replace(/NUM_RECT_AREA_LIGHTS/g, parameters.numRectAreaLights)
-    .replace(/NUM_POINT_LIGHTS/g, parameters.numPointLights)
-    .replace(/NUM_HEMI_LIGHTS/g, parameters.numHemiLights)
-    .replace(/NUM_DIR_LIGHT_SHADOWS/g, parameters.numDirLightShadows)
-    .replace(/NUM_SPOT_LIGHT_SHADOWS_WITH_MAPS/g, parameters.numSpotLightShadowsWithMaps)
-    .replace(/NUM_SPOT_LIGHT_SHADOWS/g, parameters.numSpotLightShadows)
-    .replace(/NUM_POINT_LIGHT_SHADOWS/g, parameters.numPointLightShadows);
-}
-
-function replaceClippingPlaneNums(string, parameters) {
-  return string
-    .replace(/NUM_CLIPPING_PLANES/g, parameters.numClippingPlanes)
-    .replace(
-      /UNION_CLIPPING_PLANES/g,
-      parameters.numClippingPlanes - parameters.numClipIntersection
-    );
-}
-
-// Resolve Includes
-
-const includePattern = /^[ \t]*#include +<([\w\d./]+)>/gm;
-
-function resolveIncludes(string) {
-  return string.replace(includePattern, includeReplacer);
-}
-
-const shaderChunkMap = new Map([
-  ['encodings_fragment', 'colorspace_fragment'], // @deprecated, r154
-  ['encodings_pars_fragment', 'colorspace_pars_fragment'], // @deprecated, r154
-  ['output_fragment', 'opaque_fragment'] // @deprecated, r154
-]);
-
-function includeReplacer(match, include) {
-  let string = ShaderChunk[include];
-
-  if (string === undefined) {
-    const newInclude = shaderChunkMap.get(include);
-
-    if (newInclude !== undefined) {
-      string = ShaderChunk[newInclude];
-      console.warn(
-        `WebGLRenderer: Shader chunk '${include}' has been deprecated. Use '${newInclude}' instead.`
-      );
-    } else {
-      throw new Error(`Can not resolve #include <${include}>`);
-    }
-  }
-
-  return resolveIncludes(string);
-}
-
-// Unroll Loops
-
-const unrollLoopPattern =
-  /#pragma unroll_loop_start\s+for\s*\(\s*int\s+i\s*=\s*(\d+)\s*;\s*i\s*<\s*(\d+)\s*;\s*i\s*\+\+\s*\)\s*{([\s\S]+?)}\s+#pragma unroll_loop_end/g;
-
-function unrollLoops(string) {
-  return string.replace(unrollLoopPattern, loopReplacer);
-}
-
-function loopReplacer(match, start, end, snippet) {
-  let string = '';
-
-  for (let i = parseInt(start); i < parseInt(end); i++) {
-    string += snippet.replace(/\[\s*i\s*\]/g, `[ ${i} ]`).replace(/UNROLLED_LOOP_INDEX/g, i);
-  }
-
-  return string;
-}
-
-//
-
-function generatePrecision(parameters) {
-  let precisionString = `precision ${parameters.precision} float;\nprecision ${parameters.precision} int;`;
-
-  if (parameters.precision === 'highp') {
-    precisionString += '\n#define HIGH_PRECISION';
-  } else if (parameters.precision === 'mediump') {
-    precisionString += '\n#define MEDIUM_PRECISION';
-  } else if (parameters.precision === 'lowp') {
-    precisionString += '\n#define LOW_PRECISION';
-  }
-
-  return precisionString;
-}
-
-function generateShadowMapTypeDefine(parameters) {
-  let shadowMapTypeDefine = 'SHADOWMAP_TYPE_BASIC';
-
-  if (parameters.shadowMapType === PCFShadowMap) {
-    shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF';
-  } else if (parameters.shadowMapType === PCFSoftShadowMap) {
-    shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF_SOFT';
-  } else if (parameters.shadowMapType === VSMShadowMap) {
-    shadowMapTypeDefine = 'SHADOWMAP_TYPE_VSM';
-  }
-
-  return shadowMapTypeDefine;
-}
-
-function generateEnvMapTypeDefine(parameters) {
-  let envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
-
-  if (parameters.envMap) {
-    switch (parameters.envMapMode) {
-      case CubeReflectionMapping:
-      case CubeRefractionMapping:
-        envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
-        break;
-
-      case CubeUVReflectionMapping:
-        envMapTypeDefine = 'ENVMAP_TYPE_CUBE_UV';
-        break;
-    }
-  }
-
-  return envMapTypeDefine;
-}
-
-function generateEnvMapModeDefine(parameters) {
-  let envMapModeDefine = 'ENVMAP_MODE_REFLECTION';
-
-  if (parameters.envMap) {
-    switch (parameters.envMapMode) {
-      case CubeRefractionMapping:
-        envMapModeDefine = 'ENVMAP_MODE_REFRACTION';
-        break;
-    }
-  }
-
-  return envMapModeDefine;
-}
-
-function generateEnvMapBlendingDefine(parameters) {
-  let envMapBlendingDefine = 'ENVMAP_BLENDING_NONE';
-
-  if (parameters.envMap) {
-    switch (parameters.combine) {
-      case MultiplyOperation:
-        envMapBlendingDefine = 'ENVMAP_BLENDING_MULTIPLY';
-        break;
-
-      case MixOperation:
-        envMapBlendingDefine = 'ENVMAP_BLENDING_MIX';
-        break;
-
-      case AddOperation:
-        envMapBlendingDefine = 'ENVMAP_BLENDING_ADD';
-        break;
-    }
-  }
-
-  return envMapBlendingDefine;
-}
-
-function generateCubeUVSize(parameters) {
-  const imageHeight = parameters.envMapCubeUVHeight;
-
-  if (imageHeight === null) return null;
-
-  const maxMip = Math.log2(imageHeight) - 2;
-
-  const texelHeight = 1.0 / imageHeight;
-
-  const texelWidth = 1.0 / (3 * Math.max(Math.pow(2, maxMip), 7 * 16));
-
-  return { texelWidth, texelHeight, maxMip };
-}
-
 class WebGLProgram {
   #gl;
   #renderer;
@@ -408,14 +74,14 @@ class WebGLProgram {
     let vertexShader = parameters.vertexShader;
     let fragmentShader = parameters.fragmentShader;
 
-    const shadowMapTypeDefine = generateShadowMapTypeDefine(parameters);
-    const envMapTypeDefine = generateEnvMapTypeDefine(parameters);
-    const envMapModeDefine = generateEnvMapModeDefine(parameters);
-    const envMapBlendingDefine = generateEnvMapBlendingDefine(parameters);
-    const envMapCubeUVSize = generateCubeUVSize(parameters);
+    const shadowMapTypeDefine = _generateShadowMapTypeDefine(parameters);
+    const envMapTypeDefine = _generateEnvMapTypeDefine(parameters);
+    const envMapModeDefine = _generateEnvMapModeDefine(parameters);
+    const envMapBlendingDefine = _generateEnvMapBlendingDefine(parameters);
+    const envMapCubeUVSize = _generateCubeUVSize(parameters);
 
     const customExtensions = '';
-    const customDefines = generateDefines(defines);
+    const customDefines = _generateDefines(defines);
 
     this.program = gl.createProgram();
 
@@ -430,7 +96,7 @@ class WebGLProgram {
 
         customDefines
       ]
-        .filter(filterEmptyLine)
+        .filter(_filterEmptyLine)
         .join('\n');
 
       if (prefixVertex.length > 0) {
@@ -445,7 +111,7 @@ class WebGLProgram {
 
         customDefines
       ]
-        .filter(filterEmptyLine)
+        .filter(_filterEmptyLine)
         .join('\n');
 
       if (prefixFragment.length > 0) {
@@ -453,7 +119,7 @@ class WebGLProgram {
       }
     } else {
       prefixVertex = [
-        generatePrecision(parameters),
+        _generatePrecision(parameters),
 
         `#define SHADER_TYPE ${parameters.shaderType}`,
         `#define SHADER_NAME ${parameters.shaderName}`,
@@ -695,13 +361,13 @@ class WebGLProgram {
 
         '\n'
       ]
-        .filter(filterEmptyLine)
+        .filter(_filterEmptyLine)
         .join('\n');
 
       prefixFragment = [
         customExtensions,
 
-        generatePrecision(parameters),
+        _generatePrecision(parameters),
 
         `#define SHADER_TYPE ${parameters.shaderType}`,
         `#define SHADER_NAME ${parameters.shaderName}`,
@@ -798,33 +464,33 @@ class WebGLProgram {
         parameters.toneMapping !== NoToneMapping ? '#define TONE_MAPPING' : '',
         parameters.toneMapping !== NoToneMapping ? ShaderChunk['tonemapping_pars_fragment'] : '', // this code is required here because it is used by the toneMapping() function defined below
         parameters.toneMapping !== NoToneMapping ?
-          getToneMappingFunction('toneMapping', parameters.toneMapping)
+          _getToneMappingFunction('toneMapping', parameters.toneMapping)
         : '',
 
         parameters.dithering ? '#define DITHERING' : '',
         parameters.opaque ? '#define OPAQUE' : '',
 
         ShaderChunk['colorspace_pars_fragment'], // this code is required here because it is used by the various encoding/decoding function defined below
-        getTexelEncodingFunction('linearToOutputTexel', parameters.outputColorSpace),
+        _getTexelEncodingFunction('linearToOutputTexel', parameters.outputColorSpace),
 
         parameters.useDepthPacking ? `#define DEPTH_PACKING ${parameters.depthPacking}` : '',
 
         '\n'
       ]
-        .filter(filterEmptyLine)
+        .filter(_filterEmptyLine)
         .join('\n');
     }
 
-    vertexShader = resolveIncludes(vertexShader);
-    vertexShader = replaceLightNums(vertexShader, parameters);
-    vertexShader = replaceClippingPlaneNums(vertexShader, parameters);
+    vertexShader = _resolveIncludes(vertexShader);
+    vertexShader = _replaceLightNums(vertexShader, parameters);
+    vertexShader = _replaceClippingPlaneNums(vertexShader, parameters);
 
-    fragmentShader = resolveIncludes(fragmentShader);
-    fragmentShader = replaceLightNums(fragmentShader, parameters);
-    fragmentShader = replaceClippingPlaneNums(fragmentShader, parameters);
+    fragmentShader = _resolveIncludes(fragmentShader);
+    fragmentShader = _replaceLightNums(fragmentShader, parameters);
+    fragmentShader = _replaceClippingPlaneNums(fragmentShader, parameters);
 
-    vertexShader = unrollLoops(vertexShader);
-    fragmentShader = unrollLoops(fragmentShader);
+    vertexShader = _unrollLoops(vertexShader);
+    fragmentShader = _unrollLoops(fragmentShader);
 
     if (parameters.isRawShaderMaterial !== true) {
       // GLSL 3.0 conversion for built-in materials and ShaderMaterial
@@ -926,8 +592,8 @@ class WebGLProgram {
         } else {
           // default error reporting
 
-          const vertexErrors = getShaderErrors(gl, this.vertexShader, 'vertex');
-          const fragmentErrors = getShaderErrors(gl, this.fragmentShader, 'fragment');
+          const vertexErrors = _getShaderErrors(gl, this.vertexShader, 'vertex');
+          const fragmentErrors = _getShaderErrors(gl, this.fragmentShader, 'fragment');
 
           console.error(
             `WebGLProgram: Shader Error ${gl.getError()} - VALIDATE_STATUS ${gl.getProgramParameter(
@@ -971,7 +637,7 @@ class WebGLProgram {
     gl.deleteShader(this.fragmentShader);
 
     this.#cachedUniforms = new WebGLUniforms(gl, this.program);
-    this.#cachedAttributes = fetchAttributeLocations(gl, this.program);
+    this.#cachedAttributes = _fetchAttributeLocations(gl, this.program);
   }
 
   getUniforms() {
@@ -1008,5 +674,339 @@ class WebGLProgram {
     this.program = undefined;
   }
 }
+
+function _handleSource(string, errorLine) {
+  const lines = string.split('\n');
+  const lines2 = [];
+
+  const from = Math.max(errorLine - 6, 0);
+  const to = Math.min(errorLine + 6, lines.length);
+
+  for (let i = from; i < to; i++) {
+    const line = i + 1;
+    lines2.push(`${line === errorLine ? '>' : ' '} ${line}: ${lines[i]}`);
+  }
+
+  return lines2.join('\n');
+}
+
+function _getEncodingComponents(colorSpace) {
+  const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
+  const encodingPrimaries = ColorManagement.getPrimaries(colorSpace);
+
+  let gamutMapping;
+
+  if (workingPrimaries === encodingPrimaries) {
+    gamutMapping = '';
+  } else if (workingPrimaries === P3Primaries && encodingPrimaries === Rec709Primaries) {
+    gamutMapping = 'LinearDisplayP3ToLinearSRGB';
+  } else if (workingPrimaries === Rec709Primaries && encodingPrimaries === P3Primaries) {
+    gamutMapping = 'LinearSRGBToLinearDisplayP3';
+  }
+
+  switch (colorSpace) {
+    case LinearSRGBColorSpace:
+    case LinearDisplayP3ColorSpace:
+      return [gamutMapping, 'LinearTransferOETF'];
+
+    case SRGBColorSpace:
+    case DisplayP3ColorSpace:
+      return [gamutMapping, 'sRGBTransferOETF'];
+
+    default:
+      console.warn('WebGLProgram: Unsupported color space:', colorSpace);
+      return [gamutMapping, 'LinearTransferOETF'];
+  }
+}
+
+/** @param {WebGL2RenderingContext} gl */
+function _getShaderErrors(gl, shader, type) {
+  const status = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+  const errors = gl.getShaderInfoLog(shader).trim();
+
+  if (status && errors === '') return '';
+
+  const errorMatches = /ERROR: 0:(\d+)/.exec(errors);
+  if (errorMatches) {
+    // --enable-privileged-webgl-extension
+    // console.log( '**' + type + '**', gl.getExtension( 'WEBGL_debug_shaders' ).getTranslatedShaderSource( shader ) );
+
+    const errorLine = parseInt(errorMatches[1]);
+    return `${type.toUpperCase()}\n\n${errors}\n\n${_handleSource(
+      gl.getShaderSource(shader),
+      errorLine
+    )}`;
+  } else {
+    return errors;
+  }
+}
+
+function _getTexelEncodingFunction(functionName, colorSpace) {
+  const components = _getEncodingComponents(colorSpace);
+  // prettier-ignore
+  return `vec4 ${functionName}( vec4 value ) { return ${components[ 0 ]}( ${components[ 1 ]}( value ) ); }`;
+}
+
+function _getToneMappingFunction(functionName, toneMapping) {
+  let toneMappingName;
+
+  switch (toneMapping) {
+    case LinearToneMapping:
+      toneMappingName = 'Linear';
+      break;
+
+    case ReinhardToneMapping:
+      toneMappingName = 'Reinhard';
+      break;
+
+    case CineonToneMapping:
+      toneMappingName = 'OptimizedCineon';
+      break;
+
+    case ACESFilmicToneMapping:
+      toneMappingName = 'ACESFilmic';
+      break;
+
+    case CustomToneMapping:
+      toneMappingName = 'Custom';
+      break;
+
+    default:
+      console.warn('WebGLProgram: Unsupported toneMapping:', toneMapping);
+      toneMappingName = 'Linear';
+  }
+
+  return `vec3 ${functionName}( vec3 color ) { return ${toneMappingName}ToneMapping( color ); }`;
+}
+
+function _generateDefines(defines) {
+  const chunks = [];
+
+  for (const name in defines) {
+    const value = defines[name];
+
+    if (value === false) continue;
+
+    chunks.push(`#define ${name} ${value}`);
+  }
+
+  return chunks.join('\n');
+}
+
+/** @param {WebGL2RenderingContext} gl */
+function _fetchAttributeLocations(gl, program) {
+  const attributes = {};
+
+  const n = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
+
+  for (let i = 0; i < n; i++) {
+    const info = gl.getActiveAttrib(program, i);
+    const name = info.name;
+
+    let locationSize = 1;
+    if (info.type === gl.FLOAT_MAT2) locationSize = 2;
+    if (info.type === gl.FLOAT_MAT3) locationSize = 3;
+    if (info.type === gl.FLOAT_MAT4) locationSize = 4;
+
+    // console.log( 'WebGLProgram: ACTIVE VERTEX ATTRIBUTE:', name, i );
+
+    attributes[name] = {
+      type: info.type,
+      location: gl.getAttribLocation(program, name),
+      locationSize: locationSize
+    };
+  }
+
+  return attributes;
+}
+
+function _filterEmptyLine(string) {
+  return string !== '';
+}
+
+function _replaceLightNums(string, parameters) {
+  const numSpotLightCoords =
+    parameters.numSpotLightShadows +
+    parameters.numSpotLightMaps -
+    parameters.numSpotLightShadowsWithMaps;
+
+  return string
+    .replace(/NUM_DIR_LIGHTS/g, parameters.numDirLights)
+    .replace(/NUM_SPOT_LIGHTS/g, parameters.numSpotLights)
+    .replace(/NUM_SPOT_LIGHT_MAPS/g, parameters.numSpotLightMaps)
+    .replace(/NUM_SPOT_LIGHT_COORDS/g, numSpotLightCoords)
+    .replace(/NUM_RECT_AREA_LIGHTS/g, parameters.numRectAreaLights)
+    .replace(/NUM_POINT_LIGHTS/g, parameters.numPointLights)
+    .replace(/NUM_HEMI_LIGHTS/g, parameters.numHemiLights)
+    .replace(/NUM_DIR_LIGHT_SHADOWS/g, parameters.numDirLightShadows)
+    .replace(/NUM_SPOT_LIGHT_SHADOWS_WITH_MAPS/g, parameters.numSpotLightShadowsWithMaps)
+    .replace(/NUM_SPOT_LIGHT_SHADOWS/g, parameters.numSpotLightShadows)
+    .replace(/NUM_POINT_LIGHT_SHADOWS/g, parameters.numPointLightShadows);
+}
+
+function _replaceClippingPlaneNums(string, parameters) {
+  return string
+    .replace(/NUM_CLIPPING_PLANES/g, parameters.numClippingPlanes)
+    .replace(
+      /UNION_CLIPPING_PLANES/g,
+      parameters.numClippingPlanes - parameters.numClipIntersection
+    );
+}
+
+// Resolve Includes
+
+const _includePattern = /^[ \t]*#include +<([\w\d./]+)>/gm;
+
+function _resolveIncludes(string) {
+  return string.replace(_includePattern, _includeReplacer);
+}
+
+const _shaderChunkMap = new Map([
+  ['encodings_fragment', 'colorspace_fragment'], // @deprecated, r154
+  ['encodings_pars_fragment', 'colorspace_pars_fragment'], // @deprecated, r154
+  ['output_fragment', 'opaque_fragment'] // @deprecated, r154
+]);
+
+function _includeReplacer(match, include) {
+  let string = ShaderChunk[include];
+
+  if (string === undefined) {
+    const newInclude = _shaderChunkMap.get(include);
+
+    if (newInclude !== undefined) {
+      string = ShaderChunk[newInclude];
+      console.warn(
+        `WebGLRenderer: Shader chunk '${include}' has been deprecated. Use '${newInclude}' instead.`
+      );
+    } else {
+      throw new Error(`Can not resolve #include <${include}>`);
+    }
+  }
+
+  return _resolveIncludes(string);
+}
+
+// Unroll Loops
+
+const _unrollLoopPattern =
+  /#pragma unroll_loop_start\s+for\s*\(\s*int\s+i\s*=\s*(\d+)\s*;\s*i\s*<\s*(\d+)\s*;\s*i\s*\+\+\s*\)\s*{([\s\S]+?)}\s+#pragma unroll_loop_end/g;
+
+function _unrollLoops(string) {
+  return string.replace(_unrollLoopPattern, _loopReplacer);
+}
+
+function _loopReplacer(match, start, end, snippet) {
+  let string = '';
+
+  for (let i = parseInt(start); i < parseInt(end); i++) {
+    string += snippet.replace(/\[\s*i\s*\]/g, `[ ${i} ]`).replace(/UNROLLED_LOOP_INDEX/g, i);
+  }
+
+  return string;
+}
+
+//
+
+function _generatePrecision(parameters) {
+  let precisionString = `precision ${parameters.precision} float;\nprecision ${parameters.precision} int;`;
+
+  if (parameters.precision === 'highp') {
+    precisionString += '\n#define HIGH_PRECISION';
+  } else if (parameters.precision === 'mediump') {
+    precisionString += '\n#define MEDIUM_PRECISION';
+  } else if (parameters.precision === 'lowp') {
+    precisionString += '\n#define LOW_PRECISION';
+  }
+
+  return precisionString;
+}
+
+function _generateShadowMapTypeDefine(parameters) {
+  let shadowMapTypeDefine = 'SHADOWMAP_TYPE_BASIC';
+
+  if (parameters.shadowMapType === PCFShadowMap) {
+    shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF';
+  } else if (parameters.shadowMapType === PCFSoftShadowMap) {
+    shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF_SOFT';
+  } else if (parameters.shadowMapType === VSMShadowMap) {
+    shadowMapTypeDefine = 'SHADOWMAP_TYPE_VSM';
+  }
+
+  return shadowMapTypeDefine;
+}
+
+function _generateEnvMapTypeDefine(parameters) {
+  let envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
+
+  if (parameters.envMap) {
+    switch (parameters.envMapMode) {
+      case CubeReflectionMapping:
+      case CubeRefractionMapping:
+        envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
+        break;
+
+      case CubeUVReflectionMapping:
+        envMapTypeDefine = 'ENVMAP_TYPE_CUBE_UV';
+        break;
+    }
+  }
+
+  return envMapTypeDefine;
+}
+
+function _generateEnvMapModeDefine(parameters) {
+  let envMapModeDefine = 'ENVMAP_MODE_REFLECTION';
+
+  if (parameters.envMap) {
+    switch (parameters.envMapMode) {
+      case CubeRefractionMapping:
+        envMapModeDefine = 'ENVMAP_MODE_REFRACTION';
+        break;
+    }
+  }
+
+  return envMapModeDefine;
+}
+
+function _generateEnvMapBlendingDefine(parameters) {
+  let envMapBlendingDefine = 'ENVMAP_BLENDING_NONE';
+
+  if (parameters.envMap) {
+    switch (parameters.combine) {
+      case MultiplyOperation:
+        envMapBlendingDefine = 'ENVMAP_BLENDING_MULTIPLY';
+        break;
+
+      case MixOperation:
+        envMapBlendingDefine = 'ENVMAP_BLENDING_MIX';
+        break;
+
+      case AddOperation:
+        envMapBlendingDefine = 'ENVMAP_BLENDING_ADD';
+        break;
+    }
+  }
+
+  return envMapBlendingDefine;
+}
+
+function _generateCubeUVSize(parameters) {
+  const imageHeight = parameters.envMapCubeUVHeight;
+
+  if (imageHeight === null) return null;
+
+  const maxMip = Math.log2(imageHeight) - 2;
+
+  const texelHeight = 1.0 / imageHeight;
+
+  const texelWidth = 1.0 / (3 * Math.max(Math.pow(2, maxMip), 7 * 16));
+
+  return { texelWidth, texelHeight, maxMip };
+}
+
+// From https://www.khronos.org/registry/webgl/extensions/KHR_parallel_shader_compile/
+const COMPLETION_STATUS_KHR = 0x91b1;
+
+let _programIdCount = 0;
 
 export { WebGLProgram };
