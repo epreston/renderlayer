@@ -44,11 +44,11 @@ import {
  * @param {import('./WebGLInfo.js').WebGLInfo} info
  */
 function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info) {
-  const maxTextures = capabilities.maxTextures;
-  const maxCubemapSize = capabilities.maxCubemapSize;
-  const maxTextureSize = capabilities.maxTextureSize;
-  const maxSamples = capabilities.maxSamples;
-  const supportsInvalidateFramebuffer =
+  const _maxTextures = capabilities.maxTextures;
+  const _maxCubemapSize = capabilities.maxCubemapSize;
+  const _maxTextureSize = capabilities.maxTextureSize;
+  const _maxSamples = capabilities.maxSamples;
+  const _supportsInvalidateFramebuffer =
     typeof navigator === 'undefined' ? false : /OculusBrowser/g.test(navigator.userAgent);
 
   const _videoTextures = new WeakMap();
@@ -60,22 +60,22 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   // also OffscreenCanvas.getContext("webgl"), but not OffscreenCanvas.getContext("2d")!
   // Some implementations may only implement OffscreenCanvas partially (e.g. lacking 2d).
 
-  let useOffscreenCanvas = false;
+  let _useOffscreenCanvas = false;
 
   try {
-    useOffscreenCanvas =
+    _useOffscreenCanvas =
       typeof OffscreenCanvas !== 'undefined' && new OffscreenCanvas(1, 1).getContext('2d') !== null;
   } catch (err) {
     // Ignore any errors
   }
 
-  function createCanvas(width, height) {
+  function _createCanvas(width, height) {
     // Use OffscreenCanvas when available. Specially needed in web workers
 
-    return useOffscreenCanvas ? new OffscreenCanvas(width, height) : createElementNS('canvas');
+    return _useOffscreenCanvas ? new OffscreenCanvas(width, height) : createElementNS('canvas');
   }
 
-  function resizeImage(image, needsNewCanvas, maxSize) {
+  function _resizeImage(image, needsNewCanvas, maxSize) {
     let scale = 1;
 
     // handle case if texture exceeds max size
@@ -97,11 +97,11 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         const width = Math.floor(scale * image.width);
         const height = Math.floor(scale * image.height);
 
-        if (_canvas === undefined) _canvas = createCanvas(width, height);
+        if (_canvas === undefined) _canvas = _createCanvas(width, height);
 
         // cube textures can't reuse the same canvas
 
-        const canvas = needsNewCanvas ? createCanvas(width, height) : _canvas;
+        const canvas = needsNewCanvas ? _createCanvas(width, height) : _canvas;
 
         canvas.width = width;
         canvas.height = height;
@@ -128,7 +128,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     return image;
   }
 
-  function textureNeedsGenerateMipmaps(texture, supportsMips) {
+  function _textureNeedsGenerateMipmaps(texture, supportsMips) {
     return (
       texture.generateMipmaps &&
       supportsMips &&
@@ -137,11 +137,11 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     );
   }
 
-  function generateMipmap(target) {
+  function _generateMipmap(target) {
     _gl.generateMipmap(target);
   }
 
-  function getInternalFormat(
+  function _getInternalFormat(
     internalFormatName,
     glFormat,
     glType,
@@ -205,9 +205,9 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     return internalFormat;
   }
 
-  function getMipLevels(texture, image, supportsMips) {
+  function _getMipLevels(texture, image, supportsMips) {
     if (
-      textureNeedsGenerateMipmaps(texture, supportsMips) === true ||
+      _textureNeedsGenerateMipmaps(texture, supportsMips) === true ||
       (texture.isFramebufferTexture &&
         texture.minFilter !== NearestFilter &&
         texture.minFilter !== LinearFilter)
@@ -230,7 +230,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
   // Fallback filters for non-power-of-2 textures
 
-  function filterFallback(f) {
+  function _filterFallback(f) {
     if (
       f === NearestFilter ||
       f === NearestMipmapNearestFilter ||
@@ -249,7 +249,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
     texture.removeEventListener('dispose', onTextureDispose);
 
-    deallocateTexture(texture);
+    _deallocateTexture(texture);
 
     if (texture.isVideoTexture) {
       _videoTextures.delete(texture);
@@ -261,12 +261,12 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
     renderTarget.removeEventListener('dispose', onRenderTargetDispose);
 
-    deallocateRenderTarget(renderTarget);
+    _deallocateRenderTarget(renderTarget);
   }
 
   //
 
-  function deallocateTexture(texture) {
+  function _deallocateTexture(texture) {
     const textureProperties = properties.get(texture);
 
     if (textureProperties.__webglInit === undefined) return;
@@ -283,7 +283,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       // the WebGLTexture object is not used any more, remove it
 
       if (webglTexture.usedTimes === 0) {
-        deleteTexture(texture);
+        _deleteTexture(texture);
       }
 
       // remove the weak map entry if no WebGLTexture uses the source any more
@@ -296,7 +296,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     properties.remove(texture);
   }
 
-  function deleteTexture(texture) {
+  function _deleteTexture(texture) {
     const textureProperties = properties.get(texture);
     _gl.deleteTexture(textureProperties.__webglTexture);
 
@@ -307,7 +307,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     info.memory.textures--;
   }
 
-  function deallocateRenderTarget(renderTarget) {
+  function _deallocateRenderTarget(renderTarget) {
     const texture = renderTarget.texture;
 
     const renderTargetProperties = properties.get(renderTarget);
@@ -379,27 +379,27 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
   //
 
-  let textureUnits = 0;
+  let _textureUnits = 0;
 
   function resetTextureUnits() {
-    textureUnits = 0;
+    _textureUnits = 0;
   }
 
   function allocateTextureUnit() {
-    const textureUnit = textureUnits;
+    const textureUnit = _textureUnits;
 
-    if (textureUnit >= maxTextures) {
+    if (textureUnit >= _maxTextures) {
       console.warn(
-        `WebGLTextures: Trying to use ${textureUnit} texture units while this GPU supports only ${maxTextures}`
+        `WebGLTextures: Trying to use ${textureUnit} texture units while this GPU supports only ${_maxTextures}`
       );
     }
 
-    textureUnits += 1;
+    _textureUnits += 1;
 
     return textureUnit;
   }
 
-  function getTextureCacheKey(texture) {
+  function _getTextureCacheKey(texture) {
     const array = [];
 
     array.push(texture.wrapS);
@@ -425,7 +425,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   function setTexture2D(texture, slot) {
     const textureProperties = properties.get(texture);
 
-    if (texture.isVideoTexture) updateVideoTexture(texture);
+    if (texture.isVideoTexture) _updateVideoTexture(texture);
 
     if (
       texture.isRenderTargetTexture === false &&
@@ -439,7 +439,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       } else if (image.complete === false) {
         console.warn('WebGLRenderer: Texture marked for update but image is incomplete');
       } else {
-        uploadTexture(textureProperties, texture, slot);
+        _uploadTexture(textureProperties, texture, slot);
         return;
       }
     }
@@ -451,7 +451,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     const textureProperties = properties.get(texture);
 
     if (texture.version > 0 && textureProperties.__version !== texture.version) {
-      uploadTexture(textureProperties, texture, slot);
+      _uploadTexture(textureProperties, texture, slot);
       return;
     }
 
@@ -462,7 +462,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     const textureProperties = properties.get(texture);
 
     if (texture.version > 0 && textureProperties.__version !== texture.version) {
-      uploadTexture(textureProperties, texture, slot);
+      _uploadTexture(textureProperties, texture, slot);
       return;
     }
 
@@ -473,20 +473,20 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     const textureProperties = properties.get(texture);
 
     if (texture.version > 0 && textureProperties.__version !== texture.version) {
-      uploadCubeTexture(textureProperties, texture, slot);
+      _uploadCubeTexture(textureProperties, texture, slot);
       return;
     }
 
     state.bindTexture(_gl.TEXTURE_CUBE_MAP, textureProperties.__webglTexture, _gl.TEXTURE0 + slot);
   }
 
-  const wrappingToGL = {
+  const _wrappingToGL = {
     [RepeatWrapping]: _gl.REPEAT,
     [ClampToEdgeWrapping]: _gl.CLAMP_TO_EDGE,
     [MirroredRepeatWrapping]: _gl.MIRRORED_REPEAT
   };
 
-  const filterToGL = {
+  const _filterToGL = {
     [NearestFilter]: _gl.NEAREST,
     [NearestMipmapNearestFilter]: _gl.NEAREST_MIPMAP_NEAREST,
     [NearestMipmapLinearFilter]: _gl.NEAREST_MIPMAP_LINEAR,
@@ -496,7 +496,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     [LinearMipmapLinearFilter]: _gl.LINEAR_MIPMAP_LINEAR
   };
 
-  const compareToGL = {
+  const _compareToGL = {
     [NeverCompare]: _gl.NEVER,
     [AlwaysCompare]: _gl.ALWAYS,
     [LessCompare]: _gl.LESS,
@@ -507,17 +507,17 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     [NotEqualCompare]: _gl.NOTEQUAL
   };
 
-  function setTextureParameters(textureType, texture, supportsMips) {
+  function _setTextureParameters(textureType, texture, supportsMips) {
     if (supportsMips) {
-      _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_S, wrappingToGL[texture.wrapS]);
-      _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_T, wrappingToGL[texture.wrapT]);
+      _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_S, _wrappingToGL[texture.wrapS]);
+      _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_T, _wrappingToGL[texture.wrapT]);
 
       if (textureType === _gl.TEXTURE_3D || textureType === _gl.TEXTURE_2D_ARRAY) {
-        _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_R, wrappingToGL[texture.wrapR]);
+        _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_R, _wrappingToGL[texture.wrapR]);
       }
 
-      _gl.texParameteri(textureType, _gl.TEXTURE_MAG_FILTER, filterToGL[texture.magFilter]);
-      _gl.texParameteri(textureType, _gl.TEXTURE_MIN_FILTER, filterToGL[texture.minFilter]);
+      _gl.texParameteri(textureType, _gl.TEXTURE_MAG_FILTER, _filterToGL[texture.magFilter]);
+      _gl.texParameteri(textureType, _gl.TEXTURE_MIN_FILTER, _filterToGL[texture.minFilter]);
     } else {
       _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_S, _gl.CLAMP_TO_EDGE);
       _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_T, _gl.CLAMP_TO_EDGE);
@@ -532,8 +532,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         );
       }
 
-      _gl.texParameteri(textureType, _gl.TEXTURE_MAG_FILTER, filterFallback(texture.magFilter));
-      _gl.texParameteri(textureType, _gl.TEXTURE_MIN_FILTER, filterFallback(texture.minFilter));
+      _gl.texParameteri(textureType, _gl.TEXTURE_MAG_FILTER, _filterFallback(texture.magFilter));
+      _gl.texParameteri(textureType, _gl.TEXTURE_MIN_FILTER, _filterFallback(texture.minFilter));
 
       if (texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter) {
         console.warn(
@@ -547,7 +547,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       _gl.texParameteri(
         textureType,
         _gl.TEXTURE_COMPARE_FUNC,
-        compareToGL[texture.compareFunction]
+        _compareToGL[texture.compareFunction]
       );
     }
 
@@ -574,7 +574,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
   }
 
-  function initTexture(textureProperties, texture) {
+  function _initTexture(textureProperties, texture) {
     let forceUpload = false;
 
     if (textureProperties.__webglInit === undefined) {
@@ -595,7 +595,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
     // check if there is already a WebGLTexture object for the given texture parameters
 
-    const textureCacheKey = getTextureCacheKey(texture);
+    const textureCacheKey = _getTextureCacheKey(texture);
 
     if (textureCacheKey !== textureProperties.__cacheKey) {
       // if not, create a new instance of WebGLTexture
@@ -627,7 +627,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         webglTextures[textureProperties.__cacheKey].usedTimes--;
 
         if (webglTexture.usedTimes === 0) {
-          deleteTexture(texture);
+          _deleteTexture(texture);
         }
       }
 
@@ -640,7 +640,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     return forceUpload;
   }
 
-  function uploadTexture(textureProperties, texture, slot) {
+  function _uploadTexture(textureProperties, texture, slot) {
     let textureType; // appease type checking
     textureType = _gl.TEXTURE_2D;
 
@@ -648,7 +648,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       textureType = _gl.TEXTURE_2D_ARRAY;
     if (texture.isData3DTexture) textureType = _gl.TEXTURE_3D;
 
-    const forceUpload = initTexture(textureProperties, texture);
+    const forceUpload = _initTexture(textureProperties, texture);
     const source = texture.source;
 
     state.bindTexture(textureType, textureProperties.__webglTexture, _gl.TEXTURE0 + slot);
@@ -673,15 +673,15 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       _gl.pixelStorei(_gl.UNPACK_ALIGNMENT, texture.unpackAlignment);
       _gl.pixelStorei(_gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, unpackConversion);
 
-      let image = resizeImage(texture.image, false, maxTextureSize);
-      image = verifyColorSpace(texture, image);
+      let image = _resizeImage(texture.image, false, _maxTextureSize);
+      image = _verifyColorSpace(texture, image);
 
       const supportsMips = true;
 
       const glFormat = utils.convert(texture.format, texture.colorSpace);
 
       let glType = utils.convert(texture.type);
-      let glInternalFormat = getInternalFormat(
+      let glInternalFormat = _getInternalFormat(
         texture.internalFormat,
         glFormat,
         glType,
@@ -689,14 +689,14 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         texture.isVideoTexture
       );
 
-      setTextureParameters(textureType, texture, supportsMips);
+      _setTextureParameters(textureType, texture, supportsMips);
 
       let mipmap;
       const mipmaps = texture.mipmaps;
 
       const useTexStorage = texture.isVideoTexture !== true && glInternalFormat !== RGB_ETC1_Format;
       const allocateMemory = sourceProperties.__version === undefined || forceUpload === true;
-      const levels = getMipLevels(texture, image, supportsMips);
+      const levels = _getMipLevels(texture, image, supportsMips);
 
       if (texture.isDepthTexture) {
         // populate depth texture with dummy data
@@ -1159,8 +1159,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         }
       }
 
-      if (textureNeedsGenerateMipmaps(texture, supportsMips)) {
-        generateMipmap(textureType);
+      if (_textureNeedsGenerateMipmaps(texture, supportsMips)) {
+        _generateMipmap(textureType);
       }
 
       sourceProperties.__version = source.version;
@@ -1171,10 +1171,10 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     textureProperties.__version = texture.version;
   }
 
-  function uploadCubeTexture(textureProperties, texture, slot) {
+  function _uploadCubeTexture(textureProperties, texture, slot) {
     if (texture.image.length !== 6) return;
 
-    const forceUpload = initTexture(textureProperties, texture);
+    const forceUpload = _initTexture(textureProperties, texture);
     const source = texture.source;
 
     state.bindTexture(_gl.TEXTURE_CUBE_MAP, textureProperties.__webglTexture, _gl.TEXTURE0 + slot);
@@ -1206,12 +1206,12 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       for (let i = 0; i < 6; i++) {
         if (!isCompressed && !isDataTexture) {
-          cubeImage[i] = resizeImage(texture.image[i], true, maxCubemapSize);
+          cubeImage[i] = _resizeImage(texture.image[i], true, _maxCubemapSize);
         } else {
           cubeImage[i] = isDataTexture ? texture.image[i].image : texture.image[i];
         }
 
-        cubeImage[i] = verifyColorSpace(texture, cubeImage[i]);
+        cubeImage[i] = _verifyColorSpace(texture, cubeImage[i]);
       }
 
       const image = cubeImage[0];
@@ -1220,7 +1220,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       const glFormat = utils.convert(texture.format, texture.colorSpace);
       const glType = utils.convert(texture.type);
-      const glInternalFormat = getInternalFormat(
+      const glInternalFormat = _getInternalFormat(
         texture.internalFormat,
         glFormat,
         glType,
@@ -1230,9 +1230,9 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       const useTexStorage = texture.isVideoTexture !== true;
 
       const allocateMemory = sourceProperties.__version === undefined || forceUpload === true;
-      let levels = getMipLevels(texture, image, supportsMips);
+      let levels = _getMipLevels(texture, image, supportsMips);
 
-      setTextureParameters(_gl.TEXTURE_CUBE_MAP, texture, supportsMips);
+      _setTextureParameters(_gl.TEXTURE_CUBE_MAP, texture, supportsMips);
 
       let mipmaps;
 
@@ -1438,9 +1438,9 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         }
       }
 
-      if (textureNeedsGenerateMipmaps(texture, supportsMips)) {
+      if (_textureNeedsGenerateMipmaps(texture, supportsMips)) {
         // We assume images for cube map have the same size.
-        generateMipmap(_gl.TEXTURE_CUBE_MAP);
+        _generateMipmap(_gl.TEXTURE_CUBE_MAP);
       }
 
       sourceProperties.__version = source.version;
@@ -1464,7 +1464,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   ) {
     const glFormat = utils.convert(texture.format, texture.colorSpace);
     const glType = utils.convert(texture.type);
-    const glInternalFormat = getInternalFormat(
+    const glInternalFormat = _getInternalFormat(
       texture.internalFormat,
       glFormat,
       glType,
@@ -1526,7 +1526,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   }
 
   // Setup storage for internal depth/stencil buffers and bind to correct framebuffer
-  function setupRenderBufferStorage(renderbuffer, renderTarget, isMultisample) {
+  function _setupRenderBufferStorage(renderbuffer, renderTarget, isMultisample) {
     _gl.bindRenderbuffer(_gl.RENDERBUFFER, renderbuffer);
 
     if (renderTarget.depthBuffer && !renderTarget.stencilBuffer) {
@@ -1544,7 +1544,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
           }
         }
 
-        const samples = getRenderTargetSamples(renderTarget);
+        const samples = _getRenderTargetSamples(renderTarget);
 
         _gl.renderbufferStorageMultisample(
           _gl.RENDERBUFFER,
@@ -1569,7 +1569,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         renderbuffer
       );
     } else if (renderTarget.depthBuffer && renderTarget.stencilBuffer) {
-      const samples = getRenderTargetSamples(renderTarget);
+      const samples = _getRenderTargetSamples(renderTarget);
 
       if (isMultisample) {
         _gl.renderbufferStorageMultisample(
@@ -1603,13 +1603,13 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       for (const texture of textures) {
         const glFormat = utils.convert(texture.format, texture.colorSpace);
         const glType = utils.convert(texture.type);
-        const glInternalFormat = getInternalFormat(
+        const glInternalFormat = _getInternalFormat(
           texture.internalFormat,
           glFormat,
           glType,
           texture.colorSpace
         );
-        const samples = getRenderTargetSamples(renderTarget);
+        const samples = _getRenderTargetSamples(renderTarget);
 
         if (isMultisample) {
           _gl.renderbufferStorageMultisample(
@@ -1634,7 +1634,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   }
 
   // Setup resources for a Depth Texture for a FBO (needs an extension)
-  function setupDepthTexture(framebuffer, renderTarget) {
+  function _setupDepthTexture(framebuffer, renderTarget) {
     const isCube = renderTarget && renderTarget.isWebGLCubeRenderTarget;
     if (isCube) throw new Error('Depth Texture with cube render targets is not supported');
 
@@ -1658,7 +1658,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     setTexture2D(renderTarget.depthTexture, 0);
 
     const webglDepthTexture = properties.get(renderTarget.depthTexture).__webglTexture;
-    const samples = getRenderTargetSamples(renderTarget);
+    const samples = _getRenderTargetSamples(renderTarget);
 
     if (renderTarget.depthTexture.format === DepthFormat) {
       _gl.framebufferTexture2D(
@@ -1689,7 +1689,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     if (renderTarget.depthTexture && !renderTargetProperties.__autoAllocateDepthBuffer) {
       if (isCube) throw new Error('target.depthTexture not supported in Cube render targets');
 
-      setupDepthTexture(renderTargetProperties.__webglFramebuffer, renderTarget);
+      _setupDepthTexture(renderTargetProperties.__webglFramebuffer, renderTarget);
     } else {
       if (isCube) {
         renderTargetProperties.__webglDepthbuffer = [];
@@ -1697,7 +1697,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         for (let i = 0; i < 6; i++) {
           state.bindFramebuffer(_gl.FRAMEBUFFER, renderTargetProperties.__webglFramebuffer[i]);
           renderTargetProperties.__webglDepthbuffer[i] = _gl.createRenderbuffer();
-          setupRenderBufferStorage(
+          _setupRenderBufferStorage(
             renderTargetProperties.__webglDepthbuffer[i],
             renderTarget,
             false
@@ -1706,7 +1706,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       } else {
         state.bindFramebuffer(_gl.FRAMEBUFFER, renderTargetProperties.__webglFramebuffer);
         renderTargetProperties.__webglDepthbuffer = _gl.createRenderbuffer();
-        setupRenderBufferStorage(renderTargetProperties.__webglDepthbuffer, renderTarget, false);
+        _setupRenderBufferStorage(renderTargetProperties.__webglDepthbuffer, renderTarget, false);
       }
     }
 
@@ -1825,14 +1825,14 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
           const glFormat = utils.convert(texture.format, texture.colorSpace);
           const glType = utils.convert(texture.type);
-          const glInternalFormat = getInternalFormat(
+          const glInternalFormat = _getInternalFormat(
             texture.internalFormat,
             glFormat,
             glType,
             texture.colorSpace,
             renderTarget.isXRRenderTarget === true
           );
-          const samples = getRenderTargetSamples(renderTarget);
+          const samples = _getRenderTargetSamples(renderTarget);
           _gl.renderbufferStorageMultisample(
             _gl.RENDERBUFFER,
             samples,
@@ -1853,7 +1853,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
         if (renderTarget.depthBuffer) {
           renderTargetProperties.__webglDepthRenderbuffer = _gl.createRenderbuffer();
-          setupRenderBufferStorage(
+          _setupRenderBufferStorage(
             renderTargetProperties.__webglDepthRenderbuffer,
             renderTarget,
             true
@@ -1868,7 +1868,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
     if (isCube) {
       state.bindTexture(_gl.TEXTURE_CUBE_MAP, textureProperties.__webglTexture);
-      setTextureParameters(_gl.TEXTURE_CUBE_MAP, texture, supportsMips);
+      _setTextureParameters(_gl.TEXTURE_CUBE_MAP, texture, supportsMips);
 
       for (let i = 0; i < 6; i++) {
         if (texture.mipmaps && texture.mipmaps.length > 0) {
@@ -1894,8 +1894,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         }
       }
 
-      if (textureNeedsGenerateMipmaps(texture, supportsMips)) {
-        generateMipmap(_gl.TEXTURE_CUBE_MAP);
+      if (_textureNeedsGenerateMipmaps(texture, supportsMips)) {
+        _generateMipmap(_gl.TEXTURE_CUBE_MAP);
       }
 
       state.unbindTexture();
@@ -1907,7 +1907,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         const attachmentProperties = properties.get(attachment);
 
         state.bindTexture(_gl.TEXTURE_2D, attachmentProperties.__webglTexture);
-        setTextureParameters(_gl.TEXTURE_2D, attachment, supportsMips);
+        _setTextureParameters(_gl.TEXTURE_2D, attachment, supportsMips);
         setupFrameBufferTexture(
           renderTargetProperties.__webglFramebuffer,
           renderTarget,
@@ -1917,8 +1917,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
           0
         );
 
-        if (textureNeedsGenerateMipmaps(attachment, supportsMips)) {
-          generateMipmap(_gl.TEXTURE_2D);
+        if (_textureNeedsGenerateMipmaps(attachment, supportsMips)) {
+          _generateMipmap(_gl.TEXTURE_2D);
         }
       }
 
@@ -1932,7 +1932,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       }
 
       state.bindTexture(glTextureType, textureProperties.__webglTexture);
-      setTextureParameters(glTextureType, texture, supportsMips);
+      _setTextureParameters(glTextureType, texture, supportsMips);
 
       if (texture.mipmaps && texture.mipmaps.length > 0) {
         for (let level = 0; level < texture.mipmaps.length; level++) {
@@ -1956,8 +1956,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         );
       }
 
-      if (textureNeedsGenerateMipmaps(texture, supportsMips)) {
-        generateMipmap(glTextureType);
+      if (_textureNeedsGenerateMipmaps(texture, supportsMips)) {
+        _generateMipmap(glTextureType);
       }
 
       state.unbindTexture();
@@ -1981,12 +1981,12 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     for (let i = 0, il = textures.length; i < il; i++) {
       const texture = textures[i];
 
-      if (textureNeedsGenerateMipmaps(texture, supportsMips)) {
+      if (_textureNeedsGenerateMipmaps(texture, supportsMips)) {
         const target = renderTarget.isWebGLCubeRenderTarget ? _gl.TEXTURE_CUBE_MAP : _gl.TEXTURE_2D;
         const webglTexture = properties.get(texture).__webglTexture;
 
         state.bindTexture(target, webglTexture);
-        generateMipmap(target);
+        _generateMipmap(target);
         state.unbindTexture();
       }
     }
@@ -2080,7 +2080,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
         _gl.blitFramebuffer(0, 0, width, height, 0, 0, width, height, mask, _gl.NEAREST);
 
-        if (supportsInvalidateFramebuffer) {
+        if (_supportsInvalidateFramebuffer) {
           _gl.invalidateFramebuffer(_gl.READ_FRAMEBUFFER, invalidationArray);
         }
       }
@@ -2122,11 +2122,11 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
   }
 
-  function getRenderTargetSamples(renderTarget) {
-    return Math.min(maxSamples, renderTarget.samples);
+  function _getRenderTargetSamples(renderTarget) {
+    return Math.min(_maxSamples, renderTarget.samples);
   }
 
-  function updateVideoTexture(texture) {
+  function _updateVideoTexture(texture) {
     const frame = info.render.frame;
 
     // Check the last frame we updated the VideoTexture
@@ -2137,7 +2137,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
   }
 
-  function verifyColorSpace(texture, image) {
+  function _verifyColorSpace(texture, image) {
     const colorSpace = texture.colorSpace;
     const format = texture.format;
     const type = texture.type;
