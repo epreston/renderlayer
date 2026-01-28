@@ -32,6 +32,10 @@ const Cache = {
 };
 
 class LoadingManager {
+  onStart;
+  onLoad;
+  onProgress;
+  onError;
   constructor(onLoad, onProgress, onError) {
     const scope = this;
     let isLoading = false;
@@ -106,13 +110,14 @@ class LoadingManager {
 const DefaultLoadingManager = /* @__PURE__ */ new LoadingManager();
 
 class Loader {
+  manager;
+  crossOrigin = "anonymous";
+  withCredentials = false;
+  path = "";
+  resourcePath = "";
+  requestHeader = {};
   constructor(manager) {
     this.manager = manager !== void 0 ? manager : DefaultLoadingManager;
-    this.crossOrigin = "anonymous";
-    this.withCredentials = false;
-    this.path = "";
-    this.resourcePath = "";
-    this.requestHeader = {};
   }
   load() {
   }
@@ -588,13 +593,15 @@ class DataTextureLoader extends Loader {
 }
 
 class ImageBitmapLoader extends Loader {
+  options = { premultiplyAlpha: "none" };
   constructor(manager) {
     super(manager);
-    this.isImageBitmapLoader = true;
     if (typeof createImageBitmap === "undefined") {
       console.warn("ImageBitmapLoader: createImageBitmap() not supported.");
     }
-    this.options = { premultiplyAlpha: "none" };
+  }
+  get isImageBitmapLoader() {
+    return true;
   }
   setOptions(options) {
     this.options = options;
@@ -684,9 +691,9 @@ class LoaderUtils {
 }
 
 class MaterialLoader extends Loader {
+  textures = {};
   constructor(manager) {
     super(manager);
-    this.textures = {};
   }
   load(url, onLoad, onProgress, onError) {
     const scope = this;

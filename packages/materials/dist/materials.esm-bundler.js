@@ -3,67 +3,75 @@ import { NormalBlending, FrontSide, SrcAlphaFactor, OneMinusSrcAlphaFactor, AddE
 import { EventDispatcher } from '@renderlayer/core';
 import { cloneUniforms, cloneUniformsGroups } from '@renderlayer/shaders';
 
-let _materialId = 0;
 class Material extends EventDispatcher {
+  #id = _materialId++;
+  uuid = generateUUID();
+  name = "";
+  type = "Material";
+  blending = NormalBlending;
+  side = FrontSide;
+  vertexColors = false;
+  opacity = 1;
+  transparent = false;
+  alphaHash = false;
+  blendSrc = SrcAlphaFactor;
+  blendDst = OneMinusSrcAlphaFactor;
+  blendEquation = AddEquation;
+  blendSrcAlpha = null;
+  blendDstAlpha = null;
+  blendEquationAlpha = null;
+  blendColor = new Color(0, 0, 0);
+  blendAlpha = 0;
+  depthFunc = LessEqualDepth;
+  depthTest = true;
+  depthWrite = true;
+  stencilWriteMask = 255;
+  stencilFunc = AlwaysStencilFunc;
+  stencilRef = 0;
+  stencilFuncMask = 255;
+  stencilFail = KeepStencilOp;
+  stencilZFail = KeepStencilOp;
+  stencilZPass = KeepStencilOp;
+  stencilWrite = false;
+  clippingPlanes = null;
+  clipIntersection = false;
+  clipShadows = false;
+  shadowSide = null;
+  colorWrite = true;
+  // override the renderer's default precision for this material
+  precision = null;
+  polygonOffset = false;
+  polygonOffsetFactor = 0;
+  polygonOffsetUnits = 0;
+  dithering = false;
+  alphaToCoverage = false;
+  premultipliedAlpha = false;
+  forceSinglePass = false;
+  visible = true;
+  toneMapped = true;
+  userData = {};
+  version = 0;
+  #alphaTest = 0;
   constructor() {
     super();
-    Object.defineProperty(this, "id", { value: _materialId++ });
-    this.uuid = generateUUID();
-    this.name = "";
-    this.isMaterial = true;
-    this.type = "Material";
-    this.blending = NormalBlending;
-    this.side = FrontSide;
-    this.vertexColors = false;
-    this.opacity = 1;
-    this.transparent = false;
-    this.alphaHash = false;
-    this.blendSrc = SrcAlphaFactor;
-    this.blendDst = OneMinusSrcAlphaFactor;
-    this.blendEquation = AddEquation;
-    this.blendSrcAlpha = null;
-    this.blendDstAlpha = null;
-    this.blendEquationAlpha = null;
-    this.blendColor = new Color(0, 0, 0);
-    this.blendAlpha = 0;
-    this.depthFunc = LessEqualDepth;
-    this.depthTest = true;
-    this.depthWrite = true;
-    this.stencilWriteMask = 255;
-    this.stencilFunc = AlwaysStencilFunc;
-    this.stencilRef = 0;
-    this.stencilFuncMask = 255;
-    this.stencilFail = KeepStencilOp;
-    this.stencilZFail = KeepStencilOp;
-    this.stencilZPass = KeepStencilOp;
-    this.stencilWrite = false;
-    this.clippingPlanes = null;
-    this.clipIntersection = false;
-    this.clipShadows = false;
-    this.shadowSide = null;
-    this.colorWrite = true;
-    this.precision = null;
-    this.polygonOffset = false;
-    this.polygonOffsetFactor = 0;
-    this.polygonOffsetUnits = 0;
-    this.dithering = false;
-    this.alphaToCoverage = false;
-    this.premultipliedAlpha = false;
-    this.forceSinglePass = false;
-    this.visible = true;
-    this.toneMapped = true;
-    this.userData = {};
-    this.version = 0;
-    this._alphaTest = 0;
+  }
+  get isMaterial() {
+    return true;
+  }
+  get id() {
+    return this.#id;
   }
   get alphaTest() {
-    return this._alphaTest;
+    return this.#alphaTest;
   }
   set alphaTest(value) {
-    if (this._alphaTest > 0 !== value > 0) {
+    if (this.#alphaTest > 0 !== value > 0) {
       this.version++;
     }
-    this._alphaTest = value;
+    this.#alphaTest = value;
+  }
+  set needsUpdate(value) {
+    if (value === true) this.version++;
   }
   onBuild() {
   }
@@ -343,21 +351,22 @@ class Material extends EventDispatcher {
   dispose() {
     this.dispatchEvent({ type: "dispose" });
   }
-  set needsUpdate(value) {
-    if (value === true) this.version++;
-  }
 }
+let _materialId = 0;
 
 class LineBasicMaterial extends Material {
+  type = "LineBasicMaterial";
+  color = new Color(16777215);
+  map = null;
+  linewidth = 1;
+  // may be ignored
+  fog = true;
   constructor(parameters) {
     super();
-    this.isLineBasicMaterial = true;
-    this.type = "LineBasicMaterial";
-    this.color = new Color(16777215);
-    this.map = null;
-    this.linewidth = 1;
-    this.fog = true;
     this.setValues(parameters);
+  }
+  get isLineBasicMaterial() {
+    return true;
   }
   /**
    * @param {LineBasicMaterial} source
@@ -374,26 +383,30 @@ class LineBasicMaterial extends Material {
 }
 
 class MeshBasicMaterial extends Material {
+  type = "MeshBasicMaterial";
+  color = new Color(16777215);
+  // emissive
+  map = null;
+  lightMap = null;
+  lightMapIntensity = 1;
+  aoMap = null;
+  aoMapIntensity = 1;
+  specularMap = null;
+  alphaMap = null;
+  envMap = null;
+  combine = MultiplyOperation;
+  reflectivity = 1;
+  refractionRatio = 0.98;
+  wireframe = false;
+  wireframeLinewidth = 1;
+  // will almost always be 1
+  fog = true;
   constructor(parameters) {
     super();
-    this.isMeshBasicMaterial = true;
-    this.type = "MeshBasicMaterial";
-    this.color = new Color(16777215);
-    this.map = null;
-    this.lightMap = null;
-    this.lightMapIntensity = 1;
-    this.aoMap = null;
-    this.aoMapIntensity = 1;
-    this.specularMap = null;
-    this.alphaMap = null;
-    this.envMap = null;
-    this.combine = MultiplyOperation;
-    this.reflectivity = 1;
-    this.refractionRatio = 0.98;
-    this.wireframe = false;
-    this.wireframeLinewidth = 1;
-    this.fog = true;
     this.setValues(parameters);
+  }
+  get isMeshBasicMaterial() {
+    return true;
   }
   /**
    * @param {MeshBasicMaterial} source
@@ -421,19 +434,22 @@ class MeshBasicMaterial extends Material {
 }
 
 class MeshDepthMaterial extends Material {
+  type = "MeshDepthMaterial";
+  depthPacking = BasicDepthPacking;
+  map = null;
+  alphaMap = null;
+  displacementMap = null;
+  displacementScale = 1;
+  displacementBias = 0;
+  wireframe = false;
+  wireframeLinewidth = 1;
+  // will almost always be 1
   constructor(parameters) {
     super();
-    this.isMeshDepthMaterial = true;
-    this.type = "MeshDepthMaterial";
-    this.depthPacking = BasicDepthPacking;
-    this.map = null;
-    this.alphaMap = null;
-    this.displacementMap = null;
-    this.displacementScale = 1;
-    this.displacementBias = 0;
-    this.wireframe = false;
-    this.wireframeLinewidth = 1;
     this.setValues(parameters);
+  }
+  get isMeshDepthMaterial() {
+    return true;
   }
   /**
    * @param {MeshDepthMaterial} source
@@ -454,16 +470,18 @@ class MeshDepthMaterial extends Material {
 }
 
 class MeshDistanceMaterial extends Material {
+  type = "MeshDistanceMaterial";
+  map = null;
+  alphaMap = null;
+  displacementMap = null;
+  displacementScale = 1;
+  displacementBias = 0;
   constructor(parameters) {
     super();
-    this.isMeshDistanceMaterial = true;
-    this.type = "MeshDistanceMaterial";
-    this.map = null;
-    this.alphaMap = null;
-    this.displacementMap = null;
-    this.displacementScale = 1;
-    this.displacementBias = 0;
     this.setValues(parameters);
+  }
+  get isMeshDistanceMaterial() {
+    return true;
   }
   /**
    * @param {MeshDistanceMaterial} source
@@ -481,22 +499,24 @@ class MeshDistanceMaterial extends Material {
 }
 
 class MeshNormalMaterial extends Material {
+  type = "MeshNormalMaterial";
+  bumpMap = null;
+  bumpScale = 1;
+  normalMap = null;
+  normalMapType = TangentSpaceNormalMap;
+  normalScale = new Vector2(1, 1);
+  displacementMap = null;
+  displacementScale = 1;
+  displacementBias = 0;
+  wireframe = false;
+  wireframeLinewidth = 1;
+  flatShading = false;
   constructor(parameters) {
     super();
-    this.isMeshNormalMaterial = true;
-    this.type = "MeshNormalMaterial";
-    this.bumpMap = null;
-    this.bumpScale = 1;
-    this.normalMap = null;
-    this.normalMapType = TangentSpaceNormalMap;
-    this.normalScale = new Vector2(1, 1);
-    this.displacementMap = null;
-    this.displacementScale = 1;
-    this.displacementBias = 0;
-    this.wireframe = false;
-    this.wireframeLinewidth = 1;
-    this.flatShading = false;
     this.setValues(parameters);
+  }
+  get isMeshNormalMaterial() {
+    return true;
   }
   /**
    * @param {MeshNormalMaterial} source
@@ -520,40 +540,44 @@ class MeshNormalMaterial extends Material {
 }
 
 class MeshStandardMaterial extends Material {
+  type = "MeshStandardMaterial";
+  defines = { STANDARD: "" };
+  color = new Color(16777215);
+  // diffuse
+  roughness = 1;
+  metalness = 0;
+  map = null;
+  lightMap = null;
+  lightMapIntensity = 1;
+  aoMap = null;
+  aoMapIntensity = 1;
+  emissive = new Color(0);
+  emissiveIntensity = 1;
+  emissiveMap = null;
+  bumpMap = null;
+  bumpScale = 1;
+  normalMap = null;
+  normalMapType = TangentSpaceNormalMap;
+  normalScale = new Vector2(1, 1);
+  displacementMap = null;
+  displacementScale = 1;
+  displacementBias = 0;
+  roughnessMap = null;
+  metalnessMap = null;
+  alphaMap = null;
+  envMap = null;
+  envMapIntensity = 1;
+  wireframe = false;
+  wireframeLinewidth = 1;
+  // will almost always be 1
+  flatShading = false;
+  fog = true;
   constructor(parameters) {
     super();
-    this.isMeshStandardMaterial = true;
-    this.type = "MeshStandardMaterial";
-    this.defines = { STANDARD: "" };
-    this.color = new Color(16777215);
-    this.roughness = 1;
-    this.metalness = 0;
-    this.map = null;
-    this.lightMap = null;
-    this.lightMapIntensity = 1;
-    this.aoMap = null;
-    this.aoMapIntensity = 1;
-    this.emissive = new Color(0);
-    this.emissiveIntensity = 1;
-    this.emissiveMap = null;
-    this.bumpMap = null;
-    this.bumpScale = 1;
-    this.normalMap = null;
-    this.normalMapType = TangentSpaceNormalMap;
-    this.normalScale = new Vector2(1, 1);
-    this.displacementMap = null;
-    this.displacementScale = 1;
-    this.displacementBias = 0;
-    this.roughnessMap = null;
-    this.metalnessMap = null;
-    this.alphaMap = null;
-    this.envMap = null;
-    this.envMapIntensity = 1;
-    this.wireframe = false;
-    this.wireframeLinewidth = 1;
-    this.flatShading = false;
-    this.fog = true;
     this.setValues(parameters);
+  }
+  get isMeshStandardMaterial() {
+    return true;
   }
   /**
    * @param {MeshStandardMaterial} source
@@ -595,45 +619,47 @@ class MeshStandardMaterial extends Material {
 }
 
 class MeshPhysicalMaterial extends MeshStandardMaterial {
+  type = "MeshPhysicalMaterial";
+  defines = {
+    STANDARD: "",
+    PHYSICAL: ""
+  };
+  anisotropyRotation = 0;
+  anisotropyMap = null;
+  clearcoatMap = null;
+  clearcoatRoughness = 0;
+  clearcoatRoughnessMap = null;
+  clearcoatNormalScale = new Vector2(1, 1);
+  clearcoatNormalMap = null;
+  ior = 1.5;
+  iridescenceMap = null;
+  iridescenceIOR = 1.3;
+  iridescenceThicknessRange = [100, 400];
+  iridescenceThicknessMap = null;
+  sheenColor = new Color(0);
+  sheenColorMap = null;
+  sheenRoughness = 1;
+  sheenRoughnessMap = null;
+  transmissionMap = null;
+  thickness = 0;
+  thicknessMap = null;
+  attenuationDistance = Infinity;
+  attenuationColor = new Color(1, 1, 1);
+  specularIntensity = 1;
+  specularIntensityMap = null;
+  specularColor = new Color(1, 1, 1);
+  specularColorMap = null;
+  _anisotropy = 0;
+  _clearcoat = 0;
+  _iridescence = 0;
+  _sheen = 0;
+  _transmission = 0;
   constructor(parameters) {
     super();
-    this.isMeshPhysicalMaterial = true;
-    this.type = "MeshPhysicalMaterial";
-    this.defines = {
-      STANDARD: "",
-      PHYSICAL: ""
-    };
-    this.anisotropyRotation = 0;
-    this.anisotropyMap = null;
-    this.clearcoatMap = null;
-    this.clearcoatRoughness = 0;
-    this.clearcoatRoughnessMap = null;
-    this.clearcoatNormalScale = new Vector2(1, 1);
-    this.clearcoatNormalMap = null;
-    this.ior = 1.5;
-    this.iridescenceMap = null;
-    this.iridescenceIOR = 1.3;
-    this.iridescenceThicknessRange = [100, 400];
-    this.iridescenceThicknessMap = null;
-    this.sheenColor = new Color(0);
-    this.sheenColorMap = null;
-    this.sheenRoughness = 1;
-    this.sheenRoughnessMap = null;
-    this.transmissionMap = null;
-    this.thickness = 0;
-    this.thicknessMap = null;
-    this.attenuationDistance = Infinity;
-    this.attenuationColor = new Color(1, 1, 1);
-    this.specularIntensity = 1;
-    this.specularIntensityMap = null;
-    this.specularColor = new Color(1, 1, 1);
-    this.specularColorMap = null;
-    this._anisotropy = 0;
-    this._clearcoat = 0;
-    this._iridescence = 0;
-    this._sheen = 0;
-    this._transmission = 0;
     this.setValues(parameters);
+  }
+  get isMeshPhysicalMaterial() {
+    return true;
   }
   get anisotropy() {
     return this._anisotropy;
@@ -731,17 +757,19 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 }
 
 class PointsMaterial extends Material {
+  type = "PointsMaterial";
+  color = new Color(16777215);
+  map = null;
+  alphaMap = null;
+  size = 1;
+  sizeAttenuation = true;
+  fog = true;
   constructor(parameters) {
     super();
-    this.isPointsMaterial = true;
-    this.type = "PointsMaterial";
-    this.color = new Color(16777215);
-    this.map = null;
-    this.alphaMap = null;
-    this.size = 1;
-    this.sizeAttenuation = true;
-    this.fog = true;
     this.setValues(parameters);
+  }
+  get isPointsMaterial() {
+    return true;
   }
   /**
    * @param {PointsMaterial} source
@@ -772,43 +800,50 @@ void main() {
 `;
 
 class ShaderMaterial extends Material {
+  type = "ShaderMaterial";
+  defines = {};
+  uniforms = {};
+  uniformsGroups = [];
+  vertexShader = default_vertex;
+  fragmentShader = default_fragment;
+  linewidth = 1;
+  wireframe = false;
+  wireframeLinewidth = 1;
+  fog = false;
+  // set to use scene fog
+  lights = false;
+  // set to use scene lights
+  clipping = false;
+  // set to use user-defined clipping planes
+  forceSinglePass = true;
+  extensions = {
+    derivatives: false,
+    // set to use derivatives
+    fragDepth: false,
+    // set to use fragment depth values
+    drawBuffers: false,
+    // set to use draw buffers
+    shaderTextureLOD: false
+    // set to use shader texture LOD
+  };
+  // When rendered geometry doesn't include these attributes but the material does,
+  // use these default values in WebGL. This avoids errors when buffer data is missing.
+  defaultAttributeValues = {
+    color: [1, 1, 1],
+    uv: [0, 0],
+    uv1: [0, 0]
+  };
+  index0AttributeName = void 0;
+  uniformsNeedUpdate = false;
+  glslVersion = null;
   constructor(parameters) {
     super();
-    this.isShaderMaterial = true;
-    this.type = "ShaderMaterial";
-    this.defines = {};
-    this.uniforms = {};
-    this.uniformsGroups = [];
-    this.vertexShader = default_vertex;
-    this.fragmentShader = default_fragment;
-    this.linewidth = 1;
-    this.wireframe = false;
-    this.wireframeLinewidth = 1;
-    this.fog = false;
-    this.lights = false;
-    this.clipping = false;
-    this.forceSinglePass = true;
-    this.extensions = {
-      derivatives: false,
-      // set to use derivatives
-      fragDepth: false,
-      // set to use fragment depth values
-      drawBuffers: false,
-      // set to use draw buffers
-      shaderTextureLOD: false
-      // set to use shader texture LOD
-    };
-    this.defaultAttributeValues = {
-      color: [1, 1, 1],
-      uv: [0, 0],
-      uv1: [0, 0]
-    };
-    this.index0AttributeName = void 0;
-    this.uniformsNeedUpdate = false;
-    this.glslVersion = null;
     if (parameters !== void 0) {
       this.setValues(parameters);
     }
+  }
+  get isShaderMaterial() {
+    return true;
   }
   /**
    * @param {ShaderMaterial} source
@@ -894,22 +929,26 @@ class ShaderMaterial extends Material {
 }
 
 class RawShaderMaterial extends ShaderMaterial {
+  type = "RawShaderMaterial";
   constructor(parameters) {
     super(parameters);
-    this.isRawShaderMaterial = true;
-    this.type = "RawShaderMaterial";
+  }
+  get isRawShaderMaterial() {
+    return true;
   }
 }
 
 class ShadowMaterial extends Material {
+  type = "ShadowMaterial";
+  color = new Color(0);
+  transparent = true;
+  fog = true;
   constructor(parameters) {
     super();
-    this.isShadowMaterial = true;
-    this.type = "ShadowMaterial";
-    this.color = new Color(0);
-    this.transparent = true;
-    this.fog = true;
     this.setValues(parameters);
+  }
+  get isShadowMaterial() {
+    return true;
   }
   /**
    * @param {ShadowMaterial} source
@@ -924,18 +963,20 @@ class ShadowMaterial extends Material {
 }
 
 class SpriteMaterial extends Material {
+  type = "SpriteMaterial";
+  transparent = true;
+  color = new Color(16777215);
+  map = null;
+  alphaMap = null;
+  rotation = 0;
+  sizeAttenuation = true;
+  fog = true;
   constructor(parameters) {
     super();
-    this.isSpriteMaterial = true;
-    this.type = "SpriteMaterial";
-    this.transparent = true;
-    this.color = new Color(16777215);
-    this.map = null;
-    this.alphaMap = null;
-    this.rotation = 0;
-    this.sizeAttenuation = true;
-    this.fog = true;
     this.setValues(parameters);
+  }
+  get isSpriteMaterial() {
+    return true;
   }
   /**
    * @param {SpriteMaterial} source

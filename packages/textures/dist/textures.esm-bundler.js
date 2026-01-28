@@ -1,15 +1,21 @@
-import { ImageUtils, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, RGBAFormat, UnsignedByteType, NoColorSpace, UVMapping, MirroredRepeatWrapping, RepeatWrapping, CubeReflectionMapping, NearestFilter } from '@renderlayer/shared';
+import { ImageUtils, UVMapping, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, RGBAFormat, UnsignedByteType, NoColorSpace, MirroredRepeatWrapping, RepeatWrapping, CubeReflectionMapping, NearestFilter } from '@renderlayer/shared';
 import { EventDispatcher } from '@renderlayer/core';
 import { generateUUID, Vector2, Matrix3 } from '@renderlayer/math';
 
-let _sourceId = 0;
 class Source {
+  #id = _sourceId++;
+  uuid = generateUUID();
+  data;
+  // obj or array
+  version = 0;
   constructor(data = null) {
-    this.isSource = true;
-    Object.defineProperty(this, "id", { value: _sourceId++ });
-    this.uuid = generateUUID();
     this.data = data;
-    this.version = 0;
+  }
+  get isSource() {
+    return true;
+  }
+  get id() {
+    return this.#id;
   }
   set needsUpdate(value) {
     if (value === true) this.version++;
@@ -19,10 +25,7 @@ class Source {
     if (!isRootObject && meta.images[this.uuid] !== void 0) {
       return meta.images[this.uuid];
     }
-    const output = {
-      uuid: this.uuid,
-      url: ""
-    };
+    const output = { uuid: this.uuid, url: "" };
     const data = this.data;
     if (data !== null) {
       let url;
@@ -30,13 +33,13 @@ class Source {
         url = [];
         for (let i = 0, l = data.length; i < l; i++) {
           if (data[i].isDataTexture) {
-            url.push(serializeImage(data[i].image));
+            url.push(_serializeImage(data[i].image));
           } else {
-            url.push(serializeImage(data[i]));
+            url.push(_serializeImage(data[i]));
           }
         }
       } else {
-        url = serializeImage(data);
+        url = _serializeImage(data);
       }
       output.url = url;
     }
@@ -46,7 +49,8 @@ class Source {
     return output;
   }
 }
-function serializeImage(image) {
+let _sourceId = 0;
+function _serializeImage(image) {
   if (typeof HTMLImageElement !== "undefined" && image instanceof HTMLImageElement || typeof HTMLCanvasElement !== "undefined" && image instanceof HTMLCanvasElement || typeof ImageBitmap !== "undefined" && image instanceof ImageBitmap) {
     return ImageUtils.getDataURL(image);
   } else {
@@ -64,48 +68,75 @@ function serializeImage(image) {
   }
 }
 
-let _textureId = 0;
 class Texture extends EventDispatcher {
+  static DEFAULT_IMAGE = null;
+  static DEFAULT_MAPPING = UVMapping;
+  static DEFAULT_ANISOTROPY = 1;
+  #id = _textureId++;
+  uuid = generateUUID();
+  name = "";
+  source;
+  mipmaps = [];
+  mapping = Texture.DEFAULT_MAPPING;
+  channel = 0;
+  wrapS = ClampToEdgeWrapping;
+  wrapT = ClampToEdgeWrapping;
+  magFilter = LinearFilter;
+  minFilter = LinearMipmapLinearFilter;
+  anisotropy = Texture.DEFAULT_ANISOTROPY;
+  format = RGBAFormat;
+  internalFormat = null;
+  type = UnsignedByteType;
+  offset = new Vector2(0, 0);
+  repeat = new Vector2(1, 1);
+  center = new Vector2(0, 0);
+  rotation = 0;
+  matrixAutoUpdate = true;
+  matrix = new Matrix3();
+  generateMipmaps = true;
+  premultiplyAlpha = false;
+  flipY = true;
+  // valid values: 1, 2, 4, 8
+  // see http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml
+  unpackAlignment = 4;
+  colorSpace = NoColorSpace;
+  userData = {};
+  version = 0;
+  onUpdate = null;
+  isRenderTargetTexture = false;
+  // indicates whether this texture should be processed by
+  // PMREMGenerator or not (only relevant for render target textures)
+  needsPMREMUpdate = false;
   constructor(image = Texture.DEFAULT_IMAGE, mapping = Texture.DEFAULT_MAPPING, wrapS = ClampToEdgeWrapping, wrapT = ClampToEdgeWrapping, magFilter = LinearFilter, minFilter = LinearMipmapLinearFilter, format = RGBAFormat, type = UnsignedByteType, anisotropy = Texture.DEFAULT_ANISOTROPY, colorSpace = NoColorSpace) {
     super();
-    Object.defineProperty(this, "id", { value: _textureId++ });
-    this.uuid = generateUUID();
-    this.isTexture = true;
-    this.name = "";
     this.source = new Source(image);
-    this.mipmaps = [];
     this.mapping = mapping;
-    this.channel = 0;
     this.wrapS = wrapS;
     this.wrapT = wrapT;
     this.magFilter = magFilter;
     this.minFilter = minFilter;
     this.anisotropy = anisotropy;
     this.format = format;
-    this.internalFormat = null;
     this.type = type;
-    this.offset = new Vector2(0, 0);
-    this.repeat = new Vector2(1, 1);
-    this.center = new Vector2(0, 0);
-    this.rotation = 0;
-    this.matrixAutoUpdate = true;
-    this.matrix = new Matrix3();
-    this.generateMipmaps = true;
-    this.premultiplyAlpha = false;
-    this.flipY = true;
-    this.unpackAlignment = 4;
     this.colorSpace = colorSpace;
-    this.userData = {};
-    this.version = 0;
-    this.onUpdate = null;
-    this.isRenderTargetTexture = false;
-    this.needsPMREMUpdate = false;
+  }
+  get isTexture() {
+    return true;
+  }
+  get id() {
+    return this.#id;
   }
   get image() {
     return this.source.data;
   }
   set image(value) {
     this.source.data = value ? value : null;
+  }
+  set needsUpdate(value) {
+    if (value === true) {
+      this.version++;
+      this.source.needsUpdate = true;
+    }
   }
   updateMatrix() {
     this.matrix.setUvTransform(
@@ -237,16 +268,8 @@ class Texture extends EventDispatcher {
     }
     return uv;
   }
-  set needsUpdate(value) {
-    if (value === true) {
-      this.version++;
-      this.source.needsUpdate = true;
-    }
-  }
 }
-Texture.DEFAULT_IMAGE = null;
-Texture.DEFAULT_MAPPING = UVMapping;
-Texture.DEFAULT_ANISOTROPY = 1;
+let _textureId = 0;
 
 class CubeTexture extends Texture {
   constructor(images = [], mapping = CubeReflectionMapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, colorSpace) {
@@ -262,8 +285,10 @@ class CubeTexture extends Texture {
       anisotropy,
       colorSpace
     );
-    this.isCubeTexture = true;
     this.flipY = false;
+  }
+  get isCubeTexture() {
+    return true;
   }
   get images() {
     return this.image;
@@ -274,48 +299,53 @@ class CubeTexture extends Texture {
 }
 
 class Data3DTexture extends Texture {
+  wrapR = ClampToEdgeWrapping;
   constructor(data = null, width = 1, height = 1, depth = 1) {
     super(null);
-    this.isData3DTexture = true;
     this.image = { data, width, height, depth };
     this.magFilter = NearestFilter;
     this.minFilter = NearestFilter;
-    this.wrapR = ClampToEdgeWrapping;
     this.generateMipmaps = false;
     this.flipY = false;
     this.unpackAlignment = 1;
   }
+  get isData3DTexture() {
+    return true;
+  }
 }
 
 class DataArrayTexture extends Texture {
+  wrapR = ClampToEdgeWrapping;
   constructor(data = null, width = 1, height = 1, depth = 1) {
     super(null);
-    this.isDataArrayTexture = true;
     this.image = { data, width, height, depth };
     this.magFilter = NearestFilter;
     this.minFilter = NearestFilter;
-    this.wrapR = ClampToEdgeWrapping;
     this.generateMipmaps = false;
     this.flipY = false;
     this.unpackAlignment = 1;
+  }
+  get isDataArrayTexture() {
+    return true;
   }
 }
 
 class DataTexture extends Texture {
   constructor(data = null, width = 1, height = 1, format, type, mapping, wrapS, wrapT, magFilter = NearestFilter, minFilter = NearestFilter, anisotropy, colorSpace) {
     super(null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, colorSpace);
-    this.isDataTexture = true;
     this.image = { data, width, height };
     this.generateMipmaps = false;
     this.flipY = false;
     this.unpackAlignment = 1;
+  }
+  get isDataTexture() {
+    return true;
   }
 }
 
 class VideoTexture extends Texture {
   constructor(video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy) {
     super(video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy);
-    this.isVideoTexture = true;
     this.minFilter = minFilter !== void 0 ? minFilter : LinearFilter;
     this.magFilter = magFilter !== void 0 ? magFilter : LinearFilter;
     this.generateMipmaps = false;
@@ -327,6 +357,9 @@ class VideoTexture extends Texture {
     if ("requestVideoFrameCallback" in video) {
       video.requestVideoFrameCallback(updateVideo);
     }
+  }
+  get isVideoTexture() {
+    return true;
   }
   /** @returns {this} */
   clone() {

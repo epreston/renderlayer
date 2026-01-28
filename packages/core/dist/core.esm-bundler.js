@@ -72,7 +72,6 @@ class Object3D extends EventDispatcher {
   static DEFAULT_UP = /* @__PURE__ */ new Vector3(0, 1, 0);
   static DEFAULT_MATRIX_AUTO_UPDATE = true;
   static DEFAULT_MATRIX_WORLD_AUTO_UPDATE = true;
-  isObject3D = true;
   #id = _object3DId++;
   uuid = generateUUID();
   name = "";
@@ -108,6 +107,9 @@ class Object3D extends EventDispatcher {
     this.quaternion._onChange(() => {
       this.rotation.setFromQuaternion(this.quaternion, void 0, false);
     });
+  }
+  get isObject3D() {
+    return true;
   }
   get id() {
     return this.#id;

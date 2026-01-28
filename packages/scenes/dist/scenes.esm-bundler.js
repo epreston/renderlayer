@@ -2,12 +2,17 @@ import { Color } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
 
 class Fog {
+  name = "";
+  color;
+  near = 1;
+  far = 1e3;
   constructor(color, near = 1, far = 1e3) {
-    this.isFog = true;
-    this.name = "";
     this.color = new Color(color);
     this.near = near;
     this.far = far;
+  }
+  get isFog() {
+    return true;
   }
   clone() {
     return new Fog(this.color, this.near, this.far);
@@ -23,11 +28,15 @@ class Fog {
 }
 
 class FogExp2 {
+  name = "";
+  color;
+  density = 25e-5;
   constructor(color, density = 25e-5) {
-    this.isFogExp2 = true;
-    this.name = "";
     this.color = new Color(color);
     this.density = density;
+  }
+  get isFogExp2() {
+    return true;
   }
   clone() {
     return new FogExp2(this.color, this.density);
@@ -42,16 +51,18 @@ class FogExp2 {
 }
 
 class Scene extends Object3D {
+  type = "Scene";
+  background = null;
+  environment = null;
+  fog = null;
+  backgroundBlurriness = 0;
+  backgroundIntensity = 1;
+  overrideMaterial = null;
   constructor() {
     super();
-    this.isScene = true;
-    this.type = "Scene";
-    this.background = null;
-    this.environment = null;
-    this.fog = null;
-    this.backgroundBlurriness = 0;
-    this.backgroundIntensity = 1;
-    this.overrideMaterial = null;
+  }
+  get isScene() {
+    return true;
   }
   copy(source, recursive) {
     super.copy(source, recursive);

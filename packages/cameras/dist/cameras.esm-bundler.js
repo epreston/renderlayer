@@ -40,7 +40,6 @@ class Camera extends Object3D {
 }
 
 class PerspectiveCamera extends Camera {
-  isPerspectiveCamera = true;
   type = "PerspectiveCamera";
   fov = 50;
   zoom = 1;
@@ -60,6 +59,9 @@ class PerspectiveCamera extends Camera {
     this.near = near;
     this.far = far;
     this.updateProjectionMatrix();
+  }
+  get isPerspectiveCamera() {
+    return true;
   }
   copy(source, recursive) {
     super.copy(source, recursive);
@@ -311,7 +313,6 @@ const _fov = -90;
 const _aspect = 1;
 
 class OrthographicCamera extends Camera {
-  isOrthographicCamera = true;
   type = "OrthographicCamera";
   zoom = 1;
   view = null;
@@ -330,6 +331,9 @@ class OrthographicCamera extends Camera {
     this.near = near;
     this.far = far;
     this.updateProjectionMatrix();
+  }
+  get isOrthographicCamera() {
+    return true;
   }
   copy(source, recursive) {
     super.copy(source, recursive);

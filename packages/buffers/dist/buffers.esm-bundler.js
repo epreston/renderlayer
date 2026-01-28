@@ -1,4 +1,4 @@
-import { clamp, denormalize, normalize, Vector2, Vector3, generateUUID, Matrix3, Matrix4, Box3, Sphere } from '@renderlayer/math';
+import { clamp, Vector2, Vector3, denormalize, normalize, generateUUID, Matrix3, Matrix4, Box3, Sphere } from '@renderlayer/math';
 import { StaticDrawUsage, FloatType, arrayNeedsUint32, TrianglesDrawMode, TriangleFanDrawMode, TriangleStripDrawMode } from '@renderlayer/shared';
 import { EventDispatcher, Object3D } from '@renderlayer/core';
 
@@ -80,7 +80,8 @@ function _generateTables() {
   };
 }
 function toHalfFloat(val) {
-  if (Math.abs(val) > 65504) console.warn("DataUtils.toHalfFloat(): Value out of range.");
+  if (Math.abs(val) > 65504)
+    console.warn("BufferAttributeUtils.toHalfFloat(): Value out of range.");
   val = clamp(val, -65504, 65504);
   _tables.floatView[0] = val;
   const f = _tables.uint32View[0];

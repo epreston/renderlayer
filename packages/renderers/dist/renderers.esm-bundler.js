@@ -17,7 +17,6 @@ class WebGLRenderer {
       powerPreference = "default",
       failIfMajorPerformanceCaveat = false
     } = parameters;
-    this.isWebGLRenderer = true;
     let _alpha;
     if (context !== null) {
       _alpha = context.getContextAttributes().alpha;
@@ -174,22 +173,22 @@ class WebGLRenderer {
     this.info = null;
     function initGLContext() {
       extensions = new WebGLExtensions(_gl);
-      capabilities = WebGLCapabilities(_gl, extensions, parameters);
+      capabilities = new WebGLCapabilities(_gl, extensions, parameters);
       extensions.init(capabilities);
-      utils = WebGLUtils(_gl, extensions, capabilities);
-      state = WebGLState(_gl, extensions, capabilities);
+      utils = new WebGLUtils(_gl, extensions, capabilities);
+      state = new WebGLState(_gl, extensions, capabilities);
       info = new WebGLInfo(_gl);
       properties = new WebGLProperties();
       textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
       cubemaps = new WebGLCubeMaps(_this);
       cubeuvmaps = new WebGLCubeUVMaps(_this);
       attributes = new WebGLAttributes(_gl, capabilities);
-      bindingStates = WebGLBindingStates(_gl, extensions, attributes, capabilities);
+      bindingStates = new WebGLBindingStates(_gl, extensions, attributes, capabilities);
       geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
       objects = new WebGLObjects(_gl, geometries, attributes, info);
       morphtargets = new WebGLMorphtargets(_gl, capabilities, textures);
       clipping = new WebGLClipping(properties);
-      programCache = WebGLPrograms(
+      programCache = new WebGLPrograms(
         _this,
         cubemaps,
         cubeuvmaps,
@@ -198,7 +197,7 @@ class WebGLRenderer {
         bindingStates,
         clipping
       );
-      materials = WebGLMaterials(_this, properties);
+      materials = new WebGLMaterials(_this, properties);
       renderLists = new WebGLRenderLists();
       renderStates = new WebGLRenderStates(extensions, capabilities);
       background = new WebGLBackground(
@@ -1405,6 +1404,9 @@ class WebGLRenderer {
       state.reset();
       bindingStates.reset();
     };
+  }
+  get isWebGLRenderer() {
+    return true;
   }
   get coordinateSystem() {
     return WebGLCoordinateSystem;

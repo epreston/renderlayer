@@ -244,7 +244,7 @@ function warnOnce(message) {
   console.warn(message);
 }
 
-function SRGBToLinear(c) {
+function _SRGBToLinear(c) {
   return c < 0.04045 ? c * 0.0773993808 : Math.pow(c * 0.9478672986 + 0.0521327014, 2.4);
 }
 let _canvas;
@@ -288,7 +288,7 @@ class ImageUtils {
       const imageData = context.getImageData(0, 0, image.width, image.height);
       const data = imageData.data;
       for (let i = 0; i < data.length; i++) {
-        data[i] = SRGBToLinear(data[i] / 255) * 255;
+        data[i] = _SRGBToLinear(data[i] / 255) * 255;
       }
       context.putImageData(imageData, 0, 0);
       return canvas;
@@ -296,9 +296,9 @@ class ImageUtils {
       const data = image.data.slice(0);
       for (let i = 0; i < data.length; i++) {
         if (data instanceof Uint8Array || data instanceof Uint8ClampedArray) {
-          data[i] = Math.floor(SRGBToLinear(data[i] / 255) * 255);
+          data[i] = Math.floor(_SRGBToLinear(data[i] / 255) * 255);
         } else {
-          data[i] = SRGBToLinear(data[i]);
+          data[i] = _SRGBToLinear(data[i]);
         }
       }
       return {

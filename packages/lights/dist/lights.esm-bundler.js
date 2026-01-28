@@ -3,12 +3,16 @@ import { Object3D } from '@renderlayer/core';
 import { OrthographicCamera, PerspectiveCamera } from '@renderlayer/cameras';
 
 class Light extends Object3D {
+  type = "Light";
+  color;
+  intensity = 1;
   constructor(color, intensity = 1) {
     super();
-    this.isLight = true;
-    this.type = "Light";
     this.color = new Color(color);
     this.intensity = intensity;
+  }
+  get isLight() {
+    return true;
   }
   dispose() {
   }
@@ -33,33 +37,33 @@ class Light extends Object3D {
 }
 
 class AmbientLight extends Light {
+  type = "AmbientLight";
   constructor(color, intensity) {
     super(color, intensity);
-    this.isAmbientLight = true;
-    this.type = "AmbientLight";
+  }
+  get isAmbientLight() {
+    return true;
   }
 }
 
-const _projScreenMatrix$1 = /* @__PURE__ */ new Matrix4();
-const _lightPositionWorld$1 = /* @__PURE__ */ new Vector3();
-const _lookTarget$1 = /* @__PURE__ */ new Vector3();
 class LightShadow {
+  camera;
+  bias = 0;
+  normalBias = 0;
+  radius = 1;
+  blurSamples = 8;
+  mapSize = new Vector2(512, 512);
+  map = null;
+  mapPass = null;
+  matrix = new Matrix4();
+  autoUpdate = true;
+  needsUpdate = false;
+  _frustum = new Frustum();
+  _frameExtents = new Vector2(1, 1);
+  _viewportCount = 1;
+  _viewports = [new Vector4(0, 0, 1, 1)];
   constructor(camera) {
     this.camera = camera;
-    this.bias = 0;
-    this.normalBias = 0;
-    this.radius = 1;
-    this.blurSamples = 8;
-    this.mapSize = new Vector2(512, 512);
-    this.map = null;
-    this.mapPass = null;
-    this.matrix = new Matrix4();
-    this.autoUpdate = true;
-    this.needsUpdate = false;
-    this._frustum = new Frustum();
-    this._frameExtents = new Vector2(1, 1);
-    this._viewportCount = 1;
-    this._viewports = [new Vector4(0, 0, 1, 1)];
   }
   getViewportCount() {
     return this._viewportCount;
@@ -136,23 +140,30 @@ class LightShadow {
     return object;
   }
 }
+const _projScreenMatrix$1 = /* @__PURE__ */ new Matrix4();
+const _lightPositionWorld$1 = /* @__PURE__ */ new Vector3();
+const _lookTarget$1 = /* @__PURE__ */ new Vector3();
 
 class DirectionalLightShadow extends LightShadow {
   constructor() {
     super(new OrthographicCamera(-5, 5, 5, -5, 0.5, 500));
-    this.isDirectionalLightShadow = true;
+  }
+  get isDirectionalLightShadow() {
+    return true;
   }
 }
 
 class DirectionalLight extends Light {
+  type = "DirectionalLight";
+  target = new Object3D();
+  shadow = new DirectionalLightShadow();
   constructor(color, intensity) {
     super(color, intensity);
-    this.isDirectionalLight = true;
-    this.type = "DirectionalLight";
     this.position.copy(Object3D.DEFAULT_UP);
     this.updateMatrix();
-    this.target = new Object3D();
-    this.shadow = new DirectionalLightShadow();
+  }
+  get isDirectionalLight() {
+    return true;
   }
   dispose() {
     this.shadow.dispose();
@@ -165,57 +176,56 @@ class DirectionalLight extends Light {
   }
 }
 
-const _projScreenMatrix = /* @__PURE__ */ new Matrix4();
-const _lightPositionWorld = /* @__PURE__ */ new Vector3();
-const _lookTarget = /* @__PURE__ */ new Vector3();
 class PointLightShadow extends LightShadow {
+  _frameExtents = new Vector2(4, 2);
+  _viewportCount = 6;
+  _viewports = [
+    // These viewports map a cube-map onto a 2D texture with the
+    // following orientation:
+    //
+    //  xzXZ
+    //   y Y
+    //
+    // X - Positive x direction
+    // x - Negative x direction
+    // Y - Positive y direction
+    // y - Negative y direction
+    // Z - Positive z direction
+    // z - Negative z direction
+    // positive X
+    new Vector4(2, 1, 1, 1),
+    // negative X
+    new Vector4(0, 1, 1, 1),
+    // positive Z
+    new Vector4(3, 1, 1, 1),
+    // negative Z
+    new Vector4(1, 1, 1, 1),
+    // positive Y
+    new Vector4(3, 0, 1, 1),
+    // negative Y
+    new Vector4(1, 0, 1, 1)
+  ];
+  _cubeDirections = [
+    new Vector3(1, 0, 0),
+    new Vector3(-1, 0, 0),
+    new Vector3(0, 0, 1),
+    new Vector3(0, 0, -1),
+    new Vector3(0, 1, 0),
+    new Vector3(0, -1, 0)
+  ];
+  _cubeUps = [
+    new Vector3(0, 1, 0),
+    new Vector3(0, 1, 0),
+    new Vector3(0, 1, 0),
+    new Vector3(0, 1, 0),
+    new Vector3(0, 0, 1),
+    new Vector3(0, 0, -1)
+  ];
   constructor() {
     super(new PerspectiveCamera(90, 1, 0.5, 500));
-    this.isPointLightShadow = true;
-    this._frameExtents = new Vector2(4, 2);
-    this._viewportCount = 6;
-    this._viewports = [
-      // These viewports map a cube-map onto a 2D texture with the
-      // following orientation:
-      //
-      //  xzXZ
-      //   y Y
-      //
-      // X - Positive x direction
-      // x - Negative x direction
-      // Y - Positive y direction
-      // y - Negative y direction
-      // Z - Positive z direction
-      // z - Negative z direction
-      // positive X
-      new Vector4(2, 1, 1, 1),
-      // negative X
-      new Vector4(0, 1, 1, 1),
-      // positive Z
-      new Vector4(3, 1, 1, 1),
-      // negative Z
-      new Vector4(1, 1, 1, 1),
-      // positive Y
-      new Vector4(3, 0, 1, 1),
-      // negative Y
-      new Vector4(1, 0, 1, 1)
-    ];
-    this._cubeDirections = [
-      new Vector3(1, 0, 0),
-      new Vector3(-1, 0, 0),
-      new Vector3(0, 0, 1),
-      new Vector3(0, 0, -1),
-      new Vector3(0, 1, 0),
-      new Vector3(0, -1, 0)
-    ];
-    this._cubeUps = [
-      new Vector3(0, 1, 0),
-      new Vector3(0, 1, 0),
-      new Vector3(0, 1, 0),
-      new Vector3(0, 1, 0),
-      new Vector3(0, 0, 1),
-      new Vector3(0, 0, -1)
-    ];
+  }
+  get isPointLightShadow() {
+    return true;
   }
   updateMatrices(light, viewportIndex = 0) {
     const camera = this.camera;
@@ -241,15 +251,22 @@ class PointLightShadow extends LightShadow {
     this._frustum.setFromProjectionMatrix(_projScreenMatrix);
   }
 }
+const _projScreenMatrix = /* @__PURE__ */ new Matrix4();
+const _lightPositionWorld = /* @__PURE__ */ new Vector3();
+const _lookTarget = /* @__PURE__ */ new Vector3();
 
 class PointLight extends Light {
+  type = "PointLight";
+  distance = 0;
+  decay = 2;
+  shadow = new PointLightShadow();
   constructor(color, intensity, distance = 0, decay = 2) {
     super(color, intensity);
-    this.isPointLight = true;
-    this.type = "PointLight";
     this.distance = distance;
     this.decay = decay;
-    this.shadow = new PointLightShadow();
+  }
+  get isPointLight() {
+    return true;
   }
   get power() {
     return this.intensity * 4 * Math.PI;
@@ -270,10 +287,12 @@ class PointLight extends Light {
 }
 
 class SpotLightShadow extends LightShadow {
+  focus = 1;
   constructor() {
     super(new PerspectiveCamera(50, 1, 0.5, 500));
-    this.isSpotLightShadow = true;
-    this.focus = 1;
+  }
+  get isSpotLightShadow() {
+    return true;
   }
   updateMatrices(light) {
     const camera = this.camera;
@@ -296,19 +315,25 @@ class SpotLightShadow extends LightShadow {
 }
 
 class SpotLight extends Light {
+  type = "SpotLight";
+  target = new Object3D();
+  distance = 0;
+  angle = Math.PI / 3;
+  penumbra = 0;
+  decay = 2;
+  map = null;
+  shadow = new SpotLightShadow();
   constructor(color, intensity, distance = 0, angle = Math.PI / 3, penumbra = 0, decay = 2) {
     super(color, intensity);
-    this.isSpotLight = true;
-    this.type = "SpotLight";
     this.position.copy(Object3D.DEFAULT_UP);
     this.updateMatrix();
-    this.target = new Object3D();
     this.distance = distance;
     this.angle = angle;
     this.penumbra = penumbra;
     this.decay = decay;
-    this.map = null;
-    this.shadow = new SpotLightShadow();
+  }
+  get isSpotLight() {
+    return true;
   }
   get power() {
     return this.intensity * Math.PI;

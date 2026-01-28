@@ -9,14 +9,22 @@ import { cloneUniforms } from '@renderlayer/shaders';
 import { CubeCamera } from '@renderlayer/cameras';
 
 class RenderTarget extends EventDispatcher {
+  width = 1;
+  height = 1;
+  depth = 1;
+  scissor;
+  scissorTest = false;
+  viewport;
+  texture;
+  depthBuffer;
+  stencilBuffer;
+  depthTexture;
+  samples;
   constructor(width = 1, height = 1, options = {}) {
     super();
-    this.isRenderTarget = true;
     this.width = width;
     this.height = height;
-    this.depth = 1;
     this.scissor = new Vector4(0, 0, width, height);
-    this.scissorTest = false;
     this.viewport = new Vector4(0, 0, width, height);
     const image = { width, height, depth: 1 };
     const defaults = {
@@ -52,6 +60,9 @@ class RenderTarget extends EventDispatcher {
     this.stencilBuffer = options.stencilBuffer;
     this.depthTexture = options.depthTexture;
     this.samples = options.samples;
+  }
+  get isRenderTarget() {
+    return true;
   }
   setSize(width, height, depth = 1) {
     if (this.width !== width || this.height !== height || this.depth !== depth) {
@@ -96,14 +107,15 @@ class RenderTarget extends EventDispatcher {
 class WebGLRenderTarget extends RenderTarget {
   constructor(width = 1, height = 1, options = {}) {
     super(width, height, options);
-    this.isWebGLRenderTarget = true;
+  }
+  get isWebGLRenderTarget() {
+    return true;
   }
 }
 
 class WebGLCubeRenderTarget extends WebGLRenderTarget {
   constructor(size = 1, options = {}) {
     super(size, size, options);
-    this.isWebGLCubeRenderTarget = true;
     const image = { width: size, height: size, depth: 1 };
     const images = [image, image, image, image, image, image];
     this.texture = new CubeTexture(
@@ -121,6 +133,9 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
     this.texture.isRenderTargetTexture = true;
     this.texture.generateMipmaps = options.generateMipmaps !== void 0 ? options.generateMipmaps : false;
     this.texture.minFilter = options.minFilter !== void 0 ? options.minFilter : LinearFilter;
+  }
+  get isWebGLCubeRenderTarget() {
+    return true;
   }
   fromEquirectangularTexture(renderer, texture) {
     this.texture.type = texture.type;

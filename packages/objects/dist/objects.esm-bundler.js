@@ -6,50 +6,41 @@ import { BackSide, FrontSide, RGBAFormat, FloatType, AttachedBindMode, DetachedB
 import { DataTexture } from '@renderlayer/textures';
 
 class Bone extends Object3D {
+  type = "Bone";
   constructor() {
     super();
-    this.isBone = true;
-    this.type = "Bone";
+  }
+  get isBone() {
+    return true;
   }
 }
 
 class Group extends Object3D {
+  type = "Group";
   constructor() {
     super();
-    this.isGroup = true;
-    this.type = "Group";
+  }
+  get isGroup() {
+    return true;
   }
 }
 
-const _inverseMatrix$3 = /* @__PURE__ */ new Matrix4();
-const _ray$3 = /* @__PURE__ */ new Ray();
-const _sphere$4 = /* @__PURE__ */ new Sphere();
-const _sphereHitAt = /* @__PURE__ */ new Vector3();
-const _vA$1 = /* @__PURE__ */ new Vector3();
-const _vB$1 = /* @__PURE__ */ new Vector3();
-const _vC$1 = /* @__PURE__ */ new Vector3();
-const _tempA = /* @__PURE__ */ new Vector3();
-const _morphA = /* @__PURE__ */ new Vector3();
-const _uvA$1 = /* @__PURE__ */ new Vector2();
-const _uvB$1 = /* @__PURE__ */ new Vector2();
-const _uvC$1 = /* @__PURE__ */ new Vector2();
-const _normalA = /* @__PURE__ */ new Vector3();
-const _normalB = /* @__PURE__ */ new Vector3();
-const _normalC = /* @__PURE__ */ new Vector3();
-const _intersectionPoint = /* @__PURE__ */ new Vector3();
-const _intersectionPointWorld = /* @__PURE__ */ new Vector3();
 class Mesh extends Object3D {
+  type = "Mesh";
+  geometry;
+  material;
   /**
    * @param {BufferGeometry} geometry
    * @param {import('@renderlayer/materials').Material } material
    */
   constructor(geometry = new BufferGeometry(), material = new MeshBasicMaterial()) {
     super();
-    this.isMesh = true;
-    this.type = "Mesh";
     this.geometry = geometry;
     this.material = material;
     this.updateMorphTargets();
+  }
+  get isMesh() {
+    return true;
   }
   copy(source, recursive) {
     super.copy(source, recursive);
@@ -353,26 +344,40 @@ function checkGeometryIntersection(object, material, raycaster, ray, uv, uv1, no
   }
   return intersection;
 }
+const _inverseMatrix$3 = /* @__PURE__ */ new Matrix4();
+const _ray$3 = /* @__PURE__ */ new Ray();
+const _sphere$4 = /* @__PURE__ */ new Sphere();
+const _sphereHitAt = /* @__PURE__ */ new Vector3();
+const _vA$1 = /* @__PURE__ */ new Vector3();
+const _vB$1 = /* @__PURE__ */ new Vector3();
+const _vC$1 = /* @__PURE__ */ new Vector3();
+const _tempA = /* @__PURE__ */ new Vector3();
+const _morphA = /* @__PURE__ */ new Vector3();
+const _uvA$1 = /* @__PURE__ */ new Vector2();
+const _uvB$1 = /* @__PURE__ */ new Vector2();
+const _uvC$1 = /* @__PURE__ */ new Vector2();
+const _normalA = /* @__PURE__ */ new Vector3();
+const _normalB = /* @__PURE__ */ new Vector3();
+const _normalC = /* @__PURE__ */ new Vector3();
+const _intersectionPoint = /* @__PURE__ */ new Vector3();
+const _intersectionPointWorld = /* @__PURE__ */ new Vector3();
 
-const _instanceLocalMatrix = /* @__PURE__ */ new Matrix4();
-const _instanceWorldMatrix = /* @__PURE__ */ new Matrix4();
-const _instanceIntersects = [];
-const _box3 = /* @__PURE__ */ new Box3();
-const _identity = /* @__PURE__ */ new Matrix4();
-const _mesh = /* @__PURE__ */ new Mesh();
-const _sphere$3 = /* @__PURE__ */ new Sphere();
 class InstancedMesh extends Mesh {
+  instanceMatrix;
+  instanceColor = null;
+  count;
+  boundingBox = null;
+  boundingSphere = null;
   constructor(geometry, material, count) {
     super(geometry, material);
-    this.isInstancedMesh = true;
     this.instanceMatrix = new InstancedBufferAttribute(new Float32Array(count * 16), 16);
-    this.instanceColor = null;
     this.count = count;
-    this.boundingBox = null;
-    this.boundingSphere = null;
     for (let i = 0; i < count; i++) {
       this.setMatrixAt(i, _identity);
     }
+  }
+  get isInstancedMesh() {
+    return true;
   }
   computeBoundingBox() {
     const geometry = this.geometry;
@@ -463,20 +468,26 @@ class InstancedMesh extends Mesh {
     this.dispatchEvent({ type: "dispose" });
   }
 }
+const _instanceLocalMatrix = /* @__PURE__ */ new Matrix4();
+const _instanceWorldMatrix = /* @__PURE__ */ new Matrix4();
+const _instanceIntersects = [];
+const _box3 = /* @__PURE__ */ new Box3();
+const _identity = /* @__PURE__ */ new Matrix4();
+const _mesh = /* @__PURE__ */ new Mesh();
+const _sphere$3 = /* @__PURE__ */ new Sphere();
 
-const _start$1 = /* @__PURE__ */ new Vector3();
-const _end$1 = /* @__PURE__ */ new Vector3();
-const _inverseMatrix$2 = /* @__PURE__ */ new Matrix4();
-const _ray$2 = /* @__PURE__ */ new Ray();
-const _sphere$2 = /* @__PURE__ */ new Sphere();
 class Line extends Object3D {
+  type = "Line";
+  geometry;
+  material;
   constructor(geometry = new BufferGeometry(), material = new LineBasicMaterial()) {
     super();
-    this.isLine = true;
-    this.type = "Line";
     this.geometry = geometry;
     this.material = material;
     this.updateMorphTargets();
+  }
+  get isLine() {
+    return true;
   }
   copy(source, recursive) {
     super.copy(source, recursive);
@@ -591,22 +602,29 @@ class Line extends Object3D {
     }
   }
 }
+const _start$1 = /* @__PURE__ */ new Vector3();
+const _end$1 = /* @__PURE__ */ new Vector3();
+const _inverseMatrix$2 = /* @__PURE__ */ new Matrix4();
+const _ray$2 = /* @__PURE__ */ new Ray();
+const _sphere$2 = /* @__PURE__ */ new Sphere();
 
 class LineLoop extends Line {
+  type = "LineLoop";
   constructor(geometry, material) {
     super(geometry, material);
-    this.isLineLoop = true;
-    this.type = "LineLoop";
+  }
+  get isLineLoop() {
+    return true;
   }
 }
 
-const _start = /* @__PURE__ */ new Vector3();
-const _end = /* @__PURE__ */ new Vector3();
 class LineSegments extends Line {
+  type = "LineSegments";
   constructor(geometry, material) {
     super(geometry, material);
-    this.isLineSegments = true;
-    this.type = "LineSegments";
+  }
+  get isLineSegments() {
+    return true;
   }
   computeLineDistances() {
     const geometry = this.geometry;
@@ -628,24 +646,22 @@ class LineSegments extends Line {
     return this;
   }
 }
+const _start = /* @__PURE__ */ new Vector3();
+const _end = /* @__PURE__ */ new Vector3();
 
-const _v1 = /* @__PURE__ */ new Vector3();
-const _v2 = /* @__PURE__ */ new Vector3();
 class LOD extends Object3D {
+  type = "LOD";
+  autoUpdate = true;
+  #levels = [];
+  #currentLevel = 0;
   constructor() {
     super();
-    this._currentLevel = 0;
-    this.type = "LOD";
-    Object.defineProperties(this, {
-      levels: {
-        enumerable: true,
-        value: []
-      },
-      isLOD: {
-        value: true
-      }
-    });
-    this.autoUpdate = true;
+  }
+  get isLOD() {
+    return true;
+  }
+  get levels() {
+    return this.#levels;
   }
   copy(source) {
     super.copy(source, false);
@@ -671,7 +687,7 @@ class LOD extends Object3D {
     return this;
   }
   getCurrentLevel() {
-    return this._currentLevel;
+    return this.#currentLevel;
   }
   getObjectForDistance(distance) {
     const levels = this.levels;
@@ -720,7 +736,7 @@ class LOD extends Object3D {
           break;
         }
       }
-      this._currentLevel = i - 1;
+      this.#currentLevel = i - 1;
       for (; i < l; i++) {
         levels[i].object.visible = false;
       }
@@ -742,19 +758,21 @@ class LOD extends Object3D {
     return data;
   }
 }
+const _v1 = /* @__PURE__ */ new Vector3();
+const _v2 = /* @__PURE__ */ new Vector3();
 
-const _inverseMatrix$1 = /* @__PURE__ */ new Matrix4();
-const _ray$1 = /* @__PURE__ */ new Ray();
-const _sphere$1 = /* @__PURE__ */ new Sphere();
-const _position = /* @__PURE__ */ new Vector3();
 class Points extends Object3D {
+  type = "Points";
+  geometry;
+  material;
   constructor(geometry = new BufferGeometry(), material = new PointsMaterial()) {
     super();
-    this.isPoints = true;
-    this.type = "Points";
     this.geometry = geometry;
     this.material = material;
     this.updateMorphTargets();
+  }
+  get isPoints() {
+    return true;
   }
   copy(source, recursive) {
     super.copy(source, recursive);
@@ -785,14 +803,14 @@ class Points extends Object3D {
       for (let i = start, il = end; i < il; i++) {
         const a = index.getX(i);
         _position.fromBufferAttribute(positionAttribute, a);
-        testPoint(_position, a, localThresholdSq, matrixWorld, raycaster, intersects, this);
+        _testPoint(_position, a, localThresholdSq, matrixWorld, raycaster, intersects, this);
       }
     } else {
       const start = Math.max(0, drawRange.start);
       const end = Math.min(positionAttribute.count, drawRange.start + drawRange.count);
       for (let i = start, l = end; i < l; i++) {
         _position.fromBufferAttribute(positionAttribute, i);
-        testPoint(_position, i, localThresholdSq, matrixWorld, raycaster, intersects, this);
+        _testPoint(_position, i, localThresholdSq, matrixWorld, raycaster, intersects, this);
       }
     }
   }
@@ -814,7 +832,11 @@ class Points extends Object3D {
     }
   }
 }
-function testPoint(point, index, localThresholdSq, matrixWorld, raycaster, intersects, object) {
+const _inverseMatrix$1 = /* @__PURE__ */ new Matrix4();
+const _ray$1 = /* @__PURE__ */ new Ray();
+const _sphere$1 = /* @__PURE__ */ new Sphere();
+const _position = /* @__PURE__ */ new Vector3();
+function _testPoint(point, index, localThresholdSq, matrixWorld, raycaster, intersects, object) {
   const rayPointDistanceSq = _ray$1.distanceSqToPoint(point);
   if (rayPointDistanceSq < localThresholdSq) {
     const intersectPoint = new Vector3();
@@ -836,12 +858,14 @@ function testPoint(point, index, localThresholdSq, matrixWorld, raycaster, inter
 const _offsetMatrix = /* @__PURE__ */ new Matrix4();
 const _identityMatrix = /* @__PURE__ */ new Matrix4();
 class Skeleton {
+  uuid = generateUUID();
+  bones;
+  boneInverses;
+  boneMatrices = null;
+  boneTexture = null;
   constructor(bones = [], boneInverses = []) {
-    this.uuid = generateUUID();
     this.bones = bones.slice(0);
     this.boneInverses = boneInverses;
-    this.boneMatrices = null;
-    this.boneTexture = null;
     this.init();
   }
   init() {
@@ -972,26 +996,20 @@ class Skeleton {
   }
 }
 
-const _basePosition = /* @__PURE__ */ new Vector3();
-const _skinIndex = /* @__PURE__ */ new Vector4();
-const _skinWeight = /* @__PURE__ */ new Vector4();
-const _vector3 = /* @__PURE__ */ new Vector3();
-const _matrix4 = /* @__PURE__ */ new Matrix4();
-const _vertex = /* @__PURE__ */ new Vector3();
-const _sphere = /* @__PURE__ */ new Sphere();
-const _inverseMatrix = /* @__PURE__ */ new Matrix4();
-const _ray = /* @__PURE__ */ new Ray();
 class SkinnedMesh extends Mesh {
+  type = "SkinnedMesh";
+  bindMode = AttachedBindMode;
+  bindMatrix = new Matrix4();
+  bindMatrixInverse = new Matrix4();
+  skeleton = null;
+  // EP: added to avoid shape change
+  boundingBox = null;
+  boundingSphere = null;
   constructor(geometry, material) {
     super(geometry, material);
-    this.isSkinnedMesh = true;
-    this.type = "SkinnedMesh";
-    this.bindMode = AttachedBindMode;
-    this.bindMatrix = new Matrix4();
-    this.bindMatrixInverse = new Matrix4();
-    this.skeleton = null;
-    this.boundingBox = null;
-    this.boundingSphere = null;
+  }
+  get isSkinnedMesh() {
+    return true;
   }
   computeBoundingBox() {
     const geometry = this.geometry;
@@ -1105,25 +1123,23 @@ class SkinnedMesh extends Mesh {
     return vector.applyMatrix4(this.bindMatrixInverse);
   }
 }
+const _basePosition = /* @__PURE__ */ new Vector3();
+const _skinIndex = /* @__PURE__ */ new Vector4();
+const _skinWeight = /* @__PURE__ */ new Vector4();
+const _vector3 = /* @__PURE__ */ new Vector3();
+const _matrix4 = /* @__PURE__ */ new Matrix4();
+const _vertex = /* @__PURE__ */ new Vector3();
+const _sphere = /* @__PURE__ */ new Sphere();
+const _inverseMatrix = /* @__PURE__ */ new Matrix4();
+const _ray = /* @__PURE__ */ new Ray();
 
-let _geometry;
-const _intersectPoint = /* @__PURE__ */ new Vector3();
-const _worldScale = /* @__PURE__ */ new Vector3();
-const _mvPosition = /* @__PURE__ */ new Vector3();
-const _alignedPosition = /* @__PURE__ */ new Vector2();
-const _rotatedPosition = /* @__PURE__ */ new Vector2();
-const _viewWorldMatrix = /* @__PURE__ */ new Matrix4();
-const _vA = /* @__PURE__ */ new Vector3();
-const _vB = /* @__PURE__ */ new Vector3();
-const _vC = /* @__PURE__ */ new Vector3();
-const _uvA = /* @__PURE__ */ new Vector2();
-const _uvB = /* @__PURE__ */ new Vector2();
-const _uvC = /* @__PURE__ */ new Vector2();
 class Sprite extends Object3D {
+  type = "Sprite";
+  geometry;
+  material;
+  center = new Vector2(0.5, 0.5);
   constructor(material = new SpriteMaterial()) {
     super();
-    this.isSprite = true;
-    this.type = "Sprite";
     if (_geometry === void 0) {
       _geometry = new BufferGeometry();
       const float32Array = new Float32Array([
@@ -1158,7 +1174,9 @@ class Sprite extends Object3D {
     }
     this.geometry = _geometry;
     this.material = material;
-    this.center = new Vector2(0.5, 0.5);
+  }
+  get isSprite() {
+    return true;
   }
   raycast(raycaster, intersects) {
     if (raycaster.camera === null) {
@@ -1181,15 +1199,15 @@ class Sprite extends Object3D {
       sin = Math.sin(rotation);
     }
     const center = this.center;
-    transformVertex(_vA.set(-0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
-    transformVertex(_vB.set(0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
-    transformVertex(_vC.set(0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+    _transformVertex(_vA.set(-0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+    _transformVertex(_vB.set(0.5, -0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+    _transformVertex(_vC.set(0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
     _uvA.set(0, 0);
     _uvB.set(1, 0);
     _uvC.set(1, 1);
     let intersect = raycaster.ray.intersectTriangle(_vA, _vB, _vC, false, _intersectPoint);
     if (intersect === null) {
-      transformVertex(_vB.set(-0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
+      _transformVertex(_vB.set(-0.5, 0.5, 0), _mvPosition, center, _worldScale, sin, cos);
       _uvB.set(0, 1);
       intersect = raycaster.ray.intersectTriangle(_vA, _vC, _vB, false, _intersectPoint);
       if (intersect === null) {
@@ -1222,7 +1240,20 @@ class Sprite extends Object3D {
     return this;
   }
 }
-function transformVertex(vertexPosition, mvPosition, center, scale, sin, cos) {
+let _geometry;
+const _intersectPoint = /* @__PURE__ */ new Vector3();
+const _worldScale = /* @__PURE__ */ new Vector3();
+const _mvPosition = /* @__PURE__ */ new Vector3();
+const _alignedPosition = /* @__PURE__ */ new Vector2();
+const _rotatedPosition = /* @__PURE__ */ new Vector2();
+const _viewWorldMatrix = /* @__PURE__ */ new Matrix4();
+const _vA = /* @__PURE__ */ new Vector3();
+const _vB = /* @__PURE__ */ new Vector3();
+const _vC = /* @__PURE__ */ new Vector3();
+const _uvA = /* @__PURE__ */ new Vector2();
+const _uvB = /* @__PURE__ */ new Vector2();
+const _uvC = /* @__PURE__ */ new Vector2();
+function _transformVertex(vertexPosition, mvPosition, center, scale, sin, cos) {
   _alignedPosition.subVectors(vertexPosition, center).addScalar(0.5).multiply(scale);
   if (sin !== void 0) {
     _rotatedPosition.x = cos * _alignedPosition.x - sin * _alignedPosition.y;
