@@ -497,7 +497,7 @@ class OrbitControls extends Controls {
       );
     } else {
       // camera neither orthographic nor perspective
-      console.warn('WARNING: OrbitControls encountered an unknown camera type - pan disabled.');
+      console.warn('OrbitControls encountered an unknown camera type - pan disabled.');
       this.enablePan = false;
     }
   }
@@ -506,9 +506,7 @@ class OrbitControls extends Controls {
     if (this.object.isPerspectiveCamera || this.object.isOrthographicCamera) {
       this.#scale /= dollyScale;
     } else {
-      console.warn(
-        'WARNING: OrbitControls encountered an unknown camera type - dolly/zoom disabled.'
-      );
+      console.warn('OrbitControls encountered an unknown camera type - dolly/zoom disabled.');
       this.enableZoom = false;
     }
   }
@@ -517,9 +515,7 @@ class OrbitControls extends Controls {
     if (this.object.isPerspectiveCamera || this.object.isOrthographicCamera) {
       this.#scale *= dollyScale;
     } else {
-      console.warn(
-        'WARNING: OrbitControls encountered an unknown camera type - dolly/zoom disabled.'
-      );
+      console.warn('OrbitControls encountered an unknown camera type - dolly/zoom disabled.');
       this.enableZoom = false;
     }
   }
