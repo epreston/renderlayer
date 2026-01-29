@@ -2,8 +2,6 @@ import { generateUUID } from '@renderlayer/math';
 import { StaticDrawUsage } from '@renderlayer/shared';
 
 class InterleavedBuffer {
-  isInterleavedBuffer = true;
-
   uuid = generateUUID();
 
   array;
@@ -19,6 +17,10 @@ class InterleavedBuffer {
     this.array = array;
     this.stride = stride;
     this.count = array !== undefined ? array.length / stride : 0;
+  }
+
+  get isInterleavedBuffer() {
+    return true;
   }
 
   onUploadCallback() {}
