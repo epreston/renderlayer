@@ -108,7 +108,7 @@ class WebGLCubeUVMaps {
   }
 
   dispose() {
-    this._cubeUVmaps = new WeakMap();
+    this.#cubeUVmaps = new WeakMap();
 
     if (this.#pmremGenerator !== null) {
       this.#pmremGenerator.dispose();
