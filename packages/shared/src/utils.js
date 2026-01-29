@@ -53,11 +53,9 @@ function createElementNS(name) {
   return document.createElementNS('http://www.w3.org/1999/xhtml', name);
 }
 
-/** @returns { HTMLCanvasElement } */
 function createCanvasElement() {
-  const canvas = createElementNS('canvas');
+  const canvas = /** @type {HTMLCanvasElement} */ (createElementNS('canvas'));
   canvas.style.display = 'block';
-  // @ts-ignore
   return canvas;
 }
 
