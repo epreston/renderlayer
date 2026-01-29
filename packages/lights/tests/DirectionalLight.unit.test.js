@@ -116,7 +116,7 @@ describe('Lights', () => {
       const loader = new ObjectLoader();
       const outputLight = loader.parse(json);
 
-      // will be different
+      // @ts-ignore - will be different
       outputLight.target.uuid = light.target.uuid;
 
       expect(outputLight).toEqual(light);
