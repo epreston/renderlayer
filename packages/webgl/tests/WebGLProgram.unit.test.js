@@ -4,7 +4,7 @@ import { WebGLProgram } from '../src/WebGLProgram.js';
 
 describe('WebGL', () => {
   describe('WebGLProgram', () => {
-    it('should expose a function', () => {
+    it('should expose a class', () => {
       expect(WebGLProgram).toBeDefined();
     });
 
@@ -17,14 +17,7 @@ describe('WebGL', () => {
     });
 
     test.todo('id', () => {
-      const object = new WebGLProgram();
-      expect(object.id).toBeDefined();
-
-      // can change based on order of tests
-      const prevId = object.id;
-
-      const object2 = new WebGLProgram();
-      expect(object2.id).toBeGreaterThan(prevId);
+      // implement
     });
 
     test.todo('cacheKey', () => {
