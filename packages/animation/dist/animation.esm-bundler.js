@@ -7,7 +7,7 @@ import { LinearInterpolant } from '@renderlayer/interpolants';
 class AnimationAction {
   #mixer;
   #clip;
-  _localRoot = null;
+  #localRoot = null;
   blendMode;
   #interpolantSettings;
   _interpolants;
@@ -47,7 +47,7 @@ class AnimationAction {
   constructor(mixer, clip, localRoot = null, blendMode = clip.blendMode) {
     this.#mixer = mixer;
     this.#clip = clip;
-    this._localRoot = localRoot;
+    this.#localRoot = localRoot;
     this.blendMode = blendMode;
     const tracks = clip.tracks;
     const nTracks = tracks.length;
@@ -200,7 +200,10 @@ class AnimationAction {
     return this.#clip;
   }
   getRoot() {
-    return this._localRoot || this.#mixer.getRoot();
+    return this.#localRoot || this.#mixer.getRoot();
+  }
+  get localRoot() {
+    return this.#localRoot;
   }
   // Internal
   _update(time, deltaTime, timeDirection, accuIndex) {
@@ -1407,8 +1410,11 @@ class PropertyMixer {
 const _controlInterpolantsResultBuffer = new Float32Array(1);
 class AnimationMixer extends EventDispatcher {
   #root;
+  /**
+   * 'nActiveActions' followed by inactive ones
+   * @type {AnimationAction[]}
+   */
   #actions = [];
-  // 'nActiveActions' followed by inactive ones
   #nActiveActions = 0;
   #actionsByClip = /* @__PURE__ */ new Map();
   // inside:
@@ -1434,7 +1440,7 @@ class AnimationMixer extends EventDispatcher {
     this.#initMemoryManager();
   }
   #bindAction(action, prototypeAction) {
-    const root = action._localRoot || this.#root;
+    const root = action.localRoot || this.#root;
     const tracks = action.getClip().tracks;
     const nTracks = tracks.length;
     const bindings = action._propertyBindings;
@@ -1478,7 +1484,7 @@ class AnimationMixer extends EventDispatcher {
   _activateAction(action) {
     if (!this._isActiveAction(action)) {
       if (action._cacheIndex === null) {
-        const rootUuid = (action._localRoot || this.#root).uuid;
+        const rootUuid = (action.localRoot || this.#root).uuid;
         const clipUuid = action.getClip().uuid;
         const actionsForClip = this.#actionsByClip.get(clipUuid);
         this.#bindAction(action, actionsForClip && actionsForClip.knownActions[0]);
@@ -1590,7 +1596,7 @@ class AnimationMixer extends EventDispatcher {
     knownActionsForClip.pop();
     action._byClipCacheIndex = null;
     const actionByRoot = actionsForClip.actionByRoot;
-    const rootUuid = (action._localRoot || this.#root).uuid;
+    const rootUuid = (action.localRoot || this.#root).uuid;
     actionByRoot.delete(rootUuid);
     if (knownActionsForClip.length === 0) {
       actionsByClip.delete(clipUuid);
@@ -1706,7 +1712,7 @@ class AnimationMixer extends EventDispatcher {
   // return an action for a clip optionally using a custom root target
   // object (this method allocates a lot of dynamic memory in case a
   // previously unknown clip/root combination is specified)
-  /** @returns {AnimationAction | null} */
+  /** @returns {?AnimationAction} */
   clipAction(clip, optionalRoot, blendMode) {
     const root = optionalRoot || this.#root;
     const rootUuid = root.uuid;
