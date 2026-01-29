@@ -55,7 +55,7 @@ class ImageUtils {
       (typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement) ||
       (typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap)
     ) {
-      const canvas = createElementNS('canvas');
+      const canvas = /** @type {HTMLCanvasElement} */ (createElementNS('canvas'));
 
       canvas.width = image.width;
       canvas.height = image.height;
