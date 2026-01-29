@@ -1,23 +1,27 @@
 import { Vector3, denormalize, normalize } from '@renderlayer/math';
 import { BufferAttribute } from './BufferAttribute.js';
 
-class InterleavedBufferAttribute {
-  isInterleavedBufferAttribute = true;
+/**
+ * @import { Matrix3, Matrix4 } from "@renderlayer/math"
+ */
 
+class InterleavedBufferAttribute {
   name = '';
 
   data;
   itemSize;
   offset;
-
   normalized = false;
 
   constructor(interleavedBuffer, itemSize, offset, normalized = false) {
     this.data = interleavedBuffer;
     this.itemSize = itemSize;
     this.offset = offset;
-
     this.normalized = normalized;
+  }
+
+  get isInterleavedBufferAttribute() {
+    return true;
   }
 
   get count() {
@@ -32,7 +36,7 @@ class InterleavedBufferAttribute {
     this.data.needsUpdate = value;
   }
 
-  /** @param {import('@renderlayer/math').Matrix4} matrix */
+  /** @param {Matrix4} matrix */
   applyMatrix4(matrix) {
     for (let i = 0, l = this.data.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
@@ -45,7 +49,7 @@ class InterleavedBufferAttribute {
     return this;
   }
 
-  /** @param {import('@renderlayer/math').Matrix3} matrix */
+  /** @param {Matrix3} matrix */
   applyNormalMatrix(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
@@ -58,7 +62,7 @@ class InterleavedBufferAttribute {
     return this;
   }
 
-  /** @param {import('@renderlayer/math').Matrix4} matrix */
+  /** @param {Matrix4} matrix */
   transformDirection(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
