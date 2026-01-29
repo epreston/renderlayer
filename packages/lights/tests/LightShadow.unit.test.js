@@ -4,7 +4,7 @@ import { OrthographicCamera } from '@renderlayer/cameras';
 import { Object3D } from '@renderlayer/core';
 import { Frustum, Matrix4, Vector2, Vector4 } from '@renderlayer/math';
 
-import { Light } from '../src/Light.js';
+import { DirectionalLight } from '../src/DirectionalLight.js';
 import { LightShadow } from '../src/LightShadow.js';
 
 describe('Lights', () => {
@@ -90,7 +90,7 @@ describe('Lights', () => {
     });
 
     test('updateMatrices', () => {
-      const light = new Light();
+      const light = new DirectionalLight();
 
       // only apples to light types with a target
       light.target = new Object3D();
