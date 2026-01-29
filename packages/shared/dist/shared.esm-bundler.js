@@ -233,7 +233,10 @@ function createElementNS(name) {
   return document.createElementNS("http://www.w3.org/1999/xhtml", name);
 }
 function createCanvasElement() {
-  const canvas = createElementNS("canvas");
+  const canvas = (
+    /** @type {HTMLCanvasElement} */
+    createElementNS("canvas")
+  );
   canvas.style.display = "block";
   return canvas;
 }
@@ -280,7 +283,10 @@ class ImageUtils {
   }
   static sRGBToLinear(image) {
     if (typeof HTMLImageElement !== "undefined" && image instanceof HTMLImageElement || typeof HTMLCanvasElement !== "undefined" && image instanceof HTMLCanvasElement || typeof ImageBitmap !== "undefined" && image instanceof ImageBitmap) {
-      const canvas = createElementNS("canvas");
+      const canvas = (
+        /** @type {HTMLCanvasElement} */
+        createElementNS("canvas")
+      );
       canvas.width = image.width;
       canvas.height = image.height;
       const context = canvas.getContext("2d");
