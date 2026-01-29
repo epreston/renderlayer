@@ -94,6 +94,7 @@ describe('Lights', () => {
       const newLight = loader.parse(json);
 
       // Reloaded shadow is identical to the original one
+      // @ts-ignore
       expect(newLight.shadow).toEqual(light.shadow);
     });
   });
