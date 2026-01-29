@@ -33,7 +33,7 @@ class PointLightShadow extends LightShadow {
     new Vector4(1, 0, 1, 1)
   ];
 
-  _cubeDirections = [
+  #cubeDirections = [
     new Vector3(1, 0, 0),
     new Vector3(-1, 0, 0),
     new Vector3(0, 0, 1),
@@ -42,7 +42,7 @@ class PointLightShadow extends LightShadow {
     new Vector3(0, -1, 0)
   ];
 
-  _cubeUps = [
+  #cubeUps = [
     new Vector3(0, 1, 0),
     new Vector3(0, 1, 0),
     new Vector3(0, 1, 0),
@@ -78,8 +78,8 @@ class PointLightShadow extends LightShadow {
     camera.position.copy(_lightPositionWorld);
 
     _lookTarget.copy(camera.position);
-    _lookTarget.add(this._cubeDirections[viewportIndex]);
-    camera.up.copy(this._cubeUps[viewportIndex]);
+    _lookTarget.add(this.#cubeDirections[viewportIndex]);
+    camera.up.copy(this.#cubeUps[viewportIndex]);
     camera.lookAt(_lookTarget);
     camera.updateMatrixWorld();
 
