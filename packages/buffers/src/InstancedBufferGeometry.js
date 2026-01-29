@@ -1,13 +1,16 @@
 import { BufferGeometry } from './BufferGeometry.js';
 
 class InstancedBufferGeometry extends BufferGeometry {
-  isInstancedBufferGeometry = true;
   type = 'InstancedBufferGeometry';
 
   instanceCount = Infinity;
 
   constructor() {
     super();
+  }
+
+  get isInstancedBufferGeometry() {
+    return true;
   }
 
   copy(source) {
