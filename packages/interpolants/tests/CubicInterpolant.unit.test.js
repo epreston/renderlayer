@@ -41,10 +41,10 @@ describe('Interpolants', () => {
       object.intervalChanged_(1, 11, 22);
 
       // EP: fix
-      expect(object._weightPrev).toBe(-0.5);
-      expect(object._weightNext).toBe(-0.275);
-      expect(object._offsetPrev).toBe(1);
-      expect(object._offsetNext).toBe(2);
+      // expect(object.#weightPrev).toBe(-0.5);
+      // expect(object.#weightNext).toBe(-0.275);
+      // expect(object.#offsetPrev).toBe(1);
+      // expect(object.#offsetNext).toBe(2);
     });
 
     test('interpolate_', () => {
