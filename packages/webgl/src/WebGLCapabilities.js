@@ -41,7 +41,7 @@ class WebGLCapabilities {
       this.#maxAnisotropy = 0;
     }
 
-    this._isWebGL2 =
+    this.#isWebGL2 =
       typeof WebGL2RenderingContext !== 'undefined' &&
       gl.constructor.name === 'WebGL2RenderingContext';
 
