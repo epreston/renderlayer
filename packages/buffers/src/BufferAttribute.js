@@ -4,7 +4,6 @@ import { StaticDrawUsage, FloatType } from '@renderlayer/shared';
 import { fromHalfFloat, toHalfFloat } from './BufferAttributeUtils.js';
 
 class BufferAttribute {
-  isBufferAttribute = true;
   name = '';
 
   array;
@@ -27,6 +26,10 @@ class BufferAttribute {
     this.itemSize = itemSize;
     this.count = array !== undefined ? array.length / itemSize : 0;
     this.normalized = normalized;
+  }
+
+  get isBufferAttribute() {
+    return true;
   }
 
   onUploadCallback() {}
