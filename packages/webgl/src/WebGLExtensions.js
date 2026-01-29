@@ -1,3 +1,7 @@
+/**
+ * @import { WebGLCapabilities } from "@renderlayer/webgl"
+ */
+
 class WebGLExtensions {
   #gl;
   #extensions = [];
@@ -38,7 +42,7 @@ class WebGLExtensions {
     return this.#getExtension(name) !== null;
   }
 
-  /** @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities  */
+  /** @param {?WebGLCapabilities} capabilities  */
   init(capabilities) {
     // EP: some extensions need to be initialised by a query to function
     // Browser support percentages sourced from https://web3dsurvey.com/webgl2
