@@ -76,7 +76,7 @@ class WebGLCubeMaps {
   }
 
   dispose() {
-    this._cubemaps = new WeakMap();
+    this.#cubemaps = new WeakMap();
   }
 }
 
