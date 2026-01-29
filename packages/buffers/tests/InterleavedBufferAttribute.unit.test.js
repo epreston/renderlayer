@@ -281,7 +281,7 @@ describe('Buffers', () => {
       const data = {};
       const clonedObject = object.clone(data);
 
-      // will be different
+      // @ts-ignore - will be different
       clonedObject.data.uuid = object.data.uuid;
 
       expect(clonedObject).not.toBe(object);
