@@ -252,7 +252,7 @@ function mergeAttributes(attributes) {
 }
 
 /**
- * @param {BufferAttribute} attribute
+ * @param {BufferAttribute|InterleavedBufferAttribute} attribute
  * @return {BufferAttribute}
  */
 function deepCloneAttribute(attribute) {
