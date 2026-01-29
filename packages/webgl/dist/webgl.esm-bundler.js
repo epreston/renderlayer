@@ -709,7 +709,7 @@ class WebGLCapabilities {
     } else {
       this.#maxAnisotropy = 0;
     }
-    this._isWebGL2 = typeof WebGL2RenderingContext !== "undefined" && gl.constructor.name === "WebGL2RenderingContext";
+    this.#isWebGL2 = typeof WebGL2RenderingContext !== "undefined" && gl.constructor.name === "WebGL2RenderingContext";
     this.#precision = parameters.precision !== void 0 ? parameters.precision : "highp";
     const maxPrecision = this.getMaxPrecision(this.#precision);
     if (maxPrecision !== this.#precision) {
@@ -945,7 +945,7 @@ class WebGLCubeMaps {
     }
   }
   dispose() {
-    this._cubemaps = /* @__PURE__ */ new WeakMap();
+    this.#cubemaps = /* @__PURE__ */ new WeakMap();
   }
 }
 
@@ -1010,7 +1010,7 @@ class WebGLCubeUVMaps {
     }
   }
   dispose() {
-    this._cubeUVmaps = /* @__PURE__ */ new WeakMap();
+    this.#cubeUVmaps = /* @__PURE__ */ new WeakMap();
     if (this.#pmremGenerator !== null) {
       this.#pmremGenerator.dispose();
       this.#pmremGenerator = null;

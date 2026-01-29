@@ -429,12 +429,12 @@ class OrbitControls extends Controls {
   }
   listenToKeyEvents(domElement) {
     domElement.addEventListener("keydown", this.onKeyDown);
-    this._domElementKeyEvents = domElement;
+    this.#domElementKeyEvents = domElement;
   }
   stopListenToKeyEvents() {
     if (this.#domElementKeyEvents) {
       this.#domElementKeyEvents.removeEventListener("keydown", this.onKeyDown);
-      this._domElementKeyEvents = null;
+      this.#domElementKeyEvents = null;
     }
   }
   saveState() {
@@ -1099,14 +1099,14 @@ class OrbitControls extends Controls {
   // as a Ctrl + scroll wheel command
   #interceptControlDown(event) {
     if (event.key === "Control") {
-      this._controlActive = true;
+      this.#controlActive = true;
       const document = this.domElement.getRootNode();
       document.addEventListener("keyup", this.interceptControlUp, { passive: true, capture: true });
     }
   }
   #interceptControlUp(event) {
     if (event.key === "Control") {
-      this._controlActive = false;
+      this.#controlActive = false;
       const document = this.domElement.getRootNode();
       document.removeEventListener("keyup", this.interceptControlUp, {
         passive: true,

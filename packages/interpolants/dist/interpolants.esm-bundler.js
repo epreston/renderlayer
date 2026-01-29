@@ -113,11 +113,11 @@ class Interpolant {
 }
 
 class CubicInterpolant extends Interpolant {
-  _weightPrev = -0;
+  #weightPrev = -0;
   // see unit test
-  _offsetPrev = -0;
-  _weightNext = -0;
-  _offsetNext = -0;
+  #offsetPrev = -0;
+  #weightNext = -0;
+  #offsetNext = -0;
   DefaultSettings_ = {
     endingStart: ZeroCurvatureEnding,
     endingEnd: ZeroCurvatureEnding
@@ -163,10 +163,10 @@ class CubicInterpolant extends Interpolant {
     }
     const halfDt = (t1 - t0) * 0.5;
     const stride = this.valueSize;
-    this._weightPrev = halfDt / (t0 - tPrev);
-    this._weightNext = halfDt / (tNext - t1);
-    this._offsetPrev = iPrev * stride;
-    this._offsetNext = iNext * stride;
+    this.#weightPrev = halfDt / (t0 - tPrev);
+    this.#weightNext = halfDt / (tNext - t1);
+    this.#offsetPrev = iPrev * stride;
+    this.#offsetNext = iNext * stride;
   }
   interpolate_(i1, t0, t, t1) {
     const result = this.resultBuffer;
@@ -174,10 +174,10 @@ class CubicInterpolant extends Interpolant {
     const stride = this.valueSize;
     const o1 = i1 * stride;
     const o0 = o1 - stride;
-    const oP = this._offsetPrev;
-    const oN = this._offsetNext;
-    const wP = this._weightPrev;
-    const wN = this._weightNext;
+    const oP = this.#offsetPrev;
+    const oN = this.#offsetNext;
+    const wP = this.#weightPrev;
+    const wN = this.#weightNext;
     const p = (t - t0) / (t1 - t0);
     const pp = p * p;
     const ppp = pp * p;

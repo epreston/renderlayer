@@ -60,13 +60,12 @@ class LightShadow {
   needsUpdate = false;
   _frustum = new Frustum();
   _frameExtents = new Vector2(1, 1);
-  _viewportCount = 1;
   _viewports = [new Vector4(0, 0, 1, 1)];
   constructor(camera) {
     this.camera = camera;
   }
   getViewportCount() {
-    return this._viewportCount;
+    return 1;
   }
   getFrustum() {
     return this._frustum;
@@ -178,7 +177,6 @@ class DirectionalLight extends Light {
 
 class PointLightShadow extends LightShadow {
   _frameExtents = new Vector2(4, 2);
-  _viewportCount = 6;
   _viewports = [
     // These viewports map a cube-map onto a 2D texture with the
     // following orientation:
@@ -205,7 +203,7 @@ class PointLightShadow extends LightShadow {
     // negative Y
     new Vector4(1, 0, 1, 1)
   ];
-  _cubeDirections = [
+  #cubeDirections = [
     new Vector3(1, 0, 0),
     new Vector3(-1, 0, 0),
     new Vector3(0, 0, 1),
@@ -213,7 +211,7 @@ class PointLightShadow extends LightShadow {
     new Vector3(0, 1, 0),
     new Vector3(0, -1, 0)
   ];
-  _cubeUps = [
+  #cubeUps = [
     new Vector3(0, 1, 0),
     new Vector3(0, 1, 0),
     new Vector3(0, 1, 0),
@@ -227,6 +225,9 @@ class PointLightShadow extends LightShadow {
   get isPointLightShadow() {
     return true;
   }
+  getViewportCount() {
+    return 6;
+  }
   updateMatrices(light, viewportIndex = 0) {
     const camera = this.camera;
     const shadowMatrix = this.matrix;
@@ -238,8 +239,8 @@ class PointLightShadow extends LightShadow {
     _lightPositionWorld.setFromMatrixPosition(light.matrixWorld);
     camera.position.copy(_lightPositionWorld);
     _lookTarget.copy(camera.position);
-    _lookTarget.add(this._cubeDirections[viewportIndex]);
-    camera.up.copy(this._cubeUps[viewportIndex]);
+    _lookTarget.add(this.#cubeDirections[viewportIndex]);
+    camera.up.copy(this.#cubeUps[viewportIndex]);
     camera.lookAt(_lookTarget);
     camera.updateMatrixWorld();
     shadowMatrix.makeTranslation(

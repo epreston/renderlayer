@@ -649,11 +649,11 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
   specularIntensityMap = null;
   specularColor = new Color(1, 1, 1);
   specularColorMap = null;
-  _anisotropy = 0;
-  _clearcoat = 0;
-  _iridescence = 0;
-  _sheen = 0;
-  _transmission = 0;
+  #anisotropy = 0;
+  #clearcoat = 0;
+  #iridescence = 0;
+  #sheen = 0;
+  #transmission = 0;
   constructor(parameters) {
     super();
     this.setValues(parameters);
@@ -662,31 +662,31 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     return true;
   }
   get anisotropy() {
-    return this._anisotropy;
+    return this.#anisotropy;
   }
   set anisotropy(value) {
-    if (this._anisotropy > 0 !== value > 0) {
+    if (this.#anisotropy > 0 !== value > 0) {
       this.version++;
     }
-    this._anisotropy = value;
+    this.#anisotropy = value;
   }
   get clearcoat() {
-    return this._clearcoat;
+    return this.#clearcoat;
   }
   set clearcoat(value) {
-    if (this._clearcoat > 0 !== value > 0) {
+    if (this.#clearcoat > 0 !== value > 0) {
       this.version++;
     }
-    this._clearcoat = value;
+    this.#clearcoat = value;
   }
   get iridescence() {
-    return this._iridescence;
+    return this.#iridescence;
   }
   set iridescence(value) {
-    if (this._iridescence > 0 !== value > 0) {
+    if (this.#iridescence > 0 !== value > 0) {
       this.version++;
     }
-    this._iridescence = value;
+    this.#iridescence = value;
   }
   get reflectivity() {
     return clamp(2.5 * (this.ior - 1) / (this.ior + 1), 0, 1);
@@ -695,22 +695,22 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
     this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
   }
   get sheen() {
-    return this._sheen;
+    return this.#sheen;
   }
   set sheen(value) {
-    if (this._sheen > 0 !== value > 0) {
+    if (this.#sheen > 0 !== value > 0) {
       this.version++;
     }
-    this._sheen = value;
+    this.#sheen = value;
   }
   get transmission() {
-    return this._transmission;
+    return this.#transmission;
   }
   set transmission(value) {
-    if (this._transmission > 0 !== value > 0) {
+    if (this.#transmission > 0 !== value > 0) {
       this.version++;
     }
-    this._transmission = value;
+    this.#transmission = value;
   }
   /**
    * @param {MeshPhysicalMaterial} source

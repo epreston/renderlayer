@@ -2121,7 +2121,7 @@ const ColorManagement = {
     }
     this._workingColorSpace = colorSpace;
   },
-  /** @param {import('@renderlayer/math').Color} color */
+  /** @param {Color} color */
   convert(color, sourceColorSpace, targetColorSpace) {
     if (this.enabled === false || sourceColorSpace === targetColorSpace || !sourceColorSpace || !targetColorSpace) {
       return color;
@@ -2135,11 +2135,11 @@ const ColorManagement = {
     const targetFromReference = COLOR_SPACES[targetColorSpace].fromReference;
     return targetFromReference(sourceToReference(color));
   },
-  /** @param {import('@renderlayer/math').Color} color */
+  /** @param {Color} color */
   fromWorkingColorSpace(color, targetColorSpace) {
     return this.convert(color, this._workingColorSpace, targetColorSpace);
   },
-  /** @param {import('@renderlayer/math').Color} color */
+  /** @param {Color} color */
   toWorkingColorSpace(color, sourceColorSpace) {
     return this.convert(color, sourceColorSpace, this._workingColorSpace);
   },

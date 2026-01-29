@@ -829,7 +829,7 @@ class Composite {
   #bindings;
   constructor(targetGroup, path, optionalParsedPath) {
     const parsedPath = optionalParsedPath || PropertyBinding.parseTrackName(path);
-    this._targetGroup = targetGroup;
+    this.#targetGroup = targetGroup;
     this.#bindings = targetGroup.subscribe_(path, parsedPath);
   }
   getValue(array, offset) {

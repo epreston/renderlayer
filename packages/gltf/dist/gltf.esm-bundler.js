@@ -61,7 +61,7 @@ class GLTFLightsExtension {
       }
     }
   }
-  _loadLight(lightIndex) {
+  #loadLight(lightIndex) {
     const parser = this.parser;
     const cacheKey = `light:${lightIndex}`;
     let dependency = parser.cache.get(cacheKey);
@@ -112,7 +112,7 @@ class GLTFLightsExtension {
   }
   getDependency(type, index) {
     if (type !== "light") return;
-    return this._loadLight(index);
+    return this.#loadLight(index);
   }
   createNodeAttachment(nodeIndex) {
     const self = this;
@@ -122,7 +122,7 @@ class GLTFLightsExtension {
     const lightDef = nodeDef.extensions && nodeDef.extensions[this.name] || {};
     const lightIndex = lightDef.light;
     if (lightIndex === void 0) return null;
-    return this._loadLight(lightIndex).then(function(light) {
+    return this.#loadLight(lightIndex).then(function(light) {
       return parser._getNodeRef(self.cache, lightIndex, light);
     });
   }

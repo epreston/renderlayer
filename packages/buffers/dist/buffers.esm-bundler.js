@@ -95,7 +95,6 @@ function fromHalfFloat(val) {
 }
 
 class BufferAttribute {
-  isBufferAttribute = true;
   name = "";
   array;
   itemSize;
@@ -113,6 +112,9 @@ class BufferAttribute {
     this.itemSize = itemSize;
     this.count = array !== void 0 ? array.length / itemSize : 0;
     this.normalized = normalized;
+  }
+  get isBufferAttribute() {
+    return true;
   }
   onUploadCallback() {
   }
@@ -428,7 +430,6 @@ const _vector$2 = /* @__PURE__ */ new Vector3();
 const _vector2 = /* @__PURE__ */ new Vector2();
 
 class BufferGeometry extends EventDispatcher {
-  isBufferGeometry = true;
   #id = _bufferGeometryId++;
   uuid = generateUUID();
   name = "";
@@ -444,6 +445,9 @@ class BufferGeometry extends EventDispatcher {
   userData = {};
   constructor() {
     super();
+  }
+  get isBufferGeometry() {
+    return true;
   }
   get id() {
     return this.#id;
@@ -1019,11 +1023,13 @@ const _boxMorphTargets = /* @__PURE__ */ new Box3();
 const _vector$1 = /* @__PURE__ */ new Vector3();
 
 class InstancedBufferAttribute extends BufferAttribute {
-  isInstancedBufferAttribute = true;
   meshPerAttribute = 1;
   constructor(array, itemSize, normalized, meshPerAttribute = 1) {
     super(array, itemSize, normalized);
     this.meshPerAttribute = meshPerAttribute;
+  }
+  get isInstancedBufferAttribute() {
+    return true;
   }
   copy(source) {
     super.copy(source);
@@ -1039,7 +1045,6 @@ class InstancedBufferAttribute extends BufferAttribute {
 }
 
 class InterleavedBuffer {
-  isInterleavedBuffer = true;
   uuid = generateUUID();
   array;
   stride;
@@ -1051,6 +1056,9 @@ class InterleavedBuffer {
     this.array = array;
     this.stride = stride;
     this.count = array !== void 0 ? array.length / stride : 0;
+  }
+  get isInterleavedBuffer() {
+    return true;
   }
   onUploadCallback() {
   }
@@ -1119,7 +1127,6 @@ class InterleavedBuffer {
 }
 
 class InterleavedBufferAttribute {
-  isInterleavedBufferAttribute = true;
   name = "";
   data;
   itemSize;
@@ -1131,6 +1138,9 @@ class InterleavedBufferAttribute {
     this.offset = offset;
     this.normalized = normalized;
   }
+  get isInterleavedBufferAttribute() {
+    return true;
+  }
   get count() {
     return this.data.count;
   }
@@ -1140,7 +1150,7 @@ class InterleavedBufferAttribute {
   set needsUpdate(value) {
     this.data.needsUpdate = value;
   }
-  /** @param {import('@renderlayer/math').Matrix4} matrix */
+  /** @param {Matrix4} matrix */
   applyMatrix4(matrix) {
     for (let i = 0, l = this.data.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
@@ -1149,7 +1159,7 @@ class InterleavedBufferAttribute {
     }
     return this;
   }
-  /** @param {import('@renderlayer/math').Matrix3} matrix */
+  /** @param {Matrix3} matrix */
   applyNormalMatrix(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
@@ -1158,7 +1168,7 @@ class InterleavedBufferAttribute {
     }
     return this;
   }
-  /** @param {import('@renderlayer/math').Matrix4} matrix */
+  /** @param {Matrix4} matrix */
   transformDirection(matrix) {
     for (let i = 0, l = this.count; i < l; i++) {
       _vector.fromBufferAttribute(this, i);
@@ -2059,11 +2069,13 @@ function toCreasedNormals(geometry, creaseAngle = Math.PI / 3) {
 }
 
 class InstancedBufferGeometry extends BufferGeometry {
-  isInstancedBufferGeometry = true;
   type = "InstancedBufferGeometry";
   instanceCount = Infinity;
   constructor() {
     super();
+  }
+  get isInstancedBufferGeometry() {
+    return true;
   }
   copy(source) {
     super.copy(source);
@@ -2079,11 +2091,13 @@ class InstancedBufferGeometry extends BufferGeometry {
 }
 
 class InstancedInterleavedBuffer extends InterleavedBuffer {
-  isInstancedInterleavedBuffer = true;
   meshPerAttribute = 1;
   constructor(array, stride, meshPerAttribute = 1) {
     super(array, stride);
     this.meshPerAttribute = meshPerAttribute;
+  }
+  get isInstancedInterleavedBuffer() {
+    return true;
   }
   copy(source) {
     super.copy(source);
