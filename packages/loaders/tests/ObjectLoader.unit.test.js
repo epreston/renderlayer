@@ -67,7 +67,9 @@ describe('Loaders', () => {
 
       expect(loadedMesh).toBeDefined();
       expect(loadedMesh).toBeInstanceOf(Mesh);
+      // @ts-ignore
       expect(loadedMesh.geometry).toBeInstanceOf(BoxGeometry);
+      // @ts-ignore
       expect(loadedMesh.material).toBeInstanceOf(MeshBasicMaterial);
 
       vi.clearAllMocks();
