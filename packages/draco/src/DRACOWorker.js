@@ -4,16 +4,16 @@ export function DRACOWorker() {
   let decoderConfig;
   let decoderPending;
 
-  onmessage = function (e) {
+  onmessage = (e) => {
     const message = e.data;
 
     switch (message.type) {
       case 'init':
         decoderConfig = message.decoderConfig;
-        decoderPending = new Promise(function (resolve /*, reject*/) {
-          decoderConfig.onModuleLoaded = function (draco) {
+        decoderPending = new Promise((resolve /*, reject*/) => {
+          decoderConfig.onModuleLoaded = (draco) => {
             // Module is Promise-like. Wrap before resolving to avoid loop.
-            resolve({ draco: draco });
+            resolve({ draco });
           };
 
           // @ts-ignore
