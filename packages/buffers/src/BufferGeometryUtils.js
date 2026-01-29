@@ -8,7 +8,7 @@ import { InterleavedBuffer } from './InterleavedBuffer.js';
 import { InterleavedBufferAttribute } from './InterleavedBufferAttribute.js';
 
 /**
- * @import { Mesh , Line , Points } from "@renderlayer/objects"
+ * @import { Mesh, Line, Points } from "@renderlayer/objects"
  */
 
 /**
