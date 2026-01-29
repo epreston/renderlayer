@@ -2,7 +2,7 @@ import { describe, expect, it, test, vi } from 'vitest';
 
 import { WebGLExtensions } from '../src/WebGLExtensions.js';
 
-const WebglContextMock = function (supportedExtensions) {
+const WebGLRenderingContextMock = function (supportedExtensions) {
   this.supportedExtensions = supportedExtensions || [];
   this.getSupportedExtensions = function () {
     return this.supportedExtensions;
@@ -16,6 +16,11 @@ const WebglContextMock = function (supportedExtensions) {
   };
 };
 
+function getWebGLRenderingContextMock(supportedExtensions) {
+  // @ts-ignore
+  return /** @type {WebGL2RenderingContext} */ (new WebGLRenderingContextMock(supportedExtensions));
+}
+
 describe('WebGL', () => {
   describe('WebGLExtensions', () => {
     it('should expose a class', () => {
@@ -23,7 +28,7 @@ describe('WebGL', () => {
     });
 
     test('constructor', () => {
-      const gl = new WebglContextMock();
+      const gl = getWebGLRenderingContextMock();
       const extensions = new WebGLExtensions(gl);
 
       expect(extensions).toBeInstanceOf(Object);
@@ -31,7 +36,7 @@ describe('WebGL', () => {
     });
 
     test('has', () => {
-      const gl = new WebglContextMock(['Extension1', 'Extension2']);
+      const gl = getWebGLRenderingContextMock(['Extension1', 'Extension2']);
       const extensions = new WebGLExtensions(gl);
 
       expect(extensions.has('Extension1')).toBeTruthy();
@@ -41,7 +46,7 @@ describe('WebGL', () => {
     });
 
     test('has (with aliases)', () => {
-      const gl = new WebglContextMock(['WEBKIT_WEBGL_compressed_texture_pvrtc']);
+      const gl = getWebGLRenderingContextMock(['WEBKIT_WEBGL_compressed_texture_pvrtc']);
       const extensions = new WebGLExtensions(gl);
 
       expect(extensions.has('WEBGL_compressed_texture_pvrtc')).toBeTruthy();
@@ -49,7 +54,7 @@ describe('WebGL', () => {
     });
 
     test('get', () => {
-      const gl = new WebglContextMock(['Extension1', 'Extension2']);
+      const gl = getWebGLRenderingContextMock(['Extension1', 'Extension2']);
       const extensions = new WebGLExtensions(gl);
 
       expect(extensions.get('Extension1')).toBeTruthy();
@@ -61,7 +66,7 @@ describe('WebGL', () => {
     });
 
     test('get (with aliases)', () => {
-      const gl = new WebglContextMock(['WEBKIT_WEBGL_compressed_texture_pvrtc']);
+      const gl = getWebGLRenderingContextMock(['WEBKIT_WEBGL_compressed_texture_pvrtc']);
       const extensions = new WebGLExtensions(gl);
 
       expect(extensions.get('WEBGL_compressed_texture_pvrtc')).toBeTruthy();
@@ -72,9 +77,9 @@ describe('WebGL', () => {
     });
 
     test('init', () => {
-      const gl = new WebglContextMock();
+      const gl = getWebGLRenderingContextMock();
       const extensions = new WebGLExtensions(gl);
-      extensions.init();
+      extensions.init(null);
 
       expect(extensions).toBeDefined();
     });
