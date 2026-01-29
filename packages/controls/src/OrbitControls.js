@@ -1164,7 +1164,7 @@ class OrbitControls extends Controls {
 
   #interceptControlDown(event) {
     if (event.key === 'Control') {
-      this._controlActive = true;
+      this.#controlActive = true;
 
       const document = this.domElement.getRootNode(); // offscreen canvas compatibility
 
@@ -1174,7 +1174,7 @@ class OrbitControls extends Controls {
 
   #interceptControlUp(event) {
     if (event.key === 'Control') {
-      this._controlActive = false;
+      this.#controlActive = false;
 
       const document = this.domElement.getRootNode(); // offscreen canvas compatibility
 
