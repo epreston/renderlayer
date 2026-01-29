@@ -51,8 +51,8 @@ describe('Buffers', () => {
       const instance = new InstancedBufferGeometry();
 
       // EP: type error ?
-      instance.addGroup(0, 10, instanceMock1);
-      instance.addGroup(10, 5, instanceMock2);
+      instance.addGroup(0, 10, 0);
+      instance.addGroup(10, 5, 1);
       instance.setIndex(indexMock);
       instance.setAttribute('defaultAttribute1', defaultAttribute1);
       instance.setAttribute('defaultAttribute2', defaultAttribute2);
@@ -70,11 +70,11 @@ describe('Buffers', () => {
 
       expect(copiedInstance.groups[0].start).toBe(0);
       expect(copiedInstance.groups[0].count).toBe(10);
-      expect(copiedInstance.groups[0].materialIndex).toBe(instanceMock1);
+      expect(copiedInstance.groups[0].materialIndex).toBe(0);
 
       expect(copiedInstance.groups[1].start).toBe(10);
       expect(copiedInstance.groups[1].count).toBe(5);
-      expect(copiedInstance.groups[1].materialIndex).toBe(instanceMock2);
+      expect(copiedInstance.groups[1].materialIndex).toBe(1);
     });
 
     test('toJSON', () => {
