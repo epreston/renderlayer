@@ -572,6 +572,7 @@ describe('Core', () => {
       const childId = new Object3D(); // id = parent.id + 2
       const childNothing = new Object3D();
 
+      // @ts-ignore
       parent.prop = true;
       childName.name = 'foo';
       parent.add(childName, childId, childNothing);
@@ -589,6 +590,7 @@ describe('Core', () => {
       const childName2 = new Object3D();
       const childName3 = new Object3D();
 
+      // @ts-ignore
       parent.prop = true;
       childName.name = 'foo';
       childName2.name = 'foo';
