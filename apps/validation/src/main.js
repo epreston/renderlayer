@@ -73,7 +73,7 @@ const onError = (error) => console.log(error);
 
 // load glTF with DRACO support
 
-const decoderPath = 'https://www.gstatic.com/draco/versioned/decoders/1.5.6/';
+const decoderPath = 'https://www.gstatic.com/draco/versioned/decoders/1.5.7/';
 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath(decoderPath);
