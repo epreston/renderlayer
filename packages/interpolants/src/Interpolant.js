@@ -169,7 +169,6 @@ class Interpolant {
 
   copySampleValue_(index) {
     // copies a sample value to the result buffer
-
     const result = this.resultBuffer;
 
     const values = this.sampleValues;
