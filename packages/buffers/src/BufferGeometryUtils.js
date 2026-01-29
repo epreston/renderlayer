@@ -8,6 +8,10 @@ import { InterleavedBuffer } from './InterleavedBuffer.js';
 import { InterleavedBufferAttribute } from './InterleavedBufferAttribute.js';
 
 /**
+ * @import { Mesh , Line , Points } from "@renderlayer/objects"
+ */
+
+/**
  * @param  {Array<BufferGeometry>} geometries
  * @param  {Boolean} useGroups
  * @return {BufferGeometry}
@@ -187,6 +191,7 @@ function mergeAttributes(attributes) {
   let arrayLength = 0;
 
   for (const attribute of attributes) {
+    // @ts-ignore
     if (attribute.isInterleavedBufferAttribute) {
       console.error(
         'BufferGeometryUtils: .mergeAttributes() failed. InterleavedBufferAttributes are not supported.'
@@ -247,14 +252,16 @@ function mergeAttributes(attributes) {
 }
 
 /**
- * @param {BufferAttribute}
+ * @param {BufferAttribute} attribute
  * @return {BufferAttribute}
  */
-export function deepCloneAttribute(attribute) {
+function deepCloneAttribute(attribute) {
+  // @ts-ignore
   if (attribute.isInstancedInterleavedBufferAttribute || attribute.isInterleavedBufferAttribute) {
     return deinterleaveAttribute(attribute);
   }
 
+  // @ts-ignore
   if (attribute.isInstancedBufferAttribute) {
     return new InstancedBufferAttribute().copy(attribute);
   }
@@ -321,7 +328,7 @@ function interleaveAttributes(attributes) {
 }
 
 // returns a new, non-interleaved version of the provided attribute
-export function deinterleaveAttribute(attribute) {
+function deinterleaveAttribute(attribute) {
   const cons = attribute.data.array.constructor;
   const count = attribute.count;
   const itemSize = attribute.itemSize;
@@ -360,7 +367,7 @@ export function deinterleaveAttribute(attribute) {
 }
 
 // deinterleaves all attributes on the geometry
-export function deinterleaveGeometry(geometry) {
+function deinterleaveGeometry(geometry) {
   const attributes = geometry.attributes;
   const morphTargets = geometry.morphTargets;
   const attrMap = new Map();
@@ -630,7 +637,7 @@ function toTrianglesDrawMode(geometry, drawMode) {
 /**
  * Calculates the morphed attributes of a morphed/skinned BufferGeometry.
  * Helpful for Ray tracing or Decals.
- * @param {Mesh | Line | Points} object An instance of Mesh, Line or Points.
+ * @param {Mesh|Line|Points} object An instance of Mesh, Line or Points.
  * @return An Object with original position/normal attributes and morphed ones.
  */
 function computeMorphedAttributes(object) {
@@ -1062,6 +1069,9 @@ function toCreasedNormals(geometry, creaseAngle = Math.PI / 3 /* 60 degrees */) 
 }
 
 export {
+  deepCloneAttribute,
+  deinterleaveAttribute,
+  deinterleaveGeometry,
   mergeGeometries,
   mergeAttributes,
   interleaveAttributes,
