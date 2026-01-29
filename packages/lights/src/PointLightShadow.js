@@ -4,7 +4,6 @@ import { LightShadow } from './LightShadow.js';
 
 class PointLightShadow extends LightShadow {
   _frameExtents = new Vector2(4, 2);
-  _viewportCount = 6;
 
   _viewports = [
     // These viewports map a cube-map onto a 2D texture with the
@@ -58,6 +57,10 @@ class PointLightShadow extends LightShadow {
 
   get isPointLightShadow() {
     return true;
+  }
+
+  getViewportCount() {
+    return 6;
   }
 
   updateMatrices(light, viewportIndex = 0) {

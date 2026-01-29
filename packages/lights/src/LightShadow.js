@@ -20,7 +20,6 @@ class LightShadow {
   _frustum = new Frustum();
   _frameExtents = new Vector2(1, 1);
 
-  _viewportCount = 1;
   _viewports = [new Vector4(0, 0, 1, 1)];
 
   constructor(camera) {
@@ -28,7 +27,7 @@ class LightShadow {
   }
 
   getViewportCount() {
-    return this._viewportCount;
+    return 1;
   }
 
   getFrustum() {
