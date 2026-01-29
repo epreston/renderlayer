@@ -10,8 +10,6 @@ import {
 } from './BufferAttribute.js';
 
 class BufferGeometry extends EventDispatcher {
-  isBufferGeometry = true;
-
   #id = _bufferGeometryId++;
 
   uuid = generateUUID();
@@ -35,6 +33,10 @@ class BufferGeometry extends EventDispatcher {
 
   constructor() {
     super();
+  }
+
+  get isBufferGeometry() {
+    return true;
   }
 
   get id() {
