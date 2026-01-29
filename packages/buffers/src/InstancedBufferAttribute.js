@@ -1,13 +1,16 @@
 import { BufferAttribute } from './BufferAttribute.js';
 
 class InstancedBufferAttribute extends BufferAttribute {
-  isInstancedBufferAttribute = true;
   meshPerAttribute = 1;
 
   constructor(array, itemSize, normalized, meshPerAttribute = 1) {
     super(array, itemSize, normalized);
 
     this.meshPerAttribute = meshPerAttribute;
+  }
+
+  get isInstancedBufferAttribute() {
+    return true;
   }
 
   copy(source) {
