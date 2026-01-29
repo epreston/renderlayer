@@ -201,13 +201,13 @@ class OrbitControls extends Controls {
 
   listenToKeyEvents(domElement) {
     domElement.addEventListener('keydown', this.onKeyDown);
-    this._domElementKeyEvents = domElement;
+    this.#domElementKeyEvents = domElement;
   }
 
   stopListenToKeyEvents() {
     if (this.#domElementKeyEvents) {
       this.#domElementKeyEvents.removeEventListener('keydown', this.onKeyDown);
-      this._domElementKeyEvents = null;
+      this.#domElementKeyEvents = null;
     }
   }
 
