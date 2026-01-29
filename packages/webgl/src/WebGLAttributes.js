@@ -1,10 +1,14 @@
+/**
+ * @import { WebGLCapabilities } from "@renderlayer/webgl"
+ */
+
 class WebGLAttributes {
   #gl;
   #buffers = new WeakMap();
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, capabilities) {
     this.#gl = gl;
