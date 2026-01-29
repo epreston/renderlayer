@@ -266,7 +266,7 @@ class DRACOLoader extends Loader {
 
         worker.postMessage({ type: 'init', decoderConfig: this.decoderConfig });
 
-        worker.onmessage = function (e) {
+        worker.onmessage = (e) => {
           const message = e.data;
 
           switch (message.type) {
@@ -285,9 +285,7 @@ class DRACOLoader extends Loader {
 
         this.workerPool.push(worker);
       } else {
-        this.workerPool.sort(function (a, b) {
-          return a._taskLoad > b._taskLoad ? -1 : 1;
-        });
+        this.workerPool.sort((a, b) => (a._taskLoad > b._taskLoad ? -1 : 1));
       }
 
       const worker = this.workerPool[this.workerPool.length - 1];
