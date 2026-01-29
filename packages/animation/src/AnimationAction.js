@@ -12,7 +12,7 @@ import {
 class AnimationAction {
   #mixer;
   #clip;
-  _localRoot = null;
+  #localRoot = null;
   blendMode;
 
   #interpolantSettings;
@@ -56,7 +56,7 @@ class AnimationAction {
   constructor(mixer, clip, localRoot = null, blendMode = clip.blendMode) {
     this.#mixer = mixer;
     this.#clip = clip;
-    this._localRoot = localRoot;
+    this.#localRoot = localRoot;
     this.blendMode = blendMode;
 
     const tracks = clip.tracks;
@@ -275,7 +275,11 @@ class AnimationAction {
   }
 
   getRoot() {
-    return this._localRoot || this.#mixer.getRoot();
+    return this.#localRoot || this.#mixer.getRoot();
+  }
+
+  get localRoot() {
+    return this.#localRoot;
   }
 
   // Internal

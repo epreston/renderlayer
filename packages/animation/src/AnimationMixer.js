@@ -44,7 +44,7 @@ class AnimationMixer extends EventDispatcher {
   }
 
   #bindAction(action, prototypeAction) {
-    const root = action._localRoot || this.#root;
+    const root = action.localRoot || this.#root;
     const tracks = action.getClip().tracks;
     const nTracks = tracks.length;
     const bindings = action._propertyBindings;
@@ -106,7 +106,7 @@ class AnimationMixer extends EventDispatcher {
         // this action has been forgotten by the cache, but the user
         // appears to be still using it -> rebind
 
-        const rootUuid = (action._localRoot || this.#root).uuid;
+        const rootUuid = (action.localRoot || this.#root).uuid;
 
         const clipUuid = action.getClip().uuid;
         const actionsForClip = this.#actionsByClip.get(clipUuid);
@@ -261,7 +261,7 @@ class AnimationMixer extends EventDispatcher {
     action._byClipCacheIndex = null;
 
     const actionByRoot = actionsForClip.actionByRoot;
-    const rootUuid = (action._localRoot || this.#root).uuid;
+    const rootUuid = (action.localRoot || this.#root).uuid;
 
     actionByRoot.delete(rootUuid);
 
