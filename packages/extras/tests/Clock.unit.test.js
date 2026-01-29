@@ -4,7 +4,6 @@ import { Clock } from '../src/Clock.js';
 
 describe('Extras', () => {
   describe('Clock', () => {
-    // replace with vitest mock timers
     function _mockPerformance() {
       // @ts-ignore - allow code to run in browser or node
       const reference = typeof global !== 'undefined' ? global : self;
@@ -79,14 +78,17 @@ describe('Extras', () => {
 
       clock.start();
 
+      // @ts-ignore
       performance.next(123);
       expect(clock.getElapsedTime()).toBeCloseTo(0.123, 3);
 
+      // @ts-ignore
       performance.next(100);
       expect(clock.getElapsedTime()).toBeCloseTo(0.223, 3);
 
       clock.stop();
 
+      // @ts-ignore
       performance.next(1000);
       expect(clock.getElapsedTime()).toBeCloseTo(0.223, 3);
     });
