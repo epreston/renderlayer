@@ -28,6 +28,11 @@ import {
 import { WebGLShader } from './WebGLShader.js';
 import { WebGLUniforms } from './WebGLUniforms.js';
 
+/**
+ * @import { WebGLRenderer } from "@renderlayer/renderers"
+ * @import { WebGLBindingStates } from "@renderlayer/webgl"
+ */
+
 class WebGLProgram {
   #gl;
   #renderer;
@@ -57,8 +62,8 @@ class WebGLProgram {
   fragmentShader;
 
   /**
-   * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
-   * @param {import('./WebGLBindingStates.js').WebGLBindingStates} bindingStates
+   * @param {WebGLRenderer} renderer
+   * @param {WebGLBindingStates} bindingStates
    */
   constructor(renderer, cacheKey, parameters, bindingStates) {
     // console.log('WebGLProgram', cacheKey);

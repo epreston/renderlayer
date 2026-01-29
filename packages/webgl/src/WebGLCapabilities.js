@@ -1,3 +1,7 @@
+/**
+ * @import { WebGLExtensions } from "@renderlayer/webgl"
+ */
+
 class WebGLCapabilities {
   #gl;
 
@@ -25,7 +29,7 @@ class WebGLCapabilities {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   * @param {WebGLExtensions} extensions
    */
   constructor(gl, extensions, parameters) {
     this.#gl = gl;

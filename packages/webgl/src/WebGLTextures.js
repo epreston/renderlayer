@@ -35,6 +35,11 @@ import {
   createElementNS
 } from '@renderlayer/shared';
 
+/**
+ * @import { WebGLExtensions, WebGLCapabilities } from "@renderlayer/webgl"
+ * @import { WebGLState, WebGLUtils, WebGLInfo } from "@renderlayer/webgl"
+ */
+
 class WebGLTextures {
   #gl;
   #extensions;
@@ -68,11 +73,11 @@ class WebGLTextures {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLState.js').WebGLState} state
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
-   * @param {import('./WebGLUtils.js').WebGLUtils} utils
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLState} state
+   * @param {WebGLCapabilities} capabilities
+   * @param {WebGLUtils} utils
+   * @param {WebGLInfo} info
    */
   constructor(gl, extensions, state, properties, capabilities, utils, info) {
     this.#gl = gl;

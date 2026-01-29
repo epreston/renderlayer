@@ -1,3 +1,8 @@
+/**
+ * @import { WebGLGeometries, WebGLAttributes } from "@renderlayer/webgl"
+ * @import { WebGLInfo } from "@renderlayer/webgl"
+ */
+
 class WebGLObjects {
   #gl;
   #geometries;
@@ -8,9 +13,9 @@ class WebGLObjects {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLGeometries.js').WebGLGeometries} geometries
-   * @param {import('./WebGLAttributes.js').WebGLAttributes} attributes
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
+   * @param {WebGLGeometries} geometries
+   * @param {WebGLAttributes} attributes
+   * @param {WebGLInfo} info
    */
   constructor(gl, geometries, attributes, info) {
     this.#gl = gl;

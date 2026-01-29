@@ -46,7 +46,7 @@ class WebGLAttributes {
   #buffers = /* @__PURE__ */ new WeakMap();
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, capabilities) {
     this.#gl = gl;
@@ -159,11 +159,11 @@ class WebGLBackground {
   #currentBackgroundVersion = 0;
   #currentTonemapping = null;
   /**
-   * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
-   * @param {import('./WebGLCubeMaps.js').WebGLCubeMaps} cubemaps
-   * @param {import('./WebGLCubeUVMaps.js').WebGLCubeUVMaps} cubeuvmaps
-   * @param {import('./WebGLState.js').WebGLState} state
-   * @param {import('./WebGLObjects.js').WebGLObjects} objects
+   * @param {WebGLRenderer} renderer
+   * @param {WebGLCubeMaps} cubemaps
+   * @param {WebGLCubeUVMaps} cubeuvmaps
+   * @param {WebGLState} state
+   * @param {WebGLObjects} objects
    */
   constructor(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
     this.#renderer = renderer;
@@ -333,9 +333,9 @@ class WebGLBindingStates {
   #forceUpdate = false;
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLAttributes.js').WebGLAttributes} attributes
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLAttributes} attributes
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, attributes, capabilities) {
     this.#gl = gl;
@@ -656,9 +656,9 @@ class WebGLBufferRenderer {
   #mode = null;
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLInfo} info
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, info, capabilities) {
     this.#gl = gl;
@@ -699,7 +699,7 @@ class WebGLCapabilities {
   #maxSamples;
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
+   * @param {WebGLExtensions} extensions
    */
   constructor(gl, extensions, parameters) {
     this.#gl = gl;
@@ -900,7 +900,7 @@ const _viewNormalMatrix = /* @__PURE__ */ new Matrix3();
 class WebGLCubeMaps {
   #renderer;
   #cubemaps = /* @__PURE__ */ new WeakMap();
-  /** @param {import('@renderlayer/renderers').WebGLRenderer} renderer  */
+  /** @param {WebGLRenderer} renderer  */
   constructor(renderer) {
     this.#renderer = renderer;
   }
@@ -953,7 +953,7 @@ class WebGLCubeUVMaps {
   #renderer;
   #cubeUVmaps = /* @__PURE__ */ new WeakMap();
   #pmremGenerator = null;
-  /** @param {import('@renderlayer/renderers').WebGLRenderer} renderer  */
+  /** @param {WebGLRenderer} renderer  */
   constructor(renderer) {
     this.#renderer = renderer;
   }
@@ -1069,9 +1069,9 @@ class WebGLGeometries {
   onGeometryDispose;
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLAttributes.js').WebGLAttributes} attributes
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
-   * @param {import('./WebGLBindingStates.js').WebGLBindingStates} bindingStates
+   * @param {WebGLAttributes} attributes
+   * @param {WebGLInfo} info
+   * @param {WebGLBindingStates} bindingStates
    */
   constructor(gl, attributes, info, bindingStates) {
     this.#gl = gl;
@@ -1183,9 +1183,9 @@ class WebGLIndexedBufferRenderer {
   #bytesPerElement = null;
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLInfo} info
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, info, capabilities) {
     this.#gl = gl;
@@ -1271,7 +1271,7 @@ class WebGLInfo {
 class WebGLMaterials {
   #renderer;
   #properties;
-  /** @param {import('@renderlayer/renderers').WebGLRenderer} renderer  */
+  /** @param {WebGLRenderer} renderer  */
   constructor(renderer, properties) {
     this.#renderer = renderer;
     this.#properties = properties;
@@ -1585,8 +1585,8 @@ class WebGLMorphtargets {
   #workInfluences = [];
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
-   * @param {import('./WebGLTextures.js').WebGLTextures} textures
+   * @param {WebGLCapabilities} capabilities
+   * @param {WebGLTextures} textures
    */
   constructor(gl, capabilities, textures) {
     this.#gl = gl;
@@ -1690,9 +1690,9 @@ class WebGLObjects {
   #updateMap = /* @__PURE__ */ new WeakMap();
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLGeometries.js').WebGLGeometries} geometries
-   * @param {import('./WebGLAttributes.js').WebGLAttributes} attributes
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
+   * @param {WebGLGeometries} geometries
+   * @param {WebGLAttributes} attributes
+   * @param {WebGLInfo} info
    */
   constructor(gl, geometries, attributes, info) {
     this.#gl = gl;
@@ -2456,8 +2456,8 @@ class WebGLProgram {
   vertexShader;
   fragmentShader;
   /**
-   * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
-   * @param {import('./WebGLBindingStates.js').WebGLBindingStates} bindingStates
+   * @param {WebGLRenderer} renderer
+   * @param {WebGLBindingStates} bindingStates
    */
   constructor(renderer, cacheKey, parameters, bindingStates) {
     this.#gl = renderer.getContext();
@@ -3190,13 +3190,13 @@ class WebGLPrograms {
   // Exposed for resource monitoring & error feedback via renderer.info:
   programs = [];
   /**
-   * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
-   * @param {import('./WebGLCubeMaps.js').WebGLCubeMaps} cubemaps
-   * @param {import('./WebGLCubeUVMaps.js').WebGLCubeUVMaps} cubeuvmaps
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
-   * @param {import('./WebGLBindingStates.js').WebGLBindingStates} bindingStates
-   * @param {import('./WebGLClipping.js').WebGLClipping} clipping
+   * @param {WebGLRenderer} renderer
+   * @param {WebGLCubeMaps} cubemaps
+   * @param {WebGLCubeUVMaps} cubeuvmaps
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
+   * @param {WebGLBindingStates} bindingStates
+   * @param {WebGLClipping} clipping
    */
   constructor(renderer, cubemaps, cubeuvmaps, extensions, capabilities, bindingStates, clipping) {
     this.#renderer = renderer;
@@ -3783,8 +3783,8 @@ class WebGLLights {
     numLightProbes: 0
   };
   /**
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(extensions, capabilities) {
     for (let i = 0; i < 9; i++) {
@@ -4108,8 +4108,8 @@ class WebGLRenderState {
   shadowsArray;
   state;
   /**
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(extensions, capabilities) {
     const lights = new WebGLLights(extensions, capabilities);
@@ -4221,9 +4221,9 @@ class WebGLShadowMap {
   needsUpdate = false;
   type = PCFShadowMap;
   /**
-   * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
-   * @param {import('./WebGLObjects.js').WebGLObjects} objects
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLRenderer} renderer
+   * @param {WebGLObjects} objects
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(renderer, objects, capabilities) {
     this.#renderer = renderer;
@@ -4504,8 +4504,8 @@ class WebGLState {
   buffers;
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, capabilities) {
     this.#gl = gl;
@@ -5314,11 +5314,11 @@ class WebGLTextures {
   onRenderTargetDispose;
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLState.js').WebGLState} state
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
-   * @param {import('./WebGLUtils.js').WebGLUtils} utils
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLState} state
+   * @param {WebGLCapabilities} capabilities
+   * @param {WebGLUtils} utils
+   * @param {WebGLInfo} info
    */
   constructor(gl, extensions, state, properties, capabilities, utils, info) {
     this.#gl = gl;
@@ -7033,9 +7033,9 @@ class WebGLUniformsGroups {
   #maxBindingPoints;
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
-   * @param {import('./WebGLState.js').WebGLState} state
+   * @param {WebGLInfo} info
+   * @param {WebGLCapabilities} capabilities
+   * @param {WebGLState} state
    */
   constructor(gl, info, capabilities, state) {
     this.#gl = gl;
@@ -7258,8 +7258,8 @@ class WebGLUtils {
   #extensions;
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, capabilities) {
     this.#gl = gl;

@@ -6,11 +6,15 @@ import {
 } from '@renderlayer/shared';
 import { WebGLCubeRenderTarget } from '@renderlayer/targets';
 
+/**
+ * @import { WebGLRenderer } from "@renderlayer/renderers"
+ */
+
 class WebGLCubeMaps {
   #renderer;
   #cubemaps = new WeakMap();
 
-  /** @param {import('@renderlayer/renderers').WebGLRenderer} renderer  */
+  /** @param {WebGLRenderer} renderer  */
   constructor(renderer) {
     this.#renderer = renderer;
   }

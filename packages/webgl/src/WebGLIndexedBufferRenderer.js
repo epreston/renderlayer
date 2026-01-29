@@ -1,3 +1,8 @@
+/**
+ * @import { WebGLExtensions, WebGLInfo } from "@renderlayer/webgl"
+ * @import { WebGLCapabilities } from "@renderlayer/webgl"
+ */
+
 class WebGLIndexedBufferRenderer {
   #gl;
   #info;
@@ -8,9 +13,9 @@ class WebGLIndexedBufferRenderer {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLInfo} info
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, info, capabilities) {
     this.#gl = gl;

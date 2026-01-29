@@ -1,6 +1,11 @@
 import { Uint16BufferAttribute, Uint32BufferAttribute } from '@renderlayer/buffers';
 import { arrayNeedsUint32 } from '@renderlayer/shared';
 
+/**
+ * @import { WebGLAttributes, WebGLInfo } from "@renderlayer/webgl"
+ * @import { WebGLBindingStates } from "@renderlayer/webgl"
+ */
+
 class WebGLGeometries {
   #gl;
   #attributes;
@@ -14,9 +19,9 @@ class WebGLGeometries {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLAttributes.js').WebGLAttributes} attributes
-   * @param {import('./WebGLInfo.js').WebGLInfo} info
-   * @param {import('./WebGLBindingStates.js').WebGLBindingStates} bindingStates
+   * @param {WebGLAttributes} attributes
+   * @param {WebGLInfo} info
+   * @param {WebGLBindingStates} bindingStates
    */
   constructor(gl, attributes, info, bindingStates) {
     this.#gl = gl;

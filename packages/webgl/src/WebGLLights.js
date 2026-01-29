@@ -1,6 +1,10 @@
 import { Color, Matrix4, Vector2, Vector3 } from '@renderlayer/math';
 import { UniformsLib } from '@renderlayer/shaders';
 
+/**
+ * @import { WebGLExtensions, WebGLCapabilities } from "@renderlayer/webgl"
+ */
+
 class WebGLLights {
   #cache = new UniformsCache();
   #shadowCache = new ShadowUniformsCache();
@@ -47,8 +51,8 @@ class WebGLLights {
   };
 
   /**
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(extensions, capabilities) {
     // EP: params not used

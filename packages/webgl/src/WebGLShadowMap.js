@@ -16,6 +16,11 @@ import { WebGLRenderTarget } from '@renderlayer/targets';
 
 import * as vsm from './glsl/vsm.glsl.js';
 
+/**
+ * @import { WebGLRenderer } from "@renderlayer/renderers"
+ * @import { WebGLObjects, WebGLCapabilities } from "@renderlayer/webgl"
+ */
+
 class WebGLShadowMap {
   #renderer;
   #objects;
@@ -31,9 +36,9 @@ class WebGLShadowMap {
   type = PCFShadowMap;
 
   /**
-   * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
-   * @param {import('./WebGLObjects.js').WebGLObjects} objects
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLRenderer} renderer
+   * @param {WebGLObjects} objects
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(renderer, objects, capabilities) {
     this.#renderer = renderer;

@@ -7,13 +7,17 @@ import {
 
 import { PMREMGenerator } from '@renderlayer/pmrem';
 
+/**
+ * @import { WebGLRenderer } from "@renderlayer/renderers"
+ */
+
 class WebGLCubeUVMaps {
   #renderer;
 
   #cubeUVmaps = new WeakMap();
   #pmremGenerator = null;
 
-  /** @param {import('@renderlayer/renderers').WebGLRenderer} renderer  */
+  /** @param {WebGLRenderer} renderer  */
   constructor(renderer) {
     this.#renderer = renderer;
   }

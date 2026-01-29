@@ -1,11 +1,15 @@
 import { BackSide } from '@renderlayer/shared';
 import { getUnlitUniformColorSpace } from '@renderlayer/shaders';
 
+/**
+ * @import { WebGLRenderer } from "@renderlayer/renderers"
+ */
+
 class WebGLMaterials {
   #renderer;
   #properties;
 
-  /** @param {import('@renderlayer/renderers').WebGLRenderer} renderer  */
+  /** @param {WebGLRenderer} renderer  */
   constructor(renderer, properties) {
     this.#renderer = renderer;
     this.#properties = properties;

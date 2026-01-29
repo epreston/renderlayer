@@ -16,6 +16,13 @@ import {
 import { WebGLProgram } from './WebGLProgram.js';
 import { WebGLShaderCache } from './WebGLShaderCache.js';
 
+/**
+ * @import { WebGLRenderer } from "@renderlayer/renderers"
+ * @import { WebGLCubeMaps, WebGLCubeUVMaps } from "@renderlayer/webgl"
+ * @import { WebGLExtensions, WebGLCapabilities } from "@renderlayer/webgl"
+ * @import { WebGLBindingStates, WebGLClipping } from "@renderlayer/webgl"
+ */
+
 class WebGLPrograms {
   #renderer;
   #cubemaps;
@@ -55,13 +62,13 @@ class WebGLPrograms {
   programs = [];
 
   /**
-   * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
-   * @param {import('./WebGLCubeMaps.js').WebGLCubeMaps} cubemaps
-   * @param {import('./WebGLCubeUVMaps.js').WebGLCubeUVMaps} cubeuvmaps
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
-   * @param {import('./WebGLBindingStates.js').WebGLBindingStates} bindingStates
-   * @param {import('./WebGLClipping.js').WebGLClipping} clipping
+   * @param {WebGLRenderer} renderer
+   * @param {WebGLCubeMaps} cubemaps
+   * @param {WebGLCubeUVMaps} cubeuvmaps
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
+   * @param {WebGLBindingStates} bindingStates
+   * @param {WebGLClipping} clipping
    */
   constructor(renderer, cubemaps, cubeuvmaps, extensions, capabilities, bindingStates, clipping) {
     this.#renderer = renderer;

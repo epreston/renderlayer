@@ -5,6 +5,12 @@ import { Mesh } from '@renderlayer/objects';
 import { ShaderLib, cloneUniforms, getUnlitUniformColorSpace } from '@renderlayer/shaders';
 import { BackSide, CubeUVReflectionMapping, FrontSide, SRGBTransfer } from '@renderlayer/shared';
 
+/**
+ * @import { WebGLRenderer } from "@renderlayer/renderers"
+ * @import { WebGLCubeMaps, WebGLCubeUVMaps } from "@renderlayer/webgl"
+ * @import { WebGLState, WebGLObjects } from "@renderlayer/webgl"
+ */
+
 class WebGLBackground {
   #renderer;
   #cubemaps;
@@ -25,11 +31,11 @@ class WebGLBackground {
   #currentTonemapping = null;
 
   /**
-   * @param {import('@renderlayer/renderers').WebGLRenderer} renderer
-   * @param {import('./WebGLCubeMaps.js').WebGLCubeMaps} cubemaps
-   * @param {import('./WebGLCubeUVMaps.js').WebGLCubeUVMaps} cubeuvmaps
-   * @param {import('./WebGLState.js').WebGLState} state
-   * @param {import('./WebGLObjects.js').WebGLObjects} objects
+   * @param {WebGLRenderer} renderer
+   * @param {WebGLCubeMaps} cubemaps
+   * @param {WebGLCubeUVMaps} cubeuvmaps
+   * @param {WebGLState} state
+   * @param {WebGLObjects} objects
    */
   constructor(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
     this.#renderer = renderer;

@@ -1,5 +1,9 @@
 import { WebGLLights } from './WebGLLights.js';
 
+/**
+ * @import { WebGLExtensions, WebGLCapabilities } from "@renderlayer/webgl"
+ */
+
 class WebGLRenderState {
   lights;
   lightsArray;
@@ -8,8 +12,8 @@ class WebGLRenderState {
   state;
 
   /**
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(extensions, capabilities) {
     // EP: params not used

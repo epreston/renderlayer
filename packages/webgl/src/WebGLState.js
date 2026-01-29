@@ -41,6 +41,10 @@ import {
   ZeroFactor
 } from '@renderlayer/shared';
 
+/**
+ * @import { WebGLExtensions, WebGLCapabilities } from "@renderlayer/webgl"
+ */
+
 class WebGLState {
   #gl;
 
@@ -100,8 +104,8 @@ class WebGLState {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, capabilities) {
     // EP : params not used

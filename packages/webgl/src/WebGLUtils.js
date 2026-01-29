@@ -59,14 +59,18 @@ import {
   _SRGBAFormat
 } from '@renderlayer/shared';
 
+/**
+ * @import { WebGLExtensions, WebGLCapabilities } from "@renderlayer/webgl"
+ */
+
 class WebGLUtils {
   #gl;
   #extensions;
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(gl, extensions, capabilities) {
     this.#gl = gl;
