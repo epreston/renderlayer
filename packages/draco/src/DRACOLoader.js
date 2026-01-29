@@ -5,51 +5,49 @@ import { LinearSRGBColorSpace, SRGBColorSpace } from '@renderlayer/shared';
 
 import { DRACOWorker } from './DRACOWorker';
 
-const _taskCache = new WeakMap();
-
 class DRACOLoader extends Loader {
+  #decoderPath = '';
+  #decoderConfig = {};
+  // #decoderBinary = null;
+  #decoderPending = null;
+
+  #workerLimit = 4;
+  #workerPool = [];
+  #workerNextTaskID = 1;
+  #workerSourceURL = '';
+
+  #defaultAttributeIDs = {
+    position: 'POSITION',
+    normal: 'NORMAL',
+    color: 'COLOR',
+    uv: 'TEX_COORD'
+  };
+
+  #defaultAttributeTypes = {
+    position: 'Float32Array',
+    normal: 'Float32Array',
+    color: 'Float32Array',
+    uv: 'Float32Array'
+  };
+
   constructor(manager) {
     super(manager);
-
-    this.decoderPath = '';
-    this.decoderConfig = {};
-    this.decoderBinary = null;
-    this.decoderPending = null;
-
-    this.workerLimit = 4;
-    this.workerPool = [];
-    this.workerNextTaskID = 1;
-    this.workerSourceURL = '';
-
-    this.defaultAttributeIDs = {
-      position: 'POSITION',
-      normal: 'NORMAL',
-      color: 'COLOR',
-      uv: 'TEX_COORD'
-    };
-
-    this.defaultAttributeTypes = {
-      position: 'Float32Array',
-      normal: 'Float32Array',
-      color: 'Float32Array',
-      uv: 'Float32Array'
-    };
   }
 
   setDecoderPath(path) {
-    this.decoderPath = path;
+    this.#decoderPath = path;
 
     return this;
   }
 
   setDecoderConfig(config) {
-    this.decoderConfig = config;
+    this.#decoderConfig = config;
 
     return this;
   }
 
   setWorkerLimit(workerLimit) {
-    this.workerLimit = workerLimit;
+    this.#workerLimit = workerLimit;
 
     return this;
   }
@@ -84,8 +82,8 @@ class DRACOLoader extends Loader {
     vertexColorSpace = LinearSRGBColorSpace
   ) {
     const taskConfig = {
-      attributeIDs: attributeIDs || this.defaultAttributeIDs,
-      attributeTypes: attributeTypes || this.defaultAttributeTypes,
+      attributeIDs: attributeIDs || this.#defaultAttributeIDs,
+      attributeTypes: attributeTypes || this.#defaultAttributeTypes,
       useUniqueIDs: !!attributeIDs,
       vertexColorSpace: vertexColorSpace
     };
@@ -120,12 +118,12 @@ class DRACOLoader extends Loader {
     //
 
     let worker;
-    const taskID = this.workerNextTaskID++;
+    const taskID = this.#workerNextTaskID++;
     const taskCost = buffer.byteLength;
 
     // Obtain a worker and assign a task, and construct a geometry instance
     // when the task completes.
-    const geometryPending = this._getWorker(taskID, taskCost)
+    const geometryPending = this.#getWorker(taskID, taskCost)
       .then((_worker) => {
         worker = _worker;
 
@@ -137,7 +135,7 @@ class DRACOLoader extends Loader {
           // this.debug();
         });
       })
-      .then((message) => this._createGeometry(message.geometry));
+      .then((message) => this.#createGeometry(message.geometry));
 
     // Remove task from the task list.
     // Note: replaced '.finally()' with '.catch().then()' block - iOS 11 support (#19416)
@@ -145,7 +143,7 @@ class DRACOLoader extends Loader {
       .catch(() => true)
       .then(() => {
         if (worker && taskID) {
-          this._releaseTask(worker, taskID);
+          this.#releaseTask(worker, taskID);
 
           // this.debug();
         }
@@ -160,7 +158,7 @@ class DRACOLoader extends Loader {
     return geometryPending;
   }
 
-  _createGeometry(geometryData) {
+  #createGeometry(geometryData) {
     const geometry = new BufferGeometry();
 
     if (geometryData.index) {
@@ -175,7 +173,7 @@ class DRACOLoader extends Loader {
       const attribute = new BufferAttribute(array, itemSize);
 
       if (name === 'color') {
-        this._assignVertexColorSpace(attribute, result.vertexColorSpace);
+        this.#assignVertexColorSpace(attribute, result.vertexColorSpace);
 
         attribute.normalized = array instanceof Float32Array === false;
       }
@@ -186,7 +184,7 @@ class DRACOLoader extends Loader {
     return geometry;
   }
 
-  _assignVertexColorSpace(attribute, inputColorSpace) {
+  #assignVertexColorSpace(attribute, inputColorSpace) {
     // While .drc files do not specify colorspace, the only 'official' tooling
     // is PLY and OBJ converters, which use sRGB. We'll assume sRGB when a .drc
     // file is passed into .load() or .parse(). GLTFLoader uses internal APIs
@@ -202,9 +200,9 @@ class DRACOLoader extends Loader {
     }
   }
 
-  _loadLibrary(url, responseType) {
+  #loadLibrary(url, responseType) {
     const loader = new FileLoader(this.manager);
-    loader.setPath(this.decoderPath);
+    loader.setPath(this.#decoderPath);
     loader.setResponseType(responseType);
     loader.setWithCredentials(this.withCredentials);
 
@@ -214,29 +212,29 @@ class DRACOLoader extends Loader {
   }
 
   preload() {
-    this._initDecoder();
+    this.#initDecoder();
 
     return this;
   }
 
-  _initDecoder() {
-    if (this.decoderPending) return this.decoderPending;
+  #initDecoder() {
+    if (this.#decoderPending) return this.#decoderPending;
 
-    const useJS = typeof WebAssembly !== 'object' || this.decoderConfig.type === 'js';
+    const useJS = typeof WebAssembly !== 'object' || this.#decoderConfig.type === 'js';
     const librariesPending = [];
 
     if (useJS) {
-      librariesPending.push(this._loadLibrary('draco_decoder.js', 'text'));
+      librariesPending.push(this.#loadLibrary('draco_decoder.js', 'text'));
     } else {
-      librariesPending.push(this._loadLibrary('draco_wasm_wrapper.js', 'text'));
-      librariesPending.push(this._loadLibrary('draco_decoder.wasm', 'arraybuffer'));
+      librariesPending.push(this.#loadLibrary('draco_wasm_wrapper.js', 'text'));
+      librariesPending.push(this.#loadLibrary('draco_decoder.wasm', 'arraybuffer'));
     }
 
-    this.decoderPending = Promise.all(librariesPending).then((libraries) => {
+    this.#decoderPending = Promise.all(librariesPending).then((libraries) => {
       const jsContent = libraries[0];
 
       if (!useJS) {
-        this.decoderConfig.wasmBinary = libraries[1];
+        this.#decoderConfig.wasmBinary = libraries[1];
       }
 
       const fn = DRACOWorker.toString();
@@ -249,32 +247,37 @@ class DRACOLoader extends Loader {
         fn.substring(fn.indexOf('{') + 1, fn.lastIndexOf('}'))
       ].join('\n');
 
-      this.workerSourceURL = URL.createObjectURL(new Blob([body]));
+      this.#workerSourceURL = URL.createObjectURL(new Blob([body]));
     });
 
-    return this.decoderPending;
+    return this.#decoderPending;
   }
 
-  _getWorker(taskID, taskCost) {
-    return this._initDecoder().then(() => {
-      if (this.workerPool.length < this.workerLimit) {
-        const worker = new Worker(this.workerSourceURL);
+  #getWorker(taskID, taskCost) {
+    return this.#initDecoder().then(() => {
+      if (this.#workerPool.length < this.#workerLimit) {
+        const worker = new Worker(this.#workerSourceURL);
 
+        // @ts-ignore
         worker._callbacks = {};
+        // @ts-ignore
         worker._taskCosts = {};
+        // @ts-ignore
         worker._taskLoad = 0;
 
-        worker.postMessage({ type: 'init', decoderConfig: this.decoderConfig });
+        worker.postMessage({ type: 'init', decoderConfig: this.#decoderConfig });
 
         worker.onmessage = (e) => {
           const message = e.data;
 
           switch (message.type) {
             case 'decode':
+              // @ts-ignore
               worker._callbacks[message.id].resolve(message);
               break;
 
             case 'error':
+              // @ts-ignore
               worker._callbacks[message.id].reject(message);
               break;
 
@@ -283,19 +286,19 @@ class DRACOLoader extends Loader {
           }
         };
 
-        this.workerPool.push(worker);
+        this.#workerPool.push(worker);
       } else {
-        this.workerPool.sort((a, b) => (a._taskLoad > b._taskLoad ? -1 : 1));
+        this.#workerPool.sort((a, b) => (a._taskLoad > b._taskLoad ? -1 : 1));
       }
 
-      const worker = this.workerPool[this.workerPool.length - 1];
+      const worker = this.#workerPool[this.#workerPool.length - 1];
       worker._taskCosts[taskID] = taskCost;
       worker._taskLoad += taskCost;
       return worker;
     });
   }
 
-  _releaseTask(worker, taskID) {
+  #releaseTask(worker, taskID) {
     worker._taskLoad -= worker._taskCosts[taskID];
     delete worker._callbacks[taskID];
     delete worker._taskCosts[taskID];
@@ -305,23 +308,25 @@ class DRACOLoader extends Loader {
     // eslint-disable-next-line no-console
     console.log(
       'Task load: ',
-      this.workerPool.map((worker) => worker._taskLoad)
+      this.#workerPool.map((worker) => worker._taskLoad)
     );
   }
 
   dispose() {
-    for (let i = 0; i < this.workerPool.length; ++i) {
-      this.workerPool[i].terminate();
+    for (let i = 0; i < this.#workerPool.length; ++i) {
+      this.#workerPool[i].terminate();
     }
 
-    this.workerPool.length = 0;
+    this.#workerPool.length = 0;
 
-    if (this.workerSourceURL !== '') {
-      URL.revokeObjectURL(this.workerSourceURL);
+    if (this.#workerSourceURL !== '') {
+      URL.revokeObjectURL(this.#workerSourceURL);
     }
 
     return this;
   }
 }
+
+const _taskCache = new WeakMap();
 
 export { DRACOLoader };
