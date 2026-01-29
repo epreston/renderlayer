@@ -12,7 +12,11 @@ const _controlInterpolantsResultBuffer = new Float32Array(1);
 class AnimationMixer extends EventDispatcher {
   #root;
 
-  #actions = []; // 'nActiveActions' followed by inactive ones
+  /**
+   * 'nActiveActions' followed by inactive ones
+   * @type {AnimationAction[]}
+   */
+  #actions = [];
   #nActiveActions = 0;
 
   #actionsByClip = new Map();
@@ -429,7 +433,7 @@ class AnimationMixer extends EventDispatcher {
   // return an action for a clip optionally using a custom root target
   // object (this method allocates a lot of dynamic memory in case a
   // previously unknown clip/root combination is specified)
-  /** @returns {AnimationAction | null} */
+  /** @returns {?AnimationAction} */
   clipAction(clip, optionalRoot, blendMode) {
     const root = optionalRoot || this.#root;
     const rootUuid = root.uuid;
