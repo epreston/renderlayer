@@ -170,7 +170,7 @@ describe('Buffers', () => {
 
       expect(geometry.attributes[attributeName]).toBeUndefined();
 
-      geometry.setAttribute(attributeName, new BufferAttribute(new Float32Array([1, 2, 3], 1)));
+      geometry.setAttribute(attributeName, new BufferAttribute(new Float32Array([1, 2, 3]), 1));
 
       expect(geometry.attributes[attributeName]).toBeDefined();
 
@@ -731,7 +731,7 @@ describe('Buffers', () => {
       expect(a).not.toEqual(b);
       expect(a.id).not.toEqual(b.id);
 
-      expect(Object.keys(a.attributes).count).toBe(Object.keys(b.attributes).count);
+      expect(Object.keys(a.attributes).length).toBe(Object.keys(b.attributes).length);
 
       expect(
         _bufferAttributeEquals(a.getAttribute('attribute1'), b.getAttribute('attribute1'))
