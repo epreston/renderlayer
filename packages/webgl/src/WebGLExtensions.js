@@ -47,8 +47,11 @@ class WebGLExtensions {
     // EP: some extensions need to be initialised by a query to function
     // Browser support percentages sourced from https://web3dsurvey.com/webgl2
     this.#getExtension('EXT_color_buffer_float'); // 99.8%
+    this.#getExtension('WEBGL_clip_cull_distance'); // 75.33%
     this.#getExtension('OES_texture_float_linear'); // 86.31%
     this.#getExtension('EXT_color_buffer_half_float'); // 92.2%
+    this.#getExtension('WEBGL_multisampled_render_to_texture'); // EP: ???
+    this.#getExtension('WEBGL_render_shared_exponent'); // 22.42%
   }
 
   get(name) {
