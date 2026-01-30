@@ -1,3 +1,6 @@
+export * from './CompressedArrayTexture.js';
+export * from './CompressedCubeTexture.js';
+export * from './CompressedTexture.js';
 export * from './CubeTexture.js';
 export * from './Data3DTexture.js';
 export * from './DataArrayTexture.js';
