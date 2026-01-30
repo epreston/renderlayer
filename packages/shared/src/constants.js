@@ -100,10 +100,14 @@ export const UnsignedShort4444Type = 1017;
 export const UnsignedShort5551Type = 1018;
 export const UnsignedInt248Type = 1020;
 
+export const UnsignedInt5999Type = 35902;
+export const UnsignedInt101111Type = 35899;
+
 export const AlphaFormat = 1021;
+export const RGBFormat = 1022;
 export const RGBAFormat = 1023;
-export const LuminanceFormat = 1024;
-export const LuminanceAlphaFormat = 1025;
+export const LuminanceFormat = 1024; // EP : discourage luminance
+export const LuminanceAlphaFormat = 1025; // EP :  use gl.RED, gl.R8, or gl.R16F for better compatibility and performance.
 export const DepthFormat = 1026;
 export const DepthStencilFormat = 1027;
 export const RedFormat = 1028;
@@ -125,6 +129,12 @@ export const RGBA_PVRTC_2BPPV1_Format = 35843;
 export const RGB_ETC1_Format = 36196;
 export const RGB_ETC2_Format = 37492;
 export const RGBA_ETC2_EAC_Format = 37496;
+
+export const R11_EAC_Format = 37488;
+export const SIGNED_R11_EAC_Format = 37489;
+
+export const RG11_EAC_Format = 37490;
+export const SIGNED_RG11_EAC_Format = 37491;
 
 export const RGBA_ASTC_4x4_Format = 37808;
 export const RGBA_ASTC_5x4_Format = 37809;
