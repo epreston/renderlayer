@@ -6,7 +6,7 @@ import { LinearSRGBColorSpace, SRGBColorSpace } from '@renderlayer/shared';
 import { DRACOWorker } from './DRACOWorker';
 
 class DRACOLoader extends Loader {
-  #decoderPath = '';
+  #decoderPath = 'https://www.gstatic.com/draco/versioned/decoders/1.5.7/';
   #decoderConfig = {};
   // #decoderBinary = null;
   #decoderPending = null;
