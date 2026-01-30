@@ -1,5 +1,6 @@
 import { ColorManagement } from '@renderlayer/math';
 import {
+  _SRGBAFormat,
   AlphaFormat,
   ByteType,
   DepthFormat,
@@ -10,10 +11,19 @@ import {
   LuminanceAlphaFormat,
   LuminanceFormat,
   NoColorSpace,
+  R11_EAC_Format,
   RED_GREEN_RGTC2_Format,
   RED_RGTC1_Format,
-  RGBAFormat,
-  RGBAIntegerFormat,
+  RedFormat,
+  RedIntegerFormat,
+  RG11_EAC_Format,
+  RGB_BPTC_SIGNED_Format,
+  RGB_BPTC_UNSIGNED_Format,
+  RGB_ETC1_Format,
+  RGB_ETC2_Format,
+  RGB_PVRTC_2BPPV1_Format,
+  RGB_PVRTC_4BPPV1_Format,
+  RGB_S3TC_DXT1_Format,
   RGBA_ASTC_10x10_Format,
   RGBA_ASTC_10x5_Format,
   RGBA_ASTC_10x6_Format,
@@ -35,28 +45,25 @@ import {
   RGBA_S3TC_DXT1_Format,
   RGBA_S3TC_DXT3_Format,
   RGBA_S3TC_DXT5_Format,
-  RGB_BPTC_SIGNED_Format,
-  RGB_BPTC_UNSIGNED_Format,
-  RGB_ETC1_Format,
-  RGB_ETC2_Format,
-  RGB_PVRTC_2BPPV1_Format,
-  RGB_PVRTC_4BPPV1_Format,
-  RGB_S3TC_DXT1_Format,
+  RGBAFormat,
+  RGBAIntegerFormat,
+  RGBFormat,
   RGFormat,
   RGIntegerFormat,
-  RedFormat,
-  RedIntegerFormat,
+  ShortType,
+  SIGNED_R11_EAC_Format,
   SIGNED_RED_GREEN_RGTC2_Format,
   SIGNED_RED_RGTC1_Format,
+  SIGNED_RG11_EAC_Format,
   SRGBTransfer,
-  ShortType,
   UnsignedByteType,
+  UnsignedInt101111Type,
   UnsignedInt248Type,
+  UnsignedInt5999Type,
   UnsignedIntType,
   UnsignedShort4444Type,
   UnsignedShort5551Type,
-  UnsignedShortType,
-  _SRGBAFormat
+  UnsignedShortType
 } from '@renderlayer/shared';
 
 /**
@@ -88,6 +95,8 @@ class WebGLUtils {
     if (p === UnsignedByteType) return gl.UNSIGNED_BYTE;
     if (p === UnsignedShort4444Type) return gl.UNSIGNED_SHORT_4_4_4_4;
     if (p === UnsignedShort5551Type) return gl.UNSIGNED_SHORT_5_5_5_1;
+    if (p === UnsignedInt5999Type) return gl.UNSIGNED_INT_5_9_9_9_REV;
+    if (p === UnsignedInt101111Type) return gl.UNSIGNED_INT_10F_11F_11F_REV;
 
     if (p === ByteType) return gl.BYTE;
     if (p === ShortType) return gl.SHORT;
@@ -95,10 +104,12 @@ class WebGLUtils {
     if (p === IntType) return gl.INT;
     if (p === UnsignedIntType) return gl.UNSIGNED_INT;
     if (p === FloatType) return gl.FLOAT;
+    if (p === HalfFloatType) return gl.HALF_FLOAT;
 
     if (p === HalfFloatType) return gl.HALF_FLOAT;
 
     if (p === AlphaFormat) return gl.ALPHA;
+    if (p === RGBFormat) return gl.RGB;
     if (p === RGBAFormat) return gl.RGBA;
     if (p === LuminanceFormat) return gl.LUMINANCE;
     if (p === LuminanceAlphaFormat) return gl.LUMINANCE_ALPHA;
@@ -178,25 +189,21 @@ class WebGLUtils {
       }
     }
 
-    // ETC1
+    // ETC
 
-    if (p === RGB_ETC1_Format) {
-      extension = extensions.get('WEBGL_compressed_texture_etc1');
-
-      if (extension !== null) {
-        return extension.COMPRESSED_RGB_ETC1_WEBGL;
-      } else {
-        return null;
-      }
-    }
-
-    // ETC2
-
-    if (p === RGB_ETC2_Format || p === RGBA_ETC2_EAC_Format) {
+    if (
+      p === RGB_ETC1_Format ||
+      p === RGB_ETC2_Format ||
+      p === RGBA_ETC2_EAC_Format ||
+      p === R11_EAC_Format ||
+      p === SIGNED_R11_EAC_Format ||
+      p === RG11_EAC_Format ||
+      p === SIGNED_RG11_EAC_Format
+    ) {
       extension = extensions.get('WEBGL_compressed_texture_etc');
 
       if (extension !== null) {
-        if (p === RGB_ETC2_Format)
+        if (p === RGB_ETC1_Format || p === RGB_ETC2_Format)
           return transfer === SRGBTransfer ?
               extension.COMPRESSED_SRGB8_ETC2
             : extension.COMPRESSED_RGB8_ETC2;
@@ -204,6 +211,10 @@ class WebGLUtils {
           return transfer === SRGBTransfer ?
               extension.COMPRESSED_SRGB8_ALPHA8_ETC2_EAC
             : extension.COMPRESSED_RGBA8_ETC2_EAC;
+        if (p === R11_EAC_Format) return extension.COMPRESSED_R11_EAC;
+        if (p === SIGNED_R11_EAC_Format) return extension.COMPRESSED_SIGNED_R11_EAC;
+        if (p === RG11_EAC_Format) return extension.COMPRESSED_RG11_EAC;
+        if (p === SIGNED_RG11_EAC_Format) return extension.COMPRESSED_SIGNED_RG11_EAC;
       } else {
         return null;
       }
@@ -319,7 +330,7 @@ class WebGLUtils {
       extension = extensions.get('EXT_texture_compression_rgtc');
 
       if (extension !== null) {
-        if (p === RGBA_BPTC_Format) return extension.COMPRESSED_RED_RGTC1_EXT;
+        if (p === RED_RGTC1_Format) return extension.COMPRESSED_RED_RGTC1_EXT;
         if (p === SIGNED_RED_RGTC1_Format) return extension.COMPRESSED_SIGNED_RED_RGTC1_EXT;
         if (p === RED_GREEN_RGTC2_Format) return extension.COMPRESSED_RED_GREEN_RGTC2_EXT;
         if (p === SIGNED_RED_GREEN_RGTC2_Format)
