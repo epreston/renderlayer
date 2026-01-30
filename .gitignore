@@ -41,3 +41,8 @@ temp
 # ignore non-npm lockfiles
 pnpm-lock.yaml
 yarn.lock
+
+# wip
+/packages/draco/libs
+/packages/basis
+/packages/ktx2
