@@ -327,6 +327,6 @@ class DRACOLoader extends Loader {
   }
 }
 
-const _taskCache = new WeakMap();
+const _taskCache = /* @__PURE__ */ new WeakMap();
 
 export { DRACOLoader };
