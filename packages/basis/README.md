@@ -2,6 +2,13 @@
 
 Basis texture support library used by `@renderlayer` packages.
 
+Basis Universal v2.0 is an open source "supercompressed" GPU compressed texture interchange system. It supports rapid transcoding to virtually any compressed GPU texture format released over the past 25 years.
+
+It support two intermediate file formats:
+
+- the ".basis" file format.
+- the ".KTX2" wrappers from the Khronos Group
+
 [![NPM version][npm-badge]][npm-url]
 [![License][license-badge]][license-url]
 
@@ -10,6 +17,13 @@ Basis texture support library used by `@renderlayer` packages.
 ```bash
 npm i @renderlayer/basis
 ```
+
+## References
+
+| Website | Reference                                                  |
+| ------- | ---------------------------------------------------------- |
+| Basis   | https://github.com/BinomialLLC/basis_universal             |
+| KTX     | https://registry.khronos.org/KTX/specs/2.0/ktxspec.v2.html |
 
 ## License
 
