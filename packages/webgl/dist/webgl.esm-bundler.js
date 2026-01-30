@@ -1044,7 +1044,7 @@ class WebGLExtensions {
   has(name) {
     return this.#getExtension(name) !== null;
   }
-  /** @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities  */
+  /** @param {?WebGLCapabilities} capabilities  */
   init(capabilities) {
     this.#getExtension("EXT_color_buffer_float");
     this.#getExtension("OES_texture_float_linear");
@@ -4146,8 +4146,8 @@ class WebGLRenderStates {
   extensions;
   capabilities;
   /**
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(extensions, capabilities) {
     this.extensions = extensions;

@@ -271,6 +271,43 @@ class Texture extends EventDispatcher {
 }
 let _textureId = 0;
 
+class CompressedTexture extends Texture {
+  constructor(mipmaps, width, height, format, type, mapping, wrapS, wrapT, magFilter, minFilter, anisotropy, colorSpace) {
+    super(null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, colorSpace);
+    this.image = { width, height };
+    this.mipmaps = mipmaps;
+    this.flipY = false;
+    this.generateMipmaps = false;
+  }
+  get isCompressedTexture() {
+    return true;
+  }
+}
+
+class CompressedArrayTexture extends CompressedTexture {
+  wrapR = ClampToEdgeWrapping;
+  constructor(mipmaps, width, height, depth, format, type) {
+    super(mipmaps, width, height, format, type);
+    this.image.depth = depth;
+  }
+  get isCompressedArrayTexture() {
+    return true;
+  }
+}
+
+class CompressedCubeTexture extends CompressedTexture {
+  constructor(images, format, type) {
+    super(void 0, images[0].width, images[0].height, format, type, CubeReflectionMapping);
+    this.image = images;
+  }
+  get isCompressedCubeTexture() {
+    return true;
+  }
+  get isCubeTexture() {
+    return true;
+  }
+}
+
 class CubeTexture extends Texture {
   constructor(images = [], mapping = CubeReflectionMapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, colorSpace) {
     super(
@@ -374,4 +411,4 @@ class VideoTexture extends Texture {
   }
 }
 
-export { CubeTexture, Data3DTexture, DataArrayTexture, DataTexture, Source, Texture, VideoTexture };
+export { CompressedArrayTexture, CompressedCubeTexture, CompressedTexture, CubeTexture, Data3DTexture, DataArrayTexture, DataTexture, Source, Texture, VideoTexture };
