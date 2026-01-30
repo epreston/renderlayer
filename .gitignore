@@ -44,6 +44,5 @@ yarn.lock
 
 # wip
 /apps/*/public/lib
-/packages/draco/lib
 /packages/basis
 /packages/ktx2
