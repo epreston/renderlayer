@@ -62,8 +62,8 @@ class WebGLRenderStates {
   capabilities;
 
   /**
-   * @param {import('./WebGLExtensions.js').WebGLExtensions} extensions
-   * @param {import('./WebGLCapabilities.js').WebGLCapabilities} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {WebGLCapabilities} capabilities
    */
   constructor(extensions, capabilities) {
     this.extensions = extensions;
