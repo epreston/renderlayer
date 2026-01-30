@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/draco",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "@renderlayer/draco",
   "module": "./dist/draco.esm-bundler.js",
   "exports": "./dist/draco.esm-bundler.js",
