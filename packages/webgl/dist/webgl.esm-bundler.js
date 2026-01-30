@@ -3,7 +3,7 @@ import { ShaderMaterial, MeshDistanceMaterial, MeshDepthMaterial } from '@render
 import { Color, ColorManagement, Matrix3, Plane, Vector4, Vector2, Vector3, Matrix4, Frustum } from '@renderlayer/math';
 import { Mesh } from '@renderlayer/objects';
 import { ShaderLib, cloneUniforms, getUnlitUniformColorSpace, ShaderChunk, UniformsLib } from '@renderlayer/shaders';
-import { CubeUVReflectionMapping, BackSide, SRGBTransfer, FrontSide, IntType, EquirectangularReflectionMapping, CubeReflectionMapping, EquirectangularRefractionMapping, CubeRefractionMapping, arrayNeedsUint32, FloatType, NoToneMapping, GLSL3, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, CustomToneMapping, ACESFilmicToneMapping, CineonToneMapping, ReinhardToneMapping, LinearToneMapping, DisplayP3ColorSpace, SRGBColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, P3Primaries, Rec709Primaries, AddOperation, MixOperation, MultiplyOperation, DoubleSide, NormalBlending, TangentSpaceNormalMap, ObjectSpaceNormalMap, NoBlending, NearestFilter, RGBADepthPacking, MaxEquation, MinEquation, ReverseSubtractEquation, SubtractEquation, AddEquation, OneMinusConstantAlphaFactor, ConstantAlphaFactor, OneMinusConstantColorFactor, ConstantColorFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor, OneMinusSrcAlphaFactor, OneMinusSrcColorFactor, DstAlphaFactor, DstColorFactor, SrcAlphaSaturateFactor, SrcAlphaFactor, SrcColorFactor, OneFactor, ZeroFactor, LessEqualDepth, CullFaceBack, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, CullFaceNone, CullFaceFront, NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessDepth, AlwaysDepth, NeverDepth, MirroredRepeatWrapping, ClampToEdgeWrapping, RepeatWrapping, LinearMipmapLinearFilter, LinearMipmapNearestFilter, LinearFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, NotEqualCompare, GreaterCompare, GreaterEqualCompare, EqualCompare, LessEqualCompare, LessCompare, AlwaysCompare, NeverCompare, createElementNS, LinearTransfer, NoColorSpace, RGB_ETC1_Format, UnsignedIntType, UnsignedInt248Type, DepthFormat, UnsignedShortType, DepthStencilFormat, RGBAFormat, _SRGBAFormat, UnsignedByteType, UnsignedShort4444Type, UnsignedShort5551Type, ByteType, ShortType, HalfFloatType, AlphaFormat, LuminanceFormat, LuminanceAlphaFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format } from '@renderlayer/shared';
+import { CubeUVReflectionMapping, BackSide, SRGBTransfer, FrontSide, IntType, EquirectangularReflectionMapping, CubeReflectionMapping, EquirectangularRefractionMapping, CubeRefractionMapping, arrayNeedsUint32, FloatType, NoToneMapping, GLSL3, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap, CustomToneMapping, ACESFilmicToneMapping, CineonToneMapping, ReinhardToneMapping, LinearToneMapping, DisplayP3ColorSpace, SRGBColorSpace, LinearDisplayP3ColorSpace, LinearSRGBColorSpace, P3Primaries, Rec709Primaries, AddOperation, MixOperation, MultiplyOperation, DoubleSide, NormalBlending, TangentSpaceNormalMap, ObjectSpaceNormalMap, NoBlending, NearestFilter, RGBADepthPacking, MaxEquation, MinEquation, ReverseSubtractEquation, SubtractEquation, AddEquation, OneMinusConstantAlphaFactor, ConstantAlphaFactor, OneMinusConstantColorFactor, ConstantColorFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor, OneMinusSrcAlphaFactor, OneMinusSrcColorFactor, DstAlphaFactor, DstColorFactor, SrcAlphaSaturateFactor, SrcAlphaFactor, SrcColorFactor, OneFactor, ZeroFactor, LessEqualDepth, CullFaceBack, CustomBlending, MultiplyBlending, SubtractiveBlending, AdditiveBlending, CullFaceNone, CullFaceFront, NotEqualDepth, GreaterDepth, GreaterEqualDepth, EqualDepth, LessDepth, AlwaysDepth, NeverDepth, MirroredRepeatWrapping, ClampToEdgeWrapping, RepeatWrapping, LinearMipmapLinearFilter, LinearMipmapNearestFilter, LinearFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, NotEqualCompare, GreaterCompare, GreaterEqualCompare, EqualCompare, LessEqualCompare, LessCompare, AlwaysCompare, NeverCompare, createElementNS, LinearTransfer, NoColorSpace, RGB_ETC1_Format, UnsignedIntType, UnsignedInt248Type, DepthFormat, UnsignedShortType, DepthStencilFormat, RGBAFormat, _SRGBAFormat, UnsignedByteType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedInt5999Type, UnsignedInt101111Type, ByteType, ShortType, HalfFloatType, AlphaFormat, RGBFormat, LuminanceFormat, LuminanceAlphaFormat, RedFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBAIntegerFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, R11_EAC_Format, SIGNED_R11_EAC_Format, RG11_EAC_Format, SIGNED_RG11_EAC_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_BPTC_Format, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format } from '@renderlayer/shared';
 import { WebGLCubeRenderTarget, WebGLRenderTarget } from '@renderlayer/targets';
 import { PMREMGenerator } from '@renderlayer/pmrem';
 import { Uint32BufferAttribute, Uint16BufferAttribute, BufferGeometry, BufferAttribute } from '@renderlayer/buffers';
@@ -1047,8 +1047,11 @@ class WebGLExtensions {
   /** @param {?WebGLCapabilities} capabilities  */
   init(capabilities) {
     this.#getExtension("EXT_color_buffer_float");
+    this.#getExtension("WEBGL_clip_cull_distance");
     this.#getExtension("OES_texture_float_linear");
     this.#getExtension("EXT_color_buffer_half_float");
+    this.#getExtension("WEBGL_multisampled_render_to_texture");
+    this.#getExtension("WEBGL_render_shared_exponent");
   }
   get(name) {
     const extension = this.#getExtension(name);
@@ -5429,6 +5432,34 @@ class WebGLTextures {
       if (glType === gl.HALF_FLOAT) internalFormat = gl.RG16F;
       if (glType === gl.UNSIGNED_BYTE) internalFormat = gl.RG8;
     }
+    if (glFormat === gl.RG_INTEGER) {
+      if (glType === gl.UNSIGNED_BYTE) internalFormat = gl.RG8UI;
+      if (glType === gl.UNSIGNED_SHORT) internalFormat = gl.RG16UI;
+      if (glType === gl.UNSIGNED_INT) internalFormat = gl.RG32UI;
+      if (glType === gl.BYTE) internalFormat = gl.RG8I;
+      if (glType === gl.SHORT) internalFormat = gl.RG16I;
+      if (glType === gl.INT) internalFormat = gl.RG32I;
+    }
+    if (glFormat === gl.RGB_INTEGER) {
+      if (glType === gl.UNSIGNED_BYTE) internalFormat = gl.RGB8UI;
+      if (glType === gl.UNSIGNED_SHORT) internalFormat = gl.RGB16UI;
+      if (glType === gl.UNSIGNED_INT) internalFormat = gl.RGB32UI;
+      if (glType === gl.BYTE) internalFormat = gl.RGB8I;
+      if (glType === gl.SHORT) internalFormat = gl.RGB16I;
+      if (glType === gl.INT) internalFormat = gl.RGB32I;
+    }
+    if (glFormat === gl.RGBA_INTEGER) {
+      if (glType === gl.UNSIGNED_BYTE) internalFormat = gl.RGBA8UI;
+      if (glType === gl.UNSIGNED_SHORT) internalFormat = gl.RGBA16UI;
+      if (glType === gl.UNSIGNED_INT) internalFormat = gl.RGBA32UI;
+      if (glType === gl.BYTE) internalFormat = gl.RGBA8I;
+      if (glType === gl.SHORT) internalFormat = gl.RGBA16I;
+      if (glType === gl.INT) internalFormat = gl.RGBA32I;
+    }
+    if (glFormat === gl.RGB) {
+      if (glType === gl.UNSIGNED_INT_5_9_9_9_REV) internalFormat = gl.RGB9_E5;
+      if (glType === gl.UNSIGNED_INT_10F_11F_11F_REV) internalFormat = gl.R11F_G11F_B10F;
+    }
     if (glFormat === gl.RGBA) {
       const transfer = forceLinearTransfer ? LinearTransfer : ColorManagement.getTransfer(colorSpace);
       if (glType === gl.FLOAT) internalFormat = gl.RGBA32F;
@@ -7273,6 +7304,8 @@ class WebGLUtils {
     if (p === UnsignedByteType) return gl.UNSIGNED_BYTE;
     if (p === UnsignedShort4444Type) return gl.UNSIGNED_SHORT_4_4_4_4;
     if (p === UnsignedShort5551Type) return gl.UNSIGNED_SHORT_5_5_5_1;
+    if (p === UnsignedInt5999Type) return gl.UNSIGNED_INT_5_9_9_9_REV;
+    if (p === UnsignedInt101111Type) return gl.UNSIGNED_INT_10F_11F_11F_REV;
     if (p === ByteType) return gl.BYTE;
     if (p === ShortType) return gl.SHORT;
     if (p === UnsignedShortType) return gl.UNSIGNED_SHORT;
@@ -7280,7 +7313,9 @@ class WebGLUtils {
     if (p === UnsignedIntType) return gl.UNSIGNED_INT;
     if (p === FloatType) return gl.FLOAT;
     if (p === HalfFloatType) return gl.HALF_FLOAT;
+    if (p === HalfFloatType) return gl.HALF_FLOAT;
     if (p === AlphaFormat) return gl.ALPHA;
+    if (p === RGBFormat) return gl.RGB;
     if (p === RGBAFormat) return gl.RGBA;
     if (p === LuminanceFormat) return gl.LUMINANCE;
     if (p === LuminanceAlphaFormat) return gl.LUMINANCE_ALPHA;
@@ -7333,21 +7368,17 @@ class WebGLUtils {
         return null;
       }
     }
-    if (p === RGB_ETC1_Format) {
-      extension = extensions.get("WEBGL_compressed_texture_etc1");
-      if (extension !== null) {
-        return extension.COMPRESSED_RGB_ETC1_WEBGL;
-      } else {
-        return null;
-      }
-    }
-    if (p === RGB_ETC2_Format || p === RGBA_ETC2_EAC_Format) {
+    if (p === RGB_ETC1_Format || p === RGB_ETC2_Format || p === RGBA_ETC2_EAC_Format || p === R11_EAC_Format || p === SIGNED_R11_EAC_Format || p === RG11_EAC_Format || p === SIGNED_RG11_EAC_Format) {
       extension = extensions.get("WEBGL_compressed_texture_etc");
       if (extension !== null) {
-        if (p === RGB_ETC2_Format)
+        if (p === RGB_ETC1_Format || p === RGB_ETC2_Format)
           return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ETC2 : extension.COMPRESSED_RGB8_ETC2;
         if (p === RGBA_ETC2_EAC_Format)
           return transfer === SRGBTransfer ? extension.COMPRESSED_SRGB8_ALPHA8_ETC2_EAC : extension.COMPRESSED_RGBA8_ETC2_EAC;
+        if (p === R11_EAC_Format) return extension.COMPRESSED_R11_EAC;
+        if (p === SIGNED_R11_EAC_Format) return extension.COMPRESSED_SIGNED_R11_EAC;
+        if (p === RG11_EAC_Format) return extension.COMPRESSED_RG11_EAC;
+        if (p === SIGNED_RG11_EAC_Format) return extension.COMPRESSED_SIGNED_RG11_EAC;
       } else {
         return null;
       }
@@ -7401,7 +7432,7 @@ class WebGLUtils {
     if (p === RED_RGTC1_Format || p === SIGNED_RED_RGTC1_Format || p === RED_GREEN_RGTC2_Format || p === SIGNED_RED_GREEN_RGTC2_Format) {
       extension = extensions.get("EXT_texture_compression_rgtc");
       if (extension !== null) {
-        if (p === RGBA_BPTC_Format) return extension.COMPRESSED_RED_RGTC1_EXT;
+        if (p === RED_RGTC1_Format) return extension.COMPRESSED_RED_RGTC1_EXT;
         if (p === SIGNED_RED_RGTC1_Format) return extension.COMPRESSED_SIGNED_RED_RGTC1_EXT;
         if (p === RED_GREEN_RGTC2_Format) return extension.COMPRESSED_RED_GREEN_RGTC2_EXT;
         if (p === SIGNED_RED_GREEN_RGTC2_Format)
