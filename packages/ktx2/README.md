@@ -1,6 +1,8 @@
 # @renderlayer/ktx2
 
-Basis texture support library used by `@renderlayer` packages.
+KTX container file support library used by `@renderlayer` packages.
+
+KTX 2.0 is a container format for various GPU texture formats. The loader supports Basis Universal GPU textures, which can be quickly transcoded to a wide variety of GPU texture compression formats.
 
 [![NPM version][npm-badge]][npm-url]
 [![License][license-badge]][license-url]
@@ -10,6 +12,13 @@ Basis texture support library used by `@renderlayer` packages.
 ```bash
 npm i @renderlayer/ktx2
 ```
+
+## References
+
+| Website | Reference                                                  |
+| ------- | ---------------------------------------------------------- |
+| KTX     | https://registry.khronos.org/KTX/specs/2.0/ktxspec.v2.html |
+| Basis   | https://github.com/BinomialLLC/basis_universal             |
 
 ## License
 
