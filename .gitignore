@@ -43,6 +43,7 @@ pnpm-lock.yaml
 yarn.lock
 
 # wip
-/packages/draco/libs
+/apps/*/public/lib
+/packages/draco/lib
 /packages/basis
 /packages/ktx2
