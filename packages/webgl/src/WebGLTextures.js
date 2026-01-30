@@ -251,6 +251,38 @@ class WebGLTextures {
       if (glType === gl.UNSIGNED_BYTE) internalFormat = gl.RG8;
     }
 
+    if (glFormat === gl.RG_INTEGER) {
+      if (glType === gl.UNSIGNED_BYTE) internalFormat = gl.RG8UI;
+      if (glType === gl.UNSIGNED_SHORT) internalFormat = gl.RG16UI;
+      if (glType === gl.UNSIGNED_INT) internalFormat = gl.RG32UI;
+      if (glType === gl.BYTE) internalFormat = gl.RG8I;
+      if (glType === gl.SHORT) internalFormat = gl.RG16I;
+      if (glType === gl.INT) internalFormat = gl.RG32I;
+    }
+
+    if (glFormat === gl.RGB_INTEGER) {
+      if (glType === gl.UNSIGNED_BYTE) internalFormat = gl.RGB8UI;
+      if (glType === gl.UNSIGNED_SHORT) internalFormat = gl.RGB16UI;
+      if (glType === gl.UNSIGNED_INT) internalFormat = gl.RGB32UI;
+      if (glType === gl.BYTE) internalFormat = gl.RGB8I;
+      if (glType === gl.SHORT) internalFormat = gl.RGB16I;
+      if (glType === gl.INT) internalFormat = gl.RGB32I;
+    }
+
+    if (glFormat === gl.RGBA_INTEGER) {
+      if (glType === gl.UNSIGNED_BYTE) internalFormat = gl.RGBA8UI;
+      if (glType === gl.UNSIGNED_SHORT) internalFormat = gl.RGBA16UI;
+      if (glType === gl.UNSIGNED_INT) internalFormat = gl.RGBA32UI;
+      if (glType === gl.BYTE) internalFormat = gl.RGBA8I;
+      if (glType === gl.SHORT) internalFormat = gl.RGBA16I;
+      if (glType === gl.INT) internalFormat = gl.RGBA32I;
+    }
+
+    if (glFormat === gl.RGB) {
+      if (glType === gl.UNSIGNED_INT_5_9_9_9_REV) internalFormat = gl.RGB9_E5;
+      if (glType === gl.UNSIGNED_INT_10F_11F_11F_REV) internalFormat = gl.R11F_G11F_B10F;
+    }
+
     if (glFormat === gl.RGBA) {
       const transfer =
         forceLinearTransfer ? LinearTransfer : ColorManagement.getTransfer(colorSpace);
