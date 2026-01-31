@@ -142,8 +142,8 @@ class DRACOLoader extends Loader {
   // #decoderBinary = null;
   #decoderPending = null;
   #workerLimit = 4;
-  #workerPool = [];
   #workerNextTaskID = 1;
+  #workerPool = [];
   #workerSourceURL = "";
   #defaultAttributeIDs = {
     position: "POSITION",
