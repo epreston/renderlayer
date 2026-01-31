@@ -102,11 +102,6 @@ class DRACOLoader extends Loader {
       if (cachedTask.key === taskKey) {
         return cachedTask.promise;
       } else if (buffer.byteLength === 0) {
-        // Technically, it would be possible to wait for the previous task to complete,
-        // transfer the buffer back, and decode again with the second configuration. That
-        // is complex, and I don't know of any reason to decode a Draco buffer twice in
-        // different ways, so this is left unimplemented.
-
         // prettier-ignore
         throw new Error(
           'DRACOLoader: Unable to re-decode a buffer with different ' +
