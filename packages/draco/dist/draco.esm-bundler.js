@@ -137,7 +137,7 @@ function DRACOWorker() {
 }
 
 class DRACOLoader extends Loader {
-  #decoderPath = "https://www.gstatic.com/draco/versioned/decoders/1.5.7/";
+  #decoderPath = "";
   #decoderConfig = {};
   // #decoderBinary = null;
   #decoderPending = null;
