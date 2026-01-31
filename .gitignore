@@ -45,4 +45,3 @@ yarn.lock
 # wip
 /apps/*/public/lib
 /packages/basis
-/packages/ktx2
