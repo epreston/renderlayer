@@ -1,9 +1,10 @@
 {
-  "private": true,
   "type": "module",
   "name": "@renderlayer/ktx2",
   "version": "0.0.3",
   "description": "@renderlayer/ktx2",
+  "module": "./dist/ktx2.esm-bundler.js",
+  "exports": "./dist/ktx2.esm-bundler.js",
   "files": [
     "dist"
   ],
@@ -20,6 +21,7 @@
   },
   "keywords": [
     "renderlayer",
+    "compression",
     "ktx2"
   ],
   "author": "Ed Preston",
@@ -28,5 +30,9 @@
     "url": "https://github.com/epreston/renderlayer/issues"
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/ktx2#readme",
-  "dependencies": {}
+  "dependencies": {
+    "@renderlayer/loaders": "~0.0.18",
+    "@renderlayer/shared": "~0.0.9",
+    "@renderlayer/textures": "~0.0.14"
+  }
 }
