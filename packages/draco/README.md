@@ -13,6 +13,17 @@ Draco is an open-source library for compressing and decompressing 3D geometric m
 npm i @renderlayer/draco
 ```
 
+## Configure
+
+Specifiy where the 'lib' files are hosted using `decoderPath`. This can be a directory relative to the root of the web site or googles dedicated CDN for these files.
+
+```js
+const decoderPath = 'https://www.gstatic.com/draco/versioned/decoders/1.5.7/';
+
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath(decoderPath);
+```
+
 ## References
 
 | Website | Reference                       |
