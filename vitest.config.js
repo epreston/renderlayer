@@ -3,6 +3,8 @@ import { entries } from './scripts/aliases.js';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  appType: 'mpa', // disable history fallback
+  assetsInclude: ['**/*.gltf', '**/*.glb', '**/*.hdr', '**/*.bin', '**/*.wasm', '**/*.ktx2'],
   define: {
     __DEV__: true,
     __TEST__: true,
