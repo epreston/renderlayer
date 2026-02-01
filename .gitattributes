@@ -25,3 +25,4 @@ LICENSE eol=crlf
 *.mp3 binary
 *.mp4 binary
 *.gz binary
+*.ktx2 binary
