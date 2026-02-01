@@ -170,5 +170,29 @@ export const handlers = [
         'Content-Type': 'application/json'
       }
     });
+  }),
+  // KTX2 - KTX2Loader, FileLoader
+  http.get('http://renderlayer.org/test/ktx2/:fileName', (info) => {
+    const { fileName } = info.params;
+    const resolvedFileName = path.resolve(__dirname, `../fixtures/${fileName}`);
+
+    if (!fs.existsSync(resolvedFileName)) {
+      console.warn(`missing test file: ${fileName}`);
+
+      // prettier-ignore
+      return HttpResponse.json(
+        { errorMessage: `File '${fileName}' not found.` },
+        { status: 404 }
+      );
+    }
+
+    const fileBuffer = fs.readFileSync(resolvedFileName);
+
+    return new HttpResponse(fileBuffer, {
+      headers: {
+        'Content-Length': fileBuffer.byteLength.toString(),
+        'Content-Type': 'image/ktx2'
+      }
+    });
   })
 ];
