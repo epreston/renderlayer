@@ -4,3 +4,4 @@ coverage
 /meta
 /apps/*/public/lib
 /packages/*/lib
+/packages/*/inc

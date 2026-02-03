@@ -6,7 +6,7 @@ export default [
   {
     // ignores must be completely separate from other rules
     name: 'project/ignores',
-    ignores: ['**/packages/*/lib']
+    ignores: ['**/packages/*/lib', '**/packages/*/inc']
   }
   // {
   //   name: 'project/rules',
