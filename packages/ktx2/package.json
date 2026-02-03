@@ -6,7 +6,8 @@
   "module": "./dist/ktx2.esm-bundler.js",
   "exports": "./dist/ktx2.esm-bundler.js",
   "files": [
-    "dist"
+    "dist",
+    "lib"
   ],
   "sideEffects": false,
   "buildOptions": {
