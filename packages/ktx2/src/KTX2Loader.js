@@ -132,6 +132,14 @@ class KTX2Loader extends Loader {
     super(manager);
   }
 
+  get supportedFormats() {
+    if (this.#workerConfig === null) {
+      throw new Error('KTX2Loader: Missing initialization with `.detectSupport( renderer )`.');
+    }
+
+    return this.#workerConfig;
+  }
+
   dispose() {
     this.#workerPool.dispose();
     if (this.#workerSourceURL) URL.revokeObjectURL(this.#workerSourceURL);

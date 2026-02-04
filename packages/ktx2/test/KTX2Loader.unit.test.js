@@ -21,6 +21,11 @@ describe('KTX2', () => {
       expect(object.transcoderPath).toBe('');
     });
 
+    test.todo('supportedFormats', () => {
+      // const object = new KTX2Loader();
+      // object.dispose();
+    });
+
     test.todo('dispose', () => {
       // const object = new KTX2Loader();
       // object.dispose();
