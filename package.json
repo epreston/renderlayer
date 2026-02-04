@@ -28,8 +28,7 @@
     "test-watch": "vitest",
     "test-coverage": "vitest run --coverage.enabled",
     "format": "prettier --check --cache \"**/*.?(c|m)[tj]s?(x)\"",
-    "format-fix": "prettier --write --cache \"**/*.?(c|m)[tj]s?(x)\"",
-    "release": "node scripts/release.js"
+    "format-fix": "prettier --write --cache \"**/*.?(c|m)[tj]s?(x)\""
   },
   "devDependencies": {
     "@epreston/eslint-config": "^2.3.0",
