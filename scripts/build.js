@@ -27,10 +27,9 @@ import { brotliCompressSync, gzipSync } from 'node:zlib';
 
 import { execa, execaSync } from 'execa';
 import minimist from 'minimist';
-import pico from 'picocolors';
 import prettyBytes from 'pretty-bytes';
 
-import { targets as allTargets, fuzzyMatchTarget } from './utils.js';
+import { targets as allTargets, fuzzyMatchTarget, simpleConsoleColors as c } from './utils.js';
 
 const require = createRequire(import.meta.url);
 const args = minimist(process.argv.slice(2));
@@ -194,7 +193,7 @@ async function checkFileSize(filePath) {
   const brotli = brotliCompressSync(file);
 
   console.log(
-    `${pico.gray(pico.bold(fileName))} min:${prettyBytes(file.length)} / gzip:${prettyBytes(
+    `${c.dimBlue(c.bold(fileName))} min:${prettyBytes(file.length)} / gzip:${prettyBytes(
       gzipped.length
     )} / brotli:${prettyBytes(brotli.length)}`
   );
