@@ -1,5 +1,4 @@
 import { Uint16BufferAttribute, Uint32BufferAttribute } from '@renderlayer/buffers';
-import { arrayNeedsUint32 } from '@renderlayer/shared';
 
 /**
  * @import { WebGLAttributes, WebGLInfo } from "@renderlayer/webgl"
@@ -112,6 +111,10 @@ class WebGLGeometries {
     const geometryPosition = geometry.attributes.position;
     let version = 0;
 
+    if (geometryPosition === undefined) {
+      return;
+    }
+
     if (geometryIndex !== null) {
       const array = geometryIndex.array;
       version = geometryIndex.version;
@@ -123,7 +126,7 @@ class WebGLGeometries {
 
         indices.push(a, b, b, c, c, a);
       }
-    } else if (geometryPosition !== undefined) {
+    } else {
       const array = geometryPosition.array;
       version = geometryPosition.version;
 
@@ -134,12 +137,11 @@ class WebGLGeometries {
 
         indices.push(a, b, b, c, c, a);
       }
-    } else {
-      return;
     }
 
-    const attribute = new (
-      arrayNeedsUint32(indices) ? Uint32BufferAttribute : Uint16BufferAttribute)(indices, 1);
+    // check whether a 32 bit or 16 bit buffer is required to store the indices
+    const needsUint32 = geometryPosition.count >= 65535;
+    const attribute = new (needsUint32 ? Uint32BufferAttribute : Uint16BufferAttribute)(indices, 1);
     attribute.version = version;
 
     // Updating index buffer in VAO now. See WebGLBindingStates
