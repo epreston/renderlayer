@@ -9,6 +9,7 @@ import alias from '@rollup/plugin-alias';
 import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 // 3rd party Rollup plugins
 import esbuild from 'rollup-plugin-esbuild';
@@ -213,6 +214,7 @@ function createConfig(format, output, plugins = []) {
     // Global and Browser ESM builds inlines everything so that they can be used alone.
     external: resolveExternal(),
     plugins: [
+      nodeResolve(),
       shaderChunks(),
       json({
         namedExports: false
