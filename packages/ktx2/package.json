@@ -35,5 +35,9 @@
     "@renderlayer/loaders": "~0.0.18",
     "@renderlayer/shared": "~0.0.9",
     "@renderlayer/textures": "~0.0.14"
+  },
+  "devDependencies": {
+    "ktx-parse": "~1.1.0",
+    "zstddec": "~0.2.0"
   }
 }

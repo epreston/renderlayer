@@ -113,9 +113,9 @@ import {
   VK_FORMAT_E5B9G9R9_UFLOAT_PACK32,
   VK_FORMAT_B10G11R11_UFLOAT_PACK32,
   VK_FORMAT_UNDEFINED
-} from '../inc/ktx-parse.module.js';
+} from 'ktx-parse';
 
-import { ZSTDDecoder } from '../inc/zstddec.module.js';
+import { ZSTDDecoder } from 'zstddec';
 
 let _zstd;
 
