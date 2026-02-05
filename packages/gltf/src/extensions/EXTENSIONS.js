@@ -3,6 +3,7 @@ export const EXTENSIONS = {
   KHR_DRACO_MESH_COMPRESSION: 'KHR_draco_mesh_compression',
   KHR_LIGHTS_PUNCTUAL: 'KHR_lights_punctual',
   KHR_MATERIALS_CLEARCOAT: 'KHR_materials_clearcoat',
+  KHR_MATERIALS_DISPERSION: 'KHR_materials_dispersion',
   KHR_MATERIALS_IOR: 'KHR_materials_ior',
   KHR_MATERIALS_SHEEN: 'KHR_materials_sheen',
   KHR_MATERIALS_SPECULAR: 'KHR_materials_specular',

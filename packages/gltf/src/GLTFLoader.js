@@ -8,6 +8,7 @@ import { GLTFDracoMeshCompressionExtension } from './extensions/GLTFDracoMeshCom
 import { GLTFLightsExtension } from './extensions/GLTFLightsExtension';
 import { GLTFMaterialsAnisotropyExtension } from './extensions/GLTFMaterialsAnisotropyExtension';
 import { GLTFMaterialsClearcoatExtension } from './extensions/GLTFMaterialsClearcoatExtension';
+import { GLTFMaterialsDispersionExtension } from './extensions/GLTFMaterialsDispersionExtension';
 import { GLTFMaterialsEmissiveStrengthExtension } from './extensions/GLTFMaterialsEmissiveStrengthExtension';
 import { GLTFMaterialsIorExtension } from './extensions/GLTFMaterialsIorExtension';
 import { GLTFMaterialsIridescenceExtension } from './extensions/GLTFMaterialsIridescenceExtension';
@@ -48,6 +49,10 @@ class GLTFLoader extends Loader {
 
     this.register(function (parser) {
       return new GLTFMaterialsClearcoatExtension(parser);
+    });
+
+    this.register(function (parser) {
+      return new GLTFMaterialsDispersionExtension(parser);
     });
 
     this.register(function (parser) {
