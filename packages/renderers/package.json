@@ -31,9 +31,9 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/renderers#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.14",
-    "@renderlayer/shared": "~0.0.8",
-    "@renderlayer/targets": "~0.0.7",
-    "@renderlayer/webgl": "~0.0.15"
+    "@renderlayer/math": "~0.0.15",
+    "@renderlayer/shared": "~0.0.9",
+    "@renderlayer/targets": "~0.0.8",
+    "@renderlayer/webgl": "~0.0.16"
   }
 }
