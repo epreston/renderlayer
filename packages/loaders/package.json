@@ -31,17 +31,17 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/loaders#readme",
   "dependencies": {
-    "@renderlayer/animation": "~0.0.7",
-    "@renderlayer/buffers": "~0.0.7",
-    "@renderlayer/cameras": "~0.0.7",
-    "@renderlayer/core": "~0.0.8",
-    "@renderlayer/geometries": "~0.0.7",
-    "@renderlayer/lights": "~0.0.5",
-    "@renderlayer/materials": "~0.0.14",
-    "@renderlayer/math": "~0.0.14",
-    "@renderlayer/objects": "~0.0.9",
-    "@renderlayer/scenes": "~0.0.5",
-    "@renderlayer/shared": "~0.0.8",
-    "@renderlayer/textures": "~0.0.12"
+    "@renderlayer/animation": "~0.0.8",
+    "@renderlayer/buffers": "~0.0.8",
+    "@renderlayer/cameras": "~0.0.8",
+    "@renderlayer/core": "~0.0.9",
+    "@renderlayer/geometries": "~0.0.8",
+    "@renderlayer/lights": "~0.0.6",
+    "@renderlayer/materials": "~0.0.15",
+    "@renderlayer/math": "~0.0.15",
+    "@renderlayer/objects": "~0.0.10",
+    "@renderlayer/scenes": "~0.0.6",
+    "@renderlayer/shared": "~0.0.9",
+    "@renderlayer/textures": "~0.0.14"
   }
 }
