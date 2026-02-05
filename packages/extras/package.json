@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/extras",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "@renderlayer/extras",
   "module": "./dist/extras.esm-bundler.js",
   "exports": "./dist/extras.esm-bundler.js",
@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/extras#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.7",
-    "@renderlayer/loaders": "~0.0.17",
-    "@renderlayer/shared": "~0.0.8"
+    "@renderlayer/buffers": "~0.0.8",
+    "@renderlayer/loaders": "~0.0.18",
+    "@renderlayer/shared": "~0.0.9"
   }
 }
