@@ -2,9 +2,10 @@ import { BufferGeometry, Float32BufferAttribute } from '@renderlayer/buffers';
 import { Vector3, Vector2 } from '@renderlayer/math';
 
 class BoxGeometry extends BufferGeometry {
+  type = "BoxGeometry";
+  parameters;
   constructor(width = 1, height = 1, depth = 1, widthSegments = 1, heightSegments = 1, depthSegments = 1) {
     super();
-    this.type = "BoxGeometry";
     this.parameters = {
       width,
       height,
@@ -95,9 +96,10 @@ class BoxGeometry extends BufferGeometry {
 }
 
 class CircleGeometry extends BufferGeometry {
+  type = "CircleGeometry";
+  parameters;
   constructor(radius = 1, segments = 32, thetaStart = 0, thetaLength = Math.PI * 2) {
     super();
-    this.type = "CircleGeometry";
     this.parameters = {
       radius,
       segments,
@@ -143,9 +145,10 @@ class CircleGeometry extends BufferGeometry {
 }
 
 class CylinderGeometry extends BufferGeometry {
+  type = "CylinderGeometry";
+  parameters;
   constructor(radiusTop = 1, radiusBottom = 1, height = 1, radialSegments = 32, heightSegments = 1, openEnded = false, thetaStart = 0, thetaLength = Math.PI * 2) {
     super();
-    this.type = "CylinderGeometry";
     this.parameters = {
       radiusTop,
       radiusBottom,
@@ -278,9 +281,10 @@ class CylinderGeometry extends BufferGeometry {
 }
 
 class PlaneGeometry extends BufferGeometry {
+  type = "PlaneGeometry";
+  parameters;
   constructor(width = 1, height = 1, widthSegments = 1, heightSegments = 1) {
     super();
-    this.type = "PlaneGeometry";
     this.parameters = {
       width,
       height,
@@ -335,9 +339,10 @@ class PlaneGeometry extends BufferGeometry {
 }
 
 class SphereGeometry extends BufferGeometry {
+  type = "SphereGeometry";
+  parameters;
   constructor(radius = 1, widthSegments = 32, heightSegments = 16, phiStart = 0, phiLength = Math.PI * 2, thetaStart = 0, thetaLength = Math.PI) {
     super();
-    this.type = "SphereGeometry";
     this.parameters = {
       radius,
       widthSegments,
