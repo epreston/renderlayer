@@ -505,6 +505,12 @@ class KTX2Loader extends Loader {
   constructor(manager) {
     super(manager);
   }
+  get supportedFormats() {
+    if (this.#workerConfig === null) {
+      throw new Error("KTX2Loader: Missing initialization with `.detectSupport( renderer )`.");
+    }
+    return this.#workerConfig;
+  }
   dispose() {
     this.#workerPool.dispose();
     if (this.#workerSourceURL) URL.revokeObjectURL(this.#workerSourceURL);
@@ -527,6 +533,8 @@ class KTX2Loader extends Loader {
         etc1Supported: renderer.hasFeature("texture-compression-etc1"),
         etc2Supported: renderer.hasFeature("texture-compression-etc2"),
         dxtSupported: renderer.hasFeature("texture-compression-s3tc"),
+        rgtcSupported: false,
+        // use bc below
         bptcSupported: renderer.hasFeature("texture-compression-bc"),
         pvrtcSupported: renderer.hasFeature("texture-compression-pvrtc")
       };
@@ -537,6 +545,7 @@ class KTX2Loader extends Loader {
         etc1Supported: renderer.extensions.has("WEBGL_compressed_texture_etc1"),
         etc2Supported: renderer.extensions.has("WEBGL_compressed_texture_etc"),
         dxtSupported: renderer.extensions.has("WEBGL_compressed_texture_s3tc"),
+        rgtcSupported: renderer.extensions.has("EXT_texture_compression_rgtc"),
         bptcSupported: renderer.extensions.has("EXT_texture_compression_bptc"),
         pvrtcSupported: renderer.extensions.has("WEBGL_compressed_texture_pvrtc") || renderer.extensions.has("WEBKIT_WEBGL_compressed_texture_pvrtc")
       };
