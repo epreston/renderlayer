@@ -6,10 +6,10 @@ import { FloatType, HalfFloatType, LinearFilter, LinearSRGBColorSpace } from '@r
 // http://en.wikipedia.org/wiki/RGBE_image_format
 
 class RGBELoader extends DataTextureLoader {
+  type = HalfFloatType;
+
   constructor(manager) {
     super(manager);
-
-    this.type = HalfFloatType;
   }
 
   // adapted from http://www.graphics.cornell.edu/~bjw/rgbe.html
