@@ -8,61 +8,59 @@
  */
 
 import {
-  CompressedTexture,
   CompressedArrayTexture,
   CompressedCubeTexture,
+  CompressedTexture,
   Data3DTexture,
   DataTexture
 } from '@renderlayer/textures';
 
-import { Loader, FileLoader } from '@renderlayer/loaders';
+import { FileLoader, Loader } from '@renderlayer/loaders';
 
 import {
   DisplayP3ColorSpace,
-  LinearDisplayP3ColorSpace,
   FloatType,
   HalfFloatType,
+  LinearDisplayP3ColorSpace,
   LinearFilter,
   LinearMipmapLinearFilter,
+  LinearSRGBColorSpace,
   NearestFilter,
   NearestMipmapNearestFilter,
-  LinearSRGBColorSpace,
   NoColorSpace,
+  R11_EAC_Format,
+  RED_GREEN_RGTC2_Format,
+  RED_RGTC1_Format,
+  RG11_EAC_Format,
   RGBAFormat,
   RGBA_ASTC_4x4_Format,
   RGBA_ASTC_6x6_Format,
   RGBA_BPTC_Format,
   RGBA_ETC2_EAC_Format,
-  R11_EAC_Format,
-  SIGNED_R11_EAC_Format,
-  RG11_EAC_Format,
-  SIGNED_RG11_EAC_Format,
-  RGBA_PVRTC_4BPPV1_Format,
   RGBA_PVRTC_2BPPV1_Format,
+  RGBA_PVRTC_4BPPV1_Format,
   RGBA_S3TC_DXT1_Format,
   RGBA_S3TC_DXT5_Format,
+  RGBFormat,
   RGB_BPTC_UNSIGNED_Format,
   RGB_ETC1_Format,
   RGB_ETC2_Format,
   RGB_PVRTC_4BPPV1_Format,
   RGB_S3TC_DXT1_Format,
-  SIGNED_RED_GREEN_RGTC2_Format,
-  SIGNED_RED_RGTC1_Format,
-  RED_GREEN_RGTC2_Format,
-  RED_RGTC1_Format,
-  RGBFormat,
   RGFormat,
   RedFormat,
+  SIGNED_R11_EAC_Format,
+  SIGNED_RED_GREEN_RGTC2_Format,
+  SIGNED_RED_RGTC1_Format,
+  SIGNED_RG11_EAC_Format,
   SRGBColorSpace,
   UnsignedByteType,
+  UnsignedInt101111Type,
   UnsignedInt5999Type,
-  UnsignedInt101111Type
+  WorkerPool
 } from '@renderlayer/shared';
 
-import { WorkerPool } from './WorkerPool.js';
-
 import {
-  read,
   KHR_DF_FLAG_ALPHA_PREMULTIPLIED,
   KHR_DF_PRIMARIES_BT709,
   KHR_DF_PRIMARIES_DISPLAYP3,
@@ -71,11 +69,12 @@ import {
   KHR_SUPERCOMPRESSION_NONE,
   KHR_SUPERCOMPRESSION_ZSTD,
   VK_FORMAT_ASTC_4x4_SFLOAT_BLOCK_EXT,
-  VK_FORMAT_ASTC_6x6_SFLOAT_BLOCK_EXT,
   VK_FORMAT_ASTC_4x4_SRGB_BLOCK,
   VK_FORMAT_ASTC_4x4_UNORM_BLOCK,
+  VK_FORMAT_ASTC_6x6_SFLOAT_BLOCK_EXT,
   VK_FORMAT_ASTC_6x6_SRGB_BLOCK,
   VK_FORMAT_ASTC_6x6_UNORM_BLOCK,
+  VK_FORMAT_B10G11R11_UFLOAT_PACK32,
   VK_FORMAT_BC1_RGBA_SRGB_BLOCK,
   VK_FORMAT_BC1_RGBA_UNORM_BLOCK,
   VK_FORMAT_BC1_RGB_SRGB_BLOCK,
@@ -88,16 +87,17 @@ import {
   VK_FORMAT_BC5_UNORM_BLOCK,
   VK_FORMAT_BC7_SRGB_BLOCK,
   VK_FORMAT_BC7_UNORM_BLOCK,
-  VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK,
-  VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK,
-  VK_FORMAT_EAC_R11_UNORM_BLOCK,
-  VK_FORMAT_EAC_R11_SNORM_BLOCK,
-  VK_FORMAT_EAC_R11G11_UNORM_BLOCK,
+  VK_FORMAT_E5B9G9R9_UFLOAT_PACK32,
   VK_FORMAT_EAC_R11G11_SNORM_BLOCK,
-  VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG,
-  VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG,
+  VK_FORMAT_EAC_R11G11_UNORM_BLOCK,
+  VK_FORMAT_EAC_R11_SNORM_BLOCK,
+  VK_FORMAT_EAC_R11_UNORM_BLOCK,
+  VK_FORMAT_ETC2_R8G8B8A8_SRGB_BLOCK,
+  VK_FORMAT_ETC2_R8G8B8_SRGB_BLOCK,
   VK_FORMAT_PVRTC1_2BPP_SRGB_BLOCK_IMG,
   VK_FORMAT_PVRTC1_2BPP_UNORM_BLOCK_IMG,
+  VK_FORMAT_PVRTC1_4BPP_SRGB_BLOCK_IMG,
+  VK_FORMAT_PVRTC1_4BPP_UNORM_BLOCK_IMG,
   VK_FORMAT_R16G16B16A16_SFLOAT,
   VK_FORMAT_R16G16_SFLOAT,
   VK_FORMAT_R16_SFLOAT,
@@ -110,9 +110,8 @@ import {
   VK_FORMAT_R8G8_UNORM,
   VK_FORMAT_R8_SRGB,
   VK_FORMAT_R8_UNORM,
-  VK_FORMAT_E5B9G9R9_UFLOAT_PACK32,
-  VK_FORMAT_B10G11R11_UFLOAT_PACK32,
-  VK_FORMAT_UNDEFINED
+  VK_FORMAT_UNDEFINED,
+  read
 } from 'ktx-parse';
 
 import { ZSTDDecoder } from 'zstddec';
