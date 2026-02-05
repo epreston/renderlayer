@@ -9,6 +9,6 @@
     "preview": "vite preview --open"
   },
   "dependencies": {
-    "renderlayer": "file:../../packages/renderlayer"
+    "renderlayer": "^0.0.15"
   }
 }

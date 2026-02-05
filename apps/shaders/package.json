@@ -9,7 +9,7 @@
     "preview": "vite preview --open"
   },
   "dependencies": {
-    "renderlayer": "file:../../packages/renderlayer",
-    "@renderlayer/extras": "file:../../packages/extras"
+    "renderlayer": "^0.0.15",
+    "@renderlayer/extras": "^0.0.6"
   }
 }
