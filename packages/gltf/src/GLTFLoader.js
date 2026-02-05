@@ -1,28 +1,28 @@
 import { FileLoader, Loader, LoaderUtils } from '@renderlayer/loaders';
 
-import { GLTFLightsExtension } from './extensions/GLTFLightsExtension';
-import { GLTFMaterialsUnlitExtension } from './extensions/GLTFMaterialsUnlitExtension';
-import { GLTFMaterialsEmissiveStrengthExtension } from './extensions/GLTFMaterialsEmissiveStrengthExtension';
-import { GLTFMaterialsClearcoatExtension } from './extensions/GLTFMaterialsClearcoatExtension';
-import { GLTFMaterialsIridescenceExtension } from './extensions/GLTFMaterialsIridescenceExtension';
-import { GLTFMaterialsSheenExtension } from './extensions/GLTFMaterialsSheenExtension';
-import { GLTFMaterialsTransmissionExtension } from './extensions/GLTFMaterialsTransmissionExtension';
-import { GLTFMaterialsVolumeExtension } from './extensions/GLTFMaterialsVolumeExtension';
-import { GLTFMaterialsIorExtension } from './extensions/GLTFMaterialsIorExtension';
-import { GLTFMaterialsSpecularExtension } from './extensions/GLTFMaterialsSpecularExtension';
-import { GLTFMaterialsAnisotropyExtension } from './extensions/GLTFMaterialsAnisotropyExtension';
-import { GLTFTextureBasisUExtension } from './extensions/GLTFTextureBasisUExtension';
-import { GLTFTextureWebPExtension } from './extensions/GLTFTextureWebPExtension';
-import { GLTFTextureAVIFExtension } from './extensions/GLTFTextureAVIFExtension';
-import { GLTFMeshoptCompression } from './extensions/GLTFMeshoptCompression';
-import { GLTFMeshGpuInstancing } from './extensions/GLTFMeshGpuInstancing';
 import {
   BINARY_EXTENSION_HEADER_MAGIC,
   GLTFBinaryExtension
 } from './extensions/GLTFBinaryExtension';
 import { GLTFDracoMeshCompressionExtension } from './extensions/GLTFDracoMeshCompressionExtension';
-import { GLTFTextureTransformExtension } from './extensions/GLTFTextureTransformExtension';
+import { GLTFLightsExtension } from './extensions/GLTFLightsExtension';
+import { GLTFMaterialsAnisotropyExtension } from './extensions/GLTFMaterialsAnisotropyExtension';
+import { GLTFMaterialsClearcoatExtension } from './extensions/GLTFMaterialsClearcoatExtension';
+import { GLTFMaterialsEmissiveStrengthExtension } from './extensions/GLTFMaterialsEmissiveStrengthExtension';
+import { GLTFMaterialsIorExtension } from './extensions/GLTFMaterialsIorExtension';
+import { GLTFMaterialsIridescenceExtension } from './extensions/GLTFMaterialsIridescenceExtension';
+import { GLTFMaterialsSheenExtension } from './extensions/GLTFMaterialsSheenExtension';
+import { GLTFMaterialsSpecularExtension } from './extensions/GLTFMaterialsSpecularExtension';
+import { GLTFMaterialsTransmissionExtension } from './extensions/GLTFMaterialsTransmissionExtension';
+import { GLTFMaterialsUnlitExtension } from './extensions/GLTFMaterialsUnlitExtension';
+import { GLTFMaterialsVolumeExtension } from './extensions/GLTFMaterialsVolumeExtension';
+import { GLTFMeshGpuInstancing } from './extensions/GLTFMeshGpuInstancing';
+import { GLTFMeshoptCompression } from './extensions/GLTFMeshoptCompression';
 import { GLTFMeshQuantizationExtension } from './extensions/GLTFMeshQuantizationExtension';
+import { GLTFTextureAVIFExtension } from './extensions/GLTFTextureAVIFExtension';
+import { GLTFTextureBasisUExtension } from './extensions/GLTFTextureBasisUExtension';
+import { GLTFTextureTransformExtension } from './extensions/GLTFTextureTransformExtension';
+import { GLTFTextureWebPExtension } from './extensions/GLTFTextureWebPExtension';
 
 import { EXTENSIONS } from './extensions/EXTENSIONS';
 import { GLTFParser } from './GLTFParser';
