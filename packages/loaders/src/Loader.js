@@ -1,4 +1,4 @@
-import { DefaultLoadingManager } from './LoadingManager.js';
+import { DefaultLoadingManager, LoadingManager } from './LoadingManager.js';
 
 class Loader {
   manager;
@@ -9,6 +9,7 @@ class Loader {
   resourcePath = '';
   requestHeader = {};
 
+  /** @param {LoadingManager} [manager]  */
   constructor(manager) {
     this.manager = manager !== undefined ? manager : DefaultLoadingManager;
   }
