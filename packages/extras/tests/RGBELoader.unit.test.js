@@ -24,6 +24,14 @@ describe('Extras', () => {
       expect(object).toBeInstanceOf(DataTextureLoader);
     });
 
+    test.todo('parse', () => {
+      // implement
+    });
+
+    test.todo('setDataType', () => {
+      // implement
+    });
+
     test.todo('load - partial', async () => {
       // const onLoad = vi.fn();
       // const onProgress = vi.fn(); // unused
