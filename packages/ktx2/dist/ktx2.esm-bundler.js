@@ -1,68 +1,6 @@
 import { CompressedCubeTexture, CompressedArrayTexture, CompressedTexture, DataTexture, Data3DTexture } from '@renderlayer/textures';
 import { Loader, FileLoader } from '@renderlayer/loaders';
-import { LinearFilter, LinearMipmapLinearFilter, RGBA_S3TC_DXT1_Format, RGB_PVRTC_4BPPV1_Format, RGB_ETC2_Format, RGB_ETC1_Format, RGBA_S3TC_DXT5_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_ETC2_EAC_Format, RGBA_BPTC_Format, RGB_BPTC_UNSIGNED_Format, RGBA_ASTC_4x4_Format, RGBAFormat, FloatType, HalfFloatType, UnsignedByteType, RGBA_PVRTC_2BPPV1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RGB_S3TC_DXT1_Format, RGBA_ASTC_6x6_Format, SIGNED_RG11_EAC_Format, RG11_EAC_Format, SIGNED_R11_EAC_Format, R11_EAC_Format, RGBFormat, RedFormat, RGFormat, UnsignedInt101111Type, UnsignedInt5999Type, NearestMipmapNearestFilter, NearestFilter, SRGBColorSpace, LinearSRGBColorSpace, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, NoColorSpace } from '@renderlayer/shared';
-
-class WorkerPool {
-  pool = 4;
-  queue = [];
-  workers = [];
-  workersResolve = [];
-  workerStatus = 0;
-  /** @type {WorkerCreator} workerCreator  */
-  #workerCreator;
-  constructor(pool = 4) {
-    this.pool = pool;
-  }
-  dispose() {
-    this.workers.forEach((worker) => worker.terminate());
-    this.workersResolve.length = 0;
-    this.workers.length = 0;
-    this.queue.length = 0;
-    this.workerStatus = 0;
-  }
-  /** @param {WorkerCreator} workerCreator  */
-  setWorkerCreator(workerCreator) {
-    this.#workerCreator = workerCreator;
-  }
-  setWorkerLimit(pool) {
-    this.pool = pool;
-  }
-  postMessage(msg, transfer) {
-    return new Promise((resolve) => {
-      const workerId = this.#getIdleWorker();
-      if (workerId !== -1) {
-        this.#initWorker(workerId);
-        this.workerStatus |= 1 << workerId;
-        this.workersResolve[workerId] = resolve;
-        this.workers[workerId].postMessage(msg, transfer);
-      } else {
-        this.queue.push({ resolve, msg, transfer });
-      }
-    });
-  }
-  #initWorker(workerId) {
-    if (!this.workers[workerId]) {
-      const worker = this.#workerCreator();
-      worker.addEventListener("message", this.#onMessage.bind(this, workerId));
-      this.workers[workerId] = worker;
-    }
-  }
-  #getIdleWorker() {
-    for (let i = 0; i < this.pool; i++) if (!(this.workerStatus & 1 << i)) return i;
-    return -1;
-  }
-  #onMessage(workerId, msg) {
-    const resolve = this.workersResolve[workerId];
-    resolve && resolve(msg);
-    if (this.queue.length) {
-      const { resolve: resolve2, msg: msg2, transfer } = this.queue.shift();
-      this.workersResolve[workerId] = resolve2;
-      this.workers[workerId].postMessage(msg2, transfer);
-    } else {
-      this.workerStatus ^= 1 << workerId;
-    }
-  }
-}
+import { WorkerPool, LinearFilter, LinearMipmapLinearFilter, RGBA_S3TC_DXT1_Format, RGB_PVRTC_4BPPV1_Format, RGB_ETC2_Format, RGB_ETC1_Format, RGBA_S3TC_DXT5_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_ETC2_EAC_Format, RGBA_BPTC_Format, RGB_BPTC_UNSIGNED_Format, RGBA_ASTC_4x4_Format, RGBAFormat, FloatType, HalfFloatType, UnsignedByteType, RGBA_PVRTC_2BPPV1_Format, RED_GREEN_RGTC2_Format, SIGNED_RED_GREEN_RGTC2_Format, RED_RGTC1_Format, SIGNED_RED_RGTC1_Format, RGB_S3TC_DXT1_Format, RGBA_ASTC_6x6_Format, SIGNED_RG11_EAC_Format, RG11_EAC_Format, SIGNED_R11_EAC_Format, R11_EAC_Format, RGBFormat, RedFormat, RGFormat, UnsignedInt101111Type, UnsignedInt5999Type, NearestMipmapNearestFilter, NearestFilter, SRGBColorSpace, LinearSRGBColorSpace, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, NoColorSpace } from '@renderlayer/shared';
 
 ///////////////////////////////////////////////////
 // KTX2 Header.
