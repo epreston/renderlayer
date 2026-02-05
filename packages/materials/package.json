@@ -30,9 +30,9 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/materials#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.8",
-    "@renderlayer/math": "~0.0.14",
+    "@renderlayer/core": "~0.0.9",
+    "@renderlayer/math": "~0.0.15",
     "@renderlayer/shaders": "~0.0.10",
-    "@renderlayer/shared": "~0.0.8"
+    "@renderlayer/shared": "~0.0.9"
   }
 }
