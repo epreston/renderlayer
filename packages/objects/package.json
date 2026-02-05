@@ -30,11 +30,11 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/objects#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.7",
-    "@renderlayer/core": "~0.0.8",
-    "@renderlayer/materials": "~0.0.14",
-    "@renderlayer/math": "~0.0.14",
-    "@renderlayer/shared": "~0.0.8",
-    "@renderlayer/textures": "~0.0.12"
+    "@renderlayer/buffers": "~0.0.8",
+    "@renderlayer/core": "~0.0.9",
+    "@renderlayer/materials": "~0.0.15",
+    "@renderlayer/math": "~0.0.15",
+    "@renderlayer/shared": "~0.0.9",
+    "@renderlayer/textures": "~0.0.14"
   }
 }
