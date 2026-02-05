@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/shaders#readme",
   "dependencies": {
-    "@renderlayer/math": "~0.0.14",
-    "@renderlayer/shared": "~0.0.8"
+    "@renderlayer/math": "~0.0.15",
+    "@renderlayer/shared": "~0.0.9"
   }
 }
