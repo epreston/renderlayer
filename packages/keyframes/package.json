@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/keyframes#readme",
   "dependencies": {
-    "@renderlayer/interpolants": "~0.0.4",
-    "@renderlayer/shared": "~0.0.8"
+    "@renderlayer/interpolants": "~0.0.5",
+    "@renderlayer/shared": "~0.0.9"
   }
 }
