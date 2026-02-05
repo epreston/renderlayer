@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/scenes#readme",
   "dependencies": {
-    "@renderlayer/core": "~0.0.8",
-    "@renderlayer/math": "~0.0.14"
+    "@renderlayer/core": "~0.0.9",
+    "@renderlayer/math": "~0.0.15"
   }
 }
