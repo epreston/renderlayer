@@ -2,10 +2,12 @@ import { BufferGeometry, Float32BufferAttribute } from '@renderlayer/buffers';
 import { Vector2, Vector3 } from '@renderlayer/math';
 
 class CircleGeometry extends BufferGeometry {
+  type = 'CircleGeometry';
+
+  parameters;
+
   constructor(radius = 1, segments = 32, thetaStart = 0, thetaLength = Math.PI * 2) {
     super();
-
-    this.type = 'CircleGeometry';
 
     this.parameters = {
       radius: radius,

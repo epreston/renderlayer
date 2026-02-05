@@ -2,6 +2,10 @@ import { BufferGeometry, Float32BufferAttribute } from '@renderlayer/buffers';
 import { Vector2, Vector3 } from '@renderlayer/math';
 
 class CylinderGeometry extends BufferGeometry {
+  type = 'CylinderGeometry';
+
+  parameters;
+
   constructor(
     radiusTop = 1,
     radiusBottom = 1,
@@ -13,8 +17,6 @@ class CylinderGeometry extends BufferGeometry {
     thetaLength = Math.PI * 2
   ) {
     super();
-
-    this.type = 'CylinderGeometry';
 
     this.parameters = {
       radiusTop: radiusTop,

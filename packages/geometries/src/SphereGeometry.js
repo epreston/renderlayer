@@ -2,6 +2,10 @@ import { BufferGeometry, Float32BufferAttribute } from '@renderlayer/buffers';
 import { Vector3 } from '@renderlayer/math';
 
 class SphereGeometry extends BufferGeometry {
+  type = 'SphereGeometry';
+
+  parameters;
+
   constructor(
     radius = 1,
     widthSegments = 32,
@@ -12,8 +16,6 @@ class SphereGeometry extends BufferGeometry {
     thetaLength = Math.PI
   ) {
     super();
-
-    this.type = 'SphereGeometry';
 
     this.parameters = {
       radius: radius,

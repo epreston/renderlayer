@@ -1,10 +1,12 @@
 import { BufferGeometry, Float32BufferAttribute } from '@renderlayer/buffers';
 
 class PlaneGeometry extends BufferGeometry {
+  type = 'PlaneGeometry';
+
+  parameters;
+
   constructor(width = 1, height = 1, widthSegments = 1, heightSegments = 1) {
     super();
-
-    this.type = 'PlaneGeometry';
 
     this.parameters = {
       width: width,

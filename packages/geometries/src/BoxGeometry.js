@@ -2,6 +2,10 @@ import { BufferGeometry, Float32BufferAttribute } from '@renderlayer/buffers';
 import { Vector3 } from '@renderlayer/math';
 
 class BoxGeometry extends BufferGeometry {
+  type = 'BoxGeometry';
+
+  parameters;
+
   constructor(
     width = 1,
     height = 1,
@@ -11,8 +15,6 @@ class BoxGeometry extends BufferGeometry {
     depthSegments = 1
   ) {
     super();
-
-    this.type = 'BoxGeometry';
 
     this.parameters = {
       width: width,
