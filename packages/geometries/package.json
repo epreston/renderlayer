@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/geometries",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Geometry library used by @renderlayer packages.",
   "module": "./dist/geometries.esm-bundler.js",
   "exports": "./dist/geometries.esm-bundler.js",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/geometries#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.7",
-    "@renderlayer/math": "~0.0.14"
+    "@renderlayer/buffers": "~0.0.8",
+    "@renderlayer/math": "~0.0.15"
   }
 }
