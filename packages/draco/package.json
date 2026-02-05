@@ -34,9 +34,9 @@
   },
   "homepage": "https://github.com/epreston/renderlayer/blob/main/packages/draco#readme",
   "dependencies": {
-    "@renderlayer/buffers": "~0.0.7",
-    "@renderlayer/loaders": "~0.0.17",
-    "@renderlayer/math": "~0.0.14",
-    "@renderlayer/shared": "~0.0.8"
+    "@renderlayer/buffers": "~0.0.8",
+    "@renderlayer/loaders": "~0.0.18",
+    "@renderlayer/math": "~0.0.15",
+    "@renderlayer/shared": "~0.0.9"
   }
 }
