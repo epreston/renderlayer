@@ -70,14 +70,12 @@ class CylinderGeometry extends BufferGeometry {
       const slope = (radiusBottom - radiusTop) / height;
 
       // generate vertices, normals and uvs
-
       for (let y = 0; y <= heightSegments; y++) {
         const indexRow = [];
 
         const v = y / heightSegments;
 
         // calculate the radius of the current row
-
         const radius = v * (radiusBottom - radiusTop) + radiusTop;
 
         for (let x = 0; x <= radialSegments; x++) {
@@ -110,7 +108,6 @@ class CylinderGeometry extends BufferGeometry {
       }
 
       // generate indices
-
       for (let x = 0; x < radialSegments; x++) {
         for (let y = 0; y < heightSegments; y++) {
           // we use the index array to access the correct indices
@@ -169,7 +166,6 @@ class CylinderGeometry extends BufferGeometry {
       const centerIndexEnd = index;
 
       // now we generate the surrounding vertices, normals and uvs
-
       for (let x = 0; x <= radialSegments; x++) {
         const u = x / radialSegments;
         const theta = u * thetaLength + thetaStart;

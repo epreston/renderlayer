@@ -39,21 +39,18 @@ class SphereGeometry extends BufferGeometry {
     const normal = new Vector3();
 
     // buffers
-
     const indices = [];
     const vertices = [];
     const normals = [];
     const uvs = [];
 
     // generate vertices, normals and uvs
-
     for (let iy = 0; iy <= heightSegments; iy++) {
       const verticesRow = [];
 
       const v = iy / heightSegments;
 
       // special case for the poles
-
       let uOffset = 0;
 
       if (iy === 0 && thetaStart === 0) {
@@ -66,7 +63,6 @@ class SphereGeometry extends BufferGeometry {
         const u = ix / widthSegments;
 
         // vertex
-
         vertex.x =
           -radius * Math.cos(phiStart + u * phiLength) * Math.sin(thetaStart + v * thetaLength);
         vertex.y = radius * Math.cos(thetaStart + v * thetaLength);
@@ -76,12 +72,10 @@ class SphereGeometry extends BufferGeometry {
         vertices.push(vertex.x, vertex.y, vertex.z);
 
         // normal
-
         normal.copy(vertex).normalize();
         normals.push(normal.x, normal.y, normal.z);
 
         // uv
-
         uvs.push(u + uOffset, 1 - v);
         verticesRow.push(index++);
       }
@@ -90,7 +84,6 @@ class SphereGeometry extends BufferGeometry {
     }
 
     // indices
-
     for (let iy = 0; iy < heightSegments; iy++) {
       for (let ix = 0; ix < widthSegments; ix++) {
         const a = grid[iy][ix + 1];
@@ -104,7 +97,6 @@ class SphereGeometry extends BufferGeometry {
     }
 
     // build geometry
-
     this.setIndex(indices);
     this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
     this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
