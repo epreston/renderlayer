@@ -1,4 +1,4 @@
-import { RenderTarget } from '../src/RenderTarget.js';
+import { RenderTarget } from './RenderTarget.js';
 
 class WebGLRenderTarget extends RenderTarget {
   constructor(width = 1, height = 1, options = {}) {
