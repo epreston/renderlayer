@@ -2,19 +2,17 @@ import { toHalfFloat } from '@renderlayer/buffers';
 import { DataTextureLoader } from '@renderlayer/loaders';
 import { HalfFloatType, FloatType, LinearSRGBColorSpace, LinearFilter } from '@renderlayer/shared';
 
-function now() {
-  return (typeof performance === "undefined" ? Date : performance).now();
-}
 class Clock {
+  autoStart;
+  startTime = 0;
+  oldTime = 0;
+  elapsedTime = 0;
+  running = false;
   constructor(autoStart = true) {
     this.autoStart = autoStart;
-    this.startTime = 0;
-    this.oldTime = 0;
-    this.elapsedTime = 0;
-    this.running = false;
   }
   start() {
-    this.startTime = now();
+    this.startTime = _now();
     this.oldTime = this.startTime;
     this.elapsedTime = 0;
     this.running = true;
@@ -35,7 +33,7 @@ class Clock {
       return 0;
     }
     if (this.running) {
-      const newTime = now();
+      const newTime = _now();
       diff = (newTime - this.oldTime) / 1e3;
       this.oldTime = newTime;
       this.elapsedTime += diff;
@@ -43,11 +41,14 @@ class Clock {
     return diff;
   }
 }
+function _now() {
+  return (typeof performance === "undefined" ? Date : performance).now();
+}
 
 class RGBELoader extends DataTextureLoader {
+  type = HalfFloatType;
   constructor(manager) {
     super(manager);
-    this.type = HalfFloatType;
   }
   // adapted from http://www.graphics.cornell.edu/~bjw/rgbe.html
   parse(buffer) {
