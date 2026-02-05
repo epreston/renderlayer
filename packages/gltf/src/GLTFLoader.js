@@ -29,15 +29,22 @@ import { GLTFParser } from './GLTFParser';
 
 // MeshPhysicalMaterial,
 
+/**
+ * @import { DRACOLoader } from "@renderlayer/draco"
+ * @import { KTX2Loader } from "@renderlayer/ktx2"
+ * @import { LoadingManager } from '@renderlayer/loaders'
+ */
+
 class GLTFLoader extends Loader {
+  dracoLoader = null;
+  ktx2Loader = null;
+  meshoptDecoder = null;
+
+  pluginCallbacks = [];
+
+  /** @param {LoadingManager} [manager]  */
   constructor(manager) {
     super(manager);
-
-    this.dracoLoader = null;
-    this.ktx2Loader = null;
-    this.meshoptDecoder = null;
-
-    this.pluginCallbacks = [];
 
     this.register(function (parser) {
       return new GLTFMaterialsClearcoatExtension(parser);
@@ -168,11 +175,13 @@ class GLTFLoader extends Loader {
     );
   }
 
+  /** @param {DRACOLoader} dracoLoader  */
   setDRACOLoader(dracoLoader) {
     this.dracoLoader = dracoLoader;
     return this;
   }
 
+  /** @param {KTX2Loader} ktx2Loader  */
   setKTX2Loader(ktx2Loader) {
     this.ktx2Loader = ktx2Loader;
     return this;
