@@ -31,24 +31,29 @@ describe('Extras', () => {
       expect(object_all).toBeDefined();
     });
 
-    test.todo('autoStart', () => {
-      // implement
+    test('autoStart', () => {
+      const object = new Clock();
+      expect(object.autoStart).toBeTruthy();
     });
 
-    test.todo('startTime', () => {
-      // implement
+    test('startTime', () => {
+      const object = new Clock();
+      expect(object.startTime).toBe(0);
     });
 
-    test.todo('oldTime', () => {
-      // implement
+    test('oldTime', () => {
+      const object = new Clock();
+      expect(object.oldTime).toBe(0);
     });
 
-    test.todo('elapsedTime', () => {
-      // implement
+    test('elapsedTime', () => {
+      const object = new Clock();
+      expect(object.elapsedTime).toBe(0);
     });
 
-    test.todo('running', () => {
-      // implement
+    test('running', () => {
+      const object = new Clock();
+      expect(object.running).toBeFalsy();
     });
 
     test.todo('start', () => {
