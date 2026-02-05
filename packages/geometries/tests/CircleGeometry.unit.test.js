@@ -46,8 +46,9 @@ describe('Geometries', () => {
       expect(object.type).toBe('CircleGeometry');
     });
 
-    test.todo('parameters', () => {
-      // implement
+    test('parameters', () => {
+      const object = new CircleGeometry();
+      expect(object.parameters).toBeDefined();
     });
 
     test('clone', () => {

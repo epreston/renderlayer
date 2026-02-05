@@ -84,8 +84,9 @@ describe('Geometries', () => {
       expect(object.type).toBe('CylinderGeometry');
     });
 
-    test.todo('parameters', () => {
-      // implement
+    test('parameters', () => {
+      const object = new CylinderGeometry();
+      expect(object.parameters).toBeDefined();
     });
 
     test('clone', () => {

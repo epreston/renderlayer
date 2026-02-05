@@ -74,8 +74,9 @@ describe('Geometries', () => {
       expect(object.type).toBe('SphereGeometry');
     });
 
-    test.todo('parameters', () => {
-      // implement
+    test('parameters', () => {
+      const object = new SphereGeometry();
+      expect(object.parameters).toBeDefined();
     });
 
     test('clone', () => {

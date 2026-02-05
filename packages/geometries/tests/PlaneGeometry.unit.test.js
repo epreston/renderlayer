@@ -46,8 +46,9 @@ describe('Geometries', () => {
       expect(object.type).toBe('PlaneGeometry');
     });
 
-    test.todo('parameters', () => {
-      // implement
+    test('parameters', () => {
+      const object = new PlaneGeometry();
+      expect(object.parameters).toBeDefined();
     });
 
     test('clone', () => {
