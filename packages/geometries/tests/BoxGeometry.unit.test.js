@@ -48,8 +48,18 @@ describe('Geometries', () => {
       expect(object.type).toBe('BoxGeometry');
     });
 
-    test.todo('parameters', () => {
-      // implement
+    test('parameters', () => {
+      const object = new BoxGeometry(10, 20, 30);
+      expect(object.parameters).toBeDefined();
+
+      expect(object.parameters).toMatchObject({
+        width: 10,
+        height: 20,
+        depth: 30,
+        widthSegments: 1,
+        heightSegments: 1,
+        depthSegments: 1
+      });
     });
 
     test('clone', () => {
