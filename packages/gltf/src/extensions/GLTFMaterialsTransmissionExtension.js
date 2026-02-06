@@ -13,10 +13,12 @@ import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
  * Draft: https://github.com/KhronosGroup/glTF/pull/1698
  */
 export class GLTFMaterialsTransmissionExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_TRANSMISSION;
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_TRANSMISSION;
   }
 
   getMaterialType(materialIndex) {
