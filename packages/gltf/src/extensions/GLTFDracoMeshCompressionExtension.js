@@ -3,11 +3,17 @@ import { EXTENSIONS } from './EXTENSIONS';
 import { ATTRIBUTES, WEBGL_COMPONENT_TYPES } from '../GLTFConstants';
 
 /**
+ * @import { DRACOLoader } from "@renderlayer/draco"
+ * @import { GLTFParser } from "../GLTFParser"
+ */
+
+/**
  * DRACO Mesh Compression Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_draco_mesh_compression
  */
 export class GLTFDracoMeshCompressionExtension {
+  /** @param {DRACOLoader} dracoLoader  */
   constructor(json, dracoLoader) {
     if (!dracoLoader) {
       throw new Error('GLTFLoader: No DRACOLoader instance provided.');
@@ -19,6 +25,7 @@ export class GLTFDracoMeshCompressionExtension {
     this.dracoLoader.preload();
   }
 
+  /** @param {GLTFParser} parser  */
   decodePrimitive(primitive, parser) {
     const json = this.json;
     const dracoLoader = this.dracoLoader;
