@@ -44,6 +44,7 @@ class ImageBitmapLoader extends Loader {
       return cached;
     }
 
+    /** @type {RequestInit} */
     const fetchOptions = {};
     fetchOptions.credentials = this.crossOrigin === 'anonymous' ? 'same-origin' : 'include';
     fetchOptions.headers = this.requestHeader;
