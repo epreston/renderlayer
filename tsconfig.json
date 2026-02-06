@@ -13,7 +13,7 @@
       "@renderlayer/*": ["packages/*/src"],
       "renderlayer": ["packages/renderlayer/src"]
     },
-    "types": ["vitest/globals", "node"],
+    "types": ["vitest/globals"],
     "resolveJsonModule": true,
 
     /* Emit */
@@ -22,7 +22,6 @@
   "include": [
     "packages/global.d.ts",
     "packages/*/src",
-    "packages/*/tests",
-    "scripts/setup-vitest.js"
+    "packages/*/tests"
   ]
 }
