@@ -1591,6 +1591,9 @@ export class GLTFParser {
 
       if (!parser.associations.has(node)) {
         parser.associations.set(node, {});
+      } else if (nodeDef.mesh !== undefined && parser.meshCache.refs[nodeDef.mesh] > 1) {
+        const mapping = parser.associations.get(node);
+        parser.associations.set(node, { ...mapping });
       }
 
       parser.associations.get(node).nodes = nodeIndex;
