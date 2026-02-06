@@ -116,6 +116,7 @@ class Loader {
   path = "";
   resourcePath = "";
   requestHeader = {};
+  /** @param {LoadingManager} [manager]  */
   constructor(manager) {
     this.manager = manager !== void 0 ? manager : DefaultLoadingManager;
   }
