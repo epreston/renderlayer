@@ -13,13 +13,16 @@ import { ATTRIBUTES, WEBGL_COMPONENT_TYPES } from '../GLTFConstants';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_draco_mesh_compression
  */
 export class GLTFDracoMeshCompressionExtension {
+  name = EXTENSIONS.KHR_DRACO_MESH_COMPRESSION;
+  json;
+  dracoLoader;
+
   /** @param {DRACOLoader} dracoLoader  */
   constructor(json, dracoLoader) {
     if (!dracoLoader) {
       throw new Error('GLTFLoader: No DRACOLoader instance provided.');
     }
 
-    this.name = EXTENSIONS.KHR_DRACO_MESH_COMPRESSION;
     this.json = json;
     this.dracoLoader = dracoLoader;
     this.dracoLoader.preload();
