@@ -223,6 +223,7 @@ function assignExtrasToUserData(object, gltfDef) {
 }
 
 class GLTFLightsExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_LIGHTS_PUNCTUAL;
@@ -306,6 +307,7 @@ class GLTFLightsExtension {
 }
 
 class GLTFMaterialsAnisotropyExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_ANISOTROPY;
@@ -334,6 +336,7 @@ class GLTFMaterialsAnisotropyExtension {
 }
 
 class GLTFMaterialsClearcoatExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_CLEARCOAT;
@@ -384,6 +387,7 @@ class GLTFMaterialsClearcoatExtension {
 }
 
 class GLTFMaterialsDispersionExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_DISPERSION;
@@ -401,6 +405,7 @@ class GLTFMaterialsDispersionExtension {
 }
 
 class GLTFMaterialsEmissiveStrengthExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_EMISSIVE_STRENGTH;
@@ -416,6 +421,7 @@ class GLTFMaterialsEmissiveStrengthExtension {
 }
 
 class GLTFMaterialsIorExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_IOR;
@@ -433,6 +439,7 @@ class GLTFMaterialsIorExtension {
 }
 
 class GLTFMaterialsIridescenceExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_IRIDESCENCE;
@@ -479,6 +486,7 @@ class GLTFMaterialsIridescenceExtension {
 }
 
 class GLTFMaterialsSheenExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_SHEEN;
@@ -530,6 +538,7 @@ class GLTFMaterialsSheenExtension {
 }
 
 class GLTFMaterialsSpecularExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_SPECULAR;
@@ -570,6 +579,7 @@ class GLTFMaterialsSpecularExtension {
 }
 
 class GLTFMaterialsTransmissionExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_TRANSMISSION;
@@ -628,6 +638,7 @@ class GLTFMaterialsUnlitExtension {
 }
 
 class GLTFMaterialsVolumeExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_VOLUME;
@@ -659,6 +670,7 @@ class GLTFMaterialsVolumeExtension {
 }
 
 class GLTFMeshGpuInstancing {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.name = EXTENSIONS.EXT_MESH_GPU_INSTANCING;
     this.parser = parser;
@@ -734,6 +746,7 @@ class GLTFMeshGpuInstancing {
 }
 
 class GLTFMeshoptCompression {
+  /** @param {GLTFParser} parser  */
   constructor(parser, name = EXTENSIONS.KHR_MESHOPT_COMPRESSION) {
     this.name = name;
     this.parser = parser;
@@ -792,6 +805,7 @@ class GLTFMeshQuantizationExtension {
 }
 
 class GLTFTextureAVIFExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.EXT_TEXTURE_AVIF;
@@ -816,6 +830,7 @@ class GLTFTextureAVIFExtension {
 }
 
 class GLTFTextureBasisUExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_TEXTURE_BASISU;
@@ -867,6 +882,7 @@ class GLTFTextureTransformExtension {
 }
 
 class GLTFTextureWebPExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.EXT_TEXTURE_WEBP;
@@ -890,22 +906,20 @@ class GLTFTextureWebPExtension {
   }
 }
 
-function GLTFRegistry() {
-  let objects = {};
-  return {
-    get(key) {
-      return objects[key];
-    },
-    add(key, object) {
-      objects[key] = object;
-    },
-    remove(key) {
-      delete objects[key];
-    },
-    removeAll() {
-      objects = {};
-    }
-  };
+class GLTFRegistry {
+  #objects = {};
+  get(key) {
+    return this.#objects[key];
+  }
+  add(key, object) {
+    this.#objects[key] = object;
+  }
+  remove(key) {
+    delete this.#objects[key];
+  }
+  removeAll() {
+    this.#objects = {};
+  }
 }
 
 class GLTFCubicSplineInterpolant extends Interpolant {
@@ -956,21 +970,32 @@ class GLTFCubicSplineQuaternionInterpolant extends GLTFCubicSplineInterpolant {
 }
 
 class GLTFParser {
+  json;
+  extensions = {};
+  plugins = {};
+  options;
+  // loader object cache
+  cache = new GLTFRegistry();
+  // associations between objects and glTF elements
+  associations = /* @__PURE__ */ new Map();
+  // BufferGeometry caching
+  primitiveCache = {};
+  // Node cache
+  nodeCache = {};
+  // Object3D instance caches
+  meshCache = { refs: {}, uses: {} };
+  cameraCache = { refs: {}, uses: {} };
+  lightCache = { refs: {}, uses: {} };
+  sourceCache = {};
+  textureCache = {};
+  // Track node names, to ensure no duplicates
+  nodeNamesUsed = {};
+  // Loaders
+  textureLoader;
+  fileLoader;
   constructor(json = {}, options = {}) {
     this.json = json;
-    this.extensions = {};
-    this.plugins = {};
     this.options = options;
-    this.cache = new GLTFRegistry();
-    this.associations = /* @__PURE__ */ new Map();
-    this.primitiveCache = {};
-    this.nodeCache = {};
-    this.meshCache = { refs: {}, uses: {} };
-    this.cameraCache = { refs: {}, uses: {} };
-    this.lightCache = { refs: {}, uses: {} };
-    this.sourceCache = {};
-    this.textureCache = {};
-    this.nodeNamesUsed = {};
     let isSafari = false;
     let safariVersion = -1;
     let isFirefox = false;
@@ -981,7 +1006,8 @@ class GLTFParser {
       const safariMatch = userAgent.match(/Version\/(\d+)/);
       safariVersion = isSafari && safariMatch ? parseInt(safariMatch[1], 10) : -1;
       isFirefox = userAgent.indexOf("Firefox") > -1;
-      firefoxVersion = isFirefox ? userAgent.match(/Firefox\/([0-9]+)\./)[1] : -1;
+      const firefoxMatch = userAgent.match(/Firefox\/([0-9]+)\./);
+      firefoxVersion = isFirefox && firefoxMatch ? parseInt(firefoxMatch[1], 10) : -1;
     }
     if (typeof createImageBitmap === "undefined" || isSafari && safariVersion < 17 || isFirefox && firefoxVersion < 98) {
       this.textureLoader = new TextureLoader(this.options.manager);
