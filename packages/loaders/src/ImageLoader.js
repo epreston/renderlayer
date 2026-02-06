@@ -30,12 +30,12 @@ class ImageLoader extends Loader {
 
     const image = /** @type {HTMLImageElement} */ (createElementNS('img'));
 
-    function onImageLoad() {
+    function onImageLoad(event) {
       removeEventListeners();
 
-      Cache.add(url, this);
+      Cache.add(url, event.currentTarget);
 
-      if (onLoad) onLoad(this);
+      if (onLoad) onLoad(event.currentTarget);
 
       scope.manager.itemEnd(url);
     }
