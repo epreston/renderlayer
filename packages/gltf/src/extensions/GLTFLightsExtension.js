@@ -16,13 +16,15 @@ import { assignExtrasToUserData } from '../GLTFUtils';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_lights_punctual
  */
 export class GLTFLightsExtension {
+  parser;
+  name = EXTENSIONS.KHR_LIGHTS_PUNCTUAL;
+
+  // Object3D instance caches
+  cache = { refs: {}, uses: {} };
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_LIGHTS_PUNCTUAL;
-
-    // Object3D instance caches
-    this.cache = { refs: {}, uses: {} };
   }
 
   _markDefs() {
