@@ -28,7 +28,7 @@ class ImageLoader extends Loader {
       return cached;
     }
 
-    const image = createElementNS('img');
+    const image = /** @type {HTMLImageElement} */ (createElementNS('img'));
 
     function onImageLoad() {
       removeEventListeners();
