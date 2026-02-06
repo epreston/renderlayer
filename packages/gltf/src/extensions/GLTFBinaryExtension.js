@@ -7,11 +7,11 @@ const BINARY_EXTENSION_HEADER_LENGTH = 12;
 const BINARY_EXTENSION_CHUNK_TYPES = { JSON: 1313821514, BIN: 5130562 };
 
 export class GLTFBinaryExtension {
-  constructor(data) {
-    this.name = EXTENSIONS.KHR_BINARY_GLTF;
-    this.content = null;
-    this.body = null;
+  name = EXTENSIONS.KHR_BINARY_GLTF;
+  content = null;
+  body = null;
 
+  constructor(data) {
     const headerView = new DataView(data, 0, BINARY_EXTENSION_HEADER_LENGTH);
     const textDecoder = new TextDecoder();
 
