@@ -33,8 +33,16 @@ const EXTENSIONS = {
   EXT_TEXTURE_WEBP: "EXT_texture_webp",
   EXT_TEXTURE_AVIF: "EXT_texture_avif",
   EXT_MESHOPT_COMPRESSION: "EXT_meshopt_compression",
+  KHR_MESHOPT_COMPRESSION: "KHR_meshopt_compression",
   EXT_MESH_GPU_INSTANCING: "EXT_mesh_gpu_instancing"
 };
+function getMaterialExtension(parser, materialIndex, extensionName) {
+  const materialDef = parser.json.materials[materialIndex];
+  if (materialDef.extensions && materialDef.extensions[extensionName]) {
+    return materialDef.extensions[extensionName];
+  }
+  return null;
+}
 
 const BINARY_EXTENSION_HEADER_MAGIC = "glTF";
 const BINARY_EXTENSION_HEADER_LENGTH = 12;
@@ -303,19 +311,13 @@ class GLTFMaterialsAnisotropyExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_ANISOTROPY;
   }
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-    return MeshPhysicalMaterial;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
     const pending = [];
-    const extension = materialDef.extensions[this.name];
     if (extension.anisotropyStrength !== void 0) {
       materialParams.anisotropy = extension.anisotropyStrength;
     }
@@ -324,7 +326,7 @@ class GLTFMaterialsAnisotropyExtension {
     }
     if (extension.anisotropyTexture !== void 0) {
       pending.push(
-        parser.assignTexture(materialParams, "anisotropyMap", extension.anisotropyTexture)
+        this.parser.assignTexture(materialParams, "anisotropyMap", extension.anisotropyTexture)
       );
     }
     return Promise.all(pending);
@@ -337,25 +339,19 @@ class GLTFMaterialsClearcoatExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_CLEARCOAT;
   }
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-    return MeshPhysicalMaterial;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
     const pending = [];
-    const extension = materialDef.extensions[this.name];
     if (extension.clearcoatFactor !== void 0) {
       materialParams.clearcoat = extension.clearcoatFactor;
     }
     if (extension.clearcoatTexture !== void 0) {
       pending.push(
-        parser.assignTexture(materialParams, "clearcoatMap", extension.clearcoatTexture)
+        this.parser.assignTexture(materialParams, "clearcoatMap", extension.clearcoatTexture)
       );
     }
     if (extension.clearcoatRoughnessFactor !== void 0) {
@@ -363,7 +359,7 @@ class GLTFMaterialsClearcoatExtension {
     }
     if (extension.clearcoatRoughnessTexture !== void 0) {
       pending.push(
-        parser.assignTexture(
+        this.parser.assignTexture(
           materialParams,
           "clearcoatRoughnessMap",
           extension.clearcoatRoughnessTexture
@@ -372,7 +368,11 @@ class GLTFMaterialsClearcoatExtension {
     }
     if (extension.clearcoatNormalTexture !== void 0) {
       pending.push(
-        parser.assignTexture(materialParams, "clearcoatNormalMap", extension.clearcoatNormalTexture)
+        this.parser.assignTexture(
+          materialParams,
+          "clearcoatNormalMap",
+          extension.clearcoatNormalTexture
+        )
       );
       if (extension.clearcoatNormalTexture.scale !== void 0) {
         const scale = extension.clearcoatNormalTexture.scale;
@@ -389,18 +389,12 @@ class GLTFMaterialsDispersionExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_DISPERSION;
   }
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-    return MeshPhysicalMaterial;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
-    const extension = materialDef.extensions[this.name];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
     materialParams.dispersion = extension.dispersion !== void 0 ? extension.dispersion : 0;
     return Promise.resolve();
   }
@@ -412,14 +406,10 @@ class GLTFMaterialsEmissiveStrengthExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_EMISSIVE_STRENGTH;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
-    const emissiveStrength = materialDef.extensions[this.name].emissiveStrength;
-    if (emissiveStrength !== void 0) {
-      materialParams.emissiveIntensity = emissiveStrength;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
+    if (extension.emissiveStrength !== void 0) {
+      materialParams.emissiveIntensity = extension.emissiveStrength;
     }
     return Promise.resolve();
   }
@@ -431,18 +421,12 @@ class GLTFMaterialsIorExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_IOR;
   }
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-    return MeshPhysicalMaterial;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
-    const extension = materialDef.extensions[this.name];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
     materialParams.ior = extension.ior !== void 0 ? extension.ior : 1.5;
     return Promise.resolve();
   }
@@ -454,25 +438,19 @@ class GLTFMaterialsIridescenceExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_IRIDESCENCE;
   }
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-    return MeshPhysicalMaterial;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
     const pending = [];
-    const extension = materialDef.extensions[this.name];
     if (extension.iridescenceFactor !== void 0) {
       materialParams.iridescence = extension.iridescenceFactor;
     }
     if (extension.iridescenceTexture !== void 0) {
       pending.push(
-        parser.assignTexture(materialParams, "iridescenceMap", extension.iridescenceTexture)
+        this.parser.assignTexture(materialParams, "iridescenceMap", extension.iridescenceTexture)
       );
     }
     if (extension.iridescenceIor !== void 0) {
@@ -489,7 +467,7 @@ class GLTFMaterialsIridescenceExtension {
     }
     if (extension.iridescenceThicknessTexture !== void 0) {
       pending.push(
-        parser.assignTexture(
+        this.parser.assignTexture(
           materialParams,
           "iridescenceThicknessMap",
           extension.iridescenceThicknessTexture
@@ -506,22 +484,16 @@ class GLTFMaterialsSheenExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_SHEEN;
   }
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-    return MeshPhysicalMaterial;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
     const pending = [];
     materialParams.sheenColor = new Color(0, 0, 0);
     materialParams.sheenRoughness = 0;
     materialParams.sheen = 1;
-    const extension = materialDef.extensions[this.name];
     if (extension.sheenColorFactor !== void 0) {
       const colorFactor = extension.sheenColorFactor;
       materialParams.sheenColor.setRGB(
@@ -536,7 +508,7 @@ class GLTFMaterialsSheenExtension {
     }
     if (extension.sheenColorTexture !== void 0) {
       pending.push(
-        parser.assignTexture(
+        this.parser.assignTexture(
           materialParams,
           "sheenColorMap",
           extension.sheenColorTexture,
@@ -546,7 +518,11 @@ class GLTFMaterialsSheenExtension {
     }
     if (extension.sheenRoughnessTexture !== void 0) {
       pending.push(
-        parser.assignTexture(materialParams, "sheenRoughnessMap", extension.sheenRoughnessTexture)
+        this.parser.assignTexture(
+          materialParams,
+          "sheenRoughnessMap",
+          extension.sheenRoughnessTexture
+        )
       );
     }
     return Promise.all(pending);
@@ -559,23 +535,17 @@ class GLTFMaterialsSpecularExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_SPECULAR;
   }
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-    return MeshPhysicalMaterial;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
     const pending = [];
-    const extension = materialDef.extensions[this.name];
     materialParams.specularIntensity = extension.specularFactor !== void 0 ? extension.specularFactor : 1;
     if (extension.specularTexture !== void 0) {
       pending.push(
-        parser.assignTexture(materialParams, "specularIntensityMap", extension.specularTexture)
+        this.parser.assignTexture(materialParams, "specularIntensityMap", extension.specularTexture)
       );
     }
     const colorArray = extension.specularColorFactor || [1, 1, 1];
@@ -587,7 +557,7 @@ class GLTFMaterialsSpecularExtension {
     );
     if (extension.specularColorTexture !== void 0) {
       pending.push(
-        parser.assignTexture(
+        this.parser.assignTexture(
           materialParams,
           "specularColorMap",
           extension.specularColorTexture,
@@ -605,25 +575,19 @@ class GLTFMaterialsTransmissionExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_TRANSMISSION;
   }
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-    return MeshPhysicalMaterial;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
     const pending = [];
-    const extension = materialDef.extensions[this.name];
     if (extension.transmissionFactor !== void 0) {
       materialParams.transmission = extension.transmissionFactor;
     }
     if (extension.transmissionTexture !== void 0) {
       pending.push(
-        parser.assignTexture(materialParams, "transmissionMap", extension.transmissionTexture)
+        this.parser.assignTexture(materialParams, "transmissionMap", extension.transmissionTexture)
       );
     }
     return Promise.all(pending);
@@ -669,23 +633,17 @@ class GLTFMaterialsVolumeExtension {
     this.name = EXTENSIONS.KHR_MATERIALS_VOLUME;
   }
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-    return MeshPhysicalMaterial;
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
+    if (extension === null) return Promise.resolve();
     const pending = [];
-    const extension = materialDef.extensions[this.name];
     materialParams.thickness = extension.thicknessFactor !== void 0 ? extension.thicknessFactor : 0;
     if (extension.thicknessTexture !== void 0) {
       pending.push(
-        parser.assignTexture(materialParams, "thicknessMap", extension.thicknessTexture)
+        this.parser.assignTexture(materialParams, "thicknessMap", extension.thicknessTexture)
       );
     }
     materialParams.attenuationDistance = extension.attenuationDistance || Infinity;
@@ -776,8 +734,8 @@ class GLTFMeshGpuInstancing {
 }
 
 class GLTFMeshoptCompression {
-  constructor(parser) {
-    this.name = EXTENSIONS.EXT_MESHOPT_COMPRESSION;
+  constructor(parser, name = EXTENSIONS.KHR_MESHOPT_COMPRESSION) {
+    this.name = name;
     this.parser = parser;
   }
   loadBufferView(index) {
@@ -837,7 +795,6 @@ class GLTFTextureAVIFExtension {
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.EXT_TEXTURE_AVIF;
-    this.isSupported = null;
   }
   loadTexture(textureIndex) {
     const name = this.name;
@@ -854,25 +811,7 @@ class GLTFTextureAVIFExtension {
       const handler = parser.options.manager.getHandler(source.uri);
       if (handler !== null) loader = handler;
     }
-    return this.detectSupport().then((isSupported) => {
-      if (isSupported) return parser.loadTextureImage(textureIndex, extension.source, loader);
-      if (json.extensionsRequired && json.extensionsRequired.includes(name)) {
-        throw new Error("GLTFLoader: AVIF required by asset but unsupported.");
-      }
-      return parser.loadTexture(textureIndex);
-    });
-  }
-  detectSupport() {
-    if (!this.isSupported) {
-      this.isSupported = new Promise((resolve) => {
-        const image = new Image();
-        image.src = "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAABcAAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQAMAAAAABNjb2xybmNseAACAAIABoAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAAB9tZGF0EgAKCBgABogQEDQgMgkQAAAAB8dSLfI=";
-        image.onload = image.onerror = () => {
-          resolve(image.height === 1);
-        };
-      });
-    }
-    return this.isSupported;
+    return parser.loadTextureImage(textureIndex, extension.source, loader);
   }
 }
 
@@ -931,7 +870,6 @@ class GLTFTextureWebPExtension {
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.EXT_TEXTURE_WEBP;
-    this.isSupported = null;
   }
   loadTexture(textureIndex) {
     const name = this.name;
@@ -948,25 +886,7 @@ class GLTFTextureWebPExtension {
       const handler = parser.options.manager.getHandler(source.uri);
       if (handler !== null) loader = handler;
     }
-    return this.detectSupport().then(function(isSupported) {
-      if (isSupported) return parser.loadTextureImage(textureIndex, extension.source, loader);
-      if (json.extensionsRequired && json.extensionsRequired.includes(name)) {
-        throw new Error("GLTFLoader: WebP required by asset but unsupported.");
-      }
-      return parser.loadTexture(textureIndex);
-    });
-  }
-  detectSupport() {
-    if (!this.isSupported) {
-      this.isSupported = new Promise(function(resolve) {
-        const image = new Image();
-        image.src = "data:image/webp;base64,UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA";
-        image.onload = image.onerror = function() {
-          resolve(image.height === 1);
-        };
-      });
-    }
-    return this.isSupported;
+    return parser.loadTextureImage(textureIndex, extension.source, loader);
   }
 }
 
@@ -1026,11 +946,11 @@ class GLTFCubicSplineInterpolant extends Interpolant {
   }
 }
 
-const _q = new Quaternion();
+const _quaternion = new Quaternion();
 class GLTFCubicSplineQuaternionInterpolant extends GLTFCubicSplineInterpolant {
   interpolate_(i1, t0, t, t1) {
     const result = super.interpolate_(i1, t0, t, t1);
-    _q.fromArray(result).normalize().toArray(result);
+    _quaternion.fromArray(result).normalize().toArray(result);
     return result;
   }
 }
@@ -1052,14 +972,18 @@ class GLTFParser {
     this.textureCache = {};
     this.nodeNamesUsed = {};
     let isSafari = false;
+    let safariVersion = -1;
     let isFirefox = false;
     let firefoxVersion = -1;
     if (typeof navigator !== "undefined") {
-      isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) === true;
-      isFirefox = navigator.userAgent.includes("Firefox");
-      firefoxVersion = isFirefox ? navigator.userAgent.match(/Firefox\/([0-9]+)\./)[1] : -1;
+      const userAgent = navigator.userAgent;
+      isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) === true;
+      const safariMatch = userAgent.match(/Version\/(\d+)/);
+      safariVersion = isSafari && safariMatch ? parseInt(safariMatch[1], 10) : -1;
+      isFirefox = userAgent.indexOf("Firefox") > -1;
+      firefoxVersion = isFirefox ? userAgent.match(/Firefox\/([0-9]+)\./)[1] : -1;
     }
-    if (typeof createImageBitmap === "undefined" || isSafari || isFirefox && firefoxVersion < 98) {
+    if (typeof createImageBitmap === "undefined" || isSafari && safariVersion < 17 || isFirefox && firefoxVersion < 98) {
       this.textureLoader = new TextureLoader(this.options.manager);
     } else {
       this.textureLoader = new ImageBitmapLoader(this.options.manager);
@@ -1416,6 +1340,7 @@ class GLTFParser {
             bufferAttribute.normalized
           );
         }
+        bufferAttribute.normalized = false;
         for (let i = 0, il = sparseIndices.length; i < il; i++) {
           const index = sparseIndices[i];
           bufferAttribute.setX(index, sparseValues[i * itemSize]);
@@ -1425,6 +1350,7 @@ class GLTFParser {
           if (itemSize >= 5)
             throw new Error("GLTFLoader: Unsupported itemSize in sparse BufferAttribute.");
         }
+        bufferAttribute.normalized = normalized;
       }
       return bufferAttribute;
     });
@@ -1468,6 +1394,7 @@ class GLTFParser {
       texture.minFilter = WEBGL_FILTERS[sampler.minFilter] || LinearMipmapLinearFilter;
       texture.wrapS = WEBGL_WRAPPINGS[sampler.wrapS] || RepeatWrapping;
       texture.wrapT = WEBGL_WRAPPINGS[sampler.wrapT] || RepeatWrapping;
+      texture.generateMipmaps = !texture.isCompressedTexture && texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter;
       parser.associations.set(texture, { textures: textureIndex });
       return texture;
     }).catch(function() {
@@ -1513,6 +1440,7 @@ class GLTFParser {
       if (isObjectURL === true) {
         URL.revokeObjectURL(sourceURI);
       }
+      assignExtrasToUserData(texture, sourceDef);
       texture.userData.mimeType = sourceDef.mimeType || getImageURIMimeType(sourceDef.uri);
       return texture;
     }).catch(function(error) {
@@ -1996,7 +1924,9 @@ class GLTFParser {
           }
         }
       }
-      return new AnimationClip(animationName, void 0, tracks);
+      const animation = new AnimationClip(animationName, void 0, tracks);
+      assignExtrasToUserData(animation, animationDef);
+      return animation;
     });
   }
   createNodeMesh(nodeIndex) {
@@ -2120,6 +2050,9 @@ class GLTFParser {
       }
       if (!parser.associations.has(node)) {
         parser.associations.set(node, {});
+      } else if (nodeDef.mesh !== void 0 && parser.meshCache.refs[nodeDef.mesh] > 1) {
+        const mapping = parser.associations.get(node);
+        parser.associations.set(node, { ...mapping });
       }
       parser.associations.get(node).nodes = nodeIndex;
       return node;
@@ -2188,7 +2121,7 @@ class GLTFParser {
       case PATH_PROPERTIES.rotation:
         TypedKeyframeTrack = QuaternionKeyframeTrack;
         break;
-      case PATH_PROPERTIES.position:
+      case PATH_PROPERTIES.translation:
       case PATH_PROPERTIES.scale:
         TypedKeyframeTrack = VectorKeyframeTrack;
         break;
@@ -2365,9 +2298,9 @@ function getNormalizedComponentScale(constructor_type) {
   }
 }
 function getImageURIMimeType(uri) {
-  if (uri.search(/\.jpe?g($|\?)/i) > 0 || uri.search(/^data:image\/jpeg/) === 0)
-    return "image/jpeg";
+  if (uri.search(/\.jpe?g($|\?)/i) > 0 || uri.search(/^data:image\/jpeg/) === 0) return "image/jpeg";
   if (uri.search(/\.webp($|\?)/i) > 0 || uri.search(/^data:image\/webp/) === 0) return "image/webp";
+  if (uri.search(/\.ktx2($|\?)/i) > 0 || uri.search(/^data:image\/ktx2/) === 0) return "image/ktx2";
   return "image/png";
 }
 const _identityMatrix = new Matrix4();
@@ -2508,7 +2441,10 @@ class GLTFLoader extends Loader {
       return new GLTFLightsExtension(parser);
     });
     this.register(function(parser) {
-      return new GLTFMeshoptCompression(parser);
+      return new GLTFMeshoptCompression(parser, EXTENSIONS.EXT_MESHOPT_COMPRESSION);
+    });
+    this.register(function(parser) {
+      return new GLTFMeshoptCompression(parser, EXTENSIONS.KHR_MESHOPT_COMPRESSION);
     });
     this.register(function(parser) {
       return new GLTFMeshGpuInstancing(parser);
