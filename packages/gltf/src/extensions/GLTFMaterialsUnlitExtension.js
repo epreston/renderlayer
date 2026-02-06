@@ -5,6 +5,10 @@ import { LinearSRGBColorSpace, SRGBColorSpace } from '@renderlayer/shared';
 import { EXTENSIONS } from './EXTENSIONS';
 
 /**
+ * @import { GLTFParser } from "../GLTFParser"
+ */
+
+/**
  * Unlit Materials Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_unlit
@@ -18,6 +22,7 @@ export class GLTFMaterialsUnlitExtension {
     return MeshBasicMaterial;
   }
 
+  /** @param {GLTFParser} parser  */
   extendParams(materialParams, materialDef, parser) {
     const pending = [];
 
