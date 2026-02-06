@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "renderlayer",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "3D Rendering Layer for the Web",
   "module": "./dist/renderlayer.esm-bundler.js",
   "exports": "./dist/renderlayer.esm-bundler.js",
@@ -38,7 +38,7 @@
     "@renderlayer/draco": "~0.0.8",
     "@renderlayer/extras": "~0.0.6",
     "@renderlayer/geometries": "~0.0.8",
-    "@renderlayer/gltf": "~0.0.14",
+    "@renderlayer/gltf": "~0.0.15",
     "@renderlayer/interpolants": "~0.0.5",
     "@renderlayer/keyframes": "~0.0.7",
     "@renderlayer/ktx2": "~0.0.3",
