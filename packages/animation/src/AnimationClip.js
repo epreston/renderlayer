@@ -363,7 +363,9 @@ function _parseKeyframeTrack(json) {
   }
 
   // derived classes can define a static parse method
+  // @ts-ignore
   if (trackType.parse !== undefined) {
+    // @ts-ignore
     return trackType.parse(json);
   } else {
     // by default, we assume a constructor compatible with the base
