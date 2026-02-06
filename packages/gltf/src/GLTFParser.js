@@ -1684,7 +1684,7 @@ export class GLTFParser {
         TypedKeyframeTrack = QuaternionKeyframeTrack;
         break;
 
-      case PATH_PROPERTIES.position:
+      case PATH_PROPERTIES.translation:
       case PATH_PROPERTIES.scale:
         TypedKeyframeTrack = VectorKeyframeTrack;
         break;
