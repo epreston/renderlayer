@@ -79,35 +79,43 @@ import {
 } from './GLTFConstants';
 
 /* GLTF PARSER */
+
 export class GLTFParser {
+  json;
+  extensions = {};
+  plugins = {};
+  options;
+
+  // loader object cache
+  cache = new GLTFRegistry();
+
+  // associations between objects and glTF elements
+  associations = new Map();
+
+  // BufferGeometry caching
+  primitiveCache = {};
+
+  // Node cache
+  nodeCache = {};
+
+  // Object3D instance caches
+  meshCache = { refs: {}, uses: {} };
+  cameraCache = { refs: {}, uses: {} };
+  lightCache = { refs: {}, uses: {} };
+
+  sourceCache = {};
+  textureCache = {};
+
+  // Track node names, to ensure no duplicates
+  nodeNamesUsed = {};
+
+  // Loaders
+  textureLoader;
+  fileLoader;
+
   constructor(json = {}, options = {}) {
     this.json = json;
-    this.extensions = {};
-    this.plugins = {};
     this.options = options;
-
-    // loader object cache
-    this.cache = new GLTFRegistry();
-
-    // associations between objects and glTF elements
-    this.associations = new Map();
-
-    // BufferGeometry caching
-    this.primitiveCache = {};
-
-    // Node cache
-    this.nodeCache = {};
-
-    // Object3D instance caches
-    this.meshCache = { refs: {}, uses: {} };
-    this.cameraCache = { refs: {}, uses: {} };
-    this.lightCache = { refs: {}, uses: {} };
-
-    this.sourceCache = {};
-    this.textureCache = {};
-
-    // Track node names, to ensure no duplicates
-    this.nodeNamesUsed = {};
 
     // Use an ImageBitmapLoader if imageBitmaps are supported. Moves much of the
     // expensive work of uploading a texture to the GPU off the main thread.
