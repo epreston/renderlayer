@@ -12,10 +12,12 @@ import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_ior
  */
 export class GLTFMaterialsIorExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_IOR;
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_IOR;
   }
 
   getMaterialType(materialIndex) {
