@@ -55,7 +55,7 @@ class ImageBitmapLoader extends Loader {
       })
       .then(function (blob) {
         return createImageBitmap(
-          blob,
+          blob, // @ts-ignore
           Object.assign(scope.options, { colorSpaceConversion: 'none' })
         );
       })
