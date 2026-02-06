@@ -12,10 +12,12 @@ import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_iridescence
  */
 export class GLTFMaterialsIridescenceExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_IRIDESCENCE;
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_IRIDESCENCE;
   }
 
   getMaterialType(materialIndex) {
