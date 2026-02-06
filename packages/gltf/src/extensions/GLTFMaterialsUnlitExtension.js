@@ -14,9 +14,7 @@ import { EXTENSIONS } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_unlit
  */
 export class GLTFMaterialsUnlitExtension {
-  constructor() {
-    this.name = EXTENSIONS.KHR_MATERIALS_UNLIT;
-  }
+  name = EXTENSIONS.KHR_MATERIALS_UNLIT;
 
   getMaterialType() {
     return MeshBasicMaterial;
