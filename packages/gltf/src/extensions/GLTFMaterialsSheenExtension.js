@@ -2,7 +2,7 @@ import { MeshPhysicalMaterial } from '@renderlayer/materials';
 import { Color } from '@renderlayer/math';
 import { LinearSRGBColorSpace, SRGBColorSpace } from '@renderlayer/shared';
 
-import { EXTENSIONS } from './EXTENSIONS';
+import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
  * Sheen Materials Extension
@@ -16,29 +16,21 @@ export class GLTFMaterialsSheenExtension {
   }
 
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-
-    return MeshPhysicalMaterial;
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
 
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    if (extension === null) return Promise.resolve();
 
     const pending = [];
 
     materialParams.sheenColor = new Color(0, 0, 0);
     materialParams.sheenRoughness = 0;
     materialParams.sheen = 1;
-
-    const extension = materialDef.extensions[this.name];
 
     if (extension.sheenColorFactor !== undefined) {
       const colorFactor = extension.sheenColorFactor;
@@ -56,7 +48,7 @@ export class GLTFMaterialsSheenExtension {
 
     if (extension.sheenColorTexture !== undefined) {
       pending.push(
-        parser.assignTexture(
+        this.parser.assignTexture(
           materialParams,
           'sheenColorMap',
           extension.sheenColorTexture,
@@ -67,7 +59,11 @@ export class GLTFMaterialsSheenExtension {
 
     if (extension.sheenRoughnessTexture !== undefined) {
       pending.push(
-        parser.assignTexture(materialParams, 'sheenRoughnessMap', extension.sheenRoughnessTexture)
+        this.parser.assignTexture(
+          materialParams,
+          'sheenRoughnessMap',
+          extension.sheenRoughnessTexture
+        )
       );
     }
 

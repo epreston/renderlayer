@@ -1,6 +1,6 @@
 import { MeshPhysicalMaterial } from '@renderlayer/materials';
 
-import { EXTENSIONS } from './EXTENSIONS';
+import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
  * Materials anisotropy Extension
@@ -14,25 +14,17 @@ export class GLTFMaterialsAnisotropyExtension {
   }
 
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-
-    return MeshPhysicalMaterial;
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
 
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    if (extension === null) return Promise.resolve();
 
     const pending = [];
-
-    const extension = materialDef.extensions[this.name];
 
     if (extension.anisotropyStrength !== undefined) {
       materialParams.anisotropy = extension.anisotropyStrength;
@@ -44,7 +36,7 @@ export class GLTFMaterialsAnisotropyExtension {
 
     if (extension.anisotropyTexture !== undefined) {
       pending.push(
-        parser.assignTexture(materialParams, 'anisotropyMap', extension.anisotropyTexture)
+        this.parser.assignTexture(materialParams, 'anisotropyMap', extension.anisotropyTexture)
       );
     }
 

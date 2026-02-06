@@ -1,6 +1,6 @@
 import { MeshPhysicalMaterial } from '@renderlayer/materials';
 
-import { EXTENSIONS } from './EXTENSIONS';
+import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
  * Transmission Materials Extension
@@ -15,25 +15,17 @@ export class GLTFMaterialsTransmissionExtension {
   }
 
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-
-    return MeshPhysicalMaterial;
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
 
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    if (extension === null) return Promise.resolve();
 
     const pending = [];
-
-    const extension = materialDef.extensions[this.name];
 
     if (extension.transmissionFactor !== undefined) {
       materialParams.transmission = extension.transmissionFactor;
@@ -41,7 +33,7 @@ export class GLTFMaterialsTransmissionExtension {
 
     if (extension.transmissionTexture !== undefined) {
       pending.push(
-        parser.assignTexture(materialParams, 'transmissionMap', extension.transmissionTexture)
+        this.parser.assignTexture(materialParams, 'transmissionMap', extension.transmissionTexture)
       );
     }
 

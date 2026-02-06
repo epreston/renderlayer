@@ -22,3 +22,13 @@ export const EXTENSIONS = {
   KHR_MESHOPT_COMPRESSION: 'KHR_meshopt_compression',
   EXT_MESH_GPU_INSTANCING: 'EXT_mesh_gpu_instancing'
 };
+
+export function getMaterialExtension(parser, materialIndex, extensionName) {
+  const materialDef = parser.json.materials[materialIndex];
+
+  if (materialDef.extensions && materialDef.extensions[extensionName]) {
+    return materialDef.extensions[extensionName];
+  }
+
+  return null;
+}

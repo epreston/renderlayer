@@ -1,7 +1,7 @@
 import { MeshPhysicalMaterial } from '@renderlayer/materials';
 import { Vector2 } from '@renderlayer/math';
 
-import { EXTENSIONS } from './EXTENSIONS';
+import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
  * Clearcoat Materials Extension
@@ -15,25 +15,17 @@ export class GLTFMaterialsClearcoatExtension {
   }
 
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-
-    return MeshPhysicalMaterial;
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
 
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    if (extension === null) return Promise.resolve();
 
     const pending = [];
-
-    const extension = materialDef.extensions[this.name];
 
     if (extension.clearcoatFactor !== undefined) {
       materialParams.clearcoat = extension.clearcoatFactor;
@@ -41,7 +33,7 @@ export class GLTFMaterialsClearcoatExtension {
 
     if (extension.clearcoatTexture !== undefined) {
       pending.push(
-        parser.assignTexture(materialParams, 'clearcoatMap', extension.clearcoatTexture)
+        this.parser.assignTexture(materialParams, 'clearcoatMap', extension.clearcoatTexture)
       );
     }
 
@@ -51,7 +43,7 @@ export class GLTFMaterialsClearcoatExtension {
 
     if (extension.clearcoatRoughnessTexture !== undefined) {
       pending.push(
-        parser.assignTexture(
+        this.parser.assignTexture(
           materialParams,
           'clearcoatRoughnessMap',
           extension.clearcoatRoughnessTexture
@@ -61,7 +53,11 @@ export class GLTFMaterialsClearcoatExtension {
 
     if (extension.clearcoatNormalTexture !== undefined) {
       pending.push(
-        parser.assignTexture(materialParams, 'clearcoatNormalMap', extension.clearcoatNormalTexture)
+        this.parser.assignTexture(
+          materialParams,
+          'clearcoatNormalMap',
+          extension.clearcoatNormalTexture
+        )
       );
 
       if (extension.clearcoatNormalTexture.scale !== undefined) {

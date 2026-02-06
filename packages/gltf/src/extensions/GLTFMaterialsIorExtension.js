@@ -1,6 +1,6 @@
 import { MeshPhysicalMaterial } from '@renderlayer/materials';
 
-import { EXTENSIONS } from './EXTENSIONS';
+import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
  * Materials ior Extension
@@ -14,23 +14,15 @@ export class GLTFMaterialsIorExtension {
   }
 
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-
-    return MeshPhysicalMaterial;
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
 
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
-
-    const extension = materialDef.extensions[this.name];
+    if (extension === null) return Promise.resolve();
 
     materialParams.ior = extension.ior !== undefined ? extension.ior : 1.5;
 

@@ -2,7 +2,7 @@ import { MeshPhysicalMaterial } from '@renderlayer/materials';
 import { Color } from '@renderlayer/math';
 import { LinearSRGBColorSpace, SRGBColorSpace } from '@renderlayer/shared';
 
-import { EXTENSIONS } from './EXTENSIONS';
+import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
  * Materials specular Extension
@@ -16,32 +16,24 @@ export class GLTFMaterialsSpecularExtension {
   }
 
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-
-    return MeshPhysicalMaterial;
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
 
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    if (extension === null) return Promise.resolve();
 
     const pending = [];
-
-    const extension = materialDef.extensions[this.name];
 
     materialParams.specularIntensity =
       extension.specularFactor !== undefined ? extension.specularFactor : 1;
 
     if (extension.specularTexture !== undefined) {
       pending.push(
-        parser.assignTexture(materialParams, 'specularIntensityMap', extension.specularTexture)
+        this.parser.assignTexture(materialParams, 'specularIntensityMap', extension.specularTexture)
       );
     }
 
@@ -55,7 +47,7 @@ export class GLTFMaterialsSpecularExtension {
 
     if (extension.specularColorTexture !== undefined) {
       pending.push(
-        parser.assignTexture(
+        this.parser.assignTexture(
           materialParams,
           'specularColorMap',
           extension.specularColorTexture,

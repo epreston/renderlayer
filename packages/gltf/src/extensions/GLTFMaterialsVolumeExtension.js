@@ -2,7 +2,7 @@ import { MeshPhysicalMaterial } from '@renderlayer/materials';
 import { Color } from '@renderlayer/math';
 import { LinearSRGBColorSpace } from '@renderlayer/shared';
 
-import { EXTENSIONS } from './EXTENSIONS';
+import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
  * Materials Volume Extension
@@ -16,32 +16,24 @@ export class GLTFMaterialsVolumeExtension {
   }
 
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-
-    return MeshPhysicalMaterial;
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
 
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    if (extension === null) return Promise.resolve();
 
     const pending = [];
-
-    const extension = materialDef.extensions[this.name];
 
     materialParams.thickness =
       extension.thicknessFactor !== undefined ? extension.thicknessFactor : 0;
 
     if (extension.thicknessTexture !== undefined) {
       pending.push(
-        parser.assignTexture(materialParams, 'thicknessMap', extension.thicknessTexture)
+        this.parser.assignTexture(materialParams, 'thicknessMap', extension.thicknessTexture)
       );
     }
 

@@ -1,6 +1,6 @@
 import { MeshPhysicalMaterial } from '@renderlayer/materials';
 
-import { EXTENSIONS } from './EXTENSIONS';
+import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
  * Iridescence Materials Extension
@@ -14,25 +14,17 @@ export class GLTFMaterialsIridescenceExtension {
   }
 
   getMaterialType(materialIndex) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) return null;
-
-    return MeshPhysicalMaterial;
+    return extension !== null ? MeshPhysicalMaterial : null;
   }
 
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    if (extension === null) return Promise.resolve();
 
     const pending = [];
-
-    const extension = materialDef.extensions[this.name];
 
     if (extension.iridescenceFactor !== undefined) {
       materialParams.iridescence = extension.iridescenceFactor;
@@ -40,7 +32,7 @@ export class GLTFMaterialsIridescenceExtension {
 
     if (extension.iridescenceTexture !== undefined) {
       pending.push(
-        parser.assignTexture(materialParams, 'iridescenceMap', extension.iridescenceTexture)
+        this.parser.assignTexture(materialParams, 'iridescenceMap', extension.iridescenceTexture)
       );
     }
 
@@ -62,7 +54,7 @@ export class GLTFMaterialsIridescenceExtension {
 
     if (extension.iridescenceThicknessTexture !== undefined) {
       pending.push(
-        parser.assignTexture(
+        this.parser.assignTexture(
           materialParams,
           'iridescenceThicknessMap',
           extension.iridescenceThicknessTexture

@@ -1,4 +1,4 @@
-import { EXTENSIONS } from './EXTENSIONS';
+import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
  * Materials Emissive Strength Extension
@@ -12,17 +12,12 @@ export class GLTFMaterialsEmissiveStrengthExtension {
   }
 
   extendMaterialParams(materialIndex, materialParams) {
-    const parser = this.parser;
-    const materialDef = parser.json.materials[materialIndex];
+    const extension = getMaterialExtension(this.parser, materialIndex, this.name);
 
-    if (!materialDef.extensions || !materialDef.extensions[this.name]) {
-      return Promise.resolve();
-    }
+    if (extension === null) return Promise.resolve();
 
-    const emissiveStrength = materialDef.extensions[this.name].emissiveStrength;
-
-    if (emissiveStrength !== undefined) {
-      materialParams.emissiveIntensity = emissiveStrength;
+    if (extension.emissiveStrength !== undefined) {
+      materialParams.emissiveIntensity = extension.emissiveStrength;
     }
 
     return Promise.resolve();
