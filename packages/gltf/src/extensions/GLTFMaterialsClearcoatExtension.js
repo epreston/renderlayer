@@ -13,10 +13,12 @@ import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_clearcoat
  */
 export class GLTFMaterialsClearcoatExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_CLEARCOAT;
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_CLEARCOAT;
   }
 
   getMaterialType(materialIndex) {
