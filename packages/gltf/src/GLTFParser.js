@@ -49,6 +49,7 @@ import {
   LinearFilter,
   LinearMipmapLinearFilter,
   LinearSRGBColorSpace,
+  NearestFilter,
   RepeatWrapping,
   SRGBColorSpace,
   TriangleFanDrawMode,
@@ -679,6 +680,10 @@ export class GLTFParser {
         texture.minFilter = WEBGL_FILTERS[sampler.minFilter] || LinearMipmapLinearFilter;
         texture.wrapS = WEBGL_WRAPPINGS[sampler.wrapS] || RepeatWrapping;
         texture.wrapT = WEBGL_WRAPPINGS[sampler.wrapT] || RepeatWrapping;
+        texture.generateMipmaps =
+          !texture.isCompressedTexture &&
+          texture.minFilter !== NearestFilter &&
+          texture.minFilter !== LinearFilter;
 
         parser.associations.set(texture, { textures: textureIndex });
 
