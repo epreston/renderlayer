@@ -16,9 +16,11 @@ import { EXTENSIONS } from './EXTENSIONS';
  *
  */
 export class GLTFMeshGpuInstancing {
+  parser;
+  name = EXTENSIONS.EXT_MESH_GPU_INSTANCING;
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
-    this.name = EXTENSIONS.EXT_MESH_GPU_INSTANCING;
     this.parser = parser;
   }
 
