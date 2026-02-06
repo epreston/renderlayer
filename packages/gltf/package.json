@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/gltf",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "glTF 2.0 library used by @renderlayer packages.",
   "module": "./dist/gltf.esm-bundler.js",
   "exports": "./dist/gltf.esm-bundler.js",
