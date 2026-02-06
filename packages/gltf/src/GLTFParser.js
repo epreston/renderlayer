@@ -735,6 +735,8 @@ export class GLTFParser {
           URL.revokeObjectURL(sourceURI);
         }
 
+        assignExtrasToUserData(texture, sourceDef);
+
         texture.userData.mimeType = sourceDef.mimeType || getImageURIMimeType(sourceDef.uri);
 
         return texture;
