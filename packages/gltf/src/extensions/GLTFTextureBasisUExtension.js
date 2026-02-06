@@ -10,10 +10,12 @@ import { EXTENSIONS } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_texture_basisu
  */
 export class GLTFTextureBasisUExtension {
+  parser;
+  name = EXTENSIONS.KHR_TEXTURE_BASISU;
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_TEXTURE_BASISU;
   }
 
   loadTexture(textureIndex) {
