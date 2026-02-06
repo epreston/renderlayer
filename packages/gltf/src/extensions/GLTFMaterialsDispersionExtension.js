@@ -12,10 +12,12 @@ import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_dispersion
  */
 export class GLTFMaterialsDispersionExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_DISPERSION;
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_DISPERSION;
   }
 
   getMaterialType(materialIndex) {
