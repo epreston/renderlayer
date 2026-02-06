@@ -7,6 +7,8 @@ class Loader {
   withCredentials = false;
   path = '';
   resourcePath = '';
+
+  /** @type {Object<string, any>} */
   requestHeader = {};
 
   /** @param {LoadingManager} [manager]  */
