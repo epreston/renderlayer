@@ -3,6 +3,7 @@
  * @import { Material } from "@renderlayer/materials"
  * @import { BufferGeometry } from '@renderlayer/buffers'
  * @import { AnimationClip } from '@renderlayer/animation'
+ * @typedef {object} GLTF.definition
  */
 
 /**
