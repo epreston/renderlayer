@@ -6,9 +6,7 @@ import { EXTENSIONS } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_texture_transform
  */
 export class GLTFTextureTransformExtension {
-  constructor() {
-    this.name = EXTENSIONS.KHR_TEXTURE_TRANSFORM;
-  }
+  name = EXTENSIONS.KHR_TEXTURE_TRANSFORM;
 
   extendTexture(texture, transform) {
     if (
