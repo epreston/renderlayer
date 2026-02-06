@@ -1,11 +1,16 @@
 import { EXTENSIONS } from './EXTENSIONS';
 
 /**
+ * @import { GLTFParser } from "../GLTFParser"
+ */
+
+/**
  * BasisU Texture Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_texture_basisu
  */
 export class GLTFTextureBasisUExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_TEXTURE_BASISU;

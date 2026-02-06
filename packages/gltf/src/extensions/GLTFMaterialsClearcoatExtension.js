@@ -4,11 +4,16 @@ import { Vector2 } from '@renderlayer/math';
 import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
+ * @import { GLTFParser } from "../GLTFParser"
+ */
+
+/**
  * Clearcoat Materials Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_clearcoat
  */
 export class GLTFMaterialsClearcoatExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_CLEARCOAT;

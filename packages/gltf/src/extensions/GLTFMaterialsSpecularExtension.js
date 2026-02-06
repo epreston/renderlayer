@@ -5,11 +5,16 @@ import { LinearSRGBColorSpace, SRGBColorSpace } from '@renderlayer/shared';
 import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
+ * @import { GLTFParser } from "../GLTFParser"
+ */
+
+/**
  * Materials specular Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_specular
  */
 export class GLTFMaterialsSpecularExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_SPECULAR;

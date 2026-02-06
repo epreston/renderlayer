@@ -23,6 +23,11 @@ export const EXTENSIONS = {
   EXT_MESH_GPU_INSTANCING: 'EXT_mesh_gpu_instancing'
 };
 
+/**
+ * @import { GLTFParser } from "../GLTFParser"
+ */
+
+/** @param {GLTFParser} parser  */
 export function getMaterialExtension(parser, materialIndex, extensionName) {
   const materialDef = parser.json.materials[materialIndex];
 

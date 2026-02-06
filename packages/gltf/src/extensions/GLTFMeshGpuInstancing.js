@@ -6,12 +6,17 @@ import { WEBGL_CONSTANTS } from '../GLTFConstants';
 import { EXTENSIONS } from './EXTENSIONS';
 
 /**
+ * @import { GLTFParser } from "../GLTFParser"
+ */
+
+/**
  * GPU Instancing Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Vendor/EXT_mesh_gpu_instancing
  *
  */
 export class GLTFMeshGpuInstancing {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.name = EXTENSIONS.EXT_MESH_GPU_INSTANCING;
     this.parser = parser;

@@ -3,11 +3,16 @@ import { MeshPhysicalMaterial } from '@renderlayer/materials';
 import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
 
 /**
+ * @import { GLTFParser } from "../GLTFParser"
+ */
+
+/**
  * Materials ior Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_ior
  */
 export class GLTFMaterialsIorExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_MATERIALS_IOR;

@@ -7,11 +7,16 @@ import { EXTENSIONS } from './EXTENSIONS';
 import { assignExtrasToUserData } from '../GLTFUtils';
 
 /**
+ * @import { GLTFParser } from "../GLTFParser"
+ */
+
+/**
  * Punctual Lights Extension
  *
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_lights_punctual
  */
 export class GLTFLightsExtension {
+  /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.KHR_LIGHTS_PUNCTUAL;
