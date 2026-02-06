@@ -132,7 +132,8 @@ export class GLTFParser {
       safariVersion = isSafari && safariMatch ? parseInt(safariMatch[1], 10) : -1;
 
       isFirefox = userAgent.indexOf('Firefox') > -1;
-      firefoxVersion = isFirefox ? userAgent.match(/Firefox\/([0-9]+)\./)[1] : -1;
+      const firefoxMatch = userAgent.match(/Firefox\/([0-9]+)\./);
+      firefoxVersion = isFirefox && firefoxMatch ? parseInt(firefoxMatch[1], 10) : -1;
     }
 
     if (
