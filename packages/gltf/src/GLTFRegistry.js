@@ -1,23 +1,21 @@
 /* GLTFREGISTRY */
 
-export function GLTFRegistry() {
-  let objects = {};
+export class GLTFRegistry {
+  #objects = {};
 
-  return {
-    get(key) {
-      return objects[key];
-    },
+  get(key) {
+    return this.#objects[key];
+  }
 
-    add(key, object) {
-      objects[key] = object;
-    },
+  add(key, object) {
+    this.#objects[key] = object;
+  }
 
-    remove(key) {
-      delete objects[key];
-    },
+  remove(key) {
+    delete this.#objects[key];
+  }
 
-    removeAll() {
-      objects = {};
-    }
-  };
+  removeAll() {
+    this.#objects = {};
+  }
 }
