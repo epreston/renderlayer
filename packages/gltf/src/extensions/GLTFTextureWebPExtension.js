@@ -9,7 +9,6 @@ export class GLTFTextureWebPExtension {
   constructor(parser) {
     this.parser = parser;
     this.name = EXTENSIONS.EXT_TEXTURE_WEBP;
-    this.isSupported = null;
   }
 
   loadTexture(textureIndex) {
@@ -32,34 +31,6 @@ export class GLTFTextureWebPExtension {
       if (handler !== null) loader = handler;
     }
 
-    return this.detectSupport().then(function (isSupported) {
-      if (isSupported) return parser.loadTextureImage(textureIndex, extension.source, loader);
-
-      if (json.extensionsRequired && json.extensionsRequired.includes(name)) {
-        throw new Error('GLTFLoader: WebP required by asset but unsupported.');
-      }
-
-      // Fall back to PNG or JPEG.
-      return parser.loadTexture(textureIndex);
-    });
-  }
-
-  detectSupport() {
-    if (!this.isSupported) {
-      this.isSupported = new Promise(function (resolve) {
-        const image = new Image();
-
-        // Lossy test image. Support for lossy images doesn't guarantee support for all
-        // WebP images, unfortunately.
-        image.src =
-          'data:image/webp;base64,UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA';
-
-        image.onload = image.onerror = function () {
-          resolve(image.height === 1);
-        };
-      });
-    }
-
-    return this.isSupported;
+    return parser.loadTextureImage(textureIndex, extension.source, loader);
   }
 }
