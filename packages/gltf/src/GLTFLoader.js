@@ -104,7 +104,11 @@ class GLTFLoader extends Loader {
     });
 
     this.register(function (parser) {
-      return new GLTFMeshoptCompression(parser);
+      return new GLTFMeshoptCompression(parser, EXTENSIONS.EXT_MESHOPT_COMPRESSION);
+    });
+
+    this.register(function (parser) {
+      return new GLTFMeshoptCompression(parser, EXTENSIONS.KHR_MESHOPT_COMPRESSION);
     });
 
     this.register(function (parser) {

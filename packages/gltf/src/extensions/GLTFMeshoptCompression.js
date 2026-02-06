@@ -6,8 +6,8 @@ import { EXTENSIONS } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Vendor/EXT_meshopt_compression
  */
 export class GLTFMeshoptCompression {
-  constructor(parser) {
-    this.name = EXTENSIONS.EXT_MESHOPT_COMPRESSION;
+  constructor(parser, name = EXTENSIONS.KHR_MESHOPT_COMPRESSION) {
+    this.name = name;
     this.parser = parser;
   }
 
