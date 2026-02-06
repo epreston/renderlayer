@@ -14,10 +14,12 @@ import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_sheen
  */
 export class GLTFMaterialsSheenExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_SHEEN;
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_SHEEN;
   }
 
   getMaterialType(materialIndex) {
