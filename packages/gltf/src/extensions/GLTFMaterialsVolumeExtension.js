@@ -14,10 +14,12 @@ import { EXTENSIONS, getMaterialExtension } from './EXTENSIONS';
  * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_volume
  */
 export class GLTFMaterialsVolumeExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_VOLUME;
+
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_VOLUME;
   }
 
   getMaterialType(materialIndex) {
