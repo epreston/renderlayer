@@ -1168,7 +1168,7 @@ class GLTFParser {
    * Requests the specified dependency asynchronously, with caching.
    * @param {string} type
    * @param {number} index
-   * @return {Promise<Object3D|Material|Texture|AnimationClip|ArrayBuffer|Object>}
+   * @return {Promise<Object3D | Material | Texture | AnimationClip | ArrayBuffer | Object>}
    */
   getDependency(type, index) {
     const cacheKey = `${type}:${index}`;
@@ -1294,7 +1294,7 @@ class GLTFParser {
   /**
    * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#accessors
    * @param {number} accessorIndex
-   * @return {Promise<BufferAttribute|InterleavedBufferAttribute>}
+   * @return {Promise<BufferAttribute | InterleavedBufferAttribute>}
    */
   loadAccessor(accessorIndex) {
     const parser = this;
@@ -1399,7 +1399,7 @@ class GLTFParser {
   /**
    * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#textures
    * @param {number} textureIndex
-   * @return {Promise<Texture|null>}
+   * @return {Promise<Texture | null>}
    */
   loadTexture(textureIndex) {
     const json = this.json;
@@ -1757,7 +1757,7 @@ class GLTFParser {
   /**
    * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#meshes
    * @param {number} meshIndex
-   * @return {Promise<Group|Mesh|SkinnedMesh|Line|Points>}
+   * @return {Promise<Group | Mesh | SkinnedMesh | Line | Points>}
    */
   loadMesh(meshIndex) {
     const parser = this;
