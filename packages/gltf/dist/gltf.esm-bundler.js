@@ -48,10 +48,10 @@ const BINARY_EXTENSION_HEADER_MAGIC = "glTF";
 const BINARY_EXTENSION_HEADER_LENGTH = 12;
 const BINARY_EXTENSION_CHUNK_TYPES = { JSON: 1313821514, BIN: 5130562 };
 class GLTFBinaryExtension {
+  name = EXTENSIONS.KHR_BINARY_GLTF;
+  content = null;
+  body = null;
   constructor(data) {
-    this.name = EXTENSIONS.KHR_BINARY_GLTF;
-    this.content = null;
-    this.body = null;
     const headerView = new DataView(data, 0, BINARY_EXTENSION_HEADER_LENGTH);
     const textDecoder = new TextDecoder();
     this.header = {
@@ -160,12 +160,14 @@ const ALPHA_MODES = {
 };
 
 class GLTFDracoMeshCompressionExtension {
+  name = EXTENSIONS.KHR_DRACO_MESH_COMPRESSION;
+  json;
+  dracoLoader;
   /** @param {DRACOLoader} dracoLoader  */
   constructor(json, dracoLoader) {
     if (!dracoLoader) {
       throw new Error("GLTFLoader: No DRACOLoader instance provided.");
     }
-    this.name = EXTENSIONS.KHR_DRACO_MESH_COMPRESSION;
     this.json = json;
     this.dracoLoader = dracoLoader;
     this.dracoLoader.preload();
@@ -223,11 +225,13 @@ function assignExtrasToUserData(object, gltfDef) {
 }
 
 class GLTFLightsExtension {
+  parser;
+  name = EXTENSIONS.KHR_LIGHTS_PUNCTUAL;
+  // Object3D instance caches
+  cache = { refs: {}, uses: {} };
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_LIGHTS_PUNCTUAL;
-    this.cache = { refs: {}, uses: {} };
   }
   _markDefs() {
     const parser = this.parser;
@@ -307,10 +311,11 @@ class GLTFLightsExtension {
 }
 
 class GLTFMaterialsAnisotropyExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_ANISOTROPY;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_ANISOTROPY;
   }
   getMaterialType(materialIndex) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -336,10 +341,11 @@ class GLTFMaterialsAnisotropyExtension {
 }
 
 class GLTFMaterialsClearcoatExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_CLEARCOAT;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_CLEARCOAT;
   }
   getMaterialType(materialIndex) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -387,10 +393,11 @@ class GLTFMaterialsClearcoatExtension {
 }
 
 class GLTFMaterialsDispersionExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_DISPERSION;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_DISPERSION;
   }
   getMaterialType(materialIndex) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -405,10 +412,11 @@ class GLTFMaterialsDispersionExtension {
 }
 
 class GLTFMaterialsEmissiveStrengthExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_EMISSIVE_STRENGTH;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_EMISSIVE_STRENGTH;
   }
   extendMaterialParams(materialIndex, materialParams) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -421,10 +429,11 @@ class GLTFMaterialsEmissiveStrengthExtension {
 }
 
 class GLTFMaterialsIorExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_IOR;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_IOR;
   }
   getMaterialType(materialIndex) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -439,10 +448,11 @@ class GLTFMaterialsIorExtension {
 }
 
 class GLTFMaterialsIridescenceExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_IRIDESCENCE;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_IRIDESCENCE;
   }
   getMaterialType(materialIndex) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -486,10 +496,11 @@ class GLTFMaterialsIridescenceExtension {
 }
 
 class GLTFMaterialsSheenExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_SHEEN;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_SHEEN;
   }
   getMaterialType(materialIndex) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -538,10 +549,11 @@ class GLTFMaterialsSheenExtension {
 }
 
 class GLTFMaterialsSpecularExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_SPECULAR;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_SPECULAR;
   }
   getMaterialType(materialIndex) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -579,10 +591,11 @@ class GLTFMaterialsSpecularExtension {
 }
 
 class GLTFMaterialsTransmissionExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_TRANSMISSION;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_TRANSMISSION;
   }
   getMaterialType(materialIndex) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -605,12 +618,11 @@ class GLTFMaterialsTransmissionExtension {
 }
 
 class GLTFMaterialsUnlitExtension {
-  constructor() {
-    this.name = EXTENSIONS.KHR_MATERIALS_UNLIT;
-  }
+  name = EXTENSIONS.KHR_MATERIALS_UNLIT;
   getMaterialType() {
     return MeshBasicMaterial;
   }
+  /** @param {GLTFParser} parser  */
   extendParams(materialParams, materialDef, parser) {
     const pending = [];
     materialParams.color = new Color(1, 1, 1);
@@ -638,10 +650,11 @@ class GLTFMaterialsUnlitExtension {
 }
 
 class GLTFMaterialsVolumeExtension {
+  parser;
+  name = EXTENSIONS.KHR_MATERIALS_VOLUME;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_MATERIALS_VOLUME;
   }
   getMaterialType(materialIndex) {
     const extension = getMaterialExtension(this.parser, materialIndex, this.name);
@@ -670,9 +683,10 @@ class GLTFMaterialsVolumeExtension {
 }
 
 class GLTFMeshGpuInstancing {
+  parser;
+  name = EXTENSIONS.EXT_MESH_GPU_INSTANCING;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
-    this.name = EXTENSIONS.EXT_MESH_GPU_INSTANCING;
     this.parser = parser;
   }
   createNodeMesh(nodeIndex) {
@@ -746,6 +760,8 @@ class GLTFMeshGpuInstancing {
 }
 
 class GLTFMeshoptCompression {
+  name;
+  parser;
   /** @param {GLTFParser} parser  */
   constructor(parser, name = EXTENSIONS.KHR_MESHOPT_COMPRESSION) {
     this.name = name;
@@ -799,16 +815,15 @@ class GLTFMeshoptCompression {
 }
 
 class GLTFMeshQuantizationExtension {
-  constructor() {
-    this.name = EXTENSIONS.KHR_MESH_QUANTIZATION;
-  }
+  name = EXTENSIONS.KHR_MESH_QUANTIZATION;
 }
 
 class GLTFTextureAVIFExtension {
+  parser;
+  name = EXTENSIONS.EXT_TEXTURE_AVIF;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.EXT_TEXTURE_AVIF;
   }
   loadTexture(textureIndex) {
     const name = this.name;
@@ -830,10 +845,11 @@ class GLTFTextureAVIFExtension {
 }
 
 class GLTFTextureBasisUExtension {
+  parser;
+  name = EXTENSIONS.KHR_TEXTURE_BASISU;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.KHR_TEXTURE_BASISU;
   }
   loadTexture(textureIndex) {
     const parser = this.parser;
@@ -856,9 +872,7 @@ class GLTFTextureBasisUExtension {
 }
 
 class GLTFTextureTransformExtension {
-  constructor() {
-    this.name = EXTENSIONS.KHR_TEXTURE_TRANSFORM;
-  }
+  name = EXTENSIONS.KHR_TEXTURE_TRANSFORM;
   extendTexture(texture, transform) {
     if ((transform.texCoord === void 0 || transform.texCoord === texture.channel) && transform.offset === void 0 && transform.rotation === void 0 && transform.scale === void 0) {
       return texture;
@@ -882,10 +896,11 @@ class GLTFTextureTransformExtension {
 }
 
 class GLTFTextureWebPExtension {
+  parser;
+  name = EXTENSIONS.EXT_TEXTURE_WEBP;
   /** @param {GLTFParser} parser  */
   constructor(parser) {
     this.parser = parser;
-    this.name = EXTENSIONS.EXT_TEXTURE_WEBP;
   }
   loadTexture(textureIndex) {
     const name = this.name;
