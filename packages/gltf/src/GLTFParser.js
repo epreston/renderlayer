@@ -843,7 +843,6 @@ export class GLTFParser {
     const useVertexColors = geometry.attributes.color !== undefined;
     const useFlatShading = geometry.attributes.normal === undefined;
 
-    // @ts-ignore
     if (mesh.isPoints) {
       const cacheKey = `PointsMaterial:${material.uuid}`;
 
@@ -862,7 +861,6 @@ export class GLTFParser {
       }
 
       material = pointsMaterial;
-      // @ts-ignore
     } else if (mesh.isLine) {
       const cacheKey = `LineBasicMaterial:${material.uuid}`;
 
@@ -1199,7 +1197,6 @@ export class GLTFParser {
               new SkinnedMesh(geometry, material)
             : new Mesh(geometry, material);
 
-          // @ts-ignore
           if (mesh.isSkinnedMesh === true) {
             // normalize skin weights to fix malformed assets (see #15319)
             // @ts-ignore
