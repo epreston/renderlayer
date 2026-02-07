@@ -5,7 +5,9 @@ Light, Modern, Stable - 3D Rendering Layer for the Web
 [![NPM version][npm-badge]][npm-url]
 [![License][license-badge]][license-url]
 
-`renderlayer` is a number of associated packages that can be used in any combination. They define the minimum dependencies between each other for efficient builds and simple reuse. This is a convenience package to make core packages available to your project with a single dependency.
+`renderlayer` is a number of associated packages that can be used in any combination. They define the minimum dependencies between each other for efficient builds and simple reuse. 
+
+This is a convenience package to make core packages available to your project with a single dependency.
 
 ## Install
 
