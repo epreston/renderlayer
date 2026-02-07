@@ -25,6 +25,7 @@ This repository employs a [monorepo](https://en.wikipedia.org/wiki/Monorepo) set
 | `gltf`         | [![gltf][gltf-badge]][gltf-url]                         |             |
 | `interpolants` | [![interpolants][interpolants-badge]][interpolants-url] |             |
 | `keyframes`    | [![keyframes][keyframes-badge]][keyframes-url]          |             |
+| `ktx2`         | [![ktx2][ktx2-badge]][ktx2-url]                         |             |
 | `lights`       | [![lights][lights-badge]][lights-url]                   |             |
 | `loaders`      | [![loaders][loaders-badge]][loaders-url]                |             |
 | `materials`    | [![materials][materials-badge]][materials-url]          |             |
@@ -118,6 +119,8 @@ This project is released under the MIT [License](LICENSE).
 [interpolants-url]: https://www.npmjs.com/package/@renderlayer/interpolants
 [keyframes-badge]: https://img.shields.io/npm/v/@renderlayer/keyframes
 [keyframes-url]: https://www.npmjs.com/package/@renderlayer/keyframes
+[ktx2-badge]: https://img.shields.io/npm/v/@renderlayer/ktx2
+[ktx2-url]: https://www.npmjs.com/package/@renderlayer/ktx2
 [lights-badge]: https://img.shields.io/npm/v/@renderlayer/lights
 [lights-url]: https://www.npmjs.com/package/@renderlayer/lights
 [loaders-badge]: https://img.shields.io/npm/v/@renderlayer/loaders
