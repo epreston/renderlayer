@@ -76,7 +76,8 @@ declare module '@renderlayer/core' {
 declare global {
   interface String {
     /**
-     * @deprecated Please use String.prototype.slice instead of String.prototype.substring in the repository.
+     * @deprecated Please use String.prototype.slice instead of
+     * String.prototype.substring in the repository.
      */
     substring(start: number, end?: number): string;
   }
