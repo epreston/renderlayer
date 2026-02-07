@@ -103,6 +103,13 @@ declare module '@renderlayer/math' {
   }
 }
 
+declare module '@renderlayer/objects' {
+  interface SkinnedMesh {
+    /** @deprecated Renamed to .applyBoneTransform() */
+    boneTransform(index, vector);
+  }
+}
+
 declare module '@renderlayer/scenes' {
   interface Scene {
     /** @deprecated autoUpdate was renamed to matrixWorldAutoUpdate */
