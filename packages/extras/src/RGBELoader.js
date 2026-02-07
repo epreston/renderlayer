@@ -315,11 +315,13 @@ class RGBELoader extends DataTextureLoader {
     };
 
     const byteArray = new Uint8Array(buffer);
+    // @ts-ignore - private property for tracking
     byteArray.pos = 0;
     const rgbe_header_info = RGBE_ReadHeader(byteArray);
 
     const w = rgbe_header_info.width;
     const h = rgbe_header_info.height;
+    // @ts-ignore
     const image_rgba_data = RGBE_ReadPixels_RLE(byteArray.subarray(byteArray.pos), w, h);
     let data;
     let type;
