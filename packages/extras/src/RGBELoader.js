@@ -126,6 +126,7 @@ class RGBELoader extends DataTextureLoader {
         }
 
         /* if you want to require the magic token then uncomment the next line */
+        // @ts-ignore
         if (!(match = line.match(magic_token_re))) {
           rgbe_error(rgbe_format_error, 'bad initial token');
         }
@@ -139,24 +140,29 @@ class RGBELoader extends DataTextureLoader {
           if (line === false) break;
           header.string += `${line}\n`;
 
+          // @ts-ignore
           if (line.charAt(0) === '#') {
             header.comments += `${line}\n`;
             continue; // comment line
           }
 
+          // @ts-ignore
           if ((match = line.match(gamma_re))) {
             header.gamma = parseFloat(match[1]);
           }
 
+          // @ts-ignore
           if ((match = line.match(exposure_re))) {
             header.exposure = parseFloat(match[1]);
           }
 
+          // @ts-ignore
           if ((match = line.match(format_re))) {
             header.valid |= RGBE_VALID_FORMAT;
             header.format = match[1]; //'32-bit_rle_rgbe';
           }
 
+          // @ts-ignore
           if ((match = line.match(dimensions_re))) {
             header.valid |= RGBE_VALID_DIMENSIONS;
             header.height = parseInt(match[1], 10);
