@@ -103,6 +103,13 @@ declare module '@renderlayer/math' {
   }
 }
 
+declare module '@renderlayer/scenes' {
+  interface Scene {
+    /** @deprecated autoUpdate was renamed to matrixWorldAutoUpdate */
+    autoUpdate: boolean;
+  }
+}
+
 declare module '@renderlayer/shared' {
   /** @deprecated Removed. */
   const TwoPassDoubleSide = 2;
@@ -112,4 +119,11 @@ declare module '@renderlayer/shared' {
 
   /** @deprecated Removed: Use SRGBColorSpace */
   const sRGBEncoding = 3001;
+}
+
+declare module '@renderlayer/textures' {
+  interface Texture {
+    /** @deprecated Removed. replaced by .colorSpace.*/
+    encoding: string;
+  }
 }
