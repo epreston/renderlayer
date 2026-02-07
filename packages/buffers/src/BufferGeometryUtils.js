@@ -191,7 +191,6 @@ function mergeAttributes(attributes) {
   let arrayLength = 0;
 
   for (const attribute of attributes) {
-    // @ts-ignore
     if (attribute.isInterleavedBufferAttribute) {
       console.error(
         'BufferGeometryUtils: .mergeAttributes() failed. InterleavedBufferAttributes are not supported.'
@@ -256,12 +255,10 @@ function mergeAttributes(attributes) {
  * @return {BufferAttribute}
  */
 function deepCloneAttribute(attribute) {
-  // @ts-ignore
   if (attribute.isInstancedInterleavedBufferAttribute || attribute.isInterleavedBufferAttribute) {
     return deinterleaveAttribute(attribute);
   }
 
-  // @ts-ignore
   if (attribute.isInstancedBufferAttribute) {
     return new InstancedBufferAttribute().copy(attribute);
   }

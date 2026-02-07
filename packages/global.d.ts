@@ -24,7 +24,6 @@ declare var __CJS__: boolean;
 declare var __VERSION__: string;
 declare var __COMMIT__: string;
 
-
 // custom matchers for tests
 
 import type { Assertion, AsymmetricMatchersContaining } from 'vitest';
@@ -53,6 +52,21 @@ declare module '@renderlayer/core' {
     readonly isPoints?: boolean;
     readonly isScene?: boolean;
     readonly isSkinnedMesh?: boolean;
+  }
+}
+
+declare module '@renderlayer/buffers' {
+  interface BufferAttribute {
+    // optional, read-only object properties
+    readonly isInstancedBufferAttribute?: boolean;
+    readonly isInterleavedBufferAttribute?: boolean;
+    readonly isInstancedInterleavedBufferAttribute?: boolean; // EP: exists ?
+  }
+
+  interface InterleavedBufferAttribute {
+    // optional, read-only object properties
+    readonly isInstancedBufferAttribute?: boolean;
+    readonly isInstancedInterleavedBufferAttribute?: boolean; // EP: exists ?
   }
 }
 
