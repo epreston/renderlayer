@@ -32,9 +32,11 @@ declare module 'vitest' {
 
 // deprecations
 
-declare interface String {
-  /**
-   * @deprecated Please use String.prototype.slice instead of String.prototype.substring in the repository.
-   */
-  substring(start: number, end?: number): string;
+declare global {
+  interface String {
+    /**
+     * @deprecated Please use String.prototype.slice instead of String.prototype.substring in the repository.
+     */
+    substring(start: number, end?: number): string;
+  }
 }
