@@ -41,21 +41,6 @@ declare module 'vitest' {
 
 // duck typing implemented via boolean type flags
 
-declare module '@renderlayer/core' {
-  interface Object3D {
-    // optional, read-only object properties
-    readonly isCamera?: boolean;
-    readonly isInstancedMesh?: boolean;
-    readonly isLight?: boolean;
-    readonly isLine?: boolean;
-    readonly isLineSegments?: boolean;
-    readonly isMesh?: boolean;
-    readonly isPoints?: boolean;
-    readonly isScene?: boolean;
-    readonly isSkinnedMesh?: boolean;
-  }
-}
-
 declare module '@renderlayer/buffers' {
   interface BufferAttribute {
     // optional, read-only object properties
@@ -68,6 +53,21 @@ declare module '@renderlayer/buffers' {
     // optional, read-only object properties
     readonly isInstancedBufferAttribute?: boolean;
     readonly isInstancedInterleavedBufferAttribute?: boolean; // EP: exists ?
+  }
+}
+
+declare module '@renderlayer/core' {
+  interface Object3D {
+    // optional, read-only object properties
+    readonly isCamera?: boolean;
+    readonly isInstancedMesh?: boolean;
+    readonly isLight?: boolean;
+    readonly isLine?: boolean;
+    readonly isLineSegments?: boolean;
+    readonly isMesh?: boolean;
+    readonly isPoints?: boolean;
+    readonly isScene?: boolean;
+    readonly isSkinnedMesh?: boolean;
   }
 }
 
