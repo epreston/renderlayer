@@ -1,5 +1,8 @@
 /// <reference types="vite/client" />
 
+// make this a module to avoid errors if needed
+export {};
+
 declare module '*.glsl' {
   const src: string;
   export default src;
