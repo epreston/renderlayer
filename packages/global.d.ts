@@ -30,6 +30,22 @@ declare module 'vitest' {
   interface AsymmetricMatchersContaining extends CustomMatchers {}
 }
 
+// duck typing implemented via boolean type flags
+
+declare module '@renderlayer/core' {
+  interface Object3D {
+    // Optional, read-only object properties
+    readonly isCamera?: boolean;
+    readonly isInstancedMesh?: boolean;
+    readonly isLight?: boolean;
+    readonly isLine?: boolean;
+    readonly isMesh?: boolean;
+    readonly isPoints?: boolean;
+    readonly isScene?: boolean;
+    readonly isSkinnedMesh?: boolean;
+  }
+}
+
 // deprecations
 
 declare global {
