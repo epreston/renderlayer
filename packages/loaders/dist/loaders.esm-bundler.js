@@ -115,6 +115,7 @@ class Loader {
   withCredentials = false;
   path = "";
   resourcePath = "";
+  /** @type {Object<string, any>} */
   requestHeader = {};
   /** @param {LoadingManager} [manager]  */
   constructor(manager) {
@@ -459,11 +460,14 @@ class ImageLoader extends Loader {
       }, 0);
       return cached;
     }
-    const image = createElementNS("img");
-    function onImageLoad() {
+    const image = (
+      /** @type {HTMLImageElement} */
+      createElementNS("img")
+    );
+    function onImageLoad(event) {
       removeEventListeners();
-      Cache.add(url, this);
-      if (onLoad) onLoad(this);
+      Cache.add(url, event.currentTarget);
+      if (onLoad) onLoad(event.currentTarget);
       scope.manager.itemEnd(url);
     }
     function onImageError(event) {
@@ -630,6 +634,7 @@ class ImageBitmapLoader extends Loader {
     }).then(function(blob) {
       return createImageBitmap(
         blob,
+        // @ts-ignore
         Object.assign(scope.options, { colorSpaceConversion: "none" })
       );
     }).then(function(imageBitmap) {
