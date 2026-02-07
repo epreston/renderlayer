@@ -87,7 +87,6 @@ class Line extends Object3D {
     const interSegment = new Vector3();
     const interRay = new Vector3();
 
-    // @ts-ignore
     const step = this.isLineSegments ? 2 : 1;
 
     const index = geometry.index;
