@@ -80,6 +80,13 @@ import {
 
 /* GLTF PARSER */
 
+/**
+ * @typedef {object} GLTF.definition
+ * @typedef {object} GLTF.Primitive
+ * @typedef {object} GLTF.Mesh
+ * @typedef {object} GLTF.Target
+ */
+
 export class GLTFParser {
   json;
   extensions = {};
@@ -338,7 +345,7 @@ export class GLTFParser {
    * Requests the specified dependency asynchronously, with caching.
    * @param {string} type
    * @param {number} index
-   * @return {Promise<Object3D|Material|Texture|AnimationClip|ArrayBuffer|Object>}
+   * @return {Promise<Object3D | Material | Texture | AnimationClip | ArrayBuffer | Object>}
    */
   getDependency(type, index) {
     const cacheKey = `${type}:${index}`;
@@ -404,6 +411,7 @@ export class GLTFParser {
 
         default:
           dependency = this._invokeOne(function (ext) {
+            // @ts-ignore
             return ext !== this && ext.getDependency && ext.getDependency(type, index);
           });
 
@@ -494,7 +502,7 @@ export class GLTFParser {
   /**
    * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#accessors
    * @param {number} accessorIndex
-   * @return {Promise<BufferAttribute|InterleavedBufferAttribute>}
+   * @return {Promise<BufferAttribute | InterleavedBufferAttribute>}
    */
   loadAccessor(accessorIndex) {
     const parser = this;
@@ -635,7 +643,7 @@ export class GLTFParser {
   /**
    * Specification: https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#textures
    * @param {number} textureIndex
-   * @return {Promise<Texture|null>}
+   * @return {Promise<Texture | null>}
    */
   loadTexture(textureIndex) {
     const json = this.json;
@@ -835,6 +843,7 @@ export class GLTFParser {
     const useVertexColors = geometry.attributes.color !== undefined;
     const useFlatShading = geometry.attributes.normal === undefined;
 
+    // @ts-ignore
     if (mesh.isPoints) {
       const cacheKey = `PointsMaterial:${material.uuid}`;
 
@@ -843,7 +852,9 @@ export class GLTFParser {
       if (!pointsMaterial) {
         pointsMaterial = new PointsMaterial();
         Material.prototype.copy.call(pointsMaterial, material);
+        // @ts-ignore
         pointsMaterial.color.copy(material.color);
+        // @ts-ignore
         pointsMaterial.map = material.map;
         pointsMaterial.sizeAttenuation = false; // glTF spec says points should be 1px
 
@@ -851,6 +862,7 @@ export class GLTFParser {
       }
 
       material = pointsMaterial;
+      // @ts-ignore
     } else if (mesh.isLine) {
       const cacheKey = `LineBasicMaterial:${material.uuid}`;
 
@@ -859,7 +871,9 @@ export class GLTFParser {
       if (!lineMaterial) {
         lineMaterial = new LineBasicMaterial();
         Material.prototype.copy.call(lineMaterial, material);
+        // @ts-ignore
         lineMaterial.color.copy(material.color);
+        // @ts-ignore
         lineMaterial.map = material.map;
 
         this.cache.add(cacheKey, lineMaterial);
@@ -1135,7 +1149,7 @@ export class GLTFParser {
   /**
    * Specification: https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#meshes
    * @param {number} meshIndex
-   * @return {Promise<Group|Mesh|SkinnedMesh|Line|Points>}
+   * @return {Promise<Group | Mesh | SkinnedMesh | Line | Points>}
    */
   loadMesh(meshIndex) {
     const parser = this;
@@ -1185,8 +1199,10 @@ export class GLTFParser {
               new SkinnedMesh(geometry, material)
             : new Mesh(geometry, material);
 
+          // @ts-ignore
           if (mesh.isSkinnedMesh === true) {
             // normalize skin weights to fix malformed assets (see #15319)
+            // @ts-ignore
             mesh.normalizeSkinWeights();
           }
 
@@ -1208,6 +1224,7 @@ export class GLTFParser {
         }
 
         if (Object.keys(mesh.geometry.morphAttributes).length > 0) {
+          // @ts-ignore
           updateMorphTargets(mesh, meshDef);
         }
 
