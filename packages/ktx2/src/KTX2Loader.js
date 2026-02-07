@@ -493,6 +493,7 @@ KTX2Loader.BasisWorker = function () {
   function init(wasmBinary) {
     transcoderPending = new Promise((resolve) => {
       BasisModule = { wasmBinary, onRuntimeInitialized: resolve };
+      // @ts-ignore
       BASIS(BasisModule); // eslint-disable-line no-undef
     }).then(() => {
       BasisModule.initializeBasis();
