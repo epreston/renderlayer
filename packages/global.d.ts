@@ -81,3 +81,34 @@ declare global {
     substring(start: number, end?: number): string;
   }
 }
+
+declare module '@renderlayer/math' {
+  interface Color {
+    /** @deprecated Removed. */
+    setColorName(style: string, colorSpace?: string): this;
+
+    /** @deprecated Removed. */
+    NAMES: object;
+  }
+
+  namespace Triangle {
+    /** @deprecated Triangle.getUV() renamed to Triangle.getInterpolation(). */
+    function getUV(point, p1, p2, p3, uv1, uv2, uv3, target);
+  }
+
+  interface Triangle {
+    /** @deprecated getUV() renamed to getInterpolation(). */
+    getUV(point, uv1, uv2, uv3, target);
+  }
+}
+
+declare module '@renderlayer/shared' {
+  /** @deprecated Removed. */
+  const TwoPassDoubleSide = 2;
+
+  /** @deprecated Removed: Use LinearSRGBColorSpace or NoColorSpace */
+  const LinearEncoding = 3000;
+
+  /** @deprecated Removed: Use SRGBColorSpace */
+  const sRGBEncoding = 3001;
+}
