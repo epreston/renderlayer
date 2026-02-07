@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-// make this a module to avoid errors if needed
+// ensure this file is treated as a module
 export {};
 
 // ambient module declarations
