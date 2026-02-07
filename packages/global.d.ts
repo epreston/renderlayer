@@ -48,6 +48,7 @@ declare module '@renderlayer/core' {
     readonly isInstancedMesh?: boolean;
     readonly isLight?: boolean;
     readonly isLine?: boolean;
+    readonly isLineSegments?: boolean;
     readonly isMesh?: boolean;
     readonly isPoints?: boolean;
     readonly isScene?: boolean;
