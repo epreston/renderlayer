@@ -1,4 +1,4 @@
-import { ColorManagement } from '@renderlayer/math';
+import { ColorManagement, Vector2 } from '@renderlayer/math';
 import {
   AlwaysCompare,
   ClampToEdgeWrapping,
@@ -59,6 +59,7 @@ class WebGLTextures {
   #useOffscreenCanvas = false;
   #canvas;
 
+  #imageDimensions = new Vector2();
   #videoTextures = new WeakMap();
   #sources = new WeakMap(); // maps WebglTexture objects to instances of Source
 
@@ -148,10 +149,12 @@ class WebGLTextures {
   #resizeImage(image, needsNewCanvas, maxSize) {
     let scale = 1;
 
+    const dimensions = this.#getDimensions(image);
+
     // handle case if texture exceeds max size
 
-    if (image.width > maxSize || image.height > maxSize) {
-      scale = maxSize / Math.max(image.width, image.height);
+    if (dimensions.width > maxSize || dimensions.height > maxSize) {
+      scale = maxSize / Math.max(dimensions.width, dimensions.height);
     }
 
     // only perform resize if necessary
@@ -164,8 +167,8 @@ class WebGLTextures {
         (typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement) ||
         (typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap)
       ) {
-        const width = Math.floor(scale * image.width);
-        const height = Math.floor(scale * image.height);
+        const width = Math.floor(scale * dimensions.width);
+        const height = Math.floor(scale * dimensions.height);
 
         if (this.#canvas === undefined) this.#canvas = this.#createCanvas(width, height);
 
@@ -180,14 +183,14 @@ class WebGLTextures {
         context.drawImage(image, 0, 0, width, height);
 
         console.warn(
-          `WebGLRenderer: Texture has been resized from (${image.width}x${image.height}) to (${width}x${height}).`
+          `WebGLRenderer: Texture has been resized from (${dimensions.width}x${dimensions.height}) to (${width}x${height}).`
         );
 
         return canvas;
       } else {
         if ('data' in image) {
           console.warn(
-            `WebGLRenderer: Image in DataTexture is too big (${image.width}x${image.height}).`
+            `WebGLRenderer: Image in DataTexture is too big (${dimensions.width}x${dimensions.height}).`
           );
         }
 
@@ -2290,6 +2293,23 @@ class WebGLTextures {
     }
 
     return image;
+  }
+
+  #getDimensions(image) {
+    if (typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement) {
+      // if intrinsic data are not available, fallback to width/height
+
+      this.#imageDimensions.width = image.naturalWidth || image.width;
+      this.#imageDimensions.height = image.naturalHeight || image.height;
+    } else if (typeof VideoFrame !== 'undefined' && image instanceof VideoFrame) {
+      this.#imageDimensions.width = image.displayWidth;
+      this.#imageDimensions.height = image.displayHeight;
+    } else {
+      this.#imageDimensions.width = image.width;
+      this.#imageDimensions.height = image.height;
+    }
+
+    return this.#imageDimensions;
   }
 }
 
