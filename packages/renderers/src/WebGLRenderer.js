@@ -218,11 +218,9 @@ class WebGLRenderer {
     /** @type {?WebGL2RenderingContext} */
     let _gl = context;
 
-    function getContext(contextNames, contextAttributes) {
-      for (const contextName of contextNames) {
-        const context = canvas.getContext(contextName, contextAttributes);
-        if (context !== null) return context;
-      }
+    function getContext(contextName, contextAttributes) {
+      const context = canvas.getContext(contextName, contextAttributes);
+      if (context !== null) return context;
 
       return null;
     }
@@ -256,27 +254,17 @@ class WebGLRenderer {
       canvas.addEventListener('webglcontextcreationerror', onContextCreationError, false);
 
       if (_gl === null) {
-        const contextNames = ['webgl2'];
+        const contextName = ['webgl2'];
 
-        _gl = getContext(contextNames, contextAttributes);
+        _gl = getContext(contextName, contextAttributes);
 
         if (_gl === null) {
-          if (getContext(contextNames)) {
+          if (getContext(contextName)) {
             throw new Error('Error creating WebGL2 context with your selected attributes.');
           } else {
             throw new Error('Error creating WebGL2 context.');
           }
         }
-      }
-
-      // Some experimental-webgl implementations do not have getShaderPrecisionFormat
-
-      if (_gl.getShaderPrecisionFormat === undefined) {
-        _gl.getShaderPrecisionFormat = () => ({
-          rangeMin: 1,
-          rangeMax: 1,
-          precision: 1
-        });
       }
     } catch (error) {
       console.error(`WebGLRenderer: ${error.message}`);
@@ -1604,15 +1592,9 @@ class WebGLRenderer {
         const skeleton = object.skeleton;
 
         if (skeleton) {
-          if (capabilities.floatVertexTextures) {
-            if (skeleton.boneTexture === null) skeleton.computeBoneTexture();
+          if (skeleton.boneTexture === null) skeleton.computeBoneTexture();
 
-            p_uniforms.setValue(_gl, 'boneTexture', skeleton.boneTexture, textures);
-          } else {
-            console.warn(
-              'WebGLRenderer: SkinnedMesh can only be used with WebGL 2. With WebGL 1 OES_texture_float and vertex textures support is required.'
-            );
-          }
+          p_uniforms.setValue(_gl, 'boneTexture', skeleton.boneTexture, textures);
         }
       }
 
