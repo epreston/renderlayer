@@ -66,7 +66,7 @@ import {
 } from '@renderlayer/shared';
 
 /**
- * @import { WebGLExtensions, WebGLCapabilities } from "@renderlayer/webgl"
+ * @import { WebGLExtensions } from "@renderlayer/webgl"
  */
 
 class WebGLUtils {
@@ -76,9 +76,8 @@ class WebGLUtils {
   /**
    * @param {WebGL2RenderingContext} gl
    * @param {WebGLExtensions} extensions
-   * @param {WebGLCapabilities} capabilities
    */
-  constructor(gl, extensions, capabilities) {
+  constructor(gl, extensions) {
     this.#gl = gl;
     this.#extensions = extensions;
   }

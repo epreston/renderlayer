@@ -311,7 +311,7 @@ class WebGLRenderer {
 
       extensions.init(capabilities);
 
-      utils = new WebGLUtils(_gl, extensions, capabilities);
+      utils = new WebGLUtils(_gl, extensions);
 
       state = new WebGLState(_gl);
 
