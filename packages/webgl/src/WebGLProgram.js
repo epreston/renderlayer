@@ -130,8 +130,11 @@ class WebGLProgram {
 
         customDefines,
 
+        parameters.extensionClipCullDistance ? '#define USE_CLIP_DISTANCE' : '',
+        parameters.batching ? '#define USE_BATCHING' : '',
         parameters.instancing ? '#define USE_INSTANCING' : '',
         parameters.instancingColor ? '#define USE_INSTANCING_COLOR' : '',
+        parameters.instancingMorph ? '#define USE_INSTANCING_MORPH' : '',
 
         parameters.useFog && parameters.fog ? '#define USE_FOG' : '',
         parameters.useFog && parameters.fogExp2 ? '#define FOG_EXP2' : '',
