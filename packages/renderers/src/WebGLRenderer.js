@@ -1801,7 +1801,7 @@ class WebGLRenderer {
 
       const framebufferBound = state.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
 
-      if (framebufferBound && capabilities.drawBuffers && useDefaultFramebuffer) {
+      if (framebufferBound && useDefaultFramebuffer) {
         state.drawBuffers(renderTarget, framebuffer);
       }
 
@@ -1881,7 +1881,7 @@ class WebGLRenderer {
           if (
             textureType !== UnsignedByteType &&
             utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // Edge and Chrome Mac < 52 (#9513)
-            !(textureType === FloatType) && // Chrome Mac >= 52 and Firefox
+            !(textureType === FloatType) &&
             !halfFloatSupportedByExt
           ) {
             console.error(
