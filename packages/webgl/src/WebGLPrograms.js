@@ -409,6 +409,15 @@ class WebGLPrograms {
 
       index0AttributeName: material.index0AttributeName,
 
+      extensionClipCullDistance:
+        HAS_EXTENSIONS &&
+        material.extensions.clipCullDistance === true &&
+        this.#extensions.has('WEBGL_clip_cull_distance'), // 75.48%
+
+      extensionMultiDraw:
+        HAS_EXTENSIONS &&
+        material.extensions.multiDraw === true &&
+        this.#extensions.has('WEBGL_multi_draw'), // 93.32%
 
       rendererExtensionParallelShaderCompile: this.#extensions.has('KHR_parallel_shader_compile'), // 72.98%
 
