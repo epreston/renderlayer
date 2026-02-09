@@ -85,6 +85,8 @@ class WebGLProgram {
     const envMapBlendingDefine = _generateEnvMapBlendingDefine(parameters);
     const envMapCubeUVSize = _generateCubeUVSize(parameters);
 
+    const customVertexExtensions = _generateVertexExtensions(parameters);
+
     const customDefines = _generateDefines(defines);
 
     this.program = gl.createProgram();
@@ -493,7 +495,7 @@ class WebGLProgram {
 
       prefixVertex =
         [
-          'precision mediump sampler2DArray;',
+          customVertexExtensions,
           '#define attribute in',
           '#define varying out',
           '#define texture2D texture'
@@ -771,6 +773,15 @@ function _getToneMappingFunction(functionName, toneMapping) {
   }
 
   return `vec3 ${functionName}( vec3 color ) { return ${toneMappingName}ToneMapping( color ); }`;
+}
+
+function _generateVertexExtensions(parameters) {
+  const chunks = [
+    parameters.extensionClipCullDistance ? '#extension GL_ANGLE_clip_cull_distance : require' : '',
+    parameters.extensionMultiDraw ? '#extension GL_ANGLE_multi_draw : require' : ''
+  ];
+
+  return chunks.filter(_filterEmptyLine).join('\n');
 }
 
 function _generateDefines(defines) {
