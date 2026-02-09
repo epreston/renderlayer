@@ -221,8 +221,6 @@ class WebGLPrograms {
     }
 
     const parameters = {
-      isWebGL2: true, // EP: optimise
-
       shaderID,
       shaderType: material.type,
       shaderName: material.name,
@@ -411,15 +409,8 @@ class WebGLPrograms {
 
       index0AttributeName: material.index0AttributeName,
 
-      extensionDerivatives: HAS_EXTENSIONS && material.extensions.derivatives === true,
-      extensionFragDepth: HAS_EXTENSIONS && material.extensions.fragDepth === true,
-      extensionDrawBuffers: HAS_EXTENSIONS && material.extensions.drawBuffers === true,
-      extensionShaderTextureLOD: HAS_EXTENSIONS && material.extensions.shaderTextureLOD === true,
 
-      rendererExtensionFragDepth: true, // EP: always true in webgl2, optimise
-      rendererExtensionDrawBuffers: true,
-      rendererExtensionShaderTextureLod: true,
-      rendererExtensionParallelShaderCompile: this.#extensions.has('KHR_parallel_shader_compile'),
+      rendererExtensionParallelShaderCompile: this.#extensions.has('KHR_parallel_shader_compile'), // 72.98%
 
       customProgramCacheKey: material.customProgramCacheKey()
     };
@@ -509,10 +500,10 @@ class WebGLPrograms {
   #getProgramCacheKeyBooleans(array, parameters) {
     this.#programLayers.disableAll();
 
-    if (parameters.isWebGL2) this.#programLayers.enable(0);
-    if (parameters.supportsVertexTextures) this.#programLayers.enable(1);
-    if (parameters.instancing) this.#programLayers.enable(2);
-    if (parameters.instancingColor) this.#programLayers.enable(3);
+    if (parameters.supportsVertexTextures) this.#programLayers.enable(0);
+    if (parameters.instancing) this.#programLayers.enable(1);
+    if (parameters.instancingColor) this.#programLayers.enable(2);
+    if (parameters.instancingMorph) this.#programLayers.enable(3);
     if (parameters.matcap) this.#programLayers.enable(4);
     if (parameters.envMap) this.#programLayers.enable(5);
     if (parameters.normalMapObjectSpace) this.#programLayers.enable(6);
@@ -528,6 +519,7 @@ class WebGLPrograms {
     if (parameters.vertexTangents) this.#programLayers.enable(16);
     if (parameters.anisotropy) this.#programLayers.enable(17);
     if (parameters.alphaHash) this.#programLayers.enable(18);
+    if (parameters.batching) this.#programLayers.enable(19);
 
     array.push(this.#programLayers.mask);
     this.#programLayers.disableAll();
