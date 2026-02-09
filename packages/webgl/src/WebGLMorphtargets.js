@@ -136,17 +136,20 @@ class WebGLMorphtargets {
     }
 
     //
+    if (object.isInstancedMesh === true && object.morphTexture !== null) {
+      program.getUniforms().setValue(gl, 'morphTexture', object.morphTexture, textures);
+    } else {
+      let morphInfluencesSum = 0;
 
-    let morphInfluencesSum = 0;
+      for (let i = 0; i < objectInfluences.length; i++) {
+        morphInfluencesSum += objectInfluences[i];
+      }
 
-    for (let i = 0; i < objectInfluences.length; i++) {
-      morphInfluencesSum += objectInfluences[i];
+      const morphBaseInfluence = geometry.morphTargetsRelative ? 1 : 1 - morphInfluencesSum;
+
+      program.getUniforms().setValue(gl, 'morphTargetBaseInfluence', morphBaseInfluence);
+      program.getUniforms().setValue(gl, 'morphTargetInfluences', objectInfluences);
     }
-
-    const morphBaseInfluence = geometry.morphTargetsRelative ? 1 : 1 - morphInfluencesSum;
-
-    program.getUniforms().setValue(gl, 'morphTargetBaseInfluence', morphBaseInfluence);
-    program.getUniforms().setValue(gl, 'morphTargetInfluences', objectInfluences);
 
     program.getUniforms().setValue(gl, 'morphTargetsTexture', entry.texture, textures);
     program.getUniforms().setValue(gl, 'morphTargetsTextureSize', entry.size);
