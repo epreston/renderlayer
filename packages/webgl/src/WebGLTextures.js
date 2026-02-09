@@ -200,10 +200,9 @@ class WebGLTextures {
     return image;
   }
 
-  #textureNeedsGenerateMipmaps(texture, supportsMips) {
+  #textureNeedsGenerateMipmaps(texture) {
     return (
       texture.generateMipmaps &&
-      supportsMips &&
       texture.minFilter !== NearestFilter &&
       texture.minFilter !== LinearFilter
     );
@@ -311,9 +310,9 @@ class WebGLTextures {
     return internalFormat;
   }
 
-  #getMipLevels(texture, image, supportsMips) {
+  #getMipLevels(texture, image) {
     if (
-      this.#textureNeedsGenerateMipmaps(texture, supportsMips) === true ||
+      this.#textureNeedsGenerateMipmaps(texture) === true ||
       (texture.isFramebufferTexture &&
         texture.minFilter !== NearestFilter &&
         texture.minFilter !== LinearFilter)
@@ -601,44 +600,38 @@ class WebGLTextures {
     );
   }
 
-  #setTextureParameters(textureType, texture, supportsMips) {
+  #setTextureParameters(textureType, texture) {
     const gl = this.#gl;
     const extensions = this.#extensions;
     const properties = this.#properties;
 
-    if (supportsMips) {
-      gl.texParameteri(textureType, gl.TEXTURE_WRAP_S, this.#wrappingToGL[texture.wrapS]);
-      gl.texParameteri(textureType, gl.TEXTURE_WRAP_T, this.#wrappingToGL[texture.wrapT]);
-
-      if (textureType === gl.TEXTURE_3D || textureType === gl.TEXTURE_2D_ARRAY) {
-        gl.texParameteri(textureType, gl.TEXTURE_WRAP_R, this.#wrappingToGL[texture.wrapR]);
-      }
-
-      gl.texParameteri(textureType, gl.TEXTURE_MAG_FILTER, this.#filterToGL[texture.magFilter]);
-      gl.texParameteri(textureType, gl.TEXTURE_MIN_FILTER, this.#filterToGL[texture.minFilter]);
-    } else {
-      gl.texParameteri(textureType, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(textureType, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-      if (textureType === gl.TEXTURE_3D || textureType === gl.TEXTURE_2D_ARRAY) {
-        gl.texParameteri(textureType, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
-      }
-
-      if (texture.wrapS !== ClampToEdgeWrapping || texture.wrapT !== ClampToEdgeWrapping) {
-        console.warn(
-          'WebGLRenderer: Texture is not power of two. Texture.wrapS and Texture.wrapT should be set to ClampToEdgeWrapping.'
-        );
-      }
-
-      gl.texParameteri(textureType, gl.TEXTURE_MAG_FILTER, this.#filterFallback(texture.magFilter));
-      gl.texParameteri(textureType, gl.TEXTURE_MIN_FILTER, this.#filterFallback(texture.minFilter));
-
-      if (texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter) {
-        console.warn(
-          'WebGLRenderer: Texture is not power of two. Texture.minFilter should be set to NearestFilter or LinearFilter.'
-        );
-      }
+    if (
+      texture.type === FloatType &&
+      extensions.has('OES_texture_float_linear') === false && // 86.16%
+      (texture.magFilter === LinearFilter ||
+        texture.magFilter === LinearMipmapNearestFilter ||
+        texture.magFilter === NearestMipmapLinearFilter ||
+        texture.magFilter === LinearMipmapLinearFilter ||
+        texture.minFilter === LinearFilter ||
+        texture.minFilter === LinearMipmapNearestFilter ||
+        texture.minFilter === NearestMipmapLinearFilter ||
+        texture.minFilter === LinearMipmapLinearFilter)
+    ) {
+      console.warn(
+        `WebGLRenderer: Unable to use linear filtering with floating point textures.
+        OES_texture_float_linear not supported on this device.`
+      );
     }
+
+    gl.texParameteri(textureType, gl.TEXTURE_WRAP_S, this.#wrappingToGL[texture.wrapS]);
+    gl.texParameteri(textureType, gl.TEXTURE_WRAP_T, this.#wrappingToGL[texture.wrapT]);
+
+    if (textureType === gl.TEXTURE_3D || textureType === gl.TEXTURE_2D_ARRAY) {
+      gl.texParameteri(textureType, gl.TEXTURE_WRAP_R, this.#wrappingToGL[texture.wrapR]);
+    }
+
+    gl.texParameteri(textureType, gl.TEXTURE_MAG_FILTER, this.#filterToGL[texture.magFilter]);
+    gl.texParameteri(textureType, gl.TEXTURE_MIN_FILTER, this.#filterToGL[texture.minFilter]);
 
     if (texture.compareFunction) {
       gl.texParameteri(textureType, gl.TEXTURE_COMPARE_MODE, gl.COMPARE_REF_TO_TEXTURE);
@@ -650,7 +643,7 @@ class WebGLTextures {
     }
 
     if (extensions.has('EXT_texture_filter_anisotropic') === true) {
-      const extension = extensions.get('EXT_texture_filter_anisotropic');
+      const extension = extensions.get('EXT_texture_filter_anisotropic'); // 98.81%
 
       if (texture.magFilter === NearestFilter) return;
       if (
@@ -658,8 +651,6 @@ class WebGLTextures {
         texture.minFilter !== LinearMipmapLinearFilter
       )
         return;
-      if (texture.type === FloatType && extensions.has('OES_texture_float_linear') === false)
-        return; // verify extension for WebGL 1 and WebGL 2
 
       if (texture.anisotropy > 1 || properties.get(texture).__currentAnisotropy) {
         gl.texParameterf(
@@ -779,8 +770,6 @@ class WebGLTextures {
       let image = this.#resizeImage(texture.image, false, this.#maxTextureSize);
       image = this.#verifyColorSpace(texture, image);
 
-      const supportsMips = true;
-
       const glFormat = utils.convert(texture.format, texture.colorSpace);
 
       let glType = utils.convert(texture.type);
@@ -792,14 +781,14 @@ class WebGLTextures {
         texture.isVideoTexture
       );
 
-      this.#setTextureParameters(textureType, texture, supportsMips);
+      this.#setTextureParameters(textureType, texture);
 
       let mipmap;
       const mipmaps = texture.mipmaps;
 
       const useTexStorage = texture.isVideoTexture !== true && glInternalFormat !== RGB_ETC1_Format;
       const allocateMemory = sourceProperties.__version === undefined || forceUpload === true;
-      const levels = this.#getMipLevels(texture, image, supportsMips);
+      const levels = this.#getMipLevels(texture, image);
 
       if (texture.isDepthTexture) {
         // populate depth texture with dummy data
@@ -874,7 +863,7 @@ class WebGLTextures {
         // if there are no manual mipmaps
         // set 0 level mipmap and then use GL to generate other mipmap levels
 
-        if (mipmaps.length > 0 && supportsMips) {
+        if (mipmaps.length > 0) {
           if (useTexStorage && allocateMemory) {
             state.texStorage2D(
               gl.TEXTURE_2D,
@@ -1221,7 +1210,7 @@ class WebGLTextures {
         // if there are no manual mipmaps
         // set 0 level mipmap and then use GL to generate other mipmap levels
 
-        if (mipmaps.length > 0 && supportsMips) {
+        if (mipmaps.length > 0) {
           if (useTexStorage && allocateMemory) {
             state.texStorage2D(
               gl.TEXTURE_2D,
@@ -1262,7 +1251,7 @@ class WebGLTextures {
         }
       }
 
-      if (this.#textureNeedsGenerateMipmaps(texture, supportsMips)) {
+      if (this.#textureNeedsGenerateMipmaps(texture)) {
         this.#generateMipmap(textureType);
       }
 
@@ -1322,8 +1311,6 @@ class WebGLTextures {
 
       const image = cubeImage[0];
 
-      const supportsMips = true;
-
       const glFormat = this.#utils.convert(texture.format, texture.colorSpace);
       const glType = this.#utils.convert(texture.type);
       const glInternalFormat = this.#getInternalFormat(
@@ -1336,9 +1323,9 @@ class WebGLTextures {
       const useTexStorage = texture.isVideoTexture !== true;
 
       const allocateMemory = sourceProperties.__version === undefined || forceUpload === true;
-      let levels = this.#getMipLevels(texture, image, supportsMips);
+      let levels = this.#getMipLevels(texture, image);
 
-      this.#setTextureParameters(gl.TEXTURE_CUBE_MAP, texture, supportsMips);
+      this.#setTextureParameters(gl.TEXTURE_CUBE_MAP, texture);
 
       let mipmaps;
 
@@ -1544,7 +1531,7 @@ class WebGLTextures {
         }
       }
 
-      if (this.#textureNeedsGenerateMipmaps(texture, supportsMips)) {
+      if (this.#textureNeedsGenerateMipmaps(texture)) {
         // We assume images for cube map have the same size.
         this.#generateMipmap(gl.TEXTURE_CUBE_MAP);
       }
@@ -1877,8 +1864,6 @@ class WebGLTextures {
     const isCube = renderTarget.isWebGLCubeRenderTarget === true;
     const isMultipleRenderTargets = renderTarget.isWebGLMultipleRenderTargets === true;
 
-    const supportsMips = true;
-
     // Setup framebuffer
 
     if (isCube) {
@@ -1982,7 +1967,7 @@ class WebGLTextures {
 
     if (isCube) {
       state.bindTexture(gl.TEXTURE_CUBE_MAP, textureProperties.__webglTexture);
-      this.#setTextureParameters(gl.TEXTURE_CUBE_MAP, texture, supportsMips);
+      this.#setTextureParameters(gl.TEXTURE_CUBE_MAP, texture);
 
       for (let i = 0; i < 6; i++) {
         if (texture.mipmaps && texture.mipmaps.length > 0) {
@@ -2008,7 +1993,7 @@ class WebGLTextures {
         }
       }
 
-      if (this.#textureNeedsGenerateMipmaps(texture, supportsMips)) {
+      if (this.#textureNeedsGenerateMipmaps(texture)) {
         this.#generateMipmap(gl.TEXTURE_CUBE_MAP);
       }
 
@@ -2021,7 +2006,7 @@ class WebGLTextures {
         const attachmentProperties = properties.get(attachment);
 
         state.bindTexture(gl.TEXTURE_2D, attachmentProperties.__webglTexture);
-        this.#setTextureParameters(gl.TEXTURE_2D, attachment, supportsMips);
+        this.#setTextureParameters(gl.TEXTURE_2D, attachment);
         this.setupFrameBufferTexture(
           renderTargetProperties.__webglFramebuffer,
           renderTarget,
@@ -2031,7 +2016,7 @@ class WebGLTextures {
           0
         );
 
-        if (this.#textureNeedsGenerateMipmaps(attachment, supportsMips)) {
+        if (this.#textureNeedsGenerateMipmaps(attachment)) {
           this.#generateMipmap(gl.TEXTURE_2D);
         }
       }
@@ -2046,7 +2031,7 @@ class WebGLTextures {
       }
 
       state.bindTexture(glTextureType, textureProperties.__webglTexture);
-      this.#setTextureParameters(glTextureType, texture, supportsMips);
+      this.#setTextureParameters(glTextureType, texture);
 
       if (texture.mipmaps && texture.mipmaps.length > 0) {
         for (let level = 0; level < texture.mipmaps.length; level++) {
@@ -2070,7 +2055,7 @@ class WebGLTextures {
         );
       }
 
-      if (this.#textureNeedsGenerateMipmaps(texture, supportsMips)) {
+      if (this.#textureNeedsGenerateMipmaps(texture)) {
         this.#generateMipmap(glTextureType);
       }
 
@@ -2087,8 +2072,6 @@ class WebGLTextures {
   updateRenderTargetMipmap(renderTarget) {
     const gl = this.#gl;
 
-    const supportsMips = true;
-
     const textures =
       renderTarget.isWebGLMultipleRenderTargets === true ?
         renderTarget.texture
@@ -2097,7 +2080,7 @@ class WebGLTextures {
     for (let i = 0, il = textures.length; i < il; i++) {
       const texture = textures[i];
 
-      if (this.#textureNeedsGenerateMipmaps(texture, supportsMips)) {
+      if (this.#textureNeedsGenerateMipmaps(texture)) {
         const target = renderTarget.isWebGLCubeRenderTarget ? gl.TEXTURE_CUBE_MAP : gl.TEXTURE_2D;
         const webglTexture = this.#properties.get(texture).__webglTexture;
 
