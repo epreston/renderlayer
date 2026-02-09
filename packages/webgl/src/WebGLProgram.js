@@ -267,9 +267,6 @@ class WebGLProgram {
         parameters.useLegacyLights ? '#define LEGACY_LIGHTS' : '',
 
         parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
-        parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth ?
-          '#define USE_LOGDEPTHBUF_EXT'
-        : '',
 
         'uniform mat4 modelMatrix;',
         'uniform mat4 modelViewMatrix;',
@@ -453,9 +450,6 @@ class WebGLProgram {
         parameters.decodeVideoTexture ? '#define DECODE_VIDEO_TEXTURE' : '',
 
         parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
-        parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth ?
-          '#define USE_LOGDEPTHBUF_EXT'
-        : '',
 
         'uniform mat4 viewMatrix;',
         'uniform vec3 cameraPosition;',
