@@ -1,7 +1,7 @@
 import { WebGLLights } from './WebGLLights.js';
 
 /**
- * @import { WebGLExtensions, WebGLCapabilities } from "@renderlayer/webgl"
+ * @import { WebGLExtensions } from "@renderlayer/webgl"
  */
 
 class WebGLRenderState {
