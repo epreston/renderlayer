@@ -38,7 +38,7 @@ class WebGLBufferRenderer {
   renderMultiDraw(starts, counts, drawCount) {
     if (drawCount === 0) return;
 
-    const extension = this.#extensions.get('WEBGL_multi_draw');
+    const extension = this.#extensions.get('WEBGL_multi_draw'); // 93.32%
     extension.multiDrawArraysWEBGL(this.#mode, starts, 0, counts, 0, drawCount);
 
     let elementCount = 0;
@@ -52,7 +52,7 @@ class WebGLBufferRenderer {
   renderMultiDrawInstances(starts, counts, drawCount, primcount) {
     if (drawCount === 0) return;
 
-    const extension = this.#extensions.get('WEBGL_multi_draw');
+    const extension = this.#extensions.get('WEBGL_multi_draw'); // 93.32%
 
     if (extension === null) {
       for (let i = 0; i < starts.length; i++) {
