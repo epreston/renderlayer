@@ -25,8 +25,7 @@ class BindingState {
 }
 
 /**
- * @import { WebGLExtensions, WebGLAttributes } from "@renderlayer/webgl"
- * @import { WebGLCapabilities } from "@renderlayer/webgl"
+ * @import { WebGLAttributes } from "@renderlayer/webgl"
  */
 
 class WebGLBindingStates {
