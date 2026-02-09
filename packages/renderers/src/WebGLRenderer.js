@@ -1160,7 +1160,6 @@ class WebGLRenderer {
       }
 
       _this.getDrawingBufferSize(_vector2);
-
       _transmissionRenderTarget.setSize(_vector2.x, _vector2.y);
 
       //
