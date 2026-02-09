@@ -5,8 +5,6 @@
 class WebGLCapabilities {
   #gl;
 
-  #isWebGL2 = true;
-  #drawBuffers = true;
   #maxAnisotropy = 16;
   #precision = 'highp';
   #logarithmicDepthBuffer = false;
@@ -22,8 +20,6 @@ class WebGLCapabilities {
   #maxFragmentUniforms = 1024;
 
   #vertexTextures = true;
-  #floatFragmentTextures = true;
-  #floatVertexTextures = true;
 
   #maxSamples;
 
@@ -40,10 +36,6 @@ class WebGLCapabilities {
     } else {
       this.#maxAnisotropy = 0;
     }
-
-    this.#isWebGL2 =
-      typeof WebGL2RenderingContext !== 'undefined' &&
-      gl.constructor.name === 'WebGL2RenderingContext';
 
     this.#precision = parameters.precision !== undefined ? parameters.precision : 'highp';
     const maxPrecision = this.getMaxPrecision(this.#precision);
@@ -68,7 +60,6 @@ class WebGLCapabilities {
     this.#maxFragmentUniforms = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);
 
     this.#vertexTextures = this.#maxVertexTextures > 0;
-    this.#floatVertexTextures = this.#vertexTextures && this.#floatFragmentTextures;
 
     this.#maxSamples = gl.getParameter(gl.MAX_SAMPLES);
   }
@@ -104,11 +95,7 @@ class WebGLCapabilities {
   }
 
   get isWebGL2() {
-    return this.#isWebGL2;
-  }
-
-  get drawBuffers() {
-    return this.#drawBuffers;
+    return true;
   }
 
   get precision() {
@@ -153,14 +140,6 @@ class WebGLCapabilities {
 
   get vertexTextures() {
     return this.#vertexTextures;
-  }
-
-  get floatFragmentTextures() {
-    return this.#floatFragmentTextures;
-  }
-
-  get floatVertexTextures() {
-    return this.#floatVertexTextures;
   }
 
   get maxSamples() {
