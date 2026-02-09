@@ -505,7 +505,6 @@ class WebGLProgram {
 
       prefixFragment =
         [
-          'precision mediump sampler2DArray;',
           '#define varying in',
           parameters.glslVersion === GLSL3 ?
             ''
