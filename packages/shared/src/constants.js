@@ -239,7 +239,5 @@ export const StreamCopyUsage = 35042;
 export const GLSL1 = '100';
 export const GLSL3 = '300 es';
 
-export const _SRGBAFormat = 1035; // fallback for WebGL 1
-
 export const WebGLCoordinateSystem = 2000; // NDC +Y is up, Frame and Texture +Y is up.
 export const WebGPUCoordinateSystem = 2001; // NDC +Y is up, Frame and Texture +Y is down.

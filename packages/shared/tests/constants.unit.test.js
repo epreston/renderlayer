@@ -229,8 +229,6 @@ describe('Shared', () => {
       expect(Constants.GLSL1).toBe('100');
       expect(Constants.GLSL3).toBe('300 es');
 
-      expect(Constants._SRGBAFormat).toBe(1035);
-
       expect(Constants.WebGLCoordinateSystem).toBe(2000);
       expect(Constants.WebGPUCoordinateSystem).toBe(2001);
     });
