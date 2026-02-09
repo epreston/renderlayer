@@ -43,11 +43,9 @@ class WebGLBindingStates {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {WebGLExtensions} extensions
    * @param {WebGLAttributes} attributes
-   * @param {WebGLCapabilities} capabilities
    */
-  constructor(gl, extensions, attributes, capabilities) {
+  constructor(gl, attributes) {
     this.#gl = gl;
     this.#attributes = attributes;
 
