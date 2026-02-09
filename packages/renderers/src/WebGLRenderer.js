@@ -1890,8 +1890,8 @@ class WebGLRenderer {
 
           const halfFloatSupportedByExt =
             textureType === HalfFloatType &&
-            (extensions.has('EXT_color_buffer_half_float') ||
-              extensions.has('EXT_color_buffer_float'));
+            (extensions.has('EXT_color_buffer_half_float') || // 88.71%
+              extensions.has('EXT_color_buffer_float')); // 99.95%
 
           if (
             textureType !== UnsignedByteType &&
