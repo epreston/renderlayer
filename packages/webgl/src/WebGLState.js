@@ -242,6 +242,8 @@ class WebGLState {
 
       currentBoundFramebuffers[target] = framebuffer;
 
+      // gl.DRAW_FRAMEBUFFER is equivalent to gl.FRAMEBUFFER
+
       if (target === gl.DRAW_FRAMEBUFFER) {
         currentBoundFramebuffers[gl.FRAMEBUFFER] = framebuffer;
       }
@@ -834,7 +836,6 @@ class WebGLState {
     gl.activeTexture(gl.TEXTURE0);
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
     gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
     gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null);
 
