@@ -1,6 +1,5 @@
 import { ColorManagement } from '@renderlayer/math';
 import {
-  _SRGBAFormat,
   AlphaFormat,
   ByteType,
   DepthFormat,
@@ -106,8 +105,6 @@ class WebGLUtils {
     if (p === FloatType) return gl.FLOAT;
     if (p === HalfFloatType) return gl.HALF_FLOAT;
 
-    if (p === HalfFloatType) return gl.HALF_FLOAT;
-
     if (p === AlphaFormat) return gl.ALPHA;
     if (p === RGBFormat) return gl.RGB;
     if (p === RGBAFormat) return gl.RGBA;
@@ -115,18 +112,6 @@ class WebGLUtils {
     if (p === LuminanceAlphaFormat) return gl.LUMINANCE_ALPHA;
     if (p === DepthFormat) return gl.DEPTH_COMPONENT;
     if (p === DepthStencilFormat) return gl.DEPTH_STENCIL;
-
-    // WebGL 1 sRGB fallback
-
-    if (p === _SRGBAFormat) {
-      extension = extensions.get('EXT_sRGB');
-
-      if (extension !== null) {
-        return extension.SRGB_ALPHA_EXT;
-      } else {
-        return null;
-      }
-    }
 
     // WebGL2 formats.
 
