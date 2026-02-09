@@ -362,7 +362,7 @@ class WebGLRenderer {
       shadowMap = new WebGLShadowMap(_this, objects, capabilities);
       uniformsGroups = new WebGLUniformsGroups(_gl, info, capabilities, state);
 
-      bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info, capabilities);
+      bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info);
       indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info, capabilities);
 
       info.programs = programCache.programs;
