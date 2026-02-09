@@ -285,7 +285,7 @@ class WebGLBindingStates {
           const type = attribute.type;
           const bytesPerElement = attribute.bytesPerElement;
 
-          // check for integer attributes (WebGL 2 only)
+          // check for integer attributes
 
           const integer =
             type === gl.INT || type === gl.UNSIGNED_INT || geometryAttribute.gpuType === IntType;
