@@ -349,7 +349,7 @@ class WebGLRenderer {
       );
       materials = new WebGLMaterials(_this, properties);
       renderLists = new WebGLRenderLists();
-      renderStates = new WebGLRenderStates(extensions, capabilities);
+      renderStates = new WebGLRenderStates(extensions);
       background = new WebGLBackground(
         _this,
         cubemaps,

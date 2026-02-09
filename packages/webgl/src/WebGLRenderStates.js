@@ -13,12 +13,9 @@ class WebGLRenderState {
 
   /**
    * @param {WebGLExtensions} extensions
-   * @param {WebGLCapabilities} capabilities
    */
-  constructor(extensions, capabilities) {
-    // EP: params not used
-
-    const lights = new WebGLLights(extensions, capabilities);
+  constructor(extensions) {
+    const lights = new WebGLLights(extensions);
     const lightsArray = [];
     const shadowsArray = [];
 
@@ -59,15 +56,12 @@ class WebGLRenderStates {
   renderStates = new WeakMap();
 
   extensions;
-  capabilities;
 
   /**
    * @param {WebGLExtensions} extensions
-   * @param {WebGLCapabilities} capabilities
    */
-  constructor(extensions, capabilities) {
+  constructor(extensions) {
     this.extensions = extensions;
-    this.capabilities = capabilities;
   }
 
   dispose() {
@@ -79,11 +73,11 @@ class WebGLRenderStates {
     let renderState;
 
     if (renderStateArray === undefined) {
-      renderState = new WebGLRenderState(this.extensions, this.capabilities);
+      renderState = new WebGLRenderState(this.extensions);
       this.renderStates.set(scene, [renderState]);
     } else {
       if (renderCallDepth >= renderStateArray.length) {
-        renderState = new WebGLRenderState(this.extensions, this.capabilities);
+        renderState = new WebGLRenderState(this.extensions);
         renderStateArray.push(renderState);
       } else {
         renderState = renderStateArray[renderCallDepth];

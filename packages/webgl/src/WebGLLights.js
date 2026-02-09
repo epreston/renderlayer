@@ -2,7 +2,7 @@ import { Color, Matrix4, Vector2, Vector3 } from '@renderlayer/math';
 import { UniformsLib } from '@renderlayer/shaders';
 
 /**
- * @import { WebGLExtensions, WebGLCapabilities } from "@renderlayer/webgl"
+ * @import { WebGLExtensions } from "@renderlayer/webgl"
  */
 
 class WebGLLights {
@@ -52,9 +52,8 @@ class WebGLLights {
 
   /**
    * @param {WebGLExtensions} extensions
-   * @param {WebGLCapabilities} capabilities
    */
-  constructor(extensions, capabilities) {
+  constructor(extensions) {
     // EP: params not used
 
     for (let i = 0; i < 9; i++) {
