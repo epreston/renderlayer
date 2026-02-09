@@ -13,7 +13,6 @@ class WebGLMorphtargets {
 
   #morphTextures = new WeakMap();
   #morph = new Vector4();
-  #workInfluences = [];
 
   /**
    * @param {WebGL2RenderingContext} gl
@@ -24,10 +23,6 @@ class WebGLMorphtargets {
     this.#gl = gl;
     this.#capabilities = capabilities;
     this.#textures = textures;
-
-    for (let i = 0; i < 8; i++) {
-      this.#workInfluences[i] = [i, 0];
-    }
   }
 
   update(object, geometry, program) {
