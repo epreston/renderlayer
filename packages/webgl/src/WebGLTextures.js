@@ -31,7 +31,6 @@ import {
   UnsignedInt248Type,
   UnsignedIntType,
   UnsignedShortType,
-  _SRGBAFormat,
   createElementNS
 } from '@renderlayer/shared';
 
@@ -2269,12 +2268,7 @@ class WebGLTextures {
     const format = texture.format;
     const type = texture.type;
 
-    if (
-      texture.isCompressedTexture === true ||
-      texture.isVideoTexture === true ||
-      texture.format === _SRGBAFormat
-    )
-      return image;
+    if (texture.isCompressedTexture === true || texture.isVideoTexture === true) return image;
 
     if (colorSpace !== LinearSRGBColorSpace && colorSpace !== NoColorSpace) {
       // sRGB
