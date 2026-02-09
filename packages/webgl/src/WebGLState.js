@@ -104,12 +104,8 @@ class WebGLState {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {WebGLExtensions} extensions
-   * @param {WebGLCapabilities} capabilities
    */
-  constructor(gl, extensions, capabilities) {
-    // EP : params not used
-
+  constructor(gl) {
     this.#gl = gl;
     this.#enabledCapabilities = new CapabilityTracker(gl);
 
