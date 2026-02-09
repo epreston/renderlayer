@@ -6,6 +6,8 @@ import { UniformsLib } from '@renderlayer/shaders';
  */
 
 class WebGLLights {
+  #extensions;
+
   #cache = new UniformsCache();
   #shadowCache = new ShadowUniformsCache();
 
@@ -54,7 +56,7 @@ class WebGLLights {
    * @param {WebGLExtensions} extensions
    */
   constructor(extensions) {
-    // EP: params not used
+    this.#extensions = extensions;
 
     for (let i = 0; i < 9; i++) {
       this.state.probe.push(new Vector3());
@@ -228,8 +230,14 @@ class WebGLLights {
     }
 
     if (rectAreaLength > 0) {
-      this.state.rectAreaLTC1 = UniformsLib.LTC_FLOAT_1;
-      this.state.rectAreaLTC2 = UniformsLib.LTC_FLOAT_2;
+      if (this.#extensions.has('OES_texture_float_linear') === true) {
+        // 86.16%
+        this.state.rectAreaLTC1 = UniformsLib.LTC_FLOAT_1;
+        this.state.rectAreaLTC2 = UniformsLib.LTC_FLOAT_2;
+      } else {
+        this.state.rectAreaLTC1 = UniformsLib.LTC_HALF_1;
+        this.state.rectAreaLTC2 = UniformsLib.LTC_HALF_2;
+      }
     }
 
     this.state.ambient[0] = r;
