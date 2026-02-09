@@ -1,7 +1,3 @@
-/**
- * @import { WebGLCapabilities } from "@renderlayer/webgl"
- */
-
 class WebGLExtensions {
   #gl;
   #extensions = [];
@@ -42,8 +38,7 @@ class WebGLExtensions {
     return this.#getExtension(name) !== null;
   }
 
-  /** @param {?WebGLCapabilities} capabilities  */
-  init(capabilities) {
+  init() {
     // EP: some extensions need to be initialised by a query to function
     // Browser support percentages sourced from https://web3dsurvey.com/webgl2
     this.#getExtension('EXT_color_buffer_float'); // 99.8%
