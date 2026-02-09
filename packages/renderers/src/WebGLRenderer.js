@@ -1989,7 +1989,13 @@ class WebGLRenderer {
       state.unbindTexture();
     };
 
-    this.copyTextureToTexture3D = (sourceBox, position, srcTexture, dstTexture, level = 0) => {
+    this.copyTextureToTexture3D = function (
+      sourceBox,
+      position,
+      srcTexture,
+      dstTexture,
+      level = 0
+    ) {
       const width = sourceBox.max.x - sourceBox.min.x + 1;
       const height = sourceBox.max.y - sourceBox.min.y + 1;
       const depth = sourceBox.max.z - sourceBox.min.z + 1;
