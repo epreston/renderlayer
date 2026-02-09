@@ -333,22 +333,6 @@ class WebGLTextures {
     }
   }
 
-  // Fallback filters for non-power-of-2 textures
-
-  #filterFallback(f) {
-    const gl = this.#gl;
-
-    if (
-      f === NearestFilter ||
-      f === NearestMipmapNearestFilter ||
-      f === NearestMipmapLinearFilter
-    ) {
-      return gl.NEAREST;
-    }
-
-    return gl.LINEAR;
-  }
-
   //
 
   #onTextureDispose(event) {
@@ -643,16 +627,17 @@ class WebGLTextures {
     }
 
     if (extensions.has('EXT_texture_filter_anisotropic') === true) {
-      const extension = extensions.get('EXT_texture_filter_anisotropic'); // 98.81%
-
       if (texture.magFilter === NearestFilter) return;
       if (
         texture.minFilter !== NearestMipmapLinearFilter &&
         texture.minFilter !== LinearMipmapLinearFilter
       )
         return;
+      if (texture.type === FloatType && extensions.has('OES_texture_float_linear') === false)
+        return; // verify extension
 
       if (texture.anisotropy > 1 || properties.get(texture).__currentAnisotropy) {
+        const extension = extensions.get('EXT_texture_filter_anisotropic'); // 98.81%
         gl.texParameterf(
           textureType,
           extension.TEXTURE_MAX_ANISOTROPY_EXT,
@@ -788,6 +773,7 @@ class WebGLTextures {
 
       const useTexStorage = texture.isVideoTexture !== true && glInternalFormat !== RGB_ETC1_Format;
       const allocateMemory = sourceProperties.__version === undefined || forceUpload === true;
+      // const dataReady = source.dataReady;
       const levels = this.#getMipLevels(texture, image);
 
       if (texture.isDepthTexture) {
@@ -1622,7 +1608,7 @@ class WebGLTextures {
 
     if (renderTarget.depthBuffer && !renderTarget.stencilBuffer) {
       let glInternalFormat; // appease type checking
-      glInternalFormat = gl.DEPTH_COMPONENT32F;
+      glInternalFormat = gl.DEPTH_COMPONENT24;
 
       if (isMultisample) {
         const depthTexture = renderTarget.depthTexture;
