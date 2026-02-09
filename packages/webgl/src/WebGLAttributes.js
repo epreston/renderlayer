@@ -1,7 +1,3 @@
-/**
- * @import { WebGLCapabilities } from "@renderlayer/webgl"
- */
-
 class WebGLAttributes {
   #gl;
   #buffers = new WeakMap();
