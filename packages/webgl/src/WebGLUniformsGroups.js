@@ -24,6 +24,7 @@ class WebGLUniformsGroups {
     this.#info = info;
     this.#state = state;
 
+    // binding points are global whereas block indices are per shader program
     this.#maxBindingPoints = gl.getParameter(gl.MAX_UNIFORM_BUFFER_BINDINGS);
   }
 
