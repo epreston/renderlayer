@@ -8,9 +8,8 @@ class WebGLAttributes {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {WebGLCapabilities} capabilities
    */
-  constructor(gl, capabilities) {
+  constructor(gl) {
     this.#gl = gl;
   }
 
