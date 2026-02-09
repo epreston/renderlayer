@@ -85,7 +85,6 @@ class WebGLProgram {
     const envMapBlendingDefine = _generateEnvMapBlendingDefine(parameters);
     const envMapCubeUVSize = _generateCubeUVSize(parameters);
 
-    const customExtensions = '';
     const customDefines = _generateDefines(defines);
 
     this.program = gl.createProgram();
@@ -109,8 +108,6 @@ class WebGLProgram {
       }
 
       prefixFragment = [
-        customExtensions,
-
         `#define SHADER_TYPE ${parameters.shaderType}`,
         `#define SHADER_NAME ${parameters.shaderName}`,
 
@@ -370,8 +367,6 @@ class WebGLProgram {
         .join('\n');
 
       prefixFragment = [
-        customExtensions,
-
         _generatePrecision(parameters),
 
         `#define SHADER_TYPE ${parameters.shaderType}`,
