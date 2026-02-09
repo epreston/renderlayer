@@ -1907,22 +1907,16 @@ class WebGLTextures {
       }
 
       if (isMultipleRenderTargets) {
-        if (capabilities.drawBuffers) {
-          const textures = renderTarget.texture;
+        const textures = renderTarget.texture;
 
-          for (let i = 0, il = textures.length; i < il; i++) {
-            const attachmentProperties = properties.get(textures[i]);
+        for (let i = 0, il = textures.length; i < il; i++) {
+          const attachmentProperties = properties.get(textures[i]);
 
-            if (attachmentProperties.__webglTexture === undefined) {
-              attachmentProperties.__webglTexture = gl.createTexture();
+          if (attachmentProperties.__webglTexture === undefined) {
+            attachmentProperties.__webglTexture = gl.createTexture();
 
-              info.memory.textures++;
-            }
+            info.memory.textures++;
           }
-        } else {
-          console.warn(
-            'WebGLRenderer: WebGLMultipleRenderTargets can only be used with WebGL2 or WEBGL_draw_buffers extension.'
-          );
         }
       }
 
