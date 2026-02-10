@@ -585,7 +585,7 @@ KTX2Loader.BasisWorker = function () {
           } else {
             // Handles non-multiple-of-four dimensions in textures without mipmaps. Textures with
             // mipmaps must use multiple-of-four dimensions, for some texture formats and APIs.
-            // See mrdoob/three.js#25908.
+            // See #25908.
             mipWidth = levelInfo.width;
             mipHeight = levelInfo.height;
           }
