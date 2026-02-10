@@ -41,74 +41,108 @@
  *
  */
 
-import { CubeTexture, Data3DTexture, DataArrayTexture, Texture } from '@renderlayer/textures';
+import {
+  CubeTexture,
+  DepthTexture,
+  Data3DTexture,
+  DataArrayTexture,
+  Texture
+} from '@renderlayer/textures';
+import { LessEqualCompare, GreaterEqualCompare } from '@renderlayer/shared';
 
-// --- Top-level ---
+const _emptyShadowTexture = /*@__PURE__*/ new DepthTexture(1, 1);
 
-// EP : why not save GL reference ?
+const _emptyTexture = /*@__PURE__*/ new Texture();
+const _emptyArrayTexture = /*@__PURE__*/ new DataArrayTexture();
+const _empty3dTexture = /*@__PURE__*/ new Data3DTexture();
+const _emptyCubeTexture = /*@__PURE__*/ new CubeTexture();
 
-// Root Container
-class WebGLUniforms {
-  seq = [];
-  map = {};
+// --- Utilities ---
 
-  /** @param {WebGL2RenderingContext} gl */
-  constructor(gl, program) {
-    const n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+// Array Caches (provide typed arrays for temporary by size)
 
-    for (let i = 0; i < n; ++i) {
-      const info = gl.getActiveUniform(program, i);
-      const addr = gl.getUniformLocation(program, info.name);
+const _arrayCacheF32 = [];
+const _arrayCacheI32 = [];
 
-      _parseUniform(info, addr, this);
+// Float32Array caches used for uploading Matrix uniforms
+
+const _mat4array = new Float32Array(16);
+const _mat3array = new Float32Array(9);
+const _mat2array = new Float32Array(4);
+
+// Flattening for arrays of vectors and matrices
+
+function _flatten(array, nBlocks, blockSize) {
+  const firstElem = array[0];
+
+  if (firstElem <= 0 || firstElem > 0) return array;
+  // unoptimized: ! isNaN( firstElem )
+  // see http://jacksondunstan.com/articles/983
+
+  const n = nBlocks * blockSize;
+  let r = _arrayCacheF32[n];
+
+  if (r === undefined) {
+    r = new Float32Array(n);
+    _arrayCacheF32[n] = r;
+  }
+
+  if (nBlocks !== 0) {
+    firstElem.toArray(r, 0);
+
+    for (let i = 1, offset = 0; i !== nBlocks; ++i) {
+      offset += blockSize;
+      array[i].toArray(r, offset);
     }
   }
 
-  setValue(gl, name, value, textures) {
-    const u = this.map[name];
-    if (u !== undefined) u.setValue(gl, value, textures);
+  return r;
+}
+
+function _arraysEqual(a, b) {
+  if (a.length !== b.length) return false;
+
+  for (let i = 0, l = a.length; i < l; i++) {
+    if (a[i] !== b[i]) return false;
   }
 
-  setOptional(gl, object, name) {
-    const v = object[name];
-    if (v !== undefined) this.setValue(gl, name, v);
-  }
+  return true;
+}
 
-  static upload(gl, seq, values, textures) {
-    for (let i = 0, n = seq.length; i !== n; ++i) {
-      const u = seq[i];
-      const v = values[u.id];
-
-      if (v.needsUpdate !== false) {
-        // note: always updating when .needsUpdate is undefined
-        u.setValue(gl, v.value, textures);
-      }
-    }
-  }
-
-  static seqWithValue(seq, values) {
-    const r = [];
-
-    for (let i = 0, n = seq.length; i !== n; ++i) {
-      const u = seq[i];
-      if (u.id in values) r.push(u);
-    }
-
-    return r;
+function _copyArray(a, b) {
+  for (let i = 0, l = b.length; i < l; i++) {
+    a[i] = b[i];
   }
 }
 
-// --- Uniform Classes ---
+// Texture unit allocation
+
+function _allocTexUnits(textures, n) {
+  let r = _arrayCacheI32[n];
+
+  if (r === undefined) {
+    r = new Int32Array(n);
+    _arrayCacheI32[n] = r;
+  }
+
+  for (let i = 0; i !== n; ++i) {
+    r[i] = textures.allocateTextureUnit();
+  }
+
+  return r;
+}
 
 class SingleUniform {
   id;
   addr;
   cache = [];
+  type;
   setValue;
 
   constructor(id, activeInfo, addr) {
     this.id = id;
     this.addr = addr;
+    this.type = activeInfo.type;
     this.setValue = this.getSingularSetter(activeInfo.type);
 
     // this.path = activeInfo.name; // DEBUG
@@ -420,7 +454,17 @@ class SingleUniform {
       cache[0] = unit;
     }
 
-    textures.setTexture2D(v || _emptyTexture, unit);
+    let emptyTexture2D;
+
+    if (this.type === gl.SAMPLER_2D_SHADOW) {
+      _emptyShadowTexture.compareFunction =
+        textures.isReversedDepthBuffer() ? GreaterEqualCompare : LessEqualCompare;
+      emptyTexture2D = _emptyShadowTexture;
+    } else {
+      emptyTexture2D = _emptyTexture;
+    }
+
+    textures.setTexture2D(v || emptyTexture2D, unit);
   }
 
   setValueT3D1(gl, v, textures) {
@@ -532,12 +576,14 @@ class PureArrayUniform {
   id;
   addr;
   cache = [];
+  type;
   size;
   setValue;
 
   constructor(id, activeInfo, addr) {
     this.id = id;
     this.addr = addr;
+    this.type = activeInfo.type;
     this.size = activeInfo.size;
     this.setValue = this.getPureArraySetter(activeInfo.type);
 
@@ -628,16 +674,27 @@ class PureArrayUniform {
 
   setValueT1Array(gl, v, textures) {
     const cache = this.cache;
+
     const n = v.length;
+
     const units = _allocTexUnits(textures, n);
 
     if (!_arraysEqual(cache, units)) {
       gl.uniform1iv(this.addr, units);
+
       _copyArray(cache, units);
     }
 
+    let emptyTexture2D;
+
+    if (this.type === gl.SAMPLER_2D_SHADOW) {
+      emptyTexture2D = _emptyShadowTexture;
+    } else {
+      emptyTexture2D = _emptyTexture;
+    }
+
     for (let i = 0; i !== n; ++i) {
-      textures.setTexture2D(v[i] || _emptyTexture, units[i]);
+      textures.setTexture2D(v[i] || emptyTexture2D, units[i]);
     }
   }
 
@@ -775,7 +832,7 @@ class StructuredUniform {
   }
 }
 
-// --- Utilities ---
+// --- Top-level ---
 
 // Parser - builds up the property tree from the path strings
 
@@ -840,82 +897,81 @@ function _parseUniform(activeInfo, addr, container) {
   }
 }
 
-// Flattening for arrays of vectors and matrices
+// Root Container
 
-function _flatten(array, nBlocks, blockSize) {
-  const firstElem = array[0];
+class WebGLUniforms {
+  seq = [];
+  map = {};
 
-  if (firstElem <= 0 || firstElem > 0) return array;
-  // unoptimized: ! isNaN( firstElem )
-  // see http://jacksondunstan.com/articles/983
+  /** @param {WebGL2RenderingContext} gl */
+  constructor(gl, program) {
+    // EP : why not save GL reference ?
 
-  const n = nBlocks * blockSize;
-  let r = _arrayCacheF32[n];
+    const n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
 
-  if (r === undefined) {
-    r = new Float32Array(n);
-    _arrayCacheF32[n] = r;
-  }
+    for (let i = 0; i < n; ++i) {
+      const info = gl.getActiveUniform(program, i);
+      const addr = gl.getUniformLocation(program, info.name);
 
-  if (nBlocks !== 0) {
-    firstElem.toArray(r, 0);
+      _parseUniform(info, addr, this);
+    }
 
-    for (let i = 1, offset = 0; i !== nBlocks; ++i) {
-      offset += blockSize;
-      array[i].toArray(r, offset);
+    // Sort uniforms to prioritize shadow samplers first (for optimal texture unit allocation)
+
+    const shadowSamplers = [];
+    const otherUniforms = [];
+
+    for (const u of this.seq) {
+      if (
+        u.type === gl.SAMPLER_2D_SHADOW ||
+        u.type === gl.SAMPLER_CUBE_SHADOW ||
+        u.type === gl.SAMPLER_2D_ARRAY_SHADOW
+      ) {
+        shadowSamplers.push(u);
+      } else {
+        otherUniforms.push(u);
+      }
+    }
+
+    if (shadowSamplers.length > 0) {
+      this.seq = shadowSamplers.concat(otherUniforms);
     }
   }
 
-  return r;
-}
+  setValue(gl, name, value, textures) {
+    const u = this.map[name];
 
-function _arraysEqual(a, b) {
-  if (a.length !== b.length) return false;
-
-  for (let i = 0, l = a.length; i < l; i++) {
-    if (a[i] !== b[i]) return false;
+    if (u !== undefined) u.setValue(gl, value, textures);
   }
 
-  return true;
-}
+  setOptional(gl, object, name) {
+    const v = object[name];
 
-function _copyArray(a, b) {
-  for (let i = 0, l = b.length; i < l; i++) {
-    a[i] = b[i];
-  }
-}
-
-// Texture unit allocation
-
-function _allocTexUnits(textures, n) {
-  let r = _arrayCacheI32[n];
-
-  if (r === undefined) {
-    r = new Int32Array(n);
-    _arrayCacheI32[n] = r;
+    if (v !== undefined) this.setValue(gl, name, v);
   }
 
-  for (let i = 0; i !== n; ++i) {
-    r[i] = textures.allocateTextureUnit();
+  static upload(gl, seq, values, textures) {
+    for (let i = 0, n = seq.length; i !== n; ++i) {
+      const u = seq[i];
+      const v = values[u.id];
+
+      if (v.needsUpdate !== false) {
+        // note: always updating when .needsUpdate is undefined
+        u.setValue(gl, v.value, textures);
+      }
+    }
   }
 
-  return r;
+  static seqWithValue(seq, values) {
+    const r = [];
+
+    for (let i = 0, n = seq.length; i !== n; ++i) {
+      const u = seq[i];
+      if (u.id in values) r.push(u);
+    }
+
+    return r;
+  }
 }
-
-const _emptyTexture = /*@__PURE__*/ new Texture();
-const _emptyArrayTexture = /*@__PURE__*/ new DataArrayTexture();
-const _empty3dTexture = /*@__PURE__*/ new Data3DTexture();
-const _emptyCubeTexture = /*@__PURE__*/ new CubeTexture();
-
-// Array Caches (provide typed arrays for temporary by size)
-
-const _arrayCacheF32 = [];
-const _arrayCacheI32 = [];
-
-// Float32Array caches used for uploading Matrix uniforms
-
-const _mat4array = new Float32Array(16);
-const _mat3array = new Float32Array(9);
-const _mat2array = new Float32Array(4);
 
 export { WebGLUniforms };
