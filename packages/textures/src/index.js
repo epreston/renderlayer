@@ -8,4 +8,5 @@ export * from './DataTexture.js';
 export * from './DepthTexture.js';
 export * from './Source.js';
 export * from './Texture.js';
+export * from './TextureUtils.js';
 export * from './VideoTexture.js';
