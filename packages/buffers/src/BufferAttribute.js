@@ -4,6 +4,8 @@ import { StaticDrawUsage, FloatType } from '@renderlayer/shared';
 import { fromHalfFloat, toHalfFloat } from './BufferAttributeUtils.js';
 
 class BufferAttribute {
+  #id = _bufferAttributeId++;
+
   name = '';
 
   array;
@@ -30,6 +32,10 @@ class BufferAttribute {
 
   get isBufferAttribute() {
     return true;
+  }
+
+  get id() {
+    return this.#id;
   }
 
   onUploadCallback() {}
@@ -469,6 +475,8 @@ class Float64BufferAttribute extends BufferAttribute {
     super(new Float64Array(array), itemSize, normalized);
   }
 }
+
+let _bufferAttributeId = 0;
 
 const _vector = /*@__PURE__*/ new Vector3();
 const _vector2 = /*@__PURE__*/ new Vector2();

@@ -33,6 +33,17 @@ describe('Buffers', () => {
       expect(object.isBufferAttribute).toBeTruthy();
     });
 
+    test('id', () => {
+      const object = new BufferAttribute();
+      expect(object.id).toBeDefined();
+
+      // can change based on order of tests
+      const prevId = object.id;
+
+      const object2 = new BufferAttribute();
+      expect(object2.id).toBeGreaterThan(prevId);
+    });
+
     test('name', () => {
       const object = new BufferAttribute();
       expect(object.name).toBe('');
