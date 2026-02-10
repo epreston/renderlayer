@@ -23,6 +23,13 @@ describe('Targets', () => {
       expect(object.isRenderTarget).toBeTruthy();
     });
 
+    test('texture', () => {
+      const object = new RenderTarget();
+      expect(object.texture).toBeInstanceOf(Texture);
+      expect(object.texture.isRenderTargetTexture).toBeTruthy();
+      expect(object.texture.flipY).toBe(false);
+    });
+
     test('width', () => {
       const object = new RenderTarget(64, 64);
       expect(object.width).toBe(64);
@@ -53,21 +60,29 @@ describe('Targets', () => {
       expect(object.viewport).toBeInstanceOf(Vector4);
     });
 
-    test('texture', () => {
+    test('textures', () => {
       const object = new RenderTarget();
-      expect(object.texture).toBeInstanceOf(Texture);
-      expect(object.texture.isRenderTargetTexture).toBeTruthy();
-      expect(object.texture.flipY).toBe(false);
+      expect(object.textures).toBeInstanceOf(Array);
     });
 
     test('depthBuffer', () => {
       const object = new RenderTarget();
-      expect(object.depthBuffer).toBe(true);
+      expect(object.depthBuffer).toBeTruthy();
     });
 
     test('stencilBuffer', () => {
       const object = new RenderTarget();
-      expect(object.stencilBuffer).toBe(false);
+      expect(object.stencilBuffer).toBeFalsy();
+    });
+
+    test('resolveDepthBuffer ', () => {
+      const object = new RenderTarget();
+      expect(object.resolveDepthBuffer).toBeTruthy();
+    });
+
+    test('resolveStencilBuffer  ', () => {
+      const object = new RenderTarget();
+      expect(object.resolveStencilBuffer).toBeTruthy();
     });
 
     test('depthTexture', () => {
@@ -78,6 +93,11 @@ describe('Targets', () => {
     test('samples', () => {
       const object = new RenderTarget();
       expect(object.samples).toBe(0);
+    });
+
+    test('multiview', () => {
+      const object = new RenderTarget();
+      expect(object.multiview).toBeFalsy();
     });
 
     test('setSize', () => {
