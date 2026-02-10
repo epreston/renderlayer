@@ -14,6 +14,10 @@ import {
 
 import { Source } from './Source.js';
 
+/**
+ * @import { RenderTarget, WebGLRenderTarget } from '@renderlayer/targets';
+ */
+
 class Texture extends EventDispatcher {
   static DEFAULT_IMAGE = null;
   static DEFAULT_MAPPING = UVMapping;
@@ -66,11 +70,16 @@ class Texture extends EventDispatcher {
   version = 0;
   onUpdate = null;
 
+  /** @type {?(RenderTarget | WebGLRenderTarget)} */
+  renderTarget = null;
+
   isRenderTargetTexture = false;
+  isArrayTexture = false;
 
   // indicates whether this texture should be processed by
   // PMREMGenerator or not (only relevant for render target textures)
-  needsPMREMUpdate = false;
+  #needsPMREMUpdate = false;
+  pmremVersion = 0;
 
   constructor(
     image = Texture.DEFAULT_IMAGE,
@@ -127,6 +136,18 @@ class Texture extends EventDispatcher {
       this.source.needsUpdate = true;
     }
   }
+  /** @type {boolean} */
+  get needsPMREMUpdate() {
+    return this.#needsPMREMUpdate; // EP: review
+  }
+
+  /** @type {boolean} */
+  set needsPMREMUpdate(value) {
+    this.#needsPMREMUpdate = value; // EP: review
+    if (value === true) {
+      this.pmremVersion++;
+    }
+  }
 
   updateMatrix() {
     // prettier-ignore
@@ -179,6 +200,10 @@ class Texture extends EventDispatcher {
     this.flipY = source.flipY;
     this.unpackAlignment = source.unpackAlignment;
     this.colorSpace = source.colorSpace;
+
+    this.renderTarget = source.renderTarget;
+    this.isRenderTargetTexture = source.isRenderTargetTexture;
+    this.isArrayTexture = source.isArrayTexture;
 
     this.userData = JSON.parse(JSON.stringify(source.userData));
 

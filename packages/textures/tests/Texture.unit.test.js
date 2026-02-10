@@ -194,11 +194,31 @@ describe('Textures', () => {
       expect(object.onUpdate).toBeNull();
     });
 
+    test('renderTarget', () => {
+      const object = new Texture();
+      expect(object.renderTarget).toBeNull();
+    });
+
+    test('isRenderTargetTexture', () => {
+      const object = new Texture();
+      expect(object.isRenderTargetTexture).toBeFalsy();
+    });
+
+    test('isArrayTexture', () => {
+      const object = new Texture();
+      expect(object.isArrayTexture).toBeFalsy();
+    });
+
     test('needsPMREMUpdate', () => {
       // EP: no longer required ?
 
       const object = new Texture();
       expect(object.needsPMREMUpdate).toBe(false);
+    });
+
+    test('pmremVersion', () => {
+      const object = new Texture();
+      expect(object.pmremVersion).toBe(0);
     });
 
     test('updateMatrix', () => {
