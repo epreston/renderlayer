@@ -103,12 +103,12 @@ describe('Objects', () => {
 
       expect(mesh.boundingSphere).toBeDefined();
       expect(mesh.boundingSphere).toMatchInlineSnapshot(`
-        Sphere {
-          "center": Vector3 {
-            "x": 0.6982977624676568,
-            "y": 3.5662052113218454,
-            "z": 1.3585288233260149,
-          },
+        {
+          "center": [
+            0.6982977624676568,
+            3.5662052113218454,
+            1.3585288233260149,
+          ],
           "radius": 20.60857993529236,
         }
       `);

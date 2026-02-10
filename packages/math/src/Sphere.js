@@ -177,6 +177,19 @@ class Sphere {
     // @ts-ignore
     return new this.constructor().copy(this);
   }
+
+  toJSON() {
+    return {
+      radius: this.radius,
+      center: this.center.toArray()
+    };
+  }
+
+  fromJSON(json) {
+    this.radius = json.radius;
+    this.center.fromArray(json.center);
+    return this;
+  }
 }
 
 const _box = /*@__PURE__*/ new Box3();
