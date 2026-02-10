@@ -8,9 +8,9 @@ class BindingState {
   geometry = null;
   program = null;
   wireframe = false;
+
   object;
   attributes = {};
-  attributesNum = 0;
   index = null;
 
   constructor(maxVertexAttributes, vao) {
@@ -60,7 +60,7 @@ class WebGLBindingStates {
 
     let updateBuffers = false;
 
-    const state = this.#getBindingState(geometry, program, material);
+    const state = this.#getBindingState(object, geometry, program, material);
 
     if (this.#currentState !== state) {
       this.#currentState = state;
@@ -98,14 +98,24 @@ class WebGLBindingStates {
     return this.#gl.deleteVertexArray(vao);
   }
 
-  #getBindingState(geometry, program, material) {
+  #getBindingState(object, geometry, program, material) {
     const wireframe = material.wireframe === true ? 1 : 0;
 
-    let programMap = this.#bindingStates[geometry.id];
+    let objectMap = this.#bindingStates[geometry.id];
+
+    if (objectMap === undefined) {
+      objectMap = {};
+      this.#bindingStates[geometry.id] = objectMap;
+    }
+
+    // Each InstancedMesh requires unique binding states because it contains instanced attributes.
+    const objectId = object.isInstancedMesh === true ? object.id : 0;
+
+    let programMap = objectMap[objectId];
 
     if (programMap === undefined) {
       programMap = {};
-      this.#bindingStates[geometry.id] = programMap;
+      objectMap[objectId] = programMap;
     }
 
     let stateMap = programMap[program.id];
@@ -214,6 +224,7 @@ class WebGLBindingStates {
     const newAttributes = this.#currentState.newAttributes;
     const enabledAttributes = this.#currentState.enabledAttributes;
     const attributeDivisors = this.#currentState.attributeDivisors;
+
     const gl = this.#gl;
 
     newAttributes[attribute] = 1;
@@ -254,8 +265,11 @@ class WebGLBindingStates {
     this.initAttributes();
 
     const geometryAttributes = geometry.attributes;
+
     const programAttributes = program.getAttributes();
+
     const materialDefaultAttributeValues = material.defaultAttributeValues;
+
     const gl = this.#gl;
 
     for (const name in programAttributes) {
@@ -390,7 +404,83 @@ class WebGLBindingStates {
     this.reset();
 
     for (const geometryId in this.#bindingStates) {
-      const programMap = this.#bindingStates[geometryId];
+      const objectMap = this.#bindingStates[geometryId];
+
+      for (const objectId in objectMap) {
+        const programMap = objectMap[objectId];
+
+        for (const programId in programMap) {
+          const stateMap = programMap[programId];
+
+          for (const wireframe in stateMap) {
+            this.#deleteVertexArrayObject(stateMap[wireframe].object);
+
+            delete stateMap[wireframe];
+          }
+
+          delete programMap[programId];
+        }
+      }
+
+      delete this.#bindingStates[geometryId];
+    }
+  }
+
+  releaseStatesOfGeometry(geometry) {
+    if (this.#bindingStates[geometry.id] === undefined) return;
+
+    const objectMap = this.#bindingStates[geometry.id];
+
+    for (const objectId in objectMap) {
+      const programMap = objectMap[objectId];
+
+      for (const programId in programMap) {
+        const stateMap = programMap[programId];
+
+        for (const wireframe in stateMap) {
+          this.#deleteVertexArrayObject(stateMap[wireframe].object);
+
+          delete stateMap[wireframe];
+        }
+
+        delete programMap[programId];
+      }
+    }
+
+    delete this.#bindingStates[geometry.id];
+  }
+
+  releaseStatesOfProgram(program) {
+    for (const geometryId in this.#bindingStates) {
+      const objectMap = this.#bindingStates[geometryId];
+
+      for (const objectId in objectMap) {
+        const programMap = objectMap[objectId];
+
+        if (programMap[program.id] === undefined) continue;
+
+        const stateMap = programMap[program.id];
+
+        for (const wireframe in stateMap) {
+          this.#deleteVertexArrayObject(stateMap[wireframe].object);
+
+          delete stateMap[wireframe];
+        }
+
+        delete programMap[program.id];
+      }
+    }
+  }
+
+  releaseStatesOfObject(object) {
+    for (const geometryId in this.#bindingStates) {
+      const objectMap = this.#bindingStates[geometryId];
+
+      const objectId = object.isInstancedMesh === true ? object.id : 0;
+
+      const programMap = objectMap[objectId];
+
+      if (programMap === undefined) continue;
 
       for (const programId in programMap) {
         const stateMap = programMap[programId];
@@ -404,45 +494,11 @@ class WebGLBindingStates {
         delete programMap[programId];
       }
 
-      delete this.#bindingStates[geometryId];
-    }
-  }
+      delete objectMap[objectId];
 
-  releaseStatesOfGeometry(geometry) {
-    if (this.#bindingStates[geometry.id] === undefined) return;
-
-    const programMap = this.#bindingStates[geometry.id];
-
-    for (const programId in programMap) {
-      const stateMap = programMap[programId];
-
-      for (const wireframe in stateMap) {
-        this.#deleteVertexArrayObject(stateMap[wireframe].object);
-
-        delete stateMap[wireframe];
+      if (Object.keys(objectMap).length === 0) {
+        delete this.#bindingStates[geometryId];
       }
-
-      delete programMap[programId];
-    }
-
-    delete this.#bindingStates[geometry.id];
-  }
-
-  releaseStatesOfProgram(program) {
-    for (const geometryId in this.#bindingStates) {
-      const programMap = this.#bindingStates[geometryId];
-
-      if (programMap[program.id] === undefined) continue;
-
-      const stateMap = programMap[program.id];
-
-      for (const wireframe in stateMap) {
-        this.#deleteVertexArrayObject(stateMap[wireframe].object);
-
-        delete stateMap[wireframe];
-      }
-
-      delete programMap[program.id];
     }
   }
 

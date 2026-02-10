@@ -1,12 +1,13 @@
 /**
  * @import { WebGLGeometries, WebGLAttributes } from "@renderlayer/webgl"
- * @import { WebGLInfo } from "@renderlayer/webgl"
+ * @import { WebGLBindingStates, WebGLInfo } from "@renderlayer/webgl"
  */
 
 class WebGLObjects {
   #gl;
   #geometries;
   #attributes;
+  #bindingStates;
   #info;
 
   #updateMap = new WeakMap();
@@ -15,12 +16,14 @@ class WebGLObjects {
    * @param {WebGL2RenderingContext} gl
    * @param {WebGLGeometries} geometries
    * @param {WebGLAttributes} attributes
+   * @param {WebGLBindingStates} bindingStates
    * @param {WebGLInfo} info
    */
-  constructor(gl, geometries, attributes, info) {
+  constructor(gl, geometries, attributes, bindingStates, info) {
     this.#gl = gl;
     this.#geometries = geometries;
     this.#attributes = attributes;
+    this.#bindingStates = bindingStates;
     this.#info = info;
   }
 
@@ -75,6 +78,8 @@ class WebGLObjects {
     const instancedMesh = event.target;
 
     instancedMesh.removeEventListener('dispose', this._onInstancedMeshDispose);
+
+    this.#bindingStates.releaseStatesOfObject(instancedMesh);
 
     this.#attributes.remove(instancedMesh.instanceMatrix);
 
