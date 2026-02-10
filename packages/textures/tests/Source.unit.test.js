@@ -1,5 +1,6 @@
 import { describe, expect, it, test, vi } from 'vitest';
 
+import { Vector2, Vector3 } from '@renderlayer/math';
 import { Source } from '../src/Source.js';
 
 describe('Textures', () => {
@@ -41,6 +42,11 @@ describe('Textures', () => {
       expect(object2.data).toBe(data);
     });
 
+    test('dataReady', () => {
+      const object = new Source();
+      expect(object.dataReady).toBeTruthy();
+    });
+
     test('version', () => {
       const object = new Source();
       expect(object.version).toBe(0);
@@ -53,6 +59,15 @@ describe('Textures', () => {
       object.needsUpdate = true;
 
       expect(object.version).toBe(1);
+    });
+
+    test('getSize', () => {
+      const object = new Source();
+      const testVec3 = new Vector3();
+
+      object.getSize(testVec3);
+
+      expect(testVec3.x).toBe(0);
     });
 
     test('toJSON', () => {

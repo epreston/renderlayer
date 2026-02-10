@@ -1,11 +1,16 @@
 import { ImageUtils } from '@renderlayer/shared';
 import { generateUUID } from '@renderlayer/math';
 
+/**
+ * @import { Vector2, Vector3 } from '@renderlayer/math';
+ */
+
 class Source {
   #id = _sourceId++;
 
   uuid = generateUUID();
-  data; // obj or array
+  data = null; // obj or array
+  dataReady = true;
   version = 0;
 
   constructor(data = null) {
@@ -18,6 +23,28 @@ class Source {
 
   get id() {
     return this.#id;
+  }
+
+  /**
+   * Returns the dimensions of the source into the given target vector.
+   *
+   * @param {(Vector2 | Vector3)} target - The target object the result is written into.
+   * @return {(Vector2 | Vector3)} The dimensions of the source.
+   */
+  getSize(target) {
+    const data = this.data;
+
+    if (typeof HTMLVideoElement !== 'undefined' && data instanceof HTMLVideoElement) {
+      target.set(data.videoWidth, data.videoHeight, 0);
+    } else if (typeof VideoFrame !== 'undefined' && data instanceof VideoFrame) {
+      target.set(data.displayHeight, data.displayWidth, 0);
+    } else if (data !== null) {
+      target.set(data.width, data.height, data.depth || 0);
+    } else {
+      target.set(0, 0, 0);
+    }
+
+    return target;
   }
 
   set needsUpdate(value) {
