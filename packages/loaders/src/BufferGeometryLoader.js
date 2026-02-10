@@ -116,13 +116,6 @@ class BufferGeometryLoader extends Loader {
       // @ts-ignore
       if (attribute.usage !== undefined) bufferAttribute.setUsage(attribute.usage);
 
-      if (attribute.updateRange !== undefined) {
-        // @ts-ignore
-        bufferAttribute.updateRange.offset = attribute.updateRange.offset;
-        // @ts-ignore
-        bufferAttribute.updateRange.count = attribute.updateRange.count;
-      }
-
       geometry.setAttribute(key, bufferAttribute);
     }
 

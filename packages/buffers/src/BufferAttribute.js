@@ -3,6 +3,14 @@ import { StaticDrawUsage, FloatType } from '@renderlayer/shared';
 
 import { fromHalfFloat, toHalfFloat } from './BufferAttributeUtils.js';
 
+/**
+ * This class stores data for an attribute (such as vertex positions, face
+ * indices, normals, colors, UVs, and any custom attributes ) associated with
+ * a geometry, which allows for more efficient passing of data to the GPU.
+ *
+ * When working with vector-like data, the `fromBufferAttribute( attribute, index )`
+ * helper methods on Vector and Color class might be helpful.
+ */
 class BufferAttribute {
   #id = _bufferAttributeId++;
 
@@ -14,7 +22,8 @@ class BufferAttribute {
   normalized;
 
   usage = StaticDrawUsage;
-  updateRange = { offset: 0, count: -1 };
+  updateRange = { offset: 0, count: -1 }; // EP : remove
+  updateRanges = [];
   gpuType = FloatType;
 
   version = 0;
@@ -48,6 +57,23 @@ class BufferAttribute {
     this.usage = value;
 
     return this;
+  }
+
+  /**
+   * Adds a range of data in the data array to be updated on the GPU.
+   *
+   * @param {number} start - Position at which to start update.
+   * @param {number} count - The number of components to update.
+   */
+  addUpdateRange(start, count) {
+    this.updateRanges.push({ start, count });
+  }
+
+  /**
+   * Clears the update ranges.
+   */
+  clearUpdateRanges() {
+    this.updateRanges.length = 0;
   }
 
   copy(source) {
@@ -293,8 +319,6 @@ class BufferAttribute {
 
     if (this.name !== '') data.name = this.name;
     if (this.usage !== StaticDrawUsage) data.usage = this.usage;
-    if (this.updateRange.offset !== 0 || this.updateRange.count !== -1)
-      data.updateRange = this.updateRange;
 
     return data;
   }
@@ -470,19 +494,12 @@ class Float32BufferAttribute extends BufferAttribute {
   }
 }
 
-class Float64BufferAttribute extends BufferAttribute {
-  constructor(array, itemSize, normalized) {
-    super(new Float64Array(array), itemSize, normalized);
-  }
-}
-
 let _bufferAttributeId = 0;
 
 const _vector = /*@__PURE__*/ new Vector3();
 const _vector2 = /*@__PURE__*/ new Vector2();
 
 export {
-  Float64BufferAttribute,
   Float32BufferAttribute,
   Float16BufferAttribute,
   Uint32BufferAttribute,

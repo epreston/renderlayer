@@ -13,8 +13,7 @@ import {
   Int32BufferAttribute,
   Uint32BufferAttribute,
   Float16BufferAttribute,
-  Float32BufferAttribute,
-  Float64BufferAttribute
+  Float32BufferAttribute
 } from '../src/BufferAttribute.js';
 
 describe('Buffers', () => {
@@ -74,14 +73,11 @@ describe('Buffers', () => {
       expect(object.usage).toBe(StaticDrawUsage);
     });
 
-    test('updateRange', () => {
+    test('updateRanges', () => {
       const object = new BufferAttribute();
-      expect(object.updateRange).toMatchInlineSnapshot(`
-        {
-          "count": -1,
-          "offset": 0,
-        }
-      `);
+      expect(object.updateRanges).toBeDefined();
+      expect(object.updateRanges).toBeInstanceOf(Array);
+      expect(object.updateRanges.length).toBe(0);
     });
 
     test('gpuType', () => {
@@ -115,6 +111,18 @@ describe('Buffers', () => {
       attr.setUsage(DynamicDrawUsage);
 
       expect(attr.usage).toBe(DynamicDrawUsage);
+    });
+
+    test('addUpdateRange', () => {
+      const object = new BufferAttribute();
+      expect(object.addUpdateRange).toBeDefined();
+      // EP : Todo
+    });
+
+    test('clearUpdateRanges', () => {
+      const object = new BufferAttribute();
+      expect(object.clearUpdateRanges).toBeDefined();
+      // EP : Todo
     });
 
     test('copy', () => {
@@ -271,8 +279,7 @@ describe('Buffers', () => {
       const attr2 = new BufferAttribute(new Float32Array([1, 2, 3, 4, 5, 6]), 3, true);
       attr2.name = 'attributeName';
       attr2.setUsage(DynamicDrawUsage);
-      attr2.updateRange.offset = 1;
-      attr2.updateRange.count = 2;
+      attr2.addUpdateRange(6, 7); // not exported by toJSON
 
       expect(attr2.toJSON()).toEqual({
         itemSize: 3,
@@ -280,8 +287,7 @@ describe('Buffers', () => {
         array: [1, 2, 3, 4, 5, 6],
         normalized: true,
         name: 'attributeName',
-        usage: DynamicDrawUsage,
-        updateRange: { offset: 1, count: 2 }
+        usage: DynamicDrawUsage
       });
     });
 
@@ -455,18 +461,6 @@ describe('Buffers', () => {
 
     test('extends', () => {
       const object = new Float32BufferAttribute();
-      expect(object).toBeInstanceOf(BufferAttribute);
-    });
-  });
-
-  describe('Float64BufferAttribute', () => {
-    test('constructor', () => {
-      const object = new Float64BufferAttribute();
-      expect(object).toBeDefined();
-    });
-
-    test('extends', () => {
-      const object = new Float64BufferAttribute();
       expect(object).toBeInstanceOf(BufferAttribute);
     });
   });
