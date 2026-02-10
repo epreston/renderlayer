@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/targets",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "@renderlayer/targets",
   "module": "./dist/targets.esm-bundler.js",
   "exports": "./dist/targets.esm-bundler.js",
