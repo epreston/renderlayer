@@ -11,6 +11,7 @@ class BindingState {
 
   object;
   attributes = {};
+  attributesNum = 0;
   index = null;
 
   constructor(maxVertexAttributes, vao) {
