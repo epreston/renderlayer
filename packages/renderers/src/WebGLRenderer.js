@@ -312,7 +312,7 @@ class WebGLRenderer {
 
       capabilities = new WebGLCapabilities(_gl, extensions, parameters, utils);
 
-      state = new WebGLState(_gl);
+      state = new WebGLState(_gl, extensions);
 
       info = new WebGLInfo(_gl);
       properties = new WebGLProperties();

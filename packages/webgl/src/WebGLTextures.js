@@ -2636,9 +2636,9 @@ class WebGLTextures {
     return this.#imageDimensions;
   }
 
-  // isReversedDepthBuffer() {
-  //   return this.#state.buffers.depth.getReversed();
-  // };
+  isReversedDepthBuffer() {
+    return this.#state.buffers.depth.getReversed();
+  }
 }
 
 export { WebGLTextures };

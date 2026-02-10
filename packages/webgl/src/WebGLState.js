@@ -32,6 +32,7 @@ import {
   OneMinusDstColorFactor,
   OneMinusSrcAlphaFactor,
   OneMinusSrcColorFactor,
+  ReversedDepthFuncs,
   ReverseSubtractEquation,
   SrcAlphaFactor,
   SrcAlphaSaturateFactor,
@@ -47,6 +48,7 @@ import {
 
 class WebGLState {
   #gl;
+  #extensions;
 
   #enabledCapabilities;
 
@@ -104,15 +106,17 @@ class WebGLState {
 
   /**
    * @param {WebGL2RenderingContext} gl
+   * @param {WebGLExtensions} extensions
    */
-  constructor(gl) {
+  constructor(gl, extensions) {
     this.#gl = gl;
+    this.#extensions = extensions;
     this.#enabledCapabilities = new CapabilityTracker(gl);
 
     //
 
     this.#colorBuffer = new ColorBuffer(gl);
-    this.#depthBuffer = new DepthBuffer(gl, this.#enabledCapabilities);
+    this.#depthBuffer = new DepthBuffer(gl, this.#extensions, this.#enabledCapabilities);
     this.#stencilBuffer = new StencilBuffer(gl, this.#enabledCapabilities);
 
     this.buffers = {
@@ -965,28 +969,54 @@ class ColorBuffer {
 
 class DepthBuffer {
   #gl;
-  #capabilities;
+  #extensions;
+  #capabilityTracker;
 
   #locked = false;
 
+  #currentReversed = false;
   #currentDepthMask = null;
   #currentDepthFunc = null;
   #currentDepthClear = null;
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {CapabilityTracker} capabilities
+   * @param {WebGLExtensions} extensions
+   * @param {CapabilityTracker} capabilityTracker
    */
-  constructor(gl, capabilities) {
+  constructor(gl, extensions, capabilityTracker) {
     this.#gl = gl;
-    this.#capabilities = capabilities;
+    this.#extensions = extensions;
+    this.#capabilityTracker = capabilityTracker;
+  }
+
+  getReversed() {
+    return this.#currentReversed;
+  }
+
+  setReversed(reversed) {
+    if (this.#currentReversed !== reversed) {
+      const ext = this.#extensions.get('EXT_clip_control'); // 79.4%
+
+      if (reversed) {
+        ext.clipControlEXT(ext.LOWER_LEFT_EXT, ext.ZERO_TO_ONE_EXT);
+      } else {
+        ext.clipControlEXT(ext.LOWER_LEFT_EXT, ext.NEGATIVE_ONE_TO_ONE_EXT);
+      }
+
+      this.#currentReversed = reversed;
+
+      const oldDepth = this.#currentDepthClear;
+      this.#currentDepthClear = null;
+      this.setClear(oldDepth);
+    }
   }
 
   setTest(depthTest) {
     if (depthTest) {
-      this.#capabilities.enable(this.#gl.DEPTH_TEST);
+      this.#capabilityTracker.enable(this.#gl.DEPTH_TEST);
     } else {
-      this.#capabilities.disable(this.#gl.DEPTH_TEST);
+      this.#capabilityTracker.disable(this.#gl.DEPTH_TEST);
     }
   }
 
@@ -999,6 +1029,8 @@ class DepthBuffer {
 
   setFunc(depthFunc) {
     const gl = this.#gl;
+
+    if (this.#currentReversed) depthFunc = ReversedDepthFuncs[depthFunc];
 
     if (this.#currentDepthFunc !== depthFunc) {
       switch (depthFunc) {
@@ -1048,8 +1080,13 @@ class DepthBuffer {
 
   setClear(depth) {
     if (this.#currentDepthClear !== depth) {
-      this.#gl.clearDepth(depth);
       this.#currentDepthClear = depth;
+
+      if (this.#currentReversed) {
+        depth = 1 - depth;
+      }
+
+      this.#gl.clearDepth(depth);
     }
   }
 
@@ -1059,12 +1096,13 @@ class DepthBuffer {
     this.#currentDepthMask = null;
     this.#currentDepthFunc = null;
     this.#currentDepthClear = null;
+    this.#currentReversed = false;
   }
 }
 
 class StencilBuffer {
   #gl;
-  #capabilities;
+  #capabilityTracker;
 
   #locked = false;
 
@@ -1079,19 +1117,19 @@ class StencilBuffer {
 
   /**
    * @param {WebGL2RenderingContext} gl
-   * @param {CapabilityTracker} capabilities
+   * @param {CapabilityTracker} capabilityTracker
    */
-  constructor(gl, capabilities) {
+  constructor(gl, capabilityTracker) {
     this.#gl = gl;
-    this.#capabilities = capabilities;
+    this.#capabilityTracker = capabilityTracker;
   }
 
   setTest(stencilTest) {
     if (!this.#locked) {
       if (stencilTest) {
-        this.#capabilities.enable(this.#gl.STENCIL_TEST);
+        this.#capabilityTracker.enable(this.#gl.STENCIL_TEST);
       } else {
-        this.#capabilities.disable(this.#gl.STENCIL_TEST);
+        this.#capabilityTracker.disable(this.#gl.STENCIL_TEST);
       }
     }
   }
