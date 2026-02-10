@@ -1,3 +1,14 @@
+import {
+  AlwaysDepth,
+  EqualDepth,
+  GreaterDepth,
+  GreaterEqualDepth,
+  LessDepth,
+  LessEqualDepth,
+  NeverDepth,
+  NotEqualDepth
+} from './constants.js';
+
 function arrayMin(array) {
   if (array.length === 0) return Infinity;
 
@@ -69,6 +80,18 @@ function warnOnce(message) {
   console.warn(message);
 }
 
+const ReversedDepthFuncs = {
+  [NeverDepth]: AlwaysDepth,
+  [LessDepth]: GreaterDepth,
+  [EqualDepth]: NotEqualDepth,
+  [LessEqualDepth]: GreaterEqualDepth,
+
+  [AlwaysDepth]: NeverDepth,
+  [GreaterDepth]: LessDepth,
+  [NotEqualDepth]: EqualDepth,
+  [GreaterEqualDepth]: LessEqualDepth
+};
+
 export {
   arrayMax,
   arrayMin,
@@ -76,5 +99,6 @@ export {
   createCanvasElement,
   createElementNS,
   getTypedArray,
-  warnOnce
+  warnOnce,
+  ReversedDepthFuncs
 };
