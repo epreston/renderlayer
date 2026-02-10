@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@renderlayer/textures",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "@renderlayer/textures",
   "module": "./dist/textures.esm-bundler.js",
   "exports": "./dist/textures.esm-bundler.js",
@@ -33,6 +33,6 @@
   "dependencies": {
     "@renderlayer/core": "~0.0.9",
     "@renderlayer/math": "~0.0.15",
-    "@renderlayer/shared": "~0.0.9"
+    "@renderlayer/shared": "~0.0.10"
   }
 }
