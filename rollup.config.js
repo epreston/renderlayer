@@ -83,7 +83,6 @@ function createConfig(format, output, plugins = []) {
   const isProductionBuild = process.env.__DEV__ === 'false' || /\.prod\.js$/.test(output.file);
   const isBundlerESMBuild = /esm-bundler/.test(format);
   const isBrowserESMBuild = /esm-browser/.test(format);
-  const isServerRenderer = name === 'server-renderer';
   const isCJSBuild = format === 'cjs';
   const isGlobalBuild = /global/.test(format);
   const isCompatPackage = pkg.name === '@vue/compat' || pkg.name === '@vue/compat-canary';
@@ -228,7 +227,7 @@ function createConfig(format, output, plugins = []) {
         sourceMap: output.sourcemap,
         minify: false,
         // minifyWhitespace: true,
-        target: isServerRenderer || isCJSBuild ? 'es2019' : 'es2022',
+        target: isCJSBuild ? 'es2019' : 'es2022',
         define: resolveDefine()
       }),
       ...plugins
