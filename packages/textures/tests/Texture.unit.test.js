@@ -56,6 +56,21 @@ describe('Textures', () => {
       expect(object2.id).toBeGreaterThan(prevId);
     });
 
+    test('width', () => {
+      const object = new Texture();
+      expect(object.width).toBe(0);
+    });
+
+    test('height', () => {
+      const object = new Texture();
+      expect(object.height).toBe(0);
+    });
+
+    test('depth', () => {
+      const object = new Texture();
+      expect(object.depth).toBe(0);
+    });
+
     test('uuid', () => {
       const object = new Texture();
 
@@ -182,6 +197,13 @@ describe('Textures', () => {
       const object = new Texture();
       expect(object.userData).toBeDefined();
       expect(object.userData).toBeInstanceOf(Object);
+    });
+
+    test('updateRanges', () => {
+      const object = new Texture();
+      expect(object.updateRanges).toBeDefined();
+      expect(object.updateRanges).toBeInstanceOf(Array);
+      expect(object.updateRanges.length).toBe(0);
     });
 
     test('version', () => {

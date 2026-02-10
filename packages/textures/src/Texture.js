@@ -1,5 +1,5 @@
 import { EventDispatcher } from '@renderlayer/core';
-import { generateUUID, Matrix3, Vector2 } from '@renderlayer/math';
+import { generateUUID, Matrix3, Vector2, Vector3 } from '@renderlayer/math';
 import {
   ClampToEdgeWrapping,
   LinearFilter,
@@ -67,6 +67,8 @@ class Texture extends EventDispatcher {
 
   userData = {};
 
+  updateRanges = [];
+
   version = 0;
   onUpdate = null;
 
@@ -121,6 +123,28 @@ class Texture extends EventDispatcher {
     return this.#id;
   }
 
+  /**
+   * The width of the texture in pixels.
+   */
+  get width() {
+    return this.source.getSize(_tempVec3).x;
+  }
+
+  /**
+   * The height of the texture in pixels.
+   */
+  get height() {
+    return this.source.getSize(_tempVec3).y;
+  }
+
+  /**
+   * The depth of the texture in pixels.
+   */
+  get depth() {
+    // @ts-ignore
+    return this.source.getSize(_tempVec3).z; // EP: issue, vector2 does not have z
+  }
+
   get image() {
     return this.source.data;
   }
@@ -157,6 +181,23 @@ class Texture extends EventDispatcher {
       this.rotation,
       this.center.x, this.center.y
     );
+  }
+
+  /**
+   * Adds a range of data in the data texture to be updated on the GPU.
+   *
+   * @param {number} start - Position at which to start update.
+   * @param {number} count - The number of components to update.
+   */
+  addUpdateRange(start, count) {
+    this.updateRanges.push({ start, count });
+  }
+
+  /**
+   * Clears the update ranges.
+   */
+  clearUpdateRanges() {
+    this.updateRanges.length = 0;
   }
 
   /** @returns {this} */
@@ -359,5 +400,7 @@ class Texture extends EventDispatcher {
 }
 
 let _textureId = 0;
+
+const _tempVec3 = /*@__PURE__*/ new Vector3();
 
 export { Texture };
