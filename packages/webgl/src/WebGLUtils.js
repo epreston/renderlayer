@@ -7,8 +7,6 @@ import {
   FloatType,
   HalfFloatType,
   IntType,
-  LuminanceAlphaFormat,
-  LuminanceFormat,
   NoColorSpace,
   R11_EAC_Format,
   RED_GREEN_RGTC2_Format,
@@ -107,8 +105,6 @@ class WebGLUtils {
     if (p === AlphaFormat) return gl.ALPHA;
     if (p === RGBFormat) return gl.RGB;
     if (p === RGBAFormat) return gl.RGBA;
-    if (p === LuminanceFormat) return gl.LUMINANCE;
-    if (p === LuminanceAlphaFormat) return gl.LUMINANCE_ALPHA;
     if (p === DepthFormat) return gl.DEPTH_COMPONENT;
     if (p === DepthStencilFormat) return gl.DEPTH_STENCIL;
 
