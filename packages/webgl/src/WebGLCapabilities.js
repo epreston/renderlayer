@@ -1,13 +1,18 @@
+import { FloatType, HalfFloatType, RGBAFormat, UnsignedByteType } from '@renderlayer/shared';
+
 /**
- * @import { WebGLExtensions } from "@renderlayer/webgl"
+ * @import { WebGLExtensions, WebGLUtils } from "@renderlayer/webgl"
  */
 
 class WebGLCapabilities {
   #gl;
+  #utils;
+  #extensions;
 
-  #maxAnisotropy = 16;
+  #maxAnisotropy; // 16
   #precision = 'highp';
   #logarithmicDepthBuffer = false;
+  #reversedDepthBuffer = false;
 
   #maxTextures = 16;
   #maxVertexTextures = 16;
@@ -26,16 +31,12 @@ class WebGLCapabilities {
   /**
    * @param {WebGL2RenderingContext} gl
    * @param {WebGLExtensions} extensions
+   * @param {WebGLUtils} utils
    */
-  constructor(gl, extensions, parameters) {
+  constructor(gl, extensions, parameters, utils) {
     this.#gl = gl;
-
-    if (extensions.has('EXT_texture_filter_anisotropic') === true) {
-      const extension = extensions.get('EXT_texture_filter_anisotropic');
-      this.#maxAnisotropy = gl.getParameter(extension.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-    } else {
-      this.#maxAnisotropy = 0;
-    }
+    this.#utils = utils;
+    this.#extensions = extensions;
 
     this.#precision = parameters.precision !== undefined ? parameters.precision : 'highp';
     const maxPrecision = this.getMaxPrecision(this.#precision);
@@ -48,6 +49,8 @@ class WebGLCapabilities {
     }
 
     this.#logarithmicDepthBuffer = parameters.logarithmicDepthBuffer === true;
+    this.#reversedDepthBuffer =
+      parameters.reversedDepthBuffer === true && extensions.has('EXT_clip_control'); // 79.4%
 
     this.#maxTextures = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
     this.#maxVertexTextures = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
@@ -65,6 +68,18 @@ class WebGLCapabilities {
   }
 
   getMaxAnisotropy() {
+    const gl = this.#gl;
+
+    if (this.#maxAnisotropy !== undefined) return this.#maxAnisotropy;
+
+    if (this.#extensions.has('EXT_texture_filter_anisotropic') === true) {
+      const extension = this.#extensions.get('EXT_texture_filter_anisotropic'); // 98.81%
+
+      this.#maxAnisotropy = gl.getParameter(extension.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+    } else {
+      this.#maxAnisotropy = 0;
+    }
+
     return this.#maxAnisotropy;
   }
 
@@ -94,6 +109,39 @@ class WebGLCapabilities {
     return 'lowp';
   }
 
+  textureFormatReadable(textureFormat) {
+    const gl = this.#gl;
+
+    if (
+      textureFormat !== RGBAFormat &&
+      this.#utils.convert(textureFormat) !== gl.getParameter(gl.IMPLEMENTATION_COLOR_READ_FORMAT)
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  textureTypeReadable(textureType) {
+    const gl = this.#gl;
+
+    const halfFloatSupportedByExt =
+      textureType === HalfFloatType &&
+      (this.#extensions.has('EXT_color_buffer_half_float') || // 88.71%
+        this.#extensions.has('EXT_color_buffer_float')); // 99.95%
+
+    if (
+      textureType !== UnsignedByteType &&
+      this.#utils.convert(textureType) !== gl.getParameter(gl.IMPLEMENTATION_COLOR_READ_TYPE) && // Edge and Chrome Mac < 52 (#9513)
+      textureType !== FloatType &&
+      !halfFloatSupportedByExt
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
   get isWebGL2() {
     return true;
   }
@@ -104,6 +152,10 @@ class WebGLCapabilities {
 
   get logarithmicDepthBuffer() {
     return this.#logarithmicDepthBuffer;
+  }
+
+  get reversedDepthBuffer() {
+    return this.#reversedDepthBuffer;
   }
 
   get maxTextures() {

@@ -28,11 +28,23 @@ describe('WebGL', () => {
       // implement
     });
 
+    test.todo('textureFormatReadable', () => {
+      // implement
+    });
+
+    test.todo('textureTypeReadable', () => {
+      // implement
+    });
+
     test.todo('precision', () => {
       // implement
     });
 
     test.todo('logarithmicDepthBuffer', () => {
+      // implement
+    });
+
+    test.todo('reversedDepthBuffer', () => {
       // implement
     });
 
