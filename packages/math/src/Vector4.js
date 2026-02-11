@@ -373,6 +373,17 @@ class Vector4 {
     return this;
   }
 
+  setFromMatrixPosition(m) {
+    const e = m.elements;
+
+    this.x = e[12];
+    this.y = e[13];
+    this.z = e[14];
+    this.w = e[15];
+
+    return this;
+  }
+
   min(vector) {
     this.x = Math.min(this.x, vector.x);
     this.y = Math.min(this.y, vector.y);

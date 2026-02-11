@@ -286,6 +286,17 @@ describe('Maths', () => {
       // implement
     });
 
+    test('setFromMatrixPosition', () => {
+      const a = new Vector4();
+      const m = new Matrix4().set(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53);
+
+      a.setFromMatrixPosition(m);
+      expect(a.x).toStrictEqual(7);
+      expect(a.y).toStrictEqual(19);
+      expect(a.z).toStrictEqual(37);
+      expect(a.w).toStrictEqual(53);
+    });
+
     test('min', () => {
       const v1 = new Vector4(5, 6, 7, 8);
       const v2 = new Vector4(1, 2, 3, 4);
