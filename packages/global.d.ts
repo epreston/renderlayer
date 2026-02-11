@@ -56,6 +56,15 @@ declare module '@renderlayer/buffers' {
   }
 }
 
+declare module '@renderlayer/cameras' {
+  interface Camera {
+    // optional, read-only object properties
+    readonly isArrayCamera?: boolean;
+    readonly isOrthographicCamera?: boolean;
+    readonly isPerspectiveCamera?: boolean;
+  }
+}
+
 declare module '@renderlayer/core' {
   interface Object3D {
     // optional, read-only object properties
