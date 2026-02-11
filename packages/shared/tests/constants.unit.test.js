@@ -70,6 +70,8 @@ describe('Shared', () => {
       expect(Constants.CineonToneMapping).toBe(3);
       expect(Constants.ACESFilmicToneMapping).toBe(4);
       expect(Constants.CustomToneMapping).toBe(5);
+      expect(Constants.AgXToneMapping).toBe(6);
+      expect(Constants.NeutralToneMapping).toBe(7);
 
       expect(Constants.AttachedBindMode).toBe('attached');
       expect(Constants.DetachedBindMode).toBe('detached');
@@ -173,6 +175,8 @@ describe('Shared', () => {
 
       expect(Constants.BasicDepthPacking).toBe(3200);
       expect(Constants.RGBADepthPacking).toBe(3201);
+      expect(Constants.RGBDepthPacking).toBe(3202);
+      expect(Constants.RGDepthPacking).toBe(3203);
 
       expect(Constants.TangentSpaceNormalMap).toBe(0);
       expect(Constants.ObjectSpaceNormalMap).toBe(1);
