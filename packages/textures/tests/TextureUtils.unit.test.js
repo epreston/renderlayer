@@ -6,7 +6,7 @@ import { contain, cover, fill, getByteLength, TextureUtils } from '../src/Textur
 describe('Textures', () => {
   describe('TextureUtils', () => {
     test('constructor', () => {
-      const object = new TextureUtils({});
+      const object = new TextureUtils();
       expect(object).toBeDefined();
     });
 
