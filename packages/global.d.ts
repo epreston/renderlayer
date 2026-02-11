@@ -109,6 +109,7 @@ declare module '@renderlayer/textures' {
     readonly isData3DTexture?: boolean;
     readonly isDataArrayTexture?: boolean;
     readonly isDataTexture?: boolean;
+    readonly isDepthTexture?: boolean;
     readonly isExternalTexture?: boolean;
     readonly isFramebufferTexture?: boolean;
     readonly isVideoTexture?: boolean;
