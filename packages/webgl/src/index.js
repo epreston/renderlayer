@@ -1,3 +1,4 @@
+export * from './DFGLUTData.js';
 export * from './WebGLAnimation.js';
 export * from './WebGLAttributes.js';
 export * from './WebGLBackground.js';
