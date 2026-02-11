@@ -8,6 +8,7 @@ export * from './DataArrayTexture.js';
 export * from './DataTexture.js';
 export * from './DepthTexture.js';
 export * from './ExternalTexture.js';
+export * from './FramebufferTexture.js';
 export * from './Source.js';
 export * from './Texture.js';
 export * from './TextureUtils.js';
