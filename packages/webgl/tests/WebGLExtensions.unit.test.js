@@ -79,7 +79,7 @@ describe('WebGL', () => {
     test('init', () => {
       const gl = getWebGLRenderingContextMock();
       const extensions = new WebGLExtensions(gl);
-      extensions.init(null);
+      extensions.init();
 
       expect(extensions).toBeDefined();
     });
