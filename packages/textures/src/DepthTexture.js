@@ -8,9 +8,9 @@ import {
 } from '@renderlayer/shared';
 
 /**
- * @import { NeverCompare, LessCompare, EqualCompare } from '@renderlayer/shared';
- * @import { LessEqualCompare, GreaterCompare, NotEqualCompare } from '@renderlayer/shared';
- * @import { GreaterEqualCompare, AlwaysCompare } from '@renderlayer/shared';
+ * @import { NeverCompare, LessCompare, EqualCompare } from '@renderlayer/shared'
+ * @import { LessEqualCompare, GreaterCompare, NotEqualCompare } from '@renderlayer/shared'
+ * @import { GreaterEqualCompare, AlwaysCompare } from '@renderlayer/shared'
  */
 
 class DepthTexture extends Texture {
