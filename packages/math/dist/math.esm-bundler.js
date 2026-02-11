@@ -1680,6 +1680,17 @@ class Box3 {
   equals(box) {
     return box.min.equals(this.min) && box.max.equals(this.max);
   }
+  toJSON() {
+    return {
+      min: this.min.toArray(),
+      max: this.max.toArray()
+    };
+  }
+  fromJSON(json) {
+    this.min.fromArray(json.min);
+    this.max.fromArray(json.max);
+    return this;
+  }
 }
 const _points = [
   /* @__PURE__ */ new Vector3(),
@@ -3559,6 +3570,17 @@ class Sphere {
   clone() {
     return new this.constructor().copy(this);
   }
+  toJSON() {
+    return {
+      radius: this.radius,
+      center: this.center.toArray()
+    };
+  }
+  fromJSON(json) {
+    this.radius = json.radius;
+    this.center.fromArray(json.center);
+    return this;
+  }
 }
 const _box = /* @__PURE__ */ new Box3();
 const _v1$1 = /* @__PURE__ */ new Vector3();
@@ -4535,6 +4557,14 @@ class Vector4 {
     this.y = (m13 - m31) / s;
     this.z = (m21 - m12) / s;
     this.w = Math.acos((m11 + m22 + m33 - 1) / 2);
+    return this;
+  }
+  setFromMatrixPosition(m) {
+    const e = m.elements;
+    this.x = e[12];
+    this.y = e[13];
+    this.z = e[14];
+    this.w = e[15];
     return this;
   }
   min(vector) {

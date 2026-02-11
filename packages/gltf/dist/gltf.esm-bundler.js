@@ -1011,20 +1011,7 @@ class GLTFParser {
   constructor(json = {}, options = {}) {
     this.json = json;
     this.options = options;
-    let isSafari = false;
-    let safariVersion = -1;
-    let isFirefox = false;
-    let firefoxVersion = -1;
-    if (typeof navigator !== "undefined") {
-      const userAgent = navigator.userAgent;
-      isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) === true;
-      const safariMatch = userAgent.match(/Version\/(\d+)/);
-      safariVersion = isSafari && safariMatch ? parseInt(safariMatch[1], 10) : -1;
-      isFirefox = userAgent.indexOf("Firefox") > -1;
-      const firefoxMatch = userAgent.match(/Firefox\/([0-9]+)\./);
-      firefoxVersion = isFirefox && firefoxMatch ? parseInt(firefoxMatch[1], 10) : -1;
-    }
-    if (typeof createImageBitmap === "undefined" || isSafari && safariVersion < 17 || isFirefox && firefoxVersion < 98) {
+    if (typeof createImageBitmap === "undefined") {
       this.textureLoader = new TextureLoader(this.options.manager);
     } else {
       this.textureLoader = new ImageBitmapLoader(this.options.manager);
