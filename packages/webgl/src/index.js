@@ -7,6 +7,7 @@ export * from './WebGLCapabilities.js';
 export * from './WebGLClipping.js';
 export * from './WebGLCubeMaps.js';
 export * from './WebGLCubeUVMaps.js';
+export * from './WebGLEnvironments.js';
 export * from './WebGLExtensions.js';
 export * from './WebGLGeometries.js';
 export * from './WebGLIndexedBufferRenderer.js';
