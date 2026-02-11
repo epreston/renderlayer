@@ -383,6 +383,19 @@ class Box3 {
   equals(box) {
     return box.min.equals(this.min) && box.max.equals(this.max);
   }
+
+  toJSON() {
+    return {
+      min: this.min.toArray(),
+      max: this.max.toArray()
+    };
+  }
+
+  fromJSON(json) {
+    this.min.fromArray(json.min);
+    this.max.fromArray(json.max);
+    return this;
+  }
 }
 
 const _points = [

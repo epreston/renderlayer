@@ -79,17 +79,17 @@ describe('Objects', () => {
 
       expect(mesh.boundingBox).toBeDefined();
       expect(mesh.boundingBox).toMatchInlineSnapshot(`
-        Box3 {
-          "max": Vector3 {
-            "x": 5,
-            "y": 16,
-            "z": 5,
-          },
-          "min": Vector3 {
-            "x": -5,
-            "y": -16,
-            "z": -5,
-          },
+        {
+          "max": [
+            5,
+            16,
+            5,
+          ],
+          "min": [
+            -5,
+            -16,
+            -5,
+          ],
         }
       `);
     });

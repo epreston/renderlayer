@@ -67,17 +67,17 @@ describe('Objects', () => {
 
       expect(object.boundingBox).toBeDefined();
       expect(object.boundingBox).toMatchInlineSnapshot(`
-        Box3 {
-          "max": Vector3 {
-            "x": 0.5,
-            "y": 0.5,
-            "z": 0.5,
-          },
-          "min": Vector3 {
-            "x": -0.5,
-            "y": -0.5,
-            "z": -0.5,
-          },
+        {
+          "max": [
+            0.5,
+            0.5,
+            0.5,
+          ],
+          "min": [
+            -0.5,
+            -0.5,
+            -0.5,
+          ],
         }
       `);
     });

@@ -604,5 +604,35 @@ describe('Maths', () => {
       expect(!b.equals(a)).toBeTruthy();
       expect(!a.equals(b)).toBeTruthy();
     });
+
+    test('toJSON', () => {
+      const object = new Box3(one3, two3);
+      expect(object.toJSON()).toMatchInlineSnapshot(`
+        {
+          "max": [
+            2,
+            2,
+            2,
+          ],
+          "min": [
+            1,
+            1,
+            1,
+          ],
+        }
+      `);
+    });
+
+    test('fromJSON', () => {
+      const testJson = {
+        max: [2, 2, 2],
+        min: [1, 1, 1]
+      };
+
+      const object = new Box3().fromJSON(testJson);
+
+      expect(object.min.x).toBe(1);
+      expect(object.max.x).toBe(2);
+    });
   });
 });
