@@ -2,7 +2,7 @@
   "type": "module",
   "sideEffects": false,
   "name": "@renderlayer/cameras",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Camera library used by @renderlayer packages",
   "module": "./dist/cameras.esm-bundler.js",
   "exports": "./dist/cameras.esm-bundler.js",
