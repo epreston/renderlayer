@@ -92,6 +92,10 @@ class Object3D extends EventDispatcher {
     return this.#normalMatrix;
   }
 
+  onBeforeShadow(/* renderer, object, camera, shadowCamera, geometry, depthMaterial, group */) {}
+
+  onAfterShadow(/* renderer, object, camera, shadowCamera, geometry, depthMaterial, group */) {}
+
   onBeforeRender(/* renderer, scene, camera, geometry, material, group */) {}
 
   onAfterRender(/* renderer, scene, camera, geometry, material, group */) {}

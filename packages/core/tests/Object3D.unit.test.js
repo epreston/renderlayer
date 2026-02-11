@@ -233,6 +233,14 @@ describe('Core', () => {
       }
     });
 
+    test.todo('onBeforeShadow', () => {
+      // implement
+    });
+
+    test.todo('onAfterShadow', () => {
+      // implement
+    });
+
     test.todo('onBeforeRender', () => {
       // implement
     });
