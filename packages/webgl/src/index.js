@@ -16,6 +16,7 @@ export * from './WebGLInfo.js';
 export * from './WebGLMaterials.js';
 export * from './WebGLMorphtargets.js';
 export * from './WebGLObjects.js';
+export * from './WebGLOutput.js';
 // export * from './WebGLProgram.js'; // not exported
 export * from './WebGLPrograms.js';
 export * from './WebGLProperties.js';
