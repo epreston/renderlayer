@@ -71,6 +71,36 @@ declare module '@renderlayer/core' {
   }
 }
 
+declare module '@renderlayer/math' {
+  interface Box2 {
+    // optional, read-only object properties
+    readonly isBox3?: boolean;
+  }
+
+  interface Box3 {
+    // optional, read-only object properties
+    readonly isBox2?: boolean;
+  }
+}
+
+declare module '@renderlayer/targets' {
+  interface RenderTarget {
+    // optional, read-only object properties
+    readonly isWebGLCubeRenderTarget?: boolean;
+    readonly isWebGLRenderTarget?: boolean;
+  }
+}
+
+declare module '@renderlayer/textures' {
+  interface Texture {
+    // optional, read-only object properties
+    readonly isData3DTexture?: boolean;
+    readonly isDataArrayTexture?: boolean;
+    readonly isCompressedArrayTexture?: boolean;
+    readonly isCompressedTexture?: boolean;
+  }
+}
+
 // deprecations
 
 declare global {
