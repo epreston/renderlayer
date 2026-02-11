@@ -94,10 +94,15 @@ declare module '@renderlayer/targets' {
 declare module '@renderlayer/textures' {
   interface Texture {
     // optional, read-only object properties
-    readonly isData3DTexture?: boolean;
-    readonly isDataArrayTexture?: boolean;
     readonly isCompressedArrayTexture?: boolean;
     readonly isCompressedTexture?: boolean;
+    readonly isCubeTexture?: boolean;
+    readonly isData3DTexture?: boolean;
+    readonly isDataArrayTexture?: boolean;
+    readonly isDataTexture?: boolean;
+    readonly isExternalTexture?: boolean;
+    readonly isFramebufferTexture?: boolean;
+    readonly isVideoTexture?: boolean;
   }
 }
 
