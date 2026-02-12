@@ -23,6 +23,17 @@ describe('Cameras', () => {
       expect(object.isCamera).toBeTruthy();
     });
 
+    test('reversedDepth', () => {
+      const object = new Camera();
+      expect(object.reversedDepth).toBeFalsy();
+    });
+
+    test('_reversedDepth', () => {
+      // EP: required access by other classes, fix
+      const object = new Camera();
+      expect(object._reversedDepth).toBeFalsy();
+    });
+
     test('type', () => {
       const object = new Camera();
       expect(object.type).toBe('Camera');
