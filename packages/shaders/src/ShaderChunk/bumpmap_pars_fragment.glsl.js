@@ -4,7 +4,7 @@ export default /* glsl */`
 	uniform sampler2D bumpMap;
 	uniform float bumpScale;
 
-	// Bump Mapping Un-parametrized Surfaces on the GPU by Morten S. Mikkelsen
+	// Bump Mapping Unparametrized Surfaces on the GPU by Morten S. Mikkelsen
 	// https://mmikk.github.io/papers3d/mm_sfgrad_bump.pdf
 
 	// Evaluate the derivative of the height w.r.t. screen-space using forward differencing (listing 2)
