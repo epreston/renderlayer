@@ -3,6 +3,7 @@ import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { OrthographicCamera } from '@renderlayer/cameras';
 import { Object3D } from '@renderlayer/core';
 import { Frustum, Matrix4, Vector2, Vector4 } from '@renderlayer/math';
+import { UnsignedByteType, WebGPUCoordinateSystem } from '@renderlayer/shared';
 
 import { DirectionalLight } from '../src/DirectionalLight.js';
 import { LightShadow } from '../src/LightShadow.js';
@@ -30,6 +31,11 @@ describe('Lights', () => {
       expect(_object.camera).toBe(_camera);
     });
 
+    test('intensity', () => {
+      expect(_object.intensity).toBeDefined();
+      expect(_object.intensity).toBe(1);
+    });
+
     test('bias', () => {
       expect(_object.bias).toBeDefined();
       expect(_object.bias).toBe(0);
@@ -55,6 +61,11 @@ describe('Lights', () => {
       expect(_object.mapSize.equals(new Vector2(512, 512))).toBeTruthy();
     });
 
+    test('mapType ', () => {
+      expect(_object.mapType).toBeDefined();
+      expect(_object.mapType).toBe(UnsignedByteType);
+    });
+
     test('map', () => {
       expect(_object.map).toBeDefined();
       expect(_object.map).toBeNull();
@@ -76,11 +87,12 @@ describe('Lights', () => {
     });
 
     test('needsUpdate', () => {
-      const object = new LightShadow();
-      expect(object.needsUpdate).toBe(false);
+      expect(_object.needsUpdate).toBeDefined();
+      expect(_object.needsUpdate).toBe(false);
     });
 
     test('getViewportCount', () => {
+      expect(_object.getViewportCount).toBeDefined();
       expect(_object.getViewportCount()).toBe(1);
     });
 
