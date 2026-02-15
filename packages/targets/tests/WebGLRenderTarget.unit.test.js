@@ -15,6 +15,16 @@ describe('Targets', () => {
       expect(object).toBeInstanceOf(RenderTarget);
     });
 
+    test('isXRRenderTarget', () => {
+      const object = new WebGLRenderTarget();
+      expect(object.isXRRenderTarget).toBe(false);
+
+      // it can be changed
+      object.isXRRenderTarget = true;
+
+      expect(object.isXRRenderTarget).toBe(true);
+    });
+
     test('isWebGLRenderTarget', () => {
       const object = new WebGLRenderTarget();
       expect(object.isWebGLRenderTarget).toBeTruthy();
