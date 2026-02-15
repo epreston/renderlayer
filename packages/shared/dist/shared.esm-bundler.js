@@ -52,6 +52,8 @@ const ReinhardToneMapping = 2;
 const CineonToneMapping = 3;
 const ACESFilmicToneMapping = 4;
 const CustomToneMapping = 5;
+const AgXToneMapping = 6;
+const NeutralToneMapping = 7;
 const AttachedBindMode = "attached";
 const DetachedBindMode = "detached";
 const UVMapping = 300;
@@ -150,6 +152,8 @@ const TriangleStripDrawMode = 1;
 const TriangleFanDrawMode = 2;
 const BasicDepthPacking = 3200;
 const RGBADepthPacking = 3201;
+const RGBDepthPacking = 3202;
+const RGDepthPacking = 3203;
 const TangentSpaceNormalMap = 0;
 const ObjectSpaceNormalMap = 1;
 const NoColorSpace = "";
@@ -196,7 +200,6 @@ const DynamicCopyUsage = 35050;
 const StreamCopyUsage = 35042;
 const GLSL1 = "100";
 const GLSL3 = "300 es";
-const _SRGBAFormat = 1035;
 const WebGLCoordinateSystem = 2e3;
 const WebGPUCoordinateSystem = 2001;
 
@@ -236,6 +239,9 @@ const TYPED_ARRAYS = {
 function getTypedArray(type, buffer) {
   return new TYPED_ARRAYS[type](buffer);
 }
+function isTypedArray(array) {
+  return ArrayBuffer.isView(array) && !(array instanceof DataView);
+}
 function createElementNS(name) {
   return document.createElementNS("http://www.w3.org/1999/xhtml", name);
 }
@@ -248,11 +254,98 @@ function createCanvasElement() {
   return canvas;
 }
 const _cache = {};
-function warnOnce(message) {
+let _setConsoleFunction = null;
+function setConsoleFunction(fn) {
+  _setConsoleFunction = fn;
+}
+function getConsoleFunction() {
+  return _setConsoleFunction;
+}
+function log(...params) {
+  const message = "RL." + params.shift();
+  if (_setConsoleFunction) {
+    _setConsoleFunction("log", message, ...params);
+  } else {
+    console.log(message, ...params);
+  }
+}
+function warn(...params) {
+  const message = "RL." + params.shift();
+  if (_setConsoleFunction) {
+    _setConsoleFunction("warn", message, ...params);
+  } else {
+    const stackTrace = params[0];
+    if (stackTrace && stackTrace.isStackTrace) {
+      console.warn(stackTrace.getError(message));
+    } else {
+      console.warn(message, ...params);
+    }
+  }
+}
+function error(...params) {
+  const message = "RL." + params.shift();
+  if (_setConsoleFunction) {
+    _setConsoleFunction("error", message, ...params);
+  } else {
+    const stackTrace = params[0];
+    if (stackTrace && stackTrace.isStackTrace) {
+      console.error(stackTrace.getError(message));
+    } else {
+      console.error(message, ...params);
+    }
+  }
+}
+function warnOnce(...params) {
+  const message = params.join(" ");
   if (message in _cache) return;
   _cache[message] = true;
-  console.warn(message);
+  warn(...params);
 }
+function probeAsync(gl, sync, interval) {
+  return new Promise(function(resolve, reject) {
+    function probe() {
+      switch (gl.clientWaitSync(sync, gl.SYNC_FLUSH_COMMANDS_BIT, 0)) {
+        case gl.WAIT_FAILED:
+          reject();
+          break;
+        case gl.TIMEOUT_EXPIRED:
+          setTimeout(probe, interval);
+          break;
+        default:
+          resolve();
+      }
+    }
+    setTimeout(probe, interval);
+  });
+}
+function toNormalizedProjectionMatrix(projectionMatrix) {
+  const m = projectionMatrix.elements;
+  m[2] = 0.5 * m[2] + 0.5 * m[3];
+  m[6] = 0.5 * m[6] + 0.5 * m[7];
+  m[10] = 0.5 * m[10] + 0.5 * m[11];
+  m[14] = 0.5 * m[14] + 0.5 * m[15];
+}
+function toReversedProjectionMatrix(projectionMatrix) {
+  const m = projectionMatrix.elements;
+  const isPerspectiveMatrix = m[11] === -1;
+  if (isPerspectiveMatrix) {
+    m[10] = -m[10] - 1;
+    m[14] = -m[14];
+  } else {
+    m[10] = -m[10];
+    m[14] = -m[14] + 1;
+  }
+}
+const ReversedDepthFuncs = {
+  [NeverDepth]: AlwaysDepth,
+  [LessDepth]: GreaterDepth,
+  [EqualDepth]: NotEqualDepth,
+  [LessEqualDepth]: GreaterEqualDepth,
+  [AlwaysDepth]: NeverDepth,
+  [GreaterDepth]: LessDepth,
+  [NotEqualDepth]: EqualDepth,
+  [GreaterEqualDepth]: LessEqualDepth
+};
 
 function _SRGBToLinear(c) {
   return c < 0.04045 ? c * 0.0773993808 : Math.pow(c * 0.9478672986 + 0.0521327014, 2.4);
@@ -390,4 +483,4 @@ class WorkerPool {
   }
 }
 
-export { ACESFilmicToneMapping, AddEquation, AddOperation, AdditiveAnimationBlendMode, AdditiveBlending, AlphaFormat, AlwaysCompare, AlwaysDepth, AlwaysStencilFunc, AttachedBindMode, BackSide, BasicDepthPacking, BasicShadowMap, ByteType, CineonToneMapping, ClampToEdgeWrapping, ConstantAlphaFactor, ConstantColorFactor, CubeReflectionMapping, CubeRefractionMapping, CubeUVReflectionMapping, CullFaceBack, CullFaceFront, CullFaceFrontBack, CullFaceNone, CustomBlending, CustomToneMapping, DecrementStencilOp, DecrementWrapStencilOp, DepthFormat, DepthStencilFormat, DetachedBindMode, DisplayP3ColorSpace, DoubleSide, DstAlphaFactor, DstColorFactor, DynamicCopyUsage, DynamicDrawUsage, DynamicReadUsage, EqualCompare, EqualDepth, EqualStencilFunc, EquirectangularReflectionMapping, EquirectangularRefractionMapping, FloatType, FrontSide, GLSL1, GLSL3, GreaterCompare, GreaterDepth, GreaterEqualCompare, GreaterEqualDepth, GreaterEqualStencilFunc, GreaterStencilFunc, HalfFloatType, ImageUtils, IncrementStencilOp, IncrementWrapStencilOp, IntType, InterpolateDiscrete, InterpolateLinear, InterpolateSmooth, InvertStencilOp, KeepStencilOp, LessCompare, LessDepth, LessEqualCompare, LessEqualDepth, LessEqualStencilFunc, LessStencilFunc, LinearDisplayP3ColorSpace, LinearFilter, LinearMipMapLinearFilter, LinearMipMapNearestFilter, LinearMipmapLinearFilter, LinearMipmapNearestFilter, LinearSRGBColorSpace, LinearToneMapping, LinearTransfer, LoopOnce, LoopPingPong, LoopRepeat, LuminanceAlphaFormat, LuminanceFormat, MaxEquation, MinEquation, MirroredRepeatWrapping, MixOperation, MultiplyBlending, MultiplyOperation, NearestFilter, NearestMipMapLinearFilter, NearestMipMapNearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, NeverCompare, NeverDepth, NeverStencilFunc, NoBlending, NoColorSpace, NoToneMapping, NormalAnimationBlendMode, NormalBlending, NotEqualCompare, NotEqualDepth, NotEqualStencilFunc, ObjectSpaceNormalMap, OneFactor, OneMinusConstantAlphaFactor, OneMinusConstantColorFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor, OneMinusSrcAlphaFactor, OneMinusSrcColorFactor, P3Primaries, PCFShadowMap, PCFSoftShadowMap, R11_EAC_Format, RED_GREEN_RGTC2_Format, RED_RGTC1_Format, RG11_EAC_Format, RGBADepthPacking, RGBAFormat, RGBAIntegerFormat, RGBA_ASTC_10x10_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_BPTC_Format, RGBA_ETC2_EAC_Format, RGBA_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGBFormat, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RGB_ETC1_Format, RGB_ETC2_Format, RGB_PVRTC_2BPPV1_Format, RGB_PVRTC_4BPPV1_Format, RGB_S3TC_DXT1_Format, RGFormat, RGIntegerFormat, Rec709Primaries, RedFormat, RedIntegerFormat, ReinhardToneMapping, RepeatWrapping, ReplaceStencilOp, ReverseSubtractEquation, SIGNED_R11_EAC_Format, SIGNED_RED_GREEN_RGTC2_Format, SIGNED_RED_RGTC1_Format, SIGNED_RG11_EAC_Format, SRGBColorSpace, SRGBTransfer, ShortType, SrcAlphaFactor, SrcAlphaSaturateFactor, SrcColorFactor, StaticCopyUsage, StaticDrawUsage, StaticReadUsage, StreamCopyUsage, StreamDrawUsage, StreamReadUsage, SubtractEquation, SubtractiveBlending, TangentSpaceNormalMap, TriangleFanDrawMode, TriangleStripDrawMode, TrianglesDrawMode, UVMapping, UnsignedByteType, UnsignedInt101111Type, UnsignedInt248Type, UnsignedInt5999Type, UnsignedIntType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedShortType, VSMShadowMap, WebGLCoordinateSystem, WebGPUCoordinateSystem, WorkerPool, WrapAroundEnding, ZeroCurvatureEnding, ZeroFactor, ZeroSlopeEnding, ZeroStencilOp, _SRGBAFormat, arrayMax, arrayMin, arrayNeedsUint32, createCanvasElement, createElementNS, getTypedArray, warnOnce };
+export { ACESFilmicToneMapping, AddEquation, AddOperation, AdditiveAnimationBlendMode, AdditiveBlending, AgXToneMapping, AlphaFormat, AlwaysCompare, AlwaysDepth, AlwaysStencilFunc, AttachedBindMode, BackSide, BasicDepthPacking, BasicShadowMap, ByteType, CineonToneMapping, ClampToEdgeWrapping, ConstantAlphaFactor, ConstantColorFactor, CubeReflectionMapping, CubeRefractionMapping, CubeUVReflectionMapping, CullFaceBack, CullFaceFront, CullFaceFrontBack, CullFaceNone, CustomBlending, CustomToneMapping, DecrementStencilOp, DecrementWrapStencilOp, DepthFormat, DepthStencilFormat, DetachedBindMode, DisplayP3ColorSpace, DoubleSide, DstAlphaFactor, DstColorFactor, DynamicCopyUsage, DynamicDrawUsage, DynamicReadUsage, EqualCompare, EqualDepth, EqualStencilFunc, EquirectangularReflectionMapping, EquirectangularRefractionMapping, FloatType, FrontSide, GLSL1, GLSL3, GreaterCompare, GreaterDepth, GreaterEqualCompare, GreaterEqualDepth, GreaterEqualStencilFunc, GreaterStencilFunc, HalfFloatType, ImageUtils, IncrementStencilOp, IncrementWrapStencilOp, IntType, InterpolateDiscrete, InterpolateLinear, InterpolateSmooth, InvertStencilOp, KeepStencilOp, LessCompare, LessDepth, LessEqualCompare, LessEqualDepth, LessEqualStencilFunc, LessStencilFunc, LinearDisplayP3ColorSpace, LinearFilter, LinearMipMapLinearFilter, LinearMipMapNearestFilter, LinearMipmapLinearFilter, LinearMipmapNearestFilter, LinearSRGBColorSpace, LinearToneMapping, LinearTransfer, LoopOnce, LoopPingPong, LoopRepeat, LuminanceAlphaFormat, LuminanceFormat, MaxEquation, MinEquation, MirroredRepeatWrapping, MixOperation, MultiplyBlending, MultiplyOperation, NearestFilter, NearestMipMapLinearFilter, NearestMipMapNearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, NeutralToneMapping, NeverCompare, NeverDepth, NeverStencilFunc, NoBlending, NoColorSpace, NoToneMapping, NormalAnimationBlendMode, NormalBlending, NotEqualCompare, NotEqualDepth, NotEqualStencilFunc, ObjectSpaceNormalMap, OneFactor, OneMinusConstantAlphaFactor, OneMinusConstantColorFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor, OneMinusSrcAlphaFactor, OneMinusSrcColorFactor, P3Primaries, PCFShadowMap, PCFSoftShadowMap, R11_EAC_Format, RED_GREEN_RGTC2_Format, RED_RGTC1_Format, RG11_EAC_Format, RGBADepthPacking, RGBAFormat, RGBAIntegerFormat, RGBA_ASTC_10x10_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_BPTC_Format, RGBA_ETC2_EAC_Format, RGBA_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGBDepthPacking, RGBFormat, RGB_BPTC_SIGNED_Format, RGB_BPTC_UNSIGNED_Format, RGB_ETC1_Format, RGB_ETC2_Format, RGB_PVRTC_2BPPV1_Format, RGB_PVRTC_4BPPV1_Format, RGB_S3TC_DXT1_Format, RGDepthPacking, RGFormat, RGIntegerFormat, Rec709Primaries, RedFormat, RedIntegerFormat, ReinhardToneMapping, RepeatWrapping, ReplaceStencilOp, ReverseSubtractEquation, ReversedDepthFuncs, SIGNED_R11_EAC_Format, SIGNED_RED_GREEN_RGTC2_Format, SIGNED_RED_RGTC1_Format, SIGNED_RG11_EAC_Format, SRGBColorSpace, SRGBTransfer, ShortType, SrcAlphaFactor, SrcAlphaSaturateFactor, SrcColorFactor, StaticCopyUsage, StaticDrawUsage, StaticReadUsage, StreamCopyUsage, StreamDrawUsage, StreamReadUsage, SubtractEquation, SubtractiveBlending, TangentSpaceNormalMap, TriangleFanDrawMode, TriangleStripDrawMode, TrianglesDrawMode, UVMapping, UnsignedByteType, UnsignedInt101111Type, UnsignedInt248Type, UnsignedInt5999Type, UnsignedIntType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedShortType, VSMShadowMap, WebGLCoordinateSystem, WebGPUCoordinateSystem, WorkerPool, WrapAroundEnding, ZeroCurvatureEnding, ZeroFactor, ZeroSlopeEnding, ZeroStencilOp, arrayMax, arrayMin, arrayNeedsUint32, createCanvasElement, createElementNS, error, getConsoleFunction, getTypedArray, isTypedArray, log, probeAsync, setConsoleFunction, toNormalizedProjectionMatrix, toReversedProjectionMatrix, warn, warnOnce };

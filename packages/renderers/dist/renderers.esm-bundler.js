@@ -1,7 +1,7 @@
 import { Vector4, Color, Frustum, Matrix4, Vector2, Vector3, ColorManagement } from '@renderlayer/math';
 import { createCanvasElement, SRGBColorSpace, NoToneMapping, LinearMipmapLinearFilter, HalfFloatType, UnsignedByteType, DoubleSide, BackSide, FrontSide, LinearSRGBColorSpace, RGBAFormat, FloatType, WebGLCoordinateSystem, DisplayP3ColorSpace, LinearDisplayP3ColorSpace, UnsignedIntType, UnsignedShortType, UnsignedInt248Type, UnsignedShort4444Type, UnsignedShort5551Type, RGBAIntegerFormat, RGIntegerFormat, RedIntegerFormat } from '@renderlayer/shared';
 import { WebGLRenderTarget } from '@renderlayer/targets';
-import { WebGLAnimation, WebGLUniforms, WebGLExtensions, WebGLCapabilities, WebGLUtils, WebGLState, WebGLInfo, WebGLProperties, WebGLTextures, WebGLCubeMaps, WebGLCubeUVMaps, WebGLAttributes, WebGLBindingStates, WebGLGeometries, WebGLObjects, WebGLMorphtargets, WebGLClipping, WebGLPrograms, WebGLMaterials, WebGLRenderLists, WebGLRenderStates, WebGLBackground, WebGLShadowMap, WebGLUniformsGroups, WebGLBufferRenderer, WebGLIndexedBufferRenderer } from '@renderlayer/webgl';
+import { WebGLAnimation, WebGLUniforms, WebGLExtensions, WebGLUtils, WebGLCapabilities, WebGLState, WebGLInfo, WebGLProperties, WebGLTextures, WebGLCubeMaps, WebGLCubeUVMaps, WebGLAttributes, WebGLBindingStates, WebGLGeometries, WebGLObjects, WebGLMorphtargets, WebGLClipping, WebGLPrograms, WebGLMaterials, WebGLRenderLists, WebGLRenderStates, WebGLBackground, WebGLShadowMap, WebGLUniformsGroups, WebGLBufferRenderer, WebGLIndexedBufferRenderer } from '@renderlayer/webgl';
 
 class WebGLRenderer {
   constructor(parameters = {}) {
@@ -91,11 +91,9 @@ class WebGLRenderer {
       return _currentRenderTarget === null ? _pixelRatio : 1;
     }
     let _gl = context;
-    function getContext(contextNames, contextAttributes) {
-      for (const contextName of contextNames) {
-        const context2 = canvas.getContext(contextName, contextAttributes);
-        if (context2 !== null) return context2;
-      }
+    function getContext(contextName, contextAttributes) {
+      const context2 = canvas.getContext(contextName, contextAttributes);
+      if (context2 !== null) return context2;
       return null;
     }
     try {
@@ -119,22 +117,15 @@ class WebGLRenderer {
       canvas.addEventListener("webglcontextrestored", onContextRestore, false);
       canvas.addEventListener("webglcontextcreationerror", onContextCreationError, false);
       if (_gl === null) {
-        const contextNames = ["webgl2"];
-        _gl = getContext(contextNames, contextAttributes);
+        const contextName = ["webgl2"];
+        _gl = getContext(contextName, contextAttributes);
         if (_gl === null) {
-          if (getContext(contextNames)) {
+          if (getContext(contextName)) {
             throw new Error("Error creating WebGL2 context with your selected attributes.");
           } else {
             throw new Error("Error creating WebGL2 context.");
           }
         }
-      }
-      if (_gl.getShaderPrecisionFormat === void 0) {
-        _gl.getShaderPrecisionFormat = () => ({
-          rangeMin: 1,
-          rangeMax: 1,
-          precision: 1
-        });
       }
     } catch (error) {
       console.error(`WebGLRenderer: ${error.message}`);
@@ -173,19 +164,19 @@ class WebGLRenderer {
     this.info = null;
     function initGLContext() {
       extensions = new WebGLExtensions(_gl);
-      capabilities = new WebGLCapabilities(_gl, extensions, parameters);
-      extensions.init(capabilities);
-      utils = new WebGLUtils(_gl, extensions, capabilities);
-      state = new WebGLState(_gl, extensions, capabilities);
+      extensions.init();
+      utils = new WebGLUtils(_gl, extensions);
+      capabilities = new WebGLCapabilities(_gl, extensions, parameters, utils);
+      state = new WebGLState(_gl, extensions);
       info = new WebGLInfo(_gl);
       properties = new WebGLProperties();
       textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
       cubemaps = new WebGLCubeMaps(_this);
       cubeuvmaps = new WebGLCubeUVMaps(_this);
-      attributes = new WebGLAttributes(_gl, capabilities);
-      bindingStates = new WebGLBindingStates(_gl, extensions, attributes, capabilities);
+      attributes = new WebGLAttributes(_gl);
+      bindingStates = new WebGLBindingStates(_gl, attributes);
       geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
-      objects = new WebGLObjects(_gl, geometries, attributes, info);
+      objects = new WebGLObjects(_gl, geometries, attributes, bindingStates, info);
       morphtargets = new WebGLMorphtargets(_gl, capabilities, textures);
       clipping = new WebGLClipping(properties);
       programCache = new WebGLPrograms(
@@ -199,7 +190,7 @@ class WebGLRenderer {
       );
       materials = new WebGLMaterials(_this, properties);
       renderLists = new WebGLRenderLists();
-      renderStates = new WebGLRenderStates(extensions, capabilities);
+      renderStates = new WebGLRenderStates(extensions);
       background = new WebGLBackground(
         _this,
         cubemaps,
@@ -211,8 +202,8 @@ class WebGLRenderer {
       );
       shadowMap = new WebGLShadowMap(_this, objects, capabilities);
       uniformsGroups = new WebGLUniformsGroups(_gl, info, capabilities, state);
-      bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info, capabilities);
-      indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info, capabilities);
+      bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info);
+      indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info);
       info.programs = programCache.programs;
       _this.capabilities = capabilities;
       _this.extensions = extensions;
@@ -471,7 +462,22 @@ class WebGLRenderer {
       } else if (object.isSprite) {
         renderer.setMode(_gl.TRIANGLES);
       }
-      if (object.isInstancedMesh) {
+      if (object.isBatchedMesh) {
+        if (object._multiDrawInstances !== null) {
+          renderer.renderMultiDrawInstances(
+            object._multiDrawStarts,
+            object._multiDrawCounts,
+            object._multiDrawCount,
+            object._multiDrawInstances
+          );
+        } else {
+          renderer.renderMultiDraw(
+            object._multiDrawStarts,
+            object._multiDrawCounts,
+            object._multiDrawCount
+          );
+        }
+      } else if (object.isInstancedMesh) {
         renderer.renderInstances(drawStart, drawCount, object.count);
       } else if (geometry.isInstancedBufferGeometry) {
         const maxInstanceCount = geometry._maxInstanceCount !== void 0 ? geometry._maxInstanceCount : Infinity;
@@ -1016,14 +1022,8 @@ class WebGLRenderer {
         p_uniforms.setOptional(_gl, object, "bindMatrixInverse");
         const skeleton = object.skeleton;
         if (skeleton) {
-          if (capabilities.floatVertexTextures) {
-            if (skeleton.boneTexture === null) skeleton.computeBoneTexture();
-            p_uniforms.setValue(_gl, "boneTexture", skeleton.boneTexture, textures);
-          } else {
-            console.warn(
-              "WebGLRenderer: SkinnedMesh can only be used with WebGL 2. With WebGL 1 OES_texture_float and vertex textures support is required."
-            );
-          }
+          if (skeleton.boneTexture === null) skeleton.computeBoneTexture();
+          p_uniforms.setValue(_gl, "boneTexture", skeleton.boneTexture, textures);
         }
       }
       const morphAttributes = geometry.morphAttributes;
@@ -1164,7 +1164,7 @@ class WebGLRenderer {
         _currentScissorTest = _scissorTest;
       }
       const framebufferBound = state.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
-      if (framebufferBound && capabilities.drawBuffers && useDefaultFramebuffer) {
+      if (framebufferBound && useDefaultFramebuffer) {
         state.drawBuffers(renderTarget, framebuffer);
       }
       state.viewport(_currentViewport);
@@ -1215,10 +1215,10 @@ class WebGLRenderer {
             );
             return;
           }
-          const halfFloatSupportedByExt = textureType === HalfFloatType && (extensions.has("EXT_color_buffer_half_float") || extensions.has("EXT_color_buffer_float"));
+          const halfFloatSupportedByExt = textureType === HalfFloatType && (extensions.has("EXT_color_buffer_half_float") || // 88.71%
+          extensions.has("EXT_color_buffer_float"));
           if (textureType !== UnsignedByteType && utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // Edge and Chrome Mac < 52 (#9513)
-          !(textureType === FloatType) && // Chrome Mac >= 52 and Firefox
-          !halfFloatSupportedByExt) {
+          !(textureType === FloatType) && !halfFloatSupportedByExt) {
             console.error(
               "WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type."
             );
@@ -1297,7 +1297,7 @@ class WebGLRenderer {
       if (level === 0 && dstTexture.generateMipmaps) _gl.generateMipmap(_gl.TEXTURE_2D);
       state.unbindTexture();
     };
-    this.copyTextureToTexture3D = (sourceBox, position, srcTexture, dstTexture, level = 0) => {
+    this.copyTextureToTexture3D = function(sourceBox, position, srcTexture, dstTexture, level = 0) {
       const width = sourceBox.max.x - sourceBox.min.x + 1;
       const height = sourceBox.max.y - sourceBox.min.y + 1;
       const depth2 = sourceBox.max.z - sourceBox.min.z + 1;

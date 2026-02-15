@@ -1467,13 +1467,13 @@ var lights_fragment_end = `
 `;
 
 var logdepthbuf_fragment = `
-#if defined( USE_LOGDEPTHBUF ) && defined( USE_LOGDEPTHBUF_EXT )
+#if defined( USE_LOGDEPTHBUF )
 	gl_FragDepthEXT = vIsPerspective == 0.0 ? gl_FragCoord.z : log2( vFragDepth ) * logDepthBufFC * 0.5;
 #endif
 `;
 
 var logdepthbuf_pars_fragment = `
-#if defined( USE_LOGDEPTHBUF ) && defined( USE_LOGDEPTHBUF_EXT )
+#if defined( USE_LOGDEPTHBUF )
 	uniform float logDepthBufFC;
 	varying float vFragDepth;
 	varying float vIsPerspective;
@@ -1482,26 +1482,15 @@ var logdepthbuf_pars_fragment = `
 
 var logdepthbuf_pars_vertex = `
 #ifdef USE_LOGDEPTHBUF
-	#ifdef USE_LOGDEPTHBUF_EXT
 		varying float vFragDepth;
 		varying float vIsPerspective;
-	#else
-		uniform float logDepthBufFC;
-	#endif
 #endif
 `;
 
 var logdepthbuf_vertex = `
 #ifdef USE_LOGDEPTHBUF
-	#ifdef USE_LOGDEPTHBUF_EXT
 		vFragDepth = 1.0 + gl_Position.w;
 		vIsPerspective = float( isPerspectiveMatrix( projectionMatrix ) );
-	#else
-		if ( isPerspectiveMatrix( projectionMatrix ) ) {
-			gl_Position.z = log2( max( EPSILON, gl_Position.w + 1.0 ) ) * logDepthBufFC - 1.0;
-			gl_Position.z *= gl_Position.w;
-		}
-	#endif
 #endif
 `;
 

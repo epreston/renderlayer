@@ -1,6 +1,7 @@
 import { Color, Vector2, Matrix4, Frustum, Vector4, Vector3, RAD2DEG } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
 import { OrthographicCamera, PerspectiveCamera } from '@renderlayer/cameras';
+import { UnsignedByteType, WebGPUCoordinateSystem } from '@renderlayer/shared';
 
 class Light extends Object3D {
   type = "Light";
@@ -48,11 +49,13 @@ class AmbientLight extends Light {
 
 class LightShadow {
   camera;
+  intensity = 1;
   bias = 0;
   normalBias = 0;
   radius = 1;
   blurSamples = 8;
   mapSize = new Vector2(512, 512);
+  mapType = UnsignedByteType;
   map = null;
   mapPass = null;
   matrix = new Matrix4();
@@ -60,12 +63,13 @@ class LightShadow {
   needsUpdate = false;
   _frustum = new Frustum();
   _frameExtents = new Vector2(1, 1);
+  _viewportCount = 1;
   _viewports = [new Vector4(0, 0, 1, 1)];
   constructor(camera) {
     this.camera = camera;
   }
   getViewportCount() {
-    return 1;
+    return this._viewportCount;
   }
   getFrustum() {
     return this._frustum;
@@ -82,25 +86,51 @@ class LightShadow {
       shadowCamera.projectionMatrix,
       shadowCamera.matrixWorldInverse
     );
-    this._frustum.setFromProjectionMatrix(_projScreenMatrix$1);
-    shadowMatrix.set(
-      0.5,
-      0,
-      0,
-      0.5,
-      0,
-      0.5,
-      0,
-      0.5,
-      0,
-      0,
-      0.5,
-      0.5,
-      0,
-      0,
-      0,
-      1
+    this._frustum.setFromProjectionMatrix(
+      _projScreenMatrix$1,
+      shadowCamera.coordinateSystem,
+      shadowCamera.reversedDepth
     );
+    if (shadowCamera.coordinateSystem === WebGPUCoordinateSystem || shadowCamera.reversedDepth) {
+      shadowMatrix.set(
+        0.5,
+        0,
+        0,
+        0.5,
+        0,
+        0.5,
+        0,
+        0.5,
+        0,
+        0,
+        1,
+        0,
+        // Identity Z (preserving the correct [0, 1] range from the projection matrix)
+        0,
+        0,
+        0,
+        1
+      );
+    } else {
+      shadowMatrix.set(
+        0.5,
+        0,
+        0,
+        0.5,
+        0,
+        0.5,
+        0,
+        0.5,
+        0,
+        0,
+        0.5,
+        0.5,
+        0,
+        0,
+        0,
+        1
+      );
+    }
     shadowMatrix.multiply(_projScreenMatrix$1);
   }
   getViewport(viewportIndex) {
@@ -119,8 +149,13 @@ class LightShadow {
   }
   copy(source) {
     this.camera = source.camera.clone();
+    this.intensity = source.intensity;
     this.bias = source.bias;
     this.radius = source.radius;
+    this.autoUpdate = source.autoUpdate;
+    this.needsUpdate = source.needsUpdate;
+    this.normalBias = source.normalBias;
+    this.blurSamples = source.blurSamples;
     this.mapSize.copy(source.mapSize);
     return this;
   }
@@ -130,6 +165,7 @@ class LightShadow {
   }
   toJSON() {
     const object = {};
+    if (this.intensity !== 1) object.intensity = this.intensity;
     if (this.bias !== 0) object.bias = this.bias;
     if (this.normalBias !== 0) object.normalBias = this.normalBias;
     if (this.radius !== 1) object.radius = this.radius;

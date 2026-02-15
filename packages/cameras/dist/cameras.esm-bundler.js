@@ -1,5 +1,5 @@
 import { WebGLCoordinateSystem, WebGPUCoordinateSystem } from '@renderlayer/shared';
-import { Matrix4, RAD2DEG, DEG2RAD } from '@renderlayer/math';
+import { Matrix4, Vector3, Quaternion, RAD2DEG, DEG2RAD } from '@renderlayer/math';
 import { Object3D } from '@renderlayer/core';
 
 class Camera extends Object3D {
@@ -8,11 +8,15 @@ class Camera extends Object3D {
   projectionMatrix = new Matrix4();
   projectionMatrixInverse = new Matrix4();
   coordinateSystem = WebGLCoordinateSystem;
+  _reversedDepth = false;
   constructor() {
     super();
   }
   get isCamera() {
     return true;
+  }
+  get reversedDepth() {
+    return this._reversedDepth;
   }
   copy(source, recursive) {
     super.copy(source, recursive);
@@ -27,17 +31,30 @@ class Camera extends Object3D {
   }
   updateMatrixWorld(force) {
     super.updateMatrixWorld(force);
-    this.matrixWorldInverse.copy(this.matrixWorld).invert();
+    this.matrixWorld.decompose(_position, _quaternion, _scale);
+    if (_scale.x === 1 && _scale.y === 1 && _scale.z === 1) {
+      this.matrixWorldInverse.copy(this.matrixWorld).invert();
+    } else {
+      this.matrixWorldInverse.compose(_position, _quaternion, _scale.set(1, 1, 1)).invert();
+    }
   }
   updateWorldMatrix(updateParents, updateChildren) {
     super.updateWorldMatrix(updateParents, updateChildren);
-    this.matrixWorldInverse.copy(this.matrixWorld).invert();
+    this.matrixWorld.decompose(_position, _quaternion, _scale);
+    if (_scale.x === 1 && _scale.y === 1 && _scale.z === 1) {
+      this.matrixWorldInverse.copy(this.matrixWorld).invert();
+    } else {
+      this.matrixWorldInverse.compose(_position, _quaternion, _scale.set(1, 1, 1)).invert();
+    }
   }
   /** @returns {this} */
   clone() {
     return new this.constructor().copy(this);
   }
 }
+const _position = /* @__PURE__ */ new Vector3();
+const _quaternion = /* @__PURE__ */ new Quaternion();
+const _scale = /* @__PURE__ */ new Vector3();
 
 class PerspectiveCamera extends Camera {
   type = "PerspectiveCamera";
@@ -208,6 +225,21 @@ class PerspectiveCamera extends Camera {
     data.object.filmGauge = this.filmGauge;
     data.object.filmOffset = this.filmOffset;
     return data;
+  }
+}
+
+class ArrayCamera extends PerspectiveCamera {
+  cameras;
+  isMultiViewCamera = false;
+  /**
+   * @param {Array<PerspectiveCamera>} [array=[]]
+   */
+  constructor(array = []) {
+    super();
+    this.cameras = array;
+  }
+  get isArrayCamera() {
+    return true;
   }
 }
 
@@ -416,4 +448,4 @@ class OrthographicCamera extends Camera {
   }
 }
 
-export { Camera, CubeCamera, OrthographicCamera, PerspectiveCamera };
+export { ArrayCamera, Camera, CubeCamera, OrthographicCamera, PerspectiveCamera };

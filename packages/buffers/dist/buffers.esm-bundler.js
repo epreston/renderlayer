@@ -95,6 +95,7 @@ function fromHalfFloat(val) {
 }
 
 class BufferAttribute {
+  #id = _bufferAttributeId++;
   name = "";
   array;
   itemSize;
@@ -102,6 +103,8 @@ class BufferAttribute {
   normalized;
   usage = StaticDrawUsage;
   updateRange = { offset: 0, count: -1 };
+  // EP : remove
+  updateRanges = [];
   gpuType = FloatType;
   version = 0;
   constructor(array, itemSize, normalized = false) {
@@ -116,6 +119,9 @@ class BufferAttribute {
   get isBufferAttribute() {
     return true;
   }
+  get id() {
+    return this.#id;
+  }
   onUploadCallback() {
   }
   set needsUpdate(value) {
@@ -124,6 +130,21 @@ class BufferAttribute {
   setUsage(value) {
     this.usage = value;
     return this;
+  }
+  /**
+   * Adds a range of data in the data array to be updated on the GPU.
+   *
+   * @param {number} start - Position at which to start update.
+   * @param {number} count - The number of components to update.
+   */
+  addUpdateRange(start, count) {
+    this.updateRanges.push({ start, count });
+  }
+  /**
+   * Clears the update ranges.
+   */
+  clearUpdateRanges() {
+    this.updateRanges.length = 0;
   }
   copy(source) {
     this.name = source.name;
@@ -294,8 +315,6 @@ class BufferAttribute {
     };
     if (this.name !== "") data.name = this.name;
     if (this.usage !== StaticDrawUsage) data.usage = this.usage;
-    if (this.updateRange.offset !== 0 || this.updateRange.count !== -1)
-      data.updateRange = this.updateRange;
     return data;
   }
 }
@@ -421,11 +440,7 @@ class Float32BufferAttribute extends BufferAttribute {
     super(new Float32Array(array), itemSize, normalized);
   }
 }
-class Float64BufferAttribute extends BufferAttribute {
-  constructor(array, itemSize, normalized) {
-    super(new Float64Array(array), itemSize, normalized);
-  }
-}
+let _bufferAttributeId = 0;
 const _vector$2 = /* @__PURE__ */ new Vector3();
 const _vector2 = /* @__PURE__ */ new Vector2();
 
@@ -2117,4 +2132,4 @@ class InstancedInterleavedBuffer extends InterleavedBuffer {
   }
 }
 
-export { BufferAttribute, BufferGeometry, Float16BufferAttribute, Float32BufferAttribute, Float64BufferAttribute, InstancedBufferAttribute, InstancedBufferGeometry, InstancedInterleavedBuffer, Int16BufferAttribute, Int32BufferAttribute, Int8BufferAttribute, InterleavedBuffer, InterleavedBufferAttribute, Uint16BufferAttribute, Uint32BufferAttribute, Uint8BufferAttribute, Uint8ClampedBufferAttribute, computeMorphedAttributes, deepCloneAttribute, deinterleaveAttribute, deinterleaveGeometry, estimateBytesUsed, fromHalfFloat, interleaveAttributes, mergeAttributes, mergeGeometries, mergeGroups, mergeVertices, toCreasedNormals, toHalfFloat, toTrianglesDrawMode };
+export { BufferAttribute, BufferGeometry, Float16BufferAttribute, Float32BufferAttribute, InstancedBufferAttribute, InstancedBufferGeometry, InstancedInterleavedBuffer, Int16BufferAttribute, Int32BufferAttribute, Int8BufferAttribute, InterleavedBuffer, InterleavedBufferAttribute, Uint16BufferAttribute, Uint32BufferAttribute, Uint8BufferAttribute, Uint8ClampedBufferAttribute, computeMorphedAttributes, deepCloneAttribute, deinterleaveAttribute, deinterleaveGeometry, estimateBytesUsed, fromHalfFloat, interleaveAttributes, mergeAttributes, mergeGeometries, mergeGroups, mergeVertices, toCreasedNormals, toHalfFloat, toTrianglesDrawMode };

@@ -1,5 +1,5 @@
 import { InstancedBufferGeometry, BufferGeometry, BufferAttribute, InterleavedBufferAttribute, InstancedBufferAttribute, InterleavedBuffer } from '@renderlayer/buffers';
-import { Vector3, Sphere, Color, Matrix4, Matrix3, Vector4, Vector2 } from '@renderlayer/math';
+import { Sphere, Color, Matrix4, Matrix3, Vector4, Vector3, Vector2 } from '@renderlayer/math';
 import { getTypedArray, createElementNS, SRGBColorSpace, ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter, CubeUVReflectionMapping, EquirectangularRefractionMapping, EquirectangularReflectionMapping, CubeRefractionMapping, CubeReflectionMapping, UVMapping, MirroredRepeatWrapping, RepeatWrapping, LinearMipmapNearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, NearestFilter } from '@renderlayer/shared';
 import { CubeTexture, DataTexture, Source, Texture } from '@renderlayer/textures';
 import { Material, LineBasicMaterial, MeshBasicMaterial, MeshDistanceMaterial, MeshDepthMaterial, MeshNormalMaterial, MeshStandardMaterial, MeshPhysicalMaterial, PointsMaterial, ShaderMaterial, RawShaderMaterial, SpriteMaterial, ShadowMaterial } from '@renderlayer/materials';
@@ -382,10 +382,6 @@ class BufferGeometryLoader extends Loader {
       }
       if (attribute.name !== void 0) bufferAttribute.name = attribute.name;
       if (attribute.usage !== void 0) bufferAttribute.setUsage(attribute.usage);
-      if (attribute.updateRange !== void 0) {
-        bufferAttribute.updateRange.offset = attribute.updateRange.offset;
-        bufferAttribute.updateRange.count = attribute.updateRange.count;
-      }
       geometry.setAttribute(key, bufferAttribute);
     }
     const morphAttributes = json.data.morphAttributes;
@@ -431,11 +427,7 @@ class BufferGeometryLoader extends Loader {
     }
     const boundingSphere = json.data.boundingSphere;
     if (boundingSphere !== void 0) {
-      const center = new Vector3();
-      if (boundingSphere.center !== void 0) {
-        center.fromArray(boundingSphere.center);
-      }
-      geometry.boundingSphere = new Sphere(center, boundingSphere.radius);
+      geometry.boundingSphere = new Sphere().fromJSON(boundingSphere);
     }
     if (json.name) geometry.name = json.name;
     if (json.userData) geometry.userData = json.userData;
@@ -565,8 +557,6 @@ class DataTextureLoader extends Loader {
         texture.anisotropy = texData.anisotropy !== void 0 ? texData.anisotropy : 1;
         if (texData.colorSpace !== void 0) {
           texture.colorSpace = texData.colorSpace;
-        } else if (texData.encoding !== void 0) {
-          texture.encoding = texData.encoding;
         }
         if (texData.flipY !== void 0) {
           texture.flipY = texData.flipY;
@@ -1292,7 +1282,6 @@ class ObjectLoader extends Loader {
         if (data.internalFormat !== void 0) texture.internalFormat = data.internalFormat;
         if (data.type !== void 0) texture.type = data.type;
         if (data.colorSpace !== void 0) texture.colorSpace = data.colorSpace;
-        if (data.encoding !== void 0) texture.encoding = data.encoding;
         if (data.minFilter !== void 0)
           texture.minFilter = parseConstant(data.minFilter, TEXTURE_FILTER);
         if (data.magFilter !== void 0)
