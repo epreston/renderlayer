@@ -33,7 +33,7 @@ coverage
 /notes
 
 # Temp folder
-temp
+/temp
 
 # esbuild meta
 /meta
