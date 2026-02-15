@@ -12,6 +12,10 @@ describe('WebGL', () => {
       // implement
     });
 
+    test.todo('has', () => {
+      // implement
+    });
+
     test.todo('get', () => {
       // implement
     });

@@ -1,8 +1,8 @@
 class WebGLProperties {
   #properties = new WeakMap();
 
-  dispose() {
-    this.#properties = new WeakMap();
+  has(object) {
+    return this.#properties.has(object);
   }
 
   get(object) {
@@ -22,6 +22,10 @@ class WebGLProperties {
 
   update(object, key, value) {
     this.#properties.get(object)[key] = value;
+  }
+
+  dispose() {
+    this.#properties = new WeakMap();
   }
 }
 
