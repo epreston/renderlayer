@@ -533,7 +533,9 @@ class WebGLRenderer {
         this.state.buffers.stencil.setMask(0xffffffff);
       }
 
-      _gl.clear(bits);
+      if (bits !== 0) {
+        _gl.clear(bits);
+      }
     };
 
     this.clearColor = function () {
