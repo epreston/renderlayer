@@ -14,7 +14,7 @@ CHANGELOG.md export-ignore
 *.css linguist-vendored
 *.html linguist-vendored
 
-# binary file types.
+# binary file types
 *.webp binary
 *.png binary
 *.jpg binary
