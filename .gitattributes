@@ -1,17 +1,20 @@
-# Auto detect text files and perform LF normalization
+# auto detect text files and perform LF normalization
 * text=auto eol=lf
 
-# Files to remove from language stats for this project
-*.css linguist-vendored
-*.html linguist-vendored
-
-CHANGELOG.md export-ignore
+# exceptions using CRLF normalization
 LICENSE eol=crlf
 .github/SECURITY.md eol=crlf
 .github/CODE_OF_CONDUCT.md eol=crlf
 .github/CONTRIBUTING.md eol=crlf
 
-# Binary file types.
+# exclude from generated archives
+CHANGELOG.md export-ignore
+
+# file types to remove from language stats
+*.css linguist-vendored
+*.html linguist-vendored
+
+# binary file types.
 *.webp binary
 *.png binary
 *.jpg binary
