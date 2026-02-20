@@ -1,4 +1,4 @@
-# renderlayer
+# RenderLayer
 
 WebGL 2 rendering library targeting modern browsers.
 
