@@ -3,7 +3,10 @@
   "type": "module",
   "name": "@renderlayer/monorepo",
   "version": "0.0.7",
-  "repository": "github:epreston/renderlayer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epreston/renderlayer.git"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"
