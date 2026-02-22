@@ -1,6 +1,7 @@
-// based on vue/core mono repo build system
+// - based on vue/core mono repo build system
+// - these aliases are shared between vitest and rollup
+// - used externally to local test and development
 
-// these aliases are shared between vitest and rollup
 import { readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,7 +15,7 @@ const entries = {
   renderlayer: resolveEntryForPkg('renderlayer')
 };
 
-const nonSrcPackages = ['eslint-config', 'prettier-config', 'tsconfig', 'utils'];
+const nonSrcPackages = ['utils'];
 
 for (const dir of dirs) {
   const key = `@renderlayer/${dir}`;
