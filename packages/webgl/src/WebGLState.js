@@ -87,8 +87,6 @@ class WebGLState {
 
   #maxTextures;
 
-  #lineWidthAvailable = false;
-
   #currentTextureSlot = null;
   #currentBoundTextures = {};
 
@@ -126,18 +124,6 @@ class WebGLState {
     };
 
     this.#maxTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
-
-    // EP : not required
-    let version = 0;
-    const glVersion = gl.getParameter(gl.VERSION);
-
-    if (glVersion.includes('WebGL')) {
-      version = parseFloat(/^WebGL (\d)/.exec(glVersion)[1]);
-      this.#lineWidthAvailable = version >= 1.0;
-    } else if (glVersion.includes('OpenGL ES')) {
-      version = parseFloat(/^OpenGL ES (\d)/.exec(glVersion)[1]);
-      this.#lineWidthAvailable = version >= 2.0;
-    }
 
     const _scissorParam = gl.getParameter(gl.SCISSOR_BOX);
     const _viewportParam = gl.getParameter(gl.VIEWPORT);
@@ -579,7 +565,7 @@ class WebGLState {
 
   setLineWidth(width) {
     if (width !== this.#currentLineWidth) {
-      if (this.#lineWidthAvailable) this.#gl.lineWidth(width);
+      this.#gl.lineWidth(width);
 
       this.#currentLineWidth = width;
     }
