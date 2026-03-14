@@ -5513,7 +5513,6 @@ class WebGLState {
   #currentPolygonOffsetFactor = null;
   #currentPolygonOffsetUnits = null;
   #maxTextures;
-  #lineWidthAvailable = false;
   #currentTextureSlot = null;
   #currentBoundTextures = {};
   #currentScissor;
@@ -5540,15 +5539,6 @@ class WebGLState {
       stencil: this.#stencilBuffer
     };
     this.#maxTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
-    let version = 0;
-    const glVersion = gl.getParameter(gl.VERSION);
-    if (glVersion.includes("WebGL")) {
-      version = parseFloat(/^WebGL (\d)/.exec(glVersion)[1]);
-      this.#lineWidthAvailable = version >= 1;
-    } else if (glVersion.includes("OpenGL ES")) {
-      version = parseFloat(/^OpenGL ES (\d)/.exec(glVersion)[1]);
-      this.#lineWidthAvailable = version >= 2;
-    }
     const _scissorParam = gl.getParameter(gl.SCISSOR_BOX);
     const _viewportParam = gl.getParameter(gl.VIEWPORT);
     this.#currentScissor = new Vector4().fromArray(_scissorParam);
@@ -5862,7 +5852,7 @@ class WebGLState {
   //
   setLineWidth(width) {
     if (width !== this.#currentLineWidth) {
-      if (this.#lineWidthAvailable) this.#gl.lineWidth(width);
+      this.#gl.lineWidth(width);
       this.#currentLineWidth = width;
     }
   }
