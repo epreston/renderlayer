@@ -7,11 +7,11 @@ export default [
     // ignores must be completely separate from other rules
     name: 'project/ignores',
     ignores: ['**/packages/*/lib', '**/packages/*/inc']
+  },
+  {
+    name: 'project/rules',
+    rules: {
+      'no-useless-assignment': 'off'
+    }
   }
-  // {
-  //   name: 'project/rules',
-  //   rules: {
-  //     'no-console': 'off',
-  //   }
-  // }
 ];
