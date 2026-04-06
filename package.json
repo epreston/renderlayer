@@ -59,7 +59,7 @@
     "rollup-plugin-esbuild": "^6.2.1",
     "rollup-shader-chunks": "^1.5.2",
     "typescript": "^5.9.3",
-    "vite": "^8.0.3",
+    "vite": "^8.0.5",
     "vitest": "~4.1.0"
   }
 }
