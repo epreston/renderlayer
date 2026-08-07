@@ -149,9 +149,7 @@ function createConfig(format, output, plugins = []) {
   // esbuild define is a bit strict and only allows literal json or identifiers
   // so we still need replace plugin in some cases
   function resolveReplace() {
-    const replacements = {
-      /* ...enumDefines */
-    };
+    const replacements = {/* ...enumDefines */};
 
     if (isProductionBuild && isBrowserBuild) {
       Object.assign(replacements, {
