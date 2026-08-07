@@ -8,10 +8,9 @@
 
     /* Modules */
     "rootDir": ".",
-    "baseUrl": ".",
     "paths": {
-      "@renderlayer/*": ["packages/*/src"],
-      "renderlayer": ["packages/renderlayer/src"]
+      "@renderlayer/*": ["./packages/*/src"],
+      "renderlayer": ["./packages/renderlayer/src"]
     },
     "types": ["vitest/globals", "@webgpu/types"],
     "resolveJsonModule": true,
