@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, URL } from 'node:url';
 import path from 'node:path';
 
 // 1st party Rollup plugins
