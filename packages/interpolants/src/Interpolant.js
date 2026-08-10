@@ -55,7 +55,7 @@ class Interpolant {
           //-
           //- 				if ( t >= t1 || t1 === undefined ) {
           forward_scan: if (!(t < t1)) {
-            for (let giveUpAt = i1 + 2; ; ) {
+            for (let giveUpAt = i1 + 2; ;) {
               if (t1 === undefined) {
                 if (t < t0) break forward_scan;
 
@@ -96,7 +96,7 @@ class Interpolant {
 
             // linear reverse scan
 
-            for (let giveUpAt = i1 - 2; ; ) {
+            for (let giveUpAt = i1 - 2; ;) {
               if (t0 === undefined) {
                 // before start
 
