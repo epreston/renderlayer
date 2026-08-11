@@ -64,6 +64,7 @@
   },
   "allowScripts": {
     "esbuild": true,
-    "msw": true
+    "msw": true,
+    "fsevents": true
   }
 }
