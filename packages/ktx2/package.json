@@ -37,7 +37,7 @@
     "@renderlayer/textures": "~0.0.14"
   },
   "devDependencies": {
-    "ktx-parse": "~1.1.0",
+    "ktx-parse": "~2.0.0",
     "zstddec": "~0.3.1"
   }
 }
