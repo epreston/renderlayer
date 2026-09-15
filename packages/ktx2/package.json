@@ -38,6 +38,6 @@
   },
   "devDependencies": {
     "ktx-parse": "~1.1.0",
-    "zstddec": "~0.2.0"
+    "zstddec": "~0.3.1"
   }
 }
