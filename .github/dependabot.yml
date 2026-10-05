@@ -8,6 +8,7 @@ updates:
     directory: /
     schedule:
       interval: monthly
+
     groups:
       actions-minor:
         update-types:
@@ -19,12 +20,20 @@ updates:
     directory: /
     schedule:
       interval: weekly
+
     groups:
+      # matching packages that must update together
+      vitest-ecosystem:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+
       npm-development:
         dependency-type: development
         update-types:
           - minor
           - patch
+
       npm-production:
         dependency-type: production
         update-types:
