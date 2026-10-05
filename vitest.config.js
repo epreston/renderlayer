@@ -23,7 +23,13 @@ export default defineConfig({
     // testTimeout: 0,
     // fileParallelism: false,
 
+    // Inline Tests
     // globals: true,
+    // includeSource: ['src/**/*.{js,ts}'], // enable inline tests
+
+    // clearMocks is Enabled by Default in future versons.
+    clearMocks: true,
+
     pool: 'forks',
     setupFiles: ['./scripts/setup-vitest.js'],
     sequence: {
