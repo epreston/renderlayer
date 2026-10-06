@@ -1,5 +1,6 @@
 // https://vitejs.dev/config/
 export default {
+  appType: 'mpa', // disable history fallback
   define: {
     // __PROD__: false,
   },
