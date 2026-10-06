@@ -28,13 +28,13 @@ updates:
           - 'vitest'
           - '@vitest/*'
 
-      npm-development:
+      npm-dev:
         dependency-type: development
         update-types:
           - minor
           - patch
 
-      npm-production:
+      npm-prod:
         dependency-type: production
         update-types:
           - patch
