@@ -27,7 +27,7 @@ permissions:
 jobs:
   validation:
     name: Node.js
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
 
     timeout-minutes: 10
 
