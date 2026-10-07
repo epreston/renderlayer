@@ -16,6 +16,7 @@ class BufferGeometry extends EventDispatcher {
   name = '';
   type = 'BufferGeometry';
 
+  /** @type {Uint32BufferAttribute | Uint16BufferAttribute | null} */
   index = null;
   attributes = {};
 
@@ -24,7 +25,10 @@ class BufferGeometry extends EventDispatcher {
 
   groups = [];
 
+  /** @type {Box3 | null} */
   boundingBox = null;
+
+  /** @type {Sphere | null} */
   boundingSphere = null;
 
   drawRange = { start: 0, count: Infinity };
@@ -43,7 +47,7 @@ class BufferGeometry extends EventDispatcher {
     return this.#id;
   }
 
-  /** @returns {Uint32BufferAttribute | Uint16BufferAttribute} */
+  /** @returns {Uint32BufferAttribute | Uint16BufferAttribute| null} */
   getIndex() {
     return this.index;
   }
