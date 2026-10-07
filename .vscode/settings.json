@@ -1,7 +1,7 @@
 // Settings in this file to overwrite default and user settings.
 {
   // Use the project's typescript version
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "files.exclude": {
