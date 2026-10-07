@@ -5,7 +5,6 @@
     /* Language and Environment */
     "target": "es2024", // Node.js 22+
     "lib": ["es2024", "dom", "dom.iterable", "webworker"],
-    "noImplicitAny": false,
 
     /* Modules */
     "rootDir": ".",
@@ -17,11 +16,10 @@
     "resolveJsonModule": true,
 
     /* Emit */
-    "outDir": "temp"
+    "outDir": "./temp",
+
+    /* Type Checking */
+    "noImplicitAny": false
   },
-  "include": [
-    "packages/global.d.ts",
-    "packages/*/src",
-    "packages/*/tests"
-  ]
+  "include": ["packages/global.d.ts", "packages/*/src", "packages/*/tests"]
 }
