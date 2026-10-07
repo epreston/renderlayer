@@ -4,20 +4,23 @@ import { MeshBasicMaterial } from '@renderlayer/materials';
 import { Matrix4, Ray, Sphere, Triangle, Vector2, Vector3 } from '@renderlayer/math';
 import { BackSide, FrontSide } from '@renderlayer/shared';
 
+/**
+ * @import { Material } from "@renderlayer/materials"
+ */
+
 class Mesh extends Object3D {
   type = 'Mesh';
 
-  geometry;
-  material;
-
   /**
    * @param {BufferGeometry} geometry
-   * @param {import('@renderlayer/materials').Material } material
+   * @param {Material} material
    */
   constructor(geometry = new BufferGeometry(), material = new MeshBasicMaterial()) {
     super();
 
     this.geometry = geometry;
+
+    /** @type {Material | Array<Material>} */
     this.material = material;
 
     this.updateMorphTargets();
