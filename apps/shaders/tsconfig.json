@@ -2,14 +2,14 @@
   "extends": "@epreston/tsconfig",
   "compilerOptions": {
     /* Modules */
-    "baseUrl": ".",
+    "rootDir": "./src",
     "paths": {
       "@renderlayer/*": ["../../packages/*/src"],
       "renderlayer": ["../../packages/renderlayer/src"]
     },
 
     /* Emit */
-    "outDir": "temp"
+    "outDir": "./temp"
   },
   "include": ["src"]
 }
