@@ -27,11 +27,9 @@ class Group extends Object3D {
 
 class Mesh extends Object3D {
   type = "Mesh";
-  geometry;
-  material;
   /**
    * @param {BufferGeometry} geometry
-   * @param {import('@renderlayer/materials').Material } material
+   * @param {Material | Array<Material>} material
    */
   constructor(geometry = new BufferGeometry(), material = new MeshBasicMaterial()) {
     super();
