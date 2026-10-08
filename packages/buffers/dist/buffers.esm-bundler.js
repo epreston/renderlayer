@@ -449,12 +449,15 @@ class BufferGeometry extends EventDispatcher {
   uuid = generateUUID();
   name = "";
   type = "BufferGeometry";
+  /** @type {Uint32BufferAttribute | Uint16BufferAttribute | null} */
   index = null;
   attributes = {};
   morphAttributes = {};
   morphTargetsRelative = false;
   groups = [];
+  /** @type {Box3 | null} */
   boundingBox = null;
+  /** @type {Sphere | null} */
   boundingSphere = null;
   drawRange = { start: 0, count: Infinity };
   userData = {};
@@ -467,7 +470,7 @@ class BufferGeometry extends EventDispatcher {
   get id() {
     return this.#id;
   }
-  /** @returns {Uint32BufferAttribute | Uint16BufferAttribute} */
+  /** @returns {Uint32BufferAttribute | Uint16BufferAttribute| null} */
   getIndex() {
     return this.index;
   }
