@@ -51,9 +51,9 @@ class Material extends EventDispatcher {
   toneMapped = true;
   userData = {};
   version = 0;
-  #alphaTest = 0;
   constructor() {
     super();
+    this._alphaTest = 0;
   }
   get isMaterial() {
     return true;
@@ -62,13 +62,13 @@ class Material extends EventDispatcher {
     return this.#id;
   }
   get alphaTest() {
-    return this.#alphaTest;
+    return this._alphaTest;
   }
   set alphaTest(value) {
-    if (this.#alphaTest > 0 !== value > 0) {
+    if (this._alphaTest > 0 !== value > 0) {
       this.version++;
     }
-    this.#alphaTest = value;
+    this._alphaTest = value;
   }
   set needsUpdate(value) {
     if (value === true) this.version++;
