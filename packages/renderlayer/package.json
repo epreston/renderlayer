@@ -44,7 +44,7 @@
     "@renderlayer/ktx2": "~0.0.3",
     "@renderlayer/lights": "~0.0.6",
     "@renderlayer/loaders": "~0.0.18",
-    "@renderlayer/materials": "~0.0.15",
+    "@renderlayer/materials": "~0.0.16",
     "@renderlayer/math": "~0.0.15",
     "@renderlayer/objects": "~0.0.11",
     "@renderlayer/pmrem": "~0.0.4",
