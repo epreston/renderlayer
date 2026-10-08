@@ -13,14 +13,12 @@ class Mesh extends Object3D {
 
   /**
    * @param {BufferGeometry} geometry
-   * @param {Material} material
+   * @param {Material | Array<Material>} material
    */
   constructor(geometry = new BufferGeometry(), material = new MeshBasicMaterial()) {
     super();
 
     this.geometry = geometry;
-
-    /** @type {Material | Array<Material>} */
     this.material = material;
 
     this.updateMorphTargets();
