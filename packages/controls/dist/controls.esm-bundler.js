@@ -451,6 +451,9 @@ class OrbitControls extends Controls {
     this.update();
     this.state = _STATE.NONE;
   }
+  /**
+   * @param {number | null} [deltaTime]
+   */
   update(deltaTime = null) {
     const position = this.object.position;
     _v.copy(position).sub(this.target);
