@@ -32,7 +32,7 @@
     "@renderlayer/animation": "~0.0.8",
     "@renderlayer/buffers": "~0.0.8",
     "@renderlayer/cameras": "~0.0.8",
-    "@renderlayer/controls": "~0.0.7",
+    "@renderlayer/controls": "~0.0.8",
     "@renderlayer/core": "~0.0.9",
     "@renderlayer/curves": "~0.0.7",
     "@renderlayer/draco": "~0.0.8",
